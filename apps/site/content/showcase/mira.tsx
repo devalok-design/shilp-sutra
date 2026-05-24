@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { IconHeart, IconShoppingBag, IconStar, IconTruck } from '@tabler/icons-react'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
@@ -22,12 +23,20 @@ const related = [
   { name: 'Cotton trouser · Mool', price: '₹3,600', tag: 'Last few' },
 ]
 
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
 export function MiraShowcase() {
   const [colour, setColour] = useState<(typeof colours)[number]['id']>('haldi')
   const [size, setSize] = useState<(typeof sizes)[number]>('M')
   const [favourite, setFavourite] = useState(false)
+  const [cartCount, setCartCount] = useState(0)
 
   const activeColour = colours.find((c) => c.id === colour) ?? colours[0]
+
+  const addToBag = async () => {
+    await sleep(800)
+    setCartCount((c) => c + 1)
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-ds-08">
@@ -139,7 +148,30 @@ export function MiraShowcase() {
         </div>
 
         <div className="flex items-center gap-ds-02 mt-ds-02">
-          <Button size="lg" startIcon={<IconShoppingBag size={16} />} fullWidth>
+          <Button
+            size="lg"
+            startIcon={
+              <span className="relative">
+                <IconShoppingBag size={16} />
+                <AnimatePresence>
+                  {cartCount > 0 && (
+                    <motion.span
+                      key={cartCount}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 22 }}
+                      className="absolute -top-2 -right-2 min-w-4 h-4 px-1 rounded-full bg-accent-fg text-accent-9 text-[10px] font-bold flex items-center justify-center"
+                    >
+                      {cartCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </span>
+            }
+            fullWidth
+            onClickAsync={addToBag}
+          >
             Add to bag
           </Button>
           <Button size="lg" variant="soft">

@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { IconArrowDownLeft, IconArrowUpRight, IconShieldCheck } from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@devalok/shilp-sutra/ui/avatar'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
@@ -7,7 +9,11 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
-const transactions = [
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+type Txn = { who: string; amount: number; date: string; type: string; tag: string; isNew?: boolean }
+
+const initialTxns: Txn[] = [
   { who: 'Karm subscription', amount: -49, date: 'Today, 9:14 am', type: 'card', tag: 'tools' },
   { who: 'Studio Hospitality Pvt Ltd', amount: 24000, date: 'Yesterday', type: 'transfer', tag: 'invoice paid' },
   { who: 'AWS · ap-south-1', amount: -312.4, date: '21 May', type: 'card', tag: 'hosting' },
@@ -21,6 +27,26 @@ function inr(n: number) {
 }
 
 export function LendisShowcase() {
+  const [txns, setTxns] = useState<Txn[]>(initialTxns)
+  const [balance, setBalance] = useState(1842310.4)
+
+  const sendMoney = async () => {
+    await sleep(1500)
+    const amount = 84000
+    setTxns((t) => [
+      {
+        who: 'Yogin Sharma · payout',
+        amount: -amount,
+        date: 'Just now',
+        type: 'transfer',
+        tag: 'salary',
+        isNew: true,
+      },
+      ...t.map((x) => ({ ...x, isNew: false })),
+    ])
+    setBalance((b) => b - amount)
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-ds-05">
       {/* Account + transactions */}
@@ -29,9 +55,17 @@ export function LendisShowcase() {
           <CardHeader>
             <CardDescription>Operating account · IDFC First Bank</CardDescription>
             <div className="flex items-baseline gap-ds-03 mt-ds-02">
-              <Text variant="heading-2xl" className="text-surface-fg">
-                ₹18,42,310.40
-              </Text>
+              <motion.div
+                key={balance}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+              >
+                <Text variant="heading-2xl" className="text-surface-fg">
+                  ₹
+                  {balance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </Text>
+              </motion.div>
               <Badge variant="soft" color="success">
                 +4.2% this month
               </Badge>
@@ -41,7 +75,9 @@ export function LendisShowcase() {
             </Text>
           </CardHeader>
           <CardContent className="flex flex-wrap items-center gap-ds-02">
-            <Button size="lg">Send money</Button>
+            <Button size="lg" onClickAsync={sendMoney}>
+              Send money
+            </Button>
             <Button variant="soft" size="lg">
               Request payment
             </Button>
@@ -60,42 +96,53 @@ export function LendisShowcase() {
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col">
-              {transactions.map((t, i) => (
-                <li
-                  key={i}
-                  className="flex items-center justify-between gap-ds-04 py-ds-03 border-b border-surface-border-subtle last:border-b-0"
-                >
-                  <div className="flex items-center gap-ds-03 min-w-0 flex-1">
-                    <span
-                      className={[
-                        'w-9 h-9 rounded-ds-sm flex items-center justify-center shrink-0',
-                        t.amount < 0 ? 'bg-warning-3 text-warning-11' : 'bg-success-3 text-success-11',
-                      ].join(' ')}
-                    >
-                      {t.amount < 0 ? <IconArrowUpRight size={16} /> : <IconArrowDownLeft size={16} />}
-                    </span>
-                    <div className="flex flex-col min-w-0">
-                      <Text variant="body-sm" className="text-surface-fg truncate">
-                        {t.who}
-                      </Text>
-                      <Text variant="body-xs" className="text-surface-fg-subtle">
-                        {t.date} · {t.type}
-                      </Text>
+              <AnimatePresence initial={false}>
+                {txns.map((t, i) => (
+                  <motion.li
+                    key={`${t.who}-${t.date}-${i}`}
+                    layout
+                    initial={t.isNew ? { opacity: 0, y: -8, height: 0 } : false}
+                    animate={{ opacity: 1, y: 0, height: 'auto' }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    className="flex items-center justify-between gap-ds-04 py-ds-03 border-b border-surface-border-subtle last:border-b-0"
+                  >
+                    <div className="flex items-center gap-ds-03 min-w-0 flex-1">
+                      <span
+                        className={[
+                          'w-9 h-9 rounded-ds-sm flex items-center justify-center shrink-0',
+                          t.amount < 0 ? 'bg-warning-3 text-warning-11' : 'bg-success-3 text-success-11',
+                        ].join(' ')}
+                      >
+                        {t.amount < 0 ? <IconArrowUpRight size={16} /> : <IconArrowDownLeft size={16} />}
+                      </span>
+                      <div className="flex flex-col min-w-0">
+                        <Text variant="body-sm" className="text-surface-fg truncate inline-flex items-center gap-ds-02">
+                          {t.who}
+                          {t.isNew && (
+                            <Badge variant="soft" color="accent" size="sm">
+                              just now
+                            </Badge>
+                          )}
+                        </Text>
+                        <Text variant="body-xs" className="text-surface-fg-subtle">
+                          {t.date} · {t.type}
+                        </Text>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col items-end gap-ds-01">
-                    <Text
-                      variant="body-sm"
-                      className={t.amount < 0 ? 'text-surface-fg font-medium' : 'text-success-11 font-medium'}
-                    >
-                      {inr(t.amount)}
-                    </Text>
-                    <Badge size="sm" variant="soft" color="neutral">
-                      {t.tag}
-                    </Badge>
-                  </div>
-                </li>
-              ))}
+                    <div className="flex flex-col items-end gap-ds-01">
+                      <Text
+                        variant="body-sm"
+                        className={t.amount < 0 ? 'text-surface-fg font-medium' : 'text-success-11 font-medium'}
+                      >
+                        {inr(t.amount)}
+                      </Text>
+                      <Badge size="sm" variant="soft" color="neutral">
+                        {t.tag}
+                      </Badge>
+                    </div>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
             </ul>
           </CardContent>
         </Card>
@@ -152,7 +199,7 @@ export function LendisShowcase() {
               />
             </label>
 
-            <Button size="lg" fullWidth>
+            <Button size="lg" fullWidth onClickAsync={async () => { await sleep(1800) }}>
               Verify with face ID
             </Button>
           </CardContent>

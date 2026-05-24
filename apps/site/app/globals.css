@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@devalok/shilp-sutra/css";
+@import "./canvas-modes.css";
 
 @source "../app";
 @source "../components";

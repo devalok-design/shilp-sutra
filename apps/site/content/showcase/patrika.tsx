@@ -1,6 +1,8 @@
 'use client'
 
 import { IconBookmark, IconClock, IconShare3 } from '@tabler/icons-react'
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 import { Avatar, AvatarFallback } from '@devalok/shilp-sutra/ui/avatar'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
@@ -122,7 +124,7 @@ export function PatrikaShowcase() {
               placeholder="namaskar@devalok.in"
               className="h-ds-md px-ds-04 rounded-ds-md border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9"
             />
-            <Button size="md" fullWidth>
+            <Button size="md" fullWidth onClickAsync={async () => { await sleep(1000) }}>
               Send me Patrika
             </Button>
           </CardContent>

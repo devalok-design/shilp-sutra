@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import {
   IconActivity,
   IconCalendarPlus,
@@ -8,6 +9,8 @@ import {
   IconPhoneCall,
   IconTemperature,
 } from '@tabler/icons-react'
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 import { Avatar, AvatarFallback } from '@devalok/shilp-sutra/ui/avatar'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
@@ -32,6 +35,8 @@ const history = [
 ]
 
 export function VaidyaShowcase() {
+  const [selectedSlot, setSelectedSlot] = useState<string | null>('10:00 am')
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-ds-05">
       {/* Patient overview */}
@@ -126,25 +131,38 @@ export function VaidyaShowcase() {
           </CardHeader>
           <CardContent className="flex flex-col gap-ds-04">
             <div className="grid grid-cols-2 gap-ds-02">
-              {slots.map((s) => (
-                <button
-                  key={s.time}
-                  type="button"
-                  disabled={!s.available}
-                  className={[
-                    'flex items-center justify-center gap-ds-02 h-10 rounded-ds-md border text-ds-sm transition-colors duration-fast-01',
-                    s.available
-                      ? 'border-surface-border-subtle text-surface-fg hover:border-accent-9 hover:bg-accent-2'
-                      : 'border-surface-border-subtle text-surface-fg-subtle line-through cursor-not-allowed',
-                  ].join(' ')}
-                >
-                  <IconClockHour4 size={12} />
-                  {s.time}
-                </button>
-              ))}
+              {slots.map((s) => {
+                const active = selectedSlot === s.time
+                return (
+                  <button
+                    key={s.time}
+                    type="button"
+                    disabled={!s.available}
+                    onClick={() => setSelectedSlot(s.time)}
+                    className={[
+                      'flex items-center justify-center gap-ds-02 h-10 rounded-ds-md border text-ds-sm transition-colors duration-fast-01',
+                      !s.available && 'border-surface-border-subtle text-surface-fg-subtle line-through cursor-not-allowed',
+                      s.available && active && 'border-accent-9 bg-accent-3 text-accent-11',
+                      s.available && !active && 'border-surface-border-subtle text-surface-fg hover:border-accent-9 hover:bg-accent-2',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
+                  >
+                    <IconClockHour4 size={12} />
+                    {s.time}
+                  </button>
+                )
+              })}
             </div>
-            <Button size="lg" startIcon={<IconCalendarPlus size={16} />} fullWidth>
-              Confirm slot
+            <Button
+              size="lg"
+              startIcon={<IconCalendarPlus size={16} />}
+              fullWidth
+              onClickAsync={async () => {
+                await sleep(1300)
+              }}
+            >
+              {selectedSlot ? `Book ${selectedSlot}` : 'Pick a slot'}
             </Button>
           </CardContent>
         </Card>

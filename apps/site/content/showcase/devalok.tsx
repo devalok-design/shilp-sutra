@@ -1,6 +1,8 @@
 'use client'
 
 import { IconBrandGithub, IconCircleCheck, IconExternalLink, IconSparkles } from '@tabler/icons-react'
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
@@ -123,7 +125,9 @@ export function DevalokShowcase() {
               </Text>
             </div>
           </div>
-          <Button size="lg">Talk to Devalok</Button>
+          <Button size="lg" onClickAsync={async () => { await sleep(1500) }}>
+            Talk to Devalok
+          </Button>
         </CardContent>
       </Card>
     </div>

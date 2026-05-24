@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconCalendar,
   IconChartBar,
@@ -15,7 +17,11 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
-const projects = [
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+type Project = { name: string; channel: string; tasks: number; done: number; members: string[]; isNew?: boolean }
+
+const initialProjects: Project[] = [
   { name: 'Q3 launch plan', channel: 'launch', tasks: 24, done: 16, members: ['ML', 'GP', 'YS', 'AM'] },
   { name: 'Brand refresh', channel: 'brand-2026', tasks: 47, done: 41, members: ['ML', 'YS'] },
   { name: 'Customer pipeline', channel: 'sales', tasks: 12, done: 4, members: ['GP', 'AM'] },
@@ -30,6 +36,19 @@ const team = [
 ]
 
 export function AtlasShowcase() {
+  const [projects, setProjects] = useState<Project[]>(initialProjects)
+
+  const addProject = async () => {
+    await sleep(1200)
+    const names = ['Discovery sprint', 'Customer interviews', 'Pricing experiment', 'Q4 retreat']
+    const channels = ['research', 'discovery', 'pricing', 'team']
+    const i = projects.length % names.length
+    setProjects((p) => [
+      { name: names[i], channel: channels[i], tasks: 8, done: 0, members: ['ML'], isNew: true },
+      ...p.map((x) => ({ ...x, isNew: false })),
+    ])
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-05">
       {/* Main content */}
@@ -43,7 +62,9 @@ export function AtlasShowcase() {
                 Four projects active, 88 tasks moving. The team is mostly in heads-down mode today.
               </Text>
             </div>
-            <Button startIcon={<IconPlus size={14} />}>New project</Button>
+            <Button startIcon={<IconPlus size={14} />} onClickAsync={addProject}>
+              New project
+            </Button>
           </CardHeader>
         </Card>
 
@@ -60,42 +81,54 @@ export function AtlasShowcase() {
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col">
-              {projects.map((p) => (
-                <li
-                  key={p.name}
-                  className="flex items-center justify-between gap-ds-04 py-ds-03 border-b border-surface-border-subtle last:border-b-0"
-                >
-                  <div className="flex items-center gap-ds-03 min-w-0 flex-1">
-                    <span className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
-                      <IconFolderOpen size={16} />
-                    </span>
-                    <div className="flex flex-col min-w-0">
-                      <Text variant="body-sm" className="text-surface-fg truncate">
-                        {p.name}
-                      </Text>
-                      <span className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
-                        <IconHash size={10} />
-                        {p.channel}
+              <AnimatePresence initial={false}>
+                {projects.map((p) => (
+                  <motion.li
+                    key={p.name}
+                    layout
+                    initial={p.isNew ? { opacity: 0, y: -8, height: 0 } : false}
+                    animate={{ opacity: 1, y: 0, height: 'auto' }}
+                    exit={{ opacity: 0, y: -8, height: 0 }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    className="flex items-center justify-between gap-ds-04 py-ds-03 border-b border-surface-border-subtle last:border-b-0"
+                  >
+                    <div className="flex items-center gap-ds-03 min-w-0 flex-1">
+                      <span className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+                        <IconFolderOpen size={16} />
                       </span>
+                      <div className="flex flex-col min-w-0">
+                        <Text variant="body-sm" className="text-surface-fg truncate inline-flex items-center gap-ds-02">
+                          {p.name}
+                          {p.isNew && (
+                            <Badge variant="soft" color="accent" size="sm">
+                              new
+                            </Badge>
+                          )}
+                        </Text>
+                        <span className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
+                          <IconHash size={10} />
+                          {p.channel}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="hidden sm:flex items-center gap-ds-04 text-ds-xs text-surface-fg-muted">
-                    <span>
-                      {p.done}/{p.tasks} done
-                    </span>
-                    <div className="flex -space-x-2">
-                      {p.members.map((m) => (
-                        <Avatar key={m} size="xs">
-                          <AvatarFallback>{m}</AvatarFallback>
-                        </Avatar>
-                      ))}
+                    <div className="hidden sm:flex items-center gap-ds-04 text-ds-xs text-surface-fg-muted">
+                      <span>
+                        {p.done}/{p.tasks} done
+                      </span>
+                      <div className="flex -space-x-2">
+                        {p.members.map((m) => (
+                          <Avatar key={m} size="xs">
+                            <AvatarFallback>{m}</AvatarFallback>
+                          </Avatar>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Open
-                  </Button>
-                </li>
-              ))}
+                    <Button variant="ghost" size="sm">
+                      Open
+                    </Button>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
             </ul>
           </CardContent>
         </Card>

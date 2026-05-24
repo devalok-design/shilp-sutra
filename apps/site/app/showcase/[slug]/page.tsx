@@ -2,13 +2,15 @@ import type { CSSProperties } from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { IconArrowRight, IconPalette } from '@tabler/icons-react'
+import { IconPalette } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { ShowcaseCanvas } from '@/components/showcase-canvas'
+import { ShowcasePicker } from '@/components/showcase-picker'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { generateRamp } from '@/lib/ramp-generator'
-import { getAllShowcases, getShowcase, getShowcaseSlugs } from '@/lib/showcase-registry'
+import { getShowcase, getShowcaseSlugs } from '@/lib/showcase-registry'
 
 export async function generateStaticParams() {
   return getShowcaseSlugs().map((slug) => ({ slug }))
@@ -39,10 +41,6 @@ export default async function ShowcaseDetailPage({ params }: { params: Promise<{
   const { slug } = await params
   const entry = getShowcase(slug)
   if (!entry) notFound()
-
-  const all = getAllShowcases()
-  const idx = all.findIndex((e) => e.slug === slug)
-  const next = all[(idx + 1) % all.length]
 
   const { Component } = entry
 
@@ -88,24 +86,11 @@ export default async function ShowcaseDetailPage({ params }: { params: Promise<{
             </div>
           </header>
 
-          <div
-            style={rampInlineStyle(entry.hue, entry.chroma)}
-            className="rounded-ds-md border border-surface-border bg-surface-base p-ds-06 lg:p-ds-08"
-          >
+          <ShowcaseCanvas brandStyle={rampInlineStyle(entry.hue, entry.chroma)} productName={entry.product}>
             <Component />
-          </div>
+          </ShowcaseCanvas>
 
-          <nav className="mt-ds-09 pt-ds-06 border-t border-surface-border-subtle flex items-center justify-between">
-            <Text variant="body-sm" className="text-surface-fg-muted">
-              Every example is built from the same shilp-sutra components. Only the accent ramp
-              changes.
-            </Text>
-            <Link href={`/showcase/${next.slug}`}>
-              <Button variant="soft" size="sm" endIcon={<IconArrowRight size={14} />}>
-                Next · {next.product}
-              </Button>
-            </Link>
-          </nav>
+          <ShowcasePicker currentSlug={entry.slug} />
         </div>
       </main>
       <SiteFooter />

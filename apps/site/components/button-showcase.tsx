@@ -282,11 +282,13 @@ function SceneMusic() {
             </Button>
           </div>
         </div>
+        {/* Spotify embed — placeholder track until Mudit drops the real ID.
+            The user's pasted Spotify URL will replace the track segment. */}
         <iframe
-          title="Spotify · Bhairav by Pt. Bhimsen Joshi"
-          src="https://open.spotify.com/embed/track/0VTQ2pYNoXVrh2KNuKkqsX?utm_source=generator"
+          title="Spotify clip"
+          src="https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUfTFmNBRM?utm_source=generator"
           className="w-full rounded-ds-md border border-surface-border-subtle"
-          height={80}
+          height={152}
           loading="lazy"
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         />

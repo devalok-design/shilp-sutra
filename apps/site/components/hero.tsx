@@ -13,7 +13,7 @@ export function Hero() {
       {/* pt accounts for floating pill (~70–80px). Aurora-bloom reaches up to the
           true top of the section so the pill sits *over* the bloom — magic stays. */}
       <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-12 pb-ds-09 md:pt-ds-13 md:pb-ds-12 lg:pt-[10rem] lg:pb-[8rem] flex flex-col items-center text-center gap-ds-05 md:gap-ds-06">
-        <Text variant="label-md" className="text-surface-fg-subtle">
+        <Text variant="label-md" className="text-surface-fg-muted">
           From Devalok Studios
         </Text>
         <h1 className="text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-3xl text-balance">
@@ -21,7 +21,7 @@ export function Hero() {
           <br className="hidden md:inline" />{' '}
           <span className="text-accent-11">looks like yours.</span>
         </h1>
-        <Text variant="body-lg" className="text-surface-fg-muted max-w-2xl text-balance">
+        <Text variant="body-lg" className="text-surface-fg max-w-2xl text-balance">
           Pick one colour. Watch every button, badge, card, and form match — light mode, dark
           mode, every screen — instantly. No spreadsheet of hex codes. No config files. Just your
           brand, everywhere.
@@ -36,8 +36,9 @@ export function Hero() {
             </Button>
           </Link>
         </div>
-        {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots. */}
-        <ul className="mt-ds-06 w-full max-w-xl grid grid-cols-2 gap-ds-02 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 text-ds-xs text-surface-fg-subtle">
+        {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
+            Text bumped from subtle → muted so the chips read over the bloom. */}
+        <ul className="mt-ds-06 w-full max-w-xl grid grid-cols-2 gap-ds-02 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 text-ds-xs text-surface-fg-muted">
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-success-9" />
             v{SHILP_SUTRA_MINOR} live

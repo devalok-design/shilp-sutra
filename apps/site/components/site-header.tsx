@@ -92,9 +92,13 @@ export function SiteHeader() {
             // modern Chrome/Safari/Firefox.
             'transition-[background-color,border-color,box-shadow,backdrop-filter] duration-moderate-02 ease-productive-standard',
             'forced-colors:bg-[Canvas] forced-colors:border-[CanvasText]',
+            // At-rest still feels "merged" — bg/25 + blur-md is subtle enough that
+            // the bloom passes through (amplified by saturate-150), but heavy enough
+            // that text + tinted controls have a substrate to read against.
+            // Scrolled drops bg-opacity to 65 so the blur is *visible*, not solid.
             scrolled
-              ? 'bg-surface-base/85 backdrop-blur-2xl backdrop-saturate-150 border-surface-border-subtle/70 shadow-overlay'
-              : 'bg-transparent backdrop-blur-none border-transparent shadow-none',
+              ? 'bg-surface-base/65 backdrop-blur-2xl backdrop-saturate-150 border-surface-border-subtle/60 shadow-overlay'
+              : 'bg-surface-base/25 backdrop-blur-md backdrop-saturate-150 border-transparent shadow-none',
           ].join(' ')}
         >
           <Link
@@ -130,12 +134,13 @@ export function SiteHeader() {
             })}
           </nav>
 
+          {/* Order: brand → github → hamburger(mobile) → theme (rightmost).
+              ThemeToggle owns the corner — it's solid accent so the corner reads
+              loud-and-clear as a tap target, even at-rest over the bloom. */}
           <div className="flex items-center gap-ds-01">
-            {/* BrandSwitcher only on md+; drawer hosts it on mobile. */}
             <div className="hidden md:inline-flex">
               <BrandSwitcher />
             </div>
-            {/* GitHub + Theme always visible — soft-tinted so they read as taps. */}
             <a
               href="https://github.com/devalok-design/shilp-sutra"
               target="_blank"
@@ -146,8 +151,6 @@ export function SiteHeader() {
                 <IconBrandGithub size={18} />
               </Button>
             </a>
-            <ThemeToggle />
-            {/* Hamburger only when nav links don't fit (md-). */}
             <Button
               variant="soft"
               size="icon-md"
@@ -159,6 +162,7 @@ export function SiteHeader() {
             >
               {open ? <IconX size={18} /> : <IconMenu2 size={18} />}
             </Button>
+            <ThemeToggle />
           </div>
         </div>
       </motion.header>

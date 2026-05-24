@@ -44,7 +44,7 @@ export function MiraShowcase() {
       <div className="relative rounded-ds-md overflow-hidden border border-surface-border-subtle min-h-[420px] flex items-end">
         {/* Base photograph — handwoven cotton kurta */}
         <img
-          src="https://images.unsplash.com/photo-1517254797898-04c1aa6cd95a?auto=format&fit=crop&w=900&q=80"
+          src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=900&q=80"
           alt="Handwoven cotton kurta, draped"
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"

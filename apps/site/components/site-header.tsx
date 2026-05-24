@@ -86,7 +86,9 @@ export function SiteHeader() {
             'flex items-center justify-between gap-ds-02 sm:gap-ds-03',
             // Logo gets more breathing room on the left; controls hug the right edge.
             'pl-ds-06 pr-ds-02 sm:pl-ds-07 sm:pr-ds-02 py-ds-02',
-            'rounded-full border',
+            // Rounded rectangle, not full-pill — softer corners, still distinct
+            // from the page once the chrome materializes on scroll.
+            'rounded-ds-2xl border',
             // Tween skin properties together so the pill "materializes" on scroll
             // instead of popping. backdrop-filter transitions are supported across
             // modern Chrome/Safari/Firefox.
@@ -103,18 +105,27 @@ export function SiteHeader() {
               : 'bg-transparent backdrop-blur-none border-transparent shadow-none',
           ].join(' ')}
         >
-          <Link
-            href="/"
-            className="flex items-center gap-ds-02 group min-w-0"
-            onClick={() => setOpen(false)}
-          >
-            <span className="text-ds-md sm:text-ds-lg font-semibold tracking-tight text-surface-fg truncate">
-              shilp-sutra
-            </span>
-            <span className="text-ds-xs text-surface-fg-subtle font-mono mt-0.5 shrink-0 hidden sm:inline">
-              v{SHILP_SUTRA_MINOR}
-            </span>
-          </Link>
+          {/* Logo cluster — on mobile the BrandSwitcher sits inline with the
+              wordmark so the colour-picker is reachable next to the brand it
+              colours. On md+ the switcher relocates to the rightmost controls
+              slot (rendered below) and this cluster is logo-only. */}
+          <div className="flex items-center gap-ds-03 min-w-0">
+            <Link
+              href="/"
+              className="flex items-center gap-ds-02 group min-w-0"
+              onClick={() => setOpen(false)}
+            >
+              <span className="text-ds-md sm:text-ds-lg font-semibold tracking-tight text-surface-fg truncate">
+                shilp-sutra
+              </span>
+              <span className="text-ds-xs text-surface-fg-subtle font-mono mt-0.5 shrink-0 hidden sm:inline">
+                v{SHILP_SUTRA_MINOR}
+              </span>
+            </Link>
+            <div className="md:hidden">
+              <BrandSwitcher />
+            </div>
+          </div>
 
           <nav className="hidden md:flex items-center gap-ds-05">
             {navLinks.map((link) => {
@@ -163,7 +174,10 @@ export function SiteHeader() {
             >
               {open ? <IconX size={18} /> : <IconMenu2 size={18} />}
             </Button>
-            <BrandSwitcher />
+            {/* Desktop only — mobile has its copy beside the logo. */}
+            <div className="hidden md:inline-flex">
+              <BrandSwitcher />
+            </div>
           </div>
         </div>
       </motion.header>

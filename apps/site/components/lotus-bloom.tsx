@@ -67,19 +67,30 @@ export interface LotusBloomProps {
   style?: React.CSSProperties
 }
 
-const OUTER_PETALS = 8
-const INNER_PETALS = 6
-const OUTER_PETAL_STAGGER_MS = 70
-const INNER_PETAL_STAGGER_MS = 70
-const INNER_RING_DELAY_MS = 350
+// Real Nelumbo nucifera has 18-30 spirally-arranged petals; we approximate
+// with 32 (14 outer + 10 middle + 8 inner) in three concentric rings — the
+// spiral reads as concentric at viewing distance.
+const OUTER_PETALS = 14
+const MIDDLE_PETALS = 10
+const INNER_PETALS = 8
+const OUTER_PETAL_STAGGER_MS = 55
+const MIDDLE_PETAL_STAGGER_MS = 55
+const INNER_PETAL_STAGGER_MS = 55
+const MIDDLE_RING_DELAY_MS = 280
+const INNER_RING_DELAY_MS = 520
+// Real lotus has 100-400 long slender stamens. 16 visible filaments
+// suggests the density without modelling each one.
+const STAMEN_COUNT = 16
 
-// Almond / teardrop petal pointing UP (negative Y). Base at (0, 0),
-// tip at (0, -92). Bezier control points give a soft, slightly-pointed
-// petal silhouette — closer to a real lotus than a perfect ellipse.
+// Broad ovate petal — closer to the actual length-to-width ratio (about
+// 1 : 1.85) of a lotus petal viewed from above. Wider belly, rounded tip,
+// pinched base.
 const OUTER_PETAL_PATH =
-  'M 0,0 C 12,-18 22,-55 0,-92 C -22,-55 -12,-18 0,0 Z'
+  'M 0,0 C 28,-12 48,-42 34,-78 C 18,-92 -18,-92 -34,-78 C -48,-42 -28,-12 0,0 Z'
+const MIDDLE_PETAL_PATH =
+  'M 0,0 C 20,-9 34,-30 24,-58 C 13,-70 -13,-70 -24,-58 C -34,-30 -20,-9 0,0 Z'
 const INNER_PETAL_PATH =
-  'M 0,0 C 9,-12 14,-38 0,-62 C -14,-38 -9,-12 0,0 Z'
+  'M 0,0 C 14,-6 24,-22 17,-42 C 9,-50 -9,-50 -17,-42 C -24,-22 -14,-6 0,0 Z'
 
 export function LotusBloom({
   size = 240,
@@ -274,75 +285,211 @@ export function LotusBloom({
             style={{ display: 'block', overflow: 'visible' }}
           >
             <defs>
+              {/* Petal gradients — base-light → tip-deep per ring. Inner
+                  rings carry slightly lighter base / saturated tip so the
+                  three layers read as distinct stages of petal growth. */}
               <linearGradient id={`lp-outer-${id}`} x1="0" y1="1" x2="0" y2="0">
                 <stop offset="0"    stopColor={stops.base} stopOpacity="0.95" />
                 <stop offset="0.35" stopColor={stops.mid}  stopOpacity="0.92" />
-                <stop offset="0.78" stopColor={stops.tip}  stopOpacity="0.9" />
-                <stop offset="1"    stopColor={stops.edge} stopOpacity="0.85" />
+                <stop offset="0.78" stopColor={stops.tip}  stopOpacity="0.92" />
+                <stop offset="1"    stopColor={stops.edge} stopOpacity="0.88" />
+              </linearGradient>
+              <linearGradient id={`lp-middle-${id}`} x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0"    stopColor={stops.base} stopOpacity="1" />
+                <stop offset="0.45" stopColor={stops.mid}  stopOpacity="0.95" />
+                <stop offset="1"    stopColor={stops.tip}  stopOpacity="0.95" />
               </linearGradient>
               <linearGradient id={`lp-inner-${id}`} x1="0" y1="1" x2="0" y2="0">
                 <stop offset="0"   stopColor={stops.base} stopOpacity="1" />
-                <stop offset="0.5" stopColor={stops.mid}  stopOpacity="0.95" />
-                <stop offset="1"   stopColor={stops.tip}  stopOpacity="0.95" />
+                <stop offset="0.5" stopColor={stops.mid}  stopOpacity="0.97" />
+                <stop offset="1"   stopColor={stops.edge} stopOpacity="0.95" />
               </linearGradient>
+              {/* Receptacle — obconical, brand-deepest at the centre fading
+                  to edge tone. */}
               <radialGradient id={`lp-core-${id}`} cx="0.5" cy="0.5" r="0.5">
-                <stop offset="0"   stopColor={stops.deep} stopOpacity="0.75" />
-                <stop offset="0.6" stopColor={stops.edge} stopOpacity="0.4" />
-                <stop offset="1"   stopColor={stops.edge} stopOpacity="0" />
+                <stop offset="0"    stopColor={stops.deep} stopOpacity="0.9" />
+                <stop offset="0.55" stopColor={stops.edge} stopOpacity="0.65" />
+                <stop offset="1"    stopColor={stops.edge} stopOpacity="0" />
               </radialGradient>
+
+              {/* ── Devalok grain filter ─────────────────────────────────
+                  feTurbulence (fractalNoise) generates the same paper-grain
+                  noise used in the DevalokGrain component on Buttons etc.
+                  It's clipped to the petal silhouette and multiplied onto
+                  the petal fill so the texture sits *in* the colour, not
+                  over it. baseFrequency 0.85 + numOctaves 2 gives a tight
+                  paper-like grain (matches grain.md tuning for solid
+                  surfaces). Single filter applied to a group wrapping all
+                  petals — one pass, not 32. */}
+              <filter
+                id={`lp-grain-${id}`}
+                x="-2%"
+                y="-2%"
+                width="104%"
+                height="104%"
+              >
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.85"
+                  numOctaves="2"
+                  seed="3"
+                  stitchTiles="stitch"
+                  result="noise"
+                />
+                <feColorMatrix
+                  in="noise"
+                  type="matrix"
+                  values="0 0 0 0 0
+                          0 0 0 0 0
+                          0 0 0 0 0
+                          0 0 0 0.22 0"
+                  result="grain"
+                />
+                <feComposite
+                  in="grain"
+                  in2="SourceGraphic"
+                  operator="in"
+                  result="clipped"
+                />
+                <feBlend
+                  mode="multiply"
+                  in="SourceGraphic"
+                  in2="clipped"
+                />
+              </filter>
             </defs>
 
-            {Array.from({ length: OUTER_PETALS }).map((_, i) => {
-              const rot = (360 / OUTER_PETALS) * i
-              return (
-                <path
-                  key={`outer-${i}`}
-                  className="lotus-petal"
-                  d={OUTER_PETAL_PATH}
-                  fill={`url(#lp-outer-${id})`}
-                  style={{
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    ...({
-                      '--petal-rot': `${rot}deg`,
-                      '--petal-delay': `${delay + i * OUTER_PETAL_STAGGER_MS}ms`,
-                    } as any),
-                  }}
-                />
-              )
-            })}
-            {Array.from({ length: INNER_PETALS }).map((_, i) => {
-              const rot = (360 / INNER_PETALS) * i + 30
-              const localDelay =
-                delay + INNER_RING_DELAY_MS + i * INNER_PETAL_STAGGER_MS
-              return (
-                <path
-                  key={`inner-${i}`}
-                  className="lotus-petal"
-                  d={INNER_PETAL_PATH}
-                  fill={`url(#lp-inner-${id})`}
-                  style={{
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    ...({
-                      '--petal-rot': `${rot}deg`,
-                      '--petal-delay': `${localDelay}ms`,
-                    } as any),
-                  }}
-                />
-              )
-            })}
-            <circle
-              className="lotus-core"
-              cx="0"
-              cy="0"
-              r="14"
-              fill={`url(#lp-core-${id})`}
-              style={{
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ...({
-                  '--core-delay': `${delay + INNER_RING_DELAY_MS + INNER_PETALS * INNER_PETAL_STAGGER_MS + 100}ms`,
-                } as any),
-              }}
-            />
+            {/* All petals + stamens + core wrapped in a single <g> with
+                the Devalok grain filter — one filter pass per flower. */}
+            <g filter={`url(#lp-grain-${id})`}>
+              {/* Outer ring — 14 broad petals, opens first */}
+              {Array.from({ length: OUTER_PETALS }).map((_, i) => {
+                const rot = (360 / OUTER_PETALS) * i
+                return (
+                  <path
+                    key={`outer-${i}`}
+                    className="lotus-petal"
+                    d={OUTER_PETAL_PATH}
+                    fill={`url(#lp-outer-${id})`}
+                    style={{
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      ...({
+                        '--petal-rot': `${rot}deg`,
+                        '--petal-delay': `${delay + i * OUTER_PETAL_STAGGER_MS}ms`,
+                      } as any),
+                    }}
+                  />
+                )
+              })}
+
+              {/* Middle ring — 10 petals, offset (360/14)/2 ≈ 12.86° from
+                  outer so they nest between outer petals. */}
+              {Array.from({ length: MIDDLE_PETALS }).map((_, i) => {
+                const rot = (360 / MIDDLE_PETALS) * i + 360 / (OUTER_PETALS * 2)
+                const localDelay =
+                  delay +
+                  MIDDLE_RING_DELAY_MS +
+                  i * MIDDLE_PETAL_STAGGER_MS
+                return (
+                  <path
+                    key={`middle-${i}`}
+                    className="lotus-petal"
+                    d={MIDDLE_PETAL_PATH}
+                    fill={`url(#lp-middle-${id})`}
+                    style={{
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      ...({
+                        '--petal-rot': `${rot}deg`,
+                        '--petal-delay': `${localDelay}ms`,
+                      } as any),
+                    }}
+                  />
+                )
+              })}
+
+              {/* Inner ring — 8 smaller petals, half-offset again. */}
+              {Array.from({ length: INNER_PETALS }).map((_, i) => {
+                const rot = (360 / INNER_PETALS) * i + 360 / (INNER_PETALS * 2)
+                const localDelay =
+                  delay + INNER_RING_DELAY_MS + i * INNER_PETAL_STAGGER_MS
+                return (
+                  <path
+                    key={`inner-${i}`}
+                    className="lotus-petal"
+                    d={INNER_PETAL_PATH}
+                    fill={`url(#lp-inner-${id})`}
+                    style={{
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      ...({
+                        '--petal-rot': `${rot}deg`,
+                        '--petal-delay': `${localDelay}ms`,
+                      } as any),
+                    }}
+                  />
+                )
+              })}
+
+              {/* Receptacle — large brand-deep disc that catches the eye. */}
+              <circle
+                className="lotus-core"
+                cx="0"
+                cy="0"
+                r="16"
+                fill={`url(#lp-core-${id})`}
+                style={{
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  ...({
+                    '--core-delay': `${delay + INNER_RING_DELAY_MS + INNER_PETALS * INNER_PETAL_STAGGER_MS + 100}ms`,
+                  } as any),
+                }}
+              />
+
+              {/* Stamen filaments — 16 short lines + tiny anther dots
+                  radiating from the receptacle edge. Real lotus has
+                  100-400 stamens; 16 reads as density without becoming
+                  noise at small sizes. Painted in the brand's deepest
+                  accent so they stay on-brand (no botanical yellow). */}
+              {Array.from({ length: STAMEN_COUNT }).map((_, i) => {
+                const rot = (360 / STAMEN_COUNT) * i
+                const localDelay =
+                  delay +
+                  INNER_RING_DELAY_MS +
+                  INNER_PETALS * INNER_PETAL_STAGGER_MS +
+                  200 +
+                  i * 25
+                return (
+                  <g
+                    key={`stamen-${i}`}
+                    className="lotus-petal"
+                    style={{
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      ...({
+                        '--petal-rot': `${rot}deg`,
+                        '--petal-delay': `${localDelay}ms`,
+                      } as any),
+                    }}
+                  >
+                    <line
+                      x1="0"
+                      y1="-15"
+                      x2="0"
+                      y2="-27"
+                      stroke={stops.deep}
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      opacity="0.75"
+                    />
+                    <circle
+                      cx="0"
+                      cy="-28"
+                      r="1.6"
+                      fill={stops.edge}
+                      opacity="0.85"
+                    />
+                  </g>
+                )
+              })}
+            </g>
           </svg>
         </div>
       </div>

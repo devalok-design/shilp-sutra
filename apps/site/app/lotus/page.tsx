@@ -21,8 +21,8 @@ export default function LotusPage() {
             <PageHeader
               eyebrow="Lotus"
               title="A field of lotuses."
-              subtitle="Eight petals out, six petals in."
-              description="Each lotus is an SVG flower — explicit petals, each with a base-light to tip-deep gradient drawn from --color-accent-*. The field cascades open in a wave; switch brand from the header to recolour every flower at once."
+              subtitle="Thirty-two petals, three rings, one receptacle."
+              description="Modelled on Nelumbo nucifera — broad ovate petals in spiralling rings (14 outer · 10 middle · 8 inner), sixteen stamen filaments around the centre, and the Devalok paper grain woven into every petal via a single SVG filter. Each flower spins, floats, and breathes on its own clock."
             />
             <LotusShowcase />
           </div>

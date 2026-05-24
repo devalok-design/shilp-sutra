@@ -1,23 +1,21 @@
 import { AgentCallout } from '@/components/agent-callout'
-import { BrandShowcase } from '@/components/brand-showcase'
 import { ButtonShowcase } from '@/components/button-showcase'
 import { FeatureGrid } from '@/components/feature-grid'
 import { Hero } from '@/components/hero'
-import { LandingSurface } from '@/components/landing-surface'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { UnifiedCanvas } from '@/components/unified-canvas'
 
 /**
- * Landing flow, AI-first. InstallSection removed — Agent Skill IS the
- * install for the audience this site serves. Manual install lives behind
- * a small link inside AgentCallout for visitors who want it.
+ * Landing flow, AI-first, single-canvas. LandingSurface + BrandShowcase
+ * collapsed into UnifiedCanvas — one frame, six tabs, same job done with
+ * less surface area.
  *
  *   1. Hero            — what we are
- *   2. LandingSurface  — proof it composes (one big live surface)
- *   3. BrandShowcase   — proof it's yours (six industries)
- *   4. ButtonShowcase  — proof we sweat detail (one component, ten worlds)
- *   5. FeatureGrid     — value props in plain English
- *   6. AgentCallout    — install. "Prefer to install by hand?" link inside
+ *   2. UnifiedCanvas   — six industries in one tabbed canvas, all live
+ *   3. ButtonShowcase  — one component, ten worlds (close-up craft)
+ *   4. FeatureGrid     — value props in plain English
+ *   5. AgentCallout    — install. "Prefer to install by hand?" link inside
  */
 export default function HomePage() {
   return (
@@ -25,8 +23,7 @@ export default function HomePage() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
-        <LandingSurface />
-        <BrandShowcase />
+        <UnifiedCanvas />
         <ButtonShowcase />
         <FeatureGrid />
         <AgentCallout />

@@ -159,11 +159,6 @@ export default defineConfig({
             // Sonner — only loaded by Toaster/Toast, not needed by Popover/Dialog consumers
             if (id.includes('sonner'))
               return 'sonner'
-            // Paper Shaders — only loaded by AuroraBloom. ~25KB WebGL mesh
-            // gradient renderer. Splitting it out keeps consumers who never
-            // render AuroraBloom from paying its cost.
-            if (id.includes('@paper-design'))
-              return 'paper-shaders'
             // Pure utilities — ALLOWLIST, not catch-all.
             // Unknown deps get their own isolated chunk (safe by default).
             // The SSR smoke test catches module-scope browser API usage.

@@ -8,13 +8,21 @@ import {
   readAuroraPalette,
   useAuroraPalette,
   type AuroraPalette,
-} from './aurora-palette'
+} from '@/lib/aurora-palette'
 
 export type { AuroraPalette }
 export { readAuroraPalette, useAuroraPalette }
 
 /**
  * AuroraBloom — theme-reactive, brand-aware WebGL aurora curtain.
+ *
+ * ⚠ INTERNAL — Devalok use only.
+ *
+ * Lives in `apps/site` and is intentionally NOT exported from
+ * `@devalok/shilp-sutra`. Consumers outside the Devalok monorepo cannot
+ * import this component from npm. If a future Devalok app needs the
+ * effect, copy these files into that app (or move both files into a
+ * private workspace package) — do not re-export them from the public DS.
  *
  * A composable hero background: drop one inside a `relative isolate` parent
  * and the aurora paints behind whatever sits above it. Pulls its palette

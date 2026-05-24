@@ -272,9 +272,6 @@ importers:
 
   packages/core:
     dependencies:
-      '@paper-design/shaders-react':
-        specifier: ^0.0.76
-        version: 0.0.76(@types/react@19.2.14)(react@19.2.5)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

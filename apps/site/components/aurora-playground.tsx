@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-import { AuroraBloom } from '@devalok/shilp-sutra/composed/aurora-bloom'
+import { AuroraBloom } from '@/components/aurora-bloom'
 import type {
   AuroraGrain,
   AuroraIntensity,
@@ -10,7 +10,7 @@ import type {
   AuroraParallax,
   AuroraPosition,
   AuroraShape,
-} from '@devalok/shilp-sutra/composed/aurora-bloom'
+} from '@/components/aurora-bloom'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { SegmentedControl } from '@devalok/shilp-sutra/ui/segmented-control'
 import { Slider } from '@devalok/shilp-sutra/ui/slider'

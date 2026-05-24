@@ -3,7 +3,7 @@ import { IconArrowRight } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
-import { AuroraBloom } from '@devalok/shilp-sutra/composed/aurora-bloom'
+import { AuroraBloom } from '@/components/aurora-bloom'
 
 export function Hero() {
   return (

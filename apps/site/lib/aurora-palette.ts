@@ -6,6 +6,9 @@ import * as React from 'react'
  * Live, theme- and brand-reactive palette resolver for {@link AuroraBloom}
  * and any custom WebGL/canvas composition built on the design tokens.
  *
+ * ⚠ INTERNAL — Devalok use only. Lives in `apps/site` and is intentionally
+ * NOT exported from `@devalok/shilp-sutra`.
+ *
  * The accent ramp is asymmetric:
  *   - LIGHT theme: 1-3 are near-white, 9 is the saturated brand, 11-12 deep.
  *   - DARK  theme: 1-4 are near-black (just like the page), so feeding them

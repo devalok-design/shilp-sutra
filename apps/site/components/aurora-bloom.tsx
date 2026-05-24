@@ -142,6 +142,147 @@ export interface AuroraBloomProps {
   className?: string
 }
 
+/**
+ * AURORA_PRESETS — named Devalok configurations of `AuroraBloom`.
+ *
+ * Each preset is a complete prop set + curatorial metadata. The names are
+ * borrowed from the Devalok cultural vocabulary so any future Devalok app
+ * can speak the same language ("apply the Bhairav preset" reads
+ * unambiguously).
+ *
+ * Pick a preset by id from the consumer side:
+ *
+ *   <AuroraBloom {...AURORA_PRESETS.bhairav.props} />
+ *
+ * All six presets share the live brand ramp via `palette: 'brand'`, so they
+ * recolour the moment the user switches brand from the header.
+ */
+export interface AuroraPreset {
+  id: AuroraPresetId
+  name: string
+  mood: string
+  useCase: string
+  props: Required<
+    Omit<AuroraBloomProps, 'palette' | 'className' | 'breathing'>
+  > & {
+    palette: AuroraBloomProps['palette']
+    breathing: boolean
+  }
+}
+
+export type AuroraPresetId =
+  | 'devalok'
+  | 'bhairav'
+  | 'saptarishi'
+  | 'diya'
+  | 'monsoon'
+  | 'mandir'
+
+export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
+  devalok: {
+    id: 'devalok',
+    name: 'Devalok',
+    mood: 'House voice — warm, present, brand-anchored.',
+    useCase: 'Marketing hero, product landing, anything that wants to feel like home.',
+    props: {
+      intensity: 'medium',
+      shape: 'curtain',
+      position: 'top',
+      layers: 2,
+      speed: 0.35,
+      parallax: 'mouse',
+      grain: 'paper',
+      breathing: true,
+      palette: 'brand',
+    },
+  },
+  bhairav: {
+    id: 'bhairav',
+    name: 'Bhairav',
+    mood: 'Pre-dawn raga — held, contemplative, slow to bloom.',
+    useCase: 'Meditation pages, story openers, long-read essays.',
+    props: {
+      intensity: 'strong',
+      shape: 'halo',
+      position: 'center',
+      layers: 3,
+      speed: 0.18,
+      parallax: 'scroll',
+      grain: 'match',
+      breathing: true,
+      palette: 'brand',
+    },
+  },
+  saptarishi: {
+    id: 'saptarishi',
+    name: 'Saptarishi',
+    mood: 'Starlight — the quietest aurora. Atmospheric, almost still.',
+    useCase: 'Behind data-dense screens, settings pages, dashboards.',
+    props: {
+      intensity: 'subtle',
+      shape: 'full',
+      position: 'full',
+      layers: 3,
+      speed: 0.12,
+      parallax: 'off',
+      grain: 'paper',
+      breathing: false,
+      palette: 'brand',
+    },
+  },
+  diya: {
+    id: 'diya',
+    name: 'Diya',
+    mood: 'A small flame from below — warm, anchored, glowing up.',
+    useCase: 'CTAs, footer banners, sign-in pages.',
+    props: {
+      intensity: 'strong',
+      shape: 'halo',
+      position: 'bottom',
+      layers: 2,
+      speed: 0.4,
+      parallax: 'off',
+      grain: 'match',
+      breathing: true,
+      palette: 'brand',
+    },
+  },
+  monsoon: {
+    id: 'monsoon',
+    name: 'Monsoon',
+    mood: 'A band of cloud rolling across — movement, weather.',
+    useCase: 'Announcement banners, launch pages, between sections.',
+    props: {
+      intensity: 'medium',
+      shape: 'ribbon',
+      position: 'center',
+      layers: 2,
+      speed: 0.55,
+      parallax: 'mouse',
+      grain: 'paper',
+      breathing: true,
+      palette: 'brand',
+    },
+  },
+  mandir: {
+    id: 'mandir',
+    name: 'Mandir',
+    mood: 'Incense rising — a narrow, quiet curtain at the very top.',
+    useCase: 'Doc pages, blog headers, careful product screens.',
+    props: {
+      intensity: 'subtle',
+      shape: 'curtain',
+      position: 'top',
+      layers: 1,
+      speed: 0.25,
+      parallax: 'off',
+      grain: 'match',
+      breathing: true,
+      palette: 'brand',
+    },
+  },
+}
+
 const FALLBACK_PALETTE: AuroraPalette = {
   colors: ['#fafafa', '#fce8ef', '#e58fb0', '#a23f6a', '#c66b8e'],
   ground: '#fafafa',

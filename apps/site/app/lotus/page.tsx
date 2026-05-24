@@ -21,8 +21,8 @@ export default function LotusPage() {
             <PageHeader
               eyebrow="Lotus"
               title="A field of lotuses."
-              subtitle="Devalok colour, the way nature carries it."
-              description="Each lotus is a single WebGL mesh masked into a circle. The colour ramp pulls live from --color-accent-* — white at the centre, pink at the edge — so the lotuses follow your brand without losing their shape."
+              subtitle="Eight petals out, six petals in."
+              description="Each lotus is an SVG flower — explicit petals, each with a base-light to tip-deep gradient drawn from --color-accent-*. The field cascades open in a wave; switch brand from the header to recolour every flower at once."
             />
             <LotusShowcase />
           </div>

@@ -148,23 +148,22 @@ export function LandingSurface() {
                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                         transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                         className={[
-                          'flex items-start gap-ds-03 py-ds-03 border-b border-surface-border-subtle last:border-b-0',
+                          'flex items-start gap-ds-03 px-ds-03 -mx-ds-03 py-ds-03 rounded-ds-md border-b border-surface-border-subtle last:border-b-0',
+                          'hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard',
                           a.isNew && 'border-l-2 border-l-accent-9 pl-ds-03 bg-accent-2',
                         ]
                           .filter(Boolean)
                           .join(' ')}
                       >
-                        <Avatar size="sm">
+                        <Avatar size="sm" className="border-2 border-surface-raised">
                           <AvatarFallback>{a.initials}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col flex-1 min-w-0">
-                          <Text variant="body-sm" className="text-surface-fg line-clamp-2">
-                            <span className="font-medium">{a.who}</span>{' '}
-                            <span className="text-surface-fg-muted">{a.what}</span>
-                          </Text>
-                          <Text variant="body-xs" className="text-surface-fg-subtle">
-                            {a.when}
-                          </Text>
+                          <span className="text-ds-md text-surface-fg font-semibold line-clamp-2">
+                            <span>{a.who}</span>{' '}
+                            <span className="text-surface-fg-muted font-normal">{a.what}</span>
+                          </span>
+                          <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">{a.when}</span>
                         </div>
                         <Badge variant="soft" color={tagColor[a.tag]} size="sm">
                           {a.tag}

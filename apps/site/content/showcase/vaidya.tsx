@@ -95,23 +95,15 @@ export function VaidyaShowcase() {
               {history.map((h, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-ds-04 py-ds-03 border-b border-surface-border-subtle last:border-b-0"
+                  className="group/row flex items-start gap-ds-04 px-ds-03 -mx-ds-03 py-ds-03 rounded-ds-md border-b border-surface-border-subtle last:border-b-0 hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer"
                 >
                   <div className="flex flex-col items-center text-center min-w-[3rem]">
-                    <Text variant="body-xs" className="text-surface-fg-subtle">
-                      {h.date.split(' ')[1]}
-                    </Text>
-                    <Text variant="label-sm" className="text-surface-fg">
-                      {h.date.split(' ')[0]}
-                    </Text>
+                    <span className="text-ds-xs text-surface-fg-subtle">{h.date.split(' ')[1]}</span>
+                    <span className="text-ds-md text-surface-fg font-semibold">{h.date.split(' ')[0]}</span>
                   </div>
                   <div className="flex flex-col flex-1 min-w-0">
-                    <Text variant="body-sm" className="text-surface-fg">
-                      {h.what}
-                    </Text>
-                    <Text variant="body-xs" className="text-surface-fg-subtle">
-                      {h.doctor}
-                    </Text>
+                    <span className="text-ds-md text-surface-fg font-semibold line-clamp-1">{h.what}</span>
+                    <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">{h.doctor}</span>
                   </div>
                   <Badge variant="soft" color="neutral" size="sm">
                     {h.tag}

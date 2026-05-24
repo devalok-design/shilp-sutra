@@ -104,7 +104,13 @@ export function LendisShowcase() {
                     initial={t.isNew ? { opacity: 0, y: -8, height: 0 } : false}
                     animate={{ opacity: 1, y: 0, height: 'auto' }}
                     transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    className="flex items-center justify-between gap-ds-04 py-ds-03 border-b border-surface-border-subtle last:border-b-0"
+                    className={[
+                      'group/row flex items-center justify-between gap-ds-04 px-ds-03 -mx-ds-03 py-ds-03 rounded-ds-md border-b border-surface-border-subtle last:border-b-0',
+                      'hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer',
+                      t.isNew && 'bg-accent-2',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
                   >
                     <div className="flex items-center gap-ds-03 min-w-0 flex-1">
                       <span
@@ -116,17 +122,17 @@ export function LendisShowcase() {
                         {t.amount < 0 ? <IconArrowUpRight size={16} /> : <IconArrowDownLeft size={16} />}
                       </span>
                       <div className="flex flex-col min-w-0">
-                        <Text variant="body-sm" className="text-surface-fg truncate inline-flex items-center gap-ds-02">
+                        <span className="text-ds-md text-surface-fg font-semibold line-clamp-1 inline-flex items-center gap-ds-02">
                           {t.who}
                           {t.isNew && (
                             <Badge variant="soft" color="accent" size="sm">
                               just now
                             </Badge>
                           )}
-                        </Text>
-                        <Text variant="body-xs" className="text-surface-fg-subtle">
+                        </span>
+                        <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">
                           {t.date} · {t.type}
-                        </Text>
+                        </span>
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-ds-01">

@@ -90,40 +90,50 @@ export function AtlasShowcase() {
                     animate={{ opacity: 1, y: 0, height: 'auto' }}
                     exit={{ opacity: 0, y: -8, height: 0 }}
                     transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    className="flex items-center justify-between gap-ds-04 py-ds-03 border-b border-surface-border-subtle last:border-b-0"
+                    className={[
+                      'group/row flex items-center justify-between gap-ds-04 px-ds-03 -mx-ds-03 py-ds-03 rounded-ds-md border-b border-surface-border-subtle last:border-b-0',
+                      'hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer',
+                      p.isNew && 'bg-accent-2',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
                   >
                     <div className="flex items-center gap-ds-03 min-w-0 flex-1">
                       <span className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
                         <IconFolderOpen size={16} />
                       </span>
                       <div className="flex flex-col min-w-0">
-                        <Text variant="body-sm" className="text-surface-fg truncate inline-flex items-center gap-ds-02">
+                        <span className="text-ds-md text-surface-fg font-semibold line-clamp-1 inline-flex items-center gap-ds-02">
                           {p.name}
                           {p.isNew && (
                             <Badge variant="soft" color="accent" size="sm">
                               new
                             </Badge>
                           )}
-                        </Text>
-                        <span className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
+                        </span>
+                        <span className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle mt-ds-01">
                           <IconHash size={10} />
                           {p.channel}
                         </span>
                       </div>
                     </div>
-                    <div className="hidden sm:flex items-center gap-ds-04 text-ds-xs text-surface-fg-muted">
+                    <div className="hidden sm:flex items-center gap-ds-04 text-ds-xs text-surface-fg-subtle">
                       <span>
                         {p.done}/{p.tasks} done
                       </span>
                       <div className="flex -space-x-2">
                         {p.members.map((m) => (
-                          <Avatar key={m} size="xs">
+                          <Avatar key={m} size="xs" className="border-2 border-surface-raised">
                             <AvatarFallback>{m}</AvatarFallback>
                           </Avatar>
                         ))}
                       </div>
                     </div>
-                    <Button variant="ghost" size="sm">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="opacity-0 group-hover/row:opacity-100 transition-opacity duration-fast-02 ease-productive-standard"
+                    >
                       Open
                     </Button>
                   </motion.li>

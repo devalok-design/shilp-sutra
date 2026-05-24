@@ -6,8 +6,9 @@ import { ThemeToggle } from './theme-toggle'
 
 const navLinks = [
   { href: '/components', label: 'Components' },
+  { href: '/blocks', label: 'Blocks' },
+  { href: '/theming', label: 'Theming' },
   { href: '/docs/install-vite', label: 'Docs' },
-  { href: 'https://devalok-design.github.io/shilp-sutra/', label: 'Storybook', external: true },
 ] as const
 
 export function SiteHeader() {
@@ -26,7 +27,6 @@ export function SiteHeader() {
             <Link
               key={link.href}
               href={link.href}
-              {...('external' in link && link.external ? { target: '_blank', rel: 'noreferrer' } : {})}
               className="text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01"
             >
               {link.label}

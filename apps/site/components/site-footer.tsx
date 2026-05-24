@@ -15,6 +15,8 @@ const linkGroups = [
     heading: 'Explore',
     links: [
       { label: 'Components', href: '/components' },
+      { label: 'Blocks', href: '/blocks' },
+      { label: 'Theming', href: '/theming' },
       { label: 'Docs', href: '/docs/install-vite' },
       { label: 'Storybook', href: 'https://devalok-design.github.io/shilp-sutra/', external: true },
     ],

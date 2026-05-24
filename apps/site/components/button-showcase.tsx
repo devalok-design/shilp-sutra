@@ -65,10 +65,6 @@ export function ButtonShowcase() {
       <ContextualScenes />
 
       <footer className="mt-ds-09 flex flex-col items-start gap-ds-02 max-w-2xl">
-        <Text variant="body-sm" className="text-surface-fg-muted">
-          One component, ten products. Multiply by 118 — every other primitive carries this much
-          range too.
-        </Text>
         <a
           href="/components/button"
           className="text-ds-sm text-accent-11 underline underline-offset-2 hover:text-accent-12"
@@ -165,15 +161,14 @@ function ContextualScenes() {
     <div className="flex flex-col gap-ds-06">
       <header className="flex flex-col gap-ds-03 max-w-3xl">
         <Text variant="label-md" className="text-surface-fg-subtle">
-          Same Button. Ten worlds.
+          Wherever you ship, it fits
         </Text>
         <Text variant="heading-md" className="text-surface-fg">
-          Wherever you ship, it fits.
+          The same Button, across ten products.
         </Text>
         <Text variant="body-sm" className="text-surface-fg-muted">
-          These are surfaces from ten different products — email, music, banking, social, code,
-          calendar, deploys. Each card lifts a real interaction shape and shows the same Button
-          component in that context. The variant, color, size, and compound shape pick themselves
+          Email, music, banking, social, code, calendar, deploys. Each card lifts a real
+          interaction shape — the variant, colour, size, and compound shape pick themselves
           from what the user is being asked to do.
         </Text>
       </header>

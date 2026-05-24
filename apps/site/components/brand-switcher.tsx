@@ -45,8 +45,12 @@ export function BrandSwitcher() {
 
   return (
     <div ref={containerRef} className="relative">
+      {/* Solid accent — this IS the brand-color picker, so it wearing the
+          active brand is the strongest visual signal that tapping it changes
+          the colour of everything else on the page. */}
       <Button
-        variant="ghost"
+        variant="solid"
+        color="accent"
         size="compact-md"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"

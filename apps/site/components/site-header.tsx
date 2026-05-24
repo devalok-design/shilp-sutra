@@ -134,13 +134,12 @@ export function SiteHeader() {
             })}
           </nav>
 
-          {/* Order: brand → github → hamburger(mobile) → theme (rightmost).
-              ThemeToggle owns the corner — it's solid accent so the corner reads
-              loud-and-clear as a tap target, even at-rest over the bloom. */}
+          {/* Order: github → light/dark → hamburger(mobile) → brand (rightmost).
+              BrandSwitcher owns the corner because it's the brand-colour picker
+              — it wears the active accent (solid + color=accent) so the corner
+              reads as "this is the colour control" at a glance. The other
+              controls are soft-tinted as secondary actions. */}
           <div className="flex items-center gap-ds-01">
-            <div className="hidden md:inline-flex">
-              <BrandSwitcher />
-            </div>
             <a
               href="https://github.com/devalok-design/shilp-sutra"
               target="_blank"
@@ -151,6 +150,7 @@ export function SiteHeader() {
                 <IconBrandGithub size={18} />
               </Button>
             </a>
+            <ThemeToggle />
             <Button
               variant="soft"
               size="icon-md"
@@ -162,7 +162,7 @@ export function SiteHeader() {
             >
               {open ? <IconX size={18} /> : <IconMenu2 size={18} />}
             </Button>
-            <ThemeToggle />
+            <BrandSwitcher />
           </div>
         </div>
       </motion.header>
@@ -190,6 +190,8 @@ export function SiteHeader() {
               className="md:hidden fixed inset-x-ds-03 sm:inset-x-ds-04 top-[4.75rem] z-popover origin-top rounded-ds-xl border border-surface-border-subtle/70 bg-surface-base/95 backdrop-blur-2xl backdrop-saturate-150 shadow-overlay"
               aria-label="Primary"
             >
+              {/* Drawer is nav-only now — GitHub, theme, and BrandSwitcher all
+                  live in the bar at every breakpoint. */}
               <div className="px-ds-04 py-ds-04 flex flex-col gap-ds-04 max-h-[calc(100vh-6rem)] overflow-y-auto">
                 <ul className="flex flex-col gap-ds-01">
                   {navLinks.map((link) => {
@@ -213,14 +215,6 @@ export function SiteHeader() {
                     )
                   })}
                 </ul>
-                <div className="pt-ds-03 border-t border-surface-border-subtle flex flex-col gap-ds-03">
-                  <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide px-ds-03">
-                    Brand
-                  </span>
-                  <div className="px-ds-03">
-                    <BrandSwitcher />
-                  </div>
-                </div>
               </div>
             </motion.nav>
           </>

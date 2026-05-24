@@ -39,8 +39,7 @@ export function ThemeToggle() {
 
   return (
     <Button
-      variant="solid"
-      color="accent"
+      variant="soft"
       size="icon-md"
       aria-label={mounted ? `Switch to ${theme === 'light' ? 'dark' : 'light'} theme` : 'Toggle theme'}
       onClick={toggle}

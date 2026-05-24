@@ -67,30 +67,42 @@ export interface LotusBloomProps {
   style?: React.CSSProperties
 }
 
-// Real Nelumbo nucifera has 18-30 spirally-arranged petals; we approximate
-// with 32 (14 outer + 10 middle + 8 inner) in three concentric rings — the
-// spiral reads as concentric at viewing distance.
-const OUTER_PETALS = 14
-const MIDDLE_PETALS = 10
-const INNER_PETALS = 8
-const OUTER_PETAL_STAGGER_MS = 55
-const MIDDLE_PETAL_STAGGER_MS = 55
-const INNER_PETAL_STAGGER_MS = 55
-const MIDDLE_RING_DELAY_MS = 280
-const INNER_RING_DELAY_MS = 520
-// Real lotus has 100-400 long slender stamens. 16 visible filaments
-// suggests the density without modelling each one.
-const STAMEN_COUNT = 16
+// Real lotus from above shows ~8 main outer petals + a few inner — when
+// you pack more, the gaps between petals close and the flower stops
+// reading as petals and starts reading as a wheel. We use 8 outer + 6
+// inner here so the spacing between petals stays VISIBLE — the gap is
+// where the eye sees "petals", not "sectors".
+const OUTER_PETALS = 8
+const INNER_PETALS = 6
+const OUTER_PETAL_STAGGER_MS = 65
+const INNER_PETAL_STAGGER_MS = 70
+const INNER_RING_DELAY_MS = 380
+// Sparse stamens — too many turn the centre into noise at small sizes.
+const STAMEN_COUNT = 10
 
-// Broad ovate petal — closer to the actual length-to-width ratio (about
-// 1 : 1.85) of a lotus petal viewed from above. Wider belly, rounded tip,
-// pinched base.
+// Ovate petal — wider belly than a teardrop but NARROWER than a fan
+// segment. The 32px-wide × 88px-tall belly leaves ~13° of clear space
+// between adjacent outer petals (8 petals × 360°/8 = 45° per petal slot,
+// with the petal subtending ~32° at midpoint). Visible gaps are what
+// give the flower its silhouette.
 const OUTER_PETAL_PATH =
-  'M 0,0 C 28,-12 48,-42 34,-78 C 18,-92 -18,-92 -34,-78 C -48,-42 -28,-12 0,0 Z'
-const MIDDLE_PETAL_PATH =
-  'M 0,0 C 20,-9 34,-30 24,-58 C 13,-70 -13,-70 -24,-58 C -34,-30 -20,-9 0,0 Z'
+  'M 0,0 C 18,-12 32,-40 22,-72 C 10,-88 -10,-88 -22,-72 C -32,-40 -18,-12 0,0 Z'
 const INNER_PETAL_PATH =
-  'M 0,0 C 14,-6 24,-22 17,-42 C 9,-50 -9,-50 -17,-42 C -24,-22 -14,-6 0,0 Z'
+  'M 0,0 C 12,-8 22,-26 15,-50 C 7,-60 -7,-60 -15,-50 C -22,-26 -12,-8 0,0 Z'
+
+/**
+ * Deterministic pseudo-random in [-1, 1] keyed by an integer seed. Used to
+ * apply consistent-but-organic jitter to each petal — same flower always
+ * gets the same petal variations across re-renders, but no two flowers
+ * (different `flowerSeed`) jitter the same way.
+ *
+ * The trig-hash isn't cryptographic; it just needs to look random and stay
+ * stable.
+ */
+function pseudoRandom(seed: number): number {
+  const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453
+  return (x - Math.floor(x)) * 2 - 1
+}
 
 export function LotusBloom({
   size = 240,
@@ -138,10 +150,12 @@ export function LotusBloom({
   return (
     <>
       <style>{`
-        /* Per-petal intro bloom (scale from base, overshoot, then settle). */
+        /* Per-petal intro bloom. Anchored at the petal's base (0,0). The
+           end-state honours --petal-scale and --petal-ty so each petal
+           settles into its own jittered final pose. */
         [data-lotus-instance] .lotus-petal {
           transform-origin: 0 0;
-          transform: rotate(var(--petal-rot)) scale(0.02);
+          transform: rotate(var(--petal-rot)) translate(0, 0) scale(0.02);
           animation: shilp-lotus-petal-bloom 1200ms var(--petal-delay, 0ms) cubic-bezier(0.34, 1.35, 0.5, 1) forwards;
         }
         [data-lotus-instance] .lotus-core {
@@ -192,9 +206,15 @@ export function LotusBloom({
         }
 
         @keyframes shilp-lotus-petal-bloom {
-          0%   { transform: rotate(var(--petal-rot)) scale(0.02); opacity: 0; }
+          0%   { transform: rotate(var(--petal-rot)) translate(0, 0) scale(0.02); opacity: 0; }
           40%  { opacity: 1; }
-          100% { transform: rotate(var(--petal-rot)) scale(1);    opacity: 1; }
+          100% {
+            transform:
+              rotate(var(--petal-rot))
+              translate(0, var(--petal-ty, 0px))
+              scale(var(--petal-scale, 1));
+            opacity: 1;
+          }
         }
         @keyframes shilp-lotus-core-bloom {
           0%   { transform: scale(0); opacity: 0; }
@@ -228,7 +248,10 @@ export function LotusBloom({
           [data-lotus-instance] .lotus-flower,
           [data-lotus-instance] .lotus-halo {
             animation: none !important;
-            transform: rotate(var(--petal-rot, 0deg)) scale(1) !important;
+            transform:
+              rotate(var(--petal-rot, 0deg))
+              translate(0, var(--petal-ty, 0px))
+              scale(var(--petal-scale, 1)) !important;
             rotate: var(--lotus-rot, 0deg) !important;
             translate: 0 0 !important;
             scale: 1 !important;
@@ -294,11 +317,6 @@ export function LotusBloom({
                 <stop offset="0.78" stopColor={stops.tip}  stopOpacity="0.92" />
                 <stop offset="1"    stopColor={stops.edge} stopOpacity="0.88" />
               </linearGradient>
-              <linearGradient id={`lp-middle-${id}`} x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0"    stopColor={stops.base} stopOpacity="1" />
-                <stop offset="0.45" stopColor={stops.mid}  stopOpacity="0.95" />
-                <stop offset="1"    stopColor={stops.tip}  stopOpacity="0.95" />
-              </linearGradient>
               <linearGradient id={`lp-inner-${id}`} x1="0" y1="1" x2="0" y2="0">
                 <stop offset="0"   stopColor={stops.base} stopOpacity="1" />
                 <stop offset="0.5" stopColor={stops.mid}  stopOpacity="0.97" />
@@ -362,9 +380,28 @@ export function LotusBloom({
             {/* All petals + stamens + core wrapped in a single <g> with
                 the Devalok grain filter — one filter pass per flower. */}
             <g filter={`url(#lp-grain-${id})`}>
-              {/* Outer ring — 14 broad petals, opens first */}
+              {/*
+                Petals carry SEEDED JITTER per instance so no two petals
+                are identical. We vary three things on each petal:
+
+                  - rotation     (±4° around its angular slot)
+                  - scale        (±10 % of nominal size)
+                  - tip distance (±3 px translation along the petal axis,
+                                  i.e. how far "out" the petal reaches)
+
+                The jitter is keyed by (delay + petalIndex) so each flower
+                gets its own personality but every render of the same
+                flower jitters identically. This is what stops the field
+                reading as a wheel-of-perfect-petals and gives it the
+                slightly-off, hand-arranged feel of a real bloom.
+              */}
+
+              {/* Outer ring — 8 broad petals, opens first */}
               {Array.from({ length: OUTER_PETALS }).map((_, i) => {
-                const rot = (360 / OUTER_PETALS) * i
+                const baseRot = (360 / OUTER_PETALS) * i
+                const rotJitter = pseudoRandom(delay + i) * 4
+                const scaleJitter = 1 + pseudoRandom(delay + i + 101) * 0.1
+                const tyJitter = pseudoRandom(delay + i + 211) * 3
                 return (
                   <path
                     key={`outer-${i}`}
@@ -374,7 +411,9 @@ export function LotusBloom({
                     style={{
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       ...({
-                        '--petal-rot': `${rot}deg`,
+                        '--petal-rot': `${baseRot + rotJitter}deg`,
+                        '--petal-scale': scaleJitter.toFixed(3),
+                        '--petal-ty': `${tyJitter.toFixed(2)}px`,
                         '--petal-delay': `${delay + i * OUTER_PETAL_STAGGER_MS}ms`,
                       } as any),
                     }}
@@ -382,34 +421,13 @@ export function LotusBloom({
                 )
               })}
 
-              {/* Middle ring — 10 petals, offset (360/14)/2 ≈ 12.86° from
-                  outer so they nest between outer petals. */}
-              {Array.from({ length: MIDDLE_PETALS }).map((_, i) => {
-                const rot = (360 / MIDDLE_PETALS) * i + 360 / (OUTER_PETALS * 2)
-                const localDelay =
-                  delay +
-                  MIDDLE_RING_DELAY_MS +
-                  i * MIDDLE_PETAL_STAGGER_MS
-                return (
-                  <path
-                    key={`middle-${i}`}
-                    className="lotus-petal"
-                    d={MIDDLE_PETAL_PATH}
-                    fill={`url(#lp-middle-${id})`}
-                    style={{
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      ...({
-                        '--petal-rot': `${rot}deg`,
-                        '--petal-delay': `${localDelay}ms`,
-                      } as any),
-                    }}
-                  />
-                )
-              })}
-
-              {/* Inner ring — 8 smaller petals, half-offset again. */}
+              {/* Inner ring — 6 smaller petals, base-rotated 30° (half a
+                  60° slot) so they nest in the gaps between outer petals. */}
               {Array.from({ length: INNER_PETALS }).map((_, i) => {
-                const rot = (360 / INNER_PETALS) * i + 360 / (INNER_PETALS * 2)
+                const baseRot = (360 / INNER_PETALS) * i + 30
+                const rotJitter = pseudoRandom(delay + i + 301) * 5
+                const scaleJitter = 1 + pseudoRandom(delay + i + 401) * 0.12
+                const tyJitter = pseudoRandom(delay + i + 511) * 2
                 const localDelay =
                   delay + INNER_RING_DELAY_MS + i * INNER_PETAL_STAGGER_MS
                 return (
@@ -421,7 +439,9 @@ export function LotusBloom({
                     style={{
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       ...({
-                        '--petal-rot': `${rot}deg`,
+                        '--petal-rot': `${baseRot + rotJitter}deg`,
+                        '--petal-scale': scaleJitter.toFixed(3),
+                        '--petal-ty': `${tyJitter.toFixed(2)}px`,
                         '--petal-delay': `${localDelay}ms`,
                       } as any),
                     }}
@@ -429,12 +449,13 @@ export function LotusBloom({
                 )
               })}
 
-              {/* Receptacle — large brand-deep disc that catches the eye. */}
+              {/* Receptacle — small brand-deep disc, just enough to anchor
+                  the eye between the inner petals. */}
               <circle
                 className="lotus-core"
                 cx="0"
                 cy="0"
-                r="16"
+                r="12"
                 fill={`url(#lp-core-${id})`}
                 style={{
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -444,13 +465,16 @@ export function LotusBloom({
                 }}
               />
 
-              {/* Stamen filaments — 16 short lines + tiny anther dots
+              {/* Stamen filaments — short lines + tiny anther dots
                   radiating from the receptacle edge. Real lotus has
-                  100-400 stamens; 16 reads as density without becoming
-                  noise at small sizes. Painted in the brand's deepest
-                  accent so they stay on-brand (no botanical yellow). */}
+                  100-400; 10 reads as density without becoming noise.
+                  Each stamen carries its own jitter so they don't read
+                  as a clock-face. Painted in the brand's deepest accent
+                  (no botanical yellow). */}
               {Array.from({ length: STAMEN_COUNT }).map((_, i) => {
-                const rot = (360 / STAMEN_COUNT) * i
+                const baseRot = (360 / STAMEN_COUNT) * i
+                const rotJitter = pseudoRandom(delay + i + 601) * 7
+                const lenJitter = pseudoRandom(delay + i + 701) * 4
                 const localDelay =
                   delay +
                   INNER_RING_DELAY_MS +
@@ -464,25 +488,27 @@ export function LotusBloom({
                     style={{
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       ...({
-                        '--petal-rot': `${rot}deg`,
+                        '--petal-rot': `${baseRot + rotJitter}deg`,
+                        '--petal-scale': 1,
+                        '--petal-ty': '0px',
                         '--petal-delay': `${localDelay}ms`,
                       } as any),
                     }}
                   >
                     <line
                       x1="0"
-                      y1="-15"
+                      y1="-11"
                       x2="0"
-                      y2="-27"
+                      y2={`${-22 + lenJitter}`}
                       stroke={stops.deep}
-                      strokeWidth="1.3"
+                      strokeWidth="1.2"
                       strokeLinecap="round"
-                      opacity="0.75"
+                      opacity="0.7"
                     />
                     <circle
                       cx="0"
-                      cy="-28"
-                      r="1.6"
+                      cy={`${-23 + lenJitter}`}
+                      r="1.5"
                       fill={stops.edge}
                       opacity="0.85"
                     />

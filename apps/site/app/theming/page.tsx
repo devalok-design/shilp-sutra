@@ -1,40 +1,86 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { ThemingEditor } from '@/components/theming-editor'
 
 export const metadata: Metadata = {
   title: 'Theming',
   description:
-    'Build your own brand on shilp-sutra. OKLCH accent editor with live preview, twelve-step ramp generation, and CSS export.',
+    'Build your own brand on shilp-sutra. Live OKLCH editor — pick a hue, see every component recolour, export the CSS.',
 }
 
-// Phase 8 will replace this with the live OKLCH editor.
-// This stub exists so the chrome BrandSwitcher's "Build your own →" doesn't 404.
 export default function ThemingPage() {
   return (
     <>
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto max-w-3xl px-ds-page-x py-ds-13">
-          <div className="flex flex-col gap-ds-05">
-            <Text variant="label-md" className="text-surface-fg-subtle">
-              Theming
-            </Text>
-            <Text variant="heading-2xl" className="text-surface-fg">
-              Build your own brand. Live.
-            </Text>
-            <Text variant="body-md" className="text-surface-fg-muted">
-              The accent ramp generator is coming in the next site update. For now, pick from the
-              shipped presets in the header, or edit the OKLCH primitives in your consumer CSS
-              directly. The customize-brand recipe documents the override pattern step by step.
-            </Text>
-            <div className="mt-ds-04 inline-flex items-center gap-ds-02 rounded-ds-sm border border-warning-6 bg-warning-2 px-ds-04 py-ds-03 max-w-fit">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-warning-9" />
-              <Text variant="body-xs" className="text-warning-11">
-                Phase 8 lands shortly. The live editor with H/C/L sliders is on the next release.
+        <div className="mx-auto max-w-6xl px-ds-page-x py-ds-09">
+          <div className="flex flex-col gap-ds-09">
+            <header className="flex flex-col gap-ds-03 max-w-3xl">
+              <Text variant="label-md" className="text-surface-fg-subtle">
+                Theming
               </Text>
-            </div>
+              <Text variant="heading-2xl" className="text-surface-fg">
+                Be yourself in OKLCH.
+              </Text>
+              <Text variant="body-md" className="text-surface-fg-muted">
+                shilp-sutra ships in a perceptually-uniform colour space. Pick a hue, set the
+                chroma, and the twelve-step ramp generates itself. Every component on the site —
+                buttons, badges, alerts, focus rings — recolours live as you move the sliders.
+                Drop the exported CSS into your project and your whole app follows.
+              </Text>
+              <div className="mt-ds-02 flex flex-wrap gap-ds-02 text-ds-xs">
+                <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-muted">
+                  No theme provider. CSS-vars only.
+                </span>
+                <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-muted">
+                  Light + dark generated together.
+                </span>
+                <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-muted">
+                  Same algorithm shilp-sutra ships with.
+                </span>
+              </div>
+            </header>
+
+            <ThemingEditor />
+
+            <section className="border-t border-surface-border-subtle pt-ds-08">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-06">
+                <div className="flex flex-col gap-ds-02">
+                  <Text variant="label-sm" className="text-surface-fg-subtle">
+                    Going deeper
+                  </Text>
+                  <Text variant="heading-sm" className="text-surface-fg">
+                    Radius, fonts, spacing.
+                  </Text>
+                  <Text variant="body-sm" className="text-surface-fg-muted">
+                    Every other token follows the same pattern as the accent ramp. Override the
+                    primitives you care about, leave the rest alone.
+                  </Text>
+                  <Link
+                    href="/docs/customize-brand"
+                    className="text-ds-sm text-surface-fg underline underline-offset-2 hover:text-accent-11"
+                  >
+                    Read the customize-brand recipe →
+                  </Link>
+                </div>
+                <div className="flex flex-col gap-ds-02">
+                  <Text variant="label-sm" className="text-surface-fg-subtle">
+                    Why OKLCH
+                  </Text>
+                  <Text variant="heading-sm" className="text-surface-fg">
+                    Perceptually uniform.
+                  </Text>
+                  <Text variant="body-sm" className="text-surface-fg-muted">
+                    Equal lightness numbers read as equal lightness to the eye. A step-9 pink and
+                    a step-9 indigo are the same perceived weight; rgb() and hsl() cannot promise
+                    that.
+                  </Text>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </main>

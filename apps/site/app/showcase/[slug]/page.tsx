@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { IconPalette } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
-import { Text } from '@devalok/shilp-sutra/ui/text'
+import { PageHeader } from '@/components/page-header'
 import { ShowcaseCanvas } from '@/components/showcase-canvas'
 import { ShowcasePicker } from '@/components/showcase-picker'
 import { SiteFooter } from '@/components/site-footer'
@@ -58,33 +58,29 @@ export default async function ShowcaseDetailPage({ params }: { params: Promise<{
             </Link>
           </nav>
 
-          <header className="flex flex-col gap-ds-04 mb-ds-08 max-w-3xl">
-            <Text variant="label-sm" className="text-surface-fg-subtle">
-              {entry.industry}
-            </Text>
-            <Text variant="heading-2xl" className="text-surface-fg">
-              <span style={{ color: `oklch(0.55 ${entry.chroma} ${entry.hue})` }}>{entry.product}</span>{' '}
-              <span className="text-surface-fg-muted">— {entry.tagline}</span>
-            </Text>
-            <Text variant="body-md" className="text-surface-fg-muted">
-              {entry.premise}
-            </Text>
-            <div className="flex flex-wrap items-center gap-ds-02 mt-ds-02">
-              <Link href={`/theming?hue=${entry.hue}&chroma=${entry.chroma}`}>
-                <Button variant="soft" size="sm" startIcon={<IconPalette size={14} />}>
-                  Take this brand into the editor
-                </Button>
-              </Link>
-              {entry.uses.map((u) => (
-                <span
-                  key={u}
-                  className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-raised border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
-                >
-                  {u}
-                </span>
-              ))}
-            </div>
-          </header>
+          <PageHeader
+            eyebrow={entry.industry}
+            title={<span style={{ color: `oklch(0.55 ${entry.chroma} ${entry.hue})` }}>{entry.product}</span>}
+            subtitle={entry.tagline}
+            description={entry.premise}
+            meta={
+              <div className="flex flex-wrap items-center gap-ds-02">
+                <Link href={`/theming?hue=${entry.hue}&chroma=${entry.chroma}`}>
+                  <Button variant="soft" size="sm" startIcon={<IconPalette size={14} />}>
+                    Take this brand into the editor
+                  </Button>
+                </Link>
+                {entry.uses.map((u) => (
+                  <span
+                    key={u}
+                    className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-raised border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
+                  >
+                    {u}
+                  </span>
+                ))}
+              </div>
+            }
+          />
 
           <ShowcaseCanvas brandStyle={rampInlineStyle(entry.hue, entry.chroma)} productName={entry.product}>
             <Component />

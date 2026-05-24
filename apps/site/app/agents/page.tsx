@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { IconBrandGithub, IconFileText, IconRobot, IconSparkles, IconTerminal } from '@tabler/icons-react'
-import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { CodeBlock } from '@/components/code-block'
+import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 
@@ -61,39 +61,32 @@ export default function AgentsPage() {
       <SiteHeader />
       <main className="flex-1">
         <div className="mx-auto max-w-5xl px-ds-page-x py-ds-09">
-          <header className="flex flex-col gap-ds-04 max-w-3xl mb-ds-12">
-            <Badge variant="soft" color="accent">
-              For your AI editor
-            </Badge>
-            <Text variant="heading-2xl" className="text-surface-fg">
-              Your AI editor already knows shilp-sutra.
-            </Text>
-            <Text variant="body-md" className="text-surface-fg-muted">
-              We ship four files with every release so your coding agent doesn&apos;t guess at the
-              library. An installable skill, two flavours of llms.txt, and AGENTS.md. Install
-              once, never paste docs into chat again.
-            </Text>
+          <PageHeader
+            eyebrow="For your AI editor"
+            title="Your AI editor already knows shilp-sutra."
+            subtitle="One install. Four files. Every release."
+            description="We ship an installable skill, two flavours of llms.txt, and AGENTS.md with every release so your coding agent doesn't guess at the library. Install once, never paste docs into chat again."
+          />
 
-            <div className="rounded-ds-md border border-accent-7 bg-accent-2 p-ds-06 mt-ds-04">
-              <div className="flex items-start gap-ds-04 mb-ds-04">
-                <span className="w-10 h-10 rounded-ds-sm bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
-                  <IconSparkles size={20} />
+          <div className="max-w-3xl rounded-ds-md border border-accent-7 bg-accent-2 p-ds-06 mb-ds-12">
+            <div className="flex items-start gap-ds-04 mb-ds-04">
+              <span className="w-10 h-10 rounded-ds-sm bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
+                <IconSparkles size={20} />
+              </span>
+              <div className="flex flex-col">
+                <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+                  One install
                 </span>
-                <div className="flex flex-col gap-ds-01">
-                  <Text variant="label-sm" className="text-accent-11">
-                    One install
-                  </Text>
-                  <Text variant="heading-md" className="text-surface-fg">
-                    Run this in your terminal.
-                  </Text>
-                </div>
+                <span className="text-ds-md text-surface-fg font-semibold mt-ds-01">
+                  Run this in your terminal.
+                </span>
               </div>
-              <CodeBlock
-                language="bash"
-                code={`curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash`}
-              />
             </div>
-          </header>
+            <CodeBlock
+              language="bash"
+              code={`curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash`}
+            />
+          </div>
 
           <section className="mb-ds-12">
             <header className="flex flex-col gap-ds-02 max-w-2xl mb-ds-06">

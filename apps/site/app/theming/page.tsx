@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { ThemingEditor } from '@/components/theming-editor'
@@ -18,31 +19,25 @@ export default function ThemingPage() {
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-ds-page-x py-ds-09">
           <div className="flex flex-col gap-ds-09">
-            <header className="flex flex-col gap-ds-03 max-w-3xl">
-              <Text variant="label-md" className="text-surface-fg-subtle">
-                Theming
-              </Text>
-              <Text variant="heading-2xl" className="text-surface-fg">
-                Be yourself in OKLCH.
-              </Text>
-              <Text variant="body-md" className="text-surface-fg-muted">
-                shilp-sutra ships in a perceptually-uniform colour space. Pick a hue, set the
-                chroma, and the twelve-step ramp generates itself. Every component on the site —
-                buttons, badges, alerts, focus rings — recolours live as you move the sliders.
-                Drop the exported CSS into your project and your whole app follows.
-              </Text>
-              <div className="mt-ds-02 flex flex-wrap gap-ds-02 text-ds-xs">
-                <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-muted">
-                  No theme provider. CSS-vars only.
-                </span>
-                <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-muted">
-                  Light + dark generated together.
-                </span>
-                <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-muted">
-                  Same algorithm shilp-sutra ships with.
-                </span>
-              </div>
-            </header>
+            <PageHeader
+              eyebrow="Theming"
+              title="Be yourself in OKLCH."
+              subtitle="Pick a hue. Set the chroma. The twelve-step ramp generates itself."
+              description="Every component on the site — buttons, badges, alerts, focus rings — recolours live as you move the sliders. Drop the exported CSS into your project and your whole app follows."
+              meta={
+                <div className="flex flex-wrap gap-ds-02 text-ds-xs">
+                  <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
+                    No theme provider. CSS-vars only.
+                  </span>
+                  <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
+                    Light + dark generated together.
+                  </span>
+                  <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
+                    Same algorithm shilp-sutra ships with.
+                  </span>
+                </div>
+              }
+            />
 
             <ThemingEditor />
 

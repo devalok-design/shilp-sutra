@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { IconArrowRight } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { CARD_EYEBROW, CARD_INTERACTIVE, CARD_TITLE } from '@/lib/card-recipe'
@@ -20,20 +21,13 @@ export default function BlocksIndexPage() {
       <SiteHeader />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-ds-page-x py-ds-09">
-          <div className="flex flex-col gap-ds-08">
-            <header className="flex flex-col gap-ds-03 max-w-3xl">
-              <Text variant="label-md" className="text-surface-fg-subtle">
-                Blocks
-              </Text>
-              <Text variant="heading-2xl" className="text-surface-fg">
-                Real screens, not toy demos.
-              </Text>
-              <Text variant="body-md" className="text-surface-fg-muted">
-                Blocks compose shilp-sutra components into the surfaces consumers actually ship —
-                dashboards, sign-up flows, pricing pages. Each block recolours with the brand
-                switcher. Copy the source, paste, ship.
-              </Text>
-            </header>
+          <div className="flex flex-col gap-ds-09">
+            <PageHeader
+              eyebrow="Blocks"
+              title="Real screens, not toy demos."
+              subtitle="Multi-component surfaces lifted from the work — dashboards, sign-up flows, pricing pages."
+              description="Each block recolours with the brand switcher. Copy the source, paste, ship."
+            />
 
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-ds-05">
               {blocks.map((b) => (

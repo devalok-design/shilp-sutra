@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { IconArrowUpRight, IconShieldCheck } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Markdown } from '@/components/markdown'
+import { PageHeader } from '@/components/page-header'
 import { PreviewCodeTabs } from '@/components/preview-code-tabs'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
@@ -66,32 +67,34 @@ export default async function ComponentDetailPage({ params }: { params: Promise<
             </Link>
           </nav>
 
-          <header className="flex flex-col gap-ds-04 mb-ds-09">
-            <div className="flex flex-wrap items-center gap-ds-02">
-              <Text variant="label-sm" className="text-surface-fg-subtle">
-                {item.layer} · {item.layer === 'ui' ? 'Primitive' : item.layer === 'composed' ? 'Composed pattern' : 'Shell'}
-              </Text>
-              {item.serverSafe && (
-                <span className="inline-flex items-center gap-ds-01 rounded-ds-sm bg-success-3 text-success-11 px-ds-02 py-[1px] text-ds-xs font-mono">
-                  <IconShieldCheck size={12} /> rsc-safe
+          <PageHeader
+            eyebrow={
+              <span className="inline-flex flex-wrap items-center gap-ds-02">
+                <span>
+                  {item.layer} · {item.layer === 'ui' ? 'Primitive' : item.layer === 'composed' ? 'Composed pattern' : 'Shell'}
                 </span>
-              )}
-            </div>
-            <Text variant="heading-2xl" className="text-surface-fg">
-              {item.name}
-            </Text>
-            <div className="flex flex-wrap items-center gap-ds-04">
-              <code className="text-ds-sm font-mono text-surface-fg-muted">{item.importPath}</code>
-              <Link
-                href={item.storybookUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-ds-02 text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01"
-              >
-                View in Storybook <IconArrowUpRight size={14} />
-              </Link>
-            </div>
-          </header>
+                {item.serverSafe && (
+                  <span className="inline-flex items-center gap-ds-01 rounded-ds-sm bg-success-3 text-success-11 px-ds-02 py-[1px] font-mono normal-case tracking-normal">
+                    <IconShieldCheck size={12} /> rsc-safe
+                  </span>
+                )}
+              </span>
+            }
+            title={item.name}
+            meta={
+              <div className="flex flex-wrap items-center gap-ds-04">
+                <code className="text-ds-sm font-mono text-surface-fg-muted">{item.importPath}</code>
+                <Link
+                  href={item.storybookUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-ds-02 text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01"
+                >
+                  View in Storybook <IconArrowUpRight size={14} />
+                </Link>
+              </div>
+            }
+          />
 
           {preview ? (
             <>

@@ -5,6 +5,7 @@ import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { DocsSidebar } from '@/components/docs-sidebar'
 import { Markdown } from '@/components/markdown'
+import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { getAllDocSlugs, getCategoryLabel, getDoc, getDocMeta } from '@/lib/docs-registry'
@@ -39,14 +40,7 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
             <DocsSidebar currentSlug={slug} />
           </aside>
           <article className="min-w-0">
-            <div className="mb-ds-08">
-              <Text variant="label-sm" className="text-surface-fg-subtle">
-                {getCategoryLabel(doc.category)}
-              </Text>
-              <Text variant="heading-2xl" className="text-surface-fg mt-ds-02">
-                {doc.title}
-              </Text>
-            </div>
+            <PageHeader eyebrow={getCategoryLabel(doc.category)} title={doc.title} />
             <Markdown source={doc.source} />
 
             <nav className="mt-ds-12 pt-ds-06 border-t border-surface-border-subtle grid grid-cols-2 gap-ds-04">

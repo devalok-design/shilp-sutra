@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Text } from '@devalok/shilp-sutra/ui/text'
 import { BlockDetailShell } from '@/components/block-detail-shell'
+import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { getBlock, getBlockSlugs, getBlockSource } from '@/lib/blocks-registry'
@@ -40,17 +40,7 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
             </Link>
           </nav>
 
-          <header className="flex flex-col gap-ds-03 mb-ds-08 max-w-3xl">
-            <Text variant="label-sm" className="text-surface-fg-subtle">
-              Block
-            </Text>
-            <Text variant="heading-2xl" className="text-surface-fg">
-              {block.title}
-            </Text>
-            <Text variant="body-md" className="text-surface-fg-muted">
-              {block.description}
-            </Text>
-          </header>
+          <PageHeader eyebrow={`Block · ${block.tags[0] ?? 'pattern'}`} title={block.title} description={block.description} />
 
           <BlockDetailShell source={source} uses={block.uses}>
             <Component />

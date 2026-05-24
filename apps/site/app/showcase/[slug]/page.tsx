@@ -48,7 +48,7 @@ export default async function ShowcaseDetailPage({ params }: { params: Promise<{
     <>
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-ds-page-x py-ds-09">
+        <div className="mx-auto max-w-6xl px-page-x py-ds-09">
           <nav aria-label="Breadcrumb" className="mb-ds-06">
             <Link
               href="/#showcase"

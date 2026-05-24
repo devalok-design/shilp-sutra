@@ -41,7 +41,7 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
  */
 export function ButtonShowcase() {
   return (
-    <section className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
+    <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-09">
         <Text variant="label-md" className="text-surface-fg-subtle">
           Look closer
@@ -223,7 +223,7 @@ function SceneEmail() {
       product="Email · Gmail-shaped"
       why="Primary action with an attached alternative. SplitButton fuses the two visually so the user reads it as one decision."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex items-center gap-ds-02">
           <IconMail size={14} className="text-surface-fg-subtle" />
           <Text variant="body-xs" className="text-surface-fg-subtle">
@@ -258,7 +258,7 @@ function SceneMusic() {
       why="Single icon button as the centre of gravity. Real audio below — press play, hear the actual bhajan. The Button row sits where a real product's custom chrome would."
     >
       <div className="flex flex-col gap-ds-03">
-        <div className="flex items-center justify-between gap-ds-03">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
           <div className="flex items-center gap-ds-03 min-w-0">
             <span className="w-10 h-10 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
               <IconBrandSpotify size={18} />
@@ -304,7 +304,7 @@ function SceneStreaming() {
       product="Streaming · Netflix-shaped"
       why="High-emotion conversion. Pill shape + warning hue catches the eye without screaming red."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             7-day free trial · ₹199 / month
@@ -328,7 +328,7 @@ function SceneCodeEditor() {
       product="Code editor · VS Code-shaped"
       why="ButtonGroup attached. Same context, three sibling actions, shared border radius — reads as one toolbar."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex items-center gap-ds-02">
           <IconCode size={14} className="text-surface-fg-subtle" />
           <Text variant="body-xs" className="text-surface-fg-subtle font-mono">
@@ -354,7 +354,7 @@ function SceneSocial() {
       product="Social · X-shaped"
       why="Ghost variant + icon + counter. Three sibling actions stay quiet until tapped — content does the work."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex items-center gap-ds-03 min-w-0">
           <Text variant="body-xs" className="text-surface-fg-muted truncate max-w-[18rem]">
             &ldquo;The slow web is finally winning…&rdquo;
@@ -407,7 +407,7 @@ function SceneCalendar() {
       product="Calendar · Google Calendar-shaped"
       why="Top-level create with three flavours. SplitButton reveals the alternatives without cluttering the toolbar."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             Thursday, 26 May
@@ -445,7 +445,7 @@ function SceneBanking() {
       product="Banking · Wise-shaped"
       why="Irreversible + sensitive. Solid + lg + onClickAsync. The user sees the confirm cycle, then it rests."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             To: Yogin Sharma · UPI yogin@axl
@@ -474,7 +474,7 @@ function SceneDeploy() {
       product="DevOps · Vercel-shaped"
       why="Long-running with high stakes. Processing='urgent' keeps the dotted border alive; processingDisabled=false lets the user roll back."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01 min-w-0">
           <Text variant="body-xs" className="text-surface-fg-subtle font-mono">
             shilp-sutra-site@b8eb960
@@ -501,7 +501,7 @@ function SceneNotes() {
       product="Notes · Notion-shaped"
       why="One primary, many cousins. SplitButton again — but this time the dropdown is content variety, not delivery options."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             Workspace · Devalok
@@ -539,7 +539,7 @@ function SceneCommerce() {
       product="Commerce · Stripe Checkout-shaped"
       why="Two-emphasis row. Soft + outline pair: equal weight, different priority signalled by tone alone."
     >
-      <div className="flex items-center justify-between gap-ds-03">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             Linen kurta · Tulsi · size M

@@ -47,20 +47,19 @@ function rampInlineStyle(hue: number, chroma: number): CSSProperties {
 }
 
 /**
- * Unified canvas — six industry surfaces in one frame.
+ * Unified canvas — responsive across phones, foldables, tablets, desktop.
  *
- * Discoverability layered three ways:
- *   1. Heading row spells out all six industries inline next to the title
- *      so the breadth is unmissable above the fold of the canvas.
- *   2. Tab strip uses card-shaped tabs with brand swatch + product +
- *      industry — feels like a channel switcher, not a text link list.
- *   3. Prev / Next chrome buttons let visitors cycle without aiming at
- *      specific tabs. Counter '1 / 6' anchors progress.
+ * Discoverability surfaces stay across breakpoints, the chrome adapts:
+ *   - mobile (<sm): peek row scrolls horizontally with snap; tab strip
+ *     becomes compact (swatch + product only); chrome links collapse
+ *     into the body footer
+ *   - tablet / foldable (sm–lg): full peek row, tab strip with industry
+ *     label restored, counter visible
+ *   - desktop (lg+): everything at full size
  *
- * Transitions: direction-aware slide (left when moving back, right when
- * forward), AnimatePresence with custom prop, plus a brand-coloured
- * border halo pulse the moment a tab swap fires so the eye registers
- * which brand just arrived.
+ * Transitions: direction-aware slide (left/right based on tab order) +
+ * brand-coloured boxShadow halo pulse around the canvas the moment the
+ * active surface swaps.
  */
 export function UnifiedCanvas() {
   const [activeIdx, setActiveIdx] = useState<number>(0)
@@ -78,35 +77,37 @@ export function UnifiedCanvas() {
   }
 
   return (
-    <section id="canvas" className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
+    <section id="canvas" className="mx-auto max-w-6xl px-page-x py-ds-12">
       <header className="flex flex-col gap-ds-04 max-w-3xl mb-ds-06">
         <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
-          See it run · pick an industry
+          See it run
         </span>
         <h2 className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg text-balance">
-          One library. Six worlds. One frame.
+          One library. Many worlds.
         </h2>
         <p className="text-ds-md text-surface-fg-muted leading-relaxed max-w-2xl">
-          The same shilp-sutra components rendered six different ways. Press a tab — or use the
-          arrow buttons — to switch industries. Watch the brand recolour every surface as you go.
+          Each tab below opens a different product surface — built from the same components, painted by a different brand.
         </p>
-        {/* Six swatches inline — at-a-glance proof there are six surfaces below */}
-        <ul aria-label="Available industries" className="flex flex-wrap items-center gap-ds-03 mt-ds-02">
+        {/* Industry peek strip — horizontal-scrolls on mobile, wraps on sm+ */}
+        <ul
+          aria-label="Available industries"
+          className="-mx-page-x sm:mx-0 px-page-x sm:px-0 flex sm:flex-wrap items-center gap-ds-03 mt-ds-02 overflow-x-auto sm:overflow-visible scroll-px-page-x snap-x snap-mandatory sm:snap-none"
+        >
           {SURFACES.map((s, i) => (
-            <li key={s.slug}>
+            <li key={s.slug} className="snap-start shrink-0">
               <button
                 type="button"
                 onClick={() => goTo(i)}
-                className="group/peek inline-flex items-center gap-ds-02 text-ds-xs text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-02 ease-productive-standard"
+                className="group/peek inline-flex items-center gap-ds-02 text-ds-xs text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 rounded-ds-sm"
                 aria-label={`Switch to ${s.product}`}
               >
                 <span
                   aria-hidden
-                  className="w-3 h-3 rounded-full ring-1 ring-surface-border-subtle transition-transform duration-fast-02 ease-productive-standard group-hover/peek:scale-110"
+                  className="w-3 h-3 rounded-full ring-1 ring-surface-border-subtle transition-transform duration-fast-02 ease-productive-standard group-hover/peek:scale-110 shrink-0"
                   style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}
                 />
                 <span className="font-medium">{s.product}</span>
-                <span className="text-surface-fg-subtle">{s.industry}</span>
+                <span className="text-surface-fg-subtle hidden sm:inline">{s.industry}</span>
               </button>
             </li>
           ))}
@@ -130,9 +131,9 @@ export function UnifiedCanvas() {
         style={rampInlineStyle(active.hue, active.chroma)}
       >
         {/* Chrome */}
-        <div className="flex items-center justify-between gap-ds-03 px-ds-05 py-ds-03 bg-surface-raised border-b border-surface-border-subtle">
+        <div className="flex items-center justify-between gap-ds-02 px-ds-03 sm:px-ds-05 py-ds-03 bg-surface-raised border-b border-surface-border-subtle">
           <div className="flex items-center gap-ds-03 min-w-0">
-            <span className="flex items-center gap-1 shrink-0">
+            <span className="hidden sm:flex items-center gap-1 shrink-0">
               <span className="w-2.5 h-2.5 rounded-full bg-error-9" />
               <span className="w-2.5 h-2.5 rounded-full bg-warning-9" />
               <span className="w-2.5 h-2.5 rounded-full bg-success-9" />
@@ -145,20 +146,20 @@ export function UnifiedCanvas() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
-                  className="text-ds-md text-surface-fg font-semibold"
+                  className="text-ds-md text-surface-fg font-semibold truncate"
                 >
                   {active.product}
                 </motion.span>
               </AnimatePresence>
-              <span className="text-ds-xs text-surface-fg-subtle hidden sm:inline">
+              <span className="text-ds-xs text-surface-fg-subtle hidden md:inline truncate">
                 · {active.tagline}
               </span>
             </span>
           </div>
-          <div className="flex items-center gap-ds-02 shrink-0">
+          <div className="flex items-center gap-ds-01 shrink-0">
             <Link
               href={`/showcase/${active.slug}`}
-              className="hidden sm:inline-flex items-center gap-ds-02 text-ds-xs text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-02 ease-productive-standard"
+              className="hidden md:inline-flex items-center gap-ds-02 text-ds-xs text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-02 ease-productive-standard"
             >
               Open standalone
               <IconArrowUpRight size={12} />
@@ -185,12 +186,12 @@ export function UnifiedCanvas() {
           </div>
         </div>
 
-        {/* Tab strip — card-shaped tabs, channel-switcher feel */}
+        {/* Tab strip — adapts: compact pills < md, full cards md+ */}
         <div className="flex items-stretch border-b border-surface-border-subtle bg-surface-raised">
           <button
             type="button"
             onClick={() => goTo(activeIdx - 1)}
-            className="px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="px-ds-02 sm:px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 shrink-0"
             aria-label="Previous industry"
           >
             <IconChevronLeft size={16} />
@@ -200,7 +201,7 @@ export function UnifiedCanvas() {
             <div
               role="tablist"
               aria-label="Industry showcases"
-              className="flex items-stretch flex-1 overflow-x-auto"
+              className="flex items-stretch flex-1 overflow-x-auto snap-x snap-mandatory"
             >
               {SURFACES.map((s, i) => {
                 const isActive = i === activeIdx
@@ -212,7 +213,8 @@ export function UnifiedCanvas() {
                     aria-selected={isActive}
                     onClick={() => goTo(i)}
                     className={[
-                      'group/tab relative flex flex-col items-start gap-ds-01 px-ds-04 py-ds-03 min-w-[8.5rem] text-left transition-colors duration-fast-02 ease-productive-standard shrink-0',
+                      'group/tab relative flex flex-col items-start gap-ds-01 px-ds-03 md:px-ds-04 py-ds-03',
+                      'min-w-[5.5rem] md:min-w-[8.5rem] text-left transition-colors duration-fast-02 ease-productive-standard shrink-0 snap-start',
                       'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                       isActive ? 'text-surface-fg bg-surface-base' : 'text-surface-fg-muted hover:bg-surface-raised-hover',
                     ].join(' ')}
@@ -229,7 +231,7 @@ export function UnifiedCanvas() {
                       <span
                         aria-hidden
                         className={[
-                          'w-2.5 h-2.5 rounded-full transition-transform duration-fast-02 ease-productive-standard',
+                          'w-2.5 h-2.5 rounded-full transition-transform duration-fast-02 ease-productive-standard shrink-0',
                           isActive ? 'scale-110 ring-2 ring-offset-1 ring-offset-surface-base' : '',
                         ].join(' ')}
                         style={
@@ -238,31 +240,31 @@ export function UnifiedCanvas() {
                             : { background: `oklch(0.55 ${s.chroma} ${s.hue})` }
                         }
                       />
-                      <span className="text-ds-sm font-semibold">{s.product}</span>
+                      <span className="text-ds-sm font-semibold whitespace-nowrap">{s.product}</span>
                     </div>
-                    <span className="text-ds-xs text-surface-fg-subtle">{s.industry}</span>
+                    <span className="text-ds-xs text-surface-fg-subtle hidden md:inline">{s.industry}</span>
                   </button>
                 )
               })}
             </div>
           </LayoutGroup>
 
-          <div className="hidden md:flex items-center px-ds-03 text-ds-xs text-surface-fg-subtle font-mono border-l border-surface-border-subtle shrink-0">
+          <div className="hidden lg:flex items-center px-ds-03 text-ds-xs text-surface-fg-subtle font-mono border-l border-surface-border-subtle shrink-0">
             {activeIdx + 1} / {SURFACES.length}
           </div>
 
           <button
             type="button"
             onClick={() => goTo(activeIdx + 1)}
-            className="px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="px-ds-02 sm:px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 shrink-0"
             aria-label="Next industry"
           >
             <IconChevronRight size={16} />
           </button>
         </div>
 
-        {/* Body — direction-aware slide */}
-        <div className="relative bg-surface-base p-ds-06 lg:p-ds-08 min-h-[420px] overflow-hidden">
+        {/* Body — direction-aware slide, padding scales down on mobile */}
+        <div className="relative bg-surface-base p-ds-04 sm:p-ds-06 lg:p-ds-08 min-h-[360px] sm:min-h-[420px] overflow-hidden">
           <AnimatePresence mode="wait" initial={false} custom={direction}>
             <motion.div
               key={`${active.slug}-${mode}`}
@@ -276,12 +278,18 @@ export function UnifiedCanvas() {
             </motion.div>
           </AnimatePresence>
         </div>
+
+        {/* In-canvas mobile footer: open-standalone link surfaces on small screens */}
+        <Link
+          href={`/showcase/${active.slug}`}
+          className="md:hidden flex items-center justify-between gap-ds-02 px-ds-04 py-ds-03 text-ds-sm text-surface-fg-muted hover:text-surface-fg border-t border-surface-border-subtle bg-surface-raised transition-colors duration-fast-02 ease-productive-standard"
+        >
+          <span>Open {active.product} standalone</span>
+          <IconArrowUpRight size={14} />
+        </Link>
       </motion.div>
 
-      <footer className="mt-ds-05 flex flex-wrap items-center justify-between gap-ds-03">
-        <p className="text-ds-sm text-surface-fg-muted">
-          Same components in every tab. Only the accent ramp changes.
-        </p>
+      <footer className="mt-ds-05 flex flex-wrap items-center justify-end gap-ds-03">
         <Link
           href={`/theming?hue=${active.hue}&chroma=${active.chroma}`}
           className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:underline underline-offset-2"

@@ -68,7 +68,7 @@ export function LandingSurface() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
+    <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-06">
         <Text variant="label-md" className="text-surface-fg-subtle">
           See it run
@@ -119,7 +119,7 @@ export function LandingSurface() {
               </Button>
             </header>
 
-            <div className="grid grid-cols-3 gap-ds-03">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-ds-03">
               <Stat label="Components" value="119" hint="3 added in v0.39" />
               <Stat label="Showcases live" value="6" hint="industries covered" />
               <Stat label="Tests passing" value="2,107" hint="100% on main" />

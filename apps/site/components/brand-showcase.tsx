@@ -29,7 +29,7 @@ function rampInlineStyle(hue: number, chroma: number): CSSProperties {
 
 export function BrandShowcase() {
   return (
-    <section id="showcase" className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
+    <section id="showcase" className="mx-auto max-w-6xl px-page-x py-ds-12">
       <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-08">
         <Text variant="label-md" className="text-surface-fg-subtle">
           Same library. Six different products.

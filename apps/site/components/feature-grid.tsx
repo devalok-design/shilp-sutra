@@ -27,7 +27,7 @@ const features = [
 
 export function FeatureGrid() {
   return (
-    <section className="mx-auto max-w-5xl px-ds-page-x py-ds-12">
+    <section className="mx-auto max-w-5xl px-page-x py-ds-12">
       <div className="flex flex-col gap-ds-08">
         <div className="flex flex-col gap-ds-03 max-w-3xl">
           <Text variant="label-md" className="text-surface-fg-subtle">

@@ -77,7 +77,7 @@ export function VaidyaShowcase() {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-3 gap-ds-04">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-ds-03 sm:gap-ds-04">
           <Vital icon={IconHeartbeat} label="Resting HR" value="72" unit="bpm" status="normal" />
           <Vital icon={IconActivity} label="Blood pressure" value="128/82" unit="mmHg" status="watch" />
           <Vital icon={IconTemperature} label="Temperature" value="36.6" unit="°C" status="normal" />

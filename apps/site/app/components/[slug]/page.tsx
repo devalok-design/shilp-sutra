@@ -57,7 +57,7 @@ export default async function ComponentDetailPage({ params }: { params: Promise<
     <>
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto max-w-5xl px-ds-page-x py-ds-09">
+        <div className="mx-auto max-w-5xl px-page-x py-ds-09">
           <nav aria-label="Breadcrumb" className="mb-ds-06">
             <Link
               href="/components"

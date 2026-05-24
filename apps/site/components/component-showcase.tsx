@@ -36,7 +36,7 @@ import { CommandPalette } from '@devalok/shilp-sutra/composed/command-palette'
  */
 export function ComponentShowcase() {
   return (
-    <section className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
+    <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <Toaster />
 
       <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-09">

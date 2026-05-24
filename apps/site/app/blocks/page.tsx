@@ -20,7 +20,7 @@ export default function BlocksIndexPage() {
     <>
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-ds-page-x py-ds-09">
+        <div className="mx-auto max-w-6xl px-page-x py-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
               eyebrow="Blocks"

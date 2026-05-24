@@ -41,7 +41,7 @@ const linkGroups = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-surface-border-subtle bg-surface-sunken">
-      <div className="mx-auto max-w-6xl px-ds-page-x py-ds-09">
+      <div className="mx-auto max-w-6xl px-page-x py-ds-09">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-ds-08">
           <div className="col-span-2 md:col-span-2 flex flex-col gap-ds-03">
             <Text variant="heading-sm" className="text-surface-fg">shilp-sutra</Text>

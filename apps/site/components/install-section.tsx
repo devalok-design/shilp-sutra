@@ -15,7 +15,7 @@ const frameworks = [
 
 export function InstallSection() {
   return (
-    <section id="install" className="mx-auto max-w-4xl px-ds-page-x py-ds-12">
+    <section id="install" className="mx-auto max-w-4xl px-page-x py-ds-12">
       <div className="flex flex-col gap-ds-08">
         <div className="flex flex-col gap-ds-03">
           <Text variant="label-md" className="text-surface-fg-subtle">

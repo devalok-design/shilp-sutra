@@ -19,7 +19,7 @@ export default async function ComponentsPage() {
     <>
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-ds-page-x py-ds-09">
+        <div className="mx-auto max-w-6xl px-page-x py-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
               eyebrow="Components · v0.39"

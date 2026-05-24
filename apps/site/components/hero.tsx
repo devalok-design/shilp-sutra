@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden isolate">
       <AuroraBloom />
-      <div className="relative z-10 mx-auto max-w-4xl px-ds-page-x pt-ds-13 pb-ds-12 md:pt-[10rem] md:pb-[8rem] flex flex-col items-center text-center gap-ds-06">
+      <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-10 pb-ds-09 md:pt-ds-13 md:pb-ds-12 lg:pt-[10rem] lg:pb-[8rem] flex flex-col items-center text-center gap-ds-05 md:gap-ds-06">
         <Text variant="label-md" className="text-surface-fg-subtle">
           From Devalok Studios
         </Text>
@@ -23,12 +23,12 @@ export function Hero() {
           mode, every screen — instantly. No spreadsheet of hex codes. No config files. Just your
           brand, everywhere.
         </Text>
-        <div className="flex flex-col sm:flex-row gap-ds-03 mt-ds-03">
-          <Link href="/theming">
-            <Button size="lg">Try it on</Button>
+        <div className="w-full max-w-sm sm:max-w-none sm:w-auto flex flex-col sm:flex-row gap-ds-03 mt-ds-03">
+          <Link href="/theming" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full sm:w-auto">Try it on</Button>
           </Link>
-          <Link href="/components">
-            <Button variant="soft" size="lg" endIcon={<IconArrowRight size={18} />}>
+          <Link href="/components" className="w-full sm:w-auto">
+            <Button variant="soft" size="lg" className="w-full sm:w-auto" endIcon={<IconArrowRight size={18} />}>
               See what&apos;s inside
             </Button>
           </Link>

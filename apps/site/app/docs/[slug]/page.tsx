@@ -35,7 +35,7 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
     <>
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-ds-page-x py-ds-09 grid grid-cols-1 lg:grid-cols-[14rem_1fr] gap-ds-09">
+        <div className="mx-auto max-w-6xl px-page-x py-ds-09 grid grid-cols-1 lg:grid-cols-[14rem_1fr] gap-ds-09">
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <DocsSidebar currentSlug={slug} />
           </aside>

@@ -60,7 +60,7 @@ export default function AgentsPage() {
     <>
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto max-w-5xl px-ds-page-x py-ds-09">
+        <div className="mx-auto max-w-5xl px-page-x py-ds-09">
           <PageHeader
             eyebrow="For your AI editor"
             title="Your AI editor already knows shilp-sutra."

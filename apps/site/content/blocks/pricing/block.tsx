@@ -80,7 +80,7 @@ const faqs = [
 export function PricingBlock() {
   return (
     <div className="flex flex-col gap-ds-12 py-ds-09">
-      <header className="text-center max-w-2xl mx-auto flex flex-col gap-ds-03 px-ds-page-x">
+      <header className="text-center max-w-2xl mx-auto flex flex-col gap-ds-03 px-page-x">
         <Text variant="label-md" className="text-surface-fg-subtle">
           Pricing
         </Text>
@@ -92,7 +92,7 @@ export function PricingBlock() {
         </Text>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-ds-05 max-w-6xl mx-auto px-ds-page-x w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-ds-05 max-w-6xl mx-auto px-page-x w-full">
         {tiers.map((tier) => (
           <Card
             key={tier.name}
@@ -138,7 +138,7 @@ export function PricingBlock() {
         ))}
       </div>
 
-      <section className="max-w-2xl mx-auto px-ds-page-x flex flex-col gap-ds-05">
+      <section className="max-w-2xl mx-auto px-page-x flex flex-col gap-ds-05">
         <Text variant="heading-md" className="text-surface-fg text-center">
           Honest questions, honest answers.
         </Text>

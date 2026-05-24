@@ -68,7 +68,7 @@ export function AtlasShowcase() {
           </CardHeader>
         </Card>
 
-        <div className="grid grid-cols-3 gap-ds-04">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-ds-03 sm:gap-ds-04">
           <StatTile label="Active projects" value="4" hint="2 launching this month" />
           <StatTile label="Tasks in motion" value="88" hint="61 done · 27 open" />
           <StatTile label="On-time delivery" value="94%" hint="rolling 30 days" />

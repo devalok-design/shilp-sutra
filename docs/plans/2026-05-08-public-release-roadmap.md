@@ -330,6 +330,9 @@ These need answers BEFORE Phase 4 (public launch):
 | 2026-05-08 | Skip VS Code extension; ship snippets package only | Tailwind IntelliSense covers ~80% of value for free |
 | 2026-05-08 | Skip MUI X-style commercial Pro tier | OSS-only product. Not building a business around this |
 | 2026-05-08 | Discussions before Discord | Lower friction; only escalate if volume demands it |
+| 2026-05-25 | Name locked: `@devalok/shilp-sutra` (scoped) | Soft-promo to outsiders during beta makes the npm name the contract. Scope signals provenance, aligns with brand-first thesis, avoids unscoped-namespace squat. Closes § 7 Q1. |
+| 2026-05-25 | Beta release as `0.40.0` on `latest` (no separate `beta` dist-tag) | Karm is the only existing consumer and is pinned exact (`"0.38.0"`), so dual-tag complexity isn't earned. README banner + announce posts carry the beta signal. See `docs/plans/2026-05-24-beta-release-plan.md` § 2.2. |
+| 2026-05-25 | No custom MCP feedback inbox for beta | GitHub MCP / `gh` CLI / prefilled-URL fallback covers agent-friction. Custom MCP-as-inbox = days of work, fragments triage, solves a problem we don't have at beta volume. Revisit at GA+1. |
 
 ---
 

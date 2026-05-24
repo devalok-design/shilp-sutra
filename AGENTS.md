@@ -73,10 +73,55 @@ For the per-component RSC-safety matrix and import patterns, see **`packages/cor
 
 ## Reporting feedback
 
-If you find that a recipe is wrong, a constraint above is no longer accurate, or a component behavior contradicts the docs:
+If a recipe is wrong, a constraint above is no longer accurate, a component behavior contradicts the docs, or `llms.txt` / `AGENTS.md` is missing context you needed — file a GitHub issue. We read every one. The package is in public beta (v0.40.0); your report literally shapes 1.0.
 
-1. Open a GitHub issue at `https://github.com/devalok-design/shilp-sutra/issues` with label `ai-agent-feedback`.
-2. Include the package version (`pnpm view @devalok/shilp-sutra version` or read from the consumer's lockfile), the recipe path, the exact command/file/error, and what you expected.
+### How to file (auth-tier order, use the first one that works)
+
+1. **GitHub MCP available in your environment** → call `mcp__github__create_issue` with the user's auth. Owner `devalok-design`, repo `shilp-sutra`, title `[ai-agent] <one-line summary>`, labels include `ai-agent-feedback`. Cleanest path.
+2. **`gh` CLI configured on the user's machine** → `gh issue create --repo devalok-design/shilp-sutra --template ai-agent-feedback.yml --title "[ai-agent] ..."` with field bodies via `--body-file` or interactive editor.
+3. **Fallback: prefilled URL.** Build `https://github.com/devalok-design/shilp-sutra/issues/new?template=ai-agent-feedback.yml&agent=<...>&human-prompt=<...>&package-version=<...>&framework-os=<...>&urgency=<...>&recipe-path=<...>&what-agent-tried=<...>&what-broke=<...>&doc-gap=<...>` with every field URL-encoded. Output the URL to the user and ask them to click + submit. Zero auth required. Truncate each long field to ~2KB to stay under GitHub's ~8KB issue-URL ceiling.
+
+### Required content in the issue body
+
+The `ai-agent-feedback.yml` template enforces these. Fill all required slots:
+
+- Agent name + model + version (e.g. "Claude Code 2.5 / Opus 4.7")
+- Human's original prompt (one line)
+- shilp-sutra version (`pnpm view @devalok/shilp-sutra version` or from lockfile)
+- Framework + version + OS (from lockfile + `node -v` + OS detection)
+- Urgency (self-classify per the definition below; default Normal)
+- Recipe followed, if any
+- What the agent tried (the plan, the edits, the prompt)
+- Where it broke (verbatim error / stack / surprising behavior)
+- What the docs should have said (rough sentence is fine)
+
+### Urgency self-classification (objective)
+
+**Urgent = ALL of:**
+- Reproduces on documented setup (recipe-followed install)
+- Breaks install OR initial render OR build OR security
+- Not solvable by re-reading existing docs
+
+**NOT urgent:**
+- Visual preference / "looks wrong"
+- Missing feature request
+- Confusion about docs (= normal, doc-gap)
+- Breaks only on undocumented framework or post-modification
+- Already-known issue with existing workaround
+
+Default to Normal. Maintainer reserves the right to reclassify; that is the norm, not a slight.
+
+### Rules (these stop you from drowning the queue)
+
+- **One issue per task.** Multiple problems hit during the same task → file ONE issue listing all. Do NOT file separately per broken file or per missing doc.
+- **Search before filing.** `gh issue list --repo devalok-design/shilp-sutra -l ai-agent-feedback -s open` or web-search `https://github.com/devalok-design/shilp-sutra/issues?q=is%3Aopen+label%3Aai-agent-feedback`. Near-duplicate → comment on existing instead of opening new.
+- **Acknowledge with the human.** Show the human the issue link (or the prefilled URL) before/after submission. Don't file in the background — the human is the source of truth on whether the issue should be filed.
+
+### What happens after you file
+
+- **Bot ack < 1 minute** via `.github/workflows/agent-feedback-ack.yml`.
+- **Triage cadence per [CONTRIBUTING.md#beta-sla](./CONTRIBUTING.md#beta-sla):** urgent ≤48h, normal weekly Mon, nice-to-have batched.
+- **Fix loop:** when an agent-filed issue is fixed, the PR template requires updating `llms.txt` / `docs/recipes/` / `AGENTS.md` if relevant. The next agent that reads these files gets the updated content. The loop closes structurally.
 
 <!-- END:shilp-sutra-agent-rules -->
 

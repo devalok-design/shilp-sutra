@@ -5,6 +5,31 @@ All notable changes to `@devalok/shilp-sutra` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.40.0] - unreleased (core) — **Public Beta**
+
+The package enters public beta. Install path is stable across Next.js (App + Pages), Vite, Astro, Remix, and TanStack Start per the shipped recipes. API surface is pre-1.0 — minors may break, and any break touching more than two components ships with a codemod in [`@devalok/shilp-sutra-codemods`](https://github.com/devalok-design/shilp-sutra-codemods). Full beta plan: [docs/plans/2026-05-24-beta-release-plan.md](./docs/plans/2026-05-24-beta-release-plan.md).
+
+### Added
+
+- **Beta SLA in `CONTRIBUTING.md#beta-sla`** — bot-ack immediate, urgent human-ack ≤48h, normal triage weekly Mondays. Maintainer commitment scopes to triage, not fix.
+- **Codemod policy in `CONTRIBUTING.md#codemod-policy`** — any break touching >2 components must ship a codemod. Adopted from Mantine v7 lessons.
+- **Auto-acknowledge GitHub Action (`.github/workflows/agent-feedback-ack.yml`)** — every issue labeled `ai-agent-feedback` gets an automated comment <1 minute after opening with the SLA pointer and triage timing.
+- **Pull-request template (`.github/pull_request_template.md`)** — required checkboxes for changeset, recipe/llms.txt/AGENTS.md updates on agent-feedback fixes, and codemod for >2-component breaks.
+- **Extended `ai-agent-feedback.yml` issue template** — new required slots: human's original prompt, framework + version + OS, self-classified urgency dropdown (Urgent / Normal / Nice-to-have) with definitions inline.
+- **Agent feedback rules in `AGENTS.md`** (inside managed BEGIN/END markers) — auth-tier order (GitHub MCP → `gh` CLI → prefilled URL fallback), one-issue-per-task rule, dedup-search rule, identity-declaration requirement.
+- **Storybook MCP server documented in `llms.txt`** — dev-only at `localhost:6006/mcp`, exposes per-story prop dumps and live story URLs to agents.
+
+### Changed
+
+- **README banner** marks the package as public beta with feedback channels and SLA pointer.
+- **`llms.txt` opens with a beta banner** so agents reading `node_modules/@devalok/shilp-sutra/llms.txt` know the API stability posture and feedback path.
+
+### Known
+
+- Marketing site at `https://shilp-sutra.devalok.in` is in active development on `feat/site-v1-and-skill`. Some links from beta announcements may 404 until v1 lands.
+- Only the Next.js App Router starter repo is targeted for beta. Vite, Astro, Remix, and TanStack starters are post-beta.
+- Per-component bundle-size badges, public Chromatic link, ESLint plugin, and visual builder are deferred to post-beta.
+
 ## [0.37.0] - unreleased (core)
 
 **Tailwind 4 CSS-first migration.** This is a setup-only breaking release — component APIs are unchanged. See [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration) for the full guide and the required consumer changes.

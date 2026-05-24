@@ -1,20 +1,36 @@
 name: AI agent feedback
 description: An AI coding agent (Claude Code, Cursor, Copilot, Codex, Aider) hit a wall while using shilp-sutra in a consumer project.
 title: "[ai-agent] "
-labels: ["ai-agent-feedback", "needs-triage"]
+labels: ["ai-agent-feedback", "needs-triage", "beta-feedback", "agent-filed"]
 body:
   - type: markdown
     attributes:
       value: |
         File this when an agent: (a) followed a recipe and it broke, (b) the docs claim something the code doesn't do, (c) `llms.txt` / `llms-full.txt` / `AGENTS.md` is missing context the agent needed, OR (d) a constraint we documented turned out to be wrong.
 
+        **Beta SLA** (`@devalok/shilp-sutra@0.40.0`): bot ack < 1 min, urgent human ack ≤ 48h, normal triage weekly Mon. Full SLA: https://github.com/devalok-design/shilp-sutra/blob/main/CONTRIBUTING.md#beta-sla
+
+        **One issue per task.** Multiple problems hit during the same task → file ONE issue listing all. Do not split per file or per missing-doc.
+
+        **Search first.** Before filing, check open issues: https://github.com/devalok-design/shilp-sutra/issues?q=is%3Aopen+label%3Aai-agent-feedback — comment on near-duplicates instead of opening new.
+
         Karm's agent flow uses the `karm-ai-agent-feedback` label specifically — pick that label below if you're filing from Karm. Other consumer agents use the default `ai-agent-feedback`.
 
   - type: input
     id: agent
     attributes:
-      label: Which agent
-      placeholder: "Claude Code 2.x / Cursor 0.x / GitHub Copilot / Codex / Aider"
+      label: Which agent (model + version)
+      description: Include the model identifier, not just the product (e.g. "Claude Code 2.5 / Opus 4.7").
+      placeholder: "Claude Code 2.5 (Opus 4.7) / Cursor 0.x (gpt-5) / GitHub Copilot / Codex / Aider"
+    validations:
+      required: true
+
+  - type: input
+    id: human-prompt
+    attributes:
+      label: Human's original prompt (1 line)
+      description: What did the human ask the agent to do? Helps separate "agent went rogue" from "tooling actually failed".
+      placeholder: "Add shilp-sutra to my Next.js 16 app and build a dashboard with a sidebar"
     validations:
       required: true
 
@@ -22,7 +38,34 @@ body:
     id: package-version
     attributes:
       label: shilp-sutra version
-      placeholder: "0.38.0"
+      placeholder: "0.40.0"
+    validations:
+      required: true
+
+  - type: input
+    id: framework-os
+    attributes:
+      label: Framework + version + OS
+      description: Exact framework version (from lockfile), node version, OS. Helps repro.
+      placeholder: "Next.js 16.0.2 (App Router) / Node 22.4 / macOS 14.5 (arm64)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency (self-classified)
+      description: |
+        **Urgent = ALL of:** reproduces on documented setup; breaks install / initial render / build / security; not solvable by re-reading existing docs.
+
+        **NOT urgent:** visual preference, feature request, doc confusion (= Normal), breaks only on undocumented setup, already-known issue with workaround.
+
+        Maintainer reserves the right to reclassify. Reclassification is the norm, not a slight.
+      options:
+        - "Normal — API ambiguity, agent-trap, doc gap, behavior contradicting docs"
+        - "Urgent — install-break, runtime crash on supported framework, or security"
+        - "Nice-to-have — polish, preference, feature request"
+      default: 0
     validations:
       required: true
 

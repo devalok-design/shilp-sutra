@@ -116,6 +116,18 @@ Before removing a public API:
 
 The v0.38 deprecation sweep is the canonical example — see commits `dff85b37`...`ec5112be` and `MIGRATION.md#v0380--deprecation-sweep`.
 
+### Codemod policy
+
+**Any breaking change that touches more than two components MUST ship with a codemod.** Adopted from Mantine v7's `mantine6to7` lessons — small breaks can be hand-migrated, but cross-component sweeps without automation create migration walls that stall consumer upgrades.
+
+Rules:
+
+1. **Threshold: >2 components touched.** Count the number of consumer-facing component exports impacted. Renames, prop signature changes, default-value flips, removed variants all count. A token-only break (no component code change) does not count toward the threshold.
+2. **Codemod lives in [`@devalok/shilp-sutra-codemods`](https://github.com/devalok-design/shilp-sutra-codemods).** One repo, one codemod per minor that requires one. Built on `jscodeshift`. Each codemod is named for the version that introduced the break: `0.40-to-0.41.js`.
+3. **Codemod ships in the same PR as the breaking change.** The break is not mergeable without it. Reviewer checks: `pnpm changeset` body links to the codemod path, `MIGRATION.md` references it, the codemod has unit tests.
+4. **Consumer migration is one command:** `npx @devalok/shilp-sutra-codemods <version-pair> <path>`. Document in `MIGRATION.md` next to the manual instructions — codemod first, manual as fallback.
+5. **Backfill on demand, not retroactively.** We do not owe codemods for breaks shipped before this policy (e.g. 0.38 deprecation sweep). Backfill only if a consumer explicitly asks during their upgrade.
+
 ### Public API surface
 
 The "public API" includes:
@@ -134,3 +146,41 @@ Internal-only:
 - Test fixtures, Storybook stories, the Vite playground app
 
 If a change touches public-API surface, it's a real semver event. Err toward the higher bump.
+
+## Beta SLA
+
+> Active for the `0.40.0` public beta window. See [docs/plans/2026-05-24-beta-release-plan.md](./docs/plans/2026-05-24-beta-release-plan.md) for the full beta plan.
+
+The beta SLA scopes maintainer commitment honestly — bot ack is automated, human commitment is to **triage**, not fix.
+
+| Category | Definition | Bot ack | Human triage | Fix posture |
+|---|---|---|---|---|
+| **Urgent** | Install-break, runtime crash on supported framework, or security. Reproduces on documented setup. Not solvable by re-reading docs. | Immediate (auto-comment) | ≤48h best-effort | Top of queue; ETA posted in issue |
+| **Normal** | API ambiguity, agent-trap, doc gap, behavior contradicting docs. | Immediate | Weekly Monday | Batched into next minor |
+| **Nice-to-have** | Polish, preference, feature request. | Immediate | Weekly Monday | "If it fits" — no commitment |
+
+**Bot ack** = auto-comment via [`agent-feedback-ack`](./.github/workflows/agent-feedback-ack.yml) GitHub Action. Means "we received this." Not "a human has read it."
+
+**Human SLA scopes triage, not fix.** Fix ETAs are issue-specific and posted in the issue after triage. We do not promise calendar fix times — one maintainer, real life.
+
+**Urgent definition (objective, baked into [`ai-agent-feedback.yml`](./.github/ISSUE_TEMPLATE/ai-agent-feedback.yml)):**
+
+Urgent = ALL of:
+- Reproduces on documented setup (recipe-followed install)
+- Breaks: install OR initial render OR build OR security
+- Not solvable by re-reading existing docs
+
+NOT urgent:
+- Visual preference / "looks wrong"
+- Missing feature request
+- Confusion about docs (= normal, doc-gap)
+- Breaks only on undocumented framework or post-modification
+- Already-known issue with existing workaround
+
+Maintainer reserves the right to reclassify during triage; reclassification is the norm, not a slight.
+
+**Travel/sick weeks:** SLA pauses. Pinned Discussion notice. No silent drift — public acknowledgment that the clock paused.
+
+**Weekly digest:** Mondays AM, posted to GitHub Discussions. "Heard / Shipped / Open / Beta scoreboard" format. Miss two weeks → beta credibility tanks. Discipline > tooling.
+
+**Post-beta:** This SLA section is rewritten or removed when [exit criteria](./docs/plans/2026-05-24-beta-release-plan.md#7-exit-criteria) are met.

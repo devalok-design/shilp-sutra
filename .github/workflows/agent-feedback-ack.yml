@@ -1,0 +1,43 @@
+name: Auto-acknowledge agent feedback
+
+# Posts an automatic acknowledgement comment on any issue opened with the
+# `ai-agent-feedback` label. Removes the "did anyone see this?" silence that
+# kills agent (and human) trust during beta. Bot ack < 1 minute is the
+# scoped commitment in CONTRIBUTING.md#beta-sla; the human SLA scopes
+# triage, not fix.
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  ack:
+    if: contains(github.event.issue.labels.*.name, 'ai-agent-feedback')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = [
+              '**Received** — beta feedback queue.',
+              '',
+              'Triage timing per [Beta SLA](../blob/main/CONTRIBUTING.md#beta-sla):',
+              '- **Urgent** (install-break / runtime crash on supported setup): human response ≤48h',
+              '- **Normal** (API / docs / agent-trap): weekly Monday triage',
+              '- **Nice-to-have** (polish / preference): batched, no calendar',
+              '',
+              'Wrong category? Add label `urgent` or comment to reclassify.',
+              '',
+              'Beta exit criteria + plan: [docs/plans/2026-05-24-beta-release-plan.md](../blob/main/docs/plans/2026-05-24-beta-release-plan.md#7-exit-criteria).',
+              '',
+              '_This is an automated acknowledgement. A human will read this issue on the next triage cycle._',
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body,
+            });

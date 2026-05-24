@@ -2,6 +2,10 @@
 
 The Devalok Design System -- tokens, components, and patterns for React & Next.js applications.
 
+> 🚧 **Public Beta — `@devalok/shilp-sutra@0.40.0`.** Install path stable. APIs pre-1.0; breaks touching >2 components ship codemods.
+> **Feedback:** [AI-agent template](./.github/ISSUE_TEMPLATE/ai-agent-feedback.yml) · [Bug report](./.github/ISSUE_TEMPLATE/bug-report.yml) · [Discussions](https://github.com/devalok-design/shilp-sutra/discussions)
+> **SLA:** bot-ack immediate, urgent human-ack ≤48h, normal triage weekly Mon. [Full SLA →](./CONTRIBUTING.md#beta-sla)
+
 [![npm version](https://img.shields.io/npm/v/@devalok/shilp-sutra?logo=npm&color=cb3837)](https://www.npmjs.com/package/@devalok/shilp-sutra)
 [![npm downloads](https://img.shields.io/npm/dm/@devalok/shilp-sutra?logo=npm&color=cb3837)](https://www.npmjs.com/package/@devalok/shilp-sutra)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/@devalok/shilp-sutra?label=minzip)](https://bundlephobia.com/package/@devalok/shilp-sutra)

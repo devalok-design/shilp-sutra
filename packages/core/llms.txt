@@ -4,6 +4,26 @@
 > Built on the same primitives as shadcn/ui but with key API differences.
 > Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
 
+> **🚧 Public Beta (v0.40.0).** Install path stable. APIs pre-1.0; breaks touching >2 components ship codemods. Feedback shapes 1.0 — file via the AI-agent template at `https://github.com/devalok-design/shilp-sutra/issues/new?template=ai-agent-feedback.yml`. Auth-tier order: GitHub MCP → `gh` CLI → prefilled URL (you generate, human clicks). Full rules in `AGENTS.md` § Reporting feedback. Beta SLA in `CONTRIBUTING.md#beta-sla`.
+
+## STORYBOOK MCP (live component reference for AI agents)
+
+When running this repo's dev server (`pnpm dev`), a Storybook MCP server is exposed at `http://localhost:6006/mcp`. It provides:
+
+- Per-story prop dumps (variants, sizes, default args) — authoritative against `llms-full.txt` if they ever diverge.
+- Live story URLs for visual inspection during agent runs.
+- Component → story-id mapping for `gh issue` repro links.
+
+**Connect from your agent:**
+
+| Agent | Config |
+|---|---|
+| Claude Code | `claude mcp add --transport http shilp-sutra http://localhost:6006/mcp` (only while `pnpm dev` is running locally) |
+| Cursor | Settings → MCP Servers → add HTTP server `http://localhost:6006/mcp` |
+| Other MCP-compatible | Standard HTTP MCP endpoint |
+
+**Scope:** dev-only. The MCP server is exposed by Storybook's local server only; it is not deployed alongside Storybook on GitHub Pages. Consumer projects do not need to run this — read `llms.txt` / `llms-full.txt` / `docs/recipes/` from `node_modules` instead.
+
 ## QUICK SETUP (AI agents — start here)
 
 If you are setting up shilp-sutra in a consumer project for the first time, **do not improvise**. Use a recipe.

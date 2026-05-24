@@ -1,26 +1,26 @@
-import { IconCpu, IconLayersIntersect, IconRobot, IconUniverse } from '@tabler/icons-react'
+import { IconLayersIntersect, IconPalette, IconRobot, IconShieldCheck } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 const features = [
   {
-    icon: IconLayersIntersect,
-    title: 'Tailwind 4, CSS-first',
-    body: 'No JS preset. One CSS import wires the entire token system. Spacing is `--spacing-ds-*`, typography is `--text-ds-*` — namespaced so consumer Tailwind utilities never collide with the design system.',
+    icon: IconPalette,
+    title: 'Yours, in OKLCH',
+    body: 'One accent ramp, twelve perceptually-uniform steps. Pick the hue in /theming and the whole library follows. Light and dark generate together — no auto-inversion, no broken contrast.',
   },
   {
-    icon: IconCpu,
-    title: 'RSC-safe by default',
-    body: 'Per-component imports give the bundler the right hint. Layout and typography ship server-safe; interactive components live behind a `"use client"` boundary so Next.js App Router just works.',
+    icon: IconLayersIntersect,
+    title: 'Tailwind 4, CSS-first',
+    body: 'One CSS import wires the entire token system. Spacing is `--spacing-ds-*`, typography is `--text-ds-*`. Namespaced so your project Tailwind utilities never collide with the design system.',
+  },
+  {
+    icon: IconShieldCheck,
+    title: 'RSC-safe per component',
+    body: 'Each component ships at its own import path. Server-safe components (Text, Card, Container) stay on the server; interactive ones live behind a "use client" boundary the bundler honours.',
   },
   {
     icon: IconRobot,
-    title: 'Built for AI agents',
-    body: 'Every release ships `llms.txt`, `llms-full.txt`, framework recipes, AGENTS.md, and an installable Agent Skill. Claude Code, Cursor, Codex, Aider — they all know what to do.',
-  },
-  {
-    icon: IconUniverse,
-    title: 'Designed in OKLCH',
-    body: '12-step semantic ramps in perceptually-uniform color space. Dark mode is a real palette, not auto-inverted CSS. Forced-colors (Windows high-contrast) supported. Brand swap takes one ramp override.',
+    title: 'Agent-ready in one curl',
+    body: 'llms.txt, llms-full.txt, framework recipes, AGENTS.md, and an installable Agent Skill ship in the npm tarball. Claude Code, Cursor, Codex, Aider — they know what to do.',
   },
 ] as const
 
@@ -28,12 +28,12 @@ export function FeatureGrid() {
   return (
     <section className="mx-auto max-w-5xl px-ds-page-x py-ds-12">
       <div className="flex flex-col gap-ds-08">
-        <div className="flex flex-col gap-ds-03">
+        <div className="flex flex-col gap-ds-03 max-w-3xl">
           <Text variant="label-md" className="text-surface-fg-subtle">
-            What's inside
+            Inside the package
           </Text>
           <Text variant="heading-xl" className="text-surface-fg">
-            Designed for craft. Built to scale.
+            Thought through, top to bottom.
           </Text>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-06">

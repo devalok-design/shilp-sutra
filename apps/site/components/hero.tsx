@@ -12,14 +12,14 @@ export function Hero() {
           Devalok Design &amp; Strategy Studios
         </Text>
         <h1 className="text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-3xl text-balance">
-          A design system that just works,
+          A design system that becomes
           <br className="hidden md:inline" />{' '}
-          <span className="text-surface-fg-muted">in code, in design, in production.</span>
+          <span className="text-accent-11">your brand.</span>
         </h1>
         <Text variant="body-lg" className="text-surface-fg-muted max-w-2xl text-balance">
-          Tailwind 4 CSS-first. React 19. 119 accessible components. OKLCH design tokens. Ships
-          with AI-agent setup recipes and an installable Agent Skill — so onboarding, by humans
-          and machines, takes minutes.
+          119 accessible React components, OKLCH design tokens, and AI-agent setup recipes. Pick
+          a hue in <Link href="/theming" className="text-surface-fg underline underline-offset-2">/theming</Link>{' '}
+          and the whole library follows — perceptually balanced, light and dark, every variant.
         </Text>
         <div className="flex flex-col sm:flex-row gap-ds-03 mt-ds-03">
           <Link href="#install">
@@ -30,6 +30,16 @@ export function Hero() {
               Browse components
             </Button>
           </Link>
+        </div>
+        <div className="mt-ds-06 flex flex-wrap items-center justify-center gap-ds-04 text-ds-xs text-surface-fg-subtle">
+          <span className="inline-flex items-center gap-ds-02">
+            <span className="w-1.5 h-1.5 rounded-full bg-success-9" />
+            v0.39 live on npm
+          </span>
+          <span>·</span>
+          <span>MIT licensed</span>
+          <span>·</span>
+          <span>Ships with an installable Agent Skill</span>
         </div>
       </div>
     </section>

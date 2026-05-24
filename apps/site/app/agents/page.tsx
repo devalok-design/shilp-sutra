@@ -12,7 +12,7 @@ import { SiteHeader } from '@/components/site-header'
 export const metadata: Metadata = {
   title: 'For AI editors',
   description:
-    'Cursor, Claude Code, Codex, Aider. Install the shilp-sutra Agent Skill once. The library lives inside your editor.',
+    'Claude Code, Cursor, Codex, Aider. Install the shilp-sutra Agent Skill once and the library lives inside your editor — current shape, current props, current gotchas. Built on the agentskills.io standard.',
 }
 
 const tools = [

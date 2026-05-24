@@ -10,7 +10,7 @@ import { SHILP_SUTRA_MINOR } from '@/lib/version'
 export const metadata: Metadata = {
   title: 'Components',
   description:
-    '119 accessible React components from the shilp-sutra design system. UI primitives, composed patterns, and app shell.',
+    '119 accessible React components from shilp-sutra. UI primitives, composed patterns, app shell. Builder-ready, brand-aware, RSC-safe per import.',
 }
 
 export default async function ComponentsPage() {
@@ -24,8 +24,8 @@ export default async function ComponentsPage() {
           <div className="flex flex-col gap-ds-09">
             <PageHeader
               eyebrow={`Components · v${SHILP_SUTRA_MINOR}`}
-              title={`${items.length} components, one consistent API.`}
-              subtitle="Every component is accessible, themeable, and ships with framer-motion animations tuned for craft."
+              title={`${items.length} pieces. Every one yours.`}
+              subtitle="Accessible. Themeable. Animated with intention. Ship the same components your favourite Devalok products ship."
             />
             <FeaturedComponents />
             <div className="flex flex-col gap-ds-04">

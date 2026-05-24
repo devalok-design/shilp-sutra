@@ -44,12 +44,32 @@ const navLinks = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  // bannerH = current --beta-banner-h on <html>, in pixels. Pushed up when the
+  // public-beta strip is visible (BetaBanner writes it). 0 otherwise.
+  const [bannerH, setBannerH] = useState(0)
 
   useEffect(() => {
     const sync = () => setScrolled(window.scrollY > 24)
     sync()
     window.addEventListener('scroll', sync, { passive: true })
     return () => window.removeEventListener('scroll', sync)
+  }, [])
+
+  useEffect(() => {
+    const readBanner = () => {
+      const raw = getComputedStyle(document.documentElement).getPropertyValue('--beta-banner-h')
+      const px = parseFloat(raw) || 0
+      setBannerH(px)
+    }
+    readBanner()
+    // BetaBanner mutates `style` on <html> when it mounts / dismisses / resizes.
+    const observer = new MutationObserver(readBanner)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] })
+    window.addEventListener('resize', readBanner)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', readBanner)
+    }
   }, [])
 
   useEffect(() => {
@@ -70,7 +90,7 @@ export function SiteHeader() {
     <>
       <motion.header
         initial={false}
-        animate={{ top: scrolled ? 8 : 14 }}
+        animate={{ top: bannerH + (scrolled ? 8 : 14) }}
         transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
         className="fixed left-1/2 -translate-x-1/2 z-popover w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-4xl print:hidden"
       >
@@ -198,7 +218,8 @@ export function SiteHeader() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.2, ease: [0.2, 0, 0.38, 0.9] }}
-              className="md:hidden fixed inset-x-ds-03 sm:inset-x-ds-04 top-[4.75rem] z-popover origin-top rounded-ds-xl border border-surface-border-subtle/70 bg-surface-base/95 backdrop-blur-2xl backdrop-saturate-150 shadow-overlay"
+              style={{ top: `calc(${bannerH}px + 4.75rem)` }}
+              className="md:hidden fixed inset-x-ds-03 sm:inset-x-ds-04 z-popover origin-top rounded-ds-xl border border-surface-border-subtle/70 bg-surface-base/95 backdrop-blur-2xl backdrop-saturate-150 shadow-overlay"
               aria-label="Primary"
             >
               {/* Drawer is nav-only now — GitHub, theme, and BrandSwitcher all

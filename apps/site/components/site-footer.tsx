@@ -35,6 +35,8 @@ const linkGroups = [
     links: [
       { label: 'devalok.in', href: 'https://devalok.in', external: true },
       { label: 'Karm', href: 'https://karm.devalok.in', external: true },
+      { label: 'BharatTools', href: 'https://bharattools.in', external: true },
+      { label: 'Gurukul', href: 'https://gurukul.devalok.in', external: true },
     ],
   },
 ] as const
@@ -71,14 +73,49 @@ export function SiteFooter() {
         </div>
         <div className="mt-ds-09 pt-ds-06 border-t border-surface-border-subtle flex flex-col gap-ds-04">
           <Text variant="body-sm" className="text-surface-fg-muted text-center sm:text-left">
-            Made in Bharat with love by Devalok, for the world.
+            Made in Bharat with <span aria-label="orange heart" role="img">🧡</span> by{' '}
+            <Link
+              href="https://devalok.in"
+              target="_blank"
+              rel="noreferrer"
+              className="text-surface-fg underline underline-offset-2 hover:text-accent-11 transition-colors duration-fast-01"
+            >
+              Devalok
+            </Link>
+            , for the world.
           </Text>
           <div className="flex flex-col sm:flex-row justify-between gap-ds-03">
             <Text variant="body-xs" className="text-surface-fg-subtle">
-              MIT · © 2026 Devalok Design &amp; Strategy Studios
+              MIT · © 2026{' '}
+              <Link
+                href="https://devalok.in"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-surface-fg-muted transition-colors duration-fast-01"
+              >
+                Devalok Design and Strategy Studio
+              </Link>
             </Text>
             <Text variant="body-xs" className="text-surface-fg-subtle">
-              Built with shilp-sutra. Hosted on Railway.
+              Built with{' '}
+              <Link
+                href="https://github.com/devalok-design/shilp-sutra"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-surface-fg-muted transition-colors duration-fast-01"
+              >
+                shilp-sutra
+              </Link>
+              . Hosted on{' '}
+              <Link
+                href="https://railway.app"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-surface-fg-muted transition-colors duration-fast-01"
+              >
+                Railway
+              </Link>
+              .
             </Text>
           </div>
         </div>

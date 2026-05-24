@@ -11,7 +11,7 @@ import { getAllBlocks } from '@/lib/blocks-registry'
 export const metadata: Metadata = {
   title: 'Blocks',
   description:
-    'Real-world multi-component pages built with shilp-sutra. Dashboard shells, auth flows, pricing pages — copy the source, drop it in, ship.',
+    'Real pages. Real spacing. Real copy. Multi-component shilp-sutra blocks — dashboards, auth flows, pricing pages, data tables. Copy the source, drop it in, ship.',
 }
 
 export default function BlocksIndexPage() {
@@ -24,8 +24,8 @@ export default function BlocksIndexPage() {
           <div className="flex flex-col gap-ds-09">
             <PageHeader
               eyebrow="Blocks"
-              title="Real screens, not toy demos."
-              subtitle="Multi-component surfaces lifted from the work — dashboards, sign-up flows, pricing pages."
+              title="Real pages. Real spacing. Real copy."
+              subtitle="Multi-component surfaces lifted from real work — dashboards, sign-up flows, pricing pages, data tables."
               description="Each block recolours with the brand switcher. Copy the source, paste, ship."
             />
 
@@ -64,8 +64,16 @@ export default function BlocksIndexPage() {
                 More coming
               </Text>
               <Text variant="body-sm" className="text-surface-fg-muted">
-                Settings + data-table blocks land in the next site update. If you have a block
-                shape you wish existed, file it at github.com/devalok-design/shilp-sutra/issues.
+                Settings + data-table blocks land in the next site update. If a block shape you wish existed isn&apos;t here, file it at{' '}
+                <Link
+                  href="https://github.com/devalok-design/shilp-sutra/issues/new?template=ai-agent-feedback.yml&labels=block-request"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline underline-offset-2 hover:text-surface-fg"
+                >
+                  github.com/devalok-design/shilp-sutra/issues
+                </Link>
+                .
               </Text>
             </div>
           </div>

@@ -14,7 +14,7 @@ import { getAllShowcases } from '@/lib/showcase-registry'
 export const metadata: Metadata = {
   title: 'Showcase',
   description:
-    'Six industries, one library. SaaS, fintech, D2C, healthcare, editorial, studio — full UI compositions built with shilp-sutra, each with its own brand ramp.',
+    'Six fictional industries, one library. SaaS, fintech, D2C, healthcare, editorial, studio — mock UI compositions built with shilp-sutra, each with its own brand ramp. For real consumers, see the built-with strip on the homepage.',
 }
 
 /**
@@ -41,10 +41,10 @@ export default function ShowcaseIndexPage() {
         <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
-              eyebrow="Showcase"
+              eyebrow="Showcase · mock setups"
               title="Six industries. One library."
               subtitle="Same components, six brand ramps, six worlds."
-              description="Every screen is built from the same shilp-sutra primitives. Only the accent ramp changes. See how the library reads as SaaS, fintech, D2C, healthcare, editorial, and studio — without forks, without overrides, without theme providers."
+              description="Every screen below is built from the same shilp-sutra primitives. Only the accent ramp changes. The brands are fictional — built to demonstrate breadth, not to claim partnership. For the real products carrying shilp-sutra today, see the built-with strip on the homepage."
             />
 
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-ds-05">
@@ -56,7 +56,15 @@ export default function ShowcaseIndexPage() {
                   >
                     <header className="flex items-start justify-between gap-ds-03">
                       <div className="flex flex-col">
-                        <span className={CARD_EYEBROW + ' mb-0'}>{entry.industry}</span>
+                        <span className={CARD_EYEBROW + ' mb-0 inline-flex items-center gap-ds-02'}>
+                          {entry.industry}
+                          <span
+                            aria-label="Fictional brand"
+                            className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay border border-surface-border-subtle text-[10px] font-mono text-surface-fg-subtle uppercase tracking-wide"
+                          >
+                            Mock
+                          </span>
+                        </span>
                         <h3 className={CARD_TITLE}>{entry.product}</h3>
                       </div>
                       <span

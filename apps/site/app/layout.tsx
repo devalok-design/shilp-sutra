@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     'Your brand. Every component. Out of the box. A React design system from Devalok — Tailwind 4, OKLCH tokens, 119 components. Public beta.',
   applicationName: 'shilp-sutra',
-  authors: [{ name: 'Devalok Design & Strategy Studios', url: 'https://devalok.in' }],
+  authors: [{ name: 'Devalok Design and Strategy Studio', url: 'https://devalok.in' }],
   keywords: [
     'design system',
     'react',

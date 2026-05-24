@@ -86,9 +86,10 @@ export function SiteHeader() {
             'flex items-center justify-between gap-ds-02 sm:gap-ds-03',
             // Logo gets more breathing room on the left; controls hug the right edge.
             'pl-ds-06 pr-ds-02 sm:pl-ds-07 sm:pr-ds-02 py-ds-02',
-            // Rounded rectangle, not full-pill — softer corners, still distinct
-            // from the page once the chrome materializes on scroll.
-            'rounded-ds-2xl border',
+            // Rounded rectangle — 10px corners on a ~56px bar reads clearly
+            // as a rectangle, not a pill. Earlier 24px (rounded-ds-2xl) was
+            // still half the bar height and looked capsule-y.
+            'rounded-ds-lg border',
             // Tween skin properties together so the pill "materializes" on scroll
             // instead of popping. backdrop-filter transitions are supported across
             // modern Chrome/Safari/Firefox.

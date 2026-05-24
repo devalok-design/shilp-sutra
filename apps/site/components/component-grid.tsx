@@ -65,7 +65,7 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
             className="w-full h-ds-md pl-[2.5rem] pr-ds-04 rounded-ds-lg border border-surface-border bg-surface-raised text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
           />
         </div>
-        <div role="tablist" aria-label="Filter by layer" className="flex items-center gap-ds-01 flex-wrap">
+        <div role="tablist" aria-label="Filter by group" className="flex items-center gap-ds-01 flex-wrap">
           {(['all', 'ui', 'composed', 'shell'] as const).map((layer) => {
             const isActive = activeLayer === layer
             return (

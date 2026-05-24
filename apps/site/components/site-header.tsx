@@ -19,18 +19,27 @@ const navLinks = [
 ] as const
 
 /**
- * Floating pill — fixed, centered, max-w-4xl. Reads as light glass at-rest so
- * the aurora-bloom underneath the hero bleeds through (saturate-150 amplifies
- * the bloom's pastels through the bar). On scroll past the bloom we ramp the
- * bg opacity up + drop a stronger shadow so the pill stays legible against
- * solid page surfaces.
+ * Floating pill, fixed, centered, max-w-4xl.
+ *
+ * At-rest (top of page): pill chrome is fully invisible — no bg, no border,
+ * no shadow, no backdrop-blur. The aurora-bloom reads through untouched.
+ * Only the logo + soft-tinted controls float over the bloom.
+ *
+ * Scrolled (scrollY > 24): the pill emerges. Backdrop-blur fades in,
+ * surface-base/85 fills the body, border + overlay shadow appear, and
+ * the bar snaps closer to the top edge. All four properties tween
+ * together via CSS transitions on bg/border/shadow/backdrop-filter, with
+ * framer-motion driving the top-position move.
+ *
+ * Controls are `variant="soft"` (accent-3 tint + accent-11 icon) so each
+ * button reads as interactable even when the pill chrome is invisible.
  *
  * Responsiveness:
- *   <md  → logo + theme + hamburger only; drawer floats below pill, also pill-skinned
- *   md+  → logo + nav + theme + brand + github
+ *   <md  → logo + github + theme + hamburger (brand-switcher in drawer)
+ *   md+  → logo + nav + brand + theme + github (hamburger hidden)
  *
- * Reduced motion: scroll-state transition still happens (color / opacity only),
- * the top-position tween snaps. No bounce on mount.
+ * Reduced motion: top tween is replaced by a snap, color tween still
+ * runs (it's a visual signal, not motion).
  */
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
@@ -59,7 +68,6 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Skip link — visible only on keyboard focus */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-ds-04 focus:left-1/2 focus:-translate-x-1/2 focus:z-popover focus:px-ds-04 focus:py-ds-02 focus:rounded-full focus:bg-accent-9 focus:text-accent-fg focus:shadow-overlay focus:text-ds-sm focus:font-medium"
@@ -70,20 +78,23 @@ export function SiteHeader() {
       <motion.header
         initial={false}
         animate={{ top: scrolled ? 8 : 14 }}
-        transition={{ duration: 0.22, ease: [0.2, 0, 0.38, 0.9] }}
+        transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
         className="fixed left-1/2 -translate-x-1/2 z-popover w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-4xl print:hidden"
       >
         <div
           className={[
             'flex items-center justify-between gap-ds-02 sm:gap-ds-03',
-            'pl-ds-04 pr-ds-02 sm:pl-ds-05 sm:pr-ds-02 py-ds-02',
-            'rounded-full border backdrop-blur-2xl backdrop-saturate-150',
-            'transition-[background-color,border-color,box-shadow] duration-moderate-01 ease-productive-standard',
-            // forced-colors: blur fails; reinstate solid border for legibility
+            // Logo gets more breathing room on the left; controls hug the right edge.
+            'pl-ds-06 pr-ds-02 sm:pl-ds-07 sm:pr-ds-02 py-ds-02',
+            'rounded-full border',
+            // Tween skin properties together so the pill "materializes" on scroll
+            // instead of popping. backdrop-filter transitions are supported across
+            // modern Chrome/Safari/Firefox.
+            'transition-[background-color,border-color,box-shadow,backdrop-filter] duration-moderate-02 ease-productive-standard',
             'forced-colors:bg-[Canvas] forced-colors:border-[CanvasText]',
             scrolled
-              ? 'bg-surface-base/85 border-surface-border-subtle/70 shadow-overlay'
-              : 'bg-surface-base/40 border-surface-border-subtle/30 shadow-raised',
+              ? 'bg-surface-base/85 backdrop-blur-2xl backdrop-saturate-150 border-surface-border-subtle/70 shadow-overlay'
+              : 'bg-transparent backdrop-blur-none border-transparent shadow-none',
           ].join(' ')}
         >
           <Link
@@ -120,23 +131,25 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-ds-01">
+            {/* BrandSwitcher only on md+; drawer hosts it on mobile. */}
             <div className="hidden md:inline-flex">
               <BrandSwitcher />
             </div>
-            <ThemeToggle />
+            {/* GitHub + Theme always visible — soft-tinted so they read as taps. */}
             <a
               href="https://github.com/devalok-design/shilp-sutra"
               target="_blank"
               rel="noreferrer"
               aria-label="View on GitHub"
-              className="hidden md:inline-flex"
             >
-              <Button variant="ghost" size="icon-md" aria-label="GitHub">
+              <Button variant="soft" size="icon-md" aria-label="GitHub">
                 <IconBrandGithub size={18} />
               </Button>
             </a>
+            <ThemeToggle />
+            {/* Hamburger only when nav links don't fit (md-). */}
             <Button
-              variant="ghost"
+              variant="soft"
               size="icon-md"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
@@ -198,21 +211,11 @@ export function SiteHeader() {
                 </ul>
                 <div className="pt-ds-03 border-t border-surface-border-subtle flex flex-col gap-ds-03">
                   <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide px-ds-03">
-                    Settings
+                    Brand
                   </span>
                   <div className="px-ds-03">
                     <BrandSwitcher />
                   </div>
-                  <a
-                    href="https://github.com/devalok-design/shilp-sutra"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => setOpen(false)}
-                    className="flex items-center gap-ds-03 px-ds-03 py-ds-03 rounded-ds-md text-ds-md text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover"
-                  >
-                    <IconBrandGithub size={18} />
-                    GitHub
-                  </a>
                 </div>
               </div>
             </motion.nav>

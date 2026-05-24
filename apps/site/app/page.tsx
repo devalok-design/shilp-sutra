@@ -12,11 +12,12 @@ import { UnifiedCanvas } from '@/components/unified-canvas'
  * collapsed into UnifiedCanvas — one frame, six tabs, same job done with
  * less surface area.
  *
- *   1. Hero            — what we are
- *   2. UnifiedCanvas   — six industries in one tabbed canvas, all live
- *   3. ButtonShowcase  — one component, ten worlds (close-up craft)
- *   4. FeatureGrid     — value props in plain English
- *   5. AgentCallout    — install. "Prefer to install by hand?" link inside
+ *   1. Hero              — what we are
+ *   2. UnifiedCanvas     — six industries in one tabbed canvas, all live
+ *   3. ButtonShowcase    — one component, ten worlds (close-up craft)
+ *   4. ComponentShowcase — curated grid of components in context
+ *   5. FeatureGrid       — value props in plain English
+ *   6. AgentCallout      — teaser; full pitch at /agents
  */
 export default function HomePage() {
   return (

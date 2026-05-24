@@ -92,13 +92,15 @@ export function SiteHeader() {
             // modern Chrome/Safari/Firefox.
             'transition-[background-color,border-color,box-shadow,backdrop-filter] duration-moderate-02 ease-productive-standard',
             'forced-colors:bg-[Canvas] forced-colors:border-[CanvasText]',
-            // At-rest still feels "merged" — bg/25 + blur-md is subtle enough that
-            // the bloom passes through (amplified by saturate-150), but heavy enough
-            // that text + tinted controls have a substrate to read against.
-            // Scrolled drops bg-opacity to 65 so the blur is *visible*, not solid.
+            // At-rest: chrome is fully absent — bg, blur, border, shadow all off.
+            // The bar's elements (logo, nav, controls) float directly on the
+            // page; only BrandSwitcher's solid-accent disc gives any visual
+            // anchor. The pill *materializes* on scroll, not before.
+            // Scrolled: bg/65 + heavy blur + saturate so the bloom (or any
+            // scrolling content underneath) reads as frost through the bar.
             scrolled
               ? 'bg-surface-base/65 backdrop-blur-2xl backdrop-saturate-150 border-surface-border-subtle/60 shadow-overlay'
-              : 'bg-surface-base/25 backdrop-blur-md backdrop-saturate-150 border-transparent shadow-none',
+              : 'bg-transparent backdrop-blur-none border-transparent shadow-none',
           ].join(' ')}
         >
           <Link
@@ -135,10 +137,9 @@ export function SiteHeader() {
           </nav>
 
           {/* Order: github → light/dark → hamburger(mobile) → brand (rightmost).
-              BrandSwitcher owns the corner because it's the brand-colour picker
-              — it wears the active accent (solid + color=accent) so the corner
-              reads as "this is the colour control" at a glance. The other
-              controls are soft-tinted as secondary actions. */}
+              Everything except BrandSwitcher is ghost — no chip background —
+              so the corner is the single coloured anchor. Hover-state on ghost
+              still surfaces a subtle bg, signalling tap. */}
           <div className="flex items-center gap-ds-01">
             <a
               href="https://github.com/devalok-design/shilp-sutra"
@@ -146,13 +147,13 @@ export function SiteHeader() {
               rel="noreferrer"
               aria-label="View on GitHub"
             >
-              <Button variant="soft" size="icon-md" aria-label="GitHub">
+              <Button variant="ghost" size="icon-md" aria-label="GitHub">
                 <IconBrandGithub size={18} />
               </Button>
             </a>
             <ThemeToggle />
             <Button
-              variant="soft"
+              variant="ghost"
               size="icon-md"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}

@@ -1,0 +1,13 @@
+# Railway monorepo configuration.
+# Service deploys the marketing/docs site at apps/site via Dockerfile so the
+# build is deterministic regardless of Nixpacks' monorepo heuristics.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "apps/site/Dockerfile"
+
+[deploy]
+healthcheckPath = "/"
+healthcheckTimeout = 60
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

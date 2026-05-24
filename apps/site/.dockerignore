@@ -1,0 +1,11 @@
+**/node_modules
+**/.next
+**/.turbo
+**/dist
+**/storybook-static
+**/.git
+**/.vscode
+**/.idea
+**/*.log
+**/coverage
+**/.env*.local

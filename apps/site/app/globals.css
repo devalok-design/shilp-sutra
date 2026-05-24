@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+
+@source "../app";
+@source "../components";
+
+html,
+body {
+  background: var(--color-surface-base);
+  color: var(--color-surface-fg);
+  font-family: var(--font-sans);
+}

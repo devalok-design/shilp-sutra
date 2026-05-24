@@ -602,6 +602,49 @@ gate('./tailwind preset export removed (v0.38.0)', () => {
   return true
 })
 
+// Gate: Agent Skill references in sync with source files (llms.txt, recipes/*).
+// build-skill.mjs --check exits non-zero if any file under skills/shilp-sutra/references/
+// or the bundled LICENSE drifts from the source of truth.
+// Hardcoded command — no user input, safe to use execSync.
+gate('Agent Skill references in sync with source', () => {
+  try {
+    execSync('node scripts/build-skill.mjs --check', { cwd: ROOT, stdio: 'pipe' })
+    return true
+  } catch (e) {
+    const out = (e.stdout?.toString() || '') + (e.stderr?.toString() || '')
+    return `skills/shilp-sutra/references/ is out of date. Run: node scripts/build-skill.mjs\n${out.trim()}`
+  }
+})
+
+// Gate: SKILL.md spec compliance (name matches dir, description length, body length).
+// Spec: https://agentskills.io/specification
+gate('SKILL.md follows agentskills.io spec', () => {
+  const skillPath = join(ROOT, 'skills/shilp-sutra/SKILL.md')
+  if (!existsSync(skillPath)) return 'skills/shilp-sutra/SKILL.md missing'
+  const content = readFileSync(skillPath, 'utf-8')
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  if (!fmMatch) return 'SKILL.md has no YAML frontmatter'
+  const [, frontmatter, body] = fmMatch
+
+  const nameMatch = frontmatter.match(/^name:\s*(\S+)\s*$/m)
+  if (!nameMatch) return 'frontmatter missing required `name` field'
+  const name = nameMatch[1]
+  if (name !== 'shilp-sutra') return `name must equal directory name (got "${name}", expected "shilp-sutra")`
+  if (!/^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/.test(name)) return `name "${name}" violates spec (lowercase + hyphens, no leading/trailing hyphen, max 64)`
+  if (name.includes('--')) return `name "${name}" contains consecutive hyphens`
+
+  const descMatch = frontmatter.match(/^description:\s*([\s\S]+?)(?=\n[a-z][a-z-]*:|\n---|$)/m)
+  if (!descMatch) return 'frontmatter missing required `description` field'
+  const desc = descMatch[1].trim()
+  if (desc.length === 0) return 'description is empty'
+  if (desc.length > 1024) return `description is ${desc.length} chars (max 1024 per spec)`
+
+  const bodyLines = body.split('\n').length
+  if (bodyLines > 500) return `SKILL.md body is ${bodyLines} lines (>500 risks context bloat per spec guidance)`
+
+  return true
+})
+
 // --- New Gates (added by ecosystem audit 2026-04-06) ---
 console.log('\n\x1b[36mComponent Hygiene\x1b[0m')
 

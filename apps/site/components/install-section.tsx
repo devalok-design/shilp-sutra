@@ -19,14 +19,14 @@ export function InstallSection() {
       <div className="flex flex-col gap-ds-08">
         <div className="flex flex-col gap-ds-03">
           <Text variant="label-md" className="text-surface-fg-subtle">
-            Get started
+            Add it to your project
           </Text>
           <Text variant="heading-xl" className="text-surface-fg">
-            One install. Fully configured.
+            Three lines. You&apos;re done.
           </Text>
           <Text variant="body-md" className="text-surface-fg-muted max-w-2xl">
-            Add the package, the required peer dependencies, and Tailwind 4. Then import the
-            stylesheet once and start composing — no config files, no preset, no surprises.
+            No config files to read. No setup wizards. Pick your package manager, paste the
+            line, add one import. Start using the library.
           </Text>
         </div>
 
@@ -64,11 +64,10 @@ export default function Page() {
 
         <div className="rounded-ds-md border border-surface-border bg-surface-raised p-ds-06 flex flex-col gap-ds-04">
           <Text variant="label-sm" className="text-surface-fg-subtle">
-            Framework setup
+            On a specific framework?
           </Text>
           <Text variant="body-md" className="text-surface-fg">
-            Setting up a specific framework? Use the matching recipe — every step is concrete,
-            because every step is there from fixing a real consumer.
+            Pick yours below. Each guide is short, copy-paste, and tested on a real project.
           </Text>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-ds-02">
             {frameworks.map((fw) => (

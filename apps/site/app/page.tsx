@@ -1,5 +1,6 @@
 import { AgentCallout } from '@/components/agent-callout'
 import { BrandShowcase } from '@/components/brand-showcase'
+import { ButtonShowcase } from '@/components/button-showcase'
 import { FeatureGrid } from '@/components/feature-grid'
 import { Hero } from '@/components/hero'
 import { InstallSection } from '@/components/install-section'
@@ -13,6 +14,7 @@ export default function HomePage() {
       <main className="flex-1">
         <Hero />
         <BrandShowcase />
+        <ButtonShowcase />
         <FeatureGrid />
         <InstallSection />
         <AgentCallout />

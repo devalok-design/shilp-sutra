@@ -13,24 +13,15 @@ export function AgentCallout() {
           </div>
           <div className="flex flex-col gap-ds-02">
             <Text variant="label-md" className="text-accent-11">
-              For your AI coding agent
+              For the AI in your editor
             </Text>
             <Text variant="heading-md" className="text-surface-fg">
-              Install the skill. The agent does the rest.
+              Teach your AI the library, in one line.
             </Text>
             <Text variant="body-sm" className="text-surface-fg-muted max-w-2xl">
-              Claude Code, Cursor, Codex, Aider, and any{' '}
-              <Link
-                href="https://agentskills.io/specification"
-                target="_blank"
-                rel="noreferrer"
-                className="underline underline-offset-2 hover:text-surface-fg"
-              >
-                Agent Skills-compatible
-              </Link>{' '}
-              tool can install the shilp-sutra skill once and load setup playbooks, component
-              APIs, theming patterns, and troubleshooting on demand — without you pasting context
-              every prompt.
+              Run this once. After that, Cursor, Claude Code, and Codex know every component,
+              every setup step, every gotcha. They write code that actually works, the first
+              time. No more pasting docs into chat.
             </Text>
           </div>
         </div>
@@ -39,15 +30,16 @@ export function AgentCallout() {
           code={`curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash`}
         />
         <Text variant="body-xs" className="text-surface-fg-subtle">
-          Installs to <code className="font-mono text-surface-fg">~/.claude/skills/shilp-sutra/</code>.
-          For project-scoped installs and full configuration, see the{' '}
+          The skill installs locally to{' '}
+          <code className="font-mono text-surface-fg">~/.claude/skills/shilp-sutra/</code>. Works
+          in any editor that speaks the{' '}
           <Link
-            href="https://github.com/devalok-design/shilp-sutra/tree/main/skills/shilp-sutra"
+            href="https://agentskills.io/specification"
             target="_blank"
             rel="noreferrer"
-            className="underline underline-offset-2"
+            className="underline underline-offset-2 hover:text-surface-fg"
           >
-            skill repo
+            Agent Skills standard
           </Link>
           .
         </Text>

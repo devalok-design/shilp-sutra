@@ -1,26 +1,26 @@
-import { IconLayersIntersect, IconPalette, IconRobot, IconShieldCheck } from '@tabler/icons-react'
+import { IconBolt, IconHeart, IconPalette, IconSparkles } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 const features = [
   {
     icon: IconPalette,
-    title: 'Yours, in OKLCH',
-    body: 'One accent ramp, twelve perceptually-uniform steps. Pick the hue in /theming and the whole library follows. Light and dark generate together — no auto-inversion, no broken contrast.',
+    title: 'Your brand. Baked in.',
+    body: 'Pick a colour. Every button, badge, alert, and form across the entire library matches — automatically. Light mode. Dark mode. Hover. Pressed. Focus. All of it.',
   },
   {
-    icon: IconLayersIntersect,
-    title: 'Tailwind 4, CSS-first',
-    body: 'One CSS import wires the entire token system. Spacing is `--spacing-ds-*`, typography is `--text-ds-*`. Namespaced so your project Tailwind utilities never collide with the design system.',
+    icon: IconBolt,
+    title: 'Fast pages, no shortcuts.',
+    body: 'Every screen ships only what it needs. The bundles stay small. The first paint stays quick. The thing your users came to do stays the focus.',
   },
   {
-    icon: IconShieldCheck,
-    title: 'RSC-safe per component',
-    body: 'Each component ships at its own import path. Server-safe components (Text, Card, Container) stay on the server; interactive ones live behind a "use client" boundary the bundler honours.',
+    icon: IconSparkles,
+    title: 'Your AI already knows it.',
+    body: 'Cursor, Claude Code, and Codex come pre-trained on shilp-sutra. They write the right component, the first time, with the right props. One install command.',
   },
   {
-    icon: IconRobot,
-    title: 'Agent-ready in one curl',
-    body: 'llms.txt, llms-full.txt, framework recipes, AGENTS.md, and an installable Agent Skill ship in the npm tarball. Claude Code, Cursor, Codex, Aider — they know what to do.',
+    icon: IconHeart,
+    title: 'Designed for human hands.',
+    body: 'Keyboard navigation. Screen reader labels. Focus rings you can actually see. High-contrast mode. Touch targets sized for real fingers. We did the boring work so you don’t have to.',
   },
 ] as const
 
@@ -30,10 +30,10 @@ export function FeatureGrid() {
       <div className="flex flex-col gap-ds-08">
         <div className="flex flex-col gap-ds-03 max-w-3xl">
           <Text variant="label-md" className="text-surface-fg-subtle">
-            Inside the package
+            Why people stay
           </Text>
           <Text variant="heading-xl" className="text-surface-fg">
-            Thought through, top to bottom.
+            The little things, done well.
           </Text>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-06">

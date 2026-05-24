@@ -51,7 +51,16 @@ export function ThemingEditor() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    setState(readPersisted())
+    // URL params override persisted state — lets the brand showcase tiles
+    // deep-link into the editor with a hue/chroma preloaded.
+    const params = new URLSearchParams(window.location.search)
+    const hueParam = Number.parseFloat(params.get('hue') ?? '')
+    const chromaParam = Number.parseFloat(params.get('chroma') ?? '')
+    if (Number.isFinite(hueParam) && Number.isFinite(chromaParam)) {
+      setState({ hue: hueParam, chroma: chromaParam })
+    } else {
+      setState(readPersisted())
+    }
     setMounted(true)
   }, [])
 

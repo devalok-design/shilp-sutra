@@ -250,12 +250,12 @@ function SceneEmail() {
   )
 }
 
-/* Music player — Bhimsen Joshi Raag Bhairav, embedded live */
+/* Music player — Jai Bhairav Deva. Real audio, hot-linked from archive.org. */
 function SceneMusic() {
   return (
     <Scene
       product="Music · Spotify-shaped"
-      why="Single icon button as the centre of gravity — and a real Spotify clip below to prove the row sits next to actual product chrome."
+      why="Single icon button as the centre of gravity. Real audio below — press play, hear the actual bhajan. The Button row sits where a real product's custom chrome would."
     >
       <div className="flex flex-col gap-ds-03">
         <div className="flex items-center justify-between gap-ds-03">
@@ -265,9 +265,11 @@ function SceneMusic() {
             </span>
             <div className="flex flex-col min-w-0">
               <span className="text-ds-md text-surface-fg font-semibold line-clamp-1">
-                Bhairav · morning raag
+                Jai Bhairav Deva
               </span>
-              <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">Pt. Bhimsen Joshi</span>
+              <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">
+                Glory to Lord Bhairav · bhajan
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-ds-01">
@@ -282,16 +284,14 @@ function SceneMusic() {
             </Button>
           </div>
         </div>
-        {/* Spotify embed — placeholder track until Mudit drops the real ID.
-            The user's pasted Spotify URL will replace the track segment. */}
-        <iframe
-          title="Spotify clip"
-          src="https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUfTFmNBRM?utm_source=generator"
-          className="w-full rounded-ds-md border border-surface-border-subtle"
-          height={152}
-          loading="lazy"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        />
+        <audio
+          controls
+          preload="metadata"
+          src="https://archive.org/download/24SriBhairavarKavasam/27%20Jai%20Bhairav%20Deva.mp3"
+          className="w-full rounded-ds-md"
+        >
+          Your browser does not support audio playback.
+        </audio>
       </div>
     </Scene>
   )

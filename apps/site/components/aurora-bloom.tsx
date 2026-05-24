@@ -90,33 +90,49 @@ export function AuroraBloom({
     <div
       aria-hidden="true"
       className={
-        'pointer-events-none absolute inset-0 -z-10 overflow-hidden ' + (className ?? '')
+        'pointer-events-none absolute inset-0 z-0 overflow-hidden ' + (className ?? '')
       }
       style={{
-        // Lock aurora to the top zone. Wider + taller cone than a tight
-        // vignette so the bloom feels like sky, not a spotlight. Falls off
-        // gently into transparency so the bottom-edge wash can hand off
-        // cleanly to surface-base.
+        // Lock aurora to a curtain anchored at the top — wide horizontally
+        // (so it reads like sky, not a spotlight) but TIGHT vertically so the
+        // hero copy sits in a calm, low-color zone. Aggressive falloff past
+        // 40% height ensures the body text stays readable.
         maskImage:
-          'radial-gradient(150% 120% at 50% 0%, black 50%, rgba(0,0,0,0.7) 75%, transparent 100%)',
+          'radial-gradient(120% 70% at 50% -10%, black 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.35) 65%, transparent 90%)',
         WebkitMaskImage:
-          'radial-gradient(150% 120% at 50% 0%, black 50%, rgba(0,0,0,0.7) 75%, transparent 100%)',
+          'radial-gradient(120% 70% at 50% -10%, black 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.35) 65%, transparent 90%)',
       }}
     >
+      {/* Inner background — gives mix-blend-mode something to mix with.
+          Without this, the canvas blends against the section's transparent
+          backdrop and the blend mode does nothing visible. */}
+      <div className="absolute inset-0 bg-surface-base" />
       <MeshGradient
-        // 5 stops: ground + brand-light + brand-core + brand-deep + brand-mid.
-        // Order matters — MeshGradient treats stops as orbiting spots, so the
+        // 5 stops drawn from the brand ramp (theme-aware — see aurora-palette).
+        // Order matters: MeshGradient treats stops as orbiting spots, so the
         // mid-list color tends to occupy the visual centre of the bloom.
         colors={palette.colors}
-        distortion={0.9}
-        swirl={0.6}
-        grainMixer={0.25}
-        grainOverlay={0.2}
+        distortion={0.95}
+        swirl={0.65}
+        grainMixer={0.3}
+        grainOverlay={0.22}
         speed={effectiveSpeed}
-        scale={1.3}
+        scale={1.35}
         rotation={0}
-        offsetY={-0.1}
-        style={{ width: '100%', height: '100%' }}
+        offsetY={-0.08}
+        style={{
+          width: '100%',
+          height: '100%',
+          // Dark mode: additive (screen) so bright accent stops bloom against
+          //   the near-black surface instead of being averaged with it.
+          // Light mode: multiply so accent stops tint the white surface
+          //   instead of overpowering it (Stripe / Linear-style tint).
+          mixBlendMode: palette.isDark ? 'screen' : 'multiply',
+          // Keep the bloom present but not domineering. Combined with the
+          // tight curtain mask above this lands at ~50% perceived brightness
+          // in the body of the bloom — visible, never overpowering.
+          opacity: palette.isDark ? 0.85 : 0.95,
+        }}
       />
       {/* Bottom-edge wash — taller + softer than a vignette, hands the eye
           off cleanly to the page background without darkening the bloom. */}

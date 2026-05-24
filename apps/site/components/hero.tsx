@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden isolate">
       <AuroraBloom />
-      <div className="mx-auto max-w-4xl px-ds-page-x pt-ds-13 pb-ds-12 md:pt-[10rem] md:pb-[8rem] flex flex-col items-center text-center gap-ds-06">
+      <div className="relative z-10 mx-auto max-w-4xl px-ds-page-x pt-ds-13 pb-ds-12 md:pt-[10rem] md:pb-[8rem] flex flex-col items-center text-center gap-ds-06">
         <Text variant="label-md" className="text-surface-fg-subtle">
           From Devalok Studios
         </Text>

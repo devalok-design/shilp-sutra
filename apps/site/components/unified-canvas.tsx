@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, type CSSProperties } from 'react'
+import { useRef, useState, type CSSProperties } from 'react'
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
 import Link from 'next/link'
-import { IconArrowUpRight, IconMoon, IconSun } from '@tabler/icons-react'
+import { IconArrowUpRight, IconChevronLeft, IconChevronRight, IconMoon, IconSun } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
-import { Text } from '@devalok/shilp-sutra/ui/text'
 import { AtlasShowcase } from '@/content/showcase/atlas'
 import { DevalokShowcase } from '@/content/showcase/devalok'
 import { LendisShowcase } from '@/content/showcase/lendis'
@@ -50,40 +49,80 @@ function rampInlineStyle(hue: number, chroma: number): CSSProperties {
 /**
  * Unified canvas — six industry surfaces in one frame.
  *
- * Tab strip switches between them with a sliding accent-pill indicator and
- * a crossfade on the content. Each surface wraps in its own brand-scoped
- * CSS-var override + canvas-light/dark class so the same one frame can be
- * pink Devalok, indigo Atlas, saffron Mira, or teal Vaidya without
- * affecting the surrounding page.
+ * Discoverability layered three ways:
+ *   1. Heading row spells out all six industries inline next to the title
+ *      so the breadth is unmissable above the fold of the canvas.
+ *   2. Tab strip uses card-shaped tabs with brand swatch + product +
+ *      industry — feels like a channel switcher, not a text link list.
+ *   3. Prev / Next chrome buttons let visitors cycle without aiming at
+ *      specific tabs. Counter '1 / 6' anchors progress.
  *
- * Replaces what used to be two separate sections (LandingSurface +
- * BrandShowcase) — same job, one cleaner experience.
+ * Transitions: direction-aware slide (left when moving back, right when
+ * forward), AnimatePresence with custom prop, plus a brand-coloured
+ * border halo pulse the moment a tab swap fires so the eye registers
+ * which brand just arrived.
  */
 export function UnifiedCanvas() {
-  const [activeSlug, setActiveSlug] = useState<string>('atlas')
+  const [activeIdx, setActiveIdx] = useState<number>(0)
   const [mode, setMode] = useState<CanvasMode>('light')
+  const prevIdx = useRef<number>(0)
+  const direction = activeIdx >= prevIdx.current ? 1 : -1
 
-  const active = SURFACES.find((s) => s.slug === activeSlug) ?? SURFACES[0]
+  const active = SURFACES[activeIdx]
   const ActiveComponent = active.Component
   const next: CanvasMode = mode === 'light' ? 'dark' : 'light'
 
+  const goTo = (idx: number) => {
+    prevIdx.current = activeIdx
+    setActiveIdx(((idx % SURFACES.length) + SURFACES.length) % SURFACES.length)
+  }
+
   return (
     <section id="canvas" className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
-      <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-06">
-        <div className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
-          See it run · six industries
-        </div>
+      <header className="flex flex-col gap-ds-04 max-w-3xl mb-ds-06">
+        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+          See it run · pick an industry
+        </span>
         <h2 className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg text-balance">
           One library. Six worlds. One frame.
         </h2>
         <p className="text-ds-md text-surface-fg-muted leading-relaxed max-w-2xl">
-          Each tab is a real product surface, built from shilp-sutra and recoloured by an
-          industry-appropriate brand. Switch between them — the same components carry every
-          context. Press play, click around, watch the state machines breathe.
+          The same shilp-sutra components rendered six different ways. Press a tab — or use the
+          arrow buttons — to switch industries. Watch the brand recolour every surface as you go.
         </p>
+        {/* Six swatches inline — at-a-glance proof there are six surfaces below */}
+        <ul aria-label="Available industries" className="flex flex-wrap items-center gap-ds-03 mt-ds-02">
+          {SURFACES.map((s, i) => (
+            <li key={s.slug}>
+              <button
+                type="button"
+                onClick={() => goTo(i)}
+                className="group/peek inline-flex items-center gap-ds-02 text-ds-xs text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-02 ease-productive-standard"
+                aria-label={`Switch to ${s.product}`}
+              >
+                <span
+                  aria-hidden
+                  className="w-3 h-3 rounded-full ring-1 ring-surface-border-subtle transition-transform duration-fast-02 ease-productive-standard group-hover/peek:scale-110"
+                  style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}
+                />
+                <span className="font-medium">{s.product}</span>
+                <span className="text-surface-fg-subtle">{s.industry}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
       </header>
 
-      <div
+      <motion.div
+        animate={{
+          boxShadow: [
+            `0 0 0 0 oklch(0.55 ${active.chroma} ${active.hue} / 0)`,
+            `0 0 0 6px oklch(0.55 ${active.chroma} ${active.hue} / 0.18)`,
+            `0 0 0 0 oklch(0.55 ${active.chroma} ${active.hue} / 0)`,
+          ],
+        }}
+        transition={{ duration: 0.7, times: [0, 0.4, 1], ease: [0.2, 0, 0.38, 0.9] }}
+        key={`halo-${active.slug}`}
         className={[
           mode === 'dark' ? 'canvas-dark dark' : 'canvas-light',
           'rounded-ds-lg border border-surface-border bg-surface-base overflow-hidden',
@@ -146,74 +185,103 @@ export function UnifiedCanvas() {
           </div>
         </div>
 
-        {/* Tab strip */}
-        <LayoutGroup id="canvas-tabs">
-          <div
-            role="tablist"
-            aria-label="Industry showcases"
-            className="flex items-center gap-ds-01 px-ds-03 py-ds-02 border-b border-surface-border-subtle overflow-x-auto"
+        {/* Tab strip — card-shaped tabs, channel-switcher feel */}
+        <div className="flex items-stretch border-b border-surface-border-subtle bg-surface-raised">
+          <button
+            type="button"
+            onClick={() => goTo(activeIdx - 1)}
+            className="px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+            aria-label="Previous industry"
           >
-            {SURFACES.map((s) => {
-              const isActive = s.slug === activeSlug
-              return (
-                <button
-                  key={s.slug}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  onClick={() => setActiveSlug(s.slug)}
-                  className={[
-                    'group/tab relative z-[1] inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-md text-ds-sm transition-colors duration-fast-02 ease-productive-standard shrink-0',
-                    'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
-                    isActive ? 'text-surface-fg' : 'text-surface-fg-subtle hover:text-surface-fg',
-                  ].join(' ')}
-                  style={
-                    isActive
-                      ? undefined
-                      : ({ '--swatch-bg': `oklch(0.55 ${s.chroma} ${s.hue})` } as CSSProperties)
-                  }
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="canvas-tab-pill"
-                      className="absolute inset-0 rounded-ds-md bg-surface-raised border border-surface-border-strong shadow-raised"
-                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                    />
-                  )}
-                  <span
-                    className="relative z-[1] w-2.5 h-2.5 rounded-full"
-                    style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}
-                  />
-                  <span className="relative z-[1] font-medium">{s.product}</span>
-                  <span className="relative z-[1] text-ds-xs text-surface-fg-subtle hidden md:inline">
-                    {s.industry}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-        </LayoutGroup>
+            <IconChevronLeft size={16} />
+          </button>
 
-        {/* Body */}
-        <div className="bg-surface-base p-ds-06 lg:p-ds-08 min-h-[420px]">
-          <AnimatePresence mode="wait" initial={false}>
+          <LayoutGroup id="canvas-tabs-v2">
+            <div
+              role="tablist"
+              aria-label="Industry showcases"
+              className="flex items-stretch flex-1 overflow-x-auto"
+            >
+              {SURFACES.map((s, i) => {
+                const isActive = i === activeIdx
+                return (
+                  <button
+                    key={s.slug}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => goTo(i)}
+                    className={[
+                      'group/tab relative flex flex-col items-start gap-ds-01 px-ds-04 py-ds-03 min-w-[8.5rem] text-left transition-colors duration-fast-02 ease-productive-standard shrink-0',
+                      'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
+                      isActive ? 'text-surface-fg bg-surface-base' : 'text-surface-fg-muted hover:bg-surface-raised-hover',
+                    ].join(' ')}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="canvas-tab-underline"
+                        className="absolute left-0 right-0 bottom-0 h-0.5"
+                        style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                      />
+                    )}
+                    <div className="flex items-center gap-ds-02">
+                      <span
+                        aria-hidden
+                        className={[
+                          'w-2.5 h-2.5 rounded-full transition-transform duration-fast-02 ease-productive-standard',
+                          isActive ? 'scale-110 ring-2 ring-offset-1 ring-offset-surface-base' : '',
+                        ].join(' ')}
+                        style={
+                          isActive
+                            ? ({ background: `oklch(0.55 ${s.chroma} ${s.hue})`, '--tw-ring-color': `oklch(0.55 ${s.chroma} ${s.hue})` } as CSSProperties)
+                            : { background: `oklch(0.55 ${s.chroma} ${s.hue})` }
+                        }
+                      />
+                      <span className="text-ds-sm font-semibold">{s.product}</span>
+                    </div>
+                    <span className="text-ds-xs text-surface-fg-subtle">{s.industry}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </LayoutGroup>
+
+          <div className="hidden md:flex items-center px-ds-03 text-ds-xs text-surface-fg-subtle font-mono border-l border-surface-border-subtle shrink-0">
+            {activeIdx + 1} / {SURFACES.length}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => goTo(activeIdx + 1)}
+            className="px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+            aria-label="Next industry"
+          >
+            <IconChevronRight size={16} />
+          </button>
+        </div>
+
+        {/* Body — direction-aware slide */}
+        <div className="relative bg-surface-base p-ds-06 lg:p-ds-08 min-h-[420px] overflow-hidden">
+          <AnimatePresence mode="wait" initial={false} custom={direction}>
             <motion.div
               key={`${active.slug}-${mode}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.22, ease: [0.2, 0, 0.38, 0.9] }}
+              custom={direction}
+              initial={{ opacity: 0, x: direction * 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction * -24 }}
+              transition={{ duration: 0.26, ease: [0.2, 0, 0.38, 0.9] }}
             >
               <ActiveComponent />
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
 
       <footer className="mt-ds-05 flex flex-wrap items-center justify-between gap-ds-03">
-        <Text variant="body-sm" className="text-surface-fg-muted">
+        <p className="text-ds-sm text-surface-fg-muted">
           Same components in every tab. Only the accent ramp changes.
-        </Text>
+        </p>
         <Link
           href={`/theming?hue=${active.hue}&chroma=${active.chroma}`}
           className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:underline underline-offset-2"

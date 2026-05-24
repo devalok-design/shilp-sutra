@@ -123,7 +123,7 @@ export function SiteHeader() {
               </span>
             </Link>
             <div className="md:hidden">
-              <BrandSwitcher />
+              <BrandSwitcher align="start" />
             </div>
           </div>
 

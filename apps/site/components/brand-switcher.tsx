@@ -8,7 +8,20 @@ import { Text } from '@devalok/shilp-sutra/ui/text'
 import { BRAND_PRESETS, DEFAULT_BRAND_ID } from '@/lib/brand-presets'
 import { applyBrand, readPersistedBrand } from '@/lib/brand-runtime'
 
-export function BrandSwitcher() {
+/**
+ * `align` controls which edge of the trigger the dropdown anchors to.
+ *   'end'   → right-0 (default; trigger sits on the right of its container)
+ *   'start' → left-0  (trigger sits on the left; dropdown opens rightward)
+ *
+ * Mobile header puts the switcher on the *left* (next to the wordmark),
+ * so the default `right-0` would clip the dropdown off the left edge of
+ * the viewport. Pass `align="start"` in that placement.
+ */
+export interface BrandSwitcherProps {
+  align?: 'start' | 'end'
+}
+
+export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
   const [active, setActive] = useState<string>(DEFAULT_BRAND_ID)
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -65,7 +78,11 @@ export function BrandSwitcher() {
         <div
           role="listbox"
           aria-label="Brand presets"
-          className="absolute right-0 mt-ds-02 w-72 rounded-ds-md border border-surface-border bg-surface-overlay shadow-overlay z-popover overflow-hidden"
+          className={[
+            'absolute mt-ds-02 w-72 max-w-[calc(100vw-2rem)] rounded-ds-md',
+            'border border-surface-border bg-surface-overlay shadow-overlay z-popover overflow-hidden',
+            align === 'start' ? 'left-0' : 'right-0',
+          ].join(' ')}
         >
           <div className="px-ds-04 py-ds-03 border-b border-surface-border-subtle">
             <Text variant="label-sm" className="text-surface-fg-subtle">

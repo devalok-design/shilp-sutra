@@ -47,7 +47,7 @@ export function SiteFooter() {
           <div className="col-span-2 md:col-span-2 flex flex-col gap-ds-03">
             <Text variant="heading-sm" className="text-surface-fg">shilp-sutra</Text>
             <Text variant="body-sm" className="text-surface-fg-muted max-w-sm">
-              Devalok's React design system. Tailwind 4 CSS-first, OKLCH tokens, 119 accessible components.
+              Your brand. Every component. Out of the box. A React design system from Devalok — Tailwind 4 · OKLCH · 119 components · MIT.
             </Text>
           </div>
           {linkGroups.map((group) => (
@@ -69,13 +69,18 @@ export function SiteFooter() {
             </div>
           ))}
         </div>
-        <div className="mt-ds-09 pt-ds-06 border-t border-surface-border-subtle flex flex-col sm:flex-row justify-between gap-ds-03">
-          <Text variant="body-xs" className="text-surface-fg-subtle">
-            MIT · © 2026 Devalok Design &amp; Strategy Studios
+        <div className="mt-ds-09 pt-ds-06 border-t border-surface-border-subtle flex flex-col gap-ds-04">
+          <Text variant="body-sm" className="text-surface-fg-muted text-center sm:text-left">
+            Made in Bharat with love by Devalok, for the world.
           </Text>
-          <Text variant="body-xs" className="text-surface-fg-subtle">
-            Built with shilp-sutra. Hosted on Railway.
-          </Text>
+          <div className="flex flex-col sm:flex-row justify-between gap-ds-03">
+            <Text variant="body-xs" className="text-surface-fg-subtle">
+              MIT · © 2026 Devalok Design &amp; Strategy Studios
+            </Text>
+            <Text variant="body-xs" className="text-surface-fg-subtle">
+              Built with shilp-sutra. Hosted on Railway.
+            </Text>
+          </div>
         </div>
       </div>
     </footer>

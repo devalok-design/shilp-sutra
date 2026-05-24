@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: '%s — shilp-sutra',
   },
   description:
-    'Tailwind 4 + React 19 design system by Devalok Design & Strategy Studios. 119 accessible components, OKLCH tokens, framer-motion animations, per-component RSC-safe entry points. Built for craft, designed for scale.',
+    'Your brand. Every component. Out of the box. A React design system from Devalok — Tailwind 4, OKLCH tokens, 119 components. Public beta.',
   applicationName: 'shilp-sutra',
   authors: [{ name: 'Devalok Design & Strategy Studios', url: 'https://devalok.in' }],
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'shilp-sutra — Devalok Design System',
     description:
-      'Tailwind 4 + React 19 design system. 119 accessible components, ships with AI-agent setup recipes.',
+      'Your brand. Every component. Out of the box. A React design system from Devalok. Public beta.',
     url: 'https://shilp-sutra.devalok.in',
     siteName: 'shilp-sutra',
     locale: 'en_US',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'shilp-sutra — Devalok Design System',
-    description: 'Tailwind 4 + React 19 design system by Devalok.',
+    description: 'Your brand. Every component. Out of the box. From Devalok.',
   },
   robots: { index: true, follow: true },
 }

@@ -93,12 +93,14 @@ export function AuroraBloom({
         'pointer-events-none absolute inset-0 -z-10 overflow-hidden ' + (className ?? '')
       }
       style={{
-        // Lock aurora to the top zone. Soft fade to transparent so the rest of
-        // the page reads as `surface-base` and the curtain doesn't clip hard.
+        // Lock aurora to the top zone. Wider + taller cone than a tight
+        // vignette so the bloom feels like sky, not a spotlight. Falls off
+        // gently into transparency so the bottom-edge wash can hand off
+        // cleanly to surface-base.
         maskImage:
-          'radial-gradient(120% 90% at 50% 0%, black 35%, rgba(0,0,0,0.85) 55%, transparent 95%)',
+          'radial-gradient(150% 120% at 50% 0%, black 50%, rgba(0,0,0,0.7) 75%, transparent 100%)',
         WebkitMaskImage:
-          'radial-gradient(120% 90% at 50% 0%, black 35%, rgba(0,0,0,0.85) 55%, transparent 95%)',
+          'radial-gradient(150% 120% at 50% 0%, black 50%, rgba(0,0,0,0.7) 75%, transparent 100%)',
       }}
     >
       <MeshGradient
@@ -106,28 +108,22 @@ export function AuroraBloom({
         // Order matters — MeshGradient treats stops as orbiting spots, so the
         // mid-list color tends to occupy the visual centre of the bloom.
         colors={palette.colors}
-        distortion={0.85}
-        swirl={0.55}
+        distortion={0.9}
+        swirl={0.6}
         grainMixer={0.25}
-        grainOverlay={0.18}
+        grainOverlay={0.2}
         speed={effectiveSpeed}
-        scale={1.15}
+        scale={1.3}
         rotation={0}
-        offsetY={-0.15}
+        offsetY={-0.1}
         style={{ width: '100%', height: '100%' }}
       />
-      {/* Soft inner vignette — pulls the eye into the centre of the bloom. */}
+      {/* Bottom-edge wash — taller + softer than a vignette, hands the eye
+          off cleanly to the page background without darkening the bloom. */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-x-0 bottom-0 h-1/2"
         style={{
-          background: `radial-gradient(60% 50% at 50% 30%, transparent 0%, ${withAlpha(palette.ground, 0.45)} 100%)`,
-        }}
-      />
-      {/* Bottom-edge wash — guarantees a clean seam into the page background. */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-1/3"
-        style={{
-          background: `linear-gradient(to bottom, transparent 0%, ${palette.ground} 100%)`,
+          background: `linear-gradient(to bottom, transparent 0%, ${withAlpha(palette.ground, 0.6)} 60%, ${palette.ground} 100%)`,
         }}
       />
     </div>

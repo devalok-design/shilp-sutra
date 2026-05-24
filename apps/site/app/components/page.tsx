@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { ComponentGrid } from '@/components/component-grid'
+import { FeaturedComponents } from '@/components/featured-components'
 import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
@@ -24,16 +25,19 @@ export default async function ComponentsPage() {
               eyebrow="Components · v0.39"
               title={`${items.length} components, one consistent API.`}
               subtitle="Every component is accessible, themeable, and ships with framer-motion animations tuned for craft."
-              meta={
-                <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-04 py-ds-02 max-w-fit">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-warning-9" />
-                  <span className="text-ds-xs text-surface-fg-subtle">
-                    Detail pages live; live previews ship in waves.
-                  </span>
-                </span>
-              }
             />
-            <ComponentGrid items={items} />
+            <FeaturedComponents />
+            <div className="flex flex-col gap-ds-04">
+              <header className="flex flex-col gap-ds-02 max-w-3xl">
+                <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+                  Browse all
+                </span>
+                <h2 className="text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
+                  {items.length} components · filter by layer or search by name.
+                </h2>
+              </header>
+              <ComponentGrid items={items} />
+            </div>
           </div>
         </div>
       </main>

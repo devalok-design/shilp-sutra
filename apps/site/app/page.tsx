@@ -1,5 +1,6 @@
 import { AgentCallout } from '@/components/agent-callout'
 import { ButtonShowcase } from '@/components/button-showcase'
+import { ComponentShowcase } from '@/components/component-showcase'
 import { FeatureGrid } from '@/components/feature-grid'
 import { Hero } from '@/components/hero'
 import { SiteFooter } from '@/components/site-footer'
@@ -25,6 +26,7 @@ export default function HomePage() {
         <Hero />
         <UnifiedCanvas />
         <ButtonShowcase />
+        <ComponentShowcase />
         <FeatureGrid />
         <AgentCallout />
       </main>

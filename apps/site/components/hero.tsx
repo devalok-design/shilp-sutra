@@ -3,10 +3,12 @@ import { IconArrowRight } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
+import { AuroraBloom } from '@/components/aurora-bloom'
+
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-surface-base via-surface-base to-surface-sunken" />
+    <section className="relative overflow-hidden isolate">
+      <AuroraBloom />
       <div className="mx-auto max-w-4xl px-ds-page-x pt-ds-13 pb-ds-12 md:pt-[10rem] md:pb-[8rem] flex flex-col items-center text-center gap-ds-06">
         <Text variant="label-md" className="text-surface-fg-subtle">
           From Devalok Studios

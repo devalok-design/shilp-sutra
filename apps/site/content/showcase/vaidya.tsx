@@ -209,29 +209,25 @@ function Vital({
   status: 'normal' | 'watch'
 }) {
   return (
-    <Card>
-      <CardContent className="flex flex-col gap-ds-02 pt-ds-04">
-        <div className="flex items-center justify-between">
-          <Text variant="label-sm" className="text-surface-fg-subtle">
-            {label}
-          </Text>
-          <span
-            className={[
-              'w-7 h-7 rounded-ds-sm flex items-center justify-center',
-              status === 'normal' ? 'bg-success-3 text-success-11' : 'bg-warning-3 text-warning-11',
-            ].join(' ')}
-          >
-            <Icon size={14} />
-          </span>
-        </div>
-        <Text variant="heading-md" className="text-surface-fg">
-          {value}
-          <span className="text-ds-sm font-normal text-surface-fg-subtle ml-ds-01">{unit}</span>
-        </Text>
-        <Badge size="sm" variant="soft" color={status === 'normal' ? 'success' : 'warning'}>
-          {status === 'normal' ? 'Normal range' : 'Watch'}
-        </Badge>
-      </CardContent>
+    <Card className="p-ds-06 flex flex-col">
+      <div className="flex items-center justify-between">
+        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{label}</span>
+        <span
+          className={[
+            'w-7 h-7 rounded-ds-sm flex items-center justify-center',
+            status === 'normal' ? 'bg-success-3 text-success-11' : 'bg-warning-3 text-warning-11',
+          ].join(' ')}
+        >
+          <Icon size={14} />
+        </span>
+      </div>
+      <div className="mt-ds-03">
+        <span className="text-ds-2xl text-surface-fg font-semibold leading-none">{value}</span>
+        <span className="text-ds-sm font-normal text-surface-fg-subtle ml-ds-01">{unit}</span>
+      </div>
+      <Badge size="sm" variant="soft" color={status === 'normal' ? 'success' : 'warning'} className="mt-ds-03 self-start">
+        {status === 'normal' ? 'Normal range' : 'Watch'}
+      </Badge>
     </Card>
   )
 }

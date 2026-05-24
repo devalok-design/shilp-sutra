@@ -245,15 +245,13 @@ export function LandingSurface() {
 
 function Stat({ label, value, hint }: { label: string; value: string; hint: string }) {
   return (
-    <Card>
-      <CardContent className="flex flex-col gap-ds-01 pt-ds-04">
-        <span className="text-ds-xs text-surface-fg-subtle">{label}</span>
-        <span className="text-ds-2xl text-surface-fg font-semibold leading-none mt-ds-02">{value}</span>
-        <span className="inline-flex items-center gap-ds-02 text-ds-xs text-success-11 mt-ds-02">
-          <IconCheck size={10} />
-          {hint}
-        </span>
-      </CardContent>
+    <Card className="p-ds-06 flex flex-col">
+      <span className="text-ds-xs text-surface-fg-subtle">{label}</span>
+      <span className="text-ds-2xl text-surface-fg font-semibold leading-none mt-ds-02">{value}</span>
+      <span className="inline-flex items-center gap-ds-02 text-ds-xs text-success-11 mt-ds-02">
+        <IconCheck size={10} />
+        {hint}
+      </span>
     </Card>
   )
 }

@@ -250,53 +250,46 @@ function SceneEmail() {
   )
 }
 
-/* Music player */
+/* Music player — Bhimsen Joshi Raag Bhairav, embedded live */
 function SceneMusic() {
-  const [playing, setPlaying] = useState(false)
   return (
     <Scene
       product="Music · Spotify-shaped"
-      why="Single icon button as the center of gravity. Size icon-lg + accent — the only loud thing on the row."
+      why="Single icon button as the centre of gravity — and a real Spotify clip below to prove the row sits next to actual product chrome."
     >
-      <div className="flex items-center justify-between gap-ds-03">
-        <div className="flex items-center gap-ds-03 min-w-0">
-          <span className="w-10 h-10 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
-            <IconBrandSpotify size={18} />
-          </span>
-          <div className="flex flex-col min-w-0">
-            <Text variant="body-sm" className="text-surface-fg truncate">
-              Bhairav · morning raag
-            </Text>
-            <Text variant="body-xs" className="text-surface-fg-subtle">
-              Pt. Bhimsen Joshi
-            </Text>
+      <div className="flex flex-col gap-ds-03">
+        <div className="flex items-center justify-between gap-ds-03">
+          <div className="flex items-center gap-ds-03 min-w-0">
+            <span className="w-10 h-10 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+              <IconBrandSpotify size={18} />
+            </span>
+            <div className="flex flex-col min-w-0">
+              <span className="text-ds-md text-surface-fg font-semibold line-clamp-1">
+                Bhairav · morning raag
+              </span>
+              <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">Pt. Bhimsen Joshi</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-ds-01">
+            <Button variant="ghost" size="icon-sm" aria-label="Previous">
+              <IconPlayerSkipForward size={14} className="rotate-180" />
+            </Button>
+            <Button variant="solid" size="icon-lg" shape="pill" aria-label="Play">
+              <IconPlayerPlay size={16} />
+            </Button>
+            <Button variant="ghost" size="icon-sm" aria-label="Next">
+              <IconPlayerSkipForward size={14} />
+            </Button>
           </div>
         </div>
-        <div className="flex items-center gap-ds-01">
-          <Button variant="ghost" size="icon-sm" aria-label="Previous">
-            <IconPlayerSkipForward size={14} className="rotate-180" />
-          </Button>
-          <Button
-            variant="solid"
-            size="icon-lg"
-            shape="pill"
-            aria-label={playing ? 'Pause' : 'Play'}
-            onClick={() => setPlaying((p) => !p)}
-          >
-            <motion.span
-              key={playing ? 'pause' : 'play'}
-              initial={{ scale: 0.6, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-              className="inline-flex"
-            >
-              {playing ? <span className="text-[14px] leading-none">❚❚</span> : <IconPlayerPlay size={16} />}
-            </motion.span>
-          </Button>
-          <Button variant="ghost" size="icon-sm" aria-label="Next">
-            <IconPlayerSkipForward size={14} />
-          </Button>
-        </div>
+        <iframe
+          title="Spotify · Bhairav by Pt. Bhimsen Joshi"
+          src="https://open.spotify.com/embed/track/0VTQ2pYNoXVrh2KNuKkqsX?utm_source=generator"
+          className="w-full rounded-ds-md border border-surface-border-subtle"
+          height={80}
+          loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        />
       </div>
     </Scene>
   )

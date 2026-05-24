@@ -36,9 +36,17 @@ export function DevalokShowcase() {
   return (
     <div className="flex flex-col gap-ds-09">
       <header className="flex flex-col gap-ds-04 max-w-3xl">
-        <Badge variant="soft" color="accent">
-          The house brand
-        </Badge>
+        <div className="flex items-center gap-ds-04">
+          <img
+            src="https://devalok-public-assets.s3.ap-south-1.amazonaws.com/brand/devalok/logos/chakra-brand.svg"
+            alt=""
+            aria-hidden
+            className="w-12 h-12"
+          />
+          <Badge variant="soft" color="accent">
+            The house brand
+          </Badge>
+        </div>
         <Text variant="heading-2xl" className="text-surface-fg">
           आत्मतः शिल्पं कृत्वा
         </Text>
@@ -50,6 +58,11 @@ export function DevalokShowcase() {
           editorial, and place. shilp-sutra is the library we built for ourselves. It powers
           Karm, Patrika, Sahayak, and every digital surface we ship.
         </Text>
+        <img
+          src="https://devalok-public-assets.s3.ap-south-1.amazonaws.com/brand/devalok/logos/wordmark-brand.svg"
+          alt="Devalok"
+          className="h-8 self-start mt-ds-03"
+        />
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-ds-04">

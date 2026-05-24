@@ -19,14 +19,29 @@ export function PatrikaShowcase() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-09">
       <article className="flex flex-col gap-ds-06">
+        {/* Issue cover photograph */}
+        <div className="relative rounded-ds-md overflow-hidden border border-surface-border-subtle aspect-[16/9]">
+          <img
+            src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80"
+            alt="Open editorial spread — Patrika Vol. iv cover"
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-ds-06 text-white">
+            <span className="text-ds-xs uppercase tracking-wider opacity-90">Patrika · Issue 14</span>
+            <h2 className="text-ds-2xl font-semibold leading-tight mt-ds-02">
+              Vol. iv — Margins
+            </h2>
+          </div>
+        </div>
+
         <header className="flex flex-col gap-ds-04">
           <div className="flex items-center gap-ds-02">
             <Badge variant="soft" color="accent">
               Vol. iv · Essay
             </Badge>
-            <Text variant="body-xs" className="text-surface-fg-subtle">
-              Patrika · Issue 14
-            </Text>
+            <span className="text-ds-xs text-surface-fg-subtle">Patrika · Issue 14</span>
           </div>
 
           <Text variant="heading-2xl" className="text-surface-fg">

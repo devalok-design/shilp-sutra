@@ -11,7 +11,9 @@ import {
   IconPlus,
   IconUsers,
 } from '@tabler/icons-react'
-import { Avatar, AvatarFallback } from '@devalok/shilp-sutra/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@devalok/shilp-sutra/ui/avatar'
+
+const portrait = (seed: string) => `https://i.pravatar.cc/64?u=${seed}`
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
@@ -156,6 +158,7 @@ export function LandingSurface() {
                           .join(' ')}
                       >
                         <Avatar size="sm" className="border-2 border-surface-raised">
+                          <AvatarImage src={portrait(a.initials)} alt={a.who} />
                           <AvatarFallback>{a.initials}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col flex-1 min-w-0">
@@ -193,6 +196,7 @@ export function LandingSurface() {
                     <li key={m.name} className="flex items-center gap-ds-03">
                       <span className="relative">
                         <Avatar size="sm">
+                          <AvatarImage src={portrait(m.initials)} alt={m.name} />
                           <AvatarFallback>{m.initials}</AvatarFallback>
                         </Avatar>
                         <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-success-9 border-2 border-surface-base" />

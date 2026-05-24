@@ -42,17 +42,25 @@ export function MiraShowcase() {
     <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-ds-08">
       {/* Product image */}
       <div className="relative rounded-ds-md overflow-hidden border border-surface-border-subtle min-h-[420px] flex items-end">
+        {/* Base photograph — handwoven cotton kurta */}
+        <img
+          src="https://images.unsplash.com/photo-1517254797898-04c1aa6cd95a?auto=format&fit=crop&w=900&q=80"
+          alt="Handwoven cotton kurta, draped"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+        />
+        {/* Colour wash overlaying the photo — recolours with active swatch */}
         <AnimatePresence initial={false}>
           <motion.div
             key={activeColour.id}
             aria-hidden
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 0.65 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="absolute inset-0"
+            className="absolute inset-0 mix-blend-multiply"
             style={{
-              background: `linear-gradient(135deg, ${activeColour.value} 0%, oklch(0.95 0.02 ${activeColour.value.match(/\s([0-9.]+)\)/)?.[1]}) 100%)`,
+              background: `linear-gradient(135deg, ${activeColour.value} 0%, oklch(0.6 0.1 ${activeColour.value.match(/\s([0-9.]+)\)/)?.[1]}) 100%)`,
             }}
           />
         </AnimatePresence>

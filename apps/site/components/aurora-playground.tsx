@@ -152,7 +152,7 @@ export function AuroraPlayground() {
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-col gap-ds-01 p-ds-04">
+                <div className="flex flex-col gap-ds-02 p-ds-04">
                   <div className="flex items-center justify-between gap-ds-02">
                     <Text variant="label-md" className="text-surface-fg">
                       {preset.name}
@@ -169,6 +169,31 @@ export function AuroraPlayground() {
                   <Text variant="body-sm" className="text-surface-fg-subtle line-clamp-2">
                     {preset.useCase}
                   </Text>
+                  {/* Palette swatch strip — 5 hex stops the aurora draws
+                      from. `palette: 'brand'` (Devalok preset) shows a
+                      brand-follows tag instead of static swatches. */}
+                  <div className="mt-ds-02 flex items-center gap-ds-02">
+                    {preset.props.palette === 'brand' ? (
+                      <span className="inline-flex items-center gap-ds-01 rounded-ds-sm border border-surface-border-subtle bg-surface-base px-ds-02 py-[1px] text-ds-xs font-mono text-surface-fg-subtle">
+                        <span className="w-2 h-2 rounded-full bg-accent-9" aria-hidden />
+                        follows brand
+                      </span>
+                    ) : Array.isArray(preset.props.palette) ? (
+                      <div
+                        aria-label={`${preset.name} palette`}
+                        className="flex h-3 overflow-hidden rounded-ds-sm border border-surface-border-subtle"
+                      >
+                        {preset.props.palette.map((hex, i) => (
+                          <span
+                            key={i}
+                            className="w-6"
+                            style={{ background: hex }}
+                            aria-hidden
+                          />
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
               </button>
             )

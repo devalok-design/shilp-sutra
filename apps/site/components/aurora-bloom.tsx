@@ -193,6 +193,8 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
       parallax: 'mouse',
       grain: 'paper',
       breathing: true,
+      // The Devalok preset is the only one that *follows the user's brand*
+      // — it inherits whatever accent ramp is active in the header.
       palette: 'brand',
     },
   },
@@ -210,7 +212,9 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
       parallax: 'scroll',
       grain: 'match',
       breathing: true,
-      palette: 'brand',
+      // Deep indigo / pre-dawn sky. Hue ~275 in OKLCH, hand-converted
+      // to sRGB hex at the same L/C curve as the brand ramp.
+      palette: ['#f5f3ff', '#d4c8fa', '#7d65e0', '#5440c2', '#3a2c8a'],
     },
   },
   saptarishi: {
@@ -227,7 +231,8 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
       parallax: 'off',
       grain: 'paper',
       breathing: false,
-      palette: 'brand',
+      // Cool slate-blue starlight. Hue ~230.
+      palette: ['#f1f5fb', '#cfdaee', '#7a98c5', '#4b6fa6', '#2b4670'],
     },
   },
   diya: {
@@ -244,7 +249,8 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
       parallax: 'off',
       grain: 'match',
       breathing: true,
-      palette: 'brand',
+      // Warm amber flame. Hue ~50.
+      palette: ['#fff8ed', '#ffd99c', '#f7a83a', '#d97706', '#7c3d09'],
     },
   },
   monsoon: {
@@ -261,7 +267,8 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
       parallax: 'mouse',
       grain: 'paper',
       breathing: true,
-      palette: 'brand',
+      // Stormy teal. Hue ~200.
+      palette: ['#eef9fb', '#bfe3ec', '#5fa9b5', '#2f7d8a', '#1c4d57'],
     },
   },
   mandir: {
@@ -278,7 +285,8 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
       parallax: 'off',
       grain: 'match',
       breathing: true,
-      palette: 'brand',
+      // Saffron / sandalwood. Hue ~60.
+      palette: ['#fffaeb', '#ffe8a1', '#f0b933', '#c08712', '#704d05'],
     },
   },
 }

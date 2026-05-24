@@ -1,27 +1,19 @@
 import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { IconArrowUpRight } from '@tabler/icons-react'
-import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { generateRamp } from '@/lib/ramp-generator'
 
-type IndustryBrand = {
-  industry: string
-  productName: string
-  tagline: string
-  hue: number
-  chroma: number
-  tag: string
-}
+import { getAllShowcases } from '@/lib/showcase-registry'
 
-const BRANDS: IndustryBrand[] = [
-  { industry: 'SaaS · B2B', productName: 'Atlas', tagline: 'Project workspaces for distributed teams.', hue: 245, chroma: 0.19, tag: 'Workspaces' },
-  { industry: 'Fintech', productName: 'Lendis', tagline: 'KYC + lending, end to end.', hue: 145, chroma: 0.16, tag: 'KYC live' },
-  { industry: 'Consumer · D2C', productName: 'Mira', tagline: 'Slow-made textiles, shipped global.', hue: 55, chroma: 0.18, tag: 'New arrivals' },
-  { industry: 'Healthcare', productName: 'Vaidya', tagline: 'A clinic, in your pocket.', hue: 200, chroma: 0.15, tag: 'In care' },
-  { industry: 'Editorial', productName: 'Patrika', tagline: 'Long-form journalism, weekly.', hue: 15, chroma: 0.2, tag: 'Vol. iv' },
-  { industry: 'Devalok house', productName: 'shilp-sutra', tagline: 'The library that ships here.', hue: 360, chroma: 0.19, tag: 'v0.39' },
-]
+const BRANDS = getAllShowcases().map((s) => ({
+  slug: s.slug,
+  industry: s.industry,
+  productName: s.product,
+  tagline: s.tagline,
+  hue: s.hue,
+  chroma: s.chroma,
+}))
 
 function rampInlineStyle(hue: number, chroma: number): CSSProperties {
   const ramp = generateRamp(hue, chroma)
@@ -36,24 +28,25 @@ function rampInlineStyle(hue: number, chroma: number): CSSProperties {
 
 export function BrandShowcase() {
   return (
-    <section className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
+    <section id="showcase" className="mx-auto max-w-6xl px-ds-page-x py-ds-12">
       <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-08">
         <Text variant="label-md" className="text-surface-fg-subtle">
-          Same parts. Six brands.
+          Same library. Six different products.
         </Text>
         <Text variant="heading-xl" className="text-surface-fg">
-          One library. Endless looks.
+          See it fit your kind of work.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          Click any tile to take that look into the editor and make it yours.
+          Each tile is a full example — a dashboard, a checkout, a patient record — built from
+          the same shilp-sutra components. Click in to see it run.
         </Text>
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-ds-04">
         {BRANDS.map((b) => (
           <Link
-            key={b.productName}
-            href={`/theming?hue=${b.hue}&chroma=${b.chroma}`}
+            key={b.slug}
+            href={`/showcase/${b.slug}`}
             style={rampInlineStyle(b.hue, b.chroma)}
             className="flex flex-col gap-ds-04 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised hover:border-accent-9 transition-colors duration-fast-01 group"
           >
@@ -61,9 +54,11 @@ export function BrandShowcase() {
               <Text variant="label-sm" className="text-surface-fg-subtle">
                 {b.industry}
               </Text>
-              <Badge variant="soft" size="sm" color="accent">
-                {b.tag}
-              </Badge>
+              <span
+                aria-hidden
+                className="w-5 h-5 rounded-full border border-surface-border-subtle shrink-0"
+                style={{ background: `oklch(0.55 ${b.chroma} ${b.hue})` }}
+              />
             </header>
             <div className="flex flex-col gap-ds-01">
               <Text variant="heading-sm" className="text-surface-fg">
@@ -73,16 +68,11 @@ export function BrandShowcase() {
                 {b.tagline}
               </Text>
             </div>
-            <footer className="mt-auto flex items-center justify-between gap-ds-02">
+            <footer className="mt-auto">
               <span className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 group-hover:underline underline-offset-2">
-                Try this look
+                See the example
                 <IconArrowUpRight size={14} />
               </span>
-              <span
-                aria-hidden
-                className="w-6 h-6 rounded-full border border-surface-border-subtle shrink-0"
-                style={{ background: `oklch(0.55 ${b.chroma} ${b.hue})` }}
-              />
             </footer>
           </Link>
         ))}

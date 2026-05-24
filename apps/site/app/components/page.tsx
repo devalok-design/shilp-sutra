@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { getRegistry } from '@/lib/component-registry'
+import { SHILP_SUTRA_MINOR } from '@/lib/version'
 
 export const metadata: Metadata = {
   title: 'Components',
@@ -18,11 +19,11 @@ export default async function ComponentsPage() {
   return (
     <>
       <SiteHeader />
-      <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-page-x py-ds-09">
+      <main id="main" className="flex-1">
+        <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
-              eyebrow="Components · v0.39"
+              eyebrow={`Components · v${SHILP_SUTRA_MINOR}`}
               title={`${items.length} components, one consistent API.`}
               subtitle="Every component is accessible, themeable, and ships with framer-motion animations tuned for craft."
             />
@@ -33,7 +34,7 @@ export default async function ComponentsPage() {
                   Browse all
                 </span>
                 <h2 className="text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
-                  {items.length} components · filter by layer or search by name.
+                  {items.length} components · filter by group or search by name.
                 </h2>
               </header>
               <ComponentGrid items={items} />

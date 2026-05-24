@@ -9,15 +9,15 @@ import type { ComponentMeta, Layer } from '@/lib/component-registry'
 
 const LAYER_LABELS: Record<Layer | 'all', string> = {
   all: 'All',
-  ui: 'UI primitives',
-  composed: 'Composed',
-  shell: 'Shell',
+  ui: 'Building blocks',
+  composed: 'Patterns',
+  shell: 'App layout',
 }
 
 const LAYER_TAGLINE: Record<Layer, string> = {
-  ui: 'Atomic building blocks. Inputs, buttons, dialogs, typography.',
-  composed: 'Multi-component patterns. Date picker, command palette, page headers.',
-  shell: 'App-level layout. Sidebar, top bar, navigation, notification center.',
+  ui: 'Atomic primitives. Inputs, buttons, dialogs, typography — the bricks you reach for first.',
+  composed: 'Multi-component patterns. Date picker, command palette, page headers, empty states.',
+  shell: 'Whole-app frame. Sidebar, top bar, navigation, notification center.',
 }
 
 export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
@@ -119,7 +119,7 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
                 <code className="text-ds-xs font-mono text-surface-fg-subtle truncate">{item.importPath}</code>
                 <div className="flex flex-wrap items-center gap-ds-02 mt-auto pt-ds-02">
                   <span className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay text-ds-xs text-surface-fg-subtle font-mono">
-                    {item.layer}
+                    {LAYER_LABELS[item.layer]}
                   </span>
                   {item.serverSafe && (
                     <span className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-success-3 text-success-11 text-ds-xs font-mono">

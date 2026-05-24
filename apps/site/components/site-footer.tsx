@@ -14,10 +14,11 @@ const linkGroups = [
   {
     heading: 'Explore',
     links: [
+      { label: 'Showcase', href: '/showcase' },
       { label: 'Components', href: '/components' },
       { label: 'Blocks', href: '/blocks' },
       { label: 'Theming', href: '/theming' },
-      { label: 'Docs', href: '/docs/install-vite' },
+      { label: 'Docs', href: '/docs' },
       { label: 'Storybook', href: 'https://devalok-design.github.io/shilp-sutra/', external: true },
     ],
   },

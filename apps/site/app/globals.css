@@ -11,3 +11,8 @@ body {
   color: var(--color-surface-fg);
   font-family: var(--font-sans);
 }
+
+/* Floating pill bar overlaps top of viewport — anchor jumps must clear it. */
+html {
+  scroll-padding-top: 5.5rem;
+}

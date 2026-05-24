@@ -1,8 +1,12 @@
 import Link from 'next/link'
-import { IconBook, IconSparkles } from '@tabler/icons-react'
+import { IconArrowRight, IconBook, IconSparkles } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
-import { CodeBlock } from './code-block'
 
+/**
+ * Landing teaser for /agents. One-sentence pitch + primary CTA to the full
+ * page, secondary CTA to the docs index. No duplicate install script — the
+ * full pitch lives at /agents.
+ */
 export function AgentCallout() {
   return (
     <section className="mx-auto max-w-4xl px-page-x py-ds-12">
@@ -13,41 +17,27 @@ export function AgentCallout() {
           </div>
           <div className="flex flex-col">
             <span className="text-ds-xs text-accent-11 uppercase tracking-wide">
-              Install
+              Built for AI editors
             </span>
             <h2 className="text-ds-xl text-surface-fg font-semibold mt-ds-01">
-              Teach your AI editor the library, in one line.
+              Your editor already knows the library.
             </h2>
             <p className="text-ds-md text-surface-fg-muted max-w-2xl mt-ds-03">
-              Run this once. Cursor, Claude Code, and Codex then know every component, every
-              setup step, every gotcha. They write code that works the first time.
+              Install the Agent Skill once. Cursor, Claude Code, Codex, Aider then write code
+              that compiles the first time — every component, every prop, every gotcha.
             </p>
           </div>
         </header>
 
-        <CodeBlock
-          language="bash"
-          code={`curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash`}
-        />
-
-        <footer className="flex flex-wrap items-center justify-between gap-ds-03 pt-ds-02">
-          <p className="text-ds-xs text-surface-fg-subtle">
-            Installs to{' '}
-            <code className="font-mono text-surface-fg">~/.claude/skills/shilp-sutra/</code>. Works
-            in any editor that speaks the{' '}
-            <Link
-              href="https://agentskills.io/specification"
-              target="_blank"
-              rel="noreferrer"
-              className="underline underline-offset-2 hover:text-surface-fg"
-            >
-              Agent Skills standard
-            </Link>
-            .
-          </p>
-          <Link href="/docs/install-vite">
-            <Button variant="ghost" size="sm" startIcon={<IconBook size={14} />}>
-              Prefer to install by hand?
+        <footer className="flex flex-wrap items-center gap-ds-03 pt-ds-02">
+          <Link href="/agents">
+            <Button size="md" endIcon={<IconArrowRight size={14} />}>
+              Set up your editor
+            </Button>
+          </Link>
+          <Link href="/docs">
+            <Button variant="ghost" size="md" startIcon={<IconBook size={14} />}>
+              Install by hand
             </Button>
           </Link>
         </footer>

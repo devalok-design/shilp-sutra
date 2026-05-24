@@ -4,12 +4,15 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 import { AuroraBloom } from '@/components/aurora-bloom'
+import { SHILP_SUTRA_MINOR } from '@/lib/version'
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden isolate">
       <AuroraBloom />
-      <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-10 pb-ds-09 md:pt-ds-13 md:pb-ds-12 lg:pt-[10rem] lg:pb-[8rem] flex flex-col items-center text-center gap-ds-05 md:gap-ds-06">
+      {/* pt accounts for floating pill (~70–80px). Aurora-bloom reaches up to the
+          true top of the section so the pill sits *over* the bloom — magic stays. */}
+      <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-12 pb-ds-09 md:pt-ds-13 md:pb-ds-12 lg:pt-[10rem] lg:pb-[8rem] flex flex-col items-center text-center gap-ds-05 md:gap-ds-06">
         <Text variant="label-md" className="text-surface-fg-subtle">
           From Devalok Studios
         </Text>
@@ -37,7 +40,7 @@ export function Hero() {
         <ul className="mt-ds-06 w-full max-w-xl grid grid-cols-2 gap-ds-02 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 text-ds-xs text-surface-fg-subtle">
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-success-9" />
-            v0.39 live
+            v{SHILP_SUTRA_MINOR} live
           </li>
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>

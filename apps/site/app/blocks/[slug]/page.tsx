@@ -29,8 +29,8 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
   return (
     <>
       <SiteHeader />
-      <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-page-x py-ds-09">
+      <main id="main" className="flex-1">
+        <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <nav aria-label="Breadcrumb" className="mb-ds-06">
             <Link
               href="/blocks"

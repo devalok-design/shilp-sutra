@@ -16,6 +16,7 @@
   "dependencies": {
     "@devalok/shilp-sutra": "workspace:*",
     "@devalok/shilp-sutra-brand": "workspace:*",
+    "@paper-design/shaders-react": "^0.0.76",
     "@tabler/icons-react": "^3.0.0",
     "framer-motion": "^12.0.0",
     "next": "^15.0.0",

@@ -210,6 +210,9 @@ importers:
       '@devalok/shilp-sutra-brand':
         specifier: workspace:*
         version: link:../../packages/brand
+      '@paper-design/shaders-react':
+        specifier: ^0.0.76
+        version: 0.0.76(@types/react@19.2.14)(react@19.2.5)
       '@tabler/icons-react':
         specifier: ^3.0.0
         version: 3.42.0(react@19.2.5)
@@ -1377,6 +1380,18 @@ packages:
 
   '@oxc-project/types@0.124.0':
     resolution: {integrity: sha512-VBFWMTBvHxS11Z5Lvlr3IWgrwhMTXV+Md+EQF0Xf60+wAdsGFTBx7X7K/hP4pi8N7dcm1RvcHwDxZ16Qx8keUg==}
+
+  '@paper-design/shaders-react@0.0.76':
+    resolution: {integrity: sha512-uPJWrYRf6cJdO2H+fuXlahaqz0QjYglNAyUTaRfIInpzCa/d6guxBIK003soAZQFuQ035yg9FhtfFzKNWm+a5A==}
+    peerDependencies:
+      '@types/react': ^18 || ^19
+      react: ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@paper-design/shaders@0.0.76':
+    resolution: {integrity: sha512-AcNDY4J66YQHUfQYFInkCP7M9VOje0od7wLpOR7LtCmc532opJy6ll+h1W9zBovz8tt9U7OADUmJ/qKEXyOX/A==}
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
@@ -5971,6 +5986,15 @@ snapshots:
       fastq: 1.20.1
 
   '@oxc-project/types@0.124.0': {}
+
+  '@paper-design/shaders-react@0.0.76(@types/react@19.2.14)(react@19.2.5)':
+    dependencies:
+      '@paper-design/shaders': 0.0.76
+      react: 19.2.5
+    optionalDependencies:
+      '@types/react': 19.2.14
+
+  '@paper-design/shaders@0.0.76': {}
 
   '@polka/url@1.0.0-next.29': {}
 

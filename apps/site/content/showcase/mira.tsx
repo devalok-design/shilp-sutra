@@ -99,10 +99,9 @@ export function MiraShowcase() {
                 transition={{ duration: 0.18 }}
                 className="inline-block"
               >
-                {activeColour.name}
+                {activeColour.name}.
               </motion.span>
             </AnimatePresence>
-            .
           </Text>
           <div className="flex items-center gap-ds-03 mt-ds-02">
             <Text variant="heading-md" className="text-surface-fg">

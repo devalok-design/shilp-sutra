@@ -20,9 +20,9 @@ export default function LotusPage() {
           <div className="flex flex-col gap-ds-09">
             <PageHeader
               eyebrow="Lotus"
-              title="The lotus, made of light."
-              subtitle="Bud, opening, full bloom, peak, close."
-              description="A WebGL composition that follows the developmental biology of Nelumbo nucifera. Same mesh primitives as Aurora — three stacked layers (leaves, petals, stamens) choreographed through five named keyframes with an easeInOutSine glide between each."
+              title="A field of lotuses."
+              subtitle="Devalok colour, the way nature carries it."
+              description="Each lotus is a single WebGL mesh masked into a circle. The colour ramp pulls live from --color-accent-* — white at the centre, pink at the edge — so the lotuses follow your brand without losing their shape."
             />
             <LotusShowcase />
           </div>

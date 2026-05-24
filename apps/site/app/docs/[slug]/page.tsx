@@ -3,12 +3,12 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
-import { DocsSidebar } from '@/components/docs-sidebar'
+import { DocsSidebar, type DocsSidebarGroup } from '@/components/docs-sidebar'
 import { Markdown } from '@/components/markdown'
 import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
-import { getAllDocSlugs, getCategoryLabel, getDoc, getDocMeta } from '@/lib/docs-registry'
+import { getAllDocSlugs, getCategoryLabel, getDoc, getDocMeta, groupedDocs } from '@/lib/docs-registry'
 
 export async function generateStaticParams() {
   return getAllDocSlugs().map((slug) => ({ slug }))
@@ -31,13 +31,25 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
   const prev = idx > 0 ? slugs[idx - 1] : null
   const next = idx < slugs.length - 1 ? slugs[idx + 1] : null
 
+  const grouped = groupedDocs()
+  const sidebarGroups: DocsSidebarGroup[] = (['install', 'customize', 'reference', 'troubleshoot'] as const).map((key) => ({
+    key,
+    label: getCategoryLabel(key),
+    docs: grouped[key]
+      .map((s) => {
+        const meta = getDocMeta(s)
+        return meta ? { slug: s, title: meta.title } : null
+      })
+      .filter((d): d is { slug: string; title: string } => d !== null),
+  }))
+
   return (
     <>
       <SiteHeader />
       <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-page-x py-ds-09 grid grid-cols-1 lg:grid-cols-[14rem_1fr] gap-ds-09">
+        <div className="mx-auto max-w-6xl px-page-x py-ds-09 grid grid-cols-1 lg:grid-cols-[14rem_1fr] gap-ds-06 lg:gap-ds-09">
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <DocsSidebar currentSlug={slug} />
+            <DocsSidebar currentSlug={slug} groups={sidebarGroups} currentCategory={doc.category} />
           </aside>
           <article className="min-w-0">
             <PageHeader eyebrow={getCategoryLabel(doc.category)} title={doc.title} />

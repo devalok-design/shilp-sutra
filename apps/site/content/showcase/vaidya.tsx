@@ -209,7 +209,7 @@ function Vital({
   status: 'normal' | 'watch'
 }) {
   return (
-    <Card className="p-ds-06 flex flex-col">
+    <Card className="p-ds-04 sm:p-ds-06 flex flex-col">
       <div className="flex items-center justify-between">
         <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{label}</span>
         <span

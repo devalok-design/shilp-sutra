@@ -299,7 +299,7 @@ function SceneStreaming() {
       product="Streaming · Netflix-shaped"
       why="High-emotion conversion. Pill shape + warning hue catches the eye without screaming red."
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
+      <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             7-day free trial · ₹199 / month
@@ -349,13 +349,13 @@ function SceneSocial() {
       product="Social · X-shaped"
       why="Ghost variant + icon + counter. Three sibling actions stay quiet until tapped — content does the work."
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
+      <div className="flex flex-col gap-ds-03">
         <div className="flex items-center gap-ds-03 min-w-0">
-          <Text variant="body-xs" className="text-surface-fg-muted truncate max-w-[18rem]">
+          <Text variant="body-xs" className="text-surface-fg-muted line-clamp-2">
             &ldquo;The slow web is finally winning…&rdquo;
           </Text>
         </div>
-        <div className="flex items-center gap-ds-01">
+        <div className="flex items-center justify-between sm:justify-start gap-ds-01">
           <Button
             variant="ghost"
             size="sm"
@@ -402,7 +402,7 @@ function SceneCalendar() {
       product="Calendar · Google Calendar-shaped"
       why="Top-level create with three flavours. SplitButton reveals the alternatives without cluttering the toolbar."
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
+      <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             Thursday, 26 May
@@ -496,7 +496,7 @@ function SceneNotes() {
       product="Notes · Notion-shaped"
       why="One primary, many cousins. SplitButton again — but this time the dropdown is content variety, not delivery options."
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
+      <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             Workspace · Devalok
@@ -534,7 +534,7 @@ function SceneCommerce() {
       product="Commerce · Stripe Checkout-shaped"
       why="Two-emphasis row. Soft + outline pair: equal weight, different priority signalled by tone alone."
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
+      <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
             Linen kurta · Tulsi · size M
@@ -543,7 +543,7 @@ function SceneCommerce() {
             ₹5,200
           </Text>
         </div>
-        <div className="flex items-center gap-ds-02">
+        <div className="flex items-center gap-ds-02 shrink-0">
           <Button variant="outline" size="sm">
             Add to bag
           </Button>

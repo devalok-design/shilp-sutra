@@ -3,7 +3,7 @@ import { IconArrowRight } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
-import { AuroraBloom } from '@/components/aurora-bloom'
+import { AuroraBloom } from '@devalok/shilp-sutra/composed/aurora-bloom'
 
 export function Hero() {
   return (
@@ -33,18 +33,25 @@ export function Hero() {
             </Button>
           </Link>
         </div>
-        <div className="mt-ds-06 flex flex-wrap items-center justify-center gap-ds-04 text-ds-xs text-surface-fg-subtle">
-          <span className="inline-flex items-center gap-ds-02">
-            <span className="w-1.5 h-1.5 rounded-full bg-success-9" />
+        {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots. */}
+        <ul className="mt-ds-06 w-full max-w-xl grid grid-cols-2 gap-ds-02 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 text-ds-xs text-surface-fg-subtle">
+          <li className="inline-flex items-center justify-center gap-ds-02">
+            <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-success-9" />
             v0.39 live
-          </span>
-          <span>·</span>
-          <span>Open source · MIT</span>
-          <span>·</span>
-          <span>Free, forever</span>
-          <span>·</span>
-          <span>Built into your AI editor</span>
-        </div>
+          </li>
+          <li className="inline-flex items-center justify-center gap-ds-02">
+            <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>
+            Open source · MIT
+          </li>
+          <li className="inline-flex items-center justify-center gap-ds-02">
+            <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>
+            Free, forever
+          </li>
+          <li className="inline-flex items-center justify-center gap-ds-02">
+            <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>
+            Built into your AI editor
+          </li>
+        </ul>
       </div>
     </section>
   )

@@ -64,14 +64,18 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-ds-02">
-          <BrandSwitcher />
+          {/* BrandSwitcher: drawer-only on mobile (less frequent action). */}
+          <div className="hidden md:inline-flex">
+            <BrandSwitcher />
+          </div>
+          {/* ThemeToggle stays — one-tap, used daily. */}
           <ThemeToggle />
           <a
             href="https://github.com/devalok-design/shilp-sutra"
             target="_blank"
             rel="noreferrer"
             aria-label="View on GitHub"
-            className="hidden sm:inline-flex"
+            className="hidden md:inline-flex"
           >
             <Button variant="ghost" size="icon-md" aria-label="GitHub">
               <IconBrandGithub size={18} />
@@ -114,28 +118,36 @@ export function SiteHeader() {
               className="md:hidden absolute inset-x-0 top-16 z-popover bg-surface-base border-b border-surface-border-subtle shadow-overlay"
               aria-label="Primary"
             >
-              <ul className="mx-auto max-w-6xl px-page-x py-ds-05 flex flex-col gap-ds-01">
-                {navLinks.map((link) => {
-                  const isAccent = 'accent' in link && link.accent
-                  return (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        onClick={() => setOpen(false)}
-                        className={[
-                          'flex items-center gap-ds-02 px-ds-03 py-ds-04 rounded-ds-md text-ds-md',
-                          isAccent
-                            ? 'text-accent-11 hover:bg-accent-2'
-                            : 'text-surface-fg hover:bg-surface-raised-hover',
-                        ].join(' ')}
-                      >
-                        {isAccent && <span className="w-1.5 h-1.5 rounded-full bg-accent-9" />}
-                        {link.label}
-                      </Link>
-                    </li>
-                  )
-                })}
-                <li className="mt-ds-03 pt-ds-03 border-t border-surface-border-subtle">
+              <div className="mx-auto max-w-6xl px-page-x py-ds-05 flex flex-col gap-ds-05">
+                <ul className="flex flex-col gap-ds-01">
+                  {navLinks.map((link) => {
+                    const isAccent = 'accent' in link && link.accent
+                    return (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          onClick={() => setOpen(false)}
+                          className={[
+                            'flex items-center gap-ds-02 px-ds-03 py-ds-04 rounded-ds-md text-ds-md',
+                            isAccent
+                              ? 'text-accent-11 hover:bg-accent-2'
+                              : 'text-surface-fg hover:bg-surface-raised-hover',
+                          ].join(' ')}
+                        >
+                          {isAccent && <span className="w-1.5 h-1.5 rounded-full bg-accent-9" />}
+                          {link.label}
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+                <div className="pt-ds-04 border-t border-surface-border-subtle flex flex-col gap-ds-03">
+                  <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide px-ds-03">
+                    Settings
+                  </span>
+                  <div className="px-ds-03">
+                    <BrandSwitcher />
+                  </div>
                   <a
                     href="https://github.com/devalok-design/shilp-sutra"
                     target="_blank"
@@ -146,8 +158,8 @@ export function SiteHeader() {
                     <IconBrandGithub size={18} />
                     GitHub
                   </a>
-                </li>
-              </ul>
+                </div>
+              </div>
             </motion.nav>
           </>
         )}

@@ -15,6 +15,17 @@
 
 export type { ActivityFeedProps, ActivityItem, GroupLabels } from './activity-feed'
 export { ActivityFeed, groupItemsByTime } from './activity-feed'
+export type {
+  AuroraBloomProps,
+  AuroraGrain,
+  AuroraIntensity,
+  AuroraLayers,
+  AuroraPalette,
+  AuroraParallax,
+  AuroraPosition,
+  AuroraShape,
+} from './aurora-bloom'
+export { AuroraBloom, readAuroraPalette, useAuroraPalette } from './aurora-bloom'
 export type { AvatarGroupProps, AvatarUser } from './avatar-group'
 export { AvatarGroup } from './avatar-group'
 export type { BulkActionBarAction,BulkActionBarProps } from './bulk-action-bar'

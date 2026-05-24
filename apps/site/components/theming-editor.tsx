@@ -316,6 +316,12 @@ function SliderField({
         <span className="text-ds-sm text-surface-fg-muted">{label}</span>
         <span className="text-ds-sm font-mono text-surface-fg">{valueLabel}</span>
       </span>
+      {/*
+        Track stays slim at 2px; thumb is fat on coarse pointers (touch ≥24px,
+        comfortably > 44px hit area thanks to the invisible padding ring), slim
+        on fine pointers (mouse, 16px). Avoids fat thumbs hijacking desktop
+        precision while staying easy to grab on phone/tablet.
+      */}
       <input
         type="range"
         min={min}
@@ -323,7 +329,7 @@ function SliderField({
         step={step}
         value={value}
         onChange={(e) => onChange(Number.parseFloat(e.target.value))}
-        className="w-full h-2 appearance-none rounded-full cursor-pointer outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-surface-overlay [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface-fg [&::-webkit-slider-thumb]:shadow-raised [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-surface-overlay [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-surface-fg"
+        className="w-full h-3 sm:h-2 appearance-none rounded-full cursor-pointer touch-none outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 sm:[&::-webkit-slider-thumb]:w-4 sm:[&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-surface-overlay [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface-fg [&::-webkit-slider-thumb]:shadow-raised [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6 sm:[&::-moz-range-thumb]:w-4 sm:[&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-surface-overlay [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-surface-fg"
         style={{ background: track }}
       />
     </label>

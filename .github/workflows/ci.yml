@@ -24,6 +24,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Build the library FIRST so workspace consumers (apps/site) can resolve
+      # @devalok/shilp-sutra/ui/* subpath imports during typecheck. The site
+      # showcase pages import per-component subpaths from the package's `dist/`,
+      # so typechecking before build produces TS2307 cascades.
+      - name: Build library
+        run: pnpm build
+
       - name: Typecheck
         run: pnpm typecheck
 
@@ -35,9 +42,6 @@ jobs:
 
       - name: Test
         run: pnpm test
-
-      - name: Build library
-        run: pnpm build
 
       - name: SSR smoke test
         run: node packages/core/scripts/ssr-smoke-test.mjs

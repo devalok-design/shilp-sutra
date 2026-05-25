@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconBookmark,
@@ -51,12 +51,11 @@ type IssueEntry = {
   title: string
   author: string
   read: string
-  active?: boolean
 }
 
 const issueContents: IssueEntry[] = [
   { number: '01', title: 'Editor’s note: a defence of the slow page.', author: 'Mudit Lal', read: '3 min' },
-  { number: '02', title: 'We forgot what design was for.', author: 'Mudit Lal', read: '9 min', active: true },
+  { number: '02', title: 'We forgot what design was for.', author: 'Mudit Lal', read: '9 min' },
   { number: '03', title: 'A taxonomy of empty whitespace.', author: 'Mridula Iyer', read: '12 min' },
   { number: '04', title: 'Photo essay: Ranthambore, off-season.', author: 'Aparna Bhatkar', read: '6 min' },
   { number: '05', title: 'Letters from the margin (a column).', author: 'Goutham Paneer', read: '4 min' },
@@ -109,6 +108,13 @@ export function PatrikaShowcase() {
   const [likes, setLikes] = useState(284)
   const [bookmarked, setBookmarked] = useState(false)
   const [following, setFollowing] = useState(false)
+  const [activeTocId, setActiveTocId] = useState('02')
+  const [discussCount, setDiscussCount] = useState(38)
+  const [shareStatus, setShareStatus] = useState<string | null>(null)
+  const [email, setEmail] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const articleRef = useRef<HTMLElement | null>(null)
 
   const toggleLike = () => {
     setLiked((prev) => {
@@ -117,10 +123,49 @@ export function PatrikaShowcase() {
     })
   }
 
+  // Reading progress scoped to the article element (not window).
+  useEffect(() => {
+    const el = articleRef.current
+    if (!el) return
+    const compute = () => {
+      const rect = el.getBoundingClientRect()
+      const viewport = window.innerHeight || 1
+      const total = rect.height - viewport
+      if (total <= 0) {
+        setProgress(rect.bottom <= viewport ? 100 : 0)
+        return
+      }
+      const passed = Math.min(Math.max(-rect.top, 0), total)
+      setProgress(Math.round((passed / total) * 100))
+    }
+    compute()
+    const onScroll = () => compute()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
+
+  const handleShare = () => {
+    setShareStatus('Link copied')
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard
+        .writeText('https://patrika.devalok.in/issue-14/margins')
+        .catch(() => {})
+    }
+    window.setTimeout(() => setShareStatus(null), 1800)
+  }
+
+  const handleDiscuss = () => {
+    setDiscussCount((n) => n + 1)
+  }
+
   return (
     <TooltipProvider delayDuration={200}>
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-09">
-        <article className="flex flex-col gap-ds-07">
+        <article ref={articleRef} className="flex flex-col gap-ds-07">
           {/* Reading-progress strip */}
           <motion.div
             initial={{ opacity: 0, y: -4 }}
@@ -144,11 +189,11 @@ export function PatrikaShowcase() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              <span className="text-ds-xs text-surface-fg-subtle tabular-nums shrink-0">
-                42% read
+              <span className="text-ds-xs text-surface-fg-subtle tabular-nums shrink-0" aria-live="polite">
+                {progress}% read
               </span>
             </div>
-            <Progress value={42} size="sm" />
+            <Progress value={progress} size="sm" />
           </motion.div>
 
           {/* Cover photograph as a captioned figure */}
@@ -233,7 +278,12 @@ export function PatrikaShowcase() {
                     {bookmarked ? 'Saved to your bookmarks' : 'Save for later'}
                   </TooltipContent>
                 </Tooltip>
-                <Button variant="ghost" size="icon-sm" aria-label="Share article">
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Share article"
+                  onClick={handleShare}
+                >
                   <IconShare3 size={14} />
                 </Button>
               </div>
@@ -401,12 +451,19 @@ export function PatrikaShowcase() {
                 size="sm"
                 aria-label="Discuss in comments"
                 startIcon={<IconBubble size={16} />}
+                onClick={handleDiscuss}
               >
-                Discuss (38)
+                Discuss ({discussCount})
               </Button>
             </div>
-            <Button variant="ghost" size="sm" startIcon={<IconShare3 size={16} />}>
-              Share
+            <Button
+              variant="ghost"
+              size="sm"
+              startIcon={<IconShare3 size={16} />}
+              onClick={handleShare}
+              aria-live="polite"
+            >
+              {shareStatus ?? 'Share'}
             </Button>
           </div>
 
@@ -581,12 +638,16 @@ export function PatrikaShowcase() {
             <CardContent className="pt-0">
               <ol className="flex flex-col">
                 {issueContents.map((entry) => {
-                  const isActive = entry.active
+                  const isActive = entry.number === activeTocId
                   return (
                     <li key={entry.number}>
                       <a
                         href="#"
                         aria-current={isActive ? 'page' : undefined}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setActiveTocId(entry.number)
+                        }}
                         className={[
                           'flex items-start gap-ds-03 px-ds-03 -mx-ds-03 py-ds-03 rounded-ds-md border-l-2 transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                           isActive
@@ -639,6 +700,9 @@ export function PatrikaShowcase() {
                   type="email"
                   placeholder="namaskar@devalok.in"
                   autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={subscribed}
                 />
               </FormField>
               <Button
@@ -646,11 +710,13 @@ export function PatrikaShowcase() {
                 color="accent"
                 size="md"
                 fullWidth
+                disabled={subscribed || email.trim().length === 0}
                 onClickAsync={async () => {
                   await sleep(1100)
+                  setSubscribed(true)
                 }}
               >
-                Send me Patrika
+                {subscribed ? 'Subscribed' : 'Send me Patrika'}
               </Button>
               <Text variant="body-xs" className="text-surface-fg-subtle">
                 No tracking pixels. Unsubscribe in one click. We send the letter from a person, not

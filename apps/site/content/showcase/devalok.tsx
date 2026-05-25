@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+
 import { motion } from 'framer-motion'
 
 import {
@@ -110,6 +112,9 @@ const work = {
 }
 
 export function DevalokShowcase() {
+  const [email, setEmail] = useState('')
+  const [sent, setSent] = useState(false)
+
   return (
     <div className="flex flex-col gap-ds-09">
       <header className="flex flex-col gap-ds-04 max-w-3xl">
@@ -361,17 +366,31 @@ export function DevalokShowcase() {
               placeholder="you@studio.com"
               aria-label="Your email address"
               className="sm:flex-1"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                if (sent) setSent(false)
+              }}
+              required
             />
             <Button
               size="lg"
               variant="soft"
+              disabled={!email.trim()}
               onClickAsync={async () => {
                 await sleep(1500)
+                setEmail('')
+                setSent(true)
               }}
             >
               Start the conversation
             </Button>
           </form>
+          {sent ? (
+            <Text variant="body-sm" className="text-accent-11" role="status">
+              Address received. We will write back ourselves. Namaskar.
+            </Text>
+          ) : null}
         </CardContent>
       </Card>
 

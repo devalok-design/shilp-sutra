@@ -63,10 +63,10 @@ const SIZES: readonly { id: Size; available: boolean }[] = [
 ]
 
 const BLENDS = [
-  { value: 'mulmul', label: 'Mulmul cotton', description: '90 GSM, four-warp weave' },
-  { value: 'khadi', label: 'Khadi cotton', description: '140 GSM, hand-spun yarn' },
-  { value: 'cotton-silk', label: 'Cotton with ahimsa silk', description: '120 GSM, peace silk weft' },
-  { value: 'linen', label: 'Belgian linen blend', description: '160 GSM, looser drape' },
+  { value: 'mulmul', label: 'Mulmul cotton', description: '90 GSM, four-warp weave', priceInr: 4200, priceUsd: 50 },
+  { value: 'khadi', label: 'Khadi cotton', description: '140 GSM, hand-spun yarn', priceInr: 4800, priceUsd: 58 },
+  { value: 'cotton-silk', label: 'Cotton with ahimsa silk', description: '120 GSM, peace silk weft', priceInr: 6400, priceUsd: 77 },
+  { value: 'linen', label: 'Belgian linen blend', description: '160 GSM, looser drape', priceInr: 5600, priceUsd: 68 },
 ]
 
 const REVIEWS = [
@@ -134,7 +134,9 @@ const RELATED = [
   },
 ]
 
-type CartLine = { colour: ColourId; size: Size; blend: string }
+type CartLine = { colour: ColourId; size: Size; blend: string; priceInr: number; name: string }
+
+const formatInr = (n: number) => `₹${n.toLocaleString('en-IN')}`
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
@@ -145,13 +147,31 @@ export function MiraShowcase() {
   const [favourite, setFavourite] = useState(false)
   const [cart, setCart] = useState<CartLine[]>([])
   const [tab, setTab] = useState<'description' | 'reviews' | 'story' | 'shipping'>('description')
+  const [showAllReviews, setShowAllReviews] = useState(false)
 
   const activeColour = useMemo(() => COLOURS.find((c) => c.id === colour) ?? COLOURS[0], [colour])
   const activeBlend = BLENDS.find((b) => b.value === blend) ?? BLENDS[0]
 
   const addToBag = async () => {
     await sleep(900)
-    setCart((c) => [...c, { colour, size, blend }])
+    setCart((c) => [
+      ...c,
+      {
+        colour,
+        size,
+        blend,
+        priceInr: activeBlend.priceInr,
+        name: `Mira · ${activeColour.name}`,
+      },
+    ])
+  }
+
+  const addRelatedToBag = (r: (typeof RELATED)[number]) => {
+    const priceInr = Number(r.inr.replace(/[^0-9]/g, '')) || 0
+    setCart((c) => [
+      ...c,
+      { colour, size, blend, priceInr, name: r.name },
+    ])
   }
 
   const toggleFavourite = () => setFavourite((v) => !v)
@@ -279,10 +299,10 @@ export function MiraShowcase() {
               </Text>
               <div className="flex items-center flex-wrap gap-ds-03 mt-ds-01">
                 <Text variant="heading-md" className="text-surface-fg tabular-nums">
-                  ₹4,800
+                  {formatInr(activeBlend.priceInr)}
                 </Text>
                 <Text variant="body-sm" className="text-surface-fg-subtle tabular-nums">
-                  / $58 USD
+                  / ${activeBlend.priceUsd} USD
                 </Text>
                 <Badge variant="soft" color="success" size="sm">
                   Free domestic shipping
@@ -416,7 +436,7 @@ export function MiraShowcase() {
                 fullWidth
                 onClickAsync={addToBag}
               >
-                Add to bag · ₹4,800
+                Add {activeColour.name} · {size} · {formatInr(activeBlend.priceInr)}
               </Button>
               <Sheet>
                 <SheetTrigger asChild>
@@ -449,13 +469,15 @@ export function MiraShowcase() {
                             />
                             <div className="flex flex-col flex-1 min-w-0">
                               <span className="text-ds-sm text-surface-fg font-semibold truncate">
-                                Mira · {lineColour.name}
+                                {line.name}
                               </span>
                               <span className="text-ds-xs text-surface-fg-subtle truncate">
                                 Size {line.size} · {lineBlend.label}
                               </span>
                             </div>
-                            <span className="text-ds-sm text-surface-fg tabular-nums shrink-0">₹4,800</span>
+                            <span className="text-ds-sm text-surface-fg tabular-nums shrink-0">
+                              {formatInr(line.priceInr)}
+                            </span>
                           </div>
                         )
                       })
@@ -467,7 +489,7 @@ export function MiraShowcase() {
                             Subtotal
                           </Text>
                           <Text variant="heading-sm" className="text-surface-fg tabular-nums">
-                            ₹{(cart.length * 4800).toLocaleString('en-IN')}
+                            {formatInr(cart.reduce((sum, l) => sum + l.priceInr, 0))}
                           </Text>
                         </div>
                         <Button size="md" fullWidth>
@@ -580,14 +602,23 @@ export function MiraShowcase() {
                     <Text variant="body-md" className="text-surface-fg font-semibold mt-ds-01 text-balance">
                       {r.title}
                     </Text>
-                    <Text variant="body-sm" className="text-surface-fg-muted line-clamp-3 max-w-prose">
+                    <Text
+                      variant="body-sm"
+                      className={`text-surface-fg-muted max-w-prose ${showAllReviews ? '' : 'line-clamp-3'}`}
+                    >
                       {r.body}
                     </Text>
                   </div>
                 </div>
               ))}
-              <Button variant="soft" size="md" className="self-start">
-                Show all 312 reviews
+              <Button
+                variant="soft"
+                size="md"
+                className="self-start"
+                onClick={() => setShowAllReviews((v) => !v)}
+                aria-expanded={showAllReviews}
+              >
+                {showAllReviews ? 'Show less' : 'Show all 312 reviews'}
               </Button>
             </div>
           </TabsContent>
@@ -659,7 +690,21 @@ export function MiraShowcase() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-ds-04">
             {RELATED.map((r) => (
-              <Card key={r.name} interactive size="sm">
+              <Card
+                key={r.name}
+                interactive
+                size="sm"
+                role="button"
+                tabIndex={0}
+                onClick={() => addRelatedToBag(r)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    addRelatedToBag(r)
+                  }
+                }}
+                aria-label={`Add ${r.name} to bag, ${r.inr}`}
+              >
                 <div className="relative aspect-[4/3] rounded-t-ds-md overflow-hidden -m-ds-04 mb-ds-03 border-b border-surface-border-subtle">
                   <img
                     src={r.img}

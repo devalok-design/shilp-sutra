@@ -177,6 +177,10 @@ export function AtlasShowcase() {
   const [projects, setProjects] = useState<ProjectRow[]>(initialProjects)
   const [workspace, setWorkspace] = useState<string>('devalok')
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [notificationsRead, setNotificationsRead] = useState(false)
+  const [commandHinted, setCommandHinted] = useState(false)
+  const [activeChannel, setActiveChannel] = useState<string>('launch')
+  const [activeEvent, setActiveEvent] = useState<string>('Brand review with Mira')
 
   const stats = useMemo(() => ({
     active: projects.filter((p) => p.status !== 'shipped').length,
@@ -248,19 +252,38 @@ export function AtlasShowcase() {
                 <div className="flex items-center gap-ds-02 shrink-0">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" aria-label="Notifications">
-                        <IconBell size={16} />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Notifications"
+                        onClick={() => setNotificationsRead((v) => !v)}
+                      >
+                        <span className="relative inline-flex">
+                          <IconBell size={16} />
+                          {!notificationsRead && (
+                            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-accent-9" />
+                          )}
+                        </span>
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Notifications</TooltipContent>
+                    <TooltipContent>
+                      {notificationsRead ? 'All caught up' : 'Notifications'}
+                    </TooltipContent>
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" aria-label="Command menu">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Command menu"
+                        onClick={() => setCommandHinted((v) => !v)}
+                      >
                         <IconCommand size={16} />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Command menu (Ctrl K)</TooltipContent>
+                    <TooltipContent>
+                      {commandHinted ? 'Press Ctrl K anywhere' : 'Command menu (Ctrl K)'}
+                    </TooltipContent>
                   </Tooltip>
                   <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                     <SheetTrigger asChild>
@@ -461,7 +484,17 @@ export function AtlasShowcase() {
                       icon={<IconSettings size={20} />}
                       title="Workspace settings live elsewhere"
                       description="Permissions, billing, and integrations sit in the workspace admin. Open it in a new tab when you need to."
-                      action={<Button variant="soft" endIcon={<IconChevronRight size={14} />}>Open admin</Button>}
+                      action={
+                        <Button
+                          variant="soft"
+                          endIcon={<IconChevronRight size={14} />}
+                          onClickAsync={async () => {
+                            await sleep(700)
+                          }}
+                        >
+                          Open admin
+                        </Button>
+                      }
                     />
                   </TabsContent>
                 </Tabs>
@@ -508,10 +541,21 @@ export function AtlasShowcase() {
                 <CardDescription>From your calendar</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col gap-ds-02">
-                <CalendarItem icon={IconUsers} title="Brand review with Mira" when="Today, 4:30 pm" />
-                <CalendarItem icon={IconChartBar} title="Weekly metrics" when="Tomorrow, 11:00 am" />
-                <CalendarItem icon={IconCalendar} title="Quarterly planning" when="Fri, all day" />
-                <CalendarItem icon={IconInbox} title="Inbox zero block" when="Mon, 9:00 am" />
+                {[
+                  { icon: IconUsers, title: 'Brand review with Mira', when: 'Today, 4:30 pm' },
+                  { icon: IconChartBar, title: 'Weekly metrics', when: 'Tomorrow, 11:00 am' },
+                  { icon: IconCalendar, title: 'Quarterly planning', when: 'Fri, all day' },
+                  { icon: IconInbox, title: 'Inbox zero block', when: 'Mon, 9:00 am' },
+                ].map((e) => (
+                  <CalendarItem
+                    key={e.title}
+                    icon={e.icon}
+                    title={e.title}
+                    when={e.when}
+                    active={activeEvent === e.title}
+                    onSelect={() => setActiveEvent(e.title)}
+                  />
+                ))}
               </CardContent>
             </Card>
 
@@ -521,20 +565,32 @@ export function AtlasShowcase() {
               </CardHeader>
               <CardContent>
                 <ul className="flex flex-col">
-                  {channels.map((c) => (
-                    <li
-                      key={c.name}
-                      className="flex items-center gap-ds-02 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer"
-                    >
-                      <IconHash size={12} className="text-surface-fg-subtle shrink-0" />
-                      <span className="text-ds-sm text-surface-fg flex-1 min-w-0 truncate">{c.name}</span>
-                      {c.unread > 0 && (
-                        <Badge variant="soft" color="accent" size="sm" className="shrink-0">
-                          {c.unread}
-                        </Badge>
-                      )}
-                    </li>
-                  ))}
+                  {channels.map((c) => {
+                    const isActive = activeChannel === c.name
+                    return (
+                      <li key={c.name}>
+                        <button
+                          type="button"
+                          onClick={() => setActiveChannel(c.name)}
+                          aria-pressed={isActive}
+                          className={`w-full flex items-center gap-ds-02 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md transition-colors duration-fast-02 ease-productive-standard text-left ${
+                            isActive ? 'bg-accent-3 text-accent-11' : 'hover:bg-surface-raised-hover text-surface-fg'
+                          }`}
+                        >
+                          <IconHash
+                            size={12}
+                            className={`shrink-0 ${isActive ? 'text-accent-11' : 'text-surface-fg-subtle'}`}
+                          />
+                          <span className="text-ds-sm flex-1 min-w-0 truncate">{c.name}</span>
+                          {c.unread > 0 && (
+                            <Badge variant="soft" color="accent" size="sm" className="shrink-0">
+                              {c.unread}
+                            </Badge>
+                          )}
+                        </button>
+                      </li>
+                    )
+                  })}
                 </ul>
               </CardContent>
             </Card>
@@ -607,13 +663,24 @@ function CalendarItem({
   icon: Icon,
   title,
   when,
+  active,
+  onSelect,
 }: {
   icon: typeof IconUsers
   title: string
   when: string
+  active?: boolean
+  onSelect?: () => void
 }) {
   return (
-    <div className="flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer">
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={active}
+      className={`flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md transition-colors duration-fast-02 ease-productive-standard text-left w-full ${
+        active ? 'bg-surface-raised-hover' : 'hover:bg-surface-raised-hover'
+      }`}
+    >
       <span className="w-8 h-8 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
         <Icon size={14} />
       </span>
@@ -621,6 +688,6 @@ function CalendarItem({
         <span className="text-ds-sm text-surface-fg font-semibold line-clamp-1">{title}</span>
         <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">{when}</span>
       </div>
-    </div>
+    </button>
   )
 }

@@ -167,6 +167,13 @@ export function LendisShowcase() {
   const [purpose, setPurpose] = useState('salary')
   const [amountText, setAmountText] = useState('84000')
   const [reviewOpen, setReviewOpen] = useState(false)
+  const [videoKycDone, setVideoKycDone] = useState(false)
+
+  const kycActive = videoKycDone ? 5 : 4
+  const kycScore = videoKycDone ? 100 : 80
+  const kycCaption = videoKycDone
+    ? '100% complete · all checks cleared'
+    : '80% complete · video KYC pending'
 
   const amountNum = Number(amountText.replace(/[^0-9.]/g, '')) || 0
 
@@ -367,7 +374,14 @@ export function LendisShowcase() {
                     <CardTitle>Transactions</CardTitle>
                     <CardDescription>Last 30 days across INR and USD wallets</CardDescription>
                   </div>
-                  <Button variant="soft" size="sm">
+                  <Button
+                    variant="soft"
+                    size="sm"
+                    onClickAsync={async () => {
+                      await sleep(700)
+                      setFilter('all')
+                    }}
+                  >
                     Export CSV
                   </Button>
                 </div>
@@ -403,7 +417,7 @@ export function LendisShowcase() {
                   </span>
                   <div className="flex flex-col">
                     <CardTitle className="text-ds-lg">Trust profile</CardTitle>
-                    <CardDescription>80% complete · video KYC pending</CardDescription>
+                    <CardDescription>{kycCaption}</CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -414,16 +428,28 @@ export function LendisShowcase() {
                       Verification score
                     </Text>
                     <Text variant="label-sm" className="text-surface-fg font-semibold">
-                      80%
+                      {kycScore}%
                     </Text>
                   </div>
-                  <Progress value={80} color="success" />
+                  <Progress value={kycScore} color="success" />
                 </div>
-                <Stepper activeStep={4} orientation="vertical">
+                <Stepper activeStep={kycActive} orientation="vertical">
                   {kycSteps.map((s) => (
                     <Step key={s.label} label={s.label} description={s.description} />
                   ))}
                 </Stepper>
+                {videoKycDone ? null : (
+                  <Button
+                    variant="soft"
+                    size="sm"
+                    onClickAsync={async () => {
+                      await sleep(900)
+                      setVideoKycDone(true)
+                    }}
+                  >
+                    Complete video KYC
+                  </Button>
+                )}
               </CardContent>
             </Card>
 

@@ -215,6 +215,27 @@ function Scene({
 
 /* Email client — Send + Schedule */
 function SceneEmail() {
+  const [status, setStatus] = useState<
+    | { kind: 'draft' }
+    | { kind: 'sent' }
+    | { kind: 'scheduled'; when: string }
+    | { kind: 'saved' }
+  >({ kind: 'draft' })
+
+  const flash = (next: typeof status) => {
+    setStatus(next)
+    window.setTimeout(() => setStatus({ kind: 'draft' }), 1800)
+  }
+
+  const label =
+    status.kind === 'draft'
+      ? 'Draft to mridula@devalok.in'
+      : status.kind === 'sent'
+        ? 'Sent to mridula@devalok.in'
+        : status.kind === 'scheduled'
+          ? `Scheduled for ${status.when}`
+          : 'Saved to drafts'
+
   return (
     <Scene
       product="Email · Gmail-shaped"
@@ -224,19 +245,34 @@ function SceneEmail() {
         <div className="flex items-center gap-ds-02">
           <IconMail size={14} className="text-surface-fg-subtle" />
           <Text variant="body-xs" className="text-surface-fg-subtle">
-            Draft to mridula@devalok.in
+            {label}
           </Text>
         </div>
         <SplitButton
           color="accent"
           size="sm"
-          onClick={() => {}}
+          onClick={() => flash({ kind: 'sent' })}
           dropdownLabel="Send options"
           dropdownContent={
             <div className="flex flex-col gap-ds-01 p-ds-02 min-w-[12rem]">
-              <DropdownLink icon={<IconSend size={14} />} label="Send now" hint="Default" />
-              <DropdownLink icon={<IconClock size={14} />} label="Schedule send" hint="Tomorrow 9 am" />
-              <DropdownLink icon={<IconBookmark size={14} />} label="Save as draft" hint="" />
+              <DropdownLink
+                icon={<IconSend size={14} />}
+                label="Send now"
+                hint="Default"
+                onClick={() => flash({ kind: 'sent' })}
+              />
+              <DropdownLink
+                icon={<IconClock size={14} />}
+                label="Schedule send"
+                hint="Tomorrow 9 am"
+                onClick={() => flash({ kind: 'scheduled', when: 'tomorrow 9 am' })}
+              />
+              <DropdownLink
+                icon={<IconBookmark size={14} />}
+                label="Save as draft"
+                hint=""
+                onClick={() => flash({ kind: 'saved' })}
+              />
             </div>
           }
         >
@@ -411,6 +447,7 @@ function formatTime(seconds: number) {
 
 /* Streaming subscribe */
 function SceneStreaming() {
+  const [subscribed, setSubscribed] = useState(false)
   return (
     <Scene
       product="Streaming · Netflix-shaped"
@@ -419,14 +456,22 @@ function SceneStreaming() {
       <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
-            7-day free trial · ₹199 / month
+            {subscribed ? 'Welcome to All-access' : '7-day free trial · ₹199 / month'}
           </Text>
           <Text variant="body-sm" className="text-surface-fg">
-            All-access. Cancel any time.
+            {subscribed ? 'Trial started. Renews 1 June.' : 'All-access. Cancel any time.'}
           </Text>
         </div>
-        <Button color="warning" size="md" shape="pill">
-          Subscribe
+        <Button
+          color={subscribed ? 'success' : 'warning'}
+          size="md"
+          shape="pill"
+          onClickAsync={async () => {
+            await sleep(900)
+            setSubscribed(true)
+          }}
+        >
+          {subscribed ? 'Trial started' : 'Subscribe'}
         </Button>
       </div>
     </Scene>
@@ -434,7 +479,15 @@ function SceneStreaming() {
 }
 
 /* Code editor — Run / Debug / Test */
+type EditorMode = 'run' | 'debug' | 'test'
+const EDITOR_STATUS: Record<EditorMode, string> = {
+  run: 'main.ts · ↑ no errors',
+  debug: 'main.ts · paused at line 42',
+  test: 'main.ts · 12 passed, 0 failed',
+}
+
 function SceneCodeEditor() {
+  const [mode, setMode] = useState<EditorMode>('run')
   return (
     <Scene
       product="Code editor · VS Code-shaped"
@@ -444,13 +497,34 @@ function SceneCodeEditor() {
         <div className="flex items-center gap-ds-02">
           <IconCode size={14} className="text-surface-fg-subtle" />
           <Text variant="body-xs" className="text-surface-fg-subtle font-mono">
-            main.ts · ↑ no errors
+            {EDITOR_STATUS[mode]}
           </Text>
         </div>
         <ButtonGroup variant="soft" size="sm" color="accent">
-          <Button startIcon={<IconBolt size={12} />}>Run</Button>
-          <Button startIcon={<IconBug size={12} />}>Debug</Button>
-          <Button startIcon={<IconShieldCheck size={12} />}>Test</Button>
+          <Button
+            startIcon={<IconBolt size={12} />}
+            variant={mode === 'run' ? 'solid' : 'soft'}
+            aria-pressed={mode === 'run'}
+            onClick={() => setMode('run')}
+          >
+            Run
+          </Button>
+          <Button
+            startIcon={<IconBug size={12} />}
+            variant={mode === 'debug' ? 'solid' : 'soft'}
+            aria-pressed={mode === 'debug'}
+            onClick={() => setMode('debug')}
+          >
+            Debug
+          </Button>
+          <Button
+            startIcon={<IconShieldCheck size={12} />}
+            variant={mode === 'test' ? 'solid' : 'soft'}
+            aria-pressed={mode === 'test'}
+            onClick={() => setMode('test')}
+          >
+            Test
+          </Button>
         </ButtonGroup>
       </div>
     </Scene>
@@ -461,6 +535,9 @@ function SceneCodeEditor() {
 function SceneSocial() {
   const [liked, setLiked] = useState(false)
   const [likes, setLikes] = useState(312)
+  const [reposted, setReposted] = useState(false)
+  const [reposts, setReposts] = useState(18)
+  const [shared, setShared] = useState(false)
   return (
     <Scene
       product="Social · X-shaped"
@@ -469,7 +546,9 @@ function SceneSocial() {
       <div className="flex flex-col gap-ds-03">
         <div className="flex items-center gap-ds-03 min-w-0">
           <Text variant="body-xs" className="text-surface-fg-muted line-clamp-2">
-            &ldquo;The slow web is finally winning…&rdquo;
+            {shared
+              ? 'Link copied. Share away.'
+              : '“The slow web is finally winning…”'}
           </Text>
         </div>
         <div className="flex items-center justify-between sm:justify-start gap-ds-01">
@@ -500,10 +579,36 @@ function SceneSocial() {
           <Button variant="ghost" size="sm" startIcon={<IconMessageCircle size={14} />}>
             41
           </Button>
-          <Button variant="ghost" size="sm" startIcon={<IconRepeat size={14} />}>
-            18
+          <Button
+            variant="ghost"
+            size="sm"
+            color={reposted ? 'success' : 'neutral'}
+            startIcon={<IconRepeat size={14} />}
+            aria-pressed={reposted}
+            onClick={() => {
+              setReposted((r) => !r)
+              setReposts((c) => (reposted ? c - 1 : c + 1))
+            }}
+          >
+            <motion.span
+              key={reposts}
+              initial={{ y: -3, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.15 }}
+            >
+              {reposts}
+            </motion.span>
           </Button>
-          <Button variant="ghost" size="icon-sm" aria-label="Share">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Share"
+            aria-pressed={shared}
+            onClick={() => {
+              setShared(true)
+              window.setTimeout(() => setShared(false), 1600)
+            }}
+          >
             <IconShare3 size={14} />
           </Button>
         </div>
@@ -513,7 +618,16 @@ function SceneSocial() {
 }
 
 /* Calendar — Add event with split for Task / Reminder */
+type CalendarKind = 'event' | 'task' | 'reminder' | 'ooo'
+const CALENDAR_NEXT: Record<CalendarKind, string> = {
+  event: 'Next · Standup with the studio, 10:30',
+  task: 'Next · Ship the audit doc, due 5 pm',
+  reminder: 'Next · Water the tulsi at 6 pm',
+  ooo: 'Next · Out of office Mon to Wed',
+}
+
 function SceneCalendar() {
+  const [kind, setKind] = useState<CalendarKind>('event')
   return (
     <Scene
       product="Calendar · Google Calendar-shaped"
@@ -525,21 +639,41 @@ function SceneCalendar() {
             Thursday, 26 May
           </Text>
           <Text variant="body-sm" className="text-surface-fg">
-            6 events · 2 tasks open
+            {CALENDAR_NEXT[kind]}
           </Text>
         </div>
         <SplitButton
           color="accent"
           variant="solid"
           size="sm"
-          onClick={() => {}}
+          onClick={() => setKind('event')}
           dropdownLabel="Event types"
           dropdownContent={
             <div className="flex flex-col gap-ds-01 p-ds-02 min-w-[12rem]">
-              <DropdownLink icon={<IconCalendarPlus size={14} />} label="Event" hint="With time + place" />
-              <DropdownLink icon={<IconCalendarPlus size={14} />} label="Task" hint="Owned, dated, done-able" />
-              <DropdownLink icon={<IconCalendarPlus size={14} />} label="Reminder" hint="Quiet ping" />
-              <DropdownLink icon={<IconCalendarPlus size={14} />} label="Out of office" hint="Auto-declines" />
+              <DropdownLink
+                icon={<IconCalendarPlus size={14} />}
+                label="Event"
+                hint="With time + place"
+                onClick={() => setKind('event')}
+              />
+              <DropdownLink
+                icon={<IconCalendarPlus size={14} />}
+                label="Task"
+                hint="Owned, dated, done-able"
+                onClick={() => setKind('task')}
+              />
+              <DropdownLink
+                icon={<IconCalendarPlus size={14} />}
+                label="Reminder"
+                hint="Quiet ping"
+                onClick={() => setKind('reminder')}
+              />
+              <DropdownLink
+                icon={<IconCalendarPlus size={14} />}
+                label="Out of office"
+                hint="Auto-declines"
+                onClick={() => setKind('ooo')}
+              />
             </div>
           }
         >
@@ -552,6 +686,7 @@ function SceneCalendar() {
 
 /* Banking — Send money with async verify */
 function SceneBanking() {
+  const [sent, setSent] = useState(false)
   return (
     <Scene
       product="Banking · Wise-shaped"
@@ -560,7 +695,9 @@ function SceneBanking() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
-            To: Yogin Sharma · UPI yogin@axl
+            {sent
+              ? 'Sent · ref UPI-7K2F · yogin@axl'
+              : 'To: Yogin Sharma · UPI yogin@axl'}
           </Text>
           <Text variant="heading-sm" className="text-surface-fg">
             ₹84,000
@@ -568,11 +705,14 @@ function SceneBanking() {
         </div>
         <Button
           size="lg"
+          color={sent ? 'success' : 'accent'}
           onClickAsync={async () => {
             await sleep(1600)
+            setSent(true)
+            window.setTimeout(() => setSent(false), 2400)
           }}
         >
-          Verify + send
+          {sent ? 'Sent' : 'Verify + send'}
         </Button>
       </div>
     </Scene>
@@ -580,7 +720,27 @@ function SceneBanking() {
 }
 
 /* DevOps — Deploy with urgent processing */
+type DeployState = 'idle' | 'deploying' | 'ready'
+
 function SceneDeploy() {
+  const [state, setState] = useState<DeployState>('deploying')
+  const [showLogs, setShowLogs] = useState(false)
+  const status =
+    state === 'idle'
+      ? 'Idle · last deploy 4h ago'
+      : state === 'deploying'
+        ? 'Building · 1m 14s'
+        : 'Ready · deploy live'
+
+  const onDeployClick = () => {
+    if (state === 'deploying') {
+      setState('idle')
+      return
+    }
+    setState('deploying')
+    window.setTimeout(() => setState('ready'), 1800)
+  }
+
   return (
     <Scene
       product="DevOps · Vercel-shaped"
@@ -589,16 +749,28 @@ function SceneDeploy() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01 min-w-0">
           <Text variant="body-xs" className="text-surface-fg-subtle font-mono">
-            shilp-sutra-site@b8eb960
+            {showLogs ? '> build complete in 74.2s · 0 errors' : 'shilp-sutra-site@b8eb960'}
           </Text>
           <Text variant="body-sm" className="text-surface-fg">
-            Building · 1m 14s
+            {status}
           </Text>
         </div>
         <ButtonGroup size="sm">
-          <Button variant="outline">Logs</Button>
-          <Button processing="urgent" processingDisabled={false} startIcon={<IconRocket size={12} />}>
-            Deploying
+          <Button
+            variant="outline"
+            aria-pressed={showLogs}
+            onClick={() => setShowLogs((s) => !s)}
+          >
+            {showLogs ? 'Hide logs' : 'Logs'}
+          </Button>
+          <Button
+            processing={state === 'deploying' ? 'urgent' : undefined}
+            processingDisabled={false}
+            color={state === 'ready' ? 'success' : 'accent'}
+            startIcon={<IconRocket size={12} />}
+            onClick={onDeployClick}
+          >
+            {state === 'deploying' ? 'Deploying' : state === 'ready' ? 'Deployed' : 'Deploy'}
           </Button>
         </ButtonGroup>
       </div>
@@ -607,7 +779,16 @@ function SceneDeploy() {
 }
 
 /* Notes — New page with templates */
+type NoteTemplate = 'blank' | 'meeting' | 'brief' | 'readme'
+const NOTE_PREVIEW: Record<NoteTemplate, string> = {
+  blank: 'Recent · 12 pages',
+  meeting: 'Drafting · Untitled meeting notes',
+  brief: 'Drafting · Project brief (Devalok)',
+  readme: 'Importing · README from GitHub',
+}
+
 function SceneNotes() {
+  const [template, setTemplate] = useState<NoteTemplate>('blank')
   return (
     <Scene
       product="Notes · Notion-shaped"
@@ -619,21 +800,41 @@ function SceneNotes() {
             Workspace · Devalok
           </Text>
           <Text variant="body-sm" className="text-surface-fg">
-            Recent · 12 pages
+            {NOTE_PREVIEW[template]}
           </Text>
         </div>
         <SplitButton
           variant="soft"
           color="accent"
           size="sm"
-          onClick={() => {}}
+          onClick={() => setTemplate('blank')}
           dropdownLabel="Page templates"
           dropdownContent={
             <div className="flex flex-col gap-ds-01 p-ds-02 min-w-[12rem]">
-              <DropdownLink icon={<IconPlus size={14} />} label="Blank page" hint="" />
-              <DropdownLink icon={<IconPlus size={14} />} label="Meeting notes" hint="Agenda + decisions" />
-              <DropdownLink icon={<IconPlus size={14} />} label="Project brief" hint="Devalok template" />
-              <DropdownLink icon={<IconBrandGithub size={14} />} label="From GitHub README" hint="" />
+              <DropdownLink
+                icon={<IconPlus size={14} />}
+                label="Blank page"
+                hint=""
+                onClick={() => setTemplate('blank')}
+              />
+              <DropdownLink
+                icon={<IconPlus size={14} />}
+                label="Meeting notes"
+                hint="Agenda + decisions"
+                onClick={() => setTemplate('meeting')}
+              />
+              <DropdownLink
+                icon={<IconPlus size={14} />}
+                label="Project brief"
+                hint="Devalok template"
+                onClick={() => setTemplate('brief')}
+              />
+              <DropdownLink
+                icon={<IconBrandGithub size={14} />}
+                label="From GitHub README"
+                hint=""
+                onClick={() => setTemplate('readme')}
+              />
             </div>
           }
         >
@@ -646,6 +847,8 @@ function SceneNotes() {
 
 /* Commerce — Add to cart with quick-buy */
 function SceneCommerce() {
+  const [bag, setBag] = useState(0)
+  const [buying, setBuying] = useState(false)
   return (
     <Scene
       product="Commerce · Stripe Checkout-shaped"
@@ -654,17 +857,31 @@ function SceneCommerce() {
       <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
           <Text variant="body-xs" className="text-surface-fg-subtle">
-            Linen kurta · Tulsi · size M
+            {bag > 0
+              ? `Linen kurta · Tulsi · size M · bag (${bag})`
+              : 'Linen kurta · Tulsi · size M'}
           </Text>
           <Text variant="body-sm" className="text-surface-fg">
-            ₹5,200
+            {buying ? 'Checkout opened in a new tab' : '₹5,200'}
           </Text>
         </div>
         <div className="flex items-center gap-ds-02 shrink-0">
-          <Button variant="outline" size="sm">
-            Add to bag
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setBag((c) => c + 1)}
+          >
+            {bag > 0 ? 'Added' : 'Add to bag'}
           </Button>
-          <Button size="sm" endIcon={<IconArrowRight size={14} />}>
+          <Button
+            size="sm"
+            endIcon={<IconArrowRight size={14} />}
+            onClickAsync={async () => {
+              await sleep(900)
+              setBuying(true)
+              window.setTimeout(() => setBuying(false), 2000)
+            }}
+          >
             Buy now
           </Button>
         </div>
@@ -681,14 +898,17 @@ function DropdownLink({
   icon,
   label,
   hint,
+  onClick,
 }: {
   icon: React.ReactNode
   label: string
   hint: string
+  onClick?: () => void
 }) {
   return (
     <button
       type="button"
+      onClick={onClick}
       className="flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-control-inner text-left hover:bg-surface-raised-hover transition-colors duration-fast-01"
     >
       <span className="text-surface-fg-subtle shrink-0">{icon}</span>

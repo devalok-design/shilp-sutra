@@ -201,6 +201,14 @@ function Sparkline({ data, status }: { data: number[]; status: VitalStatus }) {
 export function VaidyaShowcase() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>('10:00 am')
   const [specialist, setSpecialist] = useState<string>('cardio')
+  const [confirmed, setConfirmed] = useState<{ slot: string; specialist: string } | null>(null)
+  const [potassiumReviewed, setPotassiumReviewed] = useState(false)
+  const [callRequested, setCallRequested] = useState(false)
+
+  const specialistLabel = useMemo(
+    () => specialists.find((s) => s.value === specialist)?.label ?? 'specialist',
+    [specialist],
+  )
 
   const labColumns = useMemo<ColumnDef<LabRow, unknown>[]>(
     () => [
@@ -301,9 +309,35 @@ export function VaidyaShowcase() {
         </Card>
 
         {/* Critical lab alert */}
-        <Alert variant="subtle" color="error" size="md" title="Potassium below range. Review.">
-          Serum potassium 3.2 mmol/L on the 20 May panel, reference 3.5 to 5.0. Recommend repeat in 48 hours and a
-          review of Telmisartan dose before the next prescription.
+        <Alert
+          variant="subtle"
+          color={potassiumReviewed ? 'success' : 'error'}
+          size="md"
+          title={
+            potassiumReviewed
+              ? 'Potassium flagged for repeat draw'
+              : 'Potassium below range. Review.'
+          }
+        >
+          <div className="flex flex-col gap-ds-03">
+            <span>
+              {potassiumReviewed
+                ? 'Marked for review on the 20 May panel. Repeat draw scheduled in 48 hours, Telmisartan dose flagged for the next visit.'
+                : 'Serum potassium 3.2 mmol/L on the 20 May panel, reference 3.5 to 5.0. Recommend repeat in 48 hours and a review of Telmisartan dose before the next prescription.'}
+            </span>
+            {!potassiumReviewed && (
+              <div>
+                <Button
+                  variant="soft"
+                  color="error"
+                  size="sm"
+                  onClick={() => setPotassiumReviewed(true)}
+                >
+                  Mark reviewed
+                </Button>
+              </div>
+            )}
+          </div>
         </Alert>
 
         {/* Vital tiles */}
@@ -495,23 +529,47 @@ export function VaidyaShowcase() {
               size="lg"
               startIcon={<IconCalendarPlus size={16} />}
               fullWidth
+              disabled={!selectedSlot}
               onClickAsync={async () => {
+                if (!selectedSlot) return
                 await sleep(1300)
+                setConfirmed({ slot: selectedSlot, specialist: specialistLabel })
               }}
             >
-              {selectedSlot ? `Confirm ${selectedSlot}` : 'Pick a slot'}
+              {confirmed
+                ? `Confirmed with ${confirmed.specialist} at ${confirmed.slot}`
+                : selectedSlot
+                  ? `Book ${specialistLabel} at ${selectedSlot}`
+                  : 'Pick a slot'}
             </Button>
+            {confirmed && (
+              <Text variant="body-xs" className="text-success-11">
+                We sent a confirmation to your registered mobile number.
+              </Text>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between gap-ds-03">
             <CardTitle className="text-[length:var(--typo-heading-sm-size)] truncate min-w-0">Care team</CardTitle>
-            <Button variant="ghost" size="icon-sm" aria-label="Call primary clinician" className="shrink-0">
-              <IconPhoneCall size={14} />
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label={callRequested ? 'Callback requested' : 'Request a call from your primary clinician'}
+              aria-pressed={callRequested}
+              className="shrink-0"
+              onClick={() => setCallRequested(true)}
+            >
+              <IconPhoneCall size={14} className={callRequested ? 'text-success-11' : undefined} />
             </Button>
           </CardHeader>
           <CardContent className="flex flex-col gap-ds-03">
+            {callRequested && (
+              <Text variant="body-xs" className="text-success-11">
+                Callback requested. Dr. Anjali Rao will reach out within the hour.
+              </Text>
+            )}
             {careTeam.map((c) => (
               <div key={c.name} className="flex items-center gap-ds-03">
                 <span className="relative">

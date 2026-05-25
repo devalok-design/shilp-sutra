@@ -1,71 +1,410 @@
+'use client'
+
+import { useMemo, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
-import { IconArrowUpRight, IconLock } from '@tabler/icons-react'
+import { IconArrowUpRight, IconLock, IconSparkles } from '@tabler/icons-react'
+import { Badge } from '@devalok/shilp-sutra/ui/badge'
+import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
-import { CARD_RESTING } from '@/lib/card-recipe'
+import { generateRamp } from '@/lib/ramp-generator'
 
 /**
- * Built-with strip — Devalok's own products carrying shilp-sutra. Per
- * docs/copy/shilp-sutra-copy-context.md §7. The strongest social signal
- * available at 0.40 beta: no external consumers yet, but the studio ships
- * four of its own things on it.
+ * Built-with section — Devalok products carrying shilp-sutra. Per
+ * docs/copy/shilp-sutra-copy-context.md §7.
  *
- * Versions are pinned to what each consumer's package.json declared at
- * 2026-05-25 — re-verify before each minor by greping the consumer repos.
+ * Visual: one featured card (Karm, the largest consumer) full-width, then
+ * three secondary cards in a 3-column grid. Each card applies its own
+ * brand's accent ramp via inline CSS-vars so the strip itself demonstrates
+ * the multi-brand thesis the site sells. The same library, four colours,
+ * four products.
  *
- * Favicons load via Google's s2 service. Privacy-aware: no tracking value
- * to Google, just the favicon URL. Acceptable at beta; replace with bundled
- * brand assets when /built-with detail pages land.
+ * Dark-mode: relies entirely on semantic surface-* and accent-* tokens
+ * which DS remaps in .dark scope. The two oklch fallback values inside
+ * useBrandRamp() are the auto-foreground (white-on-dark-accent /
+ * dark-on-light-accent) and stay correct under both modes because the
+ * accent-9 lightness anchor is mode-neutral.
+ *
+ * Favicons: Google s2 service with onError fallback to a letter-tile so
+ * a missing favicon (Hiring is internal, Gurukul may not have one set
+ * yet) doesn't render a broken-image icon.
+ *
+ * Versions pinned to consumer package.json at 2026-05-25. Re-verify per
+ * minor by greping the consumer repos.
  */
 
 type Consumer = {
   name: string
   type: string
-  tagline: string
-  /** Pinned shilp-sutra version from the consumer's package.json. */
+  pitch: string
+  /** Short one-liner used on the featured hero. */
+  punchline?: string
+  /** Pinned shilp-sutra version. */
   version: string
-  /** Public domain. null = internal, no link. */
+  /** Public domain. null = internal. */
   domain: string | null
   href: string | null
+  /** Status signal — "Daily use", "Public beta", "Internal", "Open · MIT". */
+  status: string
+  /** 3-6 shilp-sutra component names this product leans on most. */
+  uses: readonly string[]
+  /** Brand ramp anchors — drives the CSS-var override on the card. */
+  hue: number
+  chroma: number
 }
 
-const consumers: Consumer[] = [
-  {
-    name: 'Karm',
-    type: 'Project ops platform',
-    tagline:
-      'Triage, track, and deliver design and strategy work to clients with low-friction review and approval.',
-    version: '0.40.x',
-    domain: 'karm.devalok.in',
-    href: 'https://karm.devalok.in',
-  },
+const KARM: Consumer = {
+  name: 'Karm',
+  type: 'Project ops platform',
+  punchline: 'The studio runs on Karm. Karm runs on shilp-sutra.',
+  pitch:
+    'Project workspaces for design and strategy studios. Triage, track, and deliver work to clients with low-friction review and approval.',
+  version: '0.40.x',
+  domain: 'karm.devalok.in',
+  href: 'https://karm.devalok.in',
+  status: 'Daily use, 8 hours a day',
+  uses: ['Sidebar', 'TopBar', 'DataTable', 'ActivityFeed', 'CommandPalette', 'Sheet'],
+  hue: 360,
+  chroma: 0.19,
+}
+
+const SECONDARIES: Consumer[] = [
   {
     name: 'Devalok Hiring',
-    type: 'Internal tool',
-    tagline:
-      'Design hiring review platform. Triage, track, and manage design applicants end-to-end.',
+    type: 'Internal review tool',
+    pitch:
+      'Design hiring review. Triage, track, and manage applicants end-to-end with brief-keyed scorecards.',
     version: '0.33.2',
     domain: null,
     href: null,
+    status: 'Internal',
+    uses: ['Form', 'Combobox', 'DataTable', 'Sheet'],
+    hue: 275,
+    chroma: 0.16,
   },
   {
     name: 'BharatTools',
     type: 'Public product',
-    tagline:
+    pitch:
       'Browser-only utilities for Indian government forms. Photo to spec, signature merge, KB compression. Files never leave your device.',
     version: '0.37.1',
     domain: 'bharattools.in',
     href: 'https://bharattools.in',
+    status: 'Public beta',
+    uses: ['FileUpload', 'Progress', 'Alert', 'Stepper'],
+    hue: 35,
+    chroma: 0.18,
   },
   {
     name: 'Gurukul',
     type: 'Open knowledge hub',
-    tagline:
-      "Devalok's practical guides for founders, designers, and builders. Public, MIT.",
+    pitch:
+      "Devalok's practical guides for founders, designers, and builders. Open, MIT, edits welcome.",
     version: '0.29.0',
     domain: 'gurukul.devalok.in',
     href: 'https://gurukul.devalok.in',
+    status: 'Open · MIT',
+    uses: ['Text', 'Card', 'Breadcrumb', 'Tabs'],
+    hue: 145,
+    chroma: 0.15,
   },
 ]
+
+/**
+ * Inline CSS-var override that re-skins the accent ramp on just this
+ * subtree. Same trick the showcase canvas uses for industry brands.
+ * Works in dark mode because --color-accent-* IS the public reactive
+ * surface in both light and dark scopes.
+ */
+function useBrandRamp(hue: number, chroma: number): CSSProperties {
+  return useMemo(() => {
+    const ramp = generateRamp(hue, chroma)
+    const style: Record<string, string> = {}
+    ramp.light.forEach((s) => {
+      style[`--color-accent-${s.step}`] = s.value
+    })
+    const accent9L = Number.parseFloat(
+      ramp.light[8].value.match(/oklch\(\s*([0-9.]+)/)?.[1] ?? '0.55',
+    )
+    style['--color-accent-fg'] = accent9L < 0.62 ? 'oklch(0.99 0 0)' : 'oklch(0.13 0 0)'
+    return style as CSSProperties
+  }, [hue, chroma])
+}
+
+/**
+ * Favicon with onError fallback. Google s2 returns a generic globe icon
+ * for unknown domains, but it CAN 404 for typos or DNS races. Letter
+ * tile fallback uses the active brand ramp via accent-3 / accent-11.
+ */
+function Favicon({
+  domain,
+  name,
+  size = 36,
+}: {
+  domain: string | null
+  name: string
+  size?: number
+}) {
+  const [errored, setErrored] = useState(false)
+  const px = `${size}px`
+
+  if (!domain) {
+    return (
+      <span
+        aria-hidden
+        className="rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-surface-fg-subtle flex items-center justify-center shrink-0"
+        style={{ width: px, height: px }}
+      >
+        <IconLock size={Math.round(size * 0.44)} />
+      </span>
+    )
+  }
+
+  if (errored) {
+    return (
+      <span
+        aria-hidden
+        className="rounded-control-inner bg-accent-3 text-accent-11 border border-accent-7 flex items-center justify-center shrink-0 font-semibold tabular-nums"
+        style={{ width: px, height: px, fontSize: `${Math.max(11, Math.round(size * 0.42))}px` }}
+      >
+        {name.charAt(0).toUpperCase()}
+      </span>
+    )
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`https://www.google.com/s2/favicons?domain=${domain}&sz=128`}
+      alt={`${name} favicon`}
+      width={size}
+      height={size}
+      loading="lazy"
+      onError={() => setErrored(true)}
+      className="rounded-control-inner shrink-0 border border-surface-border-subtle bg-surface-base"
+      style={{ width: px, height: px }}
+    />
+  )
+}
+
+/** 5-step swatch strip generated from the product's own ramp. */
+function SwatchStrip({ size = 'md' }: { size?: 'sm' | 'md' }) {
+  const steps = [3, 5, 7, 9, 11] as const
+  const dim = size === 'sm' ? 'h-1.5' : 'h-2'
+  return (
+    <div
+      aria-hidden
+      className={`flex w-full overflow-hidden rounded-pill border border-surface-border-subtle ${dim}`}
+    >
+      {steps.map((step) => (
+        <span
+          key={step}
+          className="flex-1"
+          style={{ background: `var(--color-accent-${step})` }}
+        />
+      ))}
+    </div>
+  )
+}
+
+function UsesRow({ uses }: { uses: readonly string[] }) {
+  return (
+    <ul className="flex flex-wrap items-center gap-ds-02">
+      {uses.map((c) => (
+        <li key={c}>
+          <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-ds-xs font-mono">
+            {c}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function FeaturedCard({ consumer }: { consumer: Consumer }) {
+  const style = useBrandRamp(consumer.hue, consumer.chroma)
+  return (
+    <article
+      style={style}
+      className="relative overflow-hidden rounded-surface border border-accent-7 shadow-raised bg-gradient-to-br from-accent-2 via-accent-3 to-accent-2"
+    >
+      {/* Decorative brand glow in the corner — purely atmospheric. Sized
+          smaller on mobile so it doesn't dominate the layout. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -top-16 -right-16 w-40 h-40 sm:-top-20 sm:-right-20 sm:w-64 sm:h-64 rounded-pill opacity-40 blur-3xl"
+        style={{ background: `var(--color-accent-9)` }}
+      />
+
+      <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-ds-06 lg:gap-ds-08 p-ds-05 sm:p-ds-06 lg:p-ds-08">
+        {/* Left — identity + pitch */}
+        <div className="flex flex-col gap-ds-05 min-w-0">
+          <div className="flex items-center gap-ds-03 min-w-0">
+            <Favicon domain={consumer.domain} name={consumer.name} size={40} />
+            <div className="flex flex-col min-w-0">
+              <span className="text-ds-xs uppercase tracking-wide text-accent-11 inline-flex items-center gap-ds-02 truncate">
+                <IconSparkles size={12} aria-hidden className="shrink-0" />
+                <span className="truncate">Flagship · {consumer.status}</span>
+              </span>
+              <Text variant="heading-xl" className="text-surface-fg text-balance">
+                {consumer.name}
+              </Text>
+            </div>
+          </div>
+
+          {consumer.punchline ? (
+            <Text
+              variant="heading-md"
+              className="text-surface-fg text-balance max-w-prose font-medium"
+            >
+              {consumer.punchline}
+            </Text>
+          ) : null}
+
+          <Text variant="body-md" className="text-surface-fg-muted max-w-prose">
+            {consumer.pitch}
+          </Text>
+
+          <div className="flex flex-col gap-ds-02">
+            <span className="text-ds-xs uppercase tracking-wide text-surface-fg-subtle">
+              What it leans on
+            </span>
+            <UsesRow uses={consumer.uses} />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-ds-03 pt-ds-02">
+            {consumer.href ? (
+              <Link href={consumer.href} target="_blank" rel="noreferrer">
+                <Button
+                  variant="solid"
+                  size="md"
+                  endIcon={<IconArrowUpRight size={14} />}
+                >
+                  Open {consumer.name}
+                </Button>
+              </Link>
+            ) : (
+              <Button variant="soft" size="md" disabled>
+                Internal only
+              </Button>
+            )}
+            <span className="text-ds-xs font-mono text-surface-fg-subtle">
+              shilp-sutra@{consumer.version}
+            </span>
+          </div>
+        </div>
+
+        {/* Right — visual brand evidence. Below sm the mock chrome stacks
+            below the identity; on md+ it sits in its own column. */}
+        <div className="flex flex-col gap-ds-04 justify-between min-w-0">
+          <div className="flex flex-col gap-ds-03">
+            <span className="text-ds-xs uppercase tracking-wide text-surface-fg-subtle">
+              The brand it wears
+            </span>
+            <SwatchStrip />
+            <div className="flex items-center justify-between text-ds-xs font-mono text-surface-fg-subtle">
+              <span>hue {consumer.hue}</span>
+              <span>chroma {consumer.chroma}</span>
+            </div>
+          </div>
+
+          {/* Mock product chrome — proves the brand on a real-feeling
+              artifact. Hidden below sm to avoid cramping a phone viewport. */}
+          <div className="hidden sm:flex rounded-control border border-accent-7 bg-surface-base shadow-overlay p-ds-04 flex-col gap-ds-03">
+            <div className="flex items-center gap-ds-02 min-w-0">
+              <span aria-hidden className="w-2 h-2 rounded-pill bg-error-9 shrink-0" />
+              <span aria-hidden className="w-2 h-2 rounded-pill bg-warning-9 shrink-0" />
+              <span aria-hidden className="w-2 h-2 rounded-pill bg-success-9 shrink-0" />
+              <span className="ml-ds-02 text-ds-xs font-mono text-surface-fg-subtle truncate">
+                {consumer.domain ?? 'internal'}
+              </span>
+            </div>
+            <div className="flex flex-col gap-ds-02">
+              <span aria-hidden className="h-2 w-3/4 rounded-pill bg-accent-9" />
+              <span aria-hidden className="h-1.5 w-full rounded-pill bg-accent-3" />
+              <span aria-hidden className="h-1.5 w-5/6 rounded-pill bg-accent-3" />
+              <span aria-hidden className="h-1.5 w-2/3 rounded-pill bg-accent-3" />
+            </div>
+            <div className="flex items-center justify-between gap-ds-02 pt-ds-01">
+              <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-9 text-accent-fg text-[10px] font-semibold uppercase tracking-wide">
+                Action
+              </span>
+              <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-[10px] font-medium">
+                Secondary
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function SecondaryCard({ consumer }: { consumer: Consumer }) {
+  const style = useBrandRamp(consumer.hue, consumer.chroma)
+  return (
+    <article
+      style={style}
+      className="group relative flex flex-col gap-ds-04 overflow-hidden rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised hover:shadow-raised-hover hover:border-accent-7 transition-[border-color,box-shadow,transform] duration-fast-02 ease-productive-standard hover:-translate-y-px"
+    >
+      {/* Brand wash band at top */}
+      <div className="relative h-16 bg-gradient-to-br from-accent-3 to-accent-2 border-b border-surface-border-subtle overflow-hidden">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-pill opacity-40 blur-2xl"
+          style={{ background: `var(--color-accent-9)` }}
+        />
+        <div className="relative h-full flex items-center justify-between gap-ds-03 px-ds-04 min-w-0">
+          <Favicon domain={consumer.domain} name={consumer.name} size={32} />
+          <Badge variant="soft" color="accent" size="sm" className="shrink-0 truncate max-w-[60%]">
+            {consumer.status}
+          </Badge>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-ds-03 px-ds-05 pb-ds-05 min-w-0">
+        <div className="flex flex-col gap-ds-01 min-w-0">
+          <Text variant="heading-sm" className="text-surface-fg truncate">
+            {consumer.name}
+          </Text>
+          <Text variant="body-xs" className="text-surface-fg-subtle truncate">
+            {consumer.type}
+          </Text>
+        </div>
+
+        <Text variant="body-sm" className="text-surface-fg-muted line-clamp-3">
+          {consumer.pitch}
+        </Text>
+
+        <SwatchStrip size="sm" />
+
+        <UsesRow uses={consumer.uses.slice(0, 4)} />
+
+        <footer className="mt-auto flex items-center justify-between gap-ds-02 pt-ds-03 border-t border-surface-border-subtle min-w-0">
+          <span className="text-ds-xs font-mono text-surface-fg-subtle truncate">
+            @{consumer.version}
+          </span>
+          {consumer.href ? (
+            <Link
+              href={consumer.href}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg hover:text-accent-11 transition-colors duration-fast-01 shrink-0"
+            >
+              Visit
+              <IconArrowUpRight
+                size={12}
+                aria-hidden
+                className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-fast-02 ease-productive-standard"
+              />
+            </Link>
+          ) : (
+            <span className="text-ds-xs text-surface-fg-subtle italic shrink-0">No public URL</span>
+          )}
+        </footer>
+      </div>
+    </article>
+  )
+}
 
 export function BuiltWith() {
   return (
@@ -75,75 +414,23 @@ export function BuiltWith() {
           <Text variant="label-md" className="text-surface-fg-subtle">
             Shipped on shilp-sutra
           </Text>
-          <Text variant="heading-xl" className="text-surface-fg">
+          <Text variant="heading-xl" className="text-surface-fg text-balance">
             Devalok ships its own tools on it.
           </Text>
           <Text variant="body-md" className="text-surface-fg-muted max-w-2xl">
-            Four products carry the same library. Same components, four brand identities, four
-            audiences. Real users, real builds, real beta feedback feeding back into 1.0.
+            Four products, four brands, one library. The brand swap that powers this site powers
+            every product below. Each card is tinted with its own product&apos;s accent ramp,
+            generated by the same OKLCH algorithm shilp-sutra ships.
           </Text>
         </div>
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-ds-04">
-          {consumers.map((c) => (
-            <li key={c.name} className={CARD_RESTING + ' flex flex-col gap-ds-04'}>
-              <header className="flex items-start gap-ds-03">
-                {c.domain ? (
-                  // Intentional: <img> with Google favicon service — Next/Image
-                  // would proxy through /_next/image which adds latency for a
-                  // 32×32 favicon. The @next/next/no-img-element rule is not
-                  // registered in this project's flat ESLint config.
-                  <img
-                    src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`}
-                    alt=""
-                    width={32}
-                    height={32}
-                    loading="lazy"
-                    className="rounded-control-inner shrink-0 border border-surface-border-subtle"
-                  />
-                ) : (
-                  <span
-                    aria-hidden
-                    className="w-8 h-8 rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-surface-fg-subtle flex items-center justify-center shrink-0"
-                  >
-                    <IconLock size={14} />
-                  </span>
-                )}
-                <div className="flex flex-col min-w-0">
-                  <Text variant="heading-sm" className="text-surface-fg truncate">
-                    {c.name}
-                  </Text>
-                  <Text variant="body-xs" className="text-surface-fg-subtle">
-                    {c.type}
-                  </Text>
-                </div>
-              </header>
+        <FeaturedCard consumer={KARM} />
 
-              <Text variant="body-sm" className="text-surface-fg-muted">
-                {c.tagline}
-              </Text>
-
-              <footer className="mt-auto flex items-center justify-between gap-ds-02 pt-ds-02 border-t border-surface-border-subtle">
-                <span className="text-ds-xs font-mono text-surface-fg-subtle">
-                  shilp-sutra@{c.version}
-                </span>
-                {c.href ? (
-                  <Link
-                    href={c.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg hover:text-accent-11 transition-colors duration-fast-01"
-                  >
-                    Visit
-                    <IconArrowUpRight size={12} aria-hidden />
-                  </Link>
-                ) : (
-                  <span className="text-ds-xs text-surface-fg-subtle italic">Internal</span>
-                )}
-              </footer>
-            </li>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-ds-04">
+          {SECONDARIES.map((c) => (
+            <SecondaryCard key={c.name} consumer={c} />
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   )

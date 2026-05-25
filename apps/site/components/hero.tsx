@@ -13,7 +13,7 @@ export function Hero() {
       {/* pt accounts for floating pill (~70–80px). Aurora-bloom reaches up to the
           true top of the section so the pill sits *over* the bloom — magic stays. */}
       <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-12 pb-ds-09 md:pt-ds-13 md:pb-ds-12 lg:pt-[10rem] lg:pb-[8rem] flex flex-col items-center text-center gap-ds-05 md:gap-ds-06">
-        <Text variant="label-md" className="text-surface-fg-muted">
+        <Text variant="label-md" className="text-surface-fg-muted text-halo">
           From{' '}
           <Link
             href="https://devalok.in"
@@ -47,7 +47,7 @@ export function Hero() {
         </div>
         {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
             Three capability-led chips per docs/copy/shilp-sutra-copy-context.md §10. */}
-        <ul className="mt-ds-06 w-full max-w-2xl grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 gap-ds-02 text-ds-xs text-surface-fg-muted">
+        <ul className="mt-ds-06 w-full max-w-2xl grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 gap-ds-02 text-ds-xs text-surface-fg-muted text-halo">
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="w-1.5 h-1.5 rounded-pill bg-success-9" />
             Powers Karm, Hiring + studio tools

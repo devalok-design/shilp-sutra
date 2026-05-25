@@ -16,3 +16,22 @@ body {
 html {
   scroll-padding-top: 5.5rem;
 }
+
+/*
+ * Text-halo for content that floats over the AuroraBloom (and other
+ * brand-coloured washes) before chrome materialises. Applies a soft halo
+ * the colour of the page surface so muted-grey text reads cleanly on
+ * any underlying hue. Surface-base auto-flips light <-> dark, so the
+ * halo follows the theme without a separate dark-mode rule.
+ *
+ * Used on:
+ *   - SiteHeader nav links + version pill while the pill chrome is
+ *     transparent (at rest, pre-scroll).
+ *   - Hero eyebrow + trust chips that sit over the bloom.
+ *   - LotusShowcase title block.
+ */
+@utility text-halo {
+  text-shadow:
+    0 0 10px var(--color-surface-base),
+    0 1px 3px color-mix(in oklch, var(--color-surface-base) 70%, transparent);
+}

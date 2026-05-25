@@ -131,10 +131,20 @@ export function SiteHeader() {
               className="flex items-center gap-ds-02 group min-w-0"
               onClick={() => setOpen(false)}
             >
-              <span className="text-ds-md sm:text-ds-lg font-semibold tracking-tight text-surface-fg truncate">
+              <span
+                className={[
+                  'text-ds-md sm:text-ds-lg font-semibold tracking-tight text-surface-fg truncate',
+                  scrolled ? '' : 'text-halo',
+                ].join(' ')}
+              >
                 shilp-sutra
               </span>
-              <span className="text-ds-xs text-surface-fg-subtle font-mono mt-0.5 shrink-0 hidden sm:inline">
+              <span
+                className={[
+                  'text-ds-xs text-surface-fg-subtle font-mono mt-0.5 shrink-0 hidden sm:inline',
+                  scrolled ? '' : 'text-halo',
+                ].join(' ')}
+              >
                 v{SHILP_SUTRA_MINOR}
               </span>
             </Link>
@@ -146,15 +156,14 @@ export function SiteHeader() {
           <nav className="hidden md:flex items-center gap-ds-05">
             {navLinks.map((link) => {
               const isAccent = 'accent' in link && link.accent
+              const base = isAccent
+                ? 'inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:text-accent-12 transition-colors duration-fast-01'
+                : 'text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01'
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={
-                    isAccent
-                      ? 'inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:text-accent-12 transition-colors duration-fast-01'
-                      : 'text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01'
-                  }
+                  className={[base, scrolled ? '' : 'text-halo'].join(' ')}
                 >
                   {isAccent && <span className="w-1.5 h-1.5 rounded-pill bg-accent-9" />}
                   {link.label}

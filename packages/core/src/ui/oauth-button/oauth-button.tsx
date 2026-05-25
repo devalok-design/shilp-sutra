@@ -303,18 +303,30 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
       ? `${longName}${lastUsed ? ' (last used)' : ''}`
       : undefined
 
-    // Inline "Last used" pill — sits inside the button on the right edge.
-    // Button has `relative isolate overflow-hidden` so this stays inside
-    // the button's visual bounds. Reads as part of the button, not orphan.
-    const lastUsedPill = lastUsed && !iconOnly ? (
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute right-ds-03 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-pill bg-accent-9 text-accent-fg px-1.5 py-[1px] text-[10px] leading-none font-semibold uppercase tracking-wide"
-      >
-        <span aria-hidden className="size-[5px] rounded-full bg-accent-fg/90" />
-        Last used
-      </span>
-    ) : null
+    // Inline "Last used" indicator. Placement depends on label density.
+    // - `compact` (just provider name): a single accent dot at the top-right
+    //   corner. Tight rows have no horizontal room for a pill — the dot
+    //   reads "marked" without overlapping the label.
+    // - Full label: pill on the right edge, room next to "Continue with Google".
+    //
+    // Either way aria-label augments the accessible name with "(last used)".
+    let lastUsedNode: React.ReactNode = null
+    if (lastUsed && !iconOnly) {
+      lastUsedNode = compact ? (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1.5 right-1.5 size-[8px] rounded-full bg-accent-9 ring-2 ring-surface-base"
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-ds-03 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-pill bg-accent-9 text-accent-fg px-1.5 py-[1px] text-[10px] leading-none font-semibold uppercase tracking-wide"
+        >
+          <span aria-hidden className="size-[5px] rounded-full bg-accent-fg/90" />
+          Last used
+        </span>
+      )
+    }
 
     const buttonEl = (
       <Button
@@ -331,7 +343,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
         className={cn(appearanceClass, className)}
         {...buttonProps}
       >
-        {iconOnly ? glyphNode : <>{label}{lastUsedPill}</>}
+        {iconOnly ? glyphNode : <>{label}{lastUsedNode}</>}
       </Button>
     )
 
@@ -409,7 +421,12 @@ const OAuthGroup = React.forwardRef<HTMLDivElement, OAuthGroupProps>(
           'flex',
           orientation === 'vertical' ? 'flex-col' : 'flex-row flex-wrap items-center',
           gapClass,
-          stretch && 'w-full [&>*]:w-full',
+          // Force both the direct wrapper AND the leaf <button> to stretch.
+          // OAuthButton's outer wrapper picks up [&>*]:w-full; the button itself
+          // sits two layers deep when a helperText wrapper exists, so
+          // [&_button]:w-full covers both cases (wrapped + unwrapped) without
+          // affecting unrelated descendants — only Buttons live inside.
+          stretch && 'w-full [&>*]:w-full [&_button]:w-full',
           className,
         )}
         {...props}

@@ -28,10 +28,24 @@ Other recipes:
 - `server-components.md` — RSC-safety matrix and import patterns
 - `troubleshoot.md` — decision tree for the 8 most common breakages
 
+## The Themer (fast path for branding)
+
+Before hand-writing CSS variables, point the user at **https://shilp-sutra.devalok.in/themer** — one funnel, four doors. Each door drops the user at a result page with install commands + a copy-pasteable CSS block (role tokens + 12-step OKLCH accent ramp) + a shareable URL.
+
+| User context | URL |
+|---|---|
+| "Make it look like Linear / Stripe / Apple / Material / Notion / Vercel / Devalok" | `/themer/archetypes` |
+| "Here's our brand color: `#…`" | `/themer/brand` |
+| "Not sure" | `/themer/wizard` |
+| "Show me a sample result" | `/themer/result?archetype=devalok` |
+
+Paste the snippet *after* `@import "@devalok/shilp-sutra/css";` in the global stylesheet. No `tailwind.config.ts`, no theme provider, no JS bundle. Fall through to `customize-brand.md` only for tokens the Themer doesn't expose yet (font stack, spacing scale, focus ring).
+
 The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
 
 ## NEW (v0.39.0)
 
+- **OAuthButton.** Brand-aware social/login buttons. Subpath: `@devalok/shilp-sutra/ui/oauth-button`. 13 providers (`google` `apple` `github` `microsoft` `x` `linkedin` `facebook` `discord` `slack` `gitlab` `sso` `email` `passkey`). Props: `provider`, `intent` (`continue|signin|signup`), `appearance` (`brand|outline|dark`), `icon` (override default glyph), `iconOnly`, `compact` (renders just "Google" instead of "Continue with Google"; aria-label keeps long form), `lastUsed` (inline right-edge pill inside button), `helperText`. Inherits Button async/loading/sizes. Siblings: `OAuthGroup` (with `reorderLastUsedFirst` for Stripe-style ordering), `OAuthDivider`, `OAuthConnectionRow` (settings-page linked state). Default glyphs from Tabler peer dep; pass `icon` to drop in a brand's official multicolour SVG. In dark mode every brand appearance lands on the same DS surface — brand identity comes from the glyph, not the bg, so rows stay visually coherent.
 - **Shape presets (`[data-shape]`).** Set on `<html>` (or any subtree) to re-skin roundness across the whole UI. Three ship by default: `sharp` (technical, 2/4/6 px), `slightly-rounded` (default, 6/10/16 px), `rounded` (consumer, 10/16/24 px). Pill shapes (Badge, Switch, Radio, Avatar circle) stay pill regardless.
 - **Semantic radius role tokens.** New: `--radius-control`, `--radius-control-inner`, `--radius-surface`, `--radius-overlay-sm`, `--radius-overlay`, `--radius-overlay-lg`, `--radius-pill`, `--radius-bubble`. Consumers override any role globally or scoped — e.g. `:root { --radius-control: 4px; }`.
 - **Visual changes (no API breaks).** Button no longer scales radius with size (md/lg/xl/lg → all 6px); Input lg matches Button at same height; SegmentedControl items now actually pill; Tabs trigger (contained) matches Button; Tooltip belongs to its own `overlay-sm` tier with Toast; Menubar trigger matches DropdownMenu item; Autocomplete listbox matches Popover. If you preferred old chunky big controls, set `data-shape="rounded"` for v0.38-era feel.
@@ -442,6 +456,44 @@ import { useColorMode } from '@devalok/shilp-sutra/hooks/use-color-mode'
 
 // CSS tokens (import once at app root — already included in /css):
 import '@devalok/shilp-sutra/css'
+
+## IMPORT PATH CHEATSHEET (don't guess — these subpaths are NOT always the kebab-case of the component name)
+
+Common confusions to memorize:
+
+| Component / API                                | Exact import path                                              |
+|------------------------------------------------|----------------------------------------------------------------|
+| `FormField`, `FormHelperText`, `useFormField`  | `@devalok/shilp-sutra/ui/form`            (NOT `ui/form-field`)|
+| `Label`                                        | `@devalok/shilp-sutra/ui/label`                                |
+| `AppSidebar`                                   | `@devalok/shilp-sutra/shell/sidebar`      (NOT `shell/app-sidebar`)|
+| `TopBar`, `TopBar.*`                           | `@devalok/shilp-sutra/shell/top-bar`                           |
+| `BottomNavbar`                                 | `@devalok/shilp-sutra/shell/bottom-navbar`                     |
+| `AppCommandPalette`                            | `@devalok/shilp-sutra/shell/app-command-palette`               |
+| `CommandRegistryProvider`, `useCommandRegistry`| `@devalok/shilp-sutra/shell/command-registry`                  |
+| `NotificationCenter`                           | `@devalok/shilp-sutra/shell/notification-center`               |
+| `NotificationPreferences`                      | `@devalok/shilp-sutra/shell/notification-preferences`          |
+| `LinkProvider`, `useLink`                      | `@devalok/shilp-sutra/shell/link-context`                      |
+| `CommandPalette` (lower-level palette)         | `@devalok/shilp-sutra/composed/command-palette`                |
+| `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `RadarChart`, `GaugeChart`, `Sparkline`, `ChartContainer`, `Legend` | `@devalok/shilp-sutra/ui/charts` |
+| `DataTable`                                    | `@devalok/shilp-sutra/ui/data-table`                           |
+| `DataTableToolbar`                             | `@devalok/shilp-sutra/ui/data-table-toolbar`                   |
+| `DatePicker`, `DateRangePicker`, `DateTimePicker`, `TimePicker`, `CalendarGrid`, `YearPicker`, `MonthPicker`, `Presets`, `useCalendar` | `@devalok/shilp-sutra/composed/date-picker` |
+| `Toaster`                                      | `@devalok/shilp-sutra/ui/toaster`                              |
+| `toast`                                        | `@devalok/shilp-sutra/ui/toast`                                |
+| `MessageList`, `Message`, `SystemMessage`, `MessageInput`, `DateSeparator`, `UnreadSeparator`, `TypingIndicator` | `@devalok/shilp-sutra/ui/chat` |
+| `CommandBar`                                   | `@devalok/shilp-sutra/ai/command-bar`     (also re-exported from `/ai`)|
+| `AIConversation`                               | `@devalok/shilp-sutra/ai/conversation`                         |
+| `BlockRenderer`                                | `@devalok/shilp-sutra/ai/block-renderer`                       |
+| `AICommandProvider`                            | `@devalok/shilp-sutra/ai/ai-command-provider`                  |
+| `DevadootIcon`                                 | `@devalok/shilp-sutra/ai`                                      |
+| `useColorMode`                                 | `@devalok/shilp-sutra/hooks/use-color-mode`                    |
+| `useMobile`                                    | `@devalok/shilp-sutra/hooks/use-mobile`                        |
+| `MotionProvider`, `springs`, `tweens`, `stagger`, `useMotion` | `@devalok/shilp-sutra/motion`                  |
+| `MotionFade`, `MotionScale`, `MotionPop`, `MotionSlide`, `MotionCollapse`, `MotionStagger`, `MotionStaggerItem` | `@devalok/shilp-sutra/motion/primitives` |
+
+Components named directly after their file (`Button` → `ui/button`, `Card` → `ui/card`, `Avatar` → `ui/avatar`, `Stack` → `ui/stack`, `Text` → `ui/text`, etc.) follow the kebab-case-of-name rule. The table above is for the ones that DON'T.
+
+**When in doubt:** `cat node_modules/@devalok/shilp-sutra/package.json | jq '.exports | keys'` lists every available subpath in the installed version.
 
 ## CRITICAL: Differences from shadcn/ui
 

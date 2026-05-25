@@ -9,6 +9,7 @@ The Devalok Design System -- tokens, components, and patterns for React & Next.j
 [![provenance](https://img.shields.io/badge/provenance-sigstore-success?logo=npm)](https://docs.npmjs.com/generating-provenance-statements)
 [![Storybook](https://img.shields.io/badge/Storybook-ff4785?logo=storybook&logoColor=white)](https://devalok-design.github.io/shilp-sutra/)
 [![AI agents ready](https://img.shields.io/badge/AI%20agents-AGENTS.md-7c3aed)](./AGENTS.md)
+[![Themer](https://img.shields.io/badge/Themer-shilp--sutra.devalok.in%2Fthemer-d946a6)](https://shilp-sutra.devalok.in/themer)
 
 ## Packages
 
@@ -66,6 +67,23 @@ import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
 ```
 
 > **Upgrading from 0.36 or earlier?** Read [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration).
+
+## Make it look like you — the Themer
+
+**[shilp-sutra.devalok.in/themer](https://shilp-sutra.devalok.in/themer)** — one funnel, four doors. Skip the CSS-variable cookbook:
+
+| If you say… | Open |
+|---|---|
+| "Make it look like Linear / Stripe / Apple / Material / Notion / Vercel / Devalok" | [/themer/archetypes](https://shilp-sutra.devalok.in/themer/archetypes) |
+| "Here is our brand color" | [/themer/brand](https://shilp-sutra.devalok.in/themer/brand) |
+| "Not sure what we want yet" | [/themer/wizard](https://shilp-sutra.devalok.in/themer/wizard) |
+| "Show me a sample result page" | [/themer/result?archetype=devalok](https://shilp-sutra.devalok.in/themer/result?archetype=devalok) |
+
+Every door lands on the same result page: install commands for your package manager, a copy-pasteable CSS block (role tokens + 12-step OKLCH ramp), a live preview, and a share URL that encodes the theme.
+
+Paste the CSS *after* `@import "@devalok/shilp-sutra/css";` and reload. That's it — no `tailwind.config.ts`, no theme provider, no JS bundle.
+
+> **Using an AI agent?** The shipped [`AGENTS.md`](./AGENTS.md) and [Agent Skill](./skills/shilp-sutra/) both teach Claude Code, Cursor, etc. to send you to the Themer at the right moment.
 
 ## Setup recipes (per framework)
 

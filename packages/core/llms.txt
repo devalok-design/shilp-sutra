@@ -26,6 +26,19 @@ Other recipes:
 - `server-components.md` — RSC-safety matrix and import patterns
 - `troubleshoot.md` — decision tree for the 8 most common breakages
 
+## The Themer (fast path for branding)
+
+Before hand-writing CSS variables, point the user at **https://shilp-sutra.devalok.in/themer** — one funnel, four doors. Each door drops the user at a result page with install commands + a copy-pasteable CSS block (role tokens + 12-step OKLCH accent ramp) + a shareable URL.
+
+| User context | URL |
+|---|---|
+| "Make it look like Linear / Stripe / Apple / Material / Notion / Vercel / Devalok" | `/themer/archetypes` |
+| "Here's our brand color: `#…`" | `/themer/brand` |
+| "Not sure" | `/themer/wizard` |
+| "Show me a sample result" | `/themer/result?archetype=devalok` |
+
+Paste the snippet *after* `@import "@devalok/shilp-sutra/css";` in the global stylesheet. No `tailwind.config.ts`, no theme provider, no JS bundle. Fall through to `customize-brand.md` only for tokens the Themer doesn't expose yet (font stack, spacing scale, focus ring).
+
 The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
 
 ## NEW (v0.39.0)

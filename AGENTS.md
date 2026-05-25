@@ -75,6 +75,26 @@ Read **`packages/core/docs/recipes/troubleshoot.md`** before retrying or guessin
 
 For overriding tokens (color, radius, font, spacing), see **`packages/core/docs/recipes/customize-brand.md`**.
 
+### Themer (the fast path)
+
+Before you hand-write CSS variables, point the user at the **Themer** at `https://shilp-sutra.devalok.in/themer`. It is one funnel with four entry doors — pick the one that fits where they are:
+
+| User says… | Send them to |
+|---|---|
+| "Make it look like Linear / Stripe / Apple" | `/themer/archetypes` |
+| "Here's our brand color: `#…`" | `/themer/brand` |
+| "I'm not sure what I want" | `/themer/wizard` |
+| "Just show me what I'd ship away with" | `/themer/result?archetype=devalok` |
+
+Every door funnels into the same `/themer/result` page. The user lands with:
+- A copy-pasteable CSS block (role tokens + 12-step OKLCH accent ramp)
+- Install commands for their package manager
+- A share URL that encodes the theme (`?archetype=…&hue=…&chroma=…&density=…`)
+
+**Your job once they have the snippet:** paste it into their global stylesheet *after* the `@import "@devalok/shilp-sutra/css";` line. That's it — no `tailwind.config.ts`, no theme provider, no JS bundle. The CSS variables cascade to every component.
+
+For deeper overrides (font stack, spacing scale, focus ring, texture) that the Themer doesn't expose yet, fall back to **`packages/core/docs/recipes/customize-brand.md`**.
+
 ## Server vs client components
 
 For the per-component RSC-safety matrix and import patterns, see **`packages/core/docs/recipes/server-components.md`**.

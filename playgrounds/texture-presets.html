@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" data-texture="none">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Texture Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280); --color-surface: oklch(1 0 0); --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280); --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280); --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-9: oklch(0.55 0.19 340); --color-accent-11: oklch(0.42 0.16 340);
+    --font-sans: -apple-system, system-ui, sans-serif;
+    --radius-surface: 12px;
+    --texture-overlay: none; --texture-opacity: 0;
+  }
+  [data-texture="none"] { --texture-overlay: none; --texture-opacity: 0; }
+  [data-texture="subtle"] {
+    --texture-overlay: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' opacity='0.5'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    --texture-opacity: 1;
+  }
+  [data-texture="grain"] {
+    --texture-overlay: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix type='matrix' values='0 0 0 0 0.94  0 0 0 0 0.55  0 0 0 0 0.62  0 0 0 0.12 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    --texture-opacity: 1;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+
+  .preview { padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 32px; max-width: 720px; }
+  h2 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+  .surface { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); padding: 32px; position: relative; overflow: hidden; isolation: isolate; }
+  .surface::after { content: ''; position: absolute; inset: 0; background-image: var(--texture-overlay); background-size: 200px 200px; opacity: var(--texture-opacity); pointer-events: none; mix-blend-mode: multiply; z-index: 1; }
+  .surface > * { position: relative; z-index: 2; }
+  .surface h3 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
+  .surface p { margin: 0; color: var(--color-fg-muted); line-height: 1.55; max-width: 56ch; }
+  .accent-surface { background: var(--color-accent-3); color: var(--color-accent-11); }
+  .accent-surface h3 { color: var(--color-accent-11); }
+  .dark-surface { background: oklch(0.18 0.02 280); color: oklch(0.95 0 0); border-color: oklch(0.25 0.02 280); }
+  .dark-surface h3 { color: oklch(0.95 0 0); }
+  .dark-surface p { color: oklch(0.75 0 0); }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Texture playground</h1>
+    <p class="sub">Toggle <code>[data-texture]</code> to add surface tactility. Especially noticeable on accent and dark surfaces.</p>
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn active" data-set="none"><strong>None</strong><span>Flat surfaces — default modern SaaS</span></button>
+      <button class="preset-btn" data-set="subtle"><strong>Subtle</strong><span>Barely-there noise — Notion paper-feel</span></button>
+      <button class="preset-btn" data-set="grain"><strong>Grain</strong><span>Devalok signature — warm-tinted texture</span></button>
+    </div>
+    <p style="font-size: 12px; color: var(--color-fg-muted); margin-top: 32px; line-height: 1.5;"><strong>Implementation:</strong> SVG <code>feTurbulence</code> noise overlay via pseudo-element. Inline data URI, ~600 bytes.</p>
+  </aside>
+  <main class="preview">
+    <div class="surface">
+      <h3>Standard surface</h3>
+      <p>Texture is subtle on light surfaces. Registers in peripheral vision more than direct attention — adds tactility without competing with content.</p>
+    </div>
+    <div class="surface accent-surface">
+      <h3>Accent surface</h3>
+      <p>Texture reads more strongly against tinted backgrounds. Brand-tinted grain (Devalok preset) deepens the accent without changing its hue.</p>
+    </div>
+    <div class="surface dark-surface">
+      <h3>Dark surface</h3>
+      <p>Texture is most expressive on dark surfaces. Grain feels like film stock or matte paint, lifts cheaper-looking flat dark UI.</p>
+    </div>
+  </main>
+</div>
+<script>
+  const H = document.documentElement;
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    H.setAttribute('data-texture', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+  }));
+</script>
+</body>
+</html>

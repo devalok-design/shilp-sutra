@@ -32,23 +32,12 @@ export function AgentPromptHero({ prompt }: AgentPromptHeroProps) {
       className="relative overflow-hidden rounded-surface border border-accent-7 bg-linear-to-br from-accent-2 via-surface-2 to-accent-3 p-ds-06 md:p-ds-08"
     >
       <div className="flex flex-col gap-ds-05 max-w-3xl">
-        <div className="flex flex-wrap items-center gap-ds-02">
-          <span className="inline-flex items-center gap-ds-02 rounded-pill bg-accent-9 px-ds-03 py-ds-01 text-ds-xs font-semibold uppercase tracking-wide text-accent-fg">
-            Fastest path
-          </span>
-          <span className="text-ds-xs text-surface-fg-muted font-mono">
-            Claude Code · Cursor · Codex · Aider
-          </span>
-        </div>
-
         <h2 className="text-ds-3xl md:text-ds-4xl font-semibold text-surface-fg leading-tight text-balance">
-          One prompt. Your editor does the rest.
+          Paste it. Ship it.
         </h2>
 
         <p className="text-ds-md text-surface-fg-muted leading-relaxed max-w-2xl">
-          Copy the prompt. Paste it into your AI editor. It installs the package, fetches your
-          theme from this page, drops the CSS into your global stylesheet, and verifies — all
-          without you touching the files.
+          Your AI editor installs shilp-sutra, applies this theme, and verifies the result.
         </p>
 
         <div className="flex flex-wrap items-center gap-ds-03">
@@ -57,14 +46,14 @@ export function AgentPromptHero({ prompt }: AgentPromptHeroProps) {
             onClick={copy}
             className="inline-flex items-center gap-ds-02 rounded-control bg-accent-9 px-ds-06 py-ds-04 text-ds-md font-semibold text-accent-fg shadow-raised hover:bg-accent-10 transition-colors"
           >
-            {copied ? '✓ Prompt copied — paste into your editor' : 'Copy AI agent prompt'}
+            {copied ? '✓ Copied' : 'Copy prompt'}
           </button>
           <button
             type="button"
             onClick={() => setShowPrompt((v) => !v)}
             className="text-ds-sm text-surface-fg-muted hover:text-surface-fg underline underline-offset-2"
           >
-            {showPrompt ? 'Hide prompt' : 'Show prompt'}
+            {showPrompt ? 'Hide' : 'Show prompt'}
           </button>
         </div>
 
@@ -73,11 +62,6 @@ export function AgentPromptHero({ prompt }: AgentPromptHeroProps) {
             <CodeBlock code={prompt} language="markdown" />
           </div>
         )}
-
-        <p className="text-ds-xs text-surface-fg-subtle">
-          Prompt has your archetype + accent baked into the URL — your editor goes straight to the
-          fetch step, no persona triage needed.
-        </p>
       </div>
     </section>
   )

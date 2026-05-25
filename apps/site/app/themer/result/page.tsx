@@ -55,7 +55,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
             <PageHeader
               eyebrow="Themer · Result"
               title={ARCHETYPE_TITLES[archetype]}
-              subtitle="One prompt for your AI editor. Or paste the CSS by hand."
+              subtitle="One prompt. Or paste the CSS yourself."
               description={ARCHETYPE_DESCRIPTIONS[archetype]}
               meta={
                 <ThemeSummaryBar

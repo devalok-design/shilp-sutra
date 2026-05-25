@@ -1,7 +1,12 @@
 'use client'
 
-import { IconBrandGoogle, IconCheck, IconMail } from '@tabler/icons-react'
+import { IconCheck, IconMail } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
+import {
+  OAuthButton,
+  OAuthDivider,
+  OAuthGroup,
+} from '@devalok/shilp-sutra/ui/oauth-button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 const benefits = [
@@ -60,17 +65,13 @@ export function SignupBlock() {
             </Text>
           </header>
 
-          <Button variant="outline" size="lg" startIcon={<IconBrandGoogle size={16} />}>
-            Continue with Google
-          </Button>
+          <OAuthGroup>
+            <OAuthButton provider="google" size="lg" lastUsed />
+            <OAuthButton provider="apple" size="lg" />
+            <OAuthButton provider="github" size="lg" />
+          </OAuthGroup>
 
-          <div className="flex items-center gap-ds-03">
-            <hr className="flex-1 border-surface-border-subtle" />
-            <Text variant="body-xs" className="text-surface-fg-subtle uppercase">
-              or
-            </Text>
-            <hr className="flex-1 border-surface-border-subtle" />
-          </div>
+          <OAuthDivider />
 
           <form className="flex flex-col gap-ds-04">
             <label className="flex flex-col gap-ds-02">

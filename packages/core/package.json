@@ -275,6 +275,11 @@
       "import": "./dist/ui/number-input.js",
       "default": "./dist/ui/number-input.js"
     },
+    "./ui/oauth-button": {
+      "types": "./dist/ui/oauth-button/index.d.ts",
+      "import": "./dist/ui/oauth-button/index.js",
+      "default": "./dist/ui/oauth-button/index.js"
+    },
     "./ui/pagination": {
       "types": "./dist/ui/pagination.d.ts",
       "import": "./dist/ui/pagination.js",

@@ -358,6 +358,21 @@ export {
 // Other
 export { Link, type LinkProps } from './link'
 
+// OAuth / Social sign-in
+export {
+  type OAuthAppearance,
+  OAuthButton,
+  type OAuthButtonProps,
+  OAuthConnectionRow,
+  type OAuthConnectionRowProps,
+  OAuthDivider,
+  type OAuthDividerProps,
+  OAuthGroup,
+  type OAuthGroupProps,
+  type OAuthIntent,
+  type OAuthProvider,
+} from './oauth-button'
+
 // Utilities
 export { formatRelativeTime } from './lib/date-utils'
 export type { SpringPreset, TweenPreset } from './lib/motion'

@@ -89,7 +89,10 @@ export function BuiltWith() {
             <li key={c.name} className={CARD_RESTING + ' flex flex-col gap-ds-04'}>
               <header className="flex items-start gap-ds-03">
                 {c.domain ? (
-                  // eslint-disable-next-line @next/next/no-img-element
+                  // Intentional: <img> with Google favicon service — Next/Image
+                  // would proxy through /_next/image which adds latency for a
+                  // 32×32 favicon. The @next/next/no-img-element rule is not
+                  // registered in this project's flat ESLint config.
                   <img
                     src={`https://www.google.com/s2/favicons?domain=${c.domain}&sz=64`}
                     alt=""

@@ -291,7 +291,9 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
   },
 }
 
-const FALLBACK_PALETTE: AuroraPalette = {
+// Kept exported for parity with brand-bloom's palette contract — referenced by
+// stories and snapshot tests that may import it for fallback rendering.
+export const FALLBACK_PALETTE: AuroraPalette = {
   colors: ['#fafafa', '#fce8ef', '#e58fb0', '#a23f6a', '#c66b8e'],
   ground: '#fafafa',
   isDark: false,

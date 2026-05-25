@@ -277,13 +277,12 @@ export function LotusBloom({
           <div
             className="lotus-halo"
             style={{
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               ...({
                 '--halo-inset': `${-halo * 100}%`,
                 '--lotus-halo-color': stops.halo,
                 '--halo-delay': `${delay}ms`,
                 '--motion-phase': motionPhase,
-              } as any),
+              } as React.CSSProperties),
             }}
           />
         )}
@@ -292,11 +291,10 @@ export function LotusBloom({
         <div
           className="lotus-flower"
           style={{
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ...({
               '--lotus-rot': `${rotation}deg`,
               '--motion-phase': motionPhase,
-            } as any),
+            } as React.CSSProperties),
             width: '100%',
             height: '100%',
           }}
@@ -409,13 +407,12 @@ export function LotusBloom({
                     d={OUTER_PETAL_PATH}
                     fill={`url(#lp-outer-${id})`}
                     style={{
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       ...({
                         '--petal-rot': `${baseRot + rotJitter}deg`,
                         '--petal-scale': scaleJitter.toFixed(3),
                         '--petal-ty': `${tyJitter.toFixed(2)}px`,
                         '--petal-delay': `${delay + i * OUTER_PETAL_STAGGER_MS}ms`,
-                      } as any),
+                      } as React.CSSProperties),
                     }}
                   />
                 )
@@ -437,13 +434,12 @@ export function LotusBloom({
                     d={INNER_PETAL_PATH}
                     fill={`url(#lp-inner-${id})`}
                     style={{
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       ...({
                         '--petal-rot': `${baseRot + rotJitter}deg`,
                         '--petal-scale': scaleJitter.toFixed(3),
                         '--petal-ty': `${tyJitter.toFixed(2)}px`,
                         '--petal-delay': `${localDelay}ms`,
-                      } as any),
+                      } as React.CSSProperties),
                     }}
                   />
                 )
@@ -458,10 +454,9 @@ export function LotusBloom({
                 r="12"
                 fill={`url(#lp-core-${id})`}
                 style={{
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   ...({
                     '--core-delay': `${delay + INNER_RING_DELAY_MS + INNER_PETALS * INNER_PETAL_STAGGER_MS + 100}ms`,
-                  } as any),
+                  } as React.CSSProperties),
                 }}
               />
 
@@ -486,13 +481,12 @@ export function LotusBloom({
                     key={`stamen-${i}`}
                     className="lotus-petal"
                     style={{
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       ...({
                         '--petal-rot': `${baseRot + rotJitter}deg`,
                         '--petal-scale': 1,
                         '--petal-ty': '0px',
                         '--petal-delay': `${localDelay}ms`,
-                      } as any),
+                      } as React.CSSProperties),
                     }}
                   >
                     <line

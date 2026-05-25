@@ -10,4 +10,5 @@ export {
   type OAuthGroupProps,
   type OAuthIntent,
   type OAuthProvider,
+  type OAuthVariant,
 } from './oauth-button'

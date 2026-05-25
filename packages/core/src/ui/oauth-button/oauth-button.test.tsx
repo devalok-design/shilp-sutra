@@ -84,9 +84,9 @@ describe('OAuthButton', () => {
     expect(screen.getByTestId('ms')).toHaveAttribute('data-provider', 'microsoft')
   })
 
-  it('sets the data-oauth-appearance attribute', () => {
-    render(<OAuthButton provider="google" appearance="dark" data-testid="g" />)
-    expect(screen.getByTestId('g')).toHaveAttribute('data-oauth-appearance', 'dark')
+  it('sets the data-oauth-variant attribute', () => {
+    render(<OAuthButton provider="google" variant="dark" data-testid="g" />)
+    expect(screen.getByTestId('g')).toHaveAttribute('data-oauth-variant', 'dark')
   })
 
   it('forwards onClick', async () => {
@@ -113,6 +113,49 @@ describe('OAuthButton', () => {
   it('renders the lastUsed hint', () => {
     render(<OAuthButton provider="google" lastUsed />)
     expect(screen.getByText(/last used/i)).toBeInTheDocument()
+  })
+
+  it('lastUsedLabel overrides the visible badge text', () => {
+    render(<OAuthButton provider="google" lastUsed lastUsedLabel="Recent" />)
+    expect(screen.getByText('Recent')).toBeInTheDocument()
+    expect(screen.queryByText(/last used/i)).not.toBeInTheDocument()
+  })
+
+  it('lastUsedSlot (node) replaces the entire badge', () => {
+    render(
+      <OAuthButton
+        provider="google"
+        lastUsed
+        lastUsedSlot={<span data-testid="custom-badge">★</span>}
+      />,
+    )
+    expect(screen.getByTestId('custom-badge')).toBeInTheDocument()
+    expect(screen.queryByText(/last used/i)).not.toBeInTheDocument()
+  })
+
+  it('lastUsedSlot (function) receives the resolved label', () => {
+    render(
+      <OAuthButton
+        provider="google"
+        lastUsed
+        lastUsedLabel="Recent"
+        lastUsedSlot={({ label }) => <span data-testid="fn-badge">{label} →</span>}
+      />,
+    )
+    expect(screen.getByTestId('fn-badge')).toHaveTextContent('Recent →')
+  })
+
+  it.each(['solid', 'soft', 'outline', 'ghost', 'dark'] as const)(
+    'sets data-oauth-variant="%s"',
+    (variant) => {
+      render(<OAuthButton provider="google" variant={variant} data-testid="b" />)
+      expect(screen.getByTestId('b')).toHaveAttribute('data-oauth-variant', variant)
+    },
+  )
+
+  it('back-compat: `appearance` prop maps to variant', () => {
+    render(<OAuthButton provider="google" appearance="outline" data-testid="b" />)
+    expect(screen.getByTestId('b')).toHaveAttribute('data-oauth-variant', 'outline')
   })
 
   it('honours custom icon override', () => {

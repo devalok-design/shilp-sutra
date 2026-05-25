@@ -40,12 +40,18 @@ export type OAuthProvider =
 export type OAuthIntent = 'continue' | 'signin' | 'signup'
 
 /**
- * Visual treatment for the button.
- * - `brand`   — provider's brand background colour. Highest recognition.
- * - `outline` — DS-neutral outline with monochrome glyph. Best for uniform rows.
+ * Visual treatment for the button. Mirrors the Button component's variant axis
+ * with one extra "dark" entry for row coherence across providers.
+ * - `solid`   — provider's brand background colour. Highest recognition (default).
+ * - `soft`    — tinted, low-emphasis (DS surface-raised). Glyph carries brand identity.
+ * - `outline` — DS-neutral outline. Best for uniform rows on neutral backgrounds.
+ * - `ghost`   — transparent, no border. For dense / in-toolbar contexts.
  * - `dark`    — unified Apple-style black-on-white (light) / white-on-black (dark)
  *               across all providers, for visual consistency.
  */
+export type OAuthVariant = 'solid' | 'soft' | 'outline' | 'ghost' | 'dark'
+
+/** @deprecated Use `OAuthVariant`. `brand` maps to `solid`. */
 export type OAuthAppearance = 'brand' | 'outline' | 'dark'
 
 // ── Static metadata ─────────────────────────────────────────────
@@ -161,6 +167,14 @@ const brandClasses: Record<OAuthProvider, string> = {
 const darkUnifiedClasses =
   'bg-surface-fg text-surface-base border-surface-fg hover:opacity-90 active:opacity-80 dark:bg-surface-base dark:text-surface-fg dark:border-surface-fg dark:hover:opacity-90'
 
+// soft + ghost don't carry provider brand colour on the surface — the glyph
+// carries the identity. Keeps rows visually coherent in low-emphasis contexts.
+const softClasses =
+  'bg-surface-raised text-surface-fg border-transparent hover:bg-surface-raised-hover active:bg-surface-raised-active'
+
+const ghostClasses =
+  'bg-transparent text-surface-fg border-transparent hover:bg-surface-raised-hover active:bg-surface-raised-active'
+
 const ICON_PX: Record<string, number> = {
   xs: 14,
   sm: 16,
@@ -241,7 +255,12 @@ export interface OAuthButtonProps
   provider: OAuthProvider
   /** Verb in the default label. Default: `continue` */
   intent?: OAuthIntent
-  /** Visual treatment. Default: `brand` */
+  /**
+   * Visual treatment. Default: `solid`. Mirrors Button's variant axis with
+   * an extra `dark` for row coherence across providers.
+   */
+  variant?: OAuthVariant
+  /** @deprecated Use `variant`. `appearance="brand"` maps to `variant="solid"`. */
   appearance?: OAuthAppearance
   /** Override the default glyph (e.g. brand-multicolour SVG) */
   icon?: React.ReactNode
@@ -254,8 +273,23 @@ export interface OAuthButtonProps
    * full long form for screen readers.
    */
   compact?: boolean
-  /** Show "Last used" hint inline inside the button (right-aligned pill) */
+  /**
+   * Show "Last used" hint — a small pill anchored to the top-right corner of
+   * the button (sits ON the corner, half outside the button bounds).
+   */
   lastUsed?: boolean
+  /**
+   * Customise the "Last used" badge. Pass a ReactNode to replace the entire
+   * pill (use this for custom copy, icons, or styling), or a render fn that
+   * receives the default props for tweaks. Only rendered when `lastUsed` is
+   * also set so the wrapper / aria augmentation logic stays consistent.
+   *
+   * @example
+   * <OAuthButton provider="google" lastUsed lastUsedSlot={<MyBadge />} />
+   */
+  lastUsedSlot?: React.ReactNode | ((defaults: { label: string }) => React.ReactNode)
+  /** Override the visible badge label text. Default: "Last used". */
+  lastUsedLabel?: string
   /** Reassurance copy rendered below the button */
   helperText?: React.ReactNode
   /** Override the default label entirely (i18n / custom copy) */
@@ -267,11 +301,14 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     {
       provider,
       intent = 'continue',
-      appearance = 'brand',
+      variant: variantProp,
+      appearance,
       icon,
       iconOnly = false,
       compact = false,
       lastUsed = false,
+      lastUsedSlot,
+      lastUsedLabel = 'Last used',
       helperText,
       children,
       className,
@@ -287,13 +324,29 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     const glyphNode = icon ?? <DefaultGlyph size={iconPx} aria-hidden />
     const label = children ?? resolveLabel(provider, intent, compact)
 
-    let appearanceClass: string
-    if (appearance === 'dark') {
-      appearanceClass = darkUnifiedClasses
-    } else if (appearance === 'brand') {
-      appearanceClass = brandClasses[provider] || ''
-    } else {
-      appearanceClass = ''
+    // Resolve final variant. `appearance` is a deprecated alias kept for
+    // back-compat — map "brand" → "solid", others pass through.
+    const variant: OAuthVariant =
+      variantProp ??
+      (appearance === 'brand' ? 'solid' : appearance === 'outline' ? 'outline' : appearance === 'dark' ? 'dark' : 'solid')
+
+    let variantClass: string
+    switch (variant) {
+      case 'solid':
+        variantClass = brandClasses[provider] || ''
+        break
+      case 'soft':
+        variantClass = softClasses
+        break
+      case 'ghost':
+        variantClass = ghostClasses
+        break
+      case 'dark':
+        variantClass = darkUnifiedClasses
+        break
+      case 'outline':
+      default:
+        variantClass = ''
     }
 
     // aria-label always carries the long-form name so screen readers stay
@@ -303,22 +356,22 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
       ? `${longName}${lastUsed ? ' (last used)' : ''}`
       : undefined
 
-    // "Last used" pill — anchored to the top-right corner of the button,
-    // inside Button's `overflow-hidden` bounds. The corner placement reads as
-    // a notification badge attached to the button instead of competing with
-    // the centered label for horizontal space (v2 used vertical-center
-    // placement which crowded "Google" in compact rows).
+    // "Last used" badge — sits ON the top-right corner of the button,
+    // overlapping the button edge for the classic "notification badge"
+    // look. Rendered as a SIBLING to Button (not a child) because Button's
+    // `overflow-hidden` would clip a child poking outside the corner.
     //
+    // Composable: pass `lastUsedSlot` (ReactNode or render fn) to replace
+    // the default pill. `lastUsedLabel` swaps just the text inside it.
     // aria-label augments the accessible name with "(last used)".
-    const lastUsedNode = lastUsed && !iconOnly ? (
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1 right-1 inline-flex items-center gap-[3px] rounded-pill bg-accent-9 text-accent-fg px-1.5 py-[1px] text-[9px] leading-none font-semibold uppercase tracking-wide"
-      >
-        <span aria-hidden className="size-[4px] rounded-full bg-accent-fg/90" />
-        Last used
+    const defaultBadge = (
+      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-1.5 py-[2px] text-[9px] leading-none font-semibold uppercase tracking-wide shadow-overlay">
+        {lastUsedLabel}
       </span>
-    ) : null
+    )
+    const customBadge =
+      typeof lastUsedSlot === 'function' ? lastUsedSlot({ label: lastUsedLabel }) : lastUsedSlot
+    const renderedBadge = customBadge ?? defaultBadge
 
     const buttonEl = (
       <Button
@@ -330,21 +383,33 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
         startIcon={iconOnly ? undefined : (glyphNode as React.ReactElement)}
         aria-label={ariaLabelForButton}
         data-provider={provider}
-        data-oauth-appearance={appearance}
+        data-oauth-variant={variant}
         data-last-used={lastUsed || undefined}
-        className={cn(appearanceClass, className)}
+        className={cn(variantClass, className)}
         {...buttonProps}
       >
-        {iconOnly ? glyphNode : <>{label}{lastUsedNode}</>}
+        {iconOnly ? glyphNode : label}
       </Button>
     )
 
-    if (!helperText) return buttonEl
+    const showBadge = lastUsed && !iconOnly
+    if (!showBadge && !helperText) return buttonEl
 
     return (
-      <div className={cn('inline-flex flex-col', fullWidth && 'w-full')}>
+      <div className={cn('relative inline-flex flex-col', fullWidth && 'w-full')}>
         {buttonEl}
-        <span className="mt-ds-02 text-ds-sm text-surface-fg-subtle">{helperText}</span>
+        {showBadge ? (
+          <span
+            aria-hidden="true"
+            data-last-used-badge=""
+            className="pointer-events-none absolute -top-2 right-ds-03 z-10"
+          >
+            {renderedBadge}
+          </span>
+        ) : null}
+        {helperText ? (
+          <span className="mt-ds-02 text-ds-sm text-surface-fg-subtle">{helperText}</span>
+        ) : null}
       </div>
     )
   },

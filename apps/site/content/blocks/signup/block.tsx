@@ -144,13 +144,13 @@ export function SignupBlock() {
           <OAuthGroup reorderLastUsedFirst>
             <OAuthButton
               provider="google"
-              appearance="outline"
+              variant="outline"
               compact
               lastUsed
               icon={<GoogleGMark />}
             />
-            <OAuthButton provider="passkey" appearance="outline" compact />
-            <OAuthButton provider="sso" appearance="outline" compact />
+            <OAuthButton provider="passkey" variant="outline" compact />
+            <OAuthButton provider="sso" variant="outline" compact />
           </OAuthGroup>
 
           <Text variant="body-xs" className="text-surface-fg-subtle text-center">

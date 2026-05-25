@@ -97,7 +97,7 @@ function FilePreview({
   ...props
 }: FilePreviewProps) {
   const type = typeProp ?? detectType(url, mimeType)
-  const fallback = <Skeleton className="h-64 w-full rounded-ds-md" />
+  const fallback = <Skeleton className="h-64 w-full rounded-control" />
 
   return (
     <div className={cn('flex flex-col gap-ds-03', className)} {...props}>

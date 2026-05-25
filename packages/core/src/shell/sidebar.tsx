@@ -174,9 +174,9 @@ function CloseIcon({ className }: { className?: string }) {
 // Shared styles
 // -----------------------------------------------------------------------
 
-const navItemBase = 'relative gap-ds-04 rounded-ds-lg px-ds-04 py-ds-03 transition-colors duration-fast-02'
+const navItemBase = 'relative gap-ds-04 rounded-surface px-ds-04 py-ds-03 transition-colors duration-fast-02'
 const navItemActive =
-  "bg-accent-2 text-accent-11 after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-ds-full after:bg-accent-9 after:content-['']"
+  "bg-accent-2 text-accent-11 after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-pill after:bg-accent-9 after:content-['']"
 const navItemInactive = 'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg'
 
 // -----------------------------------------------------------------------
@@ -235,7 +235,7 @@ function NavLink({
             {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
             <CollapsibleTrigger asChild>
               <button
-                className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg group-data-[collapsible=icon]:hidden"
+                className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-control text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg group-data-[collapsible=icon]:hidden"
                 aria-label={`Toggle ${item.title}`}
               >
                 <ChevronRight className="h-4 w-4 transition-transform duration-fast-02 ease-productive-standard group-data-[state=open]/collapsible:rotate-90" />
@@ -437,12 +437,12 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
             {/* Promo banner */}
             {footer.promo && (
-              <div className="relative rounded-ds-lg border border-surface-border bg-surface-raised p-ds-04 shadow-raised">
+              <div className="relative rounded-surface border border-surface-border bg-surface-raised p-ds-04 shadow-raised">
                 {footer.promo.onDismiss && (
                   <button
                     onClick={footer.promo.onDismiss}
                     aria-label="Dismiss"
-                    className="absolute right-ds-02 top-ds-02 flex h-5 w-5 items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg"
+                    className="absolute right-ds-02 top-ds-02 flex h-5 w-5 items-center justify-center rounded-control text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg"
                   >
                     <CloseIcon className="h-3.5 w-3.5" />
                   </button>
@@ -460,14 +460,14 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                         <Link
                           href={footer.promo.action.href}
                           onClick={footer.promo.action.onClick}
-                          className="inline-flex self-start rounded-ds-md bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg transition-colors hover:bg-accent-10"
+                          className="inline-flex self-start rounded-control bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg transition-colors hover:bg-accent-10"
                         >
                           {footer.promo.action.label}
                         </Link>
                       ) : (
                         <button
                           onClick={footer.promo.action.onClick}
-                          className="inline-flex self-start rounded-ds-md bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg transition-colors hover:bg-accent-10"
+                          className="inline-flex self-start rounded-control bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg transition-colors hover:bg-accent-10"
                         >
                           {footer.promo.action.label}
                         </button>

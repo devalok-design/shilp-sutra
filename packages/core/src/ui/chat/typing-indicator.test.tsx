@@ -49,7 +49,7 @@ describe('TypingIndicator', () => {
     const { container } = render(
       <TypingIndicator users={[{ name: 'Sarah' }]} />,
     )
-    const dots = container.querySelectorAll('.rounded-full.bg-surface-fg-subtle')
+    const dots = container.querySelectorAll('.rounded-pill.bg-surface-fg-subtle')
     expect(dots.length).toBe(3)
   })
 })

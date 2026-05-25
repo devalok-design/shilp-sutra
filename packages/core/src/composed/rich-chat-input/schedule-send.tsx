@@ -104,7 +104,7 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
       <select
         value={hours12}
         onChange={(e) => setHour(Number(e.target.value))}
-        className="h-ds-sm rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+        className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-02 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         aria-label="Hour"
       >
         {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
@@ -118,7 +118,7 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
       <select
         value={minutes - (minutes % 5)}
         onChange={(e) => setMinute(Number(e.target.value))}
-        className="h-ds-sm rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+        className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-02 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         aria-label="Minute"
       >
         {Array.from({ length: 12 }, (_, i) => i * 5).map((m) => (
@@ -127,7 +127,7 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
       </select>
 
       {/* AM/PM toggle */}
-      <div className="inline-flex rounded-ds-md border border-surface-border-strong overflow-hidden">
+      <div className="inline-flex rounded-control border border-surface-border-strong overflow-hidden">
         <button
           type="button"
           onClick={() => togglePeriod(false)}
@@ -192,7 +192,7 @@ function CompactDateTimeEntry({
           value={dateStr}
           min={minDateStr}
           onChange={handleDateChange}
-          className="h-ds-sm rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-03 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+          className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-03 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         />
       </div>
 
@@ -285,7 +285,7 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
           <button
             type="button"
             onClick={() => setShowPicker(false)}
-            className="inline-flex items-center justify-center rounded-ds-md p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
+            className="inline-flex items-center justify-center rounded-control p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
             aria-label="Back to presets"
           >
             <Icon icon={IconX} size="sm" />
@@ -322,7 +322,7 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
           key={i}
           type="button"
           onClick={() => handlePreset(preset.date)}
-          className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
+          className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
         >
           <Icon icon={IconClock} size="sm" className="shrink-0 text-surface-fg-muted" />
           {preset.label}
@@ -332,7 +332,7 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
       <button
         type="button"
         onClick={() => setShowPicker(true)}
-        className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
+        className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
       >
         <Icon icon={IconCalendarEvent} size="sm" className="shrink-0 text-accent-11" />
         Pick date & time...
@@ -341,7 +341,7 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
         <button
           type="button"
           onClick={() => { onOpenDialog(); onClose() }}
-          className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
+          className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
         >
           <Icon icon={IconCalendarEvent} size="sm" className="shrink-0 text-surface-fg-muted" />
           Open full picker...
@@ -439,7 +439,7 @@ export function ScheduleBanner({ date, onClear, onEdit }: { date: Date; onClear:
           <button
             type="button"
             onClick={onEdit}
-            className="inline-flex shrink-0 items-center justify-center rounded-ds-sm p-ds-01 hover:bg-accent-3 transition-colors"
+            className="inline-flex shrink-0 items-center justify-center rounded-control-inner p-ds-01 hover:bg-accent-3 transition-colors"
             aria-label="Edit schedule"
           >
             <Icon icon={IconPencil} size="xs" />
@@ -448,7 +448,7 @@ export function ScheduleBanner({ date, onClear, onEdit }: { date: Date; onClear:
         <button
           type="button"
           onClick={onClear}
-          className="inline-flex shrink-0 items-center justify-center rounded-ds-sm p-ds-01 hover:bg-accent-3 transition-colors"
+          className="inline-flex shrink-0 items-center justify-center rounded-control-inner p-ds-01 hover:bg-accent-3 transition-colors"
           aria-label="Cancel schedule"
         >
           <Icon icon={IconX} size="xs" />

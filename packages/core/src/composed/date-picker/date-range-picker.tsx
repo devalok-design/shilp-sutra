@@ -204,7 +204,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
           aria-label={rangeStart && rangeEnd ? `Change date range, ${displayText()}` : placeholder}
           {...props}
           className={cn(
-            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-ds-lg border border-surface-border-strong bg-surface-overlay px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
+            'inline-flex h-ds-sm-plus items-center gap-ds-03 rounded-surface border border-surface-border-strong bg-surface-overlay px-ds-04 text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:border-surface-border-strong',
             'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
             className,

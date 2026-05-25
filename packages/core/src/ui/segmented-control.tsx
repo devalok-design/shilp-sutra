@@ -125,7 +125,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
         aria-label={props['aria-label'] ?? 'Segmented control'}
         onKeyDown={handleKeyDown}
         className={cn(
-          'inline-flex p-[3px] rounded-ds-lg',
+          'inline-flex p-[3px] rounded-pill',
           'bg-surface-raised-hover border border-surface-border-subtle shadow-inset',
           disabled && 'opacity-action-disabled pointer-events-none',
           className,
@@ -147,7 +147,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
                 disabled={disabled}
                 onClick={() => onSelect(option.id)}
                 className={cn(
-                  'relative inline-flex items-center justify-center gap-ds-02 rounded-ds-md',
+                  'relative inline-flex items-center justify-center gap-ds-02 rounded-pill',
                   'font-medium transition-colors duration-fast-02 ease-productive-standard',
                   'outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
                   buttonSize,
@@ -161,7 +161,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
                   <motion.span
                     layoutId="segment-pill"
                     className={cn(
-                      'absolute inset-0 rounded-ds-md pointer-events-none',
+                      'absolute inset-0 rounded-pill pointer-events-none',
                       pillStyles[variant],
                     )}
                     transition={pillSpring}

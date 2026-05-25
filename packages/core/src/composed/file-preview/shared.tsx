@@ -20,7 +20,7 @@ import { cn } from '../../ui/lib/utils'
 
 export function ErrorFallback({ message, url }: { message: string; url: string }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-ds-04 rounded-ds-md border border-surface-border bg-surface-sunken p-ds-08 text-center">
+    <div className="flex flex-col items-center justify-center gap-ds-04 rounded-control border border-surface-border bg-surface-sunken p-ds-08 text-center">
       <Icon icon={IconAlertTriangle} size="2xl" className="text-warning-9" />
       <div>
         <p className="text-ds-md font-semibold text-surface-fg">Preview unavailable</p>
@@ -44,7 +44,7 @@ export function Toolbar({ children, className }: { children: React.ReactNode; cl
       animate={{ opacity: 1, y: 0 }}
       transition={tweens.fade}
       className={cn(
-        'flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-overlay/95 px-ds-02 py-ds-01 shadow-floating backdrop-blur-xs',
+        'flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-overlay/95 px-ds-02 py-ds-01 shadow-floating backdrop-blur-xs',
         className,
       )}
     >
@@ -116,7 +116,7 @@ export function VolumeControl({
       <div className="w-0 overflow-hidden group-hover/vol:w-20 transition-[width] duration-200 ease-productive-standard flex items-center">
         <div
           ref={trackRef}
-          className={cn('relative w-full h-1 rounded-full cursor-pointer', trackBg)}
+          className={cn('relative w-full h-1 rounded-pill cursor-pointer', trackBg)}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -129,13 +129,13 @@ export function VolumeControl({
         >
           {/* Fill */}
           <div
-            className={cn('absolute left-0 top-0 h-full rounded-full transition-[width] duration-75', fillBg)}
+            className={cn('absolute left-0 top-0 h-full rounded-pill transition-[width] duration-75', fillBg)}
             style={{ width: `${displayVolume * 100}%` }}
           />
           {/* Thumb */}
           <div
             className={cn(
-              'absolute top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full shadow-raised transition-opacity',
+              'absolute top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-pill shadow-raised transition-opacity',
               thumbBg,
               dragging ? 'opacity-100 scale-110' : 'opacity-0 group-hover/vol:opacity-100',
             )}

@@ -409,7 +409,7 @@ export function DataTable<TData, TValue>({
         type="button"
         onClick={() => row.toggleExpanded()}
         aria-label={row.getIsExpanded() ? 'Collapse row' : 'Expand row'}
-        className="flex items-center justify-center p-ds-01 rounded-ds-sm hover:bg-surface-raised transition-colors"
+        className="flex items-center justify-center p-ds-01 rounded-control-inner hover:bg-surface-raised transition-colors"
       >
         <Icon
           icon={IconChevronRight}

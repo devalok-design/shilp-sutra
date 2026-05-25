@@ -196,7 +196,7 @@ export const AreaChart = React.forwardRef<HTMLDivElement, AreaChartProps>(
                             className="flex items-center gap-ds-02"
                           >
                             <span
-                              className="inline-block h-2 w-2 rounded-ds-full"
+                              className="inline-block h-2 w-2 rounded-pill"
                               style={{ backgroundColor: colors[sIdx] }}
                             />
                             <span className="text-surface-fg-muted">

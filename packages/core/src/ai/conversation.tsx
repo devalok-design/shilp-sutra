@@ -108,7 +108,7 @@ function UserMessage({
 }) {
   if (reducedMotion) {
     return (
-      <div className="bg-surface-raised rounded-ds-lg px-ds-05 py-ds-04">
+      <div className="bg-surface-raised rounded-surface px-ds-05 py-ds-04">
         <p className="text-ds-sm text-surface-fg">{message.content}</p>
       </div>
     )
@@ -116,7 +116,7 @@ function UserMessage({
 
   return (
     <motion.div
-      className="bg-surface-raised rounded-ds-lg px-ds-05 py-ds-04"
+      className="bg-surface-raised rounded-surface px-ds-05 py-ds-04"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={springs.snappy}
@@ -213,7 +213,7 @@ function ProcessingIndicator({
           [0, 1, 2].map((i) => (
             <motion.span
               key={i}
-              className="h-1.5 w-1.5 rounded-full bg-accent-9"
+              className="h-1.5 w-1.5 rounded-pill bg-accent-9"
               animate={{ scale: [1, 1.4, 1], opacity: [0.4, 1, 0.4] }}
               transition={{
                 duration: 1.4,
@@ -238,7 +238,7 @@ function ScrollToBottomPill({ onClick }: { onClick: () => void }) {
     <motion.button
       role="button"
       aria-label="Scroll to latest response"
-      className="absolute bottom-ds-04 left-1/2 -translate-x-1/2 z-10 flex items-center gap-ds-02 bg-accent-9 text-accent-fg text-ds-xs font-medium rounded-full px-ds-04 py-ds-02 shadow-floating"
+      className="absolute bottom-ds-04 left-1/2 -translate-x-1/2 z-10 flex items-center gap-ds-02 bg-accent-9 text-accent-fg text-ds-xs font-medium rounded-pill px-ds-04 py-ds-02 shadow-floating"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}

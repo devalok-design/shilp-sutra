@@ -18,12 +18,12 @@ describe('ColorSwatch', () => {
 
   it('defaults to circle shape', () => {
     render(<ColorSwatch color="#000" data-testid="swatch" />)
-    expect(screen.getByTestId('swatch')).toHaveClass('rounded-full')
+    expect(screen.getByTestId('swatch')).toHaveClass('rounded-pill')
   })
 
   it('renders square shape', () => {
     render(<ColorSwatch color="#000" shape="square" data-testid="swatch" />)
-    expect(screen.getByTestId('swatch')).not.toHaveClass('rounded-full')
+    expect(screen.getByTestId('swatch')).not.toHaveClass('rounded-pill')
     expect(screen.getByTestId('swatch')).toHaveClass('rounded-none')
   })
 

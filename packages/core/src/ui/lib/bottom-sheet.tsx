@@ -65,7 +65,7 @@ export function BottomSheet({
               <motion.div
                 ref={sheetRef}
                 className={cn(
-                  'fixed inset-x-0 bottom-0 z-modal max-h-[85vh] overflow-y-auto rounded-t-ds-xl border-t border-surface-border-strong bg-surface-overlay shadow-overlay outline-hidden',
+                  'fixed inset-x-0 bottom-0 z-modal max-h-[85vh] overflow-y-auto rounded-t-overlay-lg border-t border-surface-border-strong bg-surface-overlay shadow-overlay outline-hidden',
                   className,
                 )}
                 initial={{ y: '100%' }}
@@ -79,7 +79,7 @@ export function BottomSheet({
               >
                 {dragHandle && (
                   <div className="flex justify-center pt-ds-03 pb-ds-02">
-                    <div className="h-1 w-8 rounded-ds-full bg-surface-border" />
+                    <div className="h-1 w-8 rounded-pill bg-surface-border" />
                   </div>
                 )}
                 <div className="px-ds-05 pb-ds-06">

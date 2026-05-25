@@ -118,8 +118,8 @@ function LoadingSkeleton({ compact }: { compact: boolean }) {
     <div className={cn('flex flex-col', compact ? 'gap-1' : 'gap-3')}>
       {[0, 1, 2].map((i) => (
         <div key={i} className="flex items-center gap-ds-03">
-          <Skeleton className="h-2 w-2 shrink-0 rounded-ds-full" />
-          {!compact && <Skeleton className="h-4 w-4 shrink-0 rounded-ds-full" />}
+          <Skeleton className="h-2 w-2 shrink-0 rounded-pill" />
+          {!compact && <Skeleton className="h-4 w-4 shrink-0 rounded-pill" />}
           <Skeleton className={cn('flex-1', compact ? 'h-3' : 'h-4')} />
           <Skeleton className="h-3 w-12" />
         </div>
@@ -149,7 +149,7 @@ function ActivityEntry({
       {/* Dot */}
       <div
         className={cn(
-          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface-base',
+          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-pill ring-2 ring-surface-base',
           dotColorMap[color],
         )}
       />
@@ -179,7 +179,7 @@ function ActivityEntry({
             <span
               className={cn(
                 'text-surface-fg-muted',
-                item.detail && 'cursor-pointer hover:underline hover:bg-surface-raised rounded-ds-md',
+                item.detail && 'cursor-pointer hover:underline hover:bg-surface-raised rounded-control',
               )}
               onClick={handleActionClick}
               role={item.detail ? 'button' : undefined}
@@ -245,7 +245,7 @@ function CustomEntry({
       {/* Dot — same as ActivityEntry */}
       <div
         className={cn(
-          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-ds-full ring-2 ring-surface-base',
+          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-pill ring-2 ring-surface-base',
           dotColorMap[color],
         )}
       />

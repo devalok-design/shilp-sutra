@@ -43,7 +43,7 @@ function getColorClasses(variant: 'subtle' | 'solid' | 'outline' | 'soft', color
 }
 
 const badgeVariants = cva(
-  'relative inline-flex items-center rounded-full font-sans font-medium overflow-hidden isolate transition-[color,background-color,border-color,padding] duration-fast-02 ease-productive-standard select-none [&>span:not([data-grain])]:relative [&>span:not([data-grain])]:z-[2]',
+  'relative inline-flex items-center rounded-pill font-sans font-medium overflow-hidden isolate transition-[color,background-color,border-color,padding] duration-fast-02 ease-productive-standard select-none [&>span:not([data-grain])]:relative [&>span:not([data-grain])]:z-[2]',
   {
     variants: {
       variant: {
@@ -251,11 +251,11 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
               aria-hidden="true"
             >
               <motion.span
-                className="absolute inset-0 rounded-full bg-current"
+                className="absolute inset-0 rounded-pill bg-current"
                 animate={prefersReducedMotion ? undefined : { scale: [1, 2.5], opacity: [0.35, 0] }}
                 transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, repeatDelay: 0.3, duration: 1.2, ease: [0, 0, 0.58, 1] }}
               />
-              <span className="relative h-1.5 w-1.5 rounded-full bg-current" />
+              <span className="relative h-1.5 w-1.5 rounded-pill bg-current" />
             </motion.span>
           )}
         </AnimatePresence>
@@ -307,7 +307,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
               onDismiss()
             }}
             className={cn(
-              'shrink-0 rounded-full text-current/60 hover:text-current hover:bg-current/10 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-accent-9',
+              'shrink-0 rounded-pill text-current/60 hover:text-current hover:bg-current/10 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-accent-9',
               resolvedSize === 'xs'
                 ? 'p-0 -mr-0.5 min-w-[16px] min-h-[16px]'
                 : 'p-px',

@@ -28,7 +28,7 @@ const groupRingMap: Record<string, string> = {
 }
 
 const avatarSizeVariants = cva(
-  'shrink-0 overflow-hidden rounded-ds-full border-2',
+  'shrink-0 overflow-hidden rounded-pill border-2',
   {
     variants: {
       size: {
@@ -173,7 +173,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                 <div
                   key={key}
                   className={cn(
-                    'shrink-0 rounded-ds-full',
+                    'shrink-0 rounded-pill',
                     index > 0 && overlapClass,
                     spotlightClasses,
                     user.ring && user.ring !== 'none' && groupRingMap[user.ring],
@@ -189,7 +189,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               <div
                 key={key}
                 className={cn(
-                  'relative shrink-0 rounded-ds-full',
+                  'relative shrink-0 rounded-pill',
                   index > 0 && overlapClass,
                   spotlightClasses,
                   user.ring && user.ring !== 'none' && groupRingMap[user.ring],
@@ -217,7 +217,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                       exit={{ scale: 0, opacity: 0 }}
                       transition={springs.snappy}
                       className={cn(
-                        'absolute top-0 right-0 rounded-ds-full ring-1 ring-surface-raised',
+                        'absolute top-0 right-0 rounded-pill ring-1 ring-surface-raised',
                         indicatorDotClass,
                         user.indicator === 'lead' ? 'bg-accent-9' :
                         user.indicator === 'admin' ? 'bg-accent-9' : '',

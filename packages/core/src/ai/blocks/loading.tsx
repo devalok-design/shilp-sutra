@@ -19,7 +19,7 @@ import type { BlockComponentProps, LoadingBlockData, ProcessingStep } from '../t
 function StepSpinner() {
   return (
     <motion.span
-      className="inline-block h-4 w-4 rounded-full border-2 border-current border-t-transparent text-accent-9"
+      className="inline-block h-4 w-4 rounded-pill border-2 border-current border-t-transparent text-accent-9"
       animate={{ rotate: 360 }}
       transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
       aria-hidden="true"

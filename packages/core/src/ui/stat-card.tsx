@@ -175,9 +175,9 @@ function ProgressBar({ progress, label }: { progress: number; label: string }) {
     clamped >= 90 ? 'bg-success-9' : clamped >= 70 ? 'bg-warning-9' : 'bg-accent-9'
 
   return (
-    <div className="h-1 w-full rounded-ds-full bg-surface-raised mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
+    <div className="h-1 w-full rounded-pill bg-surface-raised mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
       <div
-        className={cn('h-full rounded-ds-full transition-[width] duration-moderate-02 ease-productive-standard', barColor)}
+        className={cn('h-full rounded-pill transition-[width] duration-moderate-02 ease-productive-standard', barColor)}
         style={{ width: `${clamped}%` }}
       />
     </div>
@@ -219,15 +219,15 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <div
           ref={ref}
           className={cn(
-            'rounded-ds-lg border border-surface-border bg-surface-raised shadow-raised p-ds-05b',
+            'rounded-surface border border-surface-border bg-surface-raised shadow-raised p-ds-05b',
             accent && `border-l-[3px] ${accentBorderMap[accent]}`,
             className,
           )}
           {...props}
         >
-          <div className="h-ds-04 w-24 rounded-ds-sm bg-skeleton-base animate-pulse mb-ds-05" />
-          <div className="h-ds-sm w-32 rounded-ds-md bg-skeleton-base animate-pulse mb-ds-03" />
-          <div className="h-3 w-16 rounded-ds-sm bg-skeleton-base animate-pulse" />
+          <div className="h-ds-04 w-24 rounded-control-inner bg-skeleton-base animate-pulse mb-ds-05" />
+          <div className="h-ds-sm w-32 rounded-control bg-skeleton-base animate-pulse mb-ds-03" />
+          <div className="h-3 w-16 rounded-control-inner bg-skeleton-base animate-pulse" />
         </div>
       )
     }
@@ -356,7 +356,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     )
 
     const cardClasses = cn(
-      'rounded-ds-lg border border-surface-border bg-surface-raised shadow-raised p-ds-05b',
+      'rounded-surface border border-surface-border bg-surface-raised shadow-raised p-ds-05b',
       accent && `border-l-[3px] ${accentBorderMap[accent]}`,
       isClickable &&
         'cursor-pointer hover:shadow-raised-hover hover:border-surface-border-strong transition-[box-shadow,border-color] duration-fast-02 ease-productive-standard group',

@@ -41,7 +41,7 @@ const MentionList = React.forwardRef<MentionListRef, MentionListProps>(
     if (!items.length) return null
 
     return (
-      <div role="listbox" aria-label="Mention suggestions" className="z-popover overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover">
+      <div role="listbox" aria-label="Mention suggestions" className="z-popover overflow-hidden rounded-control border border-surface-border-strong bg-surface-overlay shadow-raised-hover">
         {items.map((item, index) => (
           <button
             key={item.id}
@@ -55,9 +55,9 @@ const MentionList = React.forwardRef<MentionListRef, MentionListProps>(
             )}
           >
             {item.avatar ? (
-              <img src={item.avatar} alt="" className="h-ico-md w-ico-md rounded-ds-full object-cover" />
+              <img src={item.avatar} alt="" className="h-ico-md w-ico-md rounded-pill object-cover" />
             ) : (
-              <span className="flex h-ico-md w-ico-md items-center justify-center rounded-ds-full bg-accent-2 text-[10px] font-semibold text-accent-11">
+              <span className="flex h-ico-md w-ico-md items-center justify-center rounded-pill bg-accent-2 text-[10px] font-semibold text-accent-11">
                 {item.label.charAt(0).toUpperCase()}
               </span>
             )}

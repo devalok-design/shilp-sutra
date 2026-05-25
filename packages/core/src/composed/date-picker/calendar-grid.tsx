@@ -193,7 +193,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(subMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Previous month"
           >
             <Icon icon={IconChevronLeft} size="sm" stroke="light" />
@@ -205,7 +205,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           className={cn(
             'text-ds-md font-semibold text-surface-fg',
             onHeaderClick &&
-              'cursor-pointer rounded-ds-md px-ds-02 transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover',
+              'cursor-pointer rounded-control px-ds-02 transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover',
           )}
           aria-label="Switch to month/year view"
         >
@@ -217,7 +217,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <button
             type="button"
             onClick={() => onMonthChange(addMonths(currentMonth, 1))}
-            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Next month"
           >
             <Icon icon={IconChevronRight} size="sm" stroke="light" />
@@ -270,13 +270,13 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
               aria-selected={isSelected || edge || undefined}
               aria-disabled={!inMonth || disabled || undefined}
               className={cn(
-                'relative flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-ds-md text-ds-md font-body transition-colors duration-fast-01 ease-productive-standard',
+                'relative flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-control text-ds-md font-body transition-colors duration-fast-01 ease-productive-standard',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && disabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&
                   'text-surface-fg hover:bg-surface-raised-hover',
                 inRange && !edge &&
-                  'rounded-ds-none bg-surface-raised-hover text-surface-fg',
+                  'rounded-none bg-surface-raised-hover text-surface-fg',
                 (isSelected || edge) &&
                   'bg-accent-9 text-accent-fg hover:bg-accent-10',
                 isToday && !isSelected && !edge && !disabled &&
@@ -290,7 +290,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
                     <span
                       key={idx}
                       data-event-dot
-                      className="h-[4px] w-[4px] rounded-ds-full"
+                      className="h-[4px] w-[4px] rounded-pill"
                       style={{ backgroundColor: evt.color ?? 'var(--color-accent-9)' }}
                     />
                   ))}

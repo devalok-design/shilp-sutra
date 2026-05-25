@@ -92,7 +92,7 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
   if (error) return <ErrorFallback message="Could not load audio" url={url} />
 
   return (
-    <div ref={containerRef} className="rounded-ds-lg border border-surface-border bg-surface-raised shadow-raised overflow-hidden" tabIndex={-1}>
+    <div ref={containerRef} className="rounded-surface border border-surface-border bg-surface-raised shadow-raised overflow-hidden" tabIndex={-1}>
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio
         ref={audioRef}
@@ -127,7 +127,7 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
         {/* Hover time tooltip */}
         {hoverTime !== null && (
           <div
-            className="absolute -top-7 -translate-x-1/2 rounded-ds-sm bg-surface-overlay px-1.5 py-0.5 text-[10px] font-mono text-surface-fg shadow-floating pointer-events-none"
+            className="absolute -top-7 -translate-x-1/2 rounded-control-inner bg-surface-overlay px-1.5 py-0.5 text-[10px] font-mono text-surface-fg shadow-floating pointer-events-none"
             style={{ left: `${(hoverTime / (duration || 1)) * 100}%` }}
           >
             {formatTime(hoverTime)}
@@ -135,7 +135,7 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
         )}
         {/* Scrub handle */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-full bg-accent-9 shadow-raised opacity-0 group-hover/bar:opacity-100 transition-opacity"
+          className="absolute top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-pill bg-accent-9 shadow-raised opacity-0 group-hover/bar:opacity-100 transition-opacity"
           style={{ left: `${progress}%`, marginLeft: '-5px' }}
         />
       </div>

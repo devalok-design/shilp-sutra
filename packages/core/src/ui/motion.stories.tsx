@@ -49,7 +49,7 @@ function AnimateButton({ active, onClick }: { active: boolean; onClick: () => vo
     <button
       type="button"
       onClick={onClick}
-      className="rounded-ds-md border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised transition-colors duration-fast-01 ease-productive-standard"
+      className="rounded-control border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised transition-colors duration-fast-01 ease-productive-standard"
     >
       {active ? 'Reset' : 'Animate'}
     </button>
@@ -70,7 +70,7 @@ function SectionLabel({ children, sub }: { children: React.ReactNode; sub?: stri
 
 function TokenBadge({ children }: { children: React.ReactNode }) {
   return (
-    <code className="inline-block rounded-ds-sm bg-surface-raised px-ds-02b py-ds-01 text-ds-xs text-surface-fg-muted font-mono">
+    <code className="inline-block rounded-control-inner bg-surface-raised px-ds-02b py-ds-01 text-ds-xs text-surface-fg-muted font-mono">
       {children}
     </code>
   )
@@ -93,7 +93,7 @@ export const SpringPresets: StoryObj = {
         <button
           type="button"
           onClick={() => setKey((k) => k + 1)}
-          className="rounded-ds-md bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg"
+          className="rounded-control bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg"
         >
           Replay springs
         </button>
@@ -101,9 +101,9 @@ export const SpringPresets: StoryObj = {
           {presets.map(([name, config]) => (
             <div key={`${name}-${key}`} className="flex items-center gap-ds-04">
               <code className="w-32 text-ds-xs text-surface-fg-muted font-mono">{name}</code>
-              <div className="relative h-8 flex-1 rounded-ds-sm bg-surface-raised overflow-hidden">
+              <div className="relative h-8 flex-1 rounded-control-inner bg-surface-raised overflow-hidden">
                 <MotionSlide show direction="right">
-                  <div className="h-8 w-8 rounded-ds-sm bg-accent-9" />
+                  <div className="h-8 w-8 rounded-control-inner bg-accent-9" />
                 </MotionSlide>
               </div>
             </div>
@@ -137,9 +137,9 @@ export const EasingComparison: StoryObj = {
             {categories.map((cat) => (
               <div key={cat} className="mb-ds-03">
                 <code className="text-ds-xs text-surface-fg-muted">{cat}</code>
-                <div className="relative h-6 mt-ds-01 rounded-ds-sm bg-surface-raised overflow-hidden">
+                <div className="relative h-6 mt-ds-01 rounded-control-inner bg-surface-raised overflow-hidden">
                   <div
-                    className="absolute inset-y-0 left-0 rounded-ds-sm bg-accent-9"
+                    className="absolute inset-y-0 left-0 rounded-control-inner bg-accent-9"
                     style={{
                       width: active ? '100%' : '0%',
                       transition: `width 400ms var(--ease-productive-${cat})`,
@@ -156,9 +156,9 @@ export const EasingComparison: StoryObj = {
             {categories.map((cat) => (
               <div key={cat} className="mb-ds-03">
                 <code className="text-ds-xs text-surface-fg-muted">{cat}</code>
-                <div className="relative h-6 mt-ds-01 rounded-ds-sm bg-surface-raised overflow-hidden">
+                <div className="relative h-6 mt-ds-01 rounded-control-inner bg-surface-raised overflow-hidden">
                   <div
-                    className="absolute inset-y-0 left-0 rounded-ds-sm bg-accent-9"
+                    className="absolute inset-y-0 left-0 rounded-control-inner bg-accent-9"
                     style={{
                       width: active ? '100%' : '0%',
                       transition: `width 400ms var(--ease-expressive-${cat})`,
@@ -197,7 +197,7 @@ export const TweenPresets: StoryObj = {
             <div key={name} className="flex items-center gap-ds-04">
               <code className="w-32 text-ds-xs text-surface-fg-muted font-mono">{name}</code>
               <MotionFade show={show}>
-                <div className="h-8 w-32 rounded-ds-sm bg-accent-9" />
+                <div className="h-8 w-32 rounded-control-inner bg-accent-9" />
               </MotionFade>
             </div>
           ))}
@@ -435,7 +435,7 @@ export const MediumReveals: StoryObj = {
                     zooms and slides — creating a dramatic, attention-drawing moment.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="rounded-ds-md bg-surface-raised p-ds-04 space-y-ds-02">
+                <div className="rounded-control bg-surface-raised p-ds-04 space-y-ds-02">
                   <div className="flex items-center gap-ds-02">
                     <TokenBadge>duration-moderate-02 (240ms)</TokenBadge>
                     <span className="text-ds-xs text-surface-fg-muted">overlay + content</span>
@@ -471,7 +471,7 @@ export const MediumReveals: StoryObj = {
                     </SheetDescription>
                   </SheetHeader>
                   <div className="mt-ds-06 space-y-ds-04">
-                    <div className="rounded-ds-md bg-surface-raised p-ds-04">
+                    <div className="rounded-control bg-surface-raised p-ds-04">
                       <TokenBadge>ease-productive-standard duration-moderate-02</TokenBadge>
                     </div>
                   </div>
@@ -643,7 +643,7 @@ export const TransitionUtilities: StoryObj = {
             <TokenBadge>tweens.fade</TokenBadge>
           </div>
           <MotionFade show={fadeOpen}>
-            <div className="rounded-ds-md bg-surface-raised border border-surface-border-strong p-ds-05">
+            <div className="rounded-control bg-surface-raised border border-surface-border-strong p-ds-05">
               <p className="text-ds-sm text-surface-fg-muted">
                 This content fades in and out with <code className="font-mono">opacity</code> via AnimatePresence.
               </p>
@@ -661,7 +661,7 @@ export const TransitionUtilities: StoryObj = {
             <TokenBadge>springs.snappy</TokenBadge>
           </div>
           <MotionCollapse show={collapseOpen}>
-            <div className="rounded-ds-md bg-surface-raised border border-surface-border-strong p-ds-05">
+            <div className="rounded-control bg-surface-raised border border-surface-border-strong p-ds-05">
               <p className="text-ds-sm text-surface-fg-muted">
                 Height-based collapse/expand with spring physics. Great for accordion-like reveals
                 where content pushes below it.
@@ -680,7 +680,7 @@ export const TransitionUtilities: StoryObj = {
             <TokenBadge>springs.gentle</TokenBadge>
           </div>
           <MotionScale show={growOpen}>
-            <div className="rounded-ds-md bg-surface-raised border border-surface-border-strong p-ds-05 inline-block">
+            <div className="rounded-control bg-surface-raised border border-surface-border-strong p-ds-05 inline-block">
               <p className="text-ds-sm text-surface-fg-muted">
                 Scales from 0.96 to 1 with opacity. Good for popover-like reveals.
               </p>
@@ -697,7 +697,7 @@ export const TransitionUtilities: StoryObj = {
             </Button>
             <TokenBadge>springs.gentle</TokenBadge>
           </div>
-          <div className="overflow-hidden rounded-ds-md border border-surface-border-strong">
+          <div className="overflow-hidden rounded-control border border-surface-border-strong">
             <MotionSlide show={slideOpen} direction="bottom">
               <div className="bg-surface-raised p-ds-05">
                 <p className="text-ds-sm text-surface-fg-muted">
@@ -745,7 +745,7 @@ export const ScenarioFormSubmission: StoryObj = {
           </p>
         </div>
 
-        <div className="rounded-ds-xl border border-surface-border-strong bg-surface-base p-ds-06 space-y-ds-05">
+        <div className="rounded-overlay-lg border border-surface-border-strong bg-surface-base p-ds-06 space-y-ds-05">
           <div className="space-y-ds-02">
             <Label>Email address</Label>
             <Input
@@ -779,7 +779,7 @@ export const ScenarioFormSubmission: StoryObj = {
 
           {/* Success feedback */}
           <MotionFade open={step === 'success'}>
-            <div className="flex items-center gap-ds-03 rounded-ds-md bg-success-3 border border-success-7 p-ds-04">
+            <div className="flex items-center gap-ds-03 rounded-control bg-success-3 border border-success-7 p-ds-04">
               <IconCheck className="h-ico-md w-ico-md text-success-11" />
               <div>
                 <p className="text-ds-sm font-medium text-success-11">Message sent successfully</p>
@@ -792,15 +792,15 @@ export const ScenarioFormSubmission: StoryObj = {
         <div className="space-y-ds-02">
           <p className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wide">Motion breakdown</p>
           <div className="grid grid-cols-3 gap-ds-03">
-            <div className="rounded-ds-md bg-surface-raised p-ds-03 text-center">
+            <div className="rounded-control bg-surface-raised p-ds-03 text-center">
               <p className="text-ds-xs font-mono text-surface-fg-muted">fast-01</p>
               <p className="text-ds-xs text-surface-fg">Input focus</p>
             </div>
-            <div className="rounded-ds-md bg-surface-raised p-ds-03 text-center">
+            <div className="rounded-control bg-surface-raised p-ds-03 text-center">
               <p className="text-ds-xs font-mono text-surface-fg-muted">continuous</p>
               <p className="text-ds-xs text-surface-fg">Button spinner</p>
             </div>
-            <div className="rounded-ds-md bg-surface-raised p-ds-03 text-center">
+            <div className="rounded-control bg-surface-raised p-ds-03 text-center">
               <p className="text-ds-xs font-mono text-surface-fg-muted">moderate-02</p>
               <p className="text-ds-xs text-surface-fg">Success fade</p>
             </div>
@@ -850,7 +850,7 @@ export const ScenarioDashboardLoading: StoryObj = {
           </div>
         </div>
 
-        <div className="rounded-ds-xl border border-surface-border-strong bg-surface-base p-ds-06 space-y-ds-06">
+        <div className="rounded-overlay-lg border border-surface-border-strong bg-surface-base p-ds-06 space-y-ds-06">
           {/* Header area */}
           <div className="flex items-center justify-between">
             {loading ? (
@@ -872,7 +872,7 @@ export const ScenarioDashboardLoading: StoryObj = {
           <div className="grid grid-cols-3 gap-ds-04">
             {loading
               ? Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="rounded-ds-md bg-surface-raised p-ds-04 space-y-ds-02">
+                  <div key={i} className="rounded-control bg-surface-raised p-ds-04 space-y-ds-02">
                     <Skeleton variant="text" className="w-16 h-3" animation="shimmer" />
                     <Skeleton variant="text" className="w-10 h-6" animation="shimmer" />
                   </div>
@@ -883,7 +883,7 @@ export const ScenarioDashboardLoading: StoryObj = {
                   { label: 'Overdue', value: '3', color: 'error' as const },
                 ].map((stat) => (
                   <Fade key={stat.label} open={!loading}>
-                    <div className="rounded-ds-md bg-surface-raised p-ds-04">
+                    <div className="rounded-control bg-surface-raised p-ds-04">
                       <p className="text-ds-xs text-surface-fg-muted">{stat.label}</p>
                       <div className="flex items-center gap-ds-02 mt-ds-01">
                         <span className="text-ds-xl font-semibold text-surface-fg">{stat.value}</span>
@@ -913,7 +913,7 @@ export const ScenarioDashboardLoading: StoryObj = {
                 ].map((task) => (
                   <Fade key={task.name} open={!loading}>
                     <div className="flex items-center gap-ds-04">
-                      <div className="h-8 w-8 rounded-ds-full bg-accent-2 flex items-center justify-center">
+                      <div className="h-8 w-8 rounded-pill bg-accent-2 flex items-center justify-center">
                         <IconCheck className="h-ico-sm w-ico-sm text-accent-11" />
                       </div>
                       <div className="flex-1">
@@ -929,11 +929,11 @@ export const ScenarioDashboardLoading: StoryObj = {
         <div className="space-y-ds-02">
           <p className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wide">Motion breakdown</p>
           <div className="grid grid-cols-2 gap-ds-03">
-            <div className="rounded-ds-md bg-surface-raised p-ds-03 text-center">
+            <div className="rounded-control bg-surface-raised p-ds-03 text-center">
               <p className="text-ds-xs font-mono text-surface-fg-muted">slow-02 (700ms)</p>
               <p className="text-ds-xs text-surface-fg">Skeleton shimmer loop</p>
             </div>
-            <div className="rounded-ds-md bg-surface-raised p-ds-03 text-center">
+            <div className="rounded-control bg-surface-raised p-ds-03 text-center">
               <p className="text-ds-xs font-mono text-surface-fg-muted">moderate-02 (240ms)</p>
               <p className="text-ds-xs text-surface-fg">Content fade-in</p>
             </div>
@@ -1016,7 +1016,7 @@ export const ScenarioNotificationCenter: StoryObj = {
                   notifications.map((n) => (
                     <div
                       key={n.id}
-                      className="flex items-start gap-ds-03 rounded-ds-md border border-surface-border-strong p-ds-04 transition-colors duration-fast-01 hover:bg-surface-raised"
+                      className="flex items-start gap-ds-03 rounded-control border border-surface-border-strong p-ds-04 transition-colors duration-fast-01 hover:bg-surface-raised"
                     >
                       <Badge color={n.color} size="sm" dot>
                         {n.color}
@@ -1051,15 +1051,15 @@ export const ScenarioNotificationCenter: StoryObj = {
         <div className="space-y-ds-02">
           <p className="text-ds-xs font-semibold text-surface-fg-muted uppercase tracking-wide">Motion breakdown</p>
           <div className="grid grid-cols-3 gap-ds-03">
-            <div className="rounded-ds-md bg-surface-raised p-ds-03 text-center">
+            <div className="rounded-control bg-surface-raised p-ds-03 text-center">
               <p className="text-ds-xs font-mono text-surface-fg-muted">fast-01</p>
               <p className="text-ds-xs text-surface-fg">Button hover</p>
             </div>
-            <div className="rounded-ds-md bg-surface-raised p-ds-03 text-center">
+            <div className="rounded-control bg-surface-raised p-ds-03 text-center">
               <p className="text-ds-xs font-mono text-surface-fg-muted">moderate-02</p>
               <p className="text-ds-xs text-surface-fg">Sheet slide-in</p>
             </div>
-            <div className="rounded-ds-md bg-surface-raised p-ds-03 text-center">
+            <div className="rounded-control bg-surface-raised p-ds-03 text-center">
               <p className="text-ds-xs font-mono text-surface-fg-muted">fast-01</p>
               <p className="text-ds-xs text-surface-fg">Card hover</p>
             </div>
@@ -1108,7 +1108,7 @@ export const ReducedMotionDemo: StoryObj = {
           </p>
         </div>
 
-        <div className="rounded-ds-md bg-surface-raised border border-surface-border-strong p-ds-05 space-y-ds-04">
+        <div className="rounded-control bg-surface-raised border border-surface-border-strong p-ds-05 space-y-ds-04">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-ds-sm font-medium text-surface-fg">Simulate reduced motion</p>
@@ -1130,7 +1130,7 @@ export const ReducedMotionDemo: StoryObj = {
 
           {/* Animated box */}
           <div
-            className="rounded-ds-md bg-accent-2 border border-accent-7 p-ds-05 transition-all ease-productive-entrance"
+            className="rounded-control bg-accent-2 border border-accent-7 p-ds-05 transition-all ease-productive-entrance"
             style={{
               opacity: showContent ? 1 : 0,
               transform: showContent ? 'translateY(0)' : 'translateY(-8px)',
@@ -1161,7 +1161,7 @@ export const ReducedMotionDemo: StoryObj = {
           </div>
         </div>
 
-        <div className="rounded-ds-md bg-warning-3 border border-warning-7 p-ds-04">
+        <div className="rounded-control bg-warning-3 border border-warning-7 p-ds-04">
           <p className="text-ds-sm text-warning-11">
             <strong>How it works in production:</strong> The global CSS rule{' '}
             <code className="font-mono text-ds-xs">@media (prefers-reduced-motion: reduce)</code>{' '}

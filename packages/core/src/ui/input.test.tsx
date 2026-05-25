@@ -209,15 +209,15 @@ describe('Input', () => {
 
   // --- Size variants on wrapper ---
 
-  it('renders lg size with rounded-ds-lg on wrapper', () => {
+  it('applies rounded-control on lg size wrapper', () => {
     render(<Input size="lg" placeholder="Large" />)
     const wrapper = screen.getByPlaceholderText('Large').parentElement!
-    expect(wrapper).toHaveClass('rounded-ds-lg')
+    expect(wrapper).toHaveClass('rounded-control')
   })
 
-  it('renders md size with rounded-ds-md on wrapper', () => {
+  it('applies rounded-control on md size wrapper', () => {
     render(<Input size="md" placeholder="Medium" />)
     const wrapper = screen.getByPlaceholderText('Medium').parentElement!
-    expect(wrapper).toHaveClass('rounded-ds-md')
+    expect(wrapper).toHaveClass('rounded-control')
   })
 })

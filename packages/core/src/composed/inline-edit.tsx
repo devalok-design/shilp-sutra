@@ -166,9 +166,9 @@ const InlineEdit = React.forwardRef<HTMLDivElement, InlineEditProps>(({
           'font-sans text-surface-fg outline-hidden',
           textClassName,
           // Idle: subtle hover hint
-          !readOnly && !focused && 'cursor-text rounded-ds-sm -mx-ds-01 px-ds-01 hover:bg-surface-raised-hover transition-colors duration-fast-01',
+          !readOnly && !focused && 'cursor-text rounded-control-inner -mx-ds-01 px-ds-01 hover:bg-surface-raised-hover transition-colors duration-fast-01',
           // Focused: subtle underline to indicate editing
-          focused && 'rounded-ds-sm -mx-ds-01 px-ds-01 bg-surface-raised-hover ring-1 ring-accent-7',
+          focused && 'rounded-control-inner -mx-ds-01 px-ds-01 bg-surface-raised-hover ring-1 ring-accent-7',
           // Empty: show placeholder styling
           isEmpty && !focused && 'text-surface-fg-subtle italic',
           // Read-only

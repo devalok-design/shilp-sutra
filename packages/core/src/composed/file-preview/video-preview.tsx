@@ -129,7 +129,7 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
   return (
     <div
       ref={containerRef}
-      className="group relative rounded-ds-md bg-black overflow-hidden"
+      className="group relative rounded-control bg-black overflow-hidden"
       onMouseMove={handleMouseMove}
       onMouseLeave={() => playing && setShowControls(false)}
       tabIndex={-1}
@@ -162,7 +162,7 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
           className="absolute inset-0 flex items-center justify-center bg-black/30"
           aria-label="Play video"
         >
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-floating">
+          <div className="flex h-14 w-14 items-center justify-center rounded-pill bg-white/90 shadow-floating">
             <Icon icon={IconPlayerPlay} size="xl" className="text-surface-fg ml-0.5" />
           </div>
         </motion.button>
@@ -180,7 +180,7 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
           >
             {/* Progress bar */}
             <div
-              className="relative h-1 w-full cursor-pointer rounded-full bg-white/30 mb-ds-03 group/progress"
+              className="relative h-1 w-full cursor-pointer rounded-pill bg-white/30 mb-ds-03 group/progress"
               onClick={handleSeek}
               role="slider"
               aria-label="Video progress"
@@ -190,12 +190,12 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
               tabIndex={0}
             >
               <div
-                className="absolute left-0 top-0 h-full rounded-full bg-white transition-[width] duration-75"
+                className="absolute left-0 top-0 h-full rounded-pill bg-white transition-[width] duration-75"
                 style={{ width: `${progress}%` }}
               />
               {/* Scrub handle */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-white shadow-raised opacity-0 group-hover/progress:opacity-100 transition-opacity"
+                className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-pill bg-white shadow-raised opacity-0 group-hover/progress:opacity-100 transition-opacity"
                 style={{ left: `${progress}%`, marginLeft: '-6px' }}
               />
             </div>
@@ -221,7 +221,7 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
               <div className="flex-1" />
               <button
                 onClick={() => cyclePlaybackRate(1)}
-                className="text-[11px] font-mono text-white/70 hover:text-white px-1 rounded-ds-sm hover:bg-white/10 transition-colors"
+                className="text-[11px] font-mono text-white/70 hover:text-white px-1 rounded-control-inner hover:bg-white/10 transition-colors"
                 aria-label={`Playback speed: ${playbackRate}x`}
               >
                 {playbackRate}x

@@ -202,7 +202,7 @@ const TopBarIconButton = React.forwardRef<
         type="button"
         aria-label={tooltip}
         className={cn(
-          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-raised-hover text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-raised-active active:scale-90 duration-fast-01 ease-productive-standard',
+          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-surface-border-strong bg-surface-raised-hover text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-raised-active active:scale-90 duration-fast-01 ease-productive-standard',
           className,
         )}
         {...props}
@@ -286,7 +286,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
         </Tooltip>
 
         <DropdownMenuContent
-          className="w-[200px] rounded-ds-xl border border-surface-border-strong bg-surface-overlay p-0 shadow-floating"
+          className="w-[200px] rounded-overlay-lg border border-surface-border-strong bg-surface-overlay p-0 shadow-floating"
           sideOffset={8}
           align="end"
         >
@@ -350,11 +350,11 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
                   {item.badge != null &&
                     item.badge !== false &&
                     (typeof item.badge === 'string' ? (
-                      <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-ds-full bg-error-9 px-ds-02 text-[10px] font-semibold leading-none text-error-fg">
+                      <span className="ml-auto inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-pill bg-error-9 px-ds-02 text-[10px] font-semibold leading-none text-error-fg">
                         {item.badge}
                       </span>
                     ) : (
-                      <span className="ml-auto h-[8px] w-[8px] rounded-ds-full bg-error-9" />
+                      <span className="ml-auto h-[8px] w-[8px] rounded-pill bg-error-9" />
                     ))}
                 </DropdownMenuItem>
               </React.Fragment>

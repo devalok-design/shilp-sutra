@@ -49,7 +49,7 @@ function Surface({
         <span className="text-ds-xs font-medium text-surface-fg-subtle">{label}</span>
       )}
       <div
-        className={`relative overflow-hidden isolate rounded-ds-xl p-ds-06 ${group ? 'group' : ''} ${className}`}
+        className={`relative overflow-hidden isolate rounded-overlay-lg p-ds-06 ${group ? 'group' : ''} ${className}`}
       >
         {children}
       </div>

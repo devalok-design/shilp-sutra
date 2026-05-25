@@ -32,7 +32,7 @@ export const Shadows: Story = {
         ].map(({ token, label, usage }) => (
           <div
             key={token}
-            className={`rounded-ds-lg bg-surface-raised p-ds-06 ${token}`}
+            className={`rounded-surface bg-surface-raised p-ds-06 ${token}`}
             style={{ boxShadow: `var(--${token})` }}
           >
             <p className="text-ds-md font-semibold text-surface-fg">
@@ -62,7 +62,7 @@ export const Shadows: Story = {
               className="flex flex-col items-center gap-ds-03"
             >
               <div
-                className="rounded-ds-lg bg-surface-raised"
+                className="rounded-surface bg-surface-raised"
                 style={{
                   boxShadow: `var(--${token})`,
                   width: 80 + i * 16,
@@ -143,18 +143,18 @@ export const FocusRings: Story = {
         styling. Tab through the buttons below to see each variant.
       </p>
       <div className="flex flex-wrap gap-ds-05">
-        <button className="focus-ring rounded-ds-md bg-accent-9 px-ds-05 py-ds-03 text-ds-md font-semibold text-accent-fg">
+        <button className="focus-ring rounded-control bg-accent-9 px-ds-05 py-ds-03 text-ds-md font-semibold text-accent-fg">
           .focus-ring
         </button>
-        <button className="focus-ring-inset rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-md font-medium text-surface-fg">
+        <button className="focus-ring-inset rounded-control border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-md font-medium text-surface-fg">
           .focus-ring-inset
         </button>
-        <button className="focus-ring-sm rounded-ds-md border border-surface-border-strong bg-surface-raised-hover px-ds-05 py-ds-03 text-ds-md font-medium text-surface-fg">
+        <button className="focus-ring-sm rounded-control border border-surface-border-strong bg-surface-raised-hover px-ds-05 py-ds-03 text-ds-md font-medium text-surface-fg">
           .focus-ring-sm
         </button>
       </div>
       <p className="text-ds-sm text-surface-fg-subtle">
-        Press <kbd className="rounded-ds-sm border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 font-mono text-ds-xs">Tab</kbd> to
+        Press <kbd className="rounded-control-inner border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 font-mono text-ds-xs">Tab</kbd> to
         focus each button and see the ring style.
       </p>
     </div>

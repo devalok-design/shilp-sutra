@@ -226,7 +226,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
                 <img
                   src={item.image}
                   alt=""
-                  className="h-ico-md w-ico-md rounded-full object-cover shrink-0"
+                  className="h-ico-md w-ico-md rounded-pill object-cover shrink-0"
                 />
               )}
               <span className="flex-1 min-w-0">

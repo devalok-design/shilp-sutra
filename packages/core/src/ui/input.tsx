@@ -13,7 +13,7 @@ const inputWrapperVariants = cva(
   [
     'relative flex items-center w-full font-sans',
     'bg-surface-raised-hover text-surface-fg',
-    'border border-surface-border-strong rounded-ds-md',
+    'border border-surface-border-strong rounded-control',
     'hover:bg-surface-raised-active',
     'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
     'focus-within:outline-hidden focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-surface-border',
@@ -26,7 +26,7 @@ const inputWrapperVariants = cva(
         xs: 'h-ds-xs-plus text-ds-sm',
         sm: 'h-ds-sm text-ds-sm',
         md: 'h-ds-md text-ds-md',
-        lg: 'h-ds-lg rounded-ds-lg text-ds-md',
+        lg: 'h-ds-lg text-ds-md',
       },
     },
     defaultVariants: { size: 'md' },

@@ -10,7 +10,7 @@ import { motionProps } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 
 const statusBadgeVariants = cva(
-  'inline-flex items-center gap-ds-02b rounded-ds-full font-body',
+  'inline-flex items-center gap-ds-02b rounded-pill font-body',
   {
     variants: {
       status: {
@@ -124,7 +124,7 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
             {!hideDot && (
               <span
                 className={cn(
-                  'shrink-0 rounded-ds-full',
+                  'shrink-0 rounded-pill',
                   size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-[8px] w-[8px]',
                   dotColor,
                 )}
@@ -163,7 +163,7 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
           {!hideDot && (
             <span
               className={cn(
-                'shrink-0 rounded-ds-full',
+                'shrink-0 rounded-pill',
                 size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-[8px] w-[8px]',
                 dotColor,
               )}

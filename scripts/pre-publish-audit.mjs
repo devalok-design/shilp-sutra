@@ -335,6 +335,50 @@ gate('No deprecated shadow tokens in components', () => {
   return true
 })
 
+// --- Shape-Role Radius Gate (added 2026-05-25, v0.39.0) ---
+// All components MUST use semantic radius role tokens (rounded-control,
+// rounded-surface, rounded-overlay, rounded-pill, etc.) so the [data-shape]
+// preset switch can remap them. Bare `rounded-ds-*` and `rounded-full` are
+// pinned to a single value and ignore the preset.
+//
+// Stories and tests are excluded (Storybook/test-runner only). Token-showcase
+// files (forced-colors.stories, FoundationsShowcase) are explicitly allowlisted
+// because they intentionally demonstrate the primitive scale.
+const RADIUS_ROLE_INTENTIONAL_RAW = new Set([
+  'packages/core/src/tokens/forced-colors.stories.tsx',
+  'packages/core/src/tokens/FoundationsShowcase.tsx',
+])
+
+gate('Components use semantic radius roles (no rounded-ds-* / rounded-full)', () => {
+  const violations = []
+  const sourceFiles = globSync('packages/core/src/**/*.tsx', { cwd: ROOT })
+
+  const bannedPattern = /\brounded(?:-[lrtb]l?|-[lrtb]r?)?-ds-[a-z0-9]+|\brounded-full\b/
+
+  for (const file of sourceFiles) {
+    const normalized = file.replace(/\\/g, '/')
+    if (normalized.includes('.stories.') || normalized.includes('.test.') || normalized.includes('__tests__')) continue
+    if (RADIUS_ROLE_INTENTIONAL_RAW.has(normalized)) continue
+
+    const content = readFileSync(join(ROOT, file), 'utf-8')
+    const lines = content.split('\n')
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]
+      // Skip lines that are clearly JSDoc/markdown examples (start with ` *`)
+      if (/^\s*\*\s/.test(line)) continue
+      const match = line.match(bannedPattern)
+      if (match) {
+        violations.push(`${file}:${i + 1} — ${match[0]}`)
+      }
+    }
+  }
+
+  if (violations.length > 0) {
+    return `Bare radius classes found (must use semantic roles):\n${violations.map(v => `      ${v}`).join('\n')}\n      Use: rounded-control, rounded-control-inner, rounded-surface, rounded-overlay-sm, rounded-overlay, rounded-overlay-lg, rounded-pill, rounded-bubble.\n      Token definitions live in packages/core/src/tokens/semantic.css.`
+  }
+  return true
+})
+
 // --- Tailwind 4 Migration Hygiene (added 2026-04-19 after issue #30) ---
 // The TW 3→4 codemod run in commit 23c68d0 produced two classes of regressions
 // that slipped past the audit: malformed nested arbitrary variants, and

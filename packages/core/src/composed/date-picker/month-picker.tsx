@@ -83,7 +83,7 @@ export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
                   disabled={isDisabled || false}
                   onClick={() => !isDisabled && onMonthSelect(index)}
                   className={cn(
-                    'h-ds-sm-plus rounded-ds-md text-ds-md transition-colors focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+                    'h-ds-sm-plus rounded-control text-ds-md transition-colors focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
                     isDisabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
                     isSelected &&
                       'bg-accent-9 text-accent-fg',

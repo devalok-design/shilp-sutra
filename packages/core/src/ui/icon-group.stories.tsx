@@ -44,7 +44,7 @@ export const Default: Story = {
 
 export const Toolbar: Story = {
   render: () => (
-    <div className="inline-flex rounded-ds-md border border-surface-border p-ds-01">
+    <div className="inline-flex rounded-control border border-surface-border p-ds-01">
       <IconGroup size="md" stroke="regular" gap="tight" role="toolbar" label="Text formatting">
         <Icon icon={IconBold} />
         <Icon icon={IconItalic} />

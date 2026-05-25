@@ -15,7 +15,7 @@ const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
       ref={ref}
       {...props}
       className={cn(
-        'rounded-ds-lg border border-surface-border-strong bg-surface-raised p-ds-05b',
+        'rounded-surface border border-surface-border-strong bg-surface-raised p-ds-05b',
         className,
       )}
     >
@@ -29,7 +29,7 @@ const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
         <Skeleton className="h-[12px] w-3/5 bg-surface-raised-hover" />
       </div>
       <div className="flex items-center gap-ds-03 pt-ds-05">
-        <Skeleton className="h-ds-xs w-ds-xs rounded-ds-full bg-surface-raised-hover" />
+        <Skeleton className="h-ds-xs w-ds-xs rounded-pill bg-surface-raised-hover" />
         <Skeleton className="h-[12px] w-[80px] bg-surface-raised-hover" />
       </div>
     </div>
@@ -56,7 +56,7 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
       ref={ref}
       {...props}
       className={cn(
-        'overflow-hidden rounded-ds-lg border border-surface-border-strong',
+        'overflow-hidden rounded-surface border border-surface-border-strong',
         className,
       )}
     >
@@ -125,7 +125,7 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
             <div className="flex items-center gap-ds-03">
               <Skeleton className="h-[12px] w-[12px] rounded bg-surface-raised-hover" />
               <Skeleton className="h-[12px] w-[80px] bg-surface-raised-hover" />
-              <Skeleton className="h-[16px] w-[20px] rounded-ds-full bg-surface-raised-hover" />
+              <Skeleton className="h-[16px] w-[20px] rounded-pill bg-surface-raised-hover" />
             </div>
             <Skeleton className="h-ico-sm w-ico-sm rounded bg-surface-raised-hover" />
           </div>
@@ -134,7 +134,7 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
           {Array.from({ length: cardsPerColumn }).map((_, cardIndex) => (
             <div
               key={`card-${colIndex}-${cardIndex}`}
-              className="rounded-ds-lg border border-surface-border-strong bg-surface-raised p-ds-04"
+              className="rounded-surface border border-surface-border-strong bg-surface-raised p-ds-04"
               style={{ animationDelay: `${(colIndex * cardsPerColumn + cardIndex) * 50}ms` }}
             >
               <div className="space-y-ds-03">
@@ -143,10 +143,10 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
               </div>
               <div className="flex items-center justify-between pt-ds-04">
                 <div className="flex items-center gap-ds-02b">
-                  <Skeleton className="h-ico-md w-ico-md rounded-ds-full bg-surface-raised-hover" />
+                  <Skeleton className="h-ico-md w-ico-md rounded-pill bg-surface-raised-hover" />
                   <Skeleton className="h-ds-03 w-[64px] bg-surface-raised-hover" />
                 </div>
-                <Skeleton className="h-[16px] w-ds-lg rounded-ds-full bg-surface-raised-hover" />
+                <Skeleton className="h-[16px] w-ds-lg rounded-pill bg-surface-raised-hover" />
               </div>
             </div>
           ))}
@@ -183,13 +183,13 @@ const ListSkeleton = React.forwardRef<HTMLDivElement, ListSkeletonProps>(
           style={{ animationDelay: `${i * 50}ms` }}
         >
           {showAvatar && (
-            <Skeleton className="h-ds-sm w-ds-sm shrink-0 rounded-ds-full bg-surface-raised-hover" />
+            <Skeleton className="h-ds-sm w-ds-sm shrink-0 rounded-pill bg-surface-raised-hover" />
           )}
           <div className="flex flex-1 flex-col gap-ds-02b">
             <Skeleton className="h-[12px] w-2/5 bg-surface-raised-hover" />
             <Skeleton className="h-ds-03 w-3/5 bg-surface-raised-hover" />
           </div>
-          <Skeleton className="h-[20px] w-[56px] rounded-ds-full bg-surface-raised-hover" />
+          <Skeleton className="h-[20px] w-[56px] rounded-pill bg-surface-raised-hover" />
         </div>
       ))}
     </div>

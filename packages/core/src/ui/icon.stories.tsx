@@ -94,7 +94,7 @@ export const InButton: Story = {
 
 export const IconGroupToolbar: Story = {
   render: () => (
-    <div className="inline-flex rounded-ds-md border border-surface-border p-ds-01">
+    <div className="inline-flex rounded-control border border-surface-border p-ds-01">
       <IconGroup size="md" stroke="regular" gap="tight" role="toolbar" label="Text formatting">
         <Icon icon={IconBold} />
         <Icon icon={IconItalic} />
@@ -193,7 +193,7 @@ export const WithGrain: Story = {
 
 export const MigrationGuide: Story = {
   render: () => (
-    <div className="grid grid-cols-2 gap-ds-06 rounded-ds-lg border border-surface-border p-ds-06">
+    <div className="grid grid-cols-2 gap-ds-06 rounded-surface border border-surface-border p-ds-06">
       <div className="flex flex-col gap-ds-03">
         <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">Before</span>
         <code className="text-sm text-text-tertiary">{'startIcon={<IconPlus />}'}</code>

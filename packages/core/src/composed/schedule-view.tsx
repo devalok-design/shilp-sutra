@@ -218,7 +218,7 @@ function DayColumn({
               key={event.id}
               type="button"
               className={cn(
-                'absolute left-ds-01 right-ds-01 rounded-ds-sm border-l-[3px] px-ds-02 py-ds-01',
+                'absolute left-ds-01 right-ds-01 rounded-control-inner border-l-[3px] px-ds-02 py-ds-01',
                 'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
                 'hover:shadow-raised hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02 ease-productive-standard',
                 colorClass,
@@ -243,7 +243,7 @@ function DayColumn({
             aria-hidden="true"
           >
             <motion.span
-              className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-ds-full bg-error-9"
+              className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-pill bg-error-9"
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ repeat: Infinity, duration: 2 }}
             />
@@ -290,7 +290,7 @@ const ScheduleView = React.forwardRef<HTMLDivElement, ScheduleViewProps>(
             : `Week schedule starting ${format(days[0], 'MMMM d, yyyy')}`
         }
         className={cn(
-          'flex rounded-ds-md border border-surface-border-strong bg-surface-raised overflow-hidden',
+          'flex rounded-control border border-surface-border-strong bg-surface-raised overflow-hidden',
           'h-[480px]',
           className,
         )}

@@ -178,7 +178,7 @@ function FilterMultiSelect({
       <button
         type="button"
         className={cn(
-          'flex items-center justify-between gap-ds-02 whitespace-nowrap rounded-ds-md border bg-surface-raised-hover text-surface-fg',
+          'flex items-center justify-between gap-ds-02 whitespace-nowrap rounded-control border bg-surface-raised-hover text-surface-fg',
           'hover:bg-surface-raised-active transition-colors duration-fast-01 ease-productive-standard',
           triggerSizeClasses[size],
           count > 0 ? 'border-accent-7' : 'border-surface-border-strong',

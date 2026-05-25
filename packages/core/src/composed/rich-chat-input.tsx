@@ -154,7 +154,7 @@ const CHAT_PROSE = [
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_a]:text-accent-11 [&_a]:underline',
-  '[&_.mention]:rounded-ds-sm [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
+  '[&_.mention]:rounded-control-inner [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
 ].join(' ')
 
 // ── Split Send Dropdown (chevron next to send — schedule send, etc.) ──
@@ -182,7 +182,7 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
         aria-label="More send options"
         aria-expanded={open}
         className={cn(
-          'inline-flex h-ds-xs-plus w-5 items-center justify-center rounded-ds-md touch-target',
+          'inline-flex h-ds-xs-plus w-5 items-center justify-center rounded-control touch-target',
           'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg',
           'transition-colors duration-fast-01 ease-productive-standard',
           open && 'bg-surface-raised-hover text-surface-fg',
@@ -192,14 +192,14 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
       </button>
       {/* min-w-[200px]: component-specific dropdown width — no design token equivalent */}
       {open && (
-        <div className="absolute bottom-full right-0 mb-ds-02 min-w-[200px] rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating z-popover">
+        <div className="absolute bottom-full right-0 mb-ds-02 min-w-[200px] rounded-surface border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating z-popover">
           <p className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">Send options</p>
           {options.map((opt, i) => (
             <button
               key={i}
               type="button"
               onClick={() => { opt.onSelect(); setOpen(false) }}
-              className="flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
+              className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
             >
               {opt.icon && <opt.icon className="h-ico-sm w-ico-sm text-surface-fg-muted" />}
               {opt.label}
@@ -242,13 +242,13 @@ function EmojiPickerPopover({ set = 'native', onSelect, onClose }: { set?: strin
   }, [onClose])
 
   const fallback = (
-    <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating">
+    <div className="flex h-[350px] w-[352px] items-center justify-center rounded-surface border border-surface-border-strong bg-surface-overlay shadow-floating">
       <span className="text-ds-sm text-surface-fg-subtle">Loading...</span>
     </div>
   )
 
   return (
-    <div ref={ref} className="rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating overflow-hidden">
+    <div ref={ref} className="rounded-surface border border-surface-border-strong bg-surface-overlay shadow-floating overflow-hidden">
       {!data ? fallback : (
         <React.Suspense fallback={fallback}>
           <LazyEmojiPicker
@@ -286,7 +286,7 @@ function BubbleBtn({
       aria-label={title}
       aria-pressed={isActive}
       className={cn(
-        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
+        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target',
         'transition-colors duration-fast-01 ease-productive-standard',
         'hover:bg-surface-raised-hover',
         isActive ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
@@ -315,7 +315,7 @@ function ChatBubbleMenu({ editor }: { editor: Editor }) {
   return (
     <BubbleMenu
       editor={editor}
-      className="flex gap-ds-01 rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
+      className="flex gap-ds-01 rounded-surface border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
     >
       <BubbleBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={state.isBold} title="Bold">
         <Icon icon={IconBold} size="xs" />
@@ -763,7 +763,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           role="region"
           aria-label="Message composer"
           className={cn(
-            'flex-1 min-w-0 overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-raised-hover',
+            'flex-1 min-w-0 overflow-hidden rounded-surface border border-surface-border-strong bg-surface-raised-hover',
             'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
             'hover:bg-surface-raised-active',
             'focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-9',
@@ -878,7 +878,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                     aria-label={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
                     aria-pressed={toolbarExpanded}
                     className={cn(
-                      'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
+                      'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target',
                       'transition-colors duration-fast-01 ease-productive-standard',
                       'hover:bg-surface-raised-hover',
                       toolbarExpanded ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
@@ -896,7 +896,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                       title="Emoji"
                       aria-label="Emoji"
                       className={cn(
-                        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md touch-target transition-colors duration-fast-01',
+                        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target transition-colors duration-fast-01',
                         showEmojiPicker ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg',
                       )}
                     >

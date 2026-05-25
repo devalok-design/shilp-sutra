@@ -19,11 +19,11 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={`stat-${i}`}
-            className="flex flex-col gap-ds-04 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-05b"
+            className="flex flex-col gap-ds-04 rounded-overlay-lg border border-surface-border-strong bg-surface-raised p-ds-05b"
           >
             <div className="flex items-center justify-between">
               <Skeleton className={cn('h-[12px] w-[80px]', shimmer)} />
-              <Skeleton className={cn('h-ds-sm w-ds-sm rounded-ds-lg', shimmer)} />
+              <Skeleton className={cn('h-ds-sm w-ds-sm rounded-surface', shimmer)} />
             </div>
             <Skeleton className={cn('h-ds-xs-plus w-[64px]', shimmer)} />
             <Skeleton className={cn('h-ds-03 w-[112px]', shimmer)} />
@@ -32,13 +32,13 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
       </div>
 
       {/* Attendance calendar placeholder */}
-      <div className="rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-06">
+      <div className="rounded-overlay-lg border border-surface-border-strong bg-surface-raised p-ds-06">
         <div className="mb-ds-06 flex items-center justify-between">
           <Skeleton className={cn('h-[20px] w-[128px]', shimmer)} />
           <div className="flex items-center gap-ds-03">
-            <Skeleton className={cn('h-ds-sm w-ds-sm rounded-ds-lg', shimmer)} />
+            <Skeleton className={cn('h-ds-sm w-ds-sm rounded-surface', shimmer)} />
             <Skeleton className={cn('h-[16px] w-[112px]', shimmer)} />
-            <Skeleton className={cn('h-ds-sm w-ds-sm rounded-ds-lg', shimmer)} />
+            <Skeleton className={cn('h-ds-sm w-ds-sm rounded-surface', shimmer)} />
           </div>
         </div>
         {/* Weekday headers */}
@@ -52,7 +52,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
           {Array.from({ length: 35 }).map((_, i) => (
             <Skeleton
               key={`cal-${i}`}
-              className={cn('mx-auto h-ds-md w-ds-md rounded-ds-full', shimmer)}
+              className={cn('mx-auto h-ds-md w-ds-md rounded-pill', shimmer)}
             />
           ))}
         </div>
@@ -78,15 +78,15 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement, ProjectListSkeleton
           <Skeleton className={cn('h-[24px] w-[112px]', shimmer)} />
           <Skeleton className={cn('h-ds-04 w-[160px]', shimmer)} />
         </div>
-        <Skeleton className={cn('h-ds-sm-plus w-[128px] rounded-ds-lg', shimmer)} />
+        <Skeleton className={cn('h-ds-sm-plus w-[128px] rounded-surface', shimmer)} />
       </div>
 
       {/* Filters */}
       <div className="flex flex-col gap-ds-04 sm:flex-row sm:items-center">
-        <Skeleton className={cn('h-ds-sm-plus flex-1 rounded-ds-lg', shimmer)} />
+        <Skeleton className={cn('h-ds-sm-plus flex-1 rounded-surface', shimmer)} />
         <div className="flex gap-ds-02b">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={`f-${i}`} className={cn('h-ds-sm w-[64px] rounded-ds-lg', shimmer)} />
+            <Skeleton key={`f-${i}`} className={cn('h-ds-sm w-[64px] rounded-surface', shimmer)} />
           ))}
         </div>
       </div>
@@ -96,12 +96,12 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement, ProjectListSkeleton
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={`proj-${i}`}
-            className="flex flex-col gap-ds-05 rounded-ds-xl border border-surface-border-strong bg-surface-raised p-ds-05b"
+            className="flex flex-col gap-ds-05 rounded-overlay-lg border border-surface-border-strong bg-surface-raised p-ds-05b"
           >
             {/* Top row: status + org */}
             <div className="flex items-center justify-between">
-              <Skeleton className={cn('h-[20px] w-[64px] rounded-ds-full', shimmer)} />
-              <Skeleton className={cn('h-[16px] w-[80px] rounded-ds-md', shimmer)} />
+              <Skeleton className={cn('h-[20px] w-[64px] rounded-pill', shimmer)} />
+              <Skeleton className={cn('h-[16px] w-[80px] rounded-control', shimmer)} />
             </div>
             {/* Title + description */}
             <div className="flex flex-col gap-ds-03">
@@ -115,7 +115,7 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement, ProjectListSkeleton
                 {Array.from({ length: 3 }).map((_, j) => (
                   <Skeleton
                     key={`av-${i}-${j}`}
-                    className={cn('h-ds-xs-plus w-ds-xs-plus rounded-ds-full', shimmer)}
+                    className={cn('h-ds-xs-plus w-ds-xs-plus rounded-pill', shimmer)}
                   />
                 ))}
               </div>
@@ -138,13 +138,13 @@ export interface TaskDetailSkeletonProps extends React.ComponentPropsWithoutRef<
 const TaskDetailSkeleton = React.forwardRef<HTMLDivElement, TaskDetailSkeletonProps>(
   function TaskDetailSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} {...props} className={cn("flex h-full flex-col gap-0 rounded-ds-xl border border-surface-border-strong bg-surface-raised", className)}>
+    <div ref={ref} {...props} className={cn("flex h-full flex-col gap-0 rounded-overlay-lg border border-surface-border-strong bg-surface-raised", className)}>
       {/* Header */}
       <div className="flex items-center justify-between border-b border-surface-border-strong px-ds-05b py-ds-05">
         <Skeleton className={cn('h-[20px] w-[192px]', shimmer)} />
         <div className="flex items-center gap-ds-03">
-          <Skeleton className={cn('h-ds-xs-plus w-ds-xs-plus rounded-ds-lg', shimmer)} />
-          <Skeleton className={cn('h-ds-xs-plus w-ds-xs-plus rounded-ds-lg', shimmer)} />
+          <Skeleton className={cn('h-ds-xs-plus w-ds-xs-plus rounded-surface', shimmer)} />
+          <Skeleton className={cn('h-ds-xs-plus w-ds-xs-plus rounded-surface', shimmer)} />
         </div>
       </div>
 
@@ -156,7 +156,7 @@ const TaskDetailSkeleton = React.forwardRef<HTMLDivElement, TaskDetailSkeletonPr
             className="flex items-center gap-ds-05 py-ds-03"
           >
             <Skeleton className={cn('h-[12px] w-[96px] shrink-0', shimmer)} />
-            <Skeleton className={cn('h-[24px] w-[128px] rounded-ds-md', shimmer)} />
+            <Skeleton className={cn('h-[24px] w-[128px] rounded-control', shimmer)} />
           </div>
         ))}
       </div>

@@ -71,7 +71,7 @@ export function ToolbarButton({
       aria-label={title}
       aria-pressed={isActive}
       className={cn(
-        'inline-flex h-ds-xs-plus items-center justify-center rounded-ds-md touch-target',
+        'inline-flex h-ds-xs-plus items-center justify-center rounded-control touch-target',
         !classNameProp?.includes('w-') && 'w-ds-xs-plus',
         'transition-[color,background-color,transform] duration-fast-01 ease-productive-standard',
         'hover:bg-surface-raised-hover hover:text-surface-fg',

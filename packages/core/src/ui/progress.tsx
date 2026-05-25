@@ -13,7 +13,7 @@ import { cn } from './lib/utils'
  * ------------------------------------------------------------------------ */
 
 const progressTrackVariants = cva(
-  'relative w-full overflow-hidden rounded-ds-full bg-surface-raised',
+  'relative w-full overflow-hidden rounded-pill bg-surface-raised',
   {
     variants: {
       size: {

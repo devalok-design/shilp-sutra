@@ -5,7 +5,7 @@ import * as React from 'react'
 import { cn } from '../ui/lib/utils'
 
 const contentCardVariants = cva(
-  'rounded-ds-lg will-change-[box-shadow] transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
+  'rounded-surface will-change-[box-shadow] transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
   {
     variants: {
       variant: {

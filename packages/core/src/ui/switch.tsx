@@ -54,7 +54,7 @@ const Switch = React.forwardRef<
   return (
     <SwitchPrimitives.Root
       className={cn(
-        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-ds-full border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
+        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-pill border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
         track,
         colorMap[color],
         isError && "border-error-7 data-[state=checked]:bg-error-9",
@@ -72,7 +72,7 @@ const Switch = React.forwardRef<
       <SwitchPrimitives.Thumb asChild>
         <motion.span
           className={cn(
-            "pointer-events-none flex items-center justify-center rounded-ds-full bg-accent-fg shadow-raised-hover ring-0",
+            "pointer-events-none flex items-center justify-center rounded-pill bg-accent-fg shadow-raised-hover ring-0",
             thumb
           )}
           animate={{ x: isChecked ? travel : 0 }}

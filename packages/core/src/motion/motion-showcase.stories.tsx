@@ -271,7 +271,7 @@ function StaggerListDemo() {
       <MotionStagger key={key} className="flex flex-col gap-ds-02" style={{ maxWidth: 300 }}>
         {items.map((item, i) => (
           <MotionStaggerItem key={i}>
-            <div className="flex items-center gap-ds-03 rounded-ds-md bg-surface-raised p-ds-03">
+            <div className="flex items-center gap-ds-03 rounded-control bg-surface-raised p-ds-03">
               <IconCheck className="h-ico-sm w-ico-sm text-success" />
               <span className="text-ds-sm text-surface-fg">{item}</span>
             </div>
@@ -326,12 +326,12 @@ function SpringPlaygroundDemo() {
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
                   transition={config}
-                  className="h-16 w-16 rounded-ds-md bg-accent-9"
+                  className="h-16 w-16 rounded-control bg-accent-9"
                 />
               )}
             </AnimatePresence>
             {active !== name && (
-              <div className="h-16 w-16 rounded-ds-md border-2 border-dashed border-surface-border" />
+              <div className="h-16 w-16 rounded-control border-2 border-dashed border-surface-border" />
             )}
           </button>
         ))}

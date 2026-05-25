@@ -11,9 +11,9 @@ const sizeMap = {
 } as const
 
 const shapeMap = {
-  circle: 'rounded-full',
+  circle: 'rounded-pill',
   square: 'rounded-none',
-  rounded: 'rounded-ds-sm',
+  rounded: 'rounded-control-inner',
 } as const
 
 /**
@@ -102,7 +102,7 @@ const ColorSwatch = React.forwardRef<HTMLSpanElement, ColorSwatchProps>(
           {copied && (
             <span
               role="status"
-              className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-ds-sm bg-surface-overlay px-1.5 py-0.5 text-[10px] font-sans text-surface-fg shadow-floating"
+              className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-control-inner bg-surface-overlay px-1.5 py-0.5 text-[10px] font-sans text-surface-fg shadow-floating"
             >
               Copied!
             </span>

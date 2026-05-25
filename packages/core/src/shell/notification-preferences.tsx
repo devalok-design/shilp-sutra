@@ -193,7 +193,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                     )}
                   >
                     {/* Channel icon */}
-                    <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-ds-lg bg-surface-raised">
+                    <div className="flex h-ds-sm w-ds-sm shrink-0 items-center justify-center rounded-surface bg-surface-raised">
                       <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm text-surface-fg-muted" aria-hidden="true">{channelInfo.icon}</span>
                     </div>
 

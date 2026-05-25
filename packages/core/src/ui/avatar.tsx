@@ -26,9 +26,9 @@ export const avatarVariants = cva(
         xl: 'h-ds-xl w-ds-xl',
       },
       shape: {
-        circle: 'rounded-ds-full',
-        square: 'rounded-ds-none',
-        rounded: 'rounded-ds-md',
+        circle: 'rounded-pill',
+        square: 'rounded-none',
+        rounded: 'rounded-control',
       },
     },
     defaultVariants: { size: 'md', shape: 'circle' },
@@ -74,9 +74,9 @@ const ringColorMap: Record<Exclude<AvatarRing, 'none'>, string> = {
 }
 
 const ringShapeMap: Record<string, string> = {
-  circle: 'rounded-ds-full',
-  square: 'rounded-ds-none',
-  rounded: 'rounded-ds-md',
+  circle: 'rounded-pill',
+  square: 'rounded-none',
+  rounded: 'rounded-control',
 }
 
 // ── Fallback font sizes that scale with avatar size ─────────────────────────
@@ -209,20 +209,20 @@ const Avatar = React.forwardRef<
       {status && (
         status === 'online' ? (
           <motion.span
-            className={cn('absolute bottom-0 right-0 rounded-ds-full ring-2 ring-surface-raised', statusColorMap[status], statusDotSizeMap[size ?? 'md'])}
+            className={cn('absolute bottom-0 right-0 rounded-pill ring-2 ring-surface-raised', statusColorMap[status], statusDotSizeMap[size ?? 'md'])}
             animate={{ opacity: [1, 0.75, 1] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             role="img"
             aria-label={statusLabelMap[status]}
           />
         ) : (
-          <span className={cn('absolute bottom-0 right-0 rounded-ds-full ring-2 ring-surface-raised', statusColorMap[status], statusDotSizeMap[size ?? 'md'])} role="img" aria-label={statusLabelMap[status]} />
+          <span className={cn('absolute bottom-0 right-0 rounded-pill ring-2 ring-surface-raised', statusColorMap[status], statusDotSizeMap[size ?? 'md'])} role="img" aria-label={statusLabelMap[status]} />
         )
       )}
       {showBadge && (
         badge === 'dot' ? (
           <span
-            className="absolute -right-0.5 -top-0.5 h-[8px] w-[8px] rounded-ds-full bg-error-9 ring-2 ring-surface-raised"
+            className="absolute -right-0.5 -top-0.5 h-[8px] w-[8px] rounded-pill bg-error-9 ring-2 ring-surface-raised"
             data-slot="avatar-badge-dot"
             aria-hidden="true"
           />
@@ -231,7 +231,7 @@ const Avatar = React.forwardRef<
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={springs.bouncy}
-            className="absolute -right-1 -top-1 flex min-w-[16px] items-center justify-center rounded-ds-full bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-error-fg ring-2 ring-surface-raised"
+            className="absolute -right-1 -top-1 flex min-w-[16px] items-center justify-center rounded-pill bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-error-fg ring-2 ring-surface-raised"
             data-slot="avatar-badge"
             role="status"
             aria-label={`${badge > 99 ? '99+' : badge} notifications`}
@@ -291,7 +291,7 @@ const AvatarFallback = React.forwardRef<
   // Inherit shape and size from parent Avatar via context
   const shape = React.useContext(AvatarShapeContext)
   const size = React.useContext(AvatarSizeContext)
-  const shapeClass = shape === 'square' ? 'rounded-ds-none' : shape === 'rounded' ? 'rounded-ds-md' : 'rounded-ds-full'
+  const shapeClass = shape === 'square' ? 'rounded-none' : shape === 'rounded' ? 'rounded-control' : 'rounded-pill'
 
   // Letter-spacing based on character count
   const tracking = childrenText.length === 1 ? 'tracking-wide' : 'tracking-normal'

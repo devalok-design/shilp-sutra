@@ -105,7 +105,7 @@ const DETAIL_ITEMS: ActivityItem[] = [
     timestamp: new Date(now - 10 * 60 * 1000),
     color: 'info',
     detail: (
-      <div className="rounded-ds-md bg-surface-raised p-ds-03 text-ds-sm">
+      <div className="rounded-control bg-surface-raised p-ds-03 text-ds-sm">
         Changed acceptance criteria to include unit tests and integration tests for the auth flow.
       </div>
     ),
@@ -116,7 +116,7 @@ const DETAIL_ITEMS: ActivityItem[] = [
     action: 'added a comment',
     timestamp: new Date(now - 45 * 60 * 1000),
     detail: (
-      <div className="rounded-ds-md bg-surface-raised p-ds-03 text-ds-sm">
+      <div className="rounded-control bg-surface-raised p-ds-03 text-ds-sm">
         We should also add rate-limiting to the login endpoint before release.
       </div>
     ),
@@ -297,7 +297,7 @@ export const CustomRenderItem: Story = {
     renderItem: (item: ActivityItem, index: number) => {
       if (index === 0) {
         return (
-          <div className="rounded-ds-md border border-accent-6 bg-accent-2 p-ds-03">
+          <div className="rounded-control border border-accent-6 bg-accent-2 p-ds-03">
             <p className="text-ds-sm font-medium text-accent-11">{item.actor?.name}</p>
             <p className="text-ds-xs text-accent-11/70">{typeof item.action === 'string' ? item.action : 'Custom action'}</p>
           </div>

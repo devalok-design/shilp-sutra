@@ -260,7 +260,7 @@ export const WrapperClassName: Story = {
       <div className="flex flex-col gap-ds-01">
         <Label>Rounded full</Label>
         <Input
-          wrapperClassName="rounded-full"
+          wrapperClassName="rounded-pill"
           startSection={<Icon icon={IconSearch} />}
           placeholder="Pill-shaped input..."
         />

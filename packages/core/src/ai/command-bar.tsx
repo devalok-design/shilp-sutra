@@ -493,15 +493,15 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
     const renderInputRow = () => (
       <GradientBorderWrap
         active={isProcessing}
-        rounded={isCompact ? 'rounded-ds-md' : 'rounded-ds-lg'}
+        rounded={isCompact ? 'rounded-control' : 'rounded-surface'}
         reducedMotion={isReduced}
       >
         <div
           className={cn(
             'flex items-center gap-ds-04 border bg-surface-overlay transition-colors transition-shadow duration-fast-02 ease-productive-standard',
             isCompact
-              ? 'rounded-ds-md px-ds-04'
-              : 'rounded-ds-lg px-ds-05',
+              ? 'rounded-control px-ds-04'
+              : 'rounded-surface px-ds-05',
             isProcessing
               ? 'border-transparent'
               : 'border-surface-border-strong',
@@ -579,7 +579,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
           <button
             type="button"
             onClick={handleClear}
-            className="shrink-0 rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-colors duration-fast-01 hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+            className="shrink-0 rounded-control-inner p-ds-01 text-surface-fg-subtle transition-colors duration-fast-01 hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
             aria-label="Clear"
             title="Clear"
           >
@@ -597,7 +597,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                 animate={{ opacity: 1 }}
                 exit={isReduced ? undefined : { opacity: 0 }}
                 transition={tweenFade}
-                className="hidden shrink-0 select-none rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex"
+                className="hidden shrink-0 select-none rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex"
               >
                 {getModifierDisplay(isMac)}J
               </motion.kbd>
@@ -685,7 +685,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                     }}
                     onMouseEnter={() => setActiveIndex(itemIndex)}
                     className={cn(
-                      'flex w-full items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 text-left transition-[color,background-color] duration-fast-02 ease-productive-standard',
+                      'flex w-full items-center gap-ds-04 rounded-surface px-ds-03 py-ds-03 text-left transition-[color,background-color] duration-fast-02 ease-productive-standard',
                       isActive
                         ? 'bg-surface-raised-hover text-surface-fg'
                         : 'text-surface-fg-muted hover:bg-surface-raised',
@@ -752,7 +752,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
           ref={ref}
           role="search"
           className={cn(
-            'bg-surface-raised rounded-ds-xl shadow-raised p-ds-07',
+            'bg-surface-raised rounded-overlay-lg shadow-raised p-ds-07',
             className,
           )}
           {...props}
@@ -778,7 +778,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                     onSearch?.(hint)
                     inputRef.current?.focus()
                   }}
-                  className="rounded-ds-md border border-surface-border-strong bg-surface-overlay px-ds-03 py-ds-01 text-ds-sm text-surface-fg-subtle transition-colors duration-fast-02 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted"
+                  className="rounded-control border border-surface-border-strong bg-surface-overlay px-ds-03 py-ds-01 text-ds-sm text-surface-fg-subtle transition-colors duration-fast-02 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted"
                 >
                   {hint}
                 </button>
@@ -826,7 +826,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
             {...props}
             className={cn(
               'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
-              'overflow-hidden rounded-ds-xl border border-surface-border-strong bg-surface-overlay shadow-overlay',
+              'overflow-hidden rounded-overlay-lg border border-surface-border-strong bg-surface-overlay shadow-overlay',
               'duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
               'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -875,7 +875,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                 </div>
               )}
               <div className="flex items-center gap-ds-02b">
-                <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
+                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
                   <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                 </kbd>
                 <span className="text-ds-xs text-surface-fg-subtle">
@@ -883,7 +883,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                 </span>
               </div>
               <div className="flex items-center gap-ds-02b">
-                <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
+                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
                   Esc
                 </kbd>
                 <span className="text-ds-xs text-surface-fg-subtle">

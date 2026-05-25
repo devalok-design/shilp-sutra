@@ -79,7 +79,7 @@ const ContextMenuSubTrigger = React.forwardRef<
   <ContextMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[state=open]:bg-surface-raised data-[state=open]:text-surface-fg",
+      "flex cursor-default select-none items-center rounded-control px-ds-03 py-ds-02b text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[state=open]:bg-surface-raised data-[state=open]:text-surface-fg",
       inset && "pl-ds-07",
       className
     )}
@@ -112,7 +112,7 @@ const ContextMenuSubContent = React.forwardRef<
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ ...springs.snappy, opacity: tweens.fade }}
             className={cn(
-              "z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
+              "z-popover min-w-[8rem] overflow-hidden rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
               className
             )}
           >
@@ -147,7 +147,7 @@ const ContextMenuContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                "z-popover rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
+                "z-popover rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
                 className
               )}
             >
@@ -170,7 +170,7 @@ const ContextMenuItem = React.forwardRef<
   <ContextMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
+      "relative flex cursor-default select-none items-center rounded-control px-ds-03 py-ds-02b text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       inset && "pl-ds-07",
       className
     )}
@@ -186,7 +186,7 @@ const ContextMenuCheckboxItem = React.forwardRef<
   <ContextMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
+      "relative flex cursor-default select-none items-center rounded-control py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       className
     )}
     checked={checked}
@@ -210,7 +210,7 @@ const ContextMenuRadioItem = React.forwardRef<
   <ContextMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
+      "relative flex cursor-default select-none items-center rounded-control py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       className
     )}
     {...props}

@@ -68,7 +68,7 @@ export default function DocumentPreview({ url, initialPage, onError }: { url: st
       onMouseLeave={() => setHovered(false)}
       tabIndex={-1}
     >
-      <div className="overflow-auto max-h-[70vh] rounded-ds-md bg-surface-sunken border border-surface-border">
+      <div className="overflow-auto max-h-[70vh] rounded-control bg-surface-sunken border border-surface-border">
         <Document
           file={url}
           onLoadSuccess={({ numPages: n }) => setNumPages(n)}
@@ -102,7 +102,7 @@ export default function DocumentPreview({ url, initialPage, onError }: { url: st
               onChange={(e) => setPageInput(e.target.value)}
               onKeyDown={handlePageInputSubmit}
               onBlur={() => setPageInput(String(page))}
-              className="w-8 bg-transparent text-center font-mono text-surface-fg outline-hidden focus:bg-surface-raised-hover rounded-ds-sm"
+              className="w-8 bg-transparent text-center font-mono text-surface-fg outline-hidden focus:bg-surface-raised-hover rounded-control-inner"
               aria-label="Page number"
             />
             <span>/ {numPages}</span>

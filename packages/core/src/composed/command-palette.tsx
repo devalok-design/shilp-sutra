@@ -327,7 +327,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           {...props}
           className={cn(
             'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
-            'overflow-hidden rounded-ds-xl border border-surface-border-strong bg-surface-overlay shadow-overlay',
+            'overflow-hidden rounded-overlay-lg border border-surface-border-strong bg-surface-overlay shadow-overlay',
             'duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out',
             'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
             'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
@@ -372,7 +372,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -435,7 +435,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       }}
                       onMouseEnter={() => setActiveIndex(itemIndex)}
                       className={cn(
-                        'flex w-full items-center gap-ds-04 rounded-ds-lg px-ds-03 py-ds-03 text-left transition-[color,background-color] duration-fast-02 ease-productive-standard',
+                        'flex w-full items-center gap-ds-04 rounded-surface px-ds-03 py-ds-03 text-left transition-[color,background-color] duration-fast-02 ease-productive-standard',
                         isActive
                           ? 'bg-surface-raised-hover text-surface-fg'
                           : 'text-surface-fg-muted hover:bg-surface-raised',
@@ -519,11 +519,11 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       </kbd>
                     </div>
                   ) : hint.keys === '↵' ? (
-                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
+                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
                       <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                   ) : (
-                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
+                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
                       {hint.keys}
                     </kbd>
                   )}

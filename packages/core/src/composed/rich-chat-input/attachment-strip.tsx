@@ -68,18 +68,18 @@ export function AttachmentStrip({
                 <img
                   src={att.url}
                   alt={att.name}
-                  className="h-full w-full rounded-ds-md object-cover"
+                  className="h-full w-full rounded-control object-cover"
                 />
                 <button
                   onClick={() => onRemoveAttachment(att.id)}
-                  className="absolute -top-1 -right-1 h-ico-sm w-ico-sm rounded-full bg-error-9 text-error-fg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-fast-02"
+                  className="absolute -top-1 -right-1 h-ico-sm w-ico-sm rounded-pill bg-error-9 text-error-fg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-fast-02"
                   aria-label={`Remove ${att.name}`}
                   title="Remove"
                 >
                   <Icon icon={IconX} size="xs" />
                 </button>
                 {att.uploading && (
-                  <div className="absolute inset-0 rounded-ds-md bg-surface-overlay/50 flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-control bg-surface-overlay/50 flex items-center justify-center">
                     <Spinner size="sm" />
                   </div>
                 )}
@@ -99,7 +99,7 @@ export function AttachmentStrip({
                   scale: { type: 'spring', stiffness: 400, damping: 30 },
                   opacity: { duration: durations.fast02 },
                 }}
-                className="flex items-center gap-ds-02 shrink-0 rounded-ds-md bg-surface-raised px-ds-03 py-ds-01 group"
+                className="flex items-center gap-ds-02 shrink-0 rounded-control bg-surface-raised px-ds-03 py-ds-01 group"
               >
                 <Icon
                   icon={IconFile}

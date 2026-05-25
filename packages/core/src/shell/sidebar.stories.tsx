@@ -294,8 +294,8 @@ export const WithHeaderSlot: Story = {
     user: mockUser,
     navGroups: [mainNavGroup, secondaryNavGroup],
     headerSlot: (
-      <div className="flex items-center gap-ds-03 rounded-ds-lg bg-surface-raised px-ds-04 py-ds-05">
-        <div className="h-3 w-3 rounded-full bg-success-9" />
+      <div className="flex items-center gap-ds-03 rounded-surface bg-surface-raised px-ds-04 py-ds-05">
+        <div className="h-3 w-3 rounded-pill bg-success-9" />
         <span className="text-ds-sm text-surface-fg">Online — 9:42 AM</span>
       </div>
     ),
@@ -330,8 +330,8 @@ export const AllFeatures: Story = {
     user: mockUser,
     navGroups: [navGroupWithChildren, secondaryNavGroup],
     headerSlot: (
-      <div className="flex items-center gap-ds-03 rounded-ds-lg bg-surface-raised px-ds-04 py-ds-05">
-        <div className="h-3 w-3 rounded-full bg-success-9" />
+      <div className="flex items-center gap-ds-03 rounded-surface bg-surface-raised px-ds-04 py-ds-05">
+        <div className="h-3 w-3 rounded-pill bg-success-9" />
         <span className="text-ds-sm text-surface-fg">Online — 9:42 AM</span>
       </div>
     ),

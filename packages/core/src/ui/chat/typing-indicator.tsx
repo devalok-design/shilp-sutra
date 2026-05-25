@@ -31,7 +31,7 @@ function TypingIndicator({ users, className }: TypingIndicatorProps) {
               {[0, 1, 2].map((i) => (
                 <motion.span
                   key={i}
-                  className="h-1 w-1 rounded-full bg-surface-fg-subtle"
+                  className="h-1 w-1 rounded-pill bg-surface-fg-subtle"
                   animate={{ y: [0, -3, 0] }}
                   transition={{
                     duration: 0.5,

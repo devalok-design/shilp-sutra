@@ -28,7 +28,7 @@ describe('Badge', () => {
   it('renders dot indicator', () => {
     const { container } = render(<Badge dot>Test</Badge>)
     // dot renders two spans (pulse + dot)
-    const dots = container.querySelectorAll('.rounded-full.bg-current')
+    const dots = container.querySelectorAll('.rounded-pill.bg-current')
     expect(dots.length).toBeGreaterThanOrEqual(1)
   })
 

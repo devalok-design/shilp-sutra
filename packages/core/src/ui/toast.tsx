@@ -181,7 +181,7 @@ function ToastContent({
       role={isUrgent ? 'alert' : 'status'}
       aria-live={isUrgent ? 'assertive' : 'polite'}
       aria-atomic="true"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-floating"
+      className="group relative flex w-full overflow-hidden rounded-overlay-sm border border-surface-border-strong bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
@@ -191,7 +191,7 @@ function ToastContent({
       {/* Left accent bar */}
       {config.accentClass && (
         <div
-          className={cn('w-1 shrink-0 rounded-l-ds-md', config.accentClass)}
+          className={cn('w-1 shrink-0 rounded-l-overlay-sm', config.accentClass)}
         />
       )}
 
@@ -249,7 +249,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-raised-hover rounded-ds-sm px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
+                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-raised-hover rounded-control-inner px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
                 >
                   {action.label}
                 </button>
@@ -258,7 +258,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={cancel.onClick}
-                  className="text-ds-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-ds-sm"
+                  className="text-ds-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
                 >
                   {cancel.label}
                 </button>
@@ -443,7 +443,7 @@ function UploadFileRow({
         <button
           type="button"
           onClick={() => onRetry(file.id)}
-          className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
+          className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-control-inner text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Retry ${file.name}`}
           title="Retry"
         >
@@ -454,7 +454,7 @@ function UploadFileRow({
         <button
           type="button"
           onClick={() => onRemove(file.id)}
-          className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-ds-sm text-surface-fg-muted hover:text-surface-fg"
+          className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-control-inner text-surface-fg-muted hover:text-surface-fg"
           aria-label={`Cancel ${file.name}`}
           title="Remove"
         >
@@ -522,7 +522,7 @@ function UploadToastContent({
       role={uploadUrgent ? 'alert' : 'status'}
       aria-live={uploadUrgent ? 'assertive' : 'polite'}
       aria-label="File uploads"
-      className="group relative flex w-full overflow-hidden rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-floating"
+      className="group relative flex w-full overflow-hidden rounded-overlay-sm border border-surface-border-strong bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
@@ -530,7 +530,7 @@ function UploadToastContent({
       transition={springs.smooth}
     >
       {/* Left accent bar */}
-      <div className={cn('w-1 shrink-0 rounded-l-ds-md', accentClass)} />
+      <div className={cn('w-1 shrink-0 rounded-l-overlay-sm', accentClass)} />
 
       {/* Content */}
       <div className="min-w-0 flex-1 p-ds-04">

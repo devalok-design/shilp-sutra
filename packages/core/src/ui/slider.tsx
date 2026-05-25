@@ -8,7 +8,7 @@ import { useFormField } from './form'
 import { cn } from './lib/utils'
 
 const sliderTrackVariants = cva(
-  'relative w-full grow overflow-hidden rounded-ds-full bg-surface-raised-hover',
+  'relative w-full grow overflow-hidden rounded-pill bg-surface-raised-hover',
   {
     variants: {
       size: {
@@ -22,7 +22,7 @@ const sliderTrackVariants = cva(
 )
 
 const sliderThumbVariants = cva(
-  'touch-target block rounded-ds-full bg-surface-overlay shadow-raised transition-[color,transform,box-shadow] duration-fast-02 ease-productive-standard hover:scale-110 hover:shadow-raised-hover active:scale-[1.15] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
+  'touch-target block rounded-pill bg-surface-overlay shadow-raised transition-[color,transform,box-shadow] duration-fast-02 ease-productive-standard hover:scale-110 hover:shadow-raised-hover active:scale-[1.15] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
   {
     variants: {
       size: {

@@ -53,15 +53,15 @@ const PROSE_CLASSES = [
   '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
   '[&_li]:text-surface-fg-muted',
   '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-accent-11',
-  '[&_pre]:rounded-ds-lg [&_pre]:bg-surface-raised [&_pre]:p-ds-04',
+  '[&_pre]:rounded-surface [&_pre]:bg-surface-raised [&_pre]:p-ds-04',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_blockquote]:border-l-[3px] [&_blockquote]:border-accent-6 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-surface-fg-subtle',
   '[&_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
   '[&_hr]:my-ds-04 [&_hr]:border-surface-border-strong',
   '[&_a]:text-accent-11 [&_a]:underline [&_a]:decoration-accent-6 hover:[&_a]:decoration-accent-11',
-  '[&_img]:max-w-full [&_img]:rounded-ds-md [&_img]:my-ds-03',
-  '[&_.mention]:rounded-ds-sm [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
+  '[&_img]:max-w-full [&_img]:rounded-control [&_img]:my-ds-03',
+  '[&_.mention]:rounded-control-inner [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
 ] as const
 
 interface ToolbarButtonProps {
@@ -88,7 +88,7 @@ function ToolbarButton({
       aria-label={title}
       aria-pressed={isActive}
       className={cn(
-        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-ds-md transition-colors duration-fast-01 ease-productive-standard',
+        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control transition-colors duration-fast-01 ease-productive-standard',
         'hover:bg-surface-raised-hover',
         'disabled:pointer-events-none disabled:opacity-action-disabled',
         isActive
@@ -147,7 +147,7 @@ function LinkButton({ editor }: { editor: Editor }) {
         <form
           onSubmit={handleSubmit}
           aria-label="Edit link URL"
-          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-ds-md border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-raised-hover"
+          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-control border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-raised-hover"
         >
           <input
             ref={inputRef}
@@ -156,9 +156,9 @@ function LinkButton({ editor }: { editor: Editor }) {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="https://..."
-            className="h-ds-sm w-[240px] rounded-ds-sm border border-surface-border-strong bg-surface-overlay px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-hidden"
+            className="h-ds-sm w-[240px] rounded-control-inner border border-surface-border-strong bg-surface-overlay px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-hidden"
           />
-          <button type="submit" className="h-ds-sm rounded-ds-sm bg-accent-9 px-ds-03 text-ds-sm text-accent-fg hover:bg-accent-10">
+          <button type="submit" className="h-ds-sm rounded-control-inner bg-accent-9 px-ds-03 text-ds-sm text-accent-fg hover:bg-accent-10">
             Apply
           </button>
         </form>
@@ -361,7 +361,7 @@ function EmojiPickerLazy({ set = 'native', onSelect }: { set?: string; onSelect:
     loadEmojiData(set).then((d) => setData(d))
   }, [set])
 
-  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-raised-hover"><span className="text-ds-sm text-surface-fg-subtle">Loading...</span></div>
+  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-surface border border-surface-border-strong bg-surface-overlay shadow-raised-hover"><span className="text-ds-sm text-surface-fg-subtle">Loading...</span></div>
 
   if (!data) return fallback
 
@@ -507,7 +507,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       Image.configure({
         allowBase64: true,
         HTMLAttributes: {
-          class: 'max-w-full rounded-ds-md',
+          class: 'max-w-full rounded-control',
         },
       }),
       FileAttachment,
@@ -633,7 +633,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       )}
       <div
         className={cn(
-          'overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-raised',
+          'overflow-hidden rounded-surface border border-surface-border-strong bg-surface-raised',
           'transition-colors ease-productive-standard focus-within:border-surface-border-strong',
         )}
       >
@@ -715,7 +715,7 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
       Image.configure({
         allowBase64: true,
         HTMLAttributes: {
-          class: 'max-w-full rounded-ds-md',
+          class: 'max-w-full rounded-control',
         },
       }),
       FileAttachment,

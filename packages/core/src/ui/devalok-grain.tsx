@@ -89,7 +89,7 @@ export interface DevalokGrainProps {
  *
  * @example
  * // Heavier grain for a hero section:
- * <div className="relative overflow-hidden isolate rounded-ds-lg bg-accent-9 p-8">
+ * <div className="relative overflow-hidden isolate rounded-surface bg-accent-9 p-8">
  *   <DevalokGrain intensity="heavy" />
  *   <h1 className="relative z-[2]">Hero</h1>
  * </div>

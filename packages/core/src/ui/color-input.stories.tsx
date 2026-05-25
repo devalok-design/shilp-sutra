@@ -126,7 +126,7 @@ export const Controlled: Story = {
         <ColorInput value={color} onChange={setColor} />
         <div className="flex items-center gap-ds-03 text-ds-sm text-surface-fg-subtle">
           <span
-            className="inline-block h-4 w-4 rounded-ds-sm border border-surface-border"
+            className="inline-block h-4 w-4 rounded-control-inner border border-surface-border"
             style={{ backgroundColor: color }}
           />
           <code className="font-mono">{color}</code>

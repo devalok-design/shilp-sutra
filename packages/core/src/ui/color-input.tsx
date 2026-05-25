@@ -150,7 +150,7 @@ function FormatInput({
           onBlur={onBlur}
           maxLength={maxLength}
           className={cn(
-            'h-ds-xs-plus w-full rounded-ds-sm border border-surface-border bg-surface-overlay px-ds-02 font-mono text-ds-sm text-surface-fg transition-colors',
+            'h-ds-xs-plus w-full rounded-control-inner border border-surface-border bg-surface-overlay px-ds-02 font-mono text-ds-sm text-surface-fg transition-colors',
             'focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
             disabled && 'cursor-not-allowed opacity-50',
           )}
@@ -298,7 +298,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 type="button"
                 disabled={disabled}
                 className={cn(
-                  'group flex items-center justify-center rounded-ds-md px-ds-04 py-ds-02 font-mono text-ds-sm font-medium',
+                  'group flex items-center justify-center rounded-control px-ds-04 py-ds-02 font-mono text-ds-sm font-medium',
                   'focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
@@ -318,7 +318,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 type="button"
                 disabled={disabled}
                 className={cn(
-                  'group relative flex items-center overflow-hidden rounded-ds-md border border-surface-border-strong',
+                  'group relative flex items-center overflow-hidden rounded-control border border-surface-border-strong',
                   'hover:border-accent-7 focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
@@ -353,7 +353,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
             aria-label="Color picker"
             align={align}
             sideOffset={8}
-            className="w-[272px] rounded-ds-xl border border-surface-border-strong bg-surface-overlay p-0 shadow-floating"
+            className="w-[272px] rounded-overlay-lg border border-surface-border-strong bg-surface-overlay p-0 shadow-floating"
           >
             <div className="flex flex-col">
               {/* Interactive picker */}
@@ -378,7 +378,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       type="button"
                       onClick={() => setFormat(f)}
                       className={cn(
-                        'relative min-h-6 rounded-ds-sm px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider transition-colors',
+                        'relative min-h-6 rounded-control-inner px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider transition-colors',
                         format === f
                           ? 'text-accent-11'
                           : 'text-surface-fg-muted hover:text-surface-fg',
@@ -387,7 +387,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       {format === f && (
                         <motion.span
                           layoutId={`color-input-format-pill-${instanceId}`}
-                          className="absolute inset-0 rounded-ds-sm bg-accent-3"
+                          className="absolute inset-0 rounded-control-inner bg-accent-3"
                           transition={springs.snappy}
                         />
                       )}
@@ -478,7 +478,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                           whileTap={{ scale: 0.9 }}
                           transition={{ ...springs.bouncy, delay: i * 0.02 }}
                           className={cn(
-                            'h-6 w-6 rounded-ds-sm border',
+                            'h-6 w-6 rounded-control-inner border',
                             isSelected
                               ? 'border-accent-7 ring-2 ring-accent-9/30'
                               : 'border-surface-border hover:border-surface-border-strong',
@@ -504,7 +504,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 >
                   {/* Original color preview */}
                   <span
-                    className="h-4 w-4 shrink-0 rounded-full border border-surface-border"
+                    className="h-4 w-4 shrink-0 rounded-pill border border-surface-border"
                     style={{ backgroundColor: openColor }}
                     title={`Original: ${openColor}`}
                   />
@@ -516,7 +516,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     <button
                       type="button"
                       onClick={handleUndo}
-                      className="min-h-6 rounded-ds-sm px-ds-02 py-px text-ds-xs font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
+                      className="min-h-6 rounded-control-inner px-ds-02 py-px text-ds-xs font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
                     >
                       Undo
                     </button>
@@ -525,7 +525,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="min-h-6 rounded-ds-sm px-ds-02 py-px text-ds-xs font-medium text-surface-fg-muted transition-colors hover:text-error-11"
+                      className="min-h-6 rounded-control-inner px-ds-02 py-px text-ds-xs font-medium text-surface-fg-muted transition-colors hover:text-error-11"
                     >
                       Reset
                     </button>

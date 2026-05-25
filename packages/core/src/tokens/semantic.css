@@ -338,7 +338,10 @@
   --spacing-stack-gap:   var(--spacing-ds-06);
 
   /* ───────────────────────────────────────────────────────────
-     RADIUS
+     RADIUS — primitive scale
+     Internal building blocks. Components should NOT reference these
+     directly. Use the semantic role tokens below (--radius-control,
+     --radius-surface, etc.) so [data-shape] presets can remap them.
      ─────────────────────────────────────────────────────────── */
   --radius:        4px;     /* bare `rounded` class — TW4 default namespace */
   --radius-ds-none: 0;
@@ -348,6 +351,32 @@
   --radius-ds-xl:   16px;
   --radius-ds-2xl:  24px;
   --radius-ds-full: 9999px;
+
+  /* ───────────────────────────────────────────────────────────
+     RADIUS — semantic roles (PUBLIC API)
+     Components reference these tokens; consumers can override them
+     globally or scoped to remap shape language. The [data-shape]
+     preset blocks below redeclare these for sharp / slightly-rounded /
+     rounded variants. Defaults match the "slightly-rounded" preset.
+
+     Token         → utility            → use for
+     --radius-control       rounded-control       Button, Input, Select, Combobox, Tabs trigger, Toggle, Code block
+     --radius-control-inner rounded-control-inner Checkbox box, +/− buttons, close buttons, inline Code
+     --radius-surface       rounded-surface       Card, Alert, Accordion, StatCard
+     --radius-overlay-sm    rounded-overlay-sm    Tooltip, Toast
+     --radius-overlay       rounded-overlay       Popover, HoverCard, DropdownMenu / ContextMenu / Menubar content, listboxes, NavigationMenu viewport
+     --radius-overlay-lg    rounded-overlay-lg    Dialog, AlertDialog, Sheet, BottomSheet, ColorInput picker
+     --radius-pill          rounded-pill          Badge, StatusDot, Radio, Switch, Slider, Progress, Avatar circle, SegmentedControl item
+     --radius-bubble        rounded-bubble        ChatMessage bubble
+     ─────────────────────────────────────────────────────────── */
+  --radius-control:        6px;
+  --radius-control-inner:  2px;
+  --radius-surface:        10px;
+  --radius-overlay-sm:     6px;
+  --radius-overlay:        10px;
+  --radius-overlay-lg:     16px;
+  --radius-pill:           9999px;
+  --radius-bubble:         24px;
 
   /* ───────────────────────────────────────────────────────────
      DURATION (Carbon-inspired scale)
@@ -774,4 +803,46 @@
 
   /* Skeleton shimmer can feel alarming in HC; keep static */
   [data-skeleton] { animation: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SHAPE PRESETS — [data-shape="sharp" | "slightly-rounded" | "rounded"]
+
+   Apply to <html>, app root, or any subtree. Overrides the semantic
+   radius role tokens for that subtree. Default (no attribute) =
+   slightly-rounded. Consumers can further override individual tokens
+   in their own CSS for fine-grained customization. Pill always stays
+   pill (--radius-pill is intentionally non-customizable per preset).
+   ═══════════════════════════════════════════════════════════════════ */
+[data-shape="sharp"] {
+  --radius-control:        2px;
+  --radius-control-inner:  0px;
+  --radius-surface:        4px;
+  --radius-overlay-sm:     2px;
+  --radius-overlay:        4px;
+  --radius-overlay-lg:     6px;
+  --radius-pill:           9999px;
+  --radius-bubble:         8px;
+}
+
+[data-shape="slightly-rounded"] {
+  --radius-control:        6px;
+  --radius-control-inner:  2px;
+  --radius-surface:        10px;
+  --radius-overlay-sm:     6px;
+  --radius-overlay:        10px;
+  --radius-overlay-lg:     16px;
+  --radius-pill:           9999px;
+  --radius-bubble:         24px;
+}
+
+[data-shape="rounded"] {
+  --radius-control:        10px;
+  --radius-control-inner:  4px;
+  --radius-surface:        16px;
+  --radius-overlay-sm:     10px;
+  --radius-overlay:        16px;
+  --radius-overlay-lg:     24px;
+  --radius-pill:           9999px;
+  --radius-bubble:         32px;
 }

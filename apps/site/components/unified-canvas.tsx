@@ -88,30 +88,6 @@ export function UnifiedCanvas() {
         <p className="text-ds-md text-surface-fg-muted leading-relaxed max-w-2xl">
           Each tab below opens a different product surface. Built from the same components, painted by a different brand.
         </p>
-        {/* Industry peek strip — horizontal-scrolls on mobile, wraps on sm+ */}
-        <ul
-          aria-label="Available industries"
-          className="-mx-page-x sm:mx-0 px-page-x sm:px-0 flex sm:flex-wrap items-center gap-ds-03 mt-ds-02 overflow-x-auto sm:overflow-visible scroll-px-page-x snap-x snap-mandatory sm:snap-none"
-        >
-          {SURFACES.map((s, i) => (
-            <li key={s.slug} className="snap-start shrink-0">
-              <button
-                type="button"
-                onClick={() => goTo(i)}
-                className="group/peek inline-flex items-center gap-ds-02 text-ds-xs text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 rounded-ds-sm"
-                aria-label={`Switch to ${s.product}`}
-              >
-                <span
-                  aria-hidden
-                  className="w-3 h-3 rounded-full ring-1 ring-surface-border-subtle transition-transform duration-fast-02 ease-productive-standard group-hover/peek:scale-110 shrink-0"
-                  style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}
-                />
-                <span className="font-medium">{s.product}</span>
-                <span className="text-surface-fg-subtle hidden sm:inline">{s.industry}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
       </header>
 
       <motion.div
@@ -231,14 +207,10 @@ export function UnifiedCanvas() {
                       <span
                         aria-hidden
                         className={[
-                          'w-2.5 h-2.5 rounded-full transition-transform duration-fast-02 ease-productive-standard shrink-0',
-                          isActive ? 'scale-110 ring-2 ring-offset-1 ring-offset-surface-base' : '',
+                          'w-1.5 h-1.5 rounded-full shrink-0 transition-opacity duration-fast-02 ease-productive-standard',
+                          isActive ? 'opacity-100' : 'opacity-60 group-hover/tab:opacity-100',
                         ].join(' ')}
-                        style={
-                          isActive
-                            ? ({ background: `oklch(0.55 ${s.chroma} ${s.hue})`, '--tw-ring-color': `oklch(0.55 ${s.chroma} ${s.hue})` } as CSSProperties)
-                            : { background: `oklch(0.55 ${s.chroma} ${s.hue})` }
-                        }
+                        style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}
                       />
                       <span className="text-ds-sm font-semibold whitespace-nowrap">{s.product}</span>
                     </div>

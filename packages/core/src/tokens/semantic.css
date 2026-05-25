@@ -413,12 +413,13 @@
   --shadow-floating:     var(--shadow-md-internal);
   --shadow-overlay:      var(--shadow-lg-internal);
 
-  /* Effect shadows */
-  --shadow-brand:   0 2px 8px oklch(0.55 0.19 360 / 0.20), 0 6px 20px oklch(0.55 0.19 360 / 0.15);
-  --shadow-glow:    0 0 0 1.5px oklch(0.55 0.19 360 / 0.20), 0 0 7px oklch(0.55 0.19 360 / 0.12);
+  /* Effect shadows — brand-reactive via color-mix on --color-accent-9.
+     When the consumer swaps brand ramps, these shadows follow. */
+  --shadow-brand:   0 2px 8px color-mix(in oklch, var(--color-accent-9) 20%, transparent), 0 6px 20px color-mix(in oklch, var(--color-accent-9) 15%, transparent);
+  --shadow-glow:    0 0 0 1.5px color-mix(in oklch, var(--color-accent-9) 20%, transparent), 0 0 7px color-mix(in oklch, var(--color-accent-9) 12%, transparent);
   --shadow-inset:   inset 0 1px 2px oklch(var(--shadow-color) / calc(0.08 * var(--shadow-strength))), inset 0 2px 5px oklch(var(--shadow-color) / calc(0.06 * var(--shadow-strength)));
   --shadow-ring-sm: 0 0 0 1px var(--color-surface-border);
-  --shadow-ring:    0 0 0 2px oklch(0.55 0.19 360 / 0.30);
+  --shadow-ring:    0 0 0 2px color-mix(in oklch, var(--color-accent-9) 30%, transparent);
 
   --shadow-raised-inner: inset 0 1px 0 oklch(1 0 0 / 0.10), inset 0 -1px 0 oklch(0 0 0 / 0.06);
   --shadow-pressed: 0 0 0 1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength)));
@@ -599,11 +600,12 @@
   --color-skeleton-base:    var(--neutral-4);
   --color-skeleton-shimmer: var(--neutral-3);
 
-  /* Shadows (heavier in dark mode) */
+  /* Shadows (heavier in dark mode) — brand-reactive via color-mix on
+     --color-accent-9 so they follow consumer brand swaps. */
   --shadow-strength: 2.5;
-  --shadow-brand:    0 2px 8px oklch(0.55 0.19 360 / 0.30), 0 6px 20px oklch(0.55 0.19 360 / 0.20);
-  --shadow-glow:     0 0 0 1.5px oklch(0.55 0.19 360 / 0.35), 0 0 10px oklch(0.55 0.19 360 / 0.20);
-  --shadow-ring:     0 0 0 2px oklch(0.55 0.19 360 / 0.45);
+  --shadow-brand:    0 2px 8px color-mix(in oklch, var(--color-accent-9) 30%, transparent), 0 6px 20px color-mix(in oklch, var(--color-accent-9) 20%, transparent);
+  --shadow-glow:     0 0 0 1.5px color-mix(in oklch, var(--color-accent-9) 35%, transparent), 0 0 10px color-mix(in oklch, var(--color-accent-9) 20%, transparent);
+  --shadow-ring:     0 0 0 2px color-mix(in oklch, var(--color-accent-9) 45%, transparent);
   --shadow-raised-inner: inset 0 1px 0 oklch(1 0 0 / 0.06), inset 0 -1px 0 oklch(0 0 0 / 0.12);
   --shadow-success:  0 2px 8px oklch(0.6 0.14 145 / 0.30), 0 6px 20px oklch(0.6 0.14 145 / 0.20);
   --shadow-error:    0 2px 8px oklch(0.6 0.18 25 / 0.30),  0 6px 20px oklch(0.6 0.18 25 / 0.20);

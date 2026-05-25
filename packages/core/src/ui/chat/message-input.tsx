@@ -89,7 +89,7 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
         )}
         {...props}
       >
-        <div className="flex items-end gap-ds-02 rounded-ds-xl border border-surface-border bg-surface-base p-ds-03">
+        <div className="flex items-end gap-ds-02 rounded-overlay-lg border border-surface-border bg-surface-base p-ds-03">
           {leadingSlot}
           <textarea
             ref={textareaRef}

@@ -72,8 +72,8 @@ const StatusDot = React.forwardRef<HTMLSpanElement, StatusDotProps>(
     const autoAriaLabel = label ? `${label} \u2014 ${status}` : `Status: ${status}`
 
     const dotClasses = variant === 'ring'
-      ? cn('relative inline-flex rounded-full border-[1.5px]', s.dot, ringBorderColorMap[status], 'bg-transparent')
-      : cn('relative inline-flex rounded-full', s.dot, dotColorMap[status])
+      ? cn('relative inline-flex rounded-pill border-[1.5px]', s.dot, ringBorderColorMap[status], 'bg-transparent')
+      : cn('relative inline-flex rounded-pill', s.dot, dotColorMap[status])
 
     return (
       <span
@@ -87,7 +87,7 @@ const StatusDot = React.forwardRef<HTMLSpanElement, StatusDotProps>(
           {shouldPulse && (
             <span
               data-pulse=""
-              className={cn('absolute inline-flex rounded-full animate-ping motion-reduce:animate-none', s.pulse, pulseColorMap[status])}
+              className={cn('absolute inline-flex rounded-pill animate-ping motion-reduce:animate-none', s.pulse, pulseColorMap[status])}
             />
           )}
           <span className={dotClasses} />

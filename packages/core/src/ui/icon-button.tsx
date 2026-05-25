@@ -62,7 +62,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       <Button
         ref={ref}
         size={sizeMap[size]}
-        className={cn(shape === 'circle' && 'rounded-ds-full', className)}
+        className={cn(shape === 'circle' && 'rounded-pill', className)}
         loading={loading}
         loadingPosition="center"
         {...props}

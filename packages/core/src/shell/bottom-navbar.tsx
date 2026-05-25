@@ -61,7 +61,7 @@ function NavBadge({ count }: { count: number }) {
     <span
       aria-label={`${count} notifications`}
       className={cn(
-        'absolute -right-1 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error-9 text-[10px] font-semibold leading-none text-error-fg animate-in zoom-in-75',
+        'absolute -right-1 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-pill bg-error-9 text-[10px] font-semibold leading-none text-error-fg animate-in zoom-in-75',
         isMultiDigit ? 'px-0.5' : '',
       )}
     >
@@ -103,7 +103,7 @@ function BottomNavLink({
           {isActive && (
             <motion.div
               layoutId="bottom-nav-indicator"
-              className="absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-accent-9 p-0"
+              className="absolute top-0 h-[3px] w-full rounded-b-control-inner bg-accent-9 p-0"
               aria-hidden="true"
               transition={prefersReducedMotion ? { duration: 0 } : springs.snappy}
             />
@@ -182,7 +182,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={prefersReducedMotion ? { duration: 0 } : springs.smooth}
-            className="absolute bottom-[72px] left-0 right-0 rounded-t-ds-2xl border-t border-surface-border-strong bg-surface-overlay p-ds-05 pb-ds-03"
+            className="absolute bottom-[72px] left-0 right-0 rounded-t-bubble border-t border-surface-border-strong bg-surface-overlay p-ds-05 pb-ds-03"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => {
               e.stopPropagation()
@@ -196,7 +196,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
               <button
                 onClick={() => setShowMore(false)}
                 aria-label="Close more menu"
-                className="flex h-ds-sm w-ds-sm items-center justify-center rounded-ds-full hover:bg-surface-raised-hover"
+                className="flex h-ds-sm w-ds-sm items-center justify-center rounded-pill hover:bg-surface-raised-hover"
               >
                 <Icon icon={IconX} size="sm" className="text-surface-fg-muted" />
               </button>
@@ -208,7 +208,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   href={item.href}
                   onClick={() => setShowMore(false)}
                   className={cn(
-                    'flex flex-col items-center gap-ds-02b rounded-ds-xl p-ds-04 text-ds-sm transition-colors ease-productive-standard',
+                    'flex flex-col items-center gap-ds-02b rounded-overlay-lg p-ds-04 text-ds-sm transition-colors ease-productive-standard',
                     isActive(item.href, item.exact)
                       ? 'bg-surface-raised-hover text-accent-11'
                       : 'text-surface-fg-subtle hover:bg-surface-raised-hover',
@@ -264,7 +264,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
               {(showMore || isMoreActive) && (
                 <motion.div
                   layoutId="bottom-nav-indicator"
-                  className="absolute top-0 h-[3px] w-full rounded-b-ds-sm bg-accent-9 p-0"
+                  className="absolute top-0 h-[3px] w-full rounded-b-control-inner bg-accent-9 p-0"
                   aria-hidden="true"
                   transition={prefersReducedMotion ? { duration: 0 } : springs.snappy}
                 />

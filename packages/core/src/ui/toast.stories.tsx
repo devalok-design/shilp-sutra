@@ -337,7 +337,7 @@ export const CustomJSX: Story = {
       <Button
         onClick={() =>
           toast.custom((id) => (
-            <div className="flex items-center gap-ds-03 rounded-ds-md border border-surface-border-strong bg-surface-overlay p-ds-04 shadow-raised-hover">
+            <div className="flex items-center gap-ds-03 rounded-control border border-surface-border-strong bg-surface-overlay p-ds-04 shadow-raised-hover">
               <span className="text-ds-md text-surface-fg">
                 Custom content (id: {String(id)})
               </span>

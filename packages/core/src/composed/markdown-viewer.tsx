@@ -96,7 +96,7 @@ function CodeBlock({ language, code, mb }: { language: string; code: string; mb:
   if (!modules) {
     return (
       <div className={cn('group relative', mb)}>
-        <pre className="bg-surface-sunken rounded-ds-md p-ds-04 overflow-x-auto text-ds-sm font-mono">
+        <pre className="bg-surface-sunken rounded-control p-ds-04 overflow-x-auto text-ds-sm font-mono">
           <code>{code}</code>
         </pre>
         <CopyButton code={code} />
@@ -197,7 +197,7 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
               return <CodeBlock language={lang} code={codeString} mb={mb} />
             }
             return (
-              <code className="bg-surface-sunken rounded-ds-sm px-1.5 py-0.5 text-ds-sm font-mono text-surface-fg" {...codeProps}>
+              <code className="bg-surface-sunken rounded-control-inner px-1.5 py-0.5 text-ds-sm font-mono text-surface-fg" {...codeProps}>
                 {children}
               </code>
             )
@@ -239,7 +239,7 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
           ),
           hr: () => <hr className={cn('border-surface-border-subtle', compact ? 'my-ds-03' : 'my-ds-04')} />,
           img: ({ src, alt }) => (
-            <img src={src} alt={alt ?? ''} className="rounded-ds-md max-w-full" loading="lazy" />
+            <img src={src} alt={alt ?? ''} className="rounded-control max-w-full" loading="lazy" />
           ),
         }}
       >

@@ -980,7 +980,7 @@ export const RealWorldPatterns: Story = {
         <p className="text-ds-xs font-semibold text-surface-fg-subtle uppercase tracking-wider mb-ds-03">
           Popover Options (compact + normal weight)
         </p>
-        <div className="w-48 rounded-ds-md border border-surface-border-strong p-ds-01">
+        <div className="w-48 rounded-control border border-surface-border-strong p-ds-01">
           <Button
             variant="ghost"
             color="neutral"

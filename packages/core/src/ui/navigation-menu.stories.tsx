@@ -28,7 +28,7 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-hidden transition-colors hover:bg-surface-raised-hover"
+                    className="block select-none space-y-ds-01 rounded-control p-ds-03 leading-none no-underline outline-hidden transition-colors hover:bg-surface-raised-hover"
                   >
                     <div className="text-ds-sm font-medium leading-none">
                       Introduction
@@ -43,7 +43,7 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-hidden transition-colors hover:bg-surface-raised-hover"
+                    className="block select-none space-y-ds-01 rounded-control p-ds-03 leading-none no-underline outline-hidden transition-colors hover:bg-surface-raised-hover"
                   >
                     <div className="text-ds-sm font-medium leading-none">
                       Installation
@@ -65,7 +65,7 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-hidden transition-colors hover:bg-surface-raised-hover"
+                    className="block select-none space-y-ds-01 rounded-control p-ds-03 leading-none no-underline outline-hidden transition-colors hover:bg-surface-raised-hover"
                   >
                     <div className="text-ds-sm font-medium leading-none">
                       Alert Dialog
@@ -80,7 +80,7 @@ export const Default: Story = {
                 <NavigationMenuLink asChild>
                   <a
                     href="#"
-                    className="block select-none space-y-ds-01 rounded-ds-md p-ds-03 leading-none no-underline outline-hidden transition-colors hover:bg-surface-raised-hover"
+                    className="block select-none space-y-ds-01 rounded-control p-ds-03 leading-none no-underline outline-hidden transition-colors hover:bg-surface-raised-hover"
                   >
                     <div className="text-ds-sm font-medium leading-none">
                       Hover Card

@@ -76,7 +76,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       >
         <motion.div
           className={cn(
-            'flex items-center justify-center rounded-ds-xl bg-surface-raised',
+            'flex items-center justify-center rounded-overlay-lg bg-surface-raised',
             compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
             !isComponentType && icon != null && iconSizeClass,
           )}

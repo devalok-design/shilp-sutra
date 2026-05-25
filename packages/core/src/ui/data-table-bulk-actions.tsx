@@ -34,7 +34,7 @@ export function DataTableBulkActions<TData>({
       className={cn(
         'fixed bottom-6 left-1/2 -translate-x-1/2 z-sticky',
         'flex items-center gap-ds-04 px-ds-05 py-ds-03',
-        'rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating',
+        'rounded-overlay border border-surface-border-strong bg-surface-overlay shadow-floating',
         'animate-in slide-in-from-bottom-2',
       )}
       role="toolbar"
@@ -62,7 +62,7 @@ export function DataTableBulkActions<TData>({
         aria-label="Clear selection"
         className={cn(
           'flex items-center justify-center p-ds-01',
-          'rounded-ds-sm hover:bg-surface-raised transition-colors',
+          'rounded-control-inner hover:bg-surface-raised transition-colors',
           'text-surface-fg-muted hover:text-surface-fg',
         )}
       >

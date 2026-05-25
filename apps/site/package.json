@@ -1,0 +1,37 @@
+{
+  "name": "site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "node scripts/build-canvas-modes.mjs",
+    "predev": "node scripts/build-canvas-modes.mjs",
+    "dev": "next dev --turbo",
+    "build": "next build",
+    "build:canvas-modes": "node scripts/build-canvas-modes.mjs",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@devalok/shilp-sutra": "workspace:*",
+    "@devalok/shilp-sutra-brand": "workspace:*",
+    "@paper-design/shaders-react": "^0.0.76",
+    "@tabler/icons-react": "^3.0.0",
+    "@tanstack/react-table": "^8.21.0",
+    "framer-motion": "^12.0.0",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^9",
+    "remark-gfm": "^4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0"
+  }
+}

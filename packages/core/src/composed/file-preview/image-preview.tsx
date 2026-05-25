@@ -81,10 +81,10 @@ export default function ImagePreview({ url, alt, onError }: { url: string; alt?:
           return (
             <>
               <div className={cn(
-                'overflow-hidden rounded-ds-md bg-surface-sunken',
+                'overflow-hidden rounded-control bg-surface-sunken',
                 fullscreen ? 'flex-1 w-full' : 'max-h-[70vh] max-w-full',
               )}>
-                {!loaded && <Skeleton className="h-64 w-full rounded-ds-md" />}
+                {!loaded && <Skeleton className="h-64 w-full rounded-control" />}
                 <TransformComponent
                   wrapperClass={cn('w-full!', fullscreen && 'h-full!')}
                   contentClass="w-full! flex! items-center! justify-center!"

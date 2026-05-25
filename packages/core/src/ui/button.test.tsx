@@ -162,7 +162,7 @@ describe('Button', () => {
 
   it('renders with pill shape', () => {
     render(<Button shape="pill">Pill</Button>)
-    expect(screen.getByRole('button').className).toContain('rounded-full')
+    expect(screen.getByRole('button').className).toContain('rounded-pill')
   })
 
   // ============ Compact sizes ============

@@ -87,8 +87,8 @@ const triggerPadding: Record<SplitButtonSize, string> = {
 }
 
 const radiusClass: Record<SplitButtonSize, string> = {
-  xs: 'rounded-ds-md', sm: 'rounded-ds-md', md: 'rounded-ds-lg',
-  'icon-xs': 'rounded-ds-sm', 'icon-sm': 'rounded-ds-md', 'icon-md': 'rounded-ds-md',
+  xs: 'rounded-control', sm: 'rounded-control', md: 'rounded-control',
+  'icon-xs': 'rounded-control', 'icon-sm': 'rounded-control', 'icon-md': 'rounded-control',
 }
 
 function getHalfClasses(variant: SplitButtonVariant, color: string): string {
@@ -344,7 +344,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: durations.moderate01 }}
-                className="rounded-ds-lg border border-surface-border-strong bg-surface-overlay shadow-floating"
+                className="rounded-overlay border border-surface-border-strong bg-surface-overlay shadow-floating"
               >
                 {dropdownContent}
               </motion.div>

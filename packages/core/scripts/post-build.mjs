@@ -7,9 +7,10 @@
  * Steps (in order):
  * 1. copy-tokens        — Copy CSS token files to dist/
  * 2. copy-root-docs     — Copy CHANGELOG/MIGRATION/README to dist/
- * 3. fix-dts-primitives — Rewrite @primitives/ import paths in .d.ts files
- * 4. inject-use-client  — Add "use client" directives + SSR safety patches
- * 5. build-docs         — Generate per-component documentation
+ * 3. copy-skill         — Copy skills/shilp-sutra/ to packages/core/skill/
+ * 4. fix-dts-primitives — Rewrite @primitives/ import paths in .d.ts files
+ * 5. inject-use-client  — Add "use client" directives + SSR safety patches
+ * 6. build-docs         — Generate per-component documentation
  */
 
 import { execFileSync } from 'child_process'
@@ -22,6 +23,7 @@ const scriptsDir = __dirname
 const steps = [
   { name: 'copy-tokens', script: 'copy-tokens.mjs' },
   { name: 'copy-root-docs', script: 'copy-root-docs.mjs' },
+  { name: 'copy-skill', script: 'copy-skill.mjs' },
   { name: 'fix-dts-primitives', script: 'fix-dts-primitives.mjs' },
   { name: 'inject-use-client', script: 'inject-use-client.mjs' },
   { name: 'build-docs', script: 'build-component-docs.mjs' },

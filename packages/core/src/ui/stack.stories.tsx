@@ -31,7 +31,7 @@ type Story = StoryObj<typeof Stack>
 
 const Box = ({ children, wide }: { children: React.ReactNode; wide?: boolean }) => (
   <div
-    className={cn('rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-03 text-ds-sm text-surface-fg', wide && 'w-32')}
+    className={cn('rounded-control border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-03 text-ds-sm text-surface-fg', wide && 'w-32')}
   >
     {children}
   </div>
@@ -73,7 +73,7 @@ export const HorizontalCentered: Story = {
     children: (
       <>
         <Box>Short</Box>
-        <div className="rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-06 text-ds-sm text-surface-fg">
+        <div className="rounded-control border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-06 text-ds-sm text-surface-fg">
           Tall
         </div>
         <Box>Short</Box>
@@ -186,11 +186,11 @@ export const AllVariants: Story = {
                 direction="horizontal"
                 gap="ds-03"
                 align={alignment}
-                className="rounded-ds-md border border-dashed border-surface-border-strong p-ds-03"
+                className="rounded-control border border-dashed border-surface-border-strong p-ds-03"
                 style={{ minHeight: 80 }}
               >
                 <Box>Short</Box>
-                <div className="rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-06 text-ds-sm text-surface-fg">
+                <div className="rounded-control border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-06 text-ds-sm text-surface-fg">
                   Tall
                 </div>
                 <Box>Short</Box>
@@ -211,7 +211,7 @@ export const AllVariants: Story = {
                 direction="horizontal"
                 gap="ds-03"
                 justify={j}
-                className="rounded-ds-md border border-dashed border-surface-border-strong p-ds-03"
+                className="rounded-control border border-dashed border-surface-border-strong p-ds-03"
               >
                 <Box>A</Box>
                 <Box>B</Box>

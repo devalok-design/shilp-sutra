@@ -242,7 +242,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             onClick={openPicker}
             disabled={disabled}
             className={cn(
-              'inline-flex items-center gap-ds-02 rounded-ds-md px-ds-03 py-ds-02',
+              'inline-flex items-center gap-ds-02 rounded-control px-ds-03 py-ds-02',
               'text-ds-sm font-medium',
               'border border-surface-border-strong',
               'bg-surface-raised-hover text-surface-fg-muted',
@@ -311,7 +311,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             }
           }}
           className={cn(
-            'flex flex-col items-center justify-center gap-ds-03 rounded-ds-lg',
+            'flex flex-col items-center justify-center gap-ds-03 rounded-surface',
             'border-2 border-dashed p-ds-08',
             'cursor-pointer',
             'border-surface-border-strong bg-surface-raised-hover',
@@ -368,10 +368,10 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                className="h-2 w-full overflow-hidden rounded-ds-full bg-surface-raised-hover"
+                className="h-2 w-full overflow-hidden rounded-pill bg-surface-raised-hover"
               >
                 <motion.div
-                  className="h-full rounded-ds-full bg-accent-9"
+                  className="h-full rounded-pill bg-accent-9"
                   animate={{ width: `${progress}%` }}
                   transition={springs.smooth}
                 />

@@ -143,7 +143,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      'flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-hidden focus:bg-surface-raised data-[state=open]:bg-surface-raised [&_svg]:pointer-events-none [&_svg]:h-ico-sm [&_svg]:w-ico-sm [&_svg]:shrink-0',
+      'flex cursor-default select-none items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-md outline-hidden focus:bg-surface-raised data-[state=open]:bg-surface-raised [&_svg]:pointer-events-none [&_svg]:h-ico-sm [&_svg]:w-ico-sm [&_svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}
@@ -177,7 +177,7 @@ const DropdownMenuSubContent = React.forwardRef<
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ ...springs.snappy, opacity: tweens.fade }}
             className={cn(
-              'z-popover min-w-[8rem] overflow-hidden rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
+              'z-popover min-w-[8rem] overflow-hidden rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
               className,
             )}
           >
@@ -214,7 +214,7 @@ const DropdownMenuContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                'z-popover min-w-[8rem] rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
+                'z-popover min-w-[8rem] rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
                 className,
               )}
             >
@@ -237,7 +237,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02b text-ds-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg active:bg-surface-raised-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+      'relative flex cursor-default select-none items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg active:bg-surface-raised-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
       inset && 'pl-ds-07',
       className,
     )}
@@ -253,7 +253,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg active:bg-surface-raised-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
+      'relative flex cursor-default select-none items-center rounded-control py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg active:bg-surface-raised-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     checked={checked}
@@ -277,7 +277,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-ds-md py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg active:bg-surface-raised-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
+      'relative flex cursor-default select-none items-center rounded-control py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg active:bg-surface-raised-hover data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     {...props}

@@ -56,19 +56,100 @@ To swap to teal:
 
 For a quick swap without redoing the full scale, only override step 9 (background) and step 11 (foreground). Other steps will still reference the original chroma — visually mismatched but functional.
 
-### Change the radius scale
+### Shape presets (`[data-shape]`)
+
+The simplest way to change roundness for the whole UI is to set a `data-shape` attribute on the document (or any subtree). Three presets ship by default — `sharp`, `slightly-rounded` (the default if no attribute), and `rounded`. Pill shapes (Badge, Switch, Slider, Avatar circle) stay pill in every preset.
+
+```html
+<!-- Whole-app, sharp/technical feel -->
+<html data-shape="sharp">
+
+<!-- Whole-app, soft/consumer feel -->
+<html data-shape="rounded">
+```
+
+You can scope it to a subtree if a particular section wants different shape language than the rest:
+
+```tsx
+<div data-shape="sharp">
+  <DeveloperConsole />
+</div>
+```
+
+Visual feel:
+
+| Preset | Identity | Comparable to |
+|---|---|---|
+| `sharp` | Technical, precise, "serious software" | Vercel, Linear, terminal UIs |
+| `slightly-rounded` (default) | Modern SaaS neutral | shadcn default, Stripe, Notion sidebar |
+| `rounded` | Friendly, soft, consumer | iOS, Notion content, modern startup landings |
+
+### Custom radius — override a role token
+
+If a preset doesn't fit, you can override any semantic radius role token directly. Components reference these role tokens (not the primitive scale), so a single override propagates everywhere.
+
+```css
+/* Tighten controls only; leave overlays / surfaces alone */
+:root {
+  --radius-control: 4px;
+}
+
+/* Or scoped to a subtree */
+.checkout {
+  --radius-control: 8px;
+  --radius-surface: 20px;
+}
+```
+
+The role tokens (defaults shown — the "slightly-rounded" preset):
+
+| Token                    | Default | Used by |
+|--------------------------|---------|---------|
+| `--radius-control`       | 6px     | Button, Input, Select, Tabs trigger, Toggle, Code block |
+| `--radius-control-inner` | 2px     | Checkbox box, ±/close buttons, inline Code |
+| `--radius-surface`       | 10px    | Card, Alert, Accordion |
+| `--radius-overlay-sm`    | 6px     | Tooltip, Toast |
+| `--radius-overlay`       | 10px    | Popover, HoverCard, DropdownMenu / ContextMenu / Menubar content, listboxes |
+| `--radius-overlay-lg`    | 16px    | Dialog, AlertDialog, Sheet, BottomSheet, ColorInput picker |
+| `--radius-pill`          | 9999px  | Badge, StatusDot, Radio, Switch, Slider, Progress, Avatar circle |
+| `--radius-bubble`        | 24px    | ChatMessage bubble |
+
+### Build your own preset
+
+Define your own `[data-shape="…"]` block and swap to it whenever you want:
+
+```css
+[data-shape="brand-soft"] {
+  --radius-control:        8px;
+  --radius-control-inner:  3px;
+  --radius-surface:        14px;
+  --radius-overlay-sm:     8px;
+  --radius-overlay:        14px;
+  --radius-overlay-lg:     20px;
+  --radius-pill:           9999px;
+  --radius-bubble:         28px;
+}
+```
+
+```html
+<html data-shape="brand-soft">
+```
+
+### Change the primitive radius scale (advanced)
+
+If you're rebuilding the entire system rather than just rebranding, you can also override the primitive scale that the role tokens reference:
 
 ```css
 @theme {
-  --radius-ds-sm: 0.25rem;   /* small */
-  --radius-ds-md: 0.5rem;    /* default */
+  --radius-ds-sm: 0.25rem;
+  --radius-ds-md: 0.5rem;
   --radius-ds-lg: 0.75rem;
   --radius-ds-xl: 1rem;
   --radius: 0.5rem;          /* unsuffixed — generates bare `rounded` */
 }
 ```
 
-For a flat, sharp brand, set everything to `0`. For a heavily rounded brand, scale up.
+Most consumers should NOT touch this — overriding the role tokens above is the cleaner path.
 
 ### Change fonts
 

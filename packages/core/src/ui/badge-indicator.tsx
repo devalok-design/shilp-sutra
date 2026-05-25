@@ -60,7 +60,7 @@ export function BadgeIndicator({
             exit={prefersReduced ? { opacity: 0 } : { scale: 0, opacity: 0 }}
             transition={springs.bouncy}
             className={cn(
-              'absolute flex items-center justify-center rounded-full font-sans font-semibold ring-2 ring-surface-raised',
+              'absolute flex items-center justify-center rounded-pill font-sans font-semibold ring-2 ring-surface-raised',
               COLOR_CLASSES[color],
               PLACEMENT_CLASSES[placement],
               dot

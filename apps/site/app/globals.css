@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+@import "./canvas-modes.css";
+
+@source "../app";
+@source "../components";
+
+html,
+body {
+  background: var(--color-surface-base);
+  color: var(--color-surface-fg);
+  font-family: var(--font-sans);
+}
+
+/* Floating pill bar overlaps top of viewport — anchor jumps must clear it. */
+html {
+  scroll-padding-top: 5.5rem;
+}

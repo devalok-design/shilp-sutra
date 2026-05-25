@@ -99,7 +99,7 @@ export const CustomContent: Story = {
         </TooltipTrigger>
         <TooltipContent className="max-w-[240px] p-0">
           <div className="flex items-center gap-ds-03 px-ds-04 py-ds-03">
-            <div className="h-ds-sm w-ds-sm rounded-ds-full bg-accent-9 flex items-center justify-center text-ds-xs font-semibold text-accent-fg">
+            <div className="h-ds-sm w-ds-sm rounded-pill bg-accent-9 flex items-center justify-center text-ds-xs font-semibold text-accent-fg">
               MG
             </div>
             <div>
@@ -117,7 +117,7 @@ export const CustomContent: Story = {
         <TooltipContent>
           <div className="flex items-center gap-ds-03">
             <span>Save changes</span>
-            <kbd className="rounded-ds-sm border border-current/20 bg-current/10 px-ds-02 py-[1px] font-mono text-ds-xs">
+            <kbd className="rounded-control-inner border border-current/20 bg-current/10 px-ds-02 py-[1px] font-mono text-ds-xs">
               Ctrl+S
             </kbd>
           </div>

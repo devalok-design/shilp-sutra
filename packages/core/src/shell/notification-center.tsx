@@ -181,7 +181,7 @@ function NotificationItem({
       <div className="mt-ds-02b flex shrink-0">
         <span
           className={cn(
-            'h-[8px] w-[8px] rounded-ds-full transition-opacity duration-fast-02 ease-productive-standard',
+            'h-[8px] w-[8px] rounded-pill transition-opacity duration-fast-02 ease-productive-standard',
             TIER_COLORS[notification.tier] || TIER_COLORS.INFO,
             notification.isRead ? 'opacity-20' : 'opacity-100',
           )}
@@ -232,7 +232,7 @@ function NotificationItem({
                 }}
                 onKeyDown={(e) => e.stopPropagation()}
                 className={cn(
-                  'rounded-ds-md px-ds-03 py-ds-01 text-ds-sm font-medium transition-colors duration-fast-02 ease-productive-standard',
+                  'rounded-control px-ds-03 py-ds-01 text-ds-sm font-medium transition-colors duration-fast-02 ease-productive-standard',
                   action.variant === 'primary'
                     ? 'bg-accent-9 text-accent-fg hover:bg-accent-10'
                     : action.variant === 'danger'
@@ -257,7 +257,7 @@ function NotificationItem({
             onDismiss(notification.id)
           }}
           onKeyDown={(e) => e.stopPropagation()}
-          className="absolute right-ds-03 top-ds-03 hidden rounded-ds-sm p-ds-01 text-surface-fg-subtle transition-[color,background-color,opacity] duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
+          className="absolute right-ds-03 top-ds-03 hidden rounded-control-inner p-ds-01 text-surface-fg-subtle transition-[color,background-color,opacity] duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
         >
           <Icon icon={IconX} size="sm" />
         </button>
@@ -352,7 +352,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             </h3>
           )}
           {unreadCount > 0 && (
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-ds-full bg-accent-2 px-ds-02b text-ds-sm font-semibold text-accent-11">
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-pill bg-accent-2 px-ds-02b text-ds-sm font-semibold text-accent-11">
               {unreadCount}
             </span>
           )}
@@ -381,7 +381,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         {notifications.length === 0 ? (
           emptyState || (
             <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
-              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-ds-full bg-surface-raised">
+              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-pill bg-surface-raised">
                 <Icon icon={IconInbox} size="lg" className="text-surface-fg-subtle" />
               </div>
               <p className="mt-ds-04 text-ds-md text-surface-fg-subtle">
@@ -445,7 +445,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       ref={ref}
       aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
       className={cn(
-        'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-ds-full border border-surface-border-strong bg-surface-raised text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-raised-hover',
+        'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-surface-border-strong bg-surface-raised text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-raised-hover',
         className,
       )}
     >
@@ -455,7 +455,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
           initial={{ rotate: 0 }}
           animate={prefersReducedMotion ? undefined : { rotate: [0, -3, 3, -1, 1, 0] }}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: durations.slow01, ease: 'easeInOut' }}
-          className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-ds-full bg-accent-9 px-ds-02 text-ds-xs font-semibold text-accent-fg"
+          className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-pill bg-accent-9 px-ds-02 text-ds-xs font-semibold text-accent-fg"
         >
           {unreadCount > 99 ? '99+' : unreadCount}
         </motion.span>
@@ -504,7 +504,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
 
       <PopoverContent
         className={cn(
-          'w-[380px] rounded-ds-xl border border-surface-border-strong bg-surface-overlay p-0 shadow-floating',
+          'w-[380px] rounded-overlay-lg border border-surface-border-strong bg-surface-overlay p-0 shadow-floating',
           popoverClassName,
         )}
         sideOffset={8}

@@ -7,9 +7,9 @@ import { cn } from './lib/utils'
 const skeletonVariants = cva('bg-skeleton-base', {
   variants: {
     variant: {
-      rectangle: 'rounded-ds-md',
-      circle: 'rounded-ds-full aspect-square',
-      text: 'rounded-ds-sm h-4 w-full',
+      rectangle: 'rounded-control',
+      circle: 'rounded-pill aspect-square',
+      text: 'rounded-control-inner h-4 w-full',
     },
     animation: {
       pulse: 'animate-pulse motion-reduce:animate-none',
@@ -106,7 +106,7 @@ const SkeletonAvatar = React.forwardRef<HTMLDivElement, SkeletonAvatarProps>(
       <div
         ref={ref}
         className={cn(
-          'bg-skeleton-base rounded-ds-full',
+          'bg-skeleton-base rounded-pill',
           avatarSizeClasses[size],
           animationClasses[animation],
           className,
@@ -165,7 +165,7 @@ const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
           <div
             key={i}
             className={cn(
-              'h-3.5 rounded-ds-sm bg-skeleton-base',
+              'h-3.5 rounded-control-inner bg-skeleton-base',
               animationClasses[animation],
               i === safeLines - 1 ? lastLineWidthClasses[lastLineWidth] : 'w-full',
             )}
@@ -205,7 +205,7 @@ const SkeletonButton = React.forwardRef<HTMLDivElement, SkeletonButtonProps>(
       <div
         ref={ref}
         className={cn(
-          'bg-skeleton-base rounded-ds-md',
+          'bg-skeleton-base rounded-control',
           buttonSizeClasses[size],
           isIcon ? 'aspect-square' : buttonWidthClasses[width as 'auto' | 'full'][size],
           animationClasses[animation],
@@ -239,7 +239,7 @@ const SkeletonInput = React.forwardRef<HTMLDivElement, SkeletonInputProps>(
       <div
         ref={ref}
         className={cn(
-          'w-full bg-skeleton-base rounded-ds-md border border-skeleton-base/30',
+          'w-full bg-skeleton-base rounded-control border border-skeleton-base/30',
           inputSizeClasses[size],
           animationClasses[animation],
           className,
@@ -279,7 +279,7 @@ const SkeletonChart = React.forwardRef<HTMLDivElement, SkeletonChartProps>(
             <div
               key={i}
               className={cn(
-                'flex-1 bg-skeleton-base rounded-t-ds-sm',
+                'flex-1 bg-skeleton-base rounded-t-control-inner',
                 animationClasses[animation],
               )}
               style={{ height: `${barHeight}%` }}
@@ -308,7 +308,7 @@ const SkeletonImage = React.forwardRef<HTMLDivElement, SkeletonImageProps>(
       <div
         ref={ref}
         className={cn(
-          'bg-skeleton-base rounded-ds-md relative flex items-center justify-center',
+          'bg-skeleton-base rounded-control relative flex items-center justify-center',
           width,
           height,
           animationClasses[animation],

@@ -734,6 +734,7 @@
     "docs/recipes",
     "docs/rollback.md",
     "fonts",
+    "skill",
     "MIGRATION.md",
     "README.md",
     "llms.txt",

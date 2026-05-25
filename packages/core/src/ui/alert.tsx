@@ -10,7 +10,7 @@ import { motionProps,springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 const alertVariants = cva(
-  'relative flex rounded-ds-lg border',
+  'relative flex rounded-surface border',
   {
     variants: {
       variant: {
@@ -159,7 +159,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
                 aria-label="Dismiss"
               >
                 <Icon icon={IconX} size={dismissIconSize} />

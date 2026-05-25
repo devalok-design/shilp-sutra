@@ -100,7 +100,7 @@ const SlashCommandList = React.forwardRef<SlashCommandListRef, SlashCommandListP
       <div
         role="listbox"
         aria-label="Slash commands"
-        className="z-popover max-h-[320px] min-w-[220px] overflow-x-hidden overflow-y-auto rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
+        className="z-popover max-h-[320px] min-w-[220px] overflow-x-hidden overflow-y-auto rounded-surface border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
       >
         {renderedGroups.map((group, gi) => (
           <div key={group.label} role="group" aria-label={group.label}>
@@ -118,7 +118,7 @@ const SlashCommandList = React.forwardRef<SlashCommandListRef, SlashCommandListP
                   aria-selected={fi === selectedIndex}
                   onClick={() => command(cmd)}
                   className={cn(
-                    'flex w-full items-center gap-ds-03 rounded-ds-md px-ds-03 py-ds-02 text-left cursor-pointer',
+                    'flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02 text-left cursor-pointer',
                     fi === selectedIndex
                       ? 'bg-surface-raised-hover'
                       : 'hover:bg-surface-raised-hover',

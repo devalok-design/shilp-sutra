@@ -67,7 +67,7 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
     if (!items.length) return null
 
     return (
-      <div role="listbox" aria-label="Emoji suggestions" className="z-popover max-h-[200px] overflow-x-hidden overflow-y-auto rounded-ds-md border border-surface-border-strong bg-surface-overlay shadow-raised-hover">
+      <div role="listbox" aria-label="Emoji suggestions" className="z-popover max-h-[200px] overflow-x-hidden overflow-y-auto rounded-control border border-surface-border-strong bg-surface-overlay shadow-raised-hover">
         {items.map((item, index) => (
           <button
             key={item.id}

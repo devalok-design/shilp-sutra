@@ -1,0 +1,6997 @@
+<!-- Source: packages/core/llms-full.txt — do not edit directly. Regenerate with `node scripts/build-skill.mjs`. -->
+
+# @devalok/shilp-sutra — Full Component Reference
+
+> Exhaustive API reference for AI coding agents.
+> For a concise cheatsheet, see llms.txt instead.
+> All variant values and props verified from source CVA definitions.
+>
+> Package: @devalok/shilp-sutra
+> Version: 0.38.0
+>
+> **If you are an AI agent reading this file top-to-bottom:** the Setup
+> section below is authoritative. If any later per-component doc or a
+> pre-0.37 history entry shows `tailwind.config.ts` / `presets: [shilpSutra]`
+> / `@config`, that is HISTORICAL and does NOT apply on 0.37+.
+
+---
+
+## Setup (0.37.0+ — Tailwind 4 CSS-first)
+
+**The only supported setup** is TW4 CSS-first. No JS preset, no `tailwind.config.ts` required from us.
+
+```sh
+pnpm add @devalok/shilp-sutra@next framer-motion
+# Only if you render <Toaster />:
+pnpm add sonner
+```
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+
+/* Your own extensions go in the same file */
+@plugin "@tailwindcss/typography";
+@source "./app/**/*.{ts,tsx}";
+```
+
+```ts
+// next.config.ts
+transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
+```
+
+**Do NOT** import `@devalok/shilp-sutra/tailwind`. That export was removed in 0.38.0. Use the CSS-first setup (`@import "tailwindcss"; @import "@devalok/shilp-sutra/css";`) — no `tailwind.config.ts` is required.
+
+### Peer dependencies (0.37.0)
+
+| Package | Role | Install when |
+|---|---|---|
+| `react`, `react-dom` | required peer | always |
+| `tailwindcss ^4.0.0` | required peer | always |
+| `framer-motion ^12.0.0` | required peer | always — module-scoped motion contexts must be single-copy |
+| `sonner ^2.0.0` | optional peer | only if you render `<Toaster />` or call `toast()` |
+| `@tabler/icons-react` | optional peer | if you use `Icon` / icon-bearing components |
+| `@tanstack/react-table`, `@tanstack/react-virtual` | optional peer | if you use `DataTable` |
+| `@tiptap/*` | optional peer | if you use `RichTextEditor` or `RichChatInput` |
+| `react-pdf`, `react-zoom-pan-pinch` | optional peer | if you use `FilePreview` |
+| `react-markdown`, `remark-gfm` | optional peer | if you use `MarkdownViewer` |
+| `date-fns` | optional peer | if you use `DatePicker` / `ScheduleView` |
+| `input-otp` | optional peer | if you use `InputOTP` |
+
+### Token namespaces exposed by our `/css` import
+
+| TW4 namespace | Generates utilities like | Our tokens |
+|---|---|---|
+| `--color-*` | `bg-*`, `text-*`, `border-*`, `ring-*` | accent-1..12, secondary-1..12, surface-*, error-*, success-*, warning-*, info-*, category-*, link-* |
+| `--spacing-ds-*` | `p-ds-03`, `m-ds-04`, `gap-ds-05`, `w-ds-md`, `h-ds-lg` | ds-namespaced to avoid collision with consumer numeric `p-4` etc. |
+| `--text-ds-*` | `text-ds-md`, `text-ds-lg` | ds-namespaced; consumer `text-lg` still works |
+| `--leading-ds-*` | `leading-ds-tight`, `leading-ds-normal` | ds-namespaced |
+| `--tracking-*` | `tracking-tight`, `tracking-normal` | standard TW namespace |
+| `--font-*`, `--font-weight-*` | `font-sans`, `font-semibold` | standard TW namespace |
+| `--radius`, `--radius-ds-*` | `rounded` (bare), `rounded-ds-lg` | unprefixed + ds-namespaced primitive scale |
+| `--radius-control`, `--radius-surface`, `--radius-overlay-*`, `--radius-pill`, `--radius-bubble` | `rounded-control`, `rounded-surface`, `rounded-overlay`, `rounded-pill`, `rounded-bubble` | semantic roles (PUBLIC) — components reference these, `[data-shape]` presets remap them |
+| `--shadow-*` | `shadow-raised`, `shadow-overlay` | semantic names only; bare `shadow` is NOT generated (TW4 has no default scale and we don't define `--shadow`) |
+| `--ease-*` | `ease-productive-standard` | semantic names |
+| `--breakpoint-*` | `md:`, `lg:` | standard TW namespace |
+| `--animate-*` | `animate-skeleton-shimmer`, `animate-processing-ants-*` | named animations |
+
+### Utilities declared via `@utility` (not token-driven)
+
+TW4 has no `--z-*` or `--duration-*` auto-namespace, so these are explicit:
+
+- **Z-layer:** `z-base`, `z-raised`, `z-dropdown`, `z-sticky`, `z-overlay`, `z-modal`, `z-popover`, `z-toast`, `z-tooltip`
+- **Named durations:** `duration-instant`, `duration-fast-01`, `duration-fast-02`, `duration-moderate-01`, `duration-moderate-01b`, `duration-moderate-02`, `duration-slow-01`, `duration-slow-02`
+- **Typography composites:** `text-heading-{2xl|xl|lg|md|sm|xs}`, `text-body-{lg|md|sm|xs}`, `text-label-{lg|md|sm|xs}`, `text-label-plain-{lg|md|sm}`, `text-caption`, `text-overline`, `text-code`
+- **Focus rings:** `focus-ring`, `focus-ring-inset`, `focus-ring-sm`
+- **Touch target:** `touch-target` (44×44 WCAG hit area via `::before`)
+- **Safe-area insets:** `pt-safe`, `pb-safe`, `pl-safe`, `pr-safe`, `p-safe`
+- **Number formatting:** `tabular-nums`
+
+### Dark mode
+
+`.dark` class-based. The `@custom-variant dark (&:where(.dark *))` declaration means `dark:` utilities apply to **descendants** of `.dark`, not the element itself. Put `.dark` on `<html>` (standard pattern for `next-themes`) or `<body>`.
+
+### Dead in TW4 — do NOT generate these
+
+| Dead pattern | Replacement |
+|---|---|
+| `w-[--var]` | `w-(--var)` |
+| `theme(spacing.N)` inside arbitrary values | literal value |
+| `bg-gradient-to-*` | `bg-linear-to-*` |
+| bare `shadow` | `shadow-sm`, `shadow-raised`, etc. |
+| `outline-none` | `outline-hidden` |
+| `rounded-sm` | `rounded-xs` |
+| `!prefix` | `suffix!` |
+
+See `MIGRATION.md#v0370--tailwind-4-css-first-migration` (root of this package).
+
+---
+
+## Shape Presets & Radius Roles (v0.39+)
+
+Radius has TWO layers:
+
+1. **Primitive scale** — `--radius-ds-sm/md/lg/xl/2xl/full` (private; internal building blocks).
+2. **Semantic roles** — `--radius-control`, `--radius-control-inner`, `--radius-surface`, `--radius-overlay-sm/md/lg`, `--radius-pill`, `--radius-bubble`. Components reference roles. Consumers customize these.
+
+### Role token reference
+
+| Token                    | Default (px) | Utility class            | Used by |
+|--------------------------|--------------|--------------------------|---------|
+| `--radius-control`       | 6            | `rounded-control`        | Button, Input, Select, Combobox, Autocomplete, NumberInput, Toggle, ToggleGroup, Tabs trigger (contained), menu items, sidebar menu button, stepper, pagination, code block, InputOTP slot |
+| `--radius-control-inner` | 2            | `rounded-control-inner`  | Checkbox box, +/− buttons, close X buttons, focus rings on text links, small badges, color preset swatches, skeleton text bars, inline Code |
+| `--radius-surface`       | 10           | `rounded-surface`        | Card, StatCard, DataTableCard, Alert, Accordion trigger, FileUpload dropzone, Tabs list (contained) |
+| `--radius-overlay-sm`    | 6            | `rounded-overlay-sm`     | Tooltip, Toast, charts internal tooltip |
+| `--radius-overlay`       | 10           | `rounded-overlay`        | Popover, HoverCard, DropdownMenu / ContextMenu / Menubar content, Select / Combobox / Autocomplete listbox, NavigationMenu viewport, DataTable bulk-actions toolbar, SplitButton dropdown |
+| `--radius-overlay-lg`    | 16           | `rounded-overlay-lg`     | Dialog, AlertDialog, Sheet (top corners), BottomSheet, ColorInput picker panel, ChatMessageInput wrapper, Sidebar inset variant |
+| `--radius-pill`          | 9999         | `rounded-pill`           | Badge, BadgeIndicator, StatusDot, Radio, Switch, Slider, Progress, Avatar circle, SegmentedControl item, ChatMessage reaction button, drag handles |
+| `--radius-bubble`        | 24           | `rounded-bubble`         | ChatMessage bubble |
+
+Bare `rounded-ds-*` and `rounded-full` are BANNED in components (enforced by pre-publish audit gate). Token-showcase stories (`forced-colors.stories.tsx`, `FoundationsShowcase.tsx`) are explicitly allowlisted.
+
+### Shape presets — `[data-shape]`
+
+Apply to `<html>`, app root, or any subtree. Three presets ship by default:
+
+| Preset | control / control-inner | surface | overlay-sm / overlay / overlay-lg | bubble | Feel |
+|---|---|---|---|---|---|
+| `sharp`              | 2 / 0   | 4   | 2 / 4 / 6     | 8  | Vercel / Linear / dev-tool |
+| `slightly-rounded` (default) | 6 / 2   | 10  | 6 / 10 / 16   | 24 | shadcn / Stripe / Notion sidebar |
+| `rounded`            | 10 / 4  | 16  | 10 / 16 / 24  | 32 | iOS / Notion content / consumer |
+
+```html
+<!-- Whole-app preset -->
+<html data-shape="sharp">
+
+<!-- Or scoped per subtree -->
+<div data-shape="rounded">...</div>
+```
+
+`--radius-pill` stays `9999px` in every preset by design — pill shapes are shape-by-meaning, not shape-by-style.
+
+### Per-token consumer overrides
+
+Override any role globally or scoped:
+
+```css
+:root { --radius-control: 4px; }                                /* tighten controls only */
+.checkout { --radius-control: 8px; --radius-surface: 20px; }    /* per-subtree */
+[data-shape="rounded"] .admin { --radius-control: 6px; }        /* extend a preset */
+```
+
+### Custom preset
+
+```css
+[data-shape="brand-soft"] {
+  --radius-control:        8px;
+  --radius-control-inner:  3px;
+  --radius-surface:        14px;
+  --radius-overlay-sm:     8px;
+  --radius-overlay:        14px;
+  --radius-overlay-lg:     20px;
+  --radius-pill:           9999px;
+  --radius-bubble:         28px;
+}
+```
+
+```html
+<html data-shape="brand-soft">
+```
+
+### Migration from `rounded-ds-*` / `rounded-full`
+
+```diff
+- className="rounded-ds-md ..."     → + className="rounded-control ..."
+- className="rounded-ds-lg ..."     → + className="rounded-surface ..."   /* card/panel context */
+- className="rounded-ds-lg ..."     → + className="rounded-overlay ..."   /* popover/dropdown context */
+- className="rounded-ds-xl ..."     → + className="rounded-overlay-lg ..."  /* dialog/sheet */
+- className="rounded-ds-2xl ..."    → + className="rounded-bubble ..."
+- className="rounded-ds-sm ..."     → + className="rounded-control-inner ..."
+- className="rounded-ds-full ..."   → + className="rounded-pill ..."
+- className="rounded-full ..."      → + className="rounded-pill ..."
+```
+
+Re-runnable codemod: `scripts/migrate-radius-roles.mjs` (dry-run by default, `--write` to apply).
+
+---
+
+## Architecture Notes
+
+### The Two-Axis Variant System
+
+Many components use TWO props where shadcn/ui uses one:
+- `variant` controls SHAPE/SURFACE: solid, outline, ghost, subtle, filled, etc.
+- `color` controls INTENT/SEMANTICS: default, error, success, warning, info, etc.
+
+Components with two-axis system: Button, Badge, Alert, Chip, Banner, Progress, StatusBadge
+
+### Server-Safe Components (no "use client")
+
+These can be imported directly in Next.js Server Components:
+- UI: Text, Skeleton, Stack, Container, Table (and sub-components), Code, VisuallyHidden
+- Composed: ContentCard, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator
+- NOTE (v0.18.0): Spinner, EmptyState, StatusBadge are NO LONGER server-safe (Framer Motion dependency)
+
+Use per-component imports for server components:
+  import { Text } from '@devalok/shilp-sutra/ui/text'
+  import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
+
+DO NOT use barrel imports in Server Components — they include "use client" components.
+
+### Token Architecture — OKLCH 12-Step System
+
+Color tokens use OKLCH (perceptually uniform) with 12 functional steps per palette:
+
+| Step | Purpose | Example usage |
+|------|---------|---------------|
+| 1 | App background | Page bg, body |
+| 2 | Subtle background | Sidebar, card alt |
+| 3 | Component bg | Input bg, badge bg |
+| 4 | Component bg hover | Button hover state |
+| 5 | Border subtle | Semantic `surface-border` in light mode |
+| 6 | Border default | Semantic `surface-border-strong` in light mode |
+| 7 | Border strong | Focus rings, emphasis borders |
+| 8 | Border emphasis | High-contrast outlines |
+| 9 | Solid / accent | Button bg, primary CTA |
+| 10 | Solid hover | Button hover bg |
+| 11 | Low-contrast text | Secondary accent text |
+| 12 | High-contrast text | Headings on light bg |
+
+Semantic layer:
+- Accent (swappable): --color-accent-{1-12} + --color-accent-fg
+- Secondary: --color-secondary-{1-12} + --color-secondary-fg
+- Surface: --color-surface-{base,raised,sunken} + --color-surface-fg / fg-muted / fg-subtle / border / border-subtle
+  - Border mapping: light mode border=step5, border-subtle=step3; dark mode border=step3, border-subtle=step2
+  - Shell chrome (sidebar, topbar, bottom nav) uses surface-sunken with brand tint for recessed chrome
+- Status: --color-{error,success,warning,info}-{3,7,9,11}
+- Category: --color-category-{teal,amber,slate,indigo,cyan,orange,emerald}
+
+Consumer rebranding: Override accent scale CSS vars or use generateScale(options) utility.
+
+Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken, plus fg/border variants.
+
+### Toast Setup Pattern
+
+1. Mount <Toaster /> once at your root layout.
+2. Import { toast } from '@devalok/shilp-sutra/ui/toast' and call toast.success(), toast.error(), etc.
+3. Types: 'success' | 'error' | 'warning' | 'info' | 'loading' | 'message'
+
+### Form Accessibility Pattern
+
+Use <FormField> + useFormField() hook:
+  <FormField state="error">
+    <Label htmlFor="email">Email</Label>
+    <Input id="email" state="error" />
+    <FormHelperText>Error message here.</FormHelperText>
+  </FormField>
+
+useFormField() returns { state, helperTextId, required } from context.
+Wire manually: <Input aria-describedby={helperTextId} aria-invalid={state === 'error'} />
+
+Note: getFormFieldA11y() was removed in favor of useFormField() hook.
+
+---
+
+# UI COMPONENTS
+# Alphabetical within this section.
+# Import from: @devalok/shilp-sutra/ui/<kebab-name>
+
+---
+
+# Accordion
+
+- Import: @devalok/shilp-sutra/ui/accordion
+- Server-safe: No
+- Category: ui
+
+## Props
+    type: "single" | "multiple" (REQUIRED)
+    defaultValue: string (single) | string[] (multiple)
+    value: string | string[] (controlled)
+    onValueChange: (value) => void
+    collapsible: boolean (only valid when type="single")
+
+## Compound Components
+    Accordion (root)
+      AccordionItem (value: string, REQUIRED)
+        AccordionTrigger (clickable header, chevron auto-renders; chevronPosition: "left" | "right")
+        AccordionContent (collapsible body)
+
+## Defaults
+    none (type is required); AccordionTrigger: chevronPosition="right"
+
+## Example
+```jsx
+<Accordion type="single" defaultValue="item-1" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Question?</AccordionTrigger>
+    <AccordionContent>Answer.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+## Composability
+- Built on Radix Accordion — accepts `value`/`defaultValue`/`onValueChange` matching the `type` discriminated union.
+- **`type="single"`** — value is a string (which item is open). Only one item open at a time. Pair with `collapsible` to allow closing the current item by re-clicking it.
+- **`type="multiple"`** — value is a string[] (which items are open). Multiple can be open at once.
+- **AccordionTrigger chevron:** Inline SVG that auto-rotates via the `data-state` attribute Radix sets (`open` / `closed`). The `chevronPosition` prop controls render order inside the trigger (left / right) — rotation still works from either position.
+- **AccordionContent:** Uses Radix CSS custom properties (`--radix-accordion-content-height`) for open/close height animation. Framer Motion handles the fade. Don't wrap AccordionContent children in additional motion components — doubles the animation.
+- **Inline, not portalled** — parent `overflow: hidden` WILL clip an open accordion. Keep accordions out of tight overflow contexts or use `overflow-visible` on the container.
+
+## Gotchas
+- type is REQUIRED — omitting it causes runtime error
+- collapsible only works with type="single"
+- Each AccordionItem needs a unique `value` — duplicates silently break toggling
+- Don't put focusable elements inside AccordionTrigger — the trigger IS the focusable button, nested focusables break screen reader navigation
+
+## Changes
+### v0.29.0
+- **Added** `chevronPosition` prop on AccordionTrigger: `"left"` | `"right"` (default: `"right"`) — controls which side the chevron icon renders
+
+### v0.18.0
+- **Changed** Accordion content fade animation migrated to Framer Motion (height animation still uses CSS keyframes)
+
+### v0.13.0
+- **Added** `accordion-down` and `accordion-up` keyframes added to Tailwind preset using Radix CSS custom properties
+
+### v0.4.2
+- **Added** `AccordionItemProps`, `AccordionTriggerProps`, `AccordionContentProps` type exports
+
+### v0.1.0
+- **Added** Initial release
+# Alert
+
+- Import: @devalok/shilp-sutra/ui/alert
+- Server-safe: No
+- Category: ui
+
+## Props
+    variant: "subtle" | "solid" | "outline"
+    color: "info" | "success" | "warning" | "error" | "neutral"
+    size: "sm" | "md" | "lg"
+    title: string (optional)
+    onDismiss: () => void (optional, shows X button when provided)
+    children: ReactNode (body text)
+
+## Defaults
+    variant="subtle", color="info", size="md"
+
+## Example
+```jsx
+<Alert color="error" title="Save failed" onDismiss={() => setError(null)}>
+  Your changes could not be saved.
+</Alert>
+```
+
+## Composability
+- **Flat, not compound** — unlike Dialog/Card, there's no `<AlertTitle>` / `<AlertDescription>`. Use the `title` prop for the heading and `children` for the body text. This simplifies the API and prevents composition traps (missing title, out-of-order header parts).
+- **Auto-icon by color:** Icon is selected automatically from color (info→circle, success→check, warning→triangle, error→alert). Pass a custom `icon` prop to override.
+- **Role=alert:** Announces assertively to screen readers. Don't stack multiple Alerts in a row — the last one wins.
+- **Dismissal pattern:** Pass `onDismiss` for user-dismissable alerts; the library tracks the exit animation before calling back. For persistent alerts (system state), omit `onDismiss`.
+- **Not for transient messages** — use Toast for transient/time-limited notifications and Banner for page-level announcements. Alert is inline, in-flow, block-level.
+
+## Gotchas
+- NOT a compound component — use title prop, NOT <AlertTitle>
+- DO NOT use variant="destructive" — use color="error"
+- Renders role="alert" automatically
+- Icon is auto-selected by color (info=circle, success=check, warning=triangle, error=alert)
+
+## Changes
+### v0.38.0
+- **Removed** (BREAKING) `variant="filled"` deprecated alias. Use `variant="solid"`.
+
+### v0.31.0
+- **Added** `size` prop: `sm | md | lg`. Default `md` (non-breaking).
+
+### v0.18.0
+- **Changed** Exit animation migrated to Framer Motion
+- **Fixed** `onDismiss` JSDoc documenting it fires after exit animation completes
+- **Changed** OKLCH color token migration
+
+### v0.3.1
+- **Fixed** AlertProps uses `Omit<HTMLAttributes, 'color'>` to resolve TypeScript conflict with CVA `color` variant
+
+### v0.3.0
+- **Changed** (BREAKING) `variant` prop renamed to `color` for semantic intent
+
+### v0.1.0
+- **Added** Initial release
+# AlertDialog
+
+- Import: @devalok/shilp-sutra/ui/alert-dialog
+- Server-safe: No
+- Category: ui
+
+## Props
+    open: boolean (controlled)
+    onOpenChange: (open: boolean) => void
+    defaultOpen: boolean
+
+## Compound Components
+    AlertDialog (root)
+      AlertDialogTrigger
+      AlertDialogContent
+        AlertDialogHeader
+          AlertDialogTitle
+          AlertDialogDescription
+        AlertDialogFooter
+          AlertDialogCancel
+          AlertDialogAction
+
+## Defaults
+    none
+
+## Example
+```jsx
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button color="error">Delete</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+## Composability
+- Built on Radix AlertDialog — like Dialog but **non-dismissible** by clicking outside or pressing Escape. The user must choose Cancel or Action.
+- Same portal + trigger + asChild pattern as Dialog.
+- `AlertDialogAction` and `AlertDialogCancel` are semantically distinct from generic buttons: they auto-close the dialog on click. Use them even if you wrap them around a styled Button via `asChild` so the close behavior stays wired.
+- **Focus management:** Initial focus lands on `AlertDialogCancel` (the safe default) — destructive confirmation is always one tab away.
+- Use AlertDialog for destructive / irreversible actions; use Dialog for everything else.
+
+## Gotchas
+- AlertDialogAction does NOT have color="error" styling — add it yourself via className or wrap a Button with `asChild`
+- Do NOT add a close-on-outside-click handler — the non-dismissible behavior is the whole point
+- AlertDialogCancel receives initial focus; don't flip the convention
+
+## Changes
+### v0.19.1
+- **Fixed** AlertDialog not centered after Framer Motion animation completes — same `transform: none` fix as Dialog.
+
+### v0.18.0
+- **Changed** Overlay animations migrated to Framer Motion (physics-based springs)
+- **Added** `AlertDialogContentProps`, `AlertDialogActionProps`, `AlertDialogCancelProps` type exports
+- **Fixed** Context provider value wrapped in `useMemo` for performance
+
+### v0.4.2
+- **Fixed** AlertDialogHeader/Footer now wrapped in `React.forwardRef` (matches Dialog/Sheet pattern)
+
+### v0.1.0
+- **Added** Initial release
+# AspectRatio
+
+- Import: @devalok/shilp-sutra/ui/aspect-ratio
+- Server-safe: No
+- Category: ui
+
+## Props
+    ratio: number (e.g. 16/9, 4/3, 1)
+
+## Defaults
+    none
+
+## Example
+```jsx
+<AspectRatio ratio={16 / 9}>
+  <img src="/photo.jpg" alt="Photo" className="object-cover w-full h-full" />
+</AspectRatio>
+```
+
+## Composability
+- Radix AspectRatio primitive — pure layout wrapper, no context, no cascade.
+- **Child fill pattern:** Its child is absolutely positioned to fill. Pair with `object-cover` / `object-contain` on `<img>`/`<video>` and `w-full h-full` for anything else.
+- Useful as a responsive-image container, a chart area (pair with Chart components), or a placeholder frame for media skeletons.
+- Works inside Card, any layout component, or flex/grid containers — nothing to configure.
+
+## Gotchas
+- ratio is a number, not a string — use `16/9` not `"16/9"`
+- The child must be size-fluid (`w-full h-full` or absolutely positioned) — elements with intrinsic size escape the aspect-ratio box
+
+## Changes
+### v0.1.0
+- **Added** Initial release
+# Autocomplete
+
+- Import: @devalok/shilp-sutra/ui/autocomplete
+- Server-safe: No
+- Category: ui
+
+## Props
+    options: AutocompleteOption[] (REQUIRED) — { value: string, label: string }
+    value: AutocompleteOption | null
+    onValueChange?: (option: AutocompleteOption) => void
+    placeholder: string
+    emptyText: string (default: "No options")
+    disabled: boolean
+    className: string
+    id: string
+
+## Defaults
+    emptyText="No options"
+
+## Example
+```jsx
+<Autocomplete
+  options={[{ value: 'mumbai', label: 'Mumbai' }]}
+  value={selectedCity}
+  onValueChange={setSelectedCity}
+  placeholder="Search cities..."
+/>
+```
+
+## Composability
+- **Autocomplete vs Combobox:** Autocomplete allows free-text input (users can type anything); Combobox enforces selection from the list. Pick by whether "off-list" values are valid (e.g. city field that accepts typos → Autocomplete; tag picker from a fixed vocabulary → Combobox).
+- **Value shape is an object** (`{ value, label }`), not a plain string — this preserves label/value decoupling for display-vs-storage.
+- **FormField:** Does NOT auto-consume FormField state. Set explicit error styling via className if needed.
+- **Portal rendering:** Dropdown portals to body with z-popover (1400) — stacks above Dialog/Sheet.
+- **Keyboard:** ArrowDown/Up navigate suggestions, Enter selects, Esc closes. Typeahead is the input's native filtering.
+
+## Gotchas
+- Allows free-text input (no forced selection) — use Combobox for forced selection
+- value is an object { value, label }, NOT just a string
+
+## Changes
+### v0.18.0
+- **Fixed** Added `useEffect` to sync query when external value changes
+
+### v0.14.0
+- **Changed** z-index promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes dropdown rendering behind Sheet/Dialog overlays
+
+### v0.3.0
+- **Changed** (BREAKING) `onChange` renamed to `onValueChange`
+
+### v0.1.1
+- **Fixed** `focus:ring` changed to `focus-visible:ring` — focus ring no longer shows on mouse click
+
+### v0.1.0
+- **Added** Initial release
+# Avatar
+
+- Import: @devalok/shilp-sutra/ui/avatar
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "xs" | "sm" | "md" | "lg" | "xl"
+    shape: "circle" | "square" | "rounded"
+    status: "online" | "offline" | "busy" | "away"
+    ring: "none" | "lead" | "admin" | "client" (default: "none") — Role ring with semantic colors
+    badge: number | "dot" | ReactNode — Badge overlay at top-right
+    loading: boolean (default: false) — Skeleton shimmer state
+
+## Compound Components
+    Avatar (root with size/shape/status/ring/badge/loading)
+      AvatarImage (src, alt)
+      AvatarFallback (children = initials text, colorSeed?: string)
+
+## AvatarFallback Props
+    colorSeed: string — Deterministic color seed for consistent background color across renders
+
+## Defaults
+    size="md", shape="circle", ring="none", loading=false
+
+## Example
+```jsx
+<Avatar size="lg" status="online" ring="lead" badge={3}>
+  <AvatarImage src={user.photoUrl} alt={user.name} />
+  <AvatarFallback colorSeed={user.id}>JD</AvatarFallback>
+</Avatar>
+```
+
+## Composability
+- **Two internal contexts cascade to AvatarFallback:**
+  - `AvatarSizeContext` — carries the Avatar's `size` so AvatarFallback's font size scales without re-specifying (xs → `text-[9px]`, sm → `text-ds-xs`, md → `text-ds-sm`, lg → `text-ds-md`, xl → `text-ds-lg`)
+  - `AvatarShapeContext` — carries `shape` so AvatarFallback inherits the same border-radius (critical for `shape="square"` / `shape="rounded"` — without context the fallback would always be `rounded-ds-full` regardless of parent)
+- **Status + Ring + Badge are independent** — you can stack all three on one Avatar. They render in separate layers so they don't conflict visually.
+- **Use with AvatarGroup:** AvatarGroup applies its own `size` to children. If your Avatar has an explicit `size`, it overrides AvatarGroup's default — keep it consistent across the group.
+- **AvatarFallback colorSeed:** Deterministic background color from the seed string — identical user IDs produce identical backgrounds across renders. Useful for user-identifying avatars without photos.
+- **Ring offset color:** The ring renders with `ring-offset` matching the current surface — it assumes the Avatar sits on `bg-surface-raised`. On other backgrounds, add a ring-offset className to compensate.
+
+## Gotchas
+- Status dot renders with role="img" and aria-label (accessible, not decorative)
+- Dot size scales automatically with avatar size
+- AvatarFallback font size scales automatically with avatar size (via AvatarSizeContext)
+- AvatarFallback shape inherits from Avatar (via AvatarShapeContext) — setting `rounded-*` on AvatarFallback directly conflicts with the context
+- Ring offset color matches the surface context — ensure it sits on the expected background
+- Badge is hidden when value is `0` (falsy); use `"dot"` for presence without a count
+- Online status dot pulses with a CSS animation
+
+## Changes
+### v0.22.3
+- **Fixed** AvatarFallback text now auto-scales with avatar size — xs gets `text-[9px]`, sm `text-ds-xs`, md `text-ds-sm`, lg `text-ds-md`, xl `text-ds-lg`
+
+### v0.22.0
+- **Fixed** Fallback always rendered `rounded-ds-full` regardless of `shape` prop. Now uses `AvatarShapeContext` to inherit the correct border-radius from `shape="square"` or `shape="rounded"`.
+
+### v0.21.0
+- **Added** `ring` prop with semantic role colors (`lead`, `admin`, `client`)
+- **Added** `badge` prop for numeric, dot, or custom ReactNode overlay at top-right
+- **Added** `loading` prop for skeleton shimmer placeholder state
+- **Added** `AvatarFallback.colorSeed` for deterministic fallback background colors
+
+### v0.1.0
+- **Added** Initial release with CVA size variants (xs-xl) and status indicator badge
+# Badge
+
+- Import: @devalok/shilp-sutra/ui/badge
+- Server-safe: No
+- Category: ui
+
+## Props
+    variant: "subtle" | "solid" | "outline" | "soft"
+    color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" | "teal" | "amber" | "slate" | "indigo" | "cyan" | "orange" | "emerald" | "custom"
+    size: "xs" | "sm" | "md" | "lg"
+    startIcon: ReactElement | null
+    endIcon: ReactElement | null
+    dot: boolean (shows animated leading dot indicator)
+    onClick: () => void (makes badge interactive as button)
+    selected: boolean (toggle state — shows check icon when true)
+    disabled: boolean
+    onDismiss: () => void (shows dismiss X button)
+    maxWidth: number (enables truncation with title tooltip)
+    truncate: boolean (ellipsis overflow — pair with a width/maxWidth; adds title tooltip)
+    circle: boolean (square aspect-ratio, centered content)
+    asChild: boolean
+    children: ReactNode
+
+## Compound Components
+    Badge.Indicator — status indicator sub-component
+    Badge.Group — layout wrapper for badge collections
+
+## Defaults
+    variant="subtle", color="default", size="md"
+
+## Example
+```jsx
+<Badge variant="solid" color="success">Active</Badge>
+<Badge color="teal" onDismiss={() => removeFilter('teal')}>Teal team</Badge>
+<Badge onClick={() => toggle()} selected={isSelected}>Filterable</Badge>
+<Badge color="custom" style={{ '--badge-color': '#8b5cf6' }}>Custom</Badge>
+```
+
+## Composability
+- **Badge.Group** (BadgeGroup) wraps a set of badges with overflow collapse (`max` + "+N" indicator) and gap control. Use it for filter chips, tag lists, user cluster avatars-equivalent.
+- **Badge.Indicator** (BadgeIndicator) attaches a count / dot overlay to ANY child (icons, avatars, buttons). It's positioning-only — doesn't style the child.
+- **Interactive modes:**
+  - `onClick` alone → renders as `<button>` (standard interactive badge)
+  - `onDismiss` alone → renders as `<span>` with an inner X button
+  - Both → renders as `<div role="button">` (avoids invalid nested buttons) — the X button inside handles its own click isolation
+- **asChild:** Use with router Links for nav-style badges (`<Badge asChild><Link href="/tags/react">React</Link></Badge>`).
+- **Custom colors via CSS variables:** Set `color="custom"` + inline style `style={{ '--badge-color': '#...' }}`. For solid variant, also set `--badge-fg-color` for the foreground.
+- **Icon slots auto-size via IconProvider** — same cascade as Button. Don't set explicit size on nested `<Icon>`.
+- **Chip (deprecated)** was merged into Badge — use Badge with `onClick` and `selected` for the old Chip use case.
+
+## Gotchas
+- DO NOT use variant="destructive" — use variant="solid" color="error"
+- Badge is now interactive when `onClick` is provided (renders as `<button>`)
+- When both `onClick` and `onDismiss` are provided, renders as `div[role="button"]` to avoid nested buttons
+- Chip is deprecated — use Badge with `onClick` for interactive tags
+- `color="custom"` requires `--badge-color` CSS variable (and optionally `--badge-fg-color` for solid variant)
+
+## Changes
+### v0.31.0
+- **Added** `truncate` prop — enables ellipsis truncation without requiring maxWidth
+
+### v0.29.0
+- **Changed** (BREAKING) v2 rewrite — Badge is now a full interactive component
+- **Added** `soft` variant (tinted bg, no border — completes the 4-variant set: subtle/solid/outline/soft)
+- **Added** `custom` color with CSS variable `--badge-color` (and `--badge-fg-color` for solid)
+- **Added** Interactive mode: `onClick` makes Badge a clickable button, `selected` shows animated check icon
+- **Added** `disabled` prop with reduced opacity and pointer-events-none
+- **Added** `startIcon` / `endIcon` props (auto-sized per badge size)
+- **Added** `maxWidth` prop for truncation with title tooltip
+- **Added** `circle` prop for square aspect-ratio badges
+- **Added** `asChild` prop for Slot composition
+- **Added** `Badge.Indicator` and `Badge.Group` compound sub-components
+- **Deprecated** Chip component — use Badge with `onClick` instead
+- **Changed** Dot animation now uses Framer Motion spring entrance + continuous pulse
+
+### v0.18.0
+- **Changed** Pulse-ring animation migrated to Framer Motion
+- **Fixed** Accent color variants — `text-accent-9` changed to `text-accent-11`, `border-accent-9` changed to `border-accent-7`
+- **Changed** OKLCH color token migration
+
+### v0.8.0
+- **Fixed** `text-[10px]` changed to `text-ds-xs` for token consistency
+
+### v0.4.2
+- **Fixed** `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA color prop
+
+### v0.3.1
+- **Fixed** Dismiss button added 24px touch target
+
+### v0.3.0
+- **Changed** (BREAKING) Single `variant` axis split into `variant` (subtle/solid/outline) + `color` (default/info/success/error/...)
+- **Fixed** Solid variant phantom token `text-on-interactive` changed to `text-on-color`
+
+### v0.1.0
+- **Added** Initial release
+# BadgeGroup
+
+- Import: @devalok/shilp-sutra/ui (as Badge.Group)
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    max: number — Show at most N badges, rest collapsed into "+N" overflow
+    gap: "tight" | "default" | "loose" (default: "default")
+    size: BadgeProps["size"] — Size passed to the overflow "+N" badge
+    onOverflowClick: () => void — Click handler for the overflow "+N" badge
+    className: string
+    children: ReactNode (REQUIRED)
+
+## Defaults
+    gap="default", max=undefined (show all), size="sm" (overflow badge)
+
+## Example
+```jsx
+<Badge.Group max={3} size="sm" onOverflowClick={() => setShowAll(true)}>
+  <Badge>React</Badge>
+  <Badge>TypeScript</Badge>
+  <Badge>Tailwind</Badge>
+  <Badge>Vite</Badge>
+  <Badge>Vitest</Badge>
+</Badge.Group>
+{/* Renders: React, TypeScript, Tailwind, +2 */}
+```
+
+## Composability
+- **Wrapper for Badge children** — doesn't style children, just lays them out and optionally collapses overflow into a "+N" indicator.
+- **Server-safe** — can render in RSC trees (children still need to be server-safe themselves).
+- **Overflow indicator is a Badge** — picks `variant="outline" color="neutral"` and the `size` prop on BadgeGroup. Child badges keep their own variant/color/size.
+- **Click-to-reveal pattern:** Pair `onOverflowClick` with a Popover / Sheet / Dialog that shows the full list. Without the handler, the overflow badge is inert (decorative count).
+- Doesn't accept arbitrary children — only Badges. Non-Badge children render but may look off (no gap rhythm matching).
+
+## Gotchas
+- Overflow badge is always `variant="outline" color="neutral"`
+- `size` only applies to the overflow badge — child badges keep their own size
+- Gap values: tight=4px, default=6px, loose=8px
+- Without `onOverflowClick`, the overflow badge is not interactive
+
+## Changes
+### v0.29.0
+- **Added** Initial release — badge grouping with overflow collapse and click handler
+# BadgeIndicator
+
+- Import: @devalok/shilp-sutra/ui (as Badge.Indicator)
+- Server-safe: No
+- Category: ui
+
+## Props
+    count: number — Numeric value to display
+    max: number (default: 99) — Cap display at this value, shows "99+" when exceeded
+    dot: boolean (default: false) — Show a small dot instead of count
+    color: "error" | "success" | "warning" | "accent" | "info" (default: "error")
+    invisible: boolean (default: false) — Hide the indicator while keeping layout
+    showZero: boolean (default: false) — Show indicator when count is 0
+    placement: "top-right" | "top-left" | "bottom-right" | "bottom-left" (default: "top-right")
+    className: string
+    children: ReactNode (REQUIRED) — The element to attach the indicator to
+
+## Defaults
+    max=99, dot=false, color="error", invisible=false, showZero=false, placement="top-right"
+
+## Example
+```jsx
+<Badge.Indicator count={5}>
+  <IconButton icon={IconBell} variant="ghost" />
+</Badge.Indicator>
+
+<Badge.Indicator dot color="success">
+  <Avatar src={user.avatar} fallback={user.name} />
+</Badge.Indicator>
+```
+
+## Composability
+- **Overlay wrapper** — takes any child and overlays a positioned count/dot at the specified corner. The child must be inline-friendly (anything that renders in a span-wrapped position: relative context).
+- **Common pairings:** IconButton (notification bell with count), Avatar (online presence dot), Button (cart with item count), tabs (unread indicator).
+- **Invisible for layout stability:** Use `invisible={true}` to keep the child's position consistent when the badge should disappear — avoids layout shift as counts appear/disappear.
+- **showZero vs hide-on-zero:** By default `count={0}` hides the indicator. Set `showZero={true}` for use cases where "zero" is meaningful (scores, pending items that should display 0 explicitly).
+- **Dot vs count:** `dot={true}` is a presence-only pulse indicator (online, new activity); count is a numeric badge. They're mutually exclusive — setting both uses dot.
+
+## Gotchas
+- Wraps children in `position: relative` span — the indicator is absolutely positioned
+- Animation uses spring physics, respects `prefers-reduced-motion`
+- When `count > max`, displays `${max}+` (e.g., "99+")
+- `invisible` keeps the layout but hides the dot/count (useful for transitions)
+
+## Changes
+### v0.29.0
+- **Added** Initial release — animated notification indicator with count, dot, placement, and color
+# Banner
+
+- Import: @devalok/shilp-sutra/ui/banner
+- Server-safe: No
+- Category: ui
+
+## Props
+    color: "info" | "success" | "warning" | "error" | "neutral"
+    actions: ReactNode (optional action slot for one or more buttons; wraps on narrow viewports)
+    onDismiss: () => void (optional, shows X button)
+    children: ReactNode (message text)
+
+## Defaults
+    color="info"
+
+## Example
+```jsx
+<Banner color="warning" onDismiss={() => dismiss()}>
+  Scheduled maintenance on Sunday.
+</Banner>
+```
+
+## Composability
+- **Banner vs Alert vs Toast:** Banner is full-width, top-of-page / top-of-region announcements (maintenance, quota, trial-expiring). Alert is inline in-flow. Toast is transient floating notifications. Pick by where the message lives in the visual hierarchy.
+- **actions slot:** Pass one or more `<Button>` elements — the container flex-wraps on narrow viewports so actions drop below the message rather than squeezing horizontally.
+- **Role=alert** announces assertively. Same constraint as Alert — don't stack multiple Banners.
+- **Dismissal timing:** `onDismiss` fires AFTER the exit animation completes, not on click. Use it to remove the banner from state only after it's visually gone.
+- Works inside Shell layouts (TopBar / Sidebar / main content) — usually sits above main content, below the TopBar.
+
+## Gotchas
+- Banner is full-width (spans container). Alert is inline.
+- Renders role="alert" automatically
+- `onDismiss` fires after the exit animation completes, not immediately on dismiss button click
+
+## Changes
+### v0.38.0
+- **Removed** (BREAKING) deprecated singular `action` prop. Use `actions={[...]}` (plural).
+
+### v0.20.0
+- **Added** `actions` prop (plural) for multiple action buttons with mobile-friendly flex-wrap
+- **Deprecated** `action` prop — use `actions` instead (both still work; `actions` takes priority)
+- **Changed** Root layout uses `flex-wrap` and children wrapper uses `min-w-0` for better text truncation
+
+### v0.3.1
+- **Fixed** BannerProps uses `Omit<HTMLAttributes, 'color'>` to resolve TypeScript conflict with CVA `color` variant
+
+### v0.3.0
+- **Changed** (BREAKING) `variant` prop renamed to `color` for semantic intent
+
+### v0.1.0
+- **Added** Initial release
+# Breadcrumb
+
+- Import: @devalok/shilp-sutra/ui/breadcrumb
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    Breadcrumb (root nav)
+      BreadcrumbList (ol)
+        BreadcrumbItem (li)
+          BreadcrumbLink (for clickable items) | BreadcrumbPage (for current page)
+        BreadcrumbSeparator (auto-rendered or custom)
+        BreadcrumbEllipsis (for collapsed items)
+
+## Defaults
+    none
+
+## Example
+```jsx
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem><BreadcrumbPage>Settings</BreadcrumbPage></BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+## Composability
+- **Compound structure only** — no context cascade, each part is standalone. The semantic shape (`<nav>` → `<ol>` → `<li>`) is what matters for a11y, not any internal state.
+- **BreadcrumbLink vs BreadcrumbPage:** Use BreadcrumbLink for everything except the current page; BreadcrumbPage for the current page (not clickable, renders without href, announced as "current page" via aria-current).
+- **Router integration:** Use `<BreadcrumbLink asChild><NextLink href="/x">...</NextLink></BreadcrumbLink>` (Radix Slot pattern).
+- **Truncation:** For long paths, use BreadcrumbEllipsis between the first and last items instead of showing all. Pair with a DropdownMenu (open the ellipsis to show hidden intermediate items) if you need to expose them.
+- **PageHeader (composed) auto-builds Breadcrumb** from its `breadcrumbs` prop — use that higher-level component for page-top breadcrumbs and save this component for inline or custom positioning.
+
+## Gotchas
+- Use BreadcrumbPage for the current (non-clickable) page, BreadcrumbLink for navigable items
+- Don't wrap BreadcrumbPage in a link — it's the current location by definition
+
+## Changes
+### v0.18.0
+- **Added** `BreadcrumbProps`, `BreadcrumbLinkProps` type exports
+
+### v0.1.0
+- **Added** Initial release
+# Button
+
+- Import: @devalok/shilp-sutra/ui/button
+- Server-safe: No
+- Category: ui
+
+## Props
+    variant: "solid" | "soft" | "outline" | "ghost" | "link"
+    color: "accent" | "error" | "success" | "warning" | "neutral"
+    size: "xs" | "sm" | "md" | "lg" | "compact-xs" | "compact-sm" | "compact-md" | "icon" | "icon-xs" | "icon-sm" | "icon-md" | "icon-lg"
+    weight: "semibold" | "normal"
+    shape: "default" | "pill"
+    startIcon: ReactElement (use <Icon icon={...} />) | null
+    endIcon: ReactElement (use <Icon icon={...} />) | null
+    loading: boolean (disables button, shows spinner)
+    loadingPosition: "start" | "end" | "center" (default: "start")
+    fullWidth: boolean
+    asChild: boolean
+    processing: boolean | 'ambient' | 'working' | 'urgent' (marching ants SVG border)
+    processingColor: 'accent' | 'error' | 'success' | 'warning' | 'neutral' (override animation color)
+    processingDisabled: boolean (disable button during processing, default: true)
+    onClickAsync: (e: MouseEvent) => Promise<void> (auto loading->success/error->idle, auto-activates processing)
+    asyncFeedbackDuration: number (ms, default 1500)
+
+## Defaults
+    variant="solid", color="accent", weight="semibold", size="md", shape="default"
+
+## Example
+```jsx
+<Button variant="solid" color="error" startIcon={<Icon icon={IconTrash} />} loading={isDeleting}>
+  Delete project
+</Button>
+<Button variant="soft" color="success" startIcon={<Icon icon={IconCheck} />}>Approved</Button>
+<Button variant="soft" color="warning" size="compact-sm" shape="pill">Overdue</Button>
+```
+
+## Composability
+- **ButtonGroup context consumption:** When nested inside `<ButtonGroup>`, Button auto-inherits variant/color/size/weight/shape/disabled. Explicit props on the individual Button override. The context also drives position-aware border-radius (first/middle/last within an attached group).
+- **IconProvider cascade:** Icons in `startIcon`/`endIcon` auto-size via IconProvider per the button size (xs→sm, sm→sm, md→md, lg→md, icon-xs→xs, icon-lg→lg). Don't pass explicit `size` to `<Icon>` inside Button.
+- **asChild for router links:** `<Button asChild><Link href="/foo">...</Link></Button>` transfers Button's styling to the Link while preserving navigation semantics. Required for Next.js `<Link>` / react-router `<Link>`.
+- **onClickAsync state machine:** Overrides onClick. Auto-cycles `idle → loading (aria-busy, spinner) → success (checkmark) → idle` on resolve; `loading → error (X mark) → idle` on reject. Duration controlled by `asyncFeedbackDuration` (1500ms default). Auto-activates `processing='working'` during loading — marching-ants border keeps users visually aware.
+- **Processing vs loading:** `loading` is a short async state (shows spinner, blocks clicks). `processing` is a longer-running state (marching ants border, may or may not block clicks based on `processingDisabled`). Use onClickAsync for simple request cases; use processing explicitly for long-running background operations.
+- **DevalokGrain children:** Grain elements are auto-extracted and rendered as direct button children for absolute positioning — lets you layer grain texture on solid-variant buttons without breaking layout.
+- **Prefer `variant="soft"` over `variant="outline"` for secondary actions** (see Gotchas for details). This is a design-system-wide convention.
+
+## Gotchas
+- **Prefer `variant="soft"` over `variant="outline"` for secondary actions.** Soft (tinted step-3 bg, step-11 text) is the Devalok-recommended default — it feels warmer and brand-consistent. Use `outline` only when soft's tint would disappear (on colored/surface-raised bg), in toolbar/icon-dense contexts, or when you need outline's stronger hierarchy next to a primary action.
+- DO NOT use variant="destructive" — use variant="solid" color="error"
+- DO NOT use variant="secondary" — use variant="soft" (preferred) or variant="ghost"
+- DO NOT use size="default" — use size="md"
+- DO NOT use color="danger" or color="default" — use color="error" or color="accent"
+- startIcon/endIcon now expect `<Icon icon={...} />` wrapper, not bare icon components
+- Inherits variant/color/size/weight/shape from ButtonGroup context if present
+- onClickAsync overrides onClick and loading when active; also auto-activates processing='working' during loading phase
+- processing forces soft variant so marching ants pop against the background
+- processingDisabled=true (default) makes button aria-disabled and pointer-events-none during processing
+- Grain children (DevalokGrain) are auto-separated and rendered as direct button children for absolute positioning
+
+## Changes
+### v0.33.0
+- **Added** `disabled` inherited from ButtonGroup context
+- **Added** Position-aware border-radius when inside an attached ButtonGroup (compound component pattern)
+
+### v0.29.0
+- **Added** `soft` variant — tinted background, colored text (new middle ground between solid and ghost)
+- **Added** 5 color options: `accent` (default), `error`, `success`, `warning`, `neutral` (replaces old `default`/`error`-only axis)
+- **Added** `shape` prop: `"default"` | `"pill"` (rounded-full with extra horizontal padding)
+- **Added** compact sizes: `compact-xs`, `compact-sm`, `compact-md` (height-less inline buttons)
+- **Added** `xs` size and `icon-xs` size
+- **Added** `weight` prop: `"semibold"` (default) | `"normal"` for lighter labels
+- **Changed** `startIcon`/`endIcon` now accept `<Icon icon={...} />` wrapper (auto-sized via IconProvider context per button size)
+- **Changed** Default color is now `"accent"` (was `"default"`)
+- **Changed** Solid hover adds tinted shadows per color (e.g., `hover:shadow-brand`, `hover:shadow-error`)
+- **Changed** Icon slots get negative-margin inset to tighten padding against button edges
+- **Added** DevalokGrain support — grain children are auto-separated and rendered for texture overlays
+- **Added** `processing` prop — marching ants SVG border while content stays visible (`"ambient"` (3s) | `"working"` (2s) | `"urgent"` (1s) | boolean). Forces soft variant so ants pop.
+- **Added** `processingColor` — override processing animation color independently of button color
+- **Added** `processingDisabled` — disable button during processing (default: true). Set false for cancel-by-click patterns.
+- **Added** Auto-processing during `onClickAsync` — loading phase auto-activates `processing='working'` when no explicit `processing` prop is set
+- **Added** Always-on layout animation — smooth width/height transitions via Framer Motion FLIP
+
+### v0.22.0
+- **Changed** Active/pressed scale from `0.97` to `0.95` for snappier press feedback.
+- **Fixed** Ghost/outline hover not fading — `transition-transform` in base overrode `transition-colors` from variant. Combined into single `transition-[color,background-color,border-color,box-shadow,transform]`.
+- **Added** `disabled:cursor-not-allowed` to button base (was missing).
+
+### v0.18.0
+- **Added** `onClickAsync` prop — promise-driven loading -> success/error state machine
+- **Added** `asyncFeedbackDuration` prop (default 1500ms)
+- **Changed** whileTap scale animation added via Framer Motion
+- **Fixed** Async feedback colors — `bg-success text-text-on-color` changed to `bg-success-9 text-accent-fg`
+- **Fixed** `onClickAsync` added `isMountedRef` guard to prevent set-state-after-unmount
+
+### v0.4.2
+- **Fixed** `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA color prop
+- **Fixed** `className` was passed inside `buttonVariants()` (silently dropped by CVA) — now separate `cn()` argument
+
+### v0.3.0
+- **Changed** (BREAKING) `variant="primary"` renamed to `variant="solid"`, `variant="secondary"` renamed to `variant="outline"`, `variant="error"` moved to `color="error"`
+- **Fixed** All dismiss/close buttons now meet WCAG 2.5.8 minimum 24px touch target
+
+### v0.1.0
+- **Added** Initial release
+# ButtonGroup
+
+- Import: @devalok/shilp-sutra/ui/button-group
+- Server-safe: No
+- Category: ui
+
+## Props
+    variant: ButtonProps['variant'] (propagated to children via context)
+    color: ButtonProps['color'] (propagated to children)
+    size: ButtonProps['size'] (propagated to children)
+    weight: ButtonProps['weight'] (propagated to children)
+    shape: ButtonProps['shape'] (propagated to children)
+    disabled: boolean (propagates to all children)
+    orientation: "horizontal" | "vertical"
+    attached: boolean (true = buttons visually merge with shared borders; false = spaced apart via gap)
+    fullWidth: boolean (group stretches to parent width; children stretch equally)
+
+## Defaults
+    orientation="horizontal", attached=true
+
+## Example
+```jsx
+<ButtonGroup variant="outline" size="sm">
+  <Button>Bold</Button>
+  <Button>Italic</Button>
+  <Button>Underline</Button>
+</ButtonGroup>
+
+{/* Spaced, not attached */}
+<ButtonGroup attached={false} variant="soft">
+  <Button>Save</Button>
+  <Button>Cancel</Button>
+</ButtonGroup>
+```
+
+## Composability
+- Every Button child reads variant/color/size/weight/shape/disabled from ButtonGroup context. Explicit props on individual children override context.
+- **Position-aware border radius:** Child Buttons read their position in the group (first / middle / last) and apply appropriate corner radii inline. Works for both horizontal and vertical orientations.
+- **Focus z-index isolation:** The focused button rises above its siblings so the focus ring isn't clipped by adjacent borders.
+- **Tonal dividers:** For solid/soft/ghost variants without visible borders, ButtonGroup injects subtle divider elements between children.
+- **Works with SplitButton:** `<SplitButton>` inside a `<ButtonGroup>` inherits the same context and position rules.
+
+## Gotchas
+- Children can override variant/size individually — context is a default, not a lock
+- `attached={false}` disables the position-aware border radius (children use their default corners)
+
+## Changes
+### v0.33.0
+- **Rebuilt** with compound component pattern — Button reads position from ButtonGroup context and applies border-radius inline
+- **Added** `disabled` prop (propagates to all children via context)
+- **Added** `attached` prop (default true; false = spaced with gap)
+- **Added** `fullWidth` prop (stretch to fill container)
+- **Added** Tonal divider elements between buttons for solid/soft/ghost variants
+- **Added** Focus z-index isolation (focused button rises above siblings)
+- **Fixed** Border-radius not working with custom `rounded-ds-*` design tokens
+
+### v0.4.2
+- **Fixed** `Omit<HTMLAttributes, 'color'>` resolves TS2320 conflict with CVA color prop
+
+### v0.1.0
+- **Added** Initial release
+# ButtonProcessing (Internal)
+
+- Import: Internal — not exported from barrel. Used only by Button.
+- Server-safe: No
+- Category: ui
+
+## Description
+
+Internal component that renders the processing animation overlay for Button. Consumers use the `processing` prop on Button, not this component directly.
+
+See `Button` docs for the public API.
+
+## Composability
+- **Internal only — do NOT import or use directly.** The Button component owns the lifecycle of this overlay.
+- Drives Button's `processing` prop rendering. If you're building a custom button and want similar marching-ants feedback, copy the SVG/animation pattern — don't reach into this component.
+- Listed here for reference so consumers grep'ing for "processing" find the behavior origin.
+
+## Changes
+### v0.29.0
+- **Added** Initial release — marching ants processing overlay (SVG dashed rect with animated stroke-dashoffset). Speed tiers: ambient (3s), working (2s), urgent (1s). Color maps to step-11 tokens for visibility on all variants.
+# Card
+
+- Import: @devalok/shilp-sutra/ui/card
+- Server-safe: No
+- Category: ui
+
+## Props
+    variant: "default" | "elevated" | "outline" | "flat"
+    color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" (border accent color)
+    size: "sm" | "md" | "lg" (padding — propagated to CardHeader/CardContent/CardFooter via context)
+    interactive: boolean (enables hover shadow lift + pointer cursor)
+    accent: "left" | "top" | "right" | "bottom" (render a colored accent bar on the specified edge)
+    accentColor: "default" | "accent" | "error" | "success" | "warning" | "info" (color of the accent bar; default maps to accent-9)
+
+## Compound Components
+    Card (root)
+      CardHeader      ← inherits size from Card context
+        CardTitle
+        CardDescription
+      CardContent     ← inherits size from Card context
+      CardFooter      ← inherits size from Card context
+
+## Defaults
+    variant="default", color="default", size="md"
+
+## Example
+```jsx
+<Card variant="elevated" interactive onClick={() => navigate(url)}>
+  <CardHeader>
+    <CardTitle>Project</CardTitle>
+    <CardDescription>Last updated 2h ago</CardDescription>
+  </CardHeader>
+  <CardContent><p>Content here</p></CardContent>
+</Card>
+```
+
+## Composability
+- **Size cascades through context** — Card's `size` prop sets padding on CardHeader, CardContent, and CardFooter via `CardSizeContext`. Don't set padding classes on sub-components directly; override via `className` if needed.
+- **Not a compound state machine** — Card, CardHeader, CardTitle, etc. are purely structural. No open/close state.
+- **Accent bar is independent:** The `accent` / `accentColor` props render a decorative colored edge bar (absolutely positioned, `aria-hidden`). Works alongside `color` (which tints the border) — the two can stack for layered emphasis.
+- **Interactive cards:** Set `interactive={true}` + `onClick` for clickable cards (entire surface becomes the button). Add `aria-label` on the Card root when there's no visible heading. For complex multi-action cards, prefer standard Card with explicit buttons inside.
+- **ContentCard (composed)** is a higher-level wrapper with built-in header/footer slots and title/actions — use it for list-row-style cards; use Card directly for custom layouts.
+
+## Gotchas
+- Use `interactive` prop for clickable cards — adds hover lift and pointer cursor
+- Don't override CardHeader/CardContent/CardFooter padding via className if you want the size cascade to work — set size on Card instead
+
+## Changes
+### v0.31.0
+- **Added** `color` prop: semantic border color (accent, error, success, warning, info, neutral)
+- **Added** `size` prop: `sm | md | lg` — padding propagated to sub-components via React context
+
+### v0.18.0
+- **Changed** Interactive card hover lift animation migrated to Framer Motion
+
+### v0.4.2
+- **Changed** (BREAKING) `variant="outlined"` renamed to `variant="outline"`
+- **Added** `cardVariants` export
+
+### v0.1.1
+- **Fixed** `leading-none tracking-tight` changed to `leading-ds-none tracking-ds-tight` for token compliance
+
+### v0.1.0
+- **Added** Initial release
+# Charts
+
+- Import: @devalok/shilp-sutra/ui/charts
+- Server-safe: No
+- Category: ui
+
+## Props
+    Charts is a collection of chart components. Each accepts data-specific props.
+
+    Exported components:
+      ChartContainer — wrapper with responsive sizing
+      BarChart
+      LineChart
+      AreaChart
+      PieChart
+      Sparkline
+      GaugeChart
+      RadarChart
+      Legend — chart legend with LegendItem[]
+
+## Defaults
+    none
+
+## Example
+```jsx
+import { BarChart } from '@devalok/shilp-sutra/ui/charts'
+
+<BarChart data={salesData} />
+```
+
+## Composability
+- **ChartContainer wraps all chart primitives** — provides responsive sizing (fills parent width, configurable aspect ratio) and a consistent background/padding. Always render charts inside a ChartContainer unless you're building a custom container.
+- **Legend is a sibling, not a child** — render `<Legend items={...} />` next to your chart (above/below), not nested. Use `onHover` / `onClick` handlers in Legend + chart to sync hover highlights.
+- **Data shape is chart-specific** — BarChart wants `[{ label, value }]`, LineChart wants `[{ x, y, series }]`, etc. Each chart's props doc spells out the shape; don't assume cross-chart compatibility.
+- **Sparkline is the only chart safe to use inline** — it's a minimal 1-line SVG, no axes, no legend. Use it inside StatCard, tables, tight cells. For anything larger, reach for the full chart types.
+- **Entrance animations** — all charts use Framer Motion spring-based entry. Animations respect `prefers-reduced-motion`.
+- **Accessibility:** Charts render role="img" with aria-label from the chart title. For dense data, provide a hidden accessible table fallback manually (WCAG requirement for complex charts).
+
+## Gotchas
+- Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/charts`, NOT the `ui` barrel
+- Requires D3 as an optional peer dependency
+- Chart components do NOT auto-generate accessible data tables — add one manually for WCAG compliance on complex charts
+
+## Changes
+### v0.18.0
+- **Changed** All 8 chart types migrated to Framer Motion entrance animations
+
+### v0.5.0
+- **Changed** (BREAKING) All chart components removed from `@devalok/shilp-sutra/ui` barrel export. Must use `@devalok/shilp-sutra/ui/charts` import path.
+
+### v0.1.0
+- **Added** Initial release
+# Chat
+
+- Import: @devalok/shilp-sutra/ui/chat
+- Server-safe: No (MessageList, Message, MessageInput, TypingIndicator use Framer Motion); DateSeparator and UnreadSeparator are server-safe
+- Category: ui
+
+Seven primitives for building chat interfaces: MessageList, Message (compound), SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator.
+
+---
+
+## MessageList
+
+Scrollable container with auto-scroll, load-more, empty state, and "N new" floating pill.
+
+### Props
+    autoScroll: boolean — auto-scroll to bottom on new content (default: true)
+    newMessageCount: number — count shown in floating pill (default: 0)
+    onScrollToBottom: () => void — called when user clicks the "N new" pill
+    onLoadMore: () => void — called when user scrolls near top
+    isLoadingMore: boolean — shows spinner at top (default: false)
+    emptySlot: ReactNode — content when there are no children
+    headerSlot: ReactNode — content above the scroll container (e.g. channel name)
+    scrollToBottomSlot: ReactNode — reserved slot for custom scroll-to-bottom button
+    children: ReactNode (REQUIRED)
+
+### Example
+```jsx
+<MessageList autoScroll onLoadMore={loadMore} isLoadingMore={loading} newMessageCount={3} onScrollToBottom={markRead}>
+  {messages.map(m => <Message key={m.id}>...</Message>)}
+</MessageList>
+```
+
+---
+
+## Message (Compound)
+
+Compound component: `Message`, `Message.Avatar`, `Message.Content`, `Message.Author`, `Message.Body`, `Message.EditableBody`, `Message.Reactions`, `Message.Actions`, `Message.Action`.
+
+### Message (root) Props
+    variant: "flat" | "bubble" (default: "flat")
+    placement: "start" | "end" (default: "start")
+    highlight: "mention" | "internal"
+    grouped: boolean — hides avatar/author for consecutive messages (default: false)
+    deleted: boolean — renders deleted placeholder (default: false)
+    deletedText: string (default: "This message was deleted")
+
+### Message.Avatar Props
+    src: string | null — avatar image URL
+    fallback: string — initials text
+    icon: ReactNode — custom icon instead of avatar
+    size: "sm" | "md" (default: "md")
+    children: ReactNode — fully custom avatar slot
+
+### Message.Author Props
+    name: string (REQUIRED)
+    badge: ReactNode
+    timestamp: Date
+    formattedTimestamp: string — pre-formatted timestamp (overrides timestamp)
+    timestampFormat: (date: Date) => string — custom formatter
+
+### Message.Body Props
+    children: ReactNode (REQUIRED)
+
+### Message.EditableBody Props
+    content: string (REQUIRED)
+    onSave: (newContent: string) => void (REQUIRED)
+    onCancel: () => void
+    canEdit: boolean (default: false)
+    renderContent: (content: string) => ReactNode — custom render for display mode
+
+### Message.Reactions Props
+    reactions: { emoji: string; count: number; reacted: boolean }[] (REQUIRED)
+    onReact: (emoji: string) => void (REQUIRED)
+
+### Message.Content Props
+    children: ReactNode (REQUIRED)
+    className: string
+
+### Message.Actions Props
+    children: ReactNode (REQUIRED)
+    delay: number — hover reveal delay in ms (default: 100)
+
+### Message.Action Props
+    icon: IconProps["icon"] (REQUIRED) — pass the Tabler component reference, e.g. `IconReply` (not `<IconReply />`)
+    label: string (REQUIRED)
+    onClick: () => void (REQUIRED)
+    variant: "default" | "danger" (default: "default")
+
+### Example
+```jsx
+<Message variant="flat" highlight="mention">
+  <Message.Avatar src={user.photo} fallback="JD" />
+  <Message.Content>
+    <Message.Author name="Jane Doe" timestamp={new Date()} badge={<Badge>Admin</Badge>} />
+    <Message.Body>Hello, world!</Message.Body>
+    <Message.Reactions reactions={reactions} onReact={handleReact} />
+    <Message.Actions>
+      <Message.Action icon={IconReply} label="Reply" onClick={handleReply} />
+      <Message.Action icon={IconTrash} label="Delete" onClick={handleDelete} variant="danger" />
+    </Message.Actions>
+  </Message.Content>
+</Message>
+```
+
+---
+
+## SystemMessage
+
+Inline system event or alert message (e.g. "Alice joined the channel").
+
+### Props
+    icon: ReactNode — custom icon
+    timestamp: string — ISO timestamp string
+    variant: "event" | "alert" (default: "event")
+    children: ReactNode (REQUIRED)
+
+### Example
+```jsx
+<SystemMessage>Alice joined the channel</SystemMessage>
+<SystemMessage variant="alert" timestamp="2026-03-26T10:00:00Z">Connection lost</SystemMessage>
+```
+
+---
+
+## MessageInput
+
+Auto-resizing textarea with send/stop buttons, streaming support, and slot-based extensibility.
+
+### Props
+    onSubmit: (text: string) => void (REQUIRED)
+    placeholder: string (default: "Type a message...")
+    disabled: boolean (default: false)
+    isStreaming: boolean — shows stop button instead of send (default: false)
+    onCancel: () => void — called when stop button is clicked
+    leadingSlot: ReactNode — content before the textarea (e.g. attachment button)
+    trailingSlot: ReactNode — content after the send button
+    disclaimer: string — centered text below the input (e.g. "AI can make mistakes")
+    sendIcon: ReactNode — custom send icon
+
+### Example
+```jsx
+<MessageInput
+  onSubmit={handleSend}
+  isStreaming={streaming}
+  onCancel={handleStop}
+  disclaimer="AI can make mistakes"
+/>
+```
+
+---
+
+## DateSeparator
+
+Horizontal rule with a formatted date label.
+
+### Props
+    date: Date | string (REQUIRED)
+    format: (date: Date) => string — custom date formatter
+    className: string
+
+### Example
+```jsx
+<DateSeparator date={new Date()} />
+<DateSeparator date="2026-03-25" format={(d) => d.toLocaleDateString()} />
+```
+
+---
+
+## UnreadSeparator
+
+Accent-colored horizontal rule marking the unread boundary.
+
+### Props
+    label: string (default: "NEW")
+    count: number — prepended to label (e.g. "5 NEW")
+    className: string
+
+### Example
+```jsx
+<UnreadSeparator />
+<UnreadSeparator count={5} />
+```
+
+---
+
+## TypingIndicator
+
+Animated bouncing dots with a text description of who is typing.
+
+### Props
+    users: { name: string; image?: string }[] (REQUIRED)
+    className: string
+
+### Example
+```jsx
+<TypingIndicator users={[{ name: 'Alice' }]} />
+<TypingIndicator users={[{ name: 'Alice' }, { name: 'Bob' }]} />
+```
+
+---
+
+## Composability
+- **Chat is a kit of 7 primitives, not a monolithic ChatWindow.** Compose MessageList (scroll container) + Message/SystemMessage (row variants) + DateSeparator/UnreadSeparator (visual dividers) + MessageInput (composer) + TypingIndicator (presence).
+- **Message is a compound component** — `Message.Avatar`, `Message.Content`, `Message.Author`, `Message.Body`, `Message.Reactions`, `Message.Actions`, `Message.Action`. Arrange them to match your design; most layouts only need Avatar + Content (with Author + Body inside).
+- **Message.Actions reveal on hover** via `group-hover/message` — ONLY works when Actions is nested inside a Message root. If you want a custom action bar, do it differently.
+- **MessageList ARIA:** `role="log" + aria-live="polite"` — screen readers announce new messages automatically. Don't manually add aria-live to children.
+- **grouped mode:** For consecutive messages from the same user, set `grouped={true}` to hide the avatar and author (typical chat UI pattern). Logic for "same user as previous" is consumer-side.
+- **MessageInput is specifically for chat** — auto-resizing textarea (up to 160px), Enter-to-send, Shift+Enter-for-newline, streaming support. For richer composition (formatting, attachments), use RichChatInput from composed (built on top of this + TipTap).
+- **TypingIndicator** accepts multiple users — handles pluralization of the "is/are typing" label automatically.
+
+## Gotchas
+- MessageList uses `role="log"` with `aria-live="polite"` — screen readers announce new messages
+- Message entrance animations use Framer Motion springs — AnimatePresence wraps children in MessageList
+- `grouped` hides avatar and author — use for consecutive messages from the same user
+- MessageInput sends on Enter (Shift+Enter for newline) — textarea auto-resizes up to 160px
+- TypingIndicator renders nothing when `users` is empty
+- Message.Actions toolbar is hidden by default (opacity-0) — it reveals on hover of the parent Message root via `group-hover/message`. Only works when Actions is inside a Message root.
+- Message.Content is the flex column wrapper for Author + Body — required for proper layout in flat variant
+- DateSeparator's default formatter shows "Today", "Yesterday", or "Mon DD" / "Mon DD, YYYY"
+
+## Changes
+### v0.29.0
+- **Added** Initial release — 7 chat primitives (MessageList, Message, SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator)
+# Checkbox
+
+- Import: @devalok/shilp-sutra/ui/checkbox
+- Server-safe: No
+- Category: ui
+
+## Props
+    checked: boolean | "indeterminate"
+    onCheckedChange: (checked: boolean | "indeterminate") => void
+    size: "sm" | "md" | "lg"
+    error: boolean (shows red border)
+    indeterminate: boolean (overrides checked, shows dash icon)
+    disabled: boolean
+
+## Defaults
+    size="md"
+
+## Example
+```jsx
+<Checkbox checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} />
+
+{/* With label */}
+<label htmlFor="terms" className="flex items-center gap-ds-02">
+  <Checkbox id="terms" checked={agreed} onCheckedChange={(v) => setAgreed(v === true)} />
+  I agree to the terms
+</label>
+```
+
+## Composability
+- **FormField integration:** Unlike Input/Textarea, Checkbox does NOT auto-consume FormField state — the `error` prop must be set explicitly. (Form-library convention differs for checkboxes since they often don't share the same visual grouping.)
+- **Labels:** Checkbox doesn't carry its own label — pair it with `<Label htmlFor="x" />` + `<Checkbox id="x" />`, or wrap both in a `<label>` element. Screen readers rely on that association.
+- **Controlled vs uncontrolled:** Pass `checked` + `onCheckedChange` for controlled, `defaultChecked` for uncontrolled. Don't mix.
+
+## Gotchas
+- indeterminate overrides checked visually
+- Checkbox does NOT auto-consume FormField error state — pass `error` explicitly if using inside a FormField
+- WCAG 2.5.8 minimum target size met at md (24px); sm (20px) may fail if not paired with enough label hit area
+
+## Changes
+### v0.22.0
+- **Changed** Check indicator animation from scale-bounce to path-draw (stroke draws progressively). Indeterminate dash also draws in.
+- **Fixed** Uncontrolled checkbox never showed checkmark — `checked` from props was `undefined`, so `isActive` was always `false`. Now tracks internal state.
+- **Added** Hover state on unchecked checkbox (subtle background highlight).
+
+### v0.18.0
+- **Changed** Bouncy check indicator animation migrated to Framer Motion
+- **Fixed** Icon sizing uses design tokens consistently
+
+### v0.1.0
+- **Added** Initial release
+# Code
+
+- Import: @devalok/shilp-sutra/ui/code
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    variant: "inline" | "block"
+    children: ReactNode
+
+## Defaults
+    variant="inline"
+
+## Example
+```jsx
+<Code>onClick</Code>
+<Code variant="block">{`const x = 1;\nconsole.log(x);`}</Code>
+```
+
+## Composability
+- **Server-safe.** No context, no cascade.
+- Inline variant composes inside Text, paragraphs, list items, table cells — wherever body text goes.
+- Block variant is a `<pre><code>` pair with overflow-x scroll; pair with a dark background Card or MarkdownViewer for long snippets.
+- Not a syntax-highlighted code viewer — for that, use RichTextEditor's code block or a dedicated library. Code here is typographic emphasis, not lexer-aware rendering.
+
+## Gotchas
+- "block" renders as `<pre><code>`, "inline" renders as `<code>`
+- Block variant doesn't syntax-highlight — it's a styled pre tag, nothing more
+
+## Changes
+### v0.1.1
+- **Fixed** `leading-[150%]` replaced with `leading-ds-relaxed` for token compliance
+
+### v0.1.0
+- **Added** Initial release
+# Collapsible
+
+- Import: @devalok/shilp-sutra/ui/collapsible
+- Server-safe: No
+- Category: ui
+
+## Props
+    open: boolean (controlled)
+    onOpenChange: (open: boolean) => void
+    defaultOpen: boolean
+
+## Compound Components
+    Collapsible (root)
+      CollapsibleTrigger
+      CollapsibleContent
+
+## Defaults
+    none
+
+## Example
+```jsx
+<Collapsible>
+  <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+  <CollapsibleContent>Hidden content</CollapsibleContent>
+</Collapsible>
+```
+
+## Composability
+- Radix Collapsible primitive — smaller than Accordion (no grouping/value matching, just open/close).
+- **When to use:** A single show/hide section where the state is local (e.g. "Advanced options" inside a form, expandable row detail, show-more). For multi-section with mutual exclusion, use Accordion.
+- **Inline rendering:** CollapsibleContent is NOT portalled — it expands inline and pushes sibling content down. Respects `overflow` rules of the parent.
+- **No built-in chevron** — unlike AccordionTrigger, CollapsibleTrigger is bare. Add your own icon + rotate via `data-state` attribute Radix sets (`[data-state=open]:rotate-180`).
+- **Animation:** Height transition via `animate-collapsible-down/up` keyframes + Radix `--radix-collapsible-content-height` CSS custom property.
+
+## Gotchas
+- Standard Radix Collapsible API
+- No auto-chevron — add one manually if you want the affordance
+- Not portalled — clipped by parent `overflow: hidden`
+
+## Changes
+### v0.13.0
+- **Changed** Default animation changed from fade-only to height-based expand/collapse using `animate-collapsible-down`/`animate-collapsible-up`
+- **Added** `collapsible-down` and `collapsible-up` keyframes added to Tailwind preset
+
+### v0.4.2
+- **Added** `CollapsibleProps` type export
+
+### v0.1.0
+- **Added** Initial release
+# ColorInput
+
+- Import: @devalok/shilp-sutra/ui/color-input
+- Server-safe: No
+- Category: ui
+- Dependency: react-colorful (bundled, 2.8KB gzipped)
+
+## Props
+    value: string (hex color, e.g. "#d33163")
+    onChange: (value: string) => void
+    presets: { hex: string; label: string }[] | string[] | false (default: 10 named colors. Pass false to hide.)
+    variant: "default" | "inline" (default: "default")
+    showPicker: boolean (default: true — set false for swatches-only mode)
+    defaultFormat: "hex" | "rgb" | "hsl" (default: "hex")
+    align: "start" | "center" | "end" (popover alignment, default: "start")
+    disabled: boolean
+    className: string
+
+## Defaults
+    value="#000000", variant="default", showPicker=true, defaultFormat="hex", align="start", disabled=false
+
+## Variants
+
+**default** — Gradient swatch on left edge fading into surface background, hex text on right. Popover opens on click.
+
+**inline** — Entire trigger IS the selected color. Hex text overlaid with contrast-aware color (white on dark, dark on light). Great for color tags, labels, and compact UIs.
+
+## Popover Contents
+
+1. Interactive gradient picker (saturation/brightness square + hue slider)
+2. Format switcher (HEX / RGB / HSL) with animated sliding pill
+3. Format-specific input fields (all editable, auto-converting)
+4. Preset color swatches (10 named defaults, customizable)
+5. Reset/Undo footer (appears when color has changed)
+
+## Example
+```jsx
+<ColorInput
+  value={color}
+  onChange={setColor}
+/>
+
+// Inline variant
+<ColorInput
+  value={color}
+  onChange={setColor}
+  variant="inline"
+/>
+
+// Custom presets
+<ColorInput
+  value={color}
+  onChange={setColor}
+  presets={[
+    { hex: '#EF4444', label: 'Danger' },
+    { hex: '#10B981', label: 'Success' },
+  ]}
+/>
+
+// Swatches only (no picker)
+<ColorInput value={color} onChange={setColor} showPicker={false} />
+```
+
+## Composability
+- **Built on Popover internally** — trigger opens a portal-rendered picker panel. z-popover (1400) stacking.
+- **variant="default" vs "inline":** Default variant is an input-style trigger with gradient swatch + hex label (fits in forms). Inline variant IS the selected color — the entire trigger takes the color as its background with contrast-aware text. Use inline for color-tags in chat, lists, or tight toolbar UIs.
+- **Controlled or uncontrolled:** Works both ways — pass `value` + `onChange` for controlled, or omit and let internal state track.
+- **Presets are compositional:** Pass `{ hex, label }[]` for named brand colors (accessible, keyboard-navigable). Pass `false` to hide the preset strip entirely (picker-only mode).
+- **react-colorful** is bundled (2.8KB gzipped) — zero additional setup. Picker itself is pointer-based; keyboard users edit via the HEX/RGB/HSL format inputs below.
+- **FormField:** Not auto-consumed (no `state` prop). Wrap in FormField for label + helper text; style error visuals via className.
+
+## Gotchas
+- Value must be a 6-character hex string (e.g. "#d33163")
+- Presets accept both `string[]` (backward-compatible) and `{ hex, label }[]` (recommended for accessibility)
+- The interactive picker (react-colorful) is pointer-based — keyboard users can edit colors via the HEX/RGB/HSL format inputs
+- Multiple ColorInput instances on the same page work correctly (unique layoutId per instance)
+- Undo tracks discrete changes (preset clicks, field edits), not continuous picker drag — dragging pushes one undo entry
+
+## Changes
+
+### v0.28.0
+- **Changed** Full redesign: replaced native `<input type="color">` with react-colorful interactive picker in a Popover
+- **Added** `variant` prop: `"default"` (gradient trigger) and `"inline"` (color-as-background trigger)
+- **Added** Multi-format input fields (HEX / RGB / HSL) with animated format switcher
+- **Added** `showPicker`, `defaultFormat`, `align` props
+- **Added** Reset/Undo functionality with footer UI
+- **Added** Framer Motion animations throughout (triggers, format swap, presets)
+- **Added** Internal state management — works both controlled and uncontrolled
+- **Changed** `presets` prop now accepts `{ hex, label }[]` or `false` in addition to `string[]`
+- **Fixed** Accessibility: label/input association, ARIA labels, input clamping
+
+### v0.15.0
+- **Changed** `md` size font standardized to `text-ds-md` (14px) from mixed values
+
+### v0.8.0
+- **Fixed** Added `aria-label` to hex color input
+
+### v0.1.0
+- **Added** Initial release
+# ColorSwatch
+
+- Import: @devalok/shilp-sutra/ui/color-swatch
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    color: string (any valid CSS color — hex, rgb, oklch, etc.)
+    size: "sm" | "md" | "lg"
+    shape: "circle" | "square" | "rounded"
+    ring: boolean (shows subtle ring border — useful for light colors that blend into the background)
+
+## Defaults
+    size="md", shape="circle", ring={false}
+
+## Example
+```jsx
+<ColorSwatch color="#FF5733" />
+<ColorSwatch color={org.brandColor} size="lg" ring />
+<ColorSwatch color="oklch(0.7 0.15 200)" shape="rounded" />
+```
+
+## Composability
+- **Server-safe, decorative-only primitive.** Accepts any valid CSS color string — hex, rgb, oklch, hsl, named. Pure presentation, no context.
+- **Usage patterns:** Inline color marker next to a label, preview dot in lists, color-indicator in a category chip, legend swatch for charts.
+- **`ring={true}`** adds a subtle outline — essential for white/very-light colors that would otherwise disappear on surface-raised backgrounds.
+- **Interactive color picking:** Use ColorInput (which opens a full picker). ColorSwatch is display-only.
+- No IconProvider cascade, no FormField consumption — composes freely with anything.
+
+## Gotchas
+- Color is applied via inline `backgroundColor` style, not a token class — accepts any runtime CSS color string
+- Renders `role="presentation"` — purely decorative, not interactive
+# Combobox
+
+- Import: @devalok/shilp-sutra/ui/combobox
+- Server-safe: No
+- Category: ui
+
+## Props
+    options: ComboboxOption[] (REQUIRED) — { value: string, label: string, description?: string, icon?: ReactNode, disabled?: boolean }
+    size: "xs" | "sm" | "md" | "lg" (trigger height)
+    DISCRIMINATED UNION — type depends on `multiple` flag:
+    Single (default): multiple?: false, value?: string, onValueChange: (value: string) => void
+    Multiple: multiple: true, value?: string[], onValueChange: (value: string[]) => void
+    placeholder: string (default: "Select...")
+    searchPlaceholder: string (default: "Search...")
+    emptyMessage: string (default: "No results found")
+    disabled: boolean
+    className: string (wrapper div — the positioning container, NOT the trigger)
+    triggerClassName: string (the actual Popover trigger button)
+    accessibleLabel: string (custom aria-label for trigger, falls back to placeholder)
+    maxVisible: number (default: 6, max dropdown items before scroll)
+    renderOption: (option, selected) => ReactNode
+
+## Defaults
+    size="md", placeholder="Select...", searchPlaceholder="Search...", emptyMessage="No results found", maxVisible=6
+
+## Example
+```jsx
+<Combobox
+  multiple
+  options={tagOptions}
+  value={selectedTags}
+  onValueChange={setSelectedTags}
+  placeholder="Select tags..."
+/>
+```
+
+## Composability
+- **Combobox vs Autocomplete vs Select:** Combobox = typeahead search + forced selection (the user picks from filtered options). Autocomplete = typeahead + free text allowed. Select = no typeahead, click-to-open with fixed options. Pick by user behavior, not visual style.
+- **Single vs multi mode** is a discriminated union — `multiple: true` changes the shape of value (`string[]`) and onValueChange. TypeScript enforces the pairing.
+- **Multi-select pills:** Capped at 2 visible + "+N more" overflow regardless of `maxVisible`. Clicking the +N opens a popover list of all selected items (handled by the component).
+- **className vs triggerClassName:** className lands on the wrapper (positioning); triggerClassName lands on the trigger button (styling the control). Know which you need.
+- **Portal + z-popover (1400):** content stacks above Dialog/Sheet; works inside scrolling containers without clipping.
+- **renderOption:** For complex option rendering (avatar + label + description), pass `renderOption: (option, selected) => <YourCustom />`. The selected state is a boolean flag.
+- **FormField:** Does NOT auto-consume FormField state. Wrap in FormField for label + helper text, but style error manually.
+
+## Gotchas
+- Enforces selection from list (unlike Autocomplete which allows free text)
+- In multi mode, selected items appear as pills with "+N more" overflow (capped at 2 visible pills regardless of `maxVisible`)
+- `className` vs `triggerClassName`: `className` lands on the wrapper div (useful for width/positioning); `triggerClassName` lands on the actual Popover trigger button (useful for styling the control itself)
+- Dropdown content is portalled to document.body — parent styles like `overflow: hidden` don't clip it, and container-scoped test queries won't find it
+
+## Changes
+### v0.18.0
+- **Added** `accessibleLabel` prop — custom aria-label for trigger, falls back to placeholder
+
+### v0.14.0
+- **Changed** z-index promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes dropdown rendering behind Sheet/Dialog overlays
+
+### v0.8.0
+- **Changed** (BREAKING) Props now use discriminated union — `multiple: true` requires `value: string[]` and `onValueChange: (value: string[]) => void`
+
+### v0.3.0
+- **Changed** (BREAKING) `onChange` renamed to `onValueChange`
+- **Changed** Now extends HTMLAttributes — accepts all standard HTML props
+
+### v0.1.0
+- **Added** Initial release
+# Container
+
+- Import: @devalok/shilp-sutra/ui/container
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    maxWidth: "default" | "body" | "full"
+    as: ElementType (default: "div")
+
+## Defaults
+    maxWidth="default"
+
+## Example
+```jsx
+<Container maxWidth="body">
+  <p>Centered content</p>
+</Container>
+```
+
+## Composability
+- **Server-safe layout primitive.** Safe in RSC trees — no hooks, no context.
+- **maxWidth choices:**
+  - `"default"` (standard page container — matches the design system's layout grid)
+  - `"body"` (narrower reading width — use for article/blog content)
+  - `"full"` (no max — edge-to-edge, useful for full-bleed marketing sections)
+- **Polymorphic via `as`:** Change the rendered element for semantics (`as="main"` for page content, `as="section"` for major subdivisions, `as="article"` for standalone content).
+- **mx-auto centering is automatic** — Container handles horizontal centering; it does NOT add vertical spacing. Pair with `py-*` utility classes on the Container itself or inside it.
+- Nothing cascades — nesting Containers is fine but rarely useful (max-width constraints compound).
+
+## Gotchas
+- Server-safe component — can be imported directly in Next.js Server Components
+- Container does NOT add vertical padding — add it explicitly via className if needed
+
+## Changes
+### v0.1.0
+- **Added** Initial release
+# ContextMenu
+
+- Import: @devalok/shilp-sutra/ui/context-menu
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    ContextMenu (root)
+      ContextMenuTrigger (right-click target)
+      ContextMenuContent
+        ContextMenuItem
+        ContextMenuCheckboxItem
+        ContextMenuRadioGroup > ContextMenuRadioItem
+        ContextMenuLabel
+        ContextMenuSeparator
+        ContextMenuSub > ContextMenuSubTrigger, ContextMenuSubContent
+
+## Defaults
+    none
+
+## Example
+```jsx
+<ContextMenu>
+  <ContextMenuTrigger>Right-click me</ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Edit</ContextMenuItem>
+    <ContextMenuItem>Delete</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+## Composability
+- Radix ContextMenu — same item-variant surface as DropdownMenu (checkbox, radio group, sub-menus, label, separator) with the same keyboard model. Swap `Dropdown` → `Context` in imports and everything behaves the same.
+- **Trigger is not a button** — ContextMenuTrigger is a wrapper element (defaults to `<div>`) that listens for `contextmenu` events on itself and children. Use `asChild` to pass styling to your own element.
+- **Touch support:** Radix maps long-press to right-click. On mobile, hold-to-open just works without extra code.
+- **No visible trigger affordance** — unlike DropdownMenu/Popover, the user has to *know* the element is right-clickable. Pair with a visible hint (keyboard shortcut label, menu icon elsewhere) for discoverability.
+- **Portal + z-index:** z-popover (1400).
+
+## Gotchas
+- Triggered by right-click (or long-press on touch devices)
+- ContextMenuTrigger doesn't auto-indicate it's interactive — add visual affordance elsewhere on the page
+
+## Changes
+### v0.18.0
+- **Added** `ContextMenuContentProps`, `ContextMenuItemProps` type exports
+
+### v0.14.0
+- **Changed** z-index promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes dropdown rendering behind Sheet/Dialog overlays
+
+### v0.1.0
+- **Added** Initial release
+# DataTable
+
+- Import: @devalok/shilp-sutra/ui/data-table
+- Server-safe: No
+- Category: ui
+
+## Props
+    columns: ColumnDef<TData>[] (TanStack column definitions)
+    data: TData[]
+    sortable: boolean — enable column sorting
+    onSort: (key: string, dir: 'asc' | 'desc' | false) => void — server-side sort callback (enables manualSorting)
+    filterable: boolean — enable per-column filters
+    globalFilter: boolean — enable global search
+    paginated: boolean — enable client-side pagination
+    pagination: { page: number, pageSize: number, total: number, onPageChange: (page: number) => void } — server-side pagination (1-based page)
+    pageSize: number (default 10)
+    selectable: boolean — enable row selection with checkboxes
+    selectedIds: Set<string> — controlled selection state
+    selectableFilter: (row: TData) => boolean — disable selection on certain rows
+    getRowId: (row: TData) => string — custom row ID accessor
+    onSelectionChange: (selectedRows: TData[]) => void
+    expandable: boolean — enable row expansion
+    renderExpanded: (row: TData) => ReactNode — expanded row content
+    singleExpand: boolean — only one row expanded at a time
+    loading: boolean — show skeleton shimmer rows
+    emptyState: ReactNode — custom empty state (takes precedence over noResultsText)
+    noResultsText: string (default "No results.")
+    stickyHeader: boolean — sticky table header
+    onRowClick: (row: TData) => void — row click handler (excludes interactive element clicks)
+    bulkActions: BulkAction<TData>[] — floating action bar on selection — { label, onClick, color?: 'default'|'error', disabled? }
+    toolbar: boolean — show DataTableToolbar (column visibility, density, CSV export)
+    editable: boolean — enable double-click cell editing
+    virtualRows: boolean — virtualize rows for large datasets
+    columnPinning: { left?: string[], right?: string[] }
+    defaultDensity: 'compact' | 'standard' | 'comfortable'
+
+## Defaults
+    pageSize=10, noResultsText="No results."
+
+## Example
+```jsx
+import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
+
+<DataTable
+  columns={[
+    { accessorKey: 'name', header: 'Name' },
+    { accessorKey: 'email', header: 'Email' },
+  ]}
+  data={users}
+  sortable
+  onSort={(key, dir) => handleSort(key, dir)}
+  pagination={{ page, pageSize: 20, total: totalCount, onPageChange: setPage }}
+  loading={isLoading}
+  emptyState={<EmptyState title="No users" />}
+/>
+```
+
+## Composability
+**Server vs client mode is prop-driven, not explicit.**
+- Pass `onSort` → server-side sort (manual, rows stay in data order — you're responsible for re-fetching).
+- Pass `pagination` object → server-side pagination (manual, pass total count).
+- Omit both → client-side sort/pagination via TanStack react-table.
+- Mix-and-match: `onSort` + no pagination = server sort + client pagination.
+
+**Companion components:**
+- `DataTableToolbar` — enabled via `toolbar={true}`. Provides column visibility, density switcher, CSV export. Reads table state via `DataTableContext` (internal). Rendered ABOVE the table automatically.
+- `BulkActionBar` (floating) — appears when rows are selected AND `bulkActions` array is non-empty. Synced with `selectedIds`; shows count + action buttons.
+- `EmptyState` from `@devalok/shilp-sutra/composed` — pass to `emptyState` prop. Takes precedence over `noResultsText` string.
+
+**Controlled selection:**
+- Pass `selectedIds` (Set<string>) + `onSelectionChange` for controlled row selection.
+- Provide `getRowId: (row) => row.id` so selection survives data refetches (otherwise TanStack uses array index, which breaks on sort/filter).
+- `selectableFilter: (row) => boolean` disables selection on specific rows (e.g. archived items).
+
+**Row click model:**
+- `onRowClick` fires on row-level click BUT excludes clicks on checkboxes, buttons, links, and inputs automatically. No manual `stopPropagation` needed for standard interactive elements.
+
+**Virtualization:** `virtualRows={true}` enables row virtualization via `@tanstack/react-virtual`. Turn it on for 1000+ row datasets; the scroll container must have a bounded height.
+
+**Density integration:** `defaultDensity="compact"` is the Karm-style dense mode (h-9 rows). DataTableToolbar's density switcher updates this at runtime; the prop sets the initial state only.
+
+## Gotchas
+- Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/data-table`, NOT the `ui` barrel
+- Requires @tanstack/react-table and @tanstack/react-virtual as peer dependencies
+- When onSort is provided, sorting is manual (server-side) — rows stay in data order
+- When pagination prop is provided, pagination is manual — pass total count
+- selectedIds syncs via useEffect — provide getRowId for custom row IDs
+- onRowClick does NOT fire when clicking checkboxes, buttons, links, or inputs
+- Use defaultDensity="compact" for Karm-style h-9 rows
+- `virtualRows={true}` requires a bounded scroll container — unbounded height silently disables virtualization
+
+## Changes
+### v0.29.0
+- **Fixed** Controlled selection infinite re-render loop — inline `getRowId` callback caused `onSelectionChange` effect to fire every render, creating a setState cycle with `selectedIds`. Now uses a stable ref for `getRowId`.
+
+### v0.16.1
+- **Fixed** `serverPagination` object reference in `useCallback` dependency caused stale closure — now uses stable ref for `onPageChange`
+- **Fixed** `onSelectionChange` effect fired every render due to `table` in dependency array — now derives selected rows directly
+- **Fixed** `selectedRows` useMemo for bulk actions had same `table` dependency issue
+
+### v0.16.0
+- **Added** `onSort` callback for server-side sorting
+- **Added** `emptyState` ReactNode slot
+- **Added** `loading` prop with shimmer skeleton rows
+- **Added** `selectedIds` + `selectableFilter` for controlled selection
+- **Added** `pagination` prop for server-side pagination
+- **Added** `singleExpand` prop
+- **Added** `stickyHeader` prop
+- **Added** `onRowClick` handler
+- **Added** `bulkActions` floating action bar
+
+### v0.5.0
+- **Changed** (BREAKING) Removed from `@devalok/shilp-sutra/ui` barrel export — must use `@devalok/shilp-sutra/ui/data-table`
+
+### v0.1.1
+- **Fixed** `useEffect` exhaustive-deps with proper dependency array
+
+### v0.1.0
+- **Added** Initial release
+# DataTableBody
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal only.** Renders the tbody + rows for DataTable. Consumes DataTableContext for row data, selection state, expandable state, loading skeletons.
+- Customization routes through DataTable props: `renderExpanded`, `onRowClick`, `getRowId`, `loading`, `emptyState`.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# DataTableBulkActions
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal only.** Renders the floating bulk-action bar that appears when rows are selected. Reads selection state + bulkActions config from DataTableContext.
+- Customization goes through DataTable's `bulkActions` prop — `{ label, onClick, color?, disabled? }[]`.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# DataTableCard
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal only.** Renders the card wrapper around DataTable (border, shadow, rounded corners matching the Card primitive's surface treatment).
+- DataTable uses this automatically — no consumer-facing prop toggles it.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# DataTableContext
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal React context** — binds DataTable's sub-components (header, body, pagination, toolbar, bulk-actions) to shared state: TanStack table instance, density, selection, loading.
+- Consumer code never reads this context — all interaction goes through DataTable's props.
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# DataTableHeader
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal only.** Renders the thead + column headers for DataTable. Reads sort state + column definitions from DataTableContext.
+- Customization goes through DataTable's `columns` prop (column definitions are TanStack ColumnDef<TData> — header, sortable, filter, etc. all declared there).
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# DataTablePagination
+
+> Internal sub-component of DataTable. Not exported to consumers.
+
+## Usage
+
+This component is used internally by `<DataTable>` and should not be imported directly.
+See [DataTable](./data-table.md) for the public API.
+
+## Composability
+- **Internal only.** Renders the pagination footer for DataTable. Reads pagination state from DataTableContext.
+- Customization goes through DataTable's `pagination` prop (server-side: pass `{ page, pageSize, total, onPageChange }`) or `pageSize` + `paginated` (client-side).
+
+## Changes
+
+### v0.32.0
+- Extracted from DataTable monolith into focused sub-component.
+# DataTableToolbar
+
+- Import: @devalok/shilp-sutra/ui/data-table-toolbar
+- Server-safe: No
+- Category: ui
+
+## Props
+    table: Table<TData> (TanStack table instance)
+    globalFilter: boolean
+    globalFilterValue: string
+    onGlobalFilterChange: (value: string) => void
+    density: 'compact' | 'standard' | 'comfortable'
+    onDensityChange: (density: Density) => void
+    enableExport: boolean
+
+## Defaults
+    none
+
+## Example
+```jsx
+import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
+
+<DataTableToolbar
+  table={table}
+  globalFilter
+  globalFilterValue={filterValue}
+  onGlobalFilterChange={setFilterValue}
+  density={density}
+  onDensityChange={setDensity}
+  enableExport
+/>
+```
+
+## Composability
+- **Companion to DataTable** — typically enabled via DataTable's `toolbar={true}` prop (which auto-renders this internally). Use DataTableToolbar directly only if you're building a custom DataTable integration that needs the toolbar positioned/styled differently.
+- **Reads table state via the `table` instance** (TanStack react-table) — you must pass it. For the auto-rendered version inside DataTable, this wiring is automatic.
+- **Feature toggles:** `globalFilter` (search across all columns), density switcher (compact/standard/comfortable row heights), CSV export. Turn each on/off independently.
+- **Density changes are runtime** — the switcher writes to the same `defaultDensity` that DataTable's prop seeds. State lives in DataTable context.
+
+## Gotchas
+- Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/data-table-toolbar`, NOT the `ui` barrel
+- Companion to DataTable — provides column visibility, density toggle, and CSV export controls
+- Requires @tanstack/react-table as a peer dependency
+- Prefer DataTable's `toolbar={true}` prop over rendering this directly
+
+## Changes
+### v0.5.0
+- **Changed** (BREAKING) Removed from `@devalok/shilp-sutra/ui` barrel export — must use `@devalok/shilp-sutra/ui/data-table-toolbar`
+
+### v0.1.0
+- **Added** Initial release
+# DevalokGrain
+
+- Import: @devalok/shilp-sutra/ui/devalok-grain
+- Server-safe: No
+- Category: ui
+
+## Props
+    intensity: "subtle" | "medium" | "heavy" — grain intensity level
+    surface: "solid" | "soft" — affects noise opacity ('solid' for filled backgrounds, 'soft' for tinted/muted)
+    sheen: boolean — inner highlight (top-lit emboss) for premium 3D feel
+    animated: boolean — fade-in entrance animation on mount
+    hoverIntensify: boolean — increase grain visibility on parent hover (requires parent `group` class)
+    tint: string — CSS color for the directional gradient (e.g. "oklch(0.55 0.19 360)", "var(--color-accent-9)")
+
+## Defaults
+    intensity: "subtle"
+    surface: "solid"
+    sheen: false
+    animated: false
+    hoverIntensify: false
+    tint: undefined (no gradient, noise texture only)
+
+## Example
+```jsx
+{/* Inside a Button (Button already has relative/overflow-hidden/isolate): */}
+<Button>
+  <DevalokGrain />
+  Save changes
+</Button>
+
+{/* Inside a Card: */}
+<Card className="relative overflow-hidden isolate">
+  <DevalokGrain surface="soft" />
+  Card content
+</Card>
+
+{/* Heavy grain with tint on a hero section: */}
+<div className="relative overflow-hidden isolate rounded-ds-lg bg-accent-9 p-8">
+  <DevalokGrain intensity="heavy" tint="oklch(0.55 0.19 360)" />
+  <h1 className="relative z-[2]">Hero</h1>
+</div>
+```
+
+## Composability
+- **Brand texture overlay** — drops into any parent with `relative overflow-hidden isolate`. Auto-inherits the parent's border radius.
+- **Button auto-extracts Grain children** — if you nest `<DevalokGrain>` inside a `<Button>`, Button auto-separates it from the label slot and positions it correctly. No extra wrapping needed.
+- **Card, custom hero sections, landing-page tiles** — wrap in a positioned container (or add the `relative overflow-hidden isolate` classes to Card explicitly) and drop Grain in as a sibling to your content.
+- **z-layer contract:** Grain renders at `z-[1]`. Content on top needs `z-[2]+`. The component doesn't boost child z-index — that's consumer responsibility.
+- **`hoverIntensify` depends on parent** — the parent must have the Tailwind `group` class so `group-hover:` selectors apply. Forgetting this silently disables the effect.
+- **Tint composes with surface:** Pass an OKLCH color (or CSS variable reference like `var(--color-accent-9)`) to `tint` for a directional gradient on top of the noise. Without tint, just noise.
+
+## Gotchas
+- Parent element MUST have `relative overflow-hidden isolate` for the grain to render correctly
+- The grain layers are absolute-positioned at `z-[1]` — content that should appear above must use `z-[2]` or higher
+- Uses `rounded-[inherit]` to match parent border-radius automatically
+- Renders `aria-hidden="true"` — purely decorative
+- Without `tint`, only the noise texture renders (no directional gradient)
+- `hoverIntensify` requires the parent to have a `group` class for `group-hover:` to work
+- Respects `prefers-reduced-motion` — entrance animation disabled when user prefers reduced motion
+
+## Changes
+### v0.29.0
+- **Added** Initial release — brand noise texture with directional gradient, sheen, animation, and hover intensification
+# Dialog
+
+- Import: @devalok/shilp-sutra/ui/dialog
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    Dialog (root)
+      DialogTrigger
+      DialogContent
+        DialogHeader
+          DialogTitle
+          DialogDescription
+        [body content]
+        DialogFooter
+      DialogClose
+
+## Defaults
+    none
+
+## Example
+```jsx
+<Dialog>
+  <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Edit Profile</DialogTitle>
+      <DialogDescription>Make changes to your profile.</DialogDescription>
+    </DialogHeader>
+    <div>Form fields here</div>
+    <DialogFooter>
+      <Button>Save</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+## Composability
+- Built on Radix Dialog primitives — every standard Radix prop passes through (`open`, `onOpenChange`, `defaultOpen`, `modal`).
+- **Trigger composition:** `<DialogTrigger asChild>` renders the wrapped element as the trigger — typical pattern is `<DialogTrigger asChild><Button>...</Button></DialogTrigger>`. Without `asChild`, a default button is injected.
+- **Portal rendering:** DialogContent portals to `document.body`. CSS containers (`overflow: hidden`, `transform`, stacking contexts) on ancestors of the trigger don't clip it. Container-scoped test queries miss portalled content — use `screen` or the portal root.
+- **Focus management:** Radix traps focus inside Content while open and restores it to the trigger on close. First focusable element inside receives focus automatically.
+- **Imperative close** from deep children: use `<DialogClose asChild>` around your own button, or `useDialogContext` — no prop drilling.
+- **z-index:** DialogContent uses `z-dialog` (configured in Tailwind theme). Nested overlays (Popover inside Dialog) stack on top because Popover uses `z-popover` (1400) higher than `z-dialog`.
+
+## Gotchas
+- DialogTitle is required for accessibility — screen readers announce it when the dialog opens
+- If your layout suppresses the title visually, use `<VisuallyHidden>` around DialogTitle — don't omit it
+- Focus returns to the trigger on close — if the trigger is conditionally unmounted, focus lands on body; handle manually if that matters
+
+## Changes
+### v0.19.1
+- **Fixed** Dialog not centered after Framer Motion animation completes — `transform: none` inline style overrode Tailwind `translate-x/y` classes. Centering now handled via Framer Motion `x`/`y` properties.
+
+### v0.18.0
+- **Changed** Overlay animations migrated to Framer Motion (physics-based springs)
+- **Added** `DialogContentProps`, `DialogTitleProps` type exports
+- **Fixed** Context provider value wrapped in `useMemo` for performance
+
+### v0.3.0
+- **Fixed** DialogHeader/Footer now support ref forwarding
+
+### v0.1.0
+- **Added** Initial release
+# DropdownMenu
+
+- Import: @devalok/shilp-sutra/ui/dropdown-menu
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    DropdownMenu (root)
+      DropdownMenuTrigger
+      DropdownMenuContent
+        DropdownMenuLabel
+        DropdownMenuSeparator
+        DropdownMenuItem (+ DropdownMenuShortcut for keyboard hints)
+        DropdownMenuCheckboxItem
+        DropdownMenuRadioGroup > DropdownMenuRadioItem
+        DropdownMenuGroup
+        DropdownMenuSub > DropdownMenuSubTrigger, DropdownMenuSubContent
+
+## Defaults
+    none
+
+## Example
+```jsx
+<DropdownMenu>
+  <DropdownMenuTrigger asChild><Button variant="ghost">Menu</Button></DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Profile</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Logout</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+## Composability
+- Radix DropdownMenu underneath — same prop surface (`open`, `onOpenChange`, `defaultOpen`, `modal`).
+- **Item variants** stack cleanly: `DropdownMenuCheckboxItem` for multi-select toggles, `DropdownMenuRadioGroup` + `DropdownMenuRadioItem` for single-select, `DropdownMenuSub` + `DropdownMenuSubTrigger/SubContent` for nested submenus. Each has its own keyboard model pre-wired.
+- **Keyboard:** Arrow keys navigate items, Enter/Space activates, Esc closes, typeahead jumps to first letter. All handled by Radix — don't re-implement.
+- **Trigger:** `<DropdownMenuTrigger asChild>` around any button. IconButton is the common pairing.
+- **Shortcut hints:** `<DropdownMenuShortcut>` inside an item renders a right-aligned `⌘K`-style kbd. Visual only — does NOT bind the shortcut globally.
+- **Closing from a handler:** Item onSelect auto-closes the menu by default. Pass `event.preventDefault()` inside the handler to keep it open (e.g. for checkbox items that shouldn't close on toggle).
+
+## Gotchas
+- Use `asChild` on DropdownMenuTrigger to render your own button element
+- DropdownMenuShortcut is decorative — bind keyboard shortcuts separately (e.g. with `useHotkeys`)
+- Sub-menus need BOTH DropdownMenuSubTrigger (visible item) and DropdownMenuSubContent (the submenu panel) — missing either silently breaks the hover-open behavior
+
+## Changes
+### v0.22.0
+- **Added** Hover state on `DropdownMenuItem` — was completely missing. Items now show `bg-surface-3` on hover with `ease-productive-standard` transition.
+
+### v0.18.0
+- **Added** `DropdownMenuContentProps`, `DropdownMenuItemProps` type exports
+
+### v0.14.0
+- **Changed** z-index promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes dropdown rendering behind Sheet/Dialog overlays
+
+### v0.1.0
+- **Added** Initial release
+# FileUpload
+
+- Import: @devalok/shilp-sutra/ui/file-upload
+- Server-safe: No
+- Category: ui
+
+## Props
+    onFiles: (files: File[]) => void (REQUIRED)
+    accept: string (MIME or extension, e.g. "image/*", ".pdf,.doc")
+    maxSize: number (bytes, default: 10MB)
+    multiple: boolean
+    uploading: boolean
+    progress: number (0-100)
+    error: string
+    compact: boolean (inline button mode vs drop zone)
+    disabled: boolean
+    label: string
+    sublabel: string
+
+## Defaults
+    compact: false
+    maxSize: 10MB (10485760 bytes)
+
+## Example
+```jsx
+<FileUpload
+  accept="image/*"
+  maxSize={2 * 1024 * 1024}
+  onFiles={(files) => uploadAvatar(files[0])}
+  label="Upload profile photo"
+  sublabel="PNG, JPG up to 2MB"
+/>
+```
+
+## Composability
+- **Two modes, one component:** `compact={false}` (default) = drag-and-drop zone with visible affordance; `compact={true}` = inline "Upload" button. Swap by prop, same callback.
+- **Progress integration:** Drive `uploading` + `progress` from your upload logic. The component renders an embedded Progress bar when uploading=true.
+- **Validation is built-in:** `accept` (MIME types / extensions) + `maxSize` are enforced before `onFiles` fires. Invalid files produce `error` state instead of calling through. Your onFiles never has to re-validate.
+- **Multi-file:** `multiple={true}` accepts File[] (array always, even for single-file mode — use `files[0]`).
+- **Composes with Toast for feedback:** Pair with toast.success on upload complete, toast.error on failure.
+
+## Gotchas
+- compact=true renders a small inline button; false (default) renders a large drag-and-drop zone
+- Client-side validation: invalid files are rejected before onFiles is called
+- `onFiles` always receives an array — use `files[0]` even when `multiple={false}`
+
+## Changes
+### v0.1.0
+- **Added** Initial release
+# FormField / FormHelperText / useFormField
+
+- Import: @devalok/shilp-sutra/ui/form
+- Server-safe: No
+- Category: ui
+
+## Props
+### FormField
+    state: "helper" | "error" | "warning" | "success" (default: "helper")
+    helperTextId: string (auto-generated if omitted)
+    required: boolean
+
+### FormHelperText
+    state: "helper" | "error" | "warning" | "success" (inherits from FormField context)
+
+## Types
+    FormHelperState = 'helper' | 'error' | 'warning' | 'success'
+
+## Hook
+    useFormField() => { state, helperTextId, required }
+
+## Defaults
+    state: "helper"
+
+## Example
+```jsx
+<FormField state="error">
+  <Label htmlFor="email">Email</Label>
+  <Input id="email" state="error" />
+  <FormHelperText>Please enter a valid email.</FormHelperText>
+</FormField>
+```
+
+## Composability
+The FormField/useFormField pair is the central a11y wiring pattern. Components that consume it automatically become accessible inside a FormField without any explicit ARIA work on your end.
+
+**FormField cascades through context to:**
+- **Input, Textarea, NumberInput, InputOTP** — auto-receive `aria-describedby` (wired to FormHelperText's id), `aria-invalid` (when state="error"), and `aria-required` (when required=true).
+- **FormHelperText** — auto-reads `state` and `helperTextId` from context; renders `role="alert"` on error so screen readers interrupt.
+- **Label** — pair it with an Input via `htmlFor` / `id` in the normal way; FormField doesn't auto-wire labels (labels need the explicit association to satisfy screen readers reliably).
+
+**Explicit props always override context.** Setting `state="error"` on an Input inside a FormField with `state="helper"` makes only that Input look errored.
+
+**Nesting is NOT supported.** Don't nest FormField inside FormField — only the outermost context wins, and some a11y wiring silently breaks.
+
+**Consuming context in your own components:**
+```tsx
+const field = useFormField()  // returns { state, helperTextId, required } or undefined
+// Thread field?.state onto your control's state prop,
+// and field?.helperTextId onto aria-describedby.
+```
+
+## Gotchas
+- getFormFieldA11y() was REMOVED — use useFormField() hook instead
+- FormHelperText auto-reads state and id from FormField context
+- FormHelperText renders role="alert" when state="error"
+- Don't nest FormField components — one FormField per field
+- FormField does NOT auto-wire Label→Input association; use `<Label htmlFor="x" />` + `<Input id="x" />` explicitly
+
+## Changes
+### v0.18.0
+- **Fixed** Wrapped FormField context provider value in `useMemo` for performance
+
+### v0.8.0
+- **Fixed** Input/Textarea now consume FormField context automatically (`aria-describedby`, `aria-invalid`, `aria-required`)
+
+### v0.3.0
+- **Added** `useFormField()` hook for automatic aria-describedby wiring
+- **Changed** (BREAKING) FormField auto-wires `aria-describedby` via context. `getFormFieldA11y()` removed
+
+### v0.1.0
+- **Added** Initial release
+# HoverCard
+
+- Import: @devalok/shilp-sutra/ui/hover-card
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    HoverCard (root)
+      HoverCardTrigger
+      HoverCardContent
+
+## Example
+```jsx
+<HoverCard>
+  <HoverCardTrigger asChild><span>Hover me</span></HoverCardTrigger>
+  <HoverCardContent>Preview content</HoverCardContent>
+</HoverCard>
+```
+
+## Composability
+- Radix HoverCard — accepts `open`, `onOpenChange`, `defaultOpen`, `openDelay` (ms before show), `closeDelay` (ms before hide).
+- **Distinction from Tooltip:** HoverCardContent can contain interactive elements (links, buttons, form fields). Tooltip is for inert text labels. If you need a rich hover preview — user card, link preview, product card — use HoverCard.
+- **Distinction from Popover:** Popover opens on click/focus; HoverCard opens on hover/focus. Use HoverCard when the intent is a passive preview, Popover when the user must explicitly invoke the panel.
+- **Trigger:** `<HoverCardTrigger asChild>` wraps any element. Works on `<span>`, `<a>`, `<button>` — the trigger doesn't need to be interactive itself (unlike Popover where click matters).
+- **Accessibility:** Hover-only interactions are invisible on touch. Pair with a focus-visible state or use Popover instead for critical content.
+- **Portal + z-index:** z-popover (1400), same as DropdownMenu/Popover.
+
+## Gotchas
+- Overlay component — uses Framer Motion for enter/exit animations (v0.18.0)
+- Don't nest another HoverCard inside one — both open on the same hover and conflict
+
+## Changes
+### v0.18.0
+- **Changed** Migrated to Framer Motion for enter/exit animations
+- **Added** `HoverCardContentProps` type export
+
+### v0.14.0
+- **Changed** z-index promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes content rendering behind Sheet/Dialog overlays
+
+### v0.1.0
+- **Added** Initial release
+# Icon
+
+- Import: @devalok/shilp-sutra/ui (barrel export)
+- Server-safe: No
+- Category: ui
+
+## Props
+    icon: ForwardRefExoticComponent (REQUIRED — Tabler icon or any ForwardRef SVG icon component)
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" — reads from IconContext if not set
+    stroke: "light" | "regular" | "bold" — reads from IconContext if not set
+    label: string — accessible label (renders <title> + sets aria-label; without it, icon is aria-hidden)
+    animate: "spin" | "pulse" | "bounce" | "draw" | "none" | { rotate?: number; scale?: number }
+    state: "idle" | "loading" | "success" | "error" — delegates to Spinner (bare variant)
+    className: string
+
+## Defaults
+    size: "md" (from context or fallback)
+    stroke: "regular" (from context or fallback)
+    state: undefined (no state machine)
+    animate: undefined (static render)
+
+## Example
+```jsx
+<Icon icon={IconPlus} />
+<Icon icon={IconPlus} size="xs" stroke="light" />
+<Icon icon={IconPlus} label="Add item" />
+<Icon icon={IconPlus} animate="spin" />
+<Icon icon={IconCheck} animate="draw" />
+<Icon icon={IconPlus} state="loading" />
+<Icon icon={IconPlus} state="success" />
+```
+
+## Composability
+- **IconContext consumption** — Icon auto-reads `size` and `stroke` from the nearest IconProvider. Button, IconButton, IconGroup, Input (startSection/endSection), Badge, NumberInput, and more all wrap their children in IconProvider so nested Icons auto-size. Explicit props always override context.
+- **Use Tabler icon components** — the `icon` prop expects a ForwardRef SVG component (the shape Tabler React exports). Any icon lib following that shape works, but Tabler is the standard.
+- **Label for a11y:** Without `label`, Icon is `aria-hidden="true"` (decorative — appropriate inside labeled buttons). With `label`, renders `role="img"` + aria-label + `<title>` for standalone icons.
+- **State overrides animate:** When both are set, state wins. `state="loading"` renders a bare Spinner; success/error render animated glyphs via Framer Motion.
+- **Reduced motion:** All animations respect `prefers-reduced-motion` — animate props fall back to static render.
+
+## Gotchas
+- Without `label`, the icon renders `aria-hidden="true"` (decorative)
+- With `label`, the icon renders `role="img"` with `aria-label` and a `<title>` element
+- **Priority rule:** If both `state` and `animate` are set, `state` wins
+- `state="loading"` renders a bare Spinner; `state="success"` / `state="error"` render animated checkmark/cross
+- Size tiers map to pixel values: xs=14, sm=16, md=18, lg=20, xl=24, 2xl=32
+- Stroke weight varies by size tier (lighter strokes on smaller icons)
+- Reads size/stroke from IconContext (provided by Button, IconGroup, etc.); explicit props override context
+- `animate="draw"` works with IconCheck, IconX, and CircleCheck only — other icons fall back to static render
+- Respects `prefers-reduced-motion` — animations disabled when user prefers reduced motion
+
+## Changes
+### v0.29.0
+- **Added** Initial release — context-aware Icon wrapper with size tiers, stroke weights, accessibility, animations, state machine
+- **Added** `animate="draw"` — SVG path-draw animation using `pathLength`. Draws check/X strokes progressively (0.35s easeOut). Respects `prefers-reduced-motion`.
+# IconButton
+
+- Import: @devalok/shilp-sutra/ui/icon-button
+- Server-safe: No
+- Category: ui
+
+## Props
+    icon: ReactElement (REQUIRED — use <Icon icon={...} />)
+    aria-label: string (REQUIRED — WCAG AA mandatory)
+    shape: "square" | "circle"
+    size: "sm" | "md" | "lg"
+    variant: same as Button (solid, soft, outline, ghost, link)
+    color: same as Button (accent, error, success, warning, neutral)
+    loading: boolean
+    disabled: boolean
+
+## Defaults
+    shape: "square"
+    size: "md"
+
+## Example
+```jsx
+<IconButton icon={<Icon icon={IconEdit} />} variant="ghost" aria-label="Edit item" />
+<IconButton icon={<Icon icon={IconX} />} shape="circle" variant="ghost" size="sm" aria-label="Close" />
+<IconButton icon={<Icon icon={IconTrash} />} variant="solid" color="error" aria-label="Delete" />
+```
+
+## Composability
+- **Built on Button internally** — inherits ALL Button features: variant, color, loading, onClickAsync, processing, ButtonGroup context consumption, asChild. Use IconButton when your button is icon-only; use Button for label-plus-icon.
+- **aria-label is TypeScript-enforced** — the library makes it impossible to forget. This is the key accessibility constraint for icon-only buttons.
+- **IconProvider cascade:** The `icon` prop expects `<Icon icon={...} />` — Icon auto-sizes based on IconButton's `size` via IconProvider context (no need to pass size to the nested Icon).
+- **Inside ButtonGroup:** Inherits variant/color/size/weight from ButtonGroup context just like Button does. Useful for icon-only toolbars.
+- **IconGroup vs ButtonGroup of IconButtons:** IconGroup is for static icon clusters (not interactive, or for decorative displays). ButtonGroup of IconButtons is for interactive toolbars where each icon is a button.
+
+## Gotchas
+- aria-label is enforced by TypeScript — you MUST provide it
+- Prefer IconButton over Button with size="icon-*" for icon-only buttons
+- `icon` prop should use `<Icon icon={...} />` wrapper (auto-sized via Button's IconProvider)
+
+## Changes
+### v0.29.0
+- **Changed** `icon` prop now expects `<Icon icon={...} />` wrapper (auto-sized via Button's IconProvider context)
+- **Changed** Inherits all new Button v2 colors: `accent`, `error`, `success`, `warning`, `neutral` (was `default`/`error` only)
+- **Changed** Inherits Button v2 variants including new `soft` variant
+
+### v0.1.0
+- **Added** Initial release
+# IconContext
+
+- Import: @devalok/shilp-sutra/ui (barrel export)
+- Server-safe: No
+- Category: ui
+
+## Exports
+    IconContext — React.Context<IconContextValue>
+    IconProvider — Provider component (props: size?, stroke?, children)
+    useIconContext() — Hook returning { size?, stroke? }
+    IconSize — Type: "xs" | "sm" | "md" | "lg" | "xl" | "2xl"
+    IconStroke — Type: "light" | "regular" | "bold"
+
+## IconProvider Props
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl"
+    stroke: "light" | "regular" | "bold"
+    children: ReactNode (REQUIRED)
+
+## Example
+```jsx
+import { IconProvider, useIconContext } from '@devalok/shilp-sutra/ui'
+
+<IconProvider size="sm" stroke="bold">
+  <MyCustomIconComponent />
+</IconProvider>
+
+// Inside MyCustomIconComponent:
+const { size, stroke } = useIconContext()
+```
+
+## Composability
+- **Low-level context primitive** — rarely used directly. Most consumers want IconGroup (which wraps IconProvider + layout) or just nest Icons inside Button/Input/Badge (which provide their own IconProvider).
+- **When to reach for IconProvider manually:** Building a custom container that hosts many Icons (a dashboard tile row, a custom toolbar, a nav rail) and you want consistent icon sizing without repeating props. IconProvider is the escape hatch for that.
+- **Consumer contract:** `useIconContext()` returns `{}` (empty) when no provider is present — your consumer code MUST handle that (fall back to a default size/stroke). Don't assume a provider exists.
+- **Memoization:** The provider memoizes its value, so consumers don't re-render unless size or stroke actually change. Safe to use in tight loops / frequently-re-rendering trees.
+- **Composes down:** IconProvider nests — inner providers override outer ones. A `<Button size="lg"><IconProvider size="xs">...</IconProvider></Button>` overrides the button's icon sizing.
+
+## Gotchas
+- Used internally by IconGroup and Button to propagate icon sizing to children
+- If no provider is present, `useIconContext()` returns `{}` (empty object) — consumers should fall back to defaults
+- Value is memoized — safe for frequent re-renders
+
+## Changes
+### v0.29.0
+- **Added** Initial release — React context for propagating icon size and stroke weight
+# IconGroup
+
+- Import: @devalok/shilp-sutra/ui (barrel export)
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" — propagated to children via IconContext
+    stroke: "light" | "regular" | "bold" — propagated to children via IconContext
+    gap: "tight" | "default" | "loose" — flex gap between icons
+    label: string — accessible label (used as aria-label when role="toolbar")
+    role: "toolbar" — optional, set for toolbar patterns
+    className: string
+    children: ReactNode (REQUIRED)
+
+## Defaults
+    gap: "default"
+    role: undefined (no ARIA role)
+
+## Example
+```jsx
+<IconGroup size="sm" gap="tight" role="toolbar" label="Formatting">
+  <Icon icon={IconBold} label="Bold" />
+  <Icon icon={IconItalic} label="Italic" />
+  <Icon icon={IconUnderline} label="Underline" />
+</IconGroup>
+```
+
+## Composability
+- **IconProvider wrapper + layout** — IconGroup is IconProvider plus a flex container. All child `<Icon>` elements auto-size via the provider. Don't pass size to nested Icons.
+- **IconGroup vs ButtonGroup-of-IconButtons:**
+  - IconGroup = static icon displays (legend rows, feature lists, decorative clusters). Not interactive.
+  - ButtonGroup of IconButtons = interactive toolbar where each icon is a button.
+  - If you want a formatting toolbar (interactive), use ButtonGroup or ToggleGroup, not IconGroup.
+- **Toolbar mode:** Set `role="toolbar"` + provide `label` to give the group a semantic role. Only then does `label` become `aria-label` on the container.
+- **Gap semantics:** tight=2px, default=4px, loose=8px — smaller values than ButtonGroup or Stack because icons are visually dense.
+
+## Gotchas
+- Wraps children in an IconProvider — all child Icons inherit size/stroke from the group
+- `label` is only applied as `aria-label` when `role="toolbar"` is set
+- Gap values: tight=2px, default=4px, loose=8px
+
+## Changes
+### v0.29.0
+- **Added** Initial release — icon grouping with shared context, toolbar ARIA support
+# Input
+
+- Import: @devalok/shilp-sutra/ui/input
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "xs" | "sm" | "md" | "lg"
+    state: InputState
+    startSection: ReactNode (icon or content in the leading slot)
+    endSection: ReactNode (icon or content in the trailing slot)
+    startSectionClickable: boolean (enables pointer events on start section)
+    endSectionClickable: boolean (enables pointer events on end section)
+    startSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
+    endSectionType: 'icon' | 'label' (section display type — auto-inferred from content)
+    wrapperClassName: string (classes for the wrapper div — border, bg, ring)
+    (plus all standard HTML input attributes except native "size")
+
+## Types
+    InputState = 'default' | 'error' | 'warning' | 'success'
+
+## Defaults
+    size: "md"
+
+## Example
+```jsx
+<Input type="email" placeholder="you@example.com" state="error" startSection={<Icon icon={IconMail} />} />
+<Input size="xs" placeholder="Quick search" startSection={<Icon icon={IconSearch} />} />
+<Input startSection="https://" startSectionType="label" placeholder="example.com" />
+<Input endSection=".00" endSectionType="label" startSection={<Icon icon={IconCurrencyDollar} />} placeholder="0" />
+```
+
+## Composability
+- **FormField auto-consumption:** Inside a `<FormField>`, Input auto-inherits `state`, `aria-describedby` (linked to FormHelperText), `aria-invalid` (when state="error"), `aria-required`. Explicit props on Input override context.
+- **IconProvider cascade:** Icons in `startSection` / `endSection` are auto-sized via IconProvider per the input's `size` (xs → sm icon, sm → sm icon, md → md icon, lg → md icon). Don't pass explicit size to nested `<Icon>`.
+- **Container-first architecture (v0.29.0+):** Border, background, focus ring all live on the wrapper div (accessed via `wrapperClassName`). The raw `<input>` inside is transparent. `className` goes to the input element; `wrapperClassName` goes to the wrapper.
+- **Section types:** Strings in startSection/endSection auto-render as `label` (tinted bg + border separator); React elements auto-render as `icon` (fixed-width centered cell). Override via `startSectionType` / `endSectionType`.
+- **Label pairing:** Always pair with `<Label htmlFor="x" />` + `<Input id="x" />` or wrap both in a `<label>` — FormField doesn't auto-wire the visual label to the input.
+
+## Gotchas
+- HTML native "size" attribute is excluded — use CSS width instead
+- state="error" sets aria-invalid automatically
+- Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
+- `className` targets the `<input>` element; use `wrapperClassName` for border/bg/ring overrides
+- Focus ring is on the wrapper container (focus-within), not the input itself
+- Icons in startSection/endSection are auto-sized via IconProvider per input size
+- Sections are `pointer-events-none` by default — set `startSectionClickable`/`endSectionClickable` for interactive sections
+- Section type is auto-inferred: strings default to `'label'` (tinted bg + border), React elements default to `'icon'` (fixed-width centered). Override with `startSectionType`/`endSectionType`.
+
+## Changes
+### v0.38.0
+- **Removed** (BREAKING) deprecated `startIcon` / `endIcon` props. Use `startSection` / `endSection`.
+- **Removed** (BREAKING) deprecated `inputVariants` export. Use `inputWrapperVariants`.
+
+### v0.29.0
+- **Changed** v2 rewrite: container-first architecture with wrapper div holding focus ring
+- **Added** `xs` size (28px height)
+- **Added** `startSection` / `endSection` props replacing `startIcon` / `endIcon` (deprecated but still work)
+- **Added** `startSectionClickable` / `endSectionClickable` props for interactive sections
+- **Added** `wrapperClassName` prop for styling the wrapper div (border, bg, ring)
+- **Changed** Focus ring now on wrapper via `focus-within` (container-level ring, not input-level)
+- **Changed** Icons auto-sized via `IconProvider` context per input size
+- **Deprecated** `startIcon` / `endIcon` — use `startSection` / `endSection`
+- **Added** `startSectionType` / `endSectionType` props — `'icon'` (fixed-width centered cell) or `'label'` (tinted background with border separator). Auto-inferred from content type (strings → label, React elements → icon).
+- **Changed** Sections use flexbox layout for consistent alignment
+- **Deprecated** `inputVariants` export — use `inputWrapperVariants` (semantics changed to target wrapper)
+
+### v0.15.0
+- **Changed** `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
+- **Changed** `md` size font standardized to `text-ds-md` (14px) from mixed values
+
+### v0.12.0
+- **Changed** Softer resting border (`border-border-subtle` instead of `border-border`), subtler focus ring (`ring-1 ring-focus/50` instead of `ring-2 ring-focus`)
+- **Changed** Reverted split `pl-*/pr-*` size variants back to `px-*`; icon padding uses `pl-ds-07`/`pr-ds-07`
+
+### v0.8.0
+- **Fixed** Now consumes FormField context automatically (`aria-describedby`, `aria-invalid`, `aria-required`)
+
+### v0.4.2
+- **Added** `inputVariants` export
+
+### v0.1.0
+- **Added** Initial release
+# InputOTP
+
+- Import: @devalok/shilp-sutra/ui/input-otp
+- Server-safe: No
+- Category: ui
+
+## Props
+### InputOTP
+    maxLength: number (REQUIRED) — total number of slots
+    value: string (controlled value; defaults to empty string)
+    onChange: (value: string) => void
+    onComplete: (value: string) => void — fires when all slots filled
+    pattern: string | RegExp — restrict input (e.g. `REGEXP_ONLY_DIGITS`)
+    state: "default" | "error" (error adds red border; auto-inherits from FormField)
+    size: "sm" | "md" | "lg" (slot dimensions — propagates to InputOTPSlot via context)
+    disabled: boolean
+    containerClassName: string (on the outer group container — separate from inner input's className)
+
+### InputOTPSlot
+    index: number (REQUIRED, 0-based) — which position this slot renders
+
+## Compound Components
+    InputOTP (root — maxLength, value, onChange, size propagated via context)
+      InputOTPGroup (visual group of slots)
+        InputOTPSlot (index: number, REQUIRED — reads size from context)
+      InputOTPSeparator (visual separator, e.g. between two groups of 3)
+
+## Defaults
+    size="md", state="default"
+
+## Example
+```jsx
+<InputOTP maxLength={6} onComplete={verifyCode}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+## Composability
+- Size propagates from InputOTP → InputOTPSlot via `InputOTPSizeContext` — don't set size on individual slots.
+- Inside `<FormField>`: auto-inherits state, aria-describedby, aria-required from context. Explicit `state="error"` overrides.
+- Underlying library is `input-otp` (OTPInput) — all standard library props (pattern, inputMode, autoFocus, etc.) pass through.
+
+## Gotchas
+- Each InputOTPSlot requires an `index` prop (0-based) matching its position
+- `onComplete` only fires when ALL slots are filled — use `onChange` for per-character reactivity
+- `containerClassName` (outer visual group) is distinct from `className` (the hidden input element itself)
+
+## Changes
+### v0.18.0
+- **Added** `InputOTPProps` type export
+
+### v0.1.1
+- **Fixed** `animate-caret-blink` keyframe added to Tailwind preset — caret animation was silently broken
+
+### v0.1.0
+- **Added** Initial release
+# Label
+
+- Import: @devalok/shilp-sutra/ui/label
+- Server-safe: No
+- Category: ui
+
+## Props
+    required: boolean (shows red asterisk)
+    htmlFor: string
+    (plus standard Radix Label props)
+
+## Example
+```jsx
+<Label htmlFor="email" required>Email Address</Label>
+```
+
+## Composability
+- **Label is NOT auto-wired by FormField** — you must explicitly pair `<Label htmlFor="x" />` with the matching `<Input id="x" />` (or Checkbox/Radio/Switch/Select). Screen-reader label association depends on this.
+- Radix Label primitive underneath — clicking the Label focuses its associated control, which is why the `htmlFor`/`id` pairing matters.
+- `required={true}` only renders the red asterisk; it does NOT set `aria-required` on the associated control (that comes from FormField context on the control itself).
+- Works with any input-like component in the library — pair with Input, Textarea, NumberInput, Checkbox, Radio, Switch, Select, Combobox, Autocomplete.
+
+## Gotchas
+- Use with FormField for automatic aria wiring on the control (but the Label-to-control association is always manual)
+
+## Changes
+### v0.2.0
+- **Fixed** Children rendering verified and covered by tests — issue was caused by `@primitives` type leak, not a runtime bug
+
+### v0.1.0
+- **Added** Initial release
+# Link
+
+- Import: @devalok/shilp-sutra/ui/link
+- Server-safe: No
+- Category: ui
+
+## Props
+    inline: boolean (default: true — "inline" or "block" display)
+    asChild: boolean (merge with child element, e.g. Next.js Link)
+    (plus standard anchor attributes)
+
+## Defaults
+    inline: true
+
+## Example
+```jsx
+<Link href="/docs">Documentation</Link>
+<Link asChild><NextLink href="/about">About</NextLink></Link>
+```
+
+## Composability
+- **Framework router integration via `asChild`:** `<Link asChild><NextLink href="/foo">...</NextLink></Link>` — Link's styling transfers to the child (NextLink/react-router Link/any `<a>`-like component) while preserving the child's navigation semantics. Don't use `asChild` for plain anchors — it's unnecessary and adds a layer.
+- **inline vs block:** Default `inline` (display: inline) so Link composes naturally inside paragraphs and mixed text. Set `inline={false}` for full-width link regions (card wrappers, list items).
+- No context, no cascade. Safe to use anywhere.
+- For icon + text links, nest Icon inside — Link doesn't auto-size via IconProvider (unlike Button), so pass an explicit `size` to the Icon.
+
+## Gotchas
+- Use asChild with framework-specific Link components (e.g. Next.js Link)
+- Don't nest interactive elements (buttons, form controls) inside a Link — that's invalid HTML and breaks screen-reader navigation
+
+## Changes
+### v0.18.0
+- **Fixed** Color tokens — `text-info-9` changed to `text-accent-11` (links are interactive = accent scale)
+
+### v0.1.0
+- **Added** Initial release
+# Menubar
+
+- Import: @devalok/shilp-sutra/ui/menubar
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    Menubar (root)
+      MenubarMenu
+        MenubarTrigger
+        MenubarContent
+          MenubarItem (+ MenubarShortcut)
+          MenubarCheckboxItem
+          MenubarRadioGroup > MenubarRadioItem
+          MenubarLabel
+          MenubarSeparator
+          MenubarSub > MenubarSubTrigger, MenubarSubContent
+
+## Example
+```jsx
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>File</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>New<MenubarShortcut>Ctrl+N</MenubarShortcut></MenubarItem>
+      <MenubarSeparator />
+      <MenubarItem>Exit</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+```
+
+## Composability
+- Radix Menubar — shares the item-variant vocabulary with DropdownMenu and ContextMenu (checkbox items, radio groups, sub-menus, labels, separators, shortcuts).
+- **Key difference from DropdownMenu:** Menubar is the horizontal top-bar-menu pattern (File / Edit / View / Help). Multiple MenubarMenu children sit side-by-side at the root; opening one closes the others, and arrow keys move between them.
+- **Typical use:** Desktop app-like UIs where the menu is always visible at the top (code editors, design tools). For a single collapsed trigger, use DropdownMenu instead.
+- **Controlled open:** Pass `value` + `onValueChange` to Menubar root to control which MenubarMenu is open (value = menu's `value` prop or falsy for none).
+- **Portal + z-index:** z-popover (1400).
+
+## Gotchas
+- Follows the standard Radix Menubar compound pattern
+- Don't use Menubar for a single dropdown — use DropdownMenu instead
+- MenubarShortcut is decorative (same as DropdownMenuShortcut) — bind shortcuts separately
+
+## Changes
+### v0.18.0
+- **Added** `MenubarContentProps`, `MenubarItemProps` type exports
+
+### v0.14.0
+- **Changed** z-index promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes content rendering behind Sheet/Dialog overlays
+
+### v0.1.0
+- **Added** Initial release
+# NavigationMenu
+
+- Import: @devalok/shilp-sutra/ui/navigation-menu
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    NavigationMenu (root)
+      NavigationMenuList
+        NavigationMenuItem
+          NavigationMenuTrigger (for items with content panels)
+          NavigationMenuContent (dropdown panel)
+          NavigationMenuLink (for direct links)
+      NavigationMenuIndicator
+      NavigationMenuViewport
+
+## Example
+```jsx
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul>...</ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/about">About</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+## Composability
+- **Radix NavigationMenu** underneath — keyboard model (Tab between items, Arrow for panel navigation, Esc to close) is pre-wired.
+- **NavigationMenuLink vs NavigationMenuTrigger:** Use Link for simple nav items (no dropdown); use Trigger + Content for items with a panel of sub-links.
+- **NavigationMenuViewport** is the animated container that holds the active Content panel — it auto-positions below the triggers. NavigationMenuIndicator is the small arrow/caret pointing from trigger to viewport.
+- **Purpose:** Top-level site navigation (Products, Solutions, Resources) with rich dropdowns containing links grouped by category. Don't use for context menus (use DropdownMenu) or action toolbars (use ButtonGroup).
+- **Router integration:** Use `<NavigationMenuLink asChild><NextLink href="/...">...</NextLink></NavigationMenuLink>` for framework-specific Link components.
+- **Portal + z-popover (1400)** — content panels portal to body and stack above Dialog/Sheet.
+
+## Gotchas
+- Uses Framer Motion for enter/exit animations (v0.18.0)
+- NavigationMenu is NOT for sidebar nav — use Sidebar; NOT for mobile nav — use Sheet or BottomNavbar
+
+## Changes
+### v0.18.0
+- **Changed** Migrated to Framer Motion for enter/exit animations
+- **Added** `NavigationMenuProps`, `NavigationMenuContentProps` type exports
+
+### v0.1.1
+- **Fixed** Token compliance — icon sizes replaced with `h-ico-sm w-ico-sm`
+
+### v0.1.0
+- **Added** Initial release
+# NumberInput
+
+- Import: @devalok/shilp-sutra/ui/number-input
+- Server-safe: No
+- Category: ui
+
+## Props
+    value: number (default: 0)
+    onValueChange: (value: number) => void
+    size: "xs" | "sm" | "md" | "lg"
+    state: "default" | "error" | "warning" | "success" (border color)
+    min: number
+    max: number
+    step: number (default: 1)
+    disabled: boolean
+
+## Defaults
+    value: 0
+    size: "md"
+    state: "default"
+    step: 1
+    min: Number.MIN_SAFE_INTEGER
+    max: Number.MAX_SAFE_INTEGER
+
+## Example
+```jsx
+<NumberInput value={qty} onValueChange={setQty} min={1} max={99} />
+```
+
+## Composability
+- **FormField auto-consumption:** Inside `<FormField>`, inherits `aria-describedby`, `aria-invalid`, `aria-required`. `state` from FormField context drives the border color unless overridden.
+- **IconProvider cascade:** The `+` and `−` stepper icons auto-size via IconProvider per the input size (xs/sm/md/lg → xs/sm/sm/md icons).
+- **Controlled only** (design choice): no `defaultValue` — pair `value` + `onValueChange` every time. The min/max bounds disable the stepper buttons automatically when reached.
+- **Label pairing:** Manual via `<Label htmlFor="x" />` + `<NumberInput id="x" />`.
+
+## Gotchas
+- Controlled only — buttons won't work without onValueChange
+
+## Changes
+### v0.18.0
+- **Fixed** Replaced `parseInt` with `Number()`, handle empty input
+
+### v0.15.0
+- **Changed** `md` size font standardized to `text-ds-md` (14px)
+
+### v0.8.0
+- **Fixed** FormField context consumption, `aria-label` fallback, `parseInt` radix parameter
+
+### v0.3.0
+- **Changed** (BREAKING) `onChange` renamed to `onValueChange`
+- **Changed** Now extends HTMLAttributes — accepts all standard HTML props
+
+### v0.1.0
+- **Added** Initial release
+# Pagination
+
+- Import: @devalok/shilp-sutra/ui/pagination
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    PaginationRoot (nav)
+      PaginationContent (ul)
+        PaginationItem (li)
+          PaginationLink (isActive: boolean, asChild: boolean)
+          PaginationPrevious
+          PaginationNext
+          PaginationEllipsis
+    PaginationNav (convenience wrapper)
+
+## Utility
+    generatePagination(current: number, total: number, siblingCount: number) => (number | 'ellipsis')[]
+
+## Example
+```jsx
+<PaginationRoot>
+  <PaginationContent>
+    <PaginationItem><PaginationPrevious onClick={() => setPage(p - 1)} /></PaginationItem>
+    {generatePagination(page, totalPages, 1).map((item, i) =>
+      item === 'ellipsis'
+        ? <PaginationItem key={i}><PaginationEllipsis /></PaginationItem>
+        : <PaginationItem key={i}>
+            <PaginationLink isActive={item === page} onClick={() => setPage(item)}>
+              {item}
+            </PaginationLink>
+          </PaginationItem>
+    )}
+    <PaginationItem><PaginationNext onClick={() => setPage(p + 1)} /></PaginationItem>
+  </PaginationContent>
+</PaginationRoot>
+```
+
+## Composability
+- **Two APIs in one component:**
+  - Low-level compound (PaginationRoot + Content + Item + Link + Previous/Next/Ellipsis) — full control over rendering
+  - High-level `PaginationNav` — pass `totalPages` + `currentPage` + `onPageChange` and it renders the whole thing using `generatePagination`
+- **Use PaginationNav for 95% of cases.** Reach for the compound API when you need custom page-button rendering (e.g. pagination with input "jump to page" or custom ellipsis handling).
+- **generatePagination** utility — pass `current`, `total`, `siblingCount` to get the `[1, ..., 5, 6, 7, ..., 20]` structure. Use it standalone if rendering pagination elsewhere (e.g. in a DataTable's footer).
+- **Router integration:** Each PaginationLink accepts `asChild` — wrap with NextLink/react-router Link for URL-based pagination.
+- **DataTable already has built-in pagination** — don't add Pagination separately; use DataTable's `pagination` prop.
+
+## Gotchas
+- Root component is PaginationRoot (NOT Pagination)
+- PaginationNav is the convenience wrapper — prefer it unless you need custom rendering
+
+## Changes
+### v0.1.1
+- **Fixed** Pagination link padding uses `ds-*` tokens instead of Tailwind arbitrary values
+
+### v0.1.0
+- **Added** Initial release
+- **Added** PaginationNav compound wrapper with `generatePagination` helper
+# Popover
+
+- Import: @devalok/shilp-sutra/ui/popover
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    Popover (root)
+      PopoverTrigger
+      PopoverContent
+      PopoverAnchor (optional anchor point)
+
+## Example
+```jsx
+<Popover>
+  <PopoverTrigger asChild><Button>Open</Button></PopoverTrigger>
+  <PopoverContent>Content here</PopoverContent>
+</Popover>
+```
+
+## Composability
+- Built on Radix Popover — accepts `open`, `onOpenChange`, `defaultOpen`, `modal`.
+- **Trigger:** `<PopoverTrigger asChild>` wraps any focusable element.
+- **PopoverAnchor:** Optional — decouples the visual anchor from the interactive trigger. Useful when the trigger is small (e.g. an icon button) but you want the popover to position relative to a larger surrounding element.
+- **Positioning:** PopoverContent accepts `side` (top / right / bottom / left), `align` (start / center / end), `sideOffset`, and `collisionPadding` — all forwarded to Floating UI via Radix.
+- **Portal rendering:** Content portals to body; z-index is `z-popover` (1400) — above Dialog (`z-dialog`) so nested popovers-in-dialogs work correctly.
+- **Not for tooltips** — use Tooltip for transient hover-label content; Popover is for interactive content (forms, menus, pickers).
+
+## Gotchas
+- Uses Framer Motion for enter/exit animations (v0.18.0)
+- If content needs to be modal (backdrop, focus trap), pass `modal={true}` to the root Popover
+
+## Changes
+### v0.18.0
+- **Changed** Migrated to Framer Motion for enter/exit animations
+- **Added** `PopoverContentProps` type export
+
+### v0.1.0
+- **Added** Initial release
+# Progress
+
+- Import: @devalok/shilp-sutra/ui/progress
+- Server-safe: No
+- Category: ui
+
+## Props
+    value: number (0-100) — omit for indeterminate
+    size: "sm" | "md" | "lg" (track height)
+    color: "default" | "success" | "warning" | "error" (indicator color)
+    autoColor: boolean (auto-shifts color by value: 0-59=default, 60-84=warning, 85-100=success, >100=error)
+    showLabel: boolean (shows percentage text)
+    indicatorClassName: string
+
+## Defaults
+    size: "md"
+    color: "default"
+
+## Example
+```jsx
+<Progress value={75} color="success" showLabel />
+<Progress size="sm" />  {/* indeterminate */}
+```
+
+## Composability
+- **Radix Progress** underneath — `value` (determinate) or absent (indeterminate). Standard ARIA: role=progressbar, aria-valuenow/min/max.
+- **autoColor semantic signal:** Maps value thresholds to color so consumers don't have to manually compute: 0–59=default, 60–84=warning, 85–100=success, >100=error. Useful for storage meters, budget trackers, goal progress.
+- **Indeterminate:** Omit `value` to get a continuous animated indeterminate bar. Use for unknown-duration loads.
+- **Progress vs ProgressRing:** Progress is a linear bar (horizontal). ProgressRing is circular. ProgressRing offers multi-ring stacked variants; Progress doesn't.
+- **Inside Card/StatCard:** StatCard has a `progress` prop that renders a thin inline version — use that inside StatCards instead of a separate Progress.
+
+## Gotchas
+- Omit value (or pass undefined) for indeterminate animation
+- `autoColor` overrides `color` when `value` is set — do not pass both unless you want autoColor to win
+
+## Changes
+### v0.29.0
+- **Added** `autoColor` prop — automatically shifts indicator color based on value thresholds (0-59 default, 60-84 warning, 85-100 success, >100 error)
+
+### v0.1.0
+- **Added** Initial release with `size`, `color`, `indeterminate` variants and optional label slot
+# ProgressRing
+
+- Import: @devalok/shilp-sutra/ui/progress-ring
+- Server-safe: No
+- Category: ui
+
+## Props
+
+### ProgressRing
+    value: number (current progress value)
+    max: number (maximum value)
+    size: "sm" | "md" | "lg"
+    color: "default" | "success" | "warning" | "error" | "info"
+    showValue: boolean (show percentage text in center)
+    label: string (accessible label — falls back to "{n}% progress")
+
+### MultiProgressRing
+    rings: Array<{ value: number; max?: number; color?: "default" | "success" | "warning" | "error" | "info"; label?: string }>
+    size: "sm" | "md" | "lg"
+
+## Defaults
+    max={100}, size="md", color="default", showValue={false}
+
+## Example
+```jsx
+<ProgressRing value={75} />
+<ProgressRing value={3} max={12} size="lg" color="warning" showValue />
+
+<MultiProgressRing
+  rings={[
+    { value: 80, color: 'error', label: 'Move' },
+    { value: 60, color: 'success', label: 'Exercise' },
+  ]}
+  size="lg"
+/>
+```
+
+## Composability
+- **SVG-based circular progress** — pure SVG, no chart library dependency.
+- **MultiProgressRing** — concentric rings for multi-metric visualization (Apple Activity style: Move + Exercise + Stand). Don't stack more than 4-5 rings at a size; the innermost rings become too thin. Size auto-allocates ring stroke; pass `size="lg"` for more room.
+- **ProgressRing vs Progress:** Use ProgressRing for dashboard tiles, at-a-glance status, multi-metric visualizations. Use Progress for linear "percentage filled" UIs.
+- **`showValue={true}`** renders the percentage in the center (ProgressRing only). For MultiProgressRing, use external labels since center would conflict with multiple values.
+- **Label for a11y:** `label` falls back to `"{n}% progress"` so screen readers always get meaningful context.
+
+## Gotchas
+- Uses Framer Motion for the animated fill — not server-safe
+- Value is clamped to `[0, max]` internally
+- MultiProgressRing skips rings whose computed radius would be <= 0 (too many rings for the size)
+# RadioGroup
+
+- Import: @devalok/shilp-sutra/ui/radio
+- Server-safe: No
+- Category: ui
+
+## Props
+### RadioGroup
+    value: string (controlled)
+    onValueChange: (value: string) => void
+    defaultValue: string
+    disabled: boolean (propagates to all items)
+    orientation: "horizontal" | "vertical"
+    name: string (form name for all items)
+
+### RadioGroupItem
+    value: string (REQUIRED — what's selected when this item is checked)
+    size: "sm" | "md" | "lg"
+    disabled: boolean (item-level override)
+
+## Compound Components
+    RadioGroup (root — value, onValueChange, defaultValue, disabled propagated)
+      RadioGroupItem (value REQUIRED, size/disabled individually overridable)
+
+## Defaults
+    RadioGroupItem size="md"
+
+## Example
+```jsx
+<RadioGroup defaultValue="option-1" onValueChange={setValue}>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem value="option-1" id="r1" />
+    <Label htmlFor="r1">Option 1</Label>
+  </div>
+  <div className="flex items-center gap-2">
+    <RadioGroupItem value="option-2" id="r2" />
+    <Label htmlFor="r2">Option 2</Label>
+  </div>
+</RadioGroup>
+```
+
+## Composability
+- Radix RadioGroup — keyboard navigation (arrow keys to move between items, space to select) is pre-wired.
+- **RadioGroup propagates** `disabled` to every RadioGroupItem; items can opt back in with `disabled={false}` for granular control (rare).
+- **Labels:** RadioGroupItem has no intrinsic label — pair each with `<Label htmlFor="x" />` + `<RadioGroupItem id="x" value="..." />`. Screen readers announce the group label (from FormField or aria-labelledby on RadioGroup) plus each item's label.
+- **Form libraries:** RadioGroup works with react-hook-form via Controller (onValueChange maps to field.onChange). The `name` prop puts a hidden form input per item for native form serialization.
+- **FormField integration:** RadioGroup does NOT auto-consume FormField error state. For error visuals, style the RadioGroup surround (e.g. via aria-invalid on a wrapping fieldset) — individual radios don't show red borders the way Inputs do.
+
+## Gotchas
+- Each RadioGroupItem needs a unique `value` prop
+- Pair each item with a Label for accessibility
+- RadioGroup does NOT auto-inherit FormField error state — handle error styling at the group level
+
+## Changes
+### v0.4.2
+- **Added** `RadioGroupProps`, `RadioGroupItemProps` type exports
+
+### v0.1.0
+- **Added** Initial release
+# SearchInput
+
+- Import: @devalok/shilp-sutra/ui/search-input
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "sm" | "md" | "lg"
+    loading: boolean (shows spinner instead of clear button)
+    onClear: () => void (shows X button when value is non-empty)
+    value: string
+    onChange: ChangeEventHandler
+    (plus standard input attributes except native "size")
+
+## Defaults
+    size: "md"
+
+## Example
+```jsx
+<SearchInput
+  value={query}
+  onChange={(e) => setQuery(e.target.value)}
+  onClear={() => setQuery('')}
+  placeholder="Search tasks..."
+  loading={isSearching}
+/>
+```
+
+## Composability
+- Purpose-built variant of Input for search — renders the leading search icon and a contextual clear/loading trailing slot. For anything more custom, use Input with explicit `startSection` / `endSection`.
+- **`onClear` makes the X button appear** only when `value` is non-empty. Pair them so users can reset.
+- **`loading={true}` swaps the clear button for a spinner** with `aria-busy="true"` on the input — useful for debounced/async search.
+- Doesn't auto-consume FormField (no `state` prop) — wrap a regular Input inside FormField for validated search fields.
+- Keyboard: Escape auto-triggers `onClear` when wired (handled via `type="search"`'s native behavior on most browsers).
+
+## Gotchas
+- HTML native "size" attribute is excluded — use CSS width instead
+- Clear button only appears when both `onClear` is provided AND `value` is non-empty
+
+## Changes
+### v0.15.0
+- **Changed** `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
+
+### v0.2.0
+- **Changed** `inputSize` prop renamed to `size` to match Input API
+
+### v0.1.1
+- **Fixed** Token compliance — replaced `pl-10 pr-9` and icon offsets with explicit arbitrary values
+
+### v0.1.0
+- **Added** Initial release
+# SegmentedControl
+
+- Import: @devalok/shilp-sutra/ui/segmented-control
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "sm" | "md" | "lg"
+    variant: "default" | "solid"
+    options: SegmentedControlOption[] (REQUIRED)
+    selectedId: string (REQUIRED)
+    onSelect: (id: string) => void (REQUIRED)
+    disabled: boolean
+
+## Types
+    SegmentedControlOption = { id: string, text: string, icon?: ComponentType<{ className?: string }> }
+    SegmentedControlSize = 'sm' | 'md' | 'lg'
+    SegmentedControlVariant = 'default' | 'solid'
+
+## Defaults
+    size: "md"
+    variant: "default"
+
+## Example
+```jsx
+<SegmentedControl
+  size="md"
+  variant="default"
+  options={[
+    { id: 'list', text: 'List' },
+    { id: 'grid', text: 'Grid' },
+  ]}
+  selectedId={viewMode}
+  onSelect={setViewMode}
+/>
+```
+
+## Composability
+- **Data-driven, not compound** — unlike Tabs/ToggleGroup, SegmentedControl takes an `options` array rather than children. This makes it easier to render from a list but harder to customize per-option styling; use Tabs if you need compound children.
+- **When to use vs Tabs:** SegmentedControl is for mutually-exclusive VIEW-MODE toggles (List/Grid/Kanban) — short labels, no associated content panel. Tabs is for content switching where each tab has a corresponding TabsContent. Both render `role="tablist"`.
+- **Option icons** auto-size based on the `size` prop — don't set explicit icon sizes.
+- Fully controlled — there's no `defaultSelectedId`. Manage state in parent.
+- Built from scratch (no Radix primitive) — standard HTML buttons with `aria-selected` and roving tabindex.
+
+## Gotchas
+- Controlled only — selectedId + onSelect are required
+- Uses data-driven API (options prop), not compound children
+- Use Tabs (not SegmentedControl) when you need associated content panels per option
+
+## Changes
+### v0.38.0
+- **Removed** (BREAKING) deprecated `variant="accent"` alias. Use `variant="solid"`.
+
+### v0.18.0
+- **Fixed** `bg-interactive` changed to `bg-accent-9`, `bg-field` changed to `bg-surface-3` (OKLCH migration)
+
+### v0.4.2
+- **Changed** (BREAKING) `color` prop renamed to `variant`
+
+### v0.1.1
+- **Fixed** `tabIndex={0}` changed to `tabIndex={-1}` on tablist wrapper — fixes double-focus keyboard navigation bug
+- **Fixed** Removed `!important` override — resolved specificity by restructuring base CVA classes
+
+### v0.1.0
+- **Added** Initial release
+# Select
+
+- Import: @devalok/shilp-sutra/ui/select
+- Server-safe: No
+- Category: ui
+
+## Props
+### SelectTrigger
+    variant: "default" | "outline" | "ghost"
+    color: "default" | "error" | "success" | "warning" (sets aria-invalid when error)
+    size: "xs" | "sm" | "md" | "lg"
+
+## Compound Components
+    Select (root — value, onValueChange, defaultValue)
+      SelectTrigger (variant/color/size go HERE, not on Select root)
+        SelectValue (placeholder)
+      SelectContent
+        SelectGroup (optional grouping)
+          SelectLabel (group header)
+          SelectItem (value: string, REQUIRED)
+        SelectSeparator
+
+## Defaults
+    SelectTrigger variant="default", color="default", size="md"
+
+## Example
+```jsx
+<Select onValueChange={setValue}>
+  <SelectTrigger size="lg">
+    <SelectValue placeholder="Choose..." />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="a">Option A</SelectItem>
+    <SelectItem value="b">Option B</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+## Composability
+- **Radix Select** underneath — `value`/`onValueChange`/`defaultValue`/`open`/`onOpenChange` standard state.
+- **Styling props live on SelectTrigger, not Select root.** The Select root owns value/state; the Trigger owns appearance (variant/color/size). Setting `<Select size="lg">` silently does nothing — TypeScript won't catch it.
+- **SelectItem requires `value`** — unique within the Select. Labels are the children of SelectItem.
+- **SelectGroup + SelectLabel:** Organize options into sections with a non-interactive section heading.
+- **FormField integration:** Set `color="error"` on SelectTrigger for error visuals. Not auto-consumed from FormField (same as Checkbox/Radio — form-library convention for select controls).
+- **Portal + z-popover (1400):** content portals to body, stacks above Dialog/Sheet/other overlays.
+- **Select vs Combobox vs Autocomplete:** Select = short fixed list, click-to-open, no typeahead. Combobox = searchable, forced selection. Autocomplete = searchable, free text. Pick by list size and search need.
+
+## Gotchas
+- Size goes on SelectTrigger, NOT on Select root
+- `<Select size="lg">` is silently ignored (no TypeScript error)
+
+## Changes
+### v0.31.0
+- **Added** `variant` prop on SelectTrigger: `default | outline | ghost`
+- **Added** `color` prop on SelectTrigger: `default | error | success | warning`. Sets `aria-invalid` when error.
+
+### v0.15.0
+- **Changed** `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
+
+### v0.14.0
+- **Changed** z-index promoted from `z-dropdown` (1000) to `z-popover` (1400) — fixes content rendering behind Sheet/Dialog overlays
+
+### v0.1.0
+- **Added** Initial release
+# Separator
+
+- Import: @devalok/shilp-sutra/ui/separator
+- Server-safe: No
+- Category: ui
+
+## Props
+    orientation: "horizontal" | "vertical"
+    decorative: boolean
+
+## Defaults
+    orientation: "horizontal"
+    decorative: true
+
+## Example
+```jsx
+<Separator />
+<Separator orientation="vertical" className="h-6" />
+```
+
+## Composability
+- Radix Separator — no context, no cascade. Drop it anywhere; it inherits its stretch dimension from its parent container (full width for horizontal, full height for vertical — but vertical needs an explicit height from the parent flexbox).
+- `decorative={true}` (default) sets `role="none"` — screen readers skip it. Set `decorative={false}` for semantic separators (e.g. between navigation sections) so screen readers announce the boundary.
+- Gradient variants compose cleanly with any surface color — they use `bg-transparent` + inline linear-gradient, so the underlying `bg-*` of the parent shows through.
+- Common inside Menu/DropdownMenu/Sheet components; their internal *Separator subcomponents already wrap this one.
+
+## Gotchas
+- When decorative is true, the separator is hidden from screen readers
+- Vertical separator needs an explicit height from the parent flex container (`h-6`, `h-full`, etc.)
+
+## Changes
+### v0.22.0
+- **Added** `variant` prop: `"gradient"` (fades both edges), `"gradient-left"` (fades left), `"gradient-right"` (fades right). Default behavior unchanged.
+
+### v0.4.2
+- **Added** `SeparatorProps` type export
+
+### v0.1.0
+- **Added** Initial release
+# Sheet
+
+- Import: @devalok/shilp-sutra/ui/sheet
+- Server-safe: No
+- Category: ui
+
+## Props
+### SheetContent
+    side: "top" | "bottom" | "left" | "right"
+
+## Compound Components
+    Sheet (root)
+      SheetTrigger
+      SheetContent (side prop)
+        SheetHeader
+          SheetTitle
+          SheetDescription
+        [body content]
+        SheetFooter
+      SheetClose
+
+## Example
+```jsx
+<Sheet>
+  <SheetTrigger asChild><Button>Open</Button></SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Settings</SheetTitle>
+    </SheetHeader>
+    <div>Content</div>
+  </SheetContent>
+</Sheet>
+```
+
+## Defaults
+    side="right"
+
+## Composability
+- Same primitives as Dialog — open/onOpenChange/defaultOpen, trigger asChild, portal rendering, focus trap.
+- `side` controls both the enter-from edge and the layout: top/bottom sides full-width, left/right sides ~75% of viewport (capped at sm breakpoint).
+- Use Sheet for side-anchored drawers (settings panels, mobile navigation); use Dialog for centered modals.
+- On mobile (`isMobile` from use-mobile), consider Sheet as the mobile-friendly equivalent of a Dialog/Popover — more thumb-reachable on tall screens.
+
+## Gotchas
+- Uses Framer Motion for slide enter/exit animations (v0.18.0)
+- SheetTitle is required for accessibility (same rule as Dialog)
+
+## Changes
+### v0.18.0
+- **Changed** Migrated to Framer Motion for enter/exit animations
+- **Added** `SheetContentProps` type export
+
+### v0.3.0
+- **Fixed** SheetHeader/Footer now support ref forwarding
+
+### v0.1.0
+- **Added** Initial release
+# Sidebar
+
+- Import: @devalok/shilp-sutra/ui/sidebar
+- Server-safe: No
+- Category: ui
+
+## Props
+### SidebarMenuButton
+    variant: "default" | "outline"
+    size: "sm" | "md" | "lg"
+    isActive: boolean (highlights as current nav item)
+    tooltip: ReactNode | string (shown when sidebar is collapsed)
+    asChild: boolean (render as Slot — common with next/link)
+
+## Compound Components
+    SidebarProvider (context provider — must wrap everything)
+      Sidebar (root panel)
+        SidebarHeader
+        SidebarContent
+          SidebarGroup
+            SidebarGroupLabel
+            SidebarGroupAction
+            SidebarGroupContent
+              SidebarMenu
+                SidebarMenuItem
+                  SidebarMenuButton (tooltip, isActive)
+                  SidebarMenuAction
+                  SidebarMenuBadge
+                  SidebarMenuSub
+                    SidebarMenuSubItem
+                      SidebarMenuSubButton (isActive)
+        SidebarFooter
+        SidebarSeparator
+        SidebarRail
+      SidebarInset (main content area)
+      SidebarTrigger (hamburger button)
+      SidebarInput (search input in sidebar)
+      SidebarMenuSkeleton (loading placeholder)
+
+## Hook
+    useSidebar() => { state, open, setOpen, openMobile, setOpenMobile, isMobile, toggleSidebar }
+
+## Defaults
+    SidebarMenuButton variant="default", size="md"
+
+## Example
+```jsx
+<SidebarProvider>
+  <Sidebar>
+    <SidebarHeader>Logo</SidebarHeader>
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton isActive>
+                <IconHome /> Dashboard
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </SidebarContent>
+  </Sidebar>
+  <SidebarInset>
+    <SidebarTrigger />
+    <main>Page content</main>
+  </SidebarInset>
+</SidebarProvider>
+```
+
+## Composability
+The whole Sidebar ecosystem is driven by `SidebarContext` — the Provider owns the expand/collapse state and every descendant reads from it.
+
+**Who reads the context:**
+- `Sidebar` — applies collapsed / expanded / off-canvas styles based on `state`
+- `SidebarTrigger` — calls `toggleSidebar()` on click; reflects aria-expanded
+- `SidebarMenuButton` — uses `state === 'collapsed'` to show its `tooltip` (hidden label appears only when sidebar is icon-width)
+- `SidebarInset` — main content area adjusts its left offset based on sidebar width + state
+- `SidebarRail` — invisible hit target on the outer edge for click-to-toggle
+- Any user component that calls `useSidebar()` — full access to open/isMobile/toggle
+
+**Desktop vs mobile:** Context tracks `isMobile` via the `use-mobile` hook and branches behavior: on desktop the sidebar collapses to an icon rail; on mobile it becomes an off-canvas drawer controlled by `openMobile`.
+
+**Controlled or uncontrolled:** `SidebarProvider` accepts `open` + `onOpenChange` (controlled) or `defaultOpen` (uncontrolled). State is synced to a cookie for cross-route persistence.
+
+**Next.js / router integration:** `SidebarMenuButton` with `asChild` wraps any link element (`next/link`, `react-router Link`, plain `<a>`) — it transfers its styling + isActive state to the child while preserving the link's navigation semantics.
+
+## Gotchas
+- SidebarProvider MUST wrap both Sidebar and SidebarInset
+- Use SidebarMenuButton for nav items (supports tooltip in collapsed state)
+- `tooltip` is only visible when sidebar is collapsed — providing one doesn't duplicate the visible label
+- Cookie-based state persistence means the sidebar defaults to its prior state on page reload — use `defaultOpen` to override if needed
+
+## Changes
+### v0.18.0
+- **Fixed** `bg-interactive-subtle` changed to `bg-accent-2` (OKLCH migration)
+- **Added** `SidebarProps` type export
+
+### v0.1.0
+- **Added** Initial release
+# Skeleton
+
+- Import: @devalok/shilp-sutra/ui/skeleton
+- Server-safe: Yes
+- Category: ui
+
+## Props
+### Skeleton (base)
+    variant: "rectangle" | "circle" | "text"
+    animation: "pulse" | "shimmer" | "none"
+
+### SkeletonAvatar
+    size: "sm" | "md" | "lg" | "xl"
+    animation: "pulse" | "shimmer" | "none"
+
+### SkeletonText
+    lines: number (default: 3)
+    lastLineWidth: "full" | "three-quarter" | "half" (default: "three-quarter")
+    spacing: "sm" | "md" (default: "md")
+    animation: "pulse" | "shimmer" | "none"
+
+### SkeletonButton
+    size: "sm" | "md" | "lg"
+    width: "auto" | "full" | "icon"
+    animation: "pulse" | "shimmer" | "none"
+
+### SkeletonInput
+    size: "sm" | "md" | "lg"
+    animation: "pulse" | "shimmer" | "none"
+
+### SkeletonChart
+    bars: number (default: 7)
+    height: string (default: "h-40")
+    animation: "pulse" | "shimmer" | "none"
+
+### SkeletonImage
+    width: string (default: "w-full")
+    height: string (default: "h-40")
+    animation: "pulse" | "shimmer" | "none"
+
+### SkeletonGroup
+    label: string (default: "Loading") — accessible label for the loading state
+
+## Defaults
+    Skeleton: variant="rectangle", animation="pulse"
+    SkeletonAvatar: size="md", animation="pulse"
+    SkeletonText: lines=3, lastLineWidth="three-quarter", spacing="md", animation="pulse"
+    SkeletonButton: size="md", width="auto", animation="pulse"
+    SkeletonInput: size="md", animation="pulse"
+    SkeletonChart: bars=7, height="h-40", animation="pulse"
+    SkeletonImage: width="w-full", height="h-40", animation="pulse"
+    SkeletonGroup: label="Loading"
+
+## Example
+```jsx
+<Skeleton variant="text" className="w-3/4" />
+<Skeleton variant="circle" className="h-12 w-12" />
+<Skeleton variant="rectangle" animation="shimmer" className="h-48 w-full" />
+
+<SkeletonGroup label="Loading user profile">
+  <SkeletonAvatar size="lg" />
+  <SkeletonText lines={2} />
+  <SkeletonButton />
+</SkeletonGroup>
+
+<SkeletonChart bars={5} height="h-32" />
+<SkeletonImage height="h-64" />
+```
+
+## Composability
+- Server-safe — can render in RSC trees during server-side loading states.
+- **Pattern:** One SkeletonGroup per load region (wraps with `role="status"` + `aria-busy="true"` + announces the `label`). Inside, compose the individual shape skeletons (Avatar, Text, Button, Chart, Image) to mirror the structure that will appear when loaded.
+- Use LoadingSkeleton (composed) instead for pre-built layouts — CardSkeleton, TableSkeleton, ListSkeleton, BoardSkeleton — or PageSkeletons for full-page placeholders.
+- `animation="none"` disables animation entirely — useful when placed inside components that already have their own load animation.
+- No context cascade — each skeleton is independent. If you want to drive multiple skeletons from one "reduced motion" setting, either set `animation="none"` on each or rely on the `useReducedMotion` hook (shimmer already respects it automatically).
+
+## Gotchas
+- shimmer respects prefers-reduced-motion
+- SkeletonGroup adds role="status" and aria-busy="true" — wrap multiple skeletons for a11y
+- All sub-components accept className for custom sizing
+
+## Changes
+### v0.1.0
+- **Added** Initial release with `shape` variants (text, circular, rectangular) and shimmer animation
+# Slider
+
+- Import: @devalok/shilp-sutra/ui/slider
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "sm" | "md" | "lg" (track height and thumb dimensions)
+    color: "accent" | "success" | "warning" | "error" (thumb border + focus ring color)
+    (plus standard Radix Slider props: value, onValueChange, defaultValue, min, max, step, aria-label)
+
+## Defaults
+    size="md", color="accent"
+
+## Example
+```jsx
+<Slider defaultValue={[50]} max={100} step={1} aria-label="Volume" />
+<Slider defaultValue={[25, 75]} max={100} step={1} /> {/* range slider */}
+```
+
+## Composability
+- Radix Slider primitive — keyboard navigation (arrow keys, Home/End, PageUp/PageDown) pre-wired.
+- **Value is always an array** — single-thumb: `[50]`; range: `[25, 75]`. Don't pass a plain number.
+- **Multi-thumb range:** Pass `[start, end]` — renders two thumbs that can cross each other by default. Use `minStepsBetweenThumbs` to enforce a gap.
+- **FormField:** Slider does NOT auto-consume FormField state. No validation UX — sliders usually don't need it (values are always valid by construction).
+- **No label pairing via Label** — use `aria-label` or `aria-labelledby` directly on the Slider. The thumb is the focusable/labeled element.
+- Not portal-rendered — inline; overflow rules of parents apply.
+
+## Gotchas
+- value is number[] (array), not a single number
+- Multi-thumb: Pass array `defaultValue={[25, 75]}` for range sliders — renders one thumb per value
+- Slider does NOT auto-consume FormField — sliders don't have validation state visuals by design
+
+## Changes
+### v0.18.0
+- **Fixed** Multi-thumb support added
+
+### v0.3.0
+- **Added** `SliderProps` type export
+
+### v0.1.0
+- **Added** Initial release
+- **Fixed** `aria-label` now forwarded to thumb element (was only on root container)
+# Spinner
+
+- Import: @devalok/shilp-sutra/ui/spinner
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "sm" | "md" | "lg"
+    state: "spinning" | "success" | "error"
+    variant: "filled" | "bare"
+    delay: number (ms — render delay to avoid flicker on fast operations)
+    onComplete: () => void (callback after success/error state transition)
+    className: string
+
+## Defaults
+    size: "md"
+    state: "spinning"
+    variant: "filled"
+
+## Example
+```jsx
+<Spinner size="lg" />
+<Spinner state="success" /> {/* green checkmark */}
+<Spinner variant="bare" /> {/* uses currentColor, for embedding in buttons */}
+```
+
+## Composability
+- **Prefer Button's `loading` prop** for inline button spinners — Button's integration is automatic (disables, sets aria-busy, positions the spinner). Manual Spinner inside Button is more work for no gain.
+- **`variant="bare"`** uses `currentColor` — drop it into any surface (button, toolbar, badge, icon group) and it picks up the parent's text color automatically.
+- **State transitions:** `spinning → success → idle` / `spinning → error → idle`. Use the state machine for async operation feedback (the success checkmark, error X animate in). Pair with `onComplete` to trigger next-step logic after the transition.
+- **delay for flicker prevention:** Set `delay={150}` so very fast operations don't flash a spinner. The spinner mounts only after the delay elapses — if the operation completes first, the user never sees it.
+- **Icon.state="loading" uses Spinner internally** — same underlying component. If you're inside an Icon context, prefer `<Icon state="loading" />` for consistent sizing.
+
+## Gotchas
+- Renders role="status" with sr-only "Loading..." text — no need for aria-label
+- Button has built-in loading prop — prefer that over manual Spinner composition
+- `bare` variant inherits text color — useful inside buttons and toolbars
+- `delay` prevents flicker: spinner only appears after delay ms (good for fast API calls)
+- No longer server-safe as of v0.18.0 (uses Framer Motion)
+
+## Changes
+### v0.29.0
+- **Changed** `bare` variant spinning state now uses `currentColor` instead of `var(--color-accent-9)` — inherits text color from parent for seamless embedding in buttons/toolbars
+
+### v0.18.0
+- **Changed** (BREAKING) Complete rewrite with Framer Motion arc animation and state transitions
+- **Added** `state` prop: 'spinning' | 'success' | 'error'
+- **Added** `variant` prop: 'filled' | 'bare'
+- **Added** `delay` prop for flicker prevention
+- **Added** `onComplete` callback for state transitions
+- **Changed** No longer server-safe (Framer Motion dependency)
+- **Fixed** Fade out track circle in bare mode, use larger icons for bare variant
+
+### v0.3.0
+- **Fixed** Animations respect `prefers-reduced-motion`
+
+### v0.2.0
+- **Added** Identified as server-safe (no longer true as of v0.18.0)
+
+### v0.1.0
+- **Added** Initial release
+# SplitButton
+
+A compound button that combines a primary action with a dropdown trigger, rendered as a single visual unit `[Action | ▼]`.
+
+## Import
+
+```ts
+import { SplitButton } from '@devalok/shilp-sutra'
+```
+
+## Usage
+
+```tsx
+<SplitButton onClick={handleSave} dropdownContent={<SaveOptions />}>
+  Save
+</SplitButton>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| children | ReactNode | — | Primary action content (left side) |
+| onClick | (e) => void | — | Primary click handler |
+| dropdownContent | ReactNode | — | Content rendered inside floating dropdown |
+| variant | 'solid' \| 'soft' \| 'outline' | 'solid' | Visual style |
+| color | 'accent' \| 'error' \| 'success' \| 'warning' \| 'neutral' | 'accent' | Color scheme |
+| size | 'xs' \| 'sm' \| 'md' \| 'icon-xs' \| 'icon-sm' \| 'icon-md' | 'md' | Size |
+| triggerSide | 'left' \| 'right' | 'right' | Which side the dropdown chevron sits on |
+| triggerWidth | number \| string | auto | Custom width for the trigger half |
+| placement | Placement | 'top-end' | Floating UI placement for dropdown |
+| disabled | boolean | false | Disable both halves |
+| open | boolean | — | Controlled open state |
+| onOpenChange | (open: boolean) => void | — | Open state callback |
+| dropdownLabel | string | 'More options' | aria-label for trigger |
+| dropdownIcon | ReactNode | chevron-down | Custom trigger icon |
+
+## Composability
+- **Two-in-one button:** visually unified `[Action | ▼]` with the left half being the primary click and the right half opening a dropdown. Use for actions that have a most-common choice plus alternatives (Save vs. Save-As-Draft, Send vs. Schedule).
+- **Built on Button + Popover internally** — inherits Button's variant/color/size vocabulary and Popover's placement prop (`top-end` default works for most top-of-page toolbars).
+- **Dropdown content is consumer-provided** — pass any JSX via `dropdownContent` (typically a DropdownMenu, list of actions, a custom panel, or a small form). Don't try to shove a full-featured menu into the chevron; keep it focused on 2–5 alternatives.
+- **ButtonGroup compatibility:** Put SplitButton inside a `<ButtonGroup>` — it inherits variant/color/size from the group context just like Button does. Position-aware corners work too.
+- **Controlled dropdown:** Pass `open` + `onOpenChange` for controlled state; omit for uncontrolled. Useful when the dropdown must close programmatically after a selection.
+
+## Gotchas
+- Always provide `dropdownLabel` (aria-label on the chevron trigger) — defaults to "More options" but context-specific labels are better
+- `triggerSide="left"` flips the chevron to the left — rare, but useful for RTL layouts or when the primary action is the secondary emphasis
+
+## Changes
+
+### v0.33.0
+- **Added** Initial release
+# Stack
+
+- Import: @devalok/shilp-sutra/ui/stack
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    direction: "vertical" | "horizontal" | "row" | "column"
+    gap: SpacingToken | number — tokens: "ds-01".."ds-13", or numbers 0-13
+    align: "start" | "center" | "end" | "stretch" | "baseline"
+    justify: "start" | "center" | "end" | "between" | "around" | "evenly"
+    wrap: boolean
+    as: ElementType (default: "div")
+
+## Defaults
+    direction: "vertical"
+
+## Example
+```jsx
+<Stack direction="horizontal" gap="ds-04" align="center">
+  <Avatar size="sm" />
+  <Text variant="body-md">User Name</Text>
+</Stack>
+```
+
+## Composability
+- **Server-safe layout primitive.** Nothing to hydrate — works anywhere.
+- **Pattern:** Stack wraps child elements in a flex container. Swap between vertical/horizontal without rewriting the child layout.
+- **Polymorphic via `as`:** Use `as="ul"` / `as="ol"` for list semantics with flex styling; `as="section"` for major page divisions; etc.
+- **gap is design-system tokenized** — use token strings (`"ds-04"`) or numeric shortcuts (`4` → `"ds-04"`). Raw numbers map 1:1 to the `ds-0N` token set.
+- **Responsive direction:** Not built in — for responsive direction changes use Tailwind's `flex-col md:flex-row` directly on a plain div, or wrap multiple Stacks with display-toggling.
+- Container vs Stack: Container centers + caps width; Stack arranges children. Compose them: `<Container><Stack>...</Stack></Container>`.
+
+## Gotchas
+- "row" and "column" are aliases for "horizontal" and "vertical"
+- gap accepts both token strings and numeric values
+
+## Changes
+### v0.2.0
+- **Added** `direction` prop now accepts `"row"` / `"column"` as aliases for `"horizontal"` / `"vertical"`
+- **Added** `gap` prop now accepts numeric values (e.g., `gap={4}` -> `gap-ds-04`) in addition to token strings
+
+### v0.1.1
+- **Fixed** Replaced dynamic `gap-${N}` with static lookup map (Tailwind JIT safety)
+
+### v0.1.0
+- **Added** Initial release
+# StatCard
+
+- Import: @devalok/shilp-sutra/ui/stat-card
+- Server-safe: No
+- Category: ui
+
+## Props
+    label: string (heading text)
+    title: string (alias for label)
+    value: string | number (REQUIRED)
+    prefix: string (before value, e.g. "$")
+    suffix: string (after value, e.g. "users")
+    delta: { value: string, direction: "up" | "down" | "neutral" }
+    icon: ReactNode | ComponentType<{ className?: string }>
+    loading: boolean (renders skeleton)
+    comparisonLabel: string (shown after delta, e.g. "vs last month")
+    secondaryLabel: string (below main value, e.g. "of $50,000 target")
+    progress: number (0-100, renders thin progress bar below value)
+    accent: "default" | "success" | "warning" | "error" | "info" (left border color)
+    sparkline: number[] (renders mini SVG line chart)
+    onClick: () => void (makes card clickable with hover state)
+    href: string (makes card a link via LinkContext)
+    footer: ReactNode (below card body, e.g. "View details →")
+
+## Defaults
+    none (all props are optional except value)
+
+## Example
+```jsx
+<StatCard
+  label="Revenue"
+  value="$48,200"
+  prefix="$"
+  delta={{ value: "+12%", direction: "up" }}
+  comparisonLabel="vs last month"
+  icon={<IconCurrencyDollar />}
+  accent="success"
+/>
+
+<StatCard
+  label="Storage"
+  value="4.2 GB"
+  secondaryLabel="of 10 GB"
+  progress={42}
+  sparkline={[10, 25, 18, 30, 42]}
+  footer={<a href="/storage">Manage storage →</a>}
+/>
+```
+
+## Composability
+- **High-density metric card** — optimized for dashboards. Everything optional except `value`. Mix and match features (delta, sparkline, progress, secondary label, footer) per metric's needs.
+- **Router integration via href:** Internally uses `LinkContext` to resolve framework-specific Link components (Next.js, react-router). Set `href` in a LinkProvider-wrapped tree to get seamless client-side navigation without custom asChild wiring.
+- **Interactive modes:** `onClick` makes the entire card a button; `href` makes it a link. Mutually exclusive — href wins if both are set.
+- **Accent bar semantic:** Use `accent` to signal metric health at a glance (success for positive, warning for at-risk, error for over-target). Combine with delta.direction for layered emphasis.
+- **Sparkline:** Pure SVG, lightweight — no chart library. For rich charts use Chart components. Minimum 2 data points.
+- **Icon auto-sizing:** Accepts `ComponentType<{ className }>` OR `ReactNode`. The component prop (e.g. `icon={IconBolt}`) is preferred — icon is rendered at a consistent size.
+- **Loading state:** `loading={true}` renders the full card skeleton — use during initial data fetch.
+
+## Gotchas
+- delta.direction "up" = green, "down" = red, "neutral" = grey
+- `label` and `title` are aliases — use either, not both
+- `onClick` and `href` are mutually exclusive — href takes precedence
+- `sparkline` needs at least 2 data points to render
+
+## Changes
+### v0.2.0
+- **Added** `icon` prop now accepts `React.ComponentType` (e.g., `icon={IconBolt}`) in addition to `ReactNode`
+
+### v0.1.0
+- **Added** Initial release
+# StatusDot
+
+- Import: @devalok/shilp-sutra/ui/status-dot
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    status: "healthy" | "warning" | "critical" | "neutral" | "inactive"
+    size: "sm" | "md" | "lg"
+    pulse: boolean (ping animation; defaults to true for "healthy", false for others)
+    label: string (inline text rendered after the dot)
+    labelClassName: string (extra classes on the label span)
+
+## Defaults
+    size="md", pulse={status === "healthy"}
+
+## Example
+```jsx
+<StatusDot status="healthy" />
+<StatusDot status="critical" label="Service down" pulse />
+<StatusDot status="warning" size="lg" label="Elevated load" />
+```
+
+## Composability
+- **Server-safe presentational dot** — simple status indicator, pairs with inline text.
+- **Status semantics map to color:** healthy=success, warning=warning, critical=error, neutral=muted surface, inactive=dimmed. The pulse animation calls attention to "healthy" by default (active presence); you can flip it for other statuses by setting pulse explicitly.
+- **StatusDot vs BadgeIndicator vs StatusBadge:**
+  - StatusDot = tiny presence/status indicator with optional inline label (e.g. "Service online")
+  - BadgeIndicator = overlay on another element (notification dot on a bell icon)
+  - StatusBadge (composed) = full pill-style badge with colored bg and label text (e.g. ticket status)
+- **Label composability:** If you pass `label`, it renders inline after the dot. Use `labelClassName` for custom typography (e.g. font-mono for status codes).
+
+## Gotchas
+- The `pulse` prop auto-enables for "healthy" status — pass `pulse={false}` to suppress
+- Status type is exported as `StatusDotStatus` if you need it in consumer code
+# Stepper / Step
+
+- Import: @devalok/shilp-sutra/ui/stepper
+- Server-safe: No
+- Category: ui
+
+## Props
+### Stepper
+    activeStep: number (REQUIRED, 0-indexed)
+    orientation: "horizontal" | "vertical"
+    children: <Step> elements
+
+### Step
+    label: string (REQUIRED)
+    description: string
+    icon: ReactNode (overrides default number/checkmark)
+
+## Defaults
+    orientation: "horizontal"
+
+### StepperContent
+    activeStep: number (REQUIRED, 0-indexed — matches Stepper's activeStep)
+    children: ReactNode (one child per step, only the active one is visible)
+    className: string
+
+## Compound Components
+    Stepper (root)
+      Step (label, description, icon)
+    StepperContent (content panel, animates active step)
+
+## Example
+```jsx
+<Stepper activeStep={1}>
+  <Step label="Account" description="Create credentials" />
+  <Step label="Profile" description="Add details" />
+  <Step label="Review" />
+</Stepper>
+```
+
+## Composability
+- `Stepper` passes `activeStep` + `orientation` + each step's index down to every `Step` child via `StepperContext`. Each Step derives its own status (completed / active / pending) from its position vs `activeStep`.
+- Step index is assigned by position in children — order matters. Don't conditionally render Steps via `&&` or `.filter()`; it shifts the indices and breaks the active highlight.
+- `StepperContent` is separate from `Stepper` — it's the animated panel surface that shows one child per step index. Pass the same `activeStep` value to both.
+- `orientation="vertical"` swaps the Step layout (stacked with connecting line on the left) AND changes how StepperContent animates (vertical crossfade instead of horizontal slide).
+- Custom icons via `Step.icon` override the default number/checkmark — the icon slot still receives the status-based styling (muted for pending, accent for active/completed).
+
+## Gotchas
+- Steps before activeStep are "completed", at activeStep is "active", after is "pending"
+- Don't conditionally render Step children — position is the index contract
+
+## Changes
+### v0.18.0
+- **Fixed** `bg-interactive` changed to `bg-accent-9` (OKLCH migration)
+- **Fixed** Wrapped Stepper context provider value in `useMemo` for performance
+
+### v0.1.0
+- **Added** Initial release
+# Switch
+
+- Import: @devalok/shilp-sutra/ui/switch
+- Server-safe: No
+- Category: ui
+
+## Props
+    checked: boolean
+    onCheckedChange: (checked: boolean) => void
+    error: boolean (shows red border/bg)
+    disabled: boolean
+    size: "sm" | "md" | "lg"
+    color: "accent" | "success" | "warning"
+    thumbIcon: ReactNode (icon rendered inside the thumb)
+
+## Defaults
+    size="md", color="accent"
+
+## Example
+```jsx
+<Switch checked={enabled} onCheckedChange={setEnabled} />
+<Switch size="lg" color="success" thumbIcon={<IconCheck size={14} />} />
+```
+
+## Composability
+- Radix Switch primitive — `checked` / `onCheckedChange` / `defaultChecked` standard control model.
+- **FormField:** Switch does NOT auto-consume FormField state (same as Checkbox/Radio — form-library convention for toggles). Pass `error` explicitly when needed.
+- **thumbIcon slot:** Any ReactNode renders inside the thumb circle — commonly used for check/X glyphs that animate with the thumb position.
+- **Label pairing:** Manual — pair with `<Label htmlFor="x" />` + `<Switch id="x" />`, or wrap both in a `<label>` for click-to-toggle.
+- Pair with FormHelperText (outside FormField wiring) for custom validation messages.
+
+## Gotchas
+- Use error prop for validation states (matches Checkbox API)
+- `error` overrides `color` — when error is true, checked state always uses error-9
+- Switch does NOT auto-consume FormField — pass `error` explicitly inside a FormField
+
+## Changes
+### v0.29.0
+- **Added** `size` prop: `"sm"` (18px track) | `"md"` (24px, default) | `"lg"` (28px track)
+- **Added** `color` prop: `"accent"` (default) | `"success"` | `"warning"` for checked-state color
+- **Added** `thumbIcon` prop — renders any ReactNode inside the thumb circle (e.g., check icon)
+
+### v0.18.0
+- **Changed** Migrated to Framer Motion spring thumb animation
+- **Fixed** Added visible border on unchecked state (`border-surface-border-strong`) — was borderless, making unchecked state hard to see
+
+### v0.4.2
+- **Fixed** `React.ComponentRef` changed to `React.ElementRef` for consistency
+
+### v0.3.0
+- **Added** `SwitchProps` type export
+- **Added** `error` prop (matches Checkbox API)
+
+### v0.1.0
+- **Added** Initial release
+# Table
+
+- Import: @devalok/shilp-sutra/ui/table
+- Server-safe: Yes
+- Category: ui
+
+## Compound Components
+    Table (root <table>)
+      TableHeader (<thead>)
+        TableRow (<tr>)
+          TableHead (<th>)
+      TableBody (<tbody>)
+        TableRow (<tr>)
+          TableCell (<td>)
+      TableFooter (<tfoot>)
+      TableCaption (<caption>)
+
+## Example
+```jsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Project Alpha</TableCell>
+      <TableCell><Badge color="success">Active</Badge></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+## Composability
+- **Server-safe pure HTML wrappers** — Table and sub-components are thin semantic wrappers around `<table>`, `<thead>`, `<tbody>`, etc. No state, no context. Safe in RSC trees.
+- **Table vs DataTable:** Table is presentational — you control every row, cell, header. DataTable (from `ui/data-table`) is feature-rich — sorting, filtering, pagination, selection, virtualization built in. Pick by whether you need that machinery.
+- **Use cases for bare Table:** Static data displays, marketing comparison tables, documentation tables, small lists where DataTable would be overkill.
+- **Composes with UI primitives inside cells:** Badge for status pills, Avatar for user cells, IconButton for row actions, StatusDot for state indicators. All server-safe if the table is server-rendered.
+- **TableCaption** renders as HTML `<caption>` — useful for a summary description that screen readers announce before the table content.
+
+## Gotchas
+- Table headers automatically have scope="col" for screen reader navigation
+- For anything beyond trivial display, prefer DataTable — don't rebuild sorting/pagination/selection on top of bare Table
+
+## Changes
+### v0.18.0
+- **Added** `TableProps`, `TableRowProps`, `TableCellProps` type exports
+
+### v0.17.0
+- **Fixed** TableCell: Added `px-ds-03` horizontal padding — was `px-0`, causing content to hug container edges
+
+### v0.1.0
+- **Added** Initial release
+# Tabs
+
+- Import: @devalok/shilp-sutra/ui/tabs
+- Server-safe: No
+- Category: ui
+
+## Props
+### Tabs (root)
+    defaultValue: string
+    value: string
+    onValueChange: (value: string) => void
+
+### TabsList
+    variant: "line" | "contained"
+    size: "sm" | "md" | "lg"
+    orientation: "horizontal" | "vertical"
+
+### TabsTrigger
+    value: string (REQUIRED)
+    variant: (inherits from TabsList)
+
+### TabsContent
+    value: string (REQUIRED)
+
+## Compound Components
+    Tabs (root)
+      TabsList (variant)
+        TabsTrigger (value)
+      TabsContent (value)
+
+## Defaults
+    TabsList variant="line", size="md", orientation="horizontal"
+
+## Example
+```jsx
+<Tabs defaultValue="overview">
+  <TabsList variant="contained">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="activity">Activity</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">Overview content</TabsContent>
+  <TabsContent value="activity">Activity content</TabsContent>
+</Tabs>
+```
+
+## Composability
+- TabsList propagates `variant`, `size`, and `orientation` to every TabsTrigger child via `TabsListContext`. TabsTrigger reads all three from context; explicit props on a trigger override the inherited value.
+- `orientation="vertical"` on TabsList changes the TabsList layout (flex-col + left border) AND the `roving-tabindex` keyboard behavior (ArrowUp/Down navigate, not ArrowLeft/Right).
+- Tabs (root) is just the Radix Tabs.Root — state props (value, defaultValue, onValueChange) live there; styling props live on TabsList.
+- Tabs content is rendered inline (not portalled) — container-scoped queries work fine in tests.
+
+## Gotchas
+- variant/size/orientation go on TabsList, NOT on Tabs root or individual TabsTrigger
+- Normally omit `variant` on TabsTrigger — it inherits from TabsList via context. You CAN set it per-trigger to override.
+
+## Changes
+### v0.31.0
+- **Added** `size` prop on TabsList: `sm | md | lg`. Scales height and trigger padding.
+- **Added** `color` prop on TabsList: `accent | neutral`. Affects line variant indicator.
+
+### v0.18.0
+- **Fixed** Wrapped TabsList context provider value in `useMemo` for performance
+
+### v0.14.0
+- **Changed** TabsTrigger: Added `gap-ds-02` (4px) between icon and label for better spacing
+
+### v0.1.0
+- **Added** Initial release
+# Text
+
+- Import: @devalok/shilp-sutra/ui/text
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    variant: "heading-2xl" | "heading-xl" | "heading-lg" | "heading-md" | "heading-sm" | "heading-xs" | "body-lg" | "body-md" | "body-sm" | "body-xs" | "label-lg" | "label-md" | "label-sm" | "label-xs" | "label-plain-lg" | "label-plain-md" | "label-plain-sm" | "caption" | "overline" | "code"
+    as: ElementType (override the auto-selected HTML element)
+
+## Defaults
+    variant: "body-md"
+
+## Default Element Mapping
+    heading-2xl -> h1, heading-xl -> h2, heading-lg -> h3, heading-md -> h4, heading-sm -> h5, heading-xs -> h6
+    body-* -> p, label-* -> span, caption -> span, overline -> span
+
+## Example
+```jsx
+<Text variant="heading-2xl">Page Title</Text>
+<Text variant="body-sm" as="span">Inline text</Text>
+<Text variant="label-sm" className="text-text-secondary">SECTION LABEL</Text>
+```
+
+## Composability
+- **Server-safe** (one of few components in the library that is). Can render in RSC trees without `"use client"`.
+- No context consumption, no context cascade — pure typography primitive.
+- **Semantic HTML by default:** Each variant maps to a meaningful HTML element (h1 through p, span, code). The `as` prop overrides for visual-only demotion: e.g. `<Text variant="heading-xl" as="div">` renders h2-sized text inside a div, useful when the element already has a heading ancestor but you want the visual weight.
+- **Underpins many components:** Card's CardTitle, Alert's title, PageHeader, EmptyState, SectionHeader all render Text internally with specific variants. Don't wrap another Text inside them — variants cascade structurally, not via context.
+- Pairs with Code for inline code spans inside body text: `<Text>Call <Code>onClick</Code> to...</Text>`.
+
+## Gotchas
+- label-* and overline variants are automatically uppercase
+- Use "as" prop to override the HTML element when needed
+- Don't use Text inside headings that already have semantic meaning (e.g. CardTitle) — the double-element wraps are redundant and break screen-reader heading navigation
+
+## Changes
+### v0.2.0
+- **Fixed** `as` prop widened to accept any `React.ElementType` — `<Text as="h1">` no longer causes TypeScript errors
+
+### v0.1.0
+- **Added** Initial release
+# Textarea
+
+- Import: @devalok/shilp-sutra/ui/textarea
+- Server-safe: No
+- Category: ui
+
+## Props
+    size: "xs" | "sm" | "md" | "lg"
+    state: "default" | "error" | "warning" | "success"
+    (plus standard textarea attributes except native "size")
+
+## Defaults
+    size: "md"
+
+## Example
+```jsx
+<Textarea size="lg" state="error" placeholder="Describe the issue..." />
+```
+
+## Composability
+- **FormField auto-consumption:** Same pattern as Input — inside `<FormField>`, Textarea inherits `state`, `aria-describedby`, `aria-invalid`, `aria-required`. Explicit props override.
+- **Resize:** Vertically resizable by default (`resize-y`); override with `className="resize-none"` if needed.
+- **Label pairing:** Manual — `<Label htmlFor="x" />` + `<Textarea id="x" />`. FormField doesn't auto-wire.
+- No IconProvider cascade (no icon slots — different from Input).
+
+## Gotchas
+- state="error" sets aria-invalid automatically; all sizes are vertically resizable
+- Inside FormField: auto-inherits state, aria-describedby, aria-required from context (explicit props override)
+
+## Changes
+### v0.15.0
+- **Changed** `lg` size font changed from `text-ds-lg` (18px) to `text-ds-md` (14px) — all input sizes now use 14px for consistency
+- **Changed** `md` size font standardized to `text-ds-md` (14px)
+
+### v0.8.0
+- **Fixed** Now consumes FormField context automatically (`aria-describedby`, `aria-invalid`, `aria-required`)
+
+### v0.4.2
+- **Added** `textareaVariants` export
+
+### v0.1.1
+- **Fixed** Added `aria-invalid` for error state (matching Input pattern)
+
+### v0.1.0
+- **Added** Initial release
+# Toast
+
+- Import: @devalok/shilp-sutra/ui/toast
+- Server-safe: No
+- Category: ui
+
+## API
+    toast('Plain message')                    // no icon, no accent bar
+    toast.message('Same as plain')            // alias for toast()
+    toast.success('Saved!')                   // green accent, check icon
+    toast.error('Failed', { description })    // red accent, X icon
+    toast.warning('Disk low')                 // yellow accent, triangle icon
+    toast.info('New version')                 // blue accent, info icon
+    toast.loading('Saving...')                // interactive accent, spinner, no timer bar, duration: Infinity
+    toast.promise(asyncFn, { loading, success, error })  // dynamic messages
+    toast.undo('Item deleted', { onUndo, duration? })    // 8s default, Undo action button
+    toast.upload({ files, id?, onRetry?, onRemove? })    // upload toast with per-file progress
+    toast.custom((id) => <MyComponent />, options)       // escape hatch
+    toast.dismiss(id?)                                   // specific or all
+
+## Options (all methods accept)
+    id?: string
+    description?: ReactNode
+    action?: { label: string, onClick: () => void }
+    cancel?: { label: string, onClick: () => void }
+    duration?: number (ms, default 5000)
+
+## Types
+    UploadFile: { id, name, size (bytes), progress? (0-100), status: 'pending' | 'uploading' | 'processing' | 'complete' | 'error', error?, previewUrl? }
+
+## Utility
+    formatFileSize(bytes) => string (B, KB, MB, GB)
+
+## Example
+```jsx
+// Mount <Toaster /> once at root layout
+import { toast } from '@devalok/shilp-sutra/ui/toast'
+
+toast.success('Changes saved!')
+toast.error('Upload failed', { description: 'File too large' })
+toast.undo('Task deleted', { onUndo: () => restoreTask(id) })
+```
+
+## Composability
+- **Imperative API only** — `toast.success(...)`, `toast.error(...)`, etc. NO JSX invocation. This is by design (Sonner-based) — you call from event handlers, not render.
+- **Requires Toaster mounted once** at app root. Without it, `toast.*` calls are no-ops. Render `<Toaster />` in the root layout, not inside route components.
+- **toast.promise** orchestrates async flows: `toast.promise(fetch(...), { loading: 'Saving', success: 'Saved', error: 'Failed' })`. One toast, three states. Beats manually calling `.loading()` + `.success()`/`.error()`.
+- **toast.undo** adds an inline Undo button with 8s default duration — pair with state management that supports reversal (soft-delete with restore, last-action redo).
+- **toast.upload** is specifically for file-upload progress — per-file progress bars, retry on error, remove from list. Replaces the old `UploadProgress` composed component.
+- **toast.custom** is the escape hatch — render arbitrary JSX. Use sparingly; prefer the typed methods for consistency.
+- **Distinction from Alert/Banner:** Toast = transient, auto-dismissing, non-interactive-dismissible floating notification. Alert = inline in-flow announcement. Banner = page-level strip. Pick by persistence + position.
+
+## Gotchas
+- DO NOT use useToast() hook — it is deprecated, use imperative toast.* methods
+- DO NOT use toast({ title, color }) object syntax — use toast.success('message') etc.
+- DO NOT call toast() without <Toaster /> mounted at layout root
+- Timer bar animates auto-dismiss countdown (hidden on loading toasts)
+- Upload toast replaces the old UploadProgress composed component
+
+## Changes
+### v0.18.0
+- **Changed** (BREAKING) Complete rewrite to Sonner-based imperative API
+- **Fixed** Accent bar colors from step 7 to step 9 (decorative fills use solid step)
+
+### v0.4.2
+- **Changed** (BREAKING) `color="default"` renamed to `color="neutral"`
+
+### v0.3.0
+- **Changed** (BREAKING) `variant` prop renamed to `color` for semantic intent
+- **Fixed** Close button now always visible (was hidden until hover)
+
+### v0.1.0
+- **Added** Initial release
+- **Fixed** Toast now announces to screen readers (`role="status"`, `aria-live`)
+# Toaster
+
+- Import: @devalok/shilp-sutra/ui/toaster
+- Server-safe: No
+- Category: ui
+
+## Props
+    position: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+    closeButton: boolean
+    duration: number (ms)
+    hotkey: string[]
+    visibleToasts: number
+
+## Defaults
+    position: "bottom-right"
+    closeButton: false
+    duration: 5000
+    hotkey: ['altKey', 'KeyT']
+    visibleToasts: 3
+
+## Example
+```jsx
+// Mount once at root layout
+import { Toaster } from '@devalok/shilp-sutra/ui/toaster'
+
+export default function RootLayout({ children }) {
+  return (
+    <>
+      {children}
+      <Toaster />
+    </>
+  )
+}
+```
+
+## Composability
+- **Mount once, use everywhere.** Render `<Toaster />` in the root layout file once. Every `toast.*` call anywhere in the tree routes to this single container.
+- **Global config lives here.** Set `position`, `duration`, `visibleToasts` on Toaster to control default behavior for all toasts. Individual `toast.*` calls can override `duration` per toast.
+- **Keyboard shortcut:** `hotkey` prop sets a global shortcut to focus the toast region (default: Alt+T). Useful for keyboard users to review recent notifications.
+- **Next.js / App Router:** Mount inside your root `app/layout.tsx`'s `<body>`. It's marked `'use client'` so it doesn't render on the server (Toaster is client-only).
+- **Portal rendering:** z-toast (highest layer) — Toaster content appears above Dialog, Popover, everything. Don't wrap it in a stacking context.
+
+## Gotchas
+- Must be mounted once at the layout root for toast notifications to work
+- Use the `toast` import from `@devalok/shilp-sutra/ui/toast` to trigger toasts
+- NOT server-safe — mounts with 'use client'; rendering during SSR has no visual effect
+
+## Changes
+### v0.18.0
+- **Changed** (BREAKING) Rewritten to Sonner-based engine with custom ToastContent rendering
+- **Added** `ToasterProps` type export
+- **Added** Visual: neutral bg-layer-01 base, colored left accent bar per type, status icon, timer bar
+
+### v0.1.0
+- **Added** Initial release
+# Toggle
+
+- Import: @devalok/shilp-sutra/ui/toggle
+- Server-safe: No
+- Category: ui
+
+## Props
+    variant: "default" | "outline"
+    size: "sm" | "md" | "lg"
+    color: "accent" | "error" | "success" | "neutral" (pressed-state bg + text color)
+    pressed: boolean
+    onPressedChange: (pressed: boolean) => void
+    defaultPressed: boolean
+
+## Defaults
+    variant="default", size="md", color="accent"
+
+## Example
+```jsx
+<Toggle aria-label="Toggle bold" pressed={isBold} onPressedChange={setIsBold}>
+  <IconBold />
+</Toggle>
+```
+
+## Composability
+- Radix Toggle primitive — `pressed` / `onPressedChange` / `defaultPressed`. Not the same as Switch (boolean value doesn't map to on/off semantically — Toggle is "this action is currently active").
+- **Pairs with ToggleGroup** for mutually-exclusive or multi-select toggle clusters — ToggleGroupItem inherits variant + size from ToggleGroup via context. Don't set variant on a ToggleGroupItem directly.
+- **No context consumption as a standalone** — when rendered outside a ToggleGroup, Toggle is fully independent.
+- **Icon content:** Commonly wraps a single `<Icon>` for formatting toolbar toggles (Bold, Italic, AlignLeft). Pair with IconGroup for a horizontal cluster of independent toggles (vs. ToggleGroup for related state).
+- **aria-label is required** — icon-only toggles need an accessible name.
+
+## Gotchas
+- Always provide aria-label for accessibility
+- Toggle is not Switch — Toggle means "this action is active right now"; Switch means "this setting is on"
+
+## Changes
+### v0.18.0
+- **Changed** Migrated to Framer Motion press spring animation
+
+### v0.4.2
+- **Fixed** `className` was passed inside CVA (silently dropped) — now separate `cn()` argument
+- **Added** `ToggleProps` type export
+
+### v0.1.0
+- **Added** Initial release
+# ToggleGroup
+
+- Import: @devalok/shilp-sutra/ui/toggle-group
+- Server-safe: No
+- Category: ui
+
+## Props
+### ToggleGroup
+    type: "single" | "multiple"
+    variant: "default" | "outline" (propagated to items)
+    size: "sm" | "md" | "lg" (propagated to items)
+    value: string | string[]
+    onValueChange: (value) => void
+
+### ToggleGroupItem
+    value: string
+
+## Compound Components
+    ToggleGroup (root — variant, size propagated to items via context)
+      ToggleGroupItem (value: string — reads variant/size from context)
+
+## Defaults
+    variant="default", size="md"
+
+## Example
+```jsx
+<ToggleGroup type="single" variant="outline" size="sm" value={alignment} onValueChange={setAlignment}>
+  <ToggleGroupItem value="left"><IconAlignLeft /></ToggleGroupItem>
+  <ToggleGroupItem value="center"><IconAlignCenter /></ToggleGroupItem>
+  <ToggleGroupItem value="right"><IconAlignRight /></ToggleGroupItem>
+</ToggleGroup>
+```
+
+## Composability
+- ToggleGroup passes `variant` and `size` to every ToggleGroupItem via `ToggleGroupContext`. Items read both from context; explicit props on a child override.
+- `type="single"` enforces one-selected-at-a-time (value: string); `type="multiple"` allows many (value: string[]). Radix Toggle Group underpins this — it's the same role + keyboard model as Radix.
+- Built on top of the plain `Toggle` component's CVA — the `variant` and `size` axes of ToggleGroupItem match Toggle exactly (`default | outline`, `sm | md | lg`).
+
+## Gotchas
+- `type` is required — "single" or "multiple" — and drives the value shape
+- variant and size propagate from ToggleGroup to items; setting them on a ToggleGroupItem overrides that item only
+- Unlike Tabs (where TabsList is the styling surface), ToggleGroup itself is the styling surface — there's no intermediate List component
+
+## Changes
+### v0.18.0
+- **Fixed** Wrapped ToggleGroup context provider value in `useMemo` for performance
+
+### v0.4.2
+- **Added** `ToggleGroupProps`, `ToggleGroupItemProps` type exports
+
+### v0.1.0
+- **Added** Initial release
+# Tooltip
+
+- Import: @devalok/shilp-sutra/ui/tooltip
+- Server-safe: No
+- Category: ui
+
+## Compound Components
+    TooltipProvider (REQUIRED at layout root or wrapping tooltip usage, controls delay)
+      Tooltip (root)
+        TooltipTrigger
+        TooltipContent
+
+## Example
+```jsx
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild><Button>Hover me</Button></TooltipTrigger>
+    <TooltipContent>Tooltip text</TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+```
+
+## Composability
+- Built on Radix Tooltip — accepts `delayDuration`, `skipDelayDuration` (on TooltipProvider), and `open`/`onOpenChange`/`defaultOpen` (on Tooltip root).
+- **Auto-provider (v0.22.0+):** If no ancestor TooltipProvider exists, `<Tooltip>` auto-wraps itself with one. Explicit TooltipProvider is still recommended at layout root for shared `delayDuration` tuning.
+- **Trigger:** `<TooltipTrigger asChild>` around the element that should show the tooltip on hover/focus. Icon-only buttons are the canonical use case.
+- **Not interactive:** TooltipContent is for non-interactive text labels — don't put buttons/links inside. Use HoverCard or Popover when the popped content needs interaction.
+- **Positioning:** TooltipContent accepts `side`, `align`, `sideOffset`, and arrow via `<TooltipArrow>` (optional).
+- **Portal rendering:** z-index is `z-tooltip` (highest in the stack — above Popover and Dialog).
+
+## Gotchas
+- TooltipProvider is REQUIRED at the layout level OR auto-created per-tooltip — but having a single root provider is better for consistent delays
+- Don't use Tooltip for critical information — hover-triggered UI is invisible to touch users. Pair with a visible label or aria-description
+- TooltipContent children must be inert — no buttons, no links, no focusable elements
+
+## Changes
+### v0.22.0
+- **Added** Auto-provider: `<Tooltip>` now auto-wraps with `<TooltipProvider>` when no ancestor provider exists. No more "tooltip doesn't appear" issues.
+- **Fixed** Content children not rendering — `motion.div` was self-closing (`/>`), so children were never passed through.
+- **Fixed** Text invisible in dark mode — `text-accent-fg` resolves to same value as `bg-surface-fg` in dark mode. Changed to `text-surface-1`.
+
+### v0.18.0
+- **Changed** Migrated to Framer Motion for enter/exit animations
+- **Added** `TooltipContentProps` type export
+- **Fixed** Wrapped Tooltip context provider value in `useMemo` for performance
+
+### v0.1.0
+- **Added** Initial release
+# TreeView / TreeItem
+
+- Import: @devalok/shilp-sutra/ui/tree-view
+- Server-safe: No
+- Category: ui
+
+## Props
+### TreeView
+    items: TreeNode[] (data-driven mode) — { id, label, icon?, disabled?, children? }
+    defaultExpanded: string[]
+    defaultSelected: string[]
+    multiSelect: boolean
+    checkboxes: boolean
+    onSelect: (ids: string[]) => void
+    onExpand: (ids: string[]) => void
+    children: ReactNode (declarative mode)
+
+### TreeItem
+    itemId: string (REQUIRED)
+    label: ReactNode
+    secondaryLabel: ReactNode
+    icon: ReactNode
+    actions: ReactNode
+    disabled: boolean
+    depth: number
+    children: ReactNode (nested TreeItems)
+
+## Hook
+    useTree({ defaultExpanded, defaultSelected, multiSelect, onSelect, onExpand })
+
+## Example (data-driven)
+```jsx
+<TreeView
+  items={[
+    { id: '1', label: 'Folder', children: [
+      { id: '1.1', label: 'File A' },
+      { id: '1.2', label: 'File B' },
+    ]},
+  ]}
+  defaultExpanded={['1']}
+  onSelect={(ids) => console.log(ids)}
+/>
+```
+
+## Example (declarative)
+```jsx
+<TreeView>
+  <TreeItem itemId="1" label="Folder">
+    <TreeItem itemId="1.1" label="File A" />
+  </TreeItem>
+</TreeView>
+```
+
+## Composability
+- **Two rendering modes:**
+  - **Data-driven:** Pass `items: TreeNode[]` with nested `children`. Good for server-fetched or programmatic trees.
+  - **Declarative:** Use `<TreeItem>` children directly. Good for hardcoded nav, readable JSX.
+  - Don't mix — pick one per TreeView instance.
+- **useTree hook** lets you drive TreeView state externally (e.g. sync with URL, persist expanded state, drive from Redux). Pass `defaultExpanded`/`defaultSelected` initially OR manage state via the hook's return value.
+- **TreeItem composability:** Each TreeItem has `icon`, `label`, `secondaryLabel`, and `actions` slots — rich rows without custom render props. `actions` reveals on row hover (same pattern as Message.Actions).
+- **multiSelect + checkboxes:** Set both to turn TreeView into a file-picker style tree with checkboxes instead of single-select highlighting.
+- **Keyboard navigation:** Full `role="tree"` spec — Arrow Up/Down to move, Right to expand/descend, Left to collapse/ascend, Enter to select. Pre-wired; no manual key handling needed.
+
+## Gotchas
+- Supports both data-driven (items prop) and declarative (children) modes
+- Don't mix data-driven and declarative in the same TreeView — pick one
+- For a simple flat checkbox list, use RadioGroup/Checkbox + Stack — TreeView is overkill for non-hierarchical data
+
+## Changes
+### v0.4.2
+- **Added** TreeItem now accepts `className` prop
+
+### v0.3.0
+- **Added** Per-component export: `./ui/tree-view`
+
+### v0.1.0
+- **Added** Initial release
+# VisuallyHidden
+
+- Import: @devalok/shilp-sutra/ui/visually-hidden
+- Server-safe: Yes
+- Category: ui
+
+## Props
+    standard span attributes
+
+## Example
+```jsx
+<VisuallyHidden>Screen reader only text</VisuallyHidden>
+```
+
+## Composability
+- Server-safe. Works anywhere — no context, no cascade.
+- Canonical use: wrap a DialogTitle / SheetTitle that must exist for a11y but shouldn't show visually (`<DialogTitle asChild><VisuallyHidden>...</VisuallyHidden></DialogTitle>`).
+- Also useful inside IconButton to provide a text alternative when the icon already has an aria-label (redundant label is harmless and helps some screen readers).
+- Uses the `sr-only` CSS pattern under the hood — content is in the DOM, just positioned off-screen.
+
+## Gotchas
+- Content is visually hidden but accessible to screen readers
+- Useful for providing accessible labels without visual UI
+- Don't use for content you want hidden entirely — that's `hidden` or conditional rendering
+
+## Changes
+### v0.1.0
+- **Added** Initial release
+
+---
+
+# COMPOSED COMPONENTS
+# Alphabetical within this section.
+# Import from: @devalok/shilp-sutra/composed/<kebab-name>
+
+---
+
+# ActivityFeed
+
+- Import: @devalok/shilp-sutra/composed/activity-feed
+- Server-safe: No
+- Category: composed
+
+## Props
+    items: ActivityItem[] (REQUIRED) — { id, actor?: { name, image? }, action: string|ReactNode, timestamp: Date|string, icon?, color?: 'default'|'success'|'warning'|'error'|'info', detail?: ReactNode }
+    onLoadMore?: () => void — "Load more" button callback
+    loading: boolean — skeleton shimmer
+    hasMore?: boolean — shows "Load more" button
+    emptyState?: ReactNode — empty state content
+    compact: boolean — tighter spacing, no avatars, smaller text
+    maxInitialItems: number — truncate with "Show all (N)" toggle
+    groupBy?: 'time' | 'none' — group items by time buckets (today, yesterday, this week, older)
+    groupLabels?: GroupLabels — custom labels for time groups: { today?, yesterday?, thisWeek?, older? }
+    renderItem?: (item: ActivityItem, index: number) => ReactNode | undefined — custom renderer per item; return undefined to fall back to default ActivityEntry
+
+## Defaults
+    loading=false, compact=false, hasMore=false, groupBy='none'
+
+## Example
+```jsx
+<ActivityFeed
+  items={[
+    { id: '1', actor: { name: 'Alice' }, action: 'completed task', timestamp: new Date(), color: 'success' },
+    { id: '2', action: 'System backup completed', timestamp: new Date(), detail: <pre>Details...</pre> },
+  ]}
+  hasMore
+  onLoadMore={() => fetchMore()}
+  compact
+/>
+```
+
+## Exported Utilities
+    groupItemsByTime(items: ActivityItem[], labels?: GroupLabels) — pure function that buckets items into time groups; returns { label: string, items: ActivityItem[] }[]
+
+## Composability
+- **Built from ui primitives:** Avatar (actor), Button (Load more), Skeleton (loading), Text (body). Override via `renderItem` to use your own primitives per row.
+- **renderItem** is the composition hook — return your own JSX or `undefined` to fall back to default ActivityEntry. Timeline dot + layout wrapper stay consistent.
+- **groupBy="time"** wraps items in Today/Yesterday/This Week/Older buckets; `groupItemsByTime()` export reusable for custom renderers.
+- **Pagination is consumer-driven** — `hasMore` + `onLoadMore` for server-side, or `maxInitialItems` + "Show all" toggle for client-side truncation.
+
+## Gotchas
+- `items` is required — passing an empty array renders the `emptyState` content
+- `color` on each item controls the timeline dot color
+- `actor.image` is optional — falls back to initials from `actor.name`
+- `maxInitialItems` truncates with a "Show all (N)" toggle button
+- `maxInitialItems` applies to the flat list BEFORE grouping — items are sliced first, then grouped
+- Empty time groups are automatically skipped
+- `renderItem` receives the item and index; return `undefined` to use the default ActivityEntry rendering
+- Custom `renderItem` content is wrapped in the same dot + layout container as default entries for consistent vertical rhythm
+
+## Changes
+### v0.29.0
+- **Added** `renderItem` prop — custom render function per item; return ReactNode for custom rendering, return `undefined` to fall back to default ActivityEntry
+- **Added** Internal `CustomEntry` wrapper that keeps dot + layout consistent with default entries
+
+### v0.20.0
+- **Added** `groupBy="time"` prop — groups items into Today, Yesterday, This Week, Older with section headers
+- **Added** `groupLabels` prop for custom group label text
+- **Added** `groupItemsByTime()` exported pure utility function
+
+### v0.18.0
+- **Fixed** `bg-accent-9` changed to `bg-info-9` (info color, not accent)
+
+### v0.16.0
+- **Added** Initial release — vertical timeline with colored dots, actor avatars, expandable detail, compact mode, load more, maxInitialItems truncation
+# AvatarGroup
+
+- Import: @devalok/shilp-sutra/composed/avatar-group
+- Server-safe: No
+- Category: composed
+
+## Props
+    users: AvatarUser[] (REQUIRED) — { name: string, image?: string | null, ring?: AvatarRing }
+    max: number (default: 4, overflow shows "+N" badge)
+    size: "xs" | "sm" | "md" | "lg" | "xl"
+    showTooltip: boolean (default: true)
+    borderColor: "surface-base" | "surface-raised" (default: "surface-raised") — overlap border color
+    onOverflowClick: () => void — makes the "+N" badge interactive (button)
+    renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
+    expandDirection: "left" | "right" (default: "right") — direction group expands on hover
+    expandAmount: "compact" | "default" | "wide" (default: "default") — how far group spreads
+
+## AvatarUser Type
+    name: string (REQUIRED)
+    image?: string | null
+    ring?: "none" | "lead" | "admin" | "client" — role ring per user in group
+    indicator?: "lead" | "admin" | ReactNode — small dot indicator at top-right of avatar
+
+## Defaults
+    size="md", max=4, showTooltip=true, borderColor="surface-raised", expandDirection="right", expandAmount="default"
+
+## Example
+```jsx
+<AvatarGroup
+  users={[
+    { name: 'Alice', image: '/alice.jpg', ring: 'lead' },
+    { name: 'Bob', ring: 'admin' },
+  ]}
+  max={3}
+  size="md"
+  borderColor="surface-base"
+  onOverflowClick={() => setShowAll(true)}
+/>
+```
+
+## Composability
+- **Built on ui/Avatar** — each slot is an Avatar with overlap + border + optional Tooltip.
+- **Wraps TooltipProvider internally** — don't add another.
+- **renderAvatar** escape hatch for custom shapes. Wrapper handles overlap/border positioning; your renderer sets size + shape.
+- **borderColor** must match the surface the group sits on (`surface-raised` on Card, `surface-base` on page bg). Mismatch = visible seam.
+- **Overflow:** +N badge with optional `onOverflowClick` → pair with a Popover/Sheet for "show all members".
+- Per-user `ring` (lead/admin/client) surfaces Avatar's ring semantic at group level — use for role/presence hints.
+
+## Gotchas
+- Wraps TooltipProvider internally — no need to add one yourself
+- Users beyond `max` are collapsed into a "+N" overflow badge
+- Missing `image` falls back to initials derived from `name`
+- Hover expand animation uses CSS `group-hover` — parent must not clip overflow
+- `borderColor` should match the surface the group sits on (`surface-base` on page bg, `surface-raised` on cards)
+- `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
+
+## Changes
+### v0.29.0
+- **Added** `indicator` prop on AvatarUser: `"lead"` (warning dot) | `"admin"` (accent dot) | ReactNode (custom indicator) — animated dot at the top-right corner of each avatar
+
+### v0.22.3
+- **Fixed** `renderAvatar` wrapper no longer clips consumer Avatar content (removed overflow-hidden, border, and size classes from wrapper)
+- **Fixed** Removed redundant text-size classes from wrapper — Avatar handles font scaling internally
+
+### v0.21.0
+- **Added** `xs` and `xl` size variants
+- **Added** `borderColor` prop for overlap border matching surface context
+- **Added** `onOverflowClick` prop making the overflow badge an interactive button
+- **Added** `renderAvatar` prop for custom per-avatar rendering
+- **Added** `AvatarUser.ring` field for per-user role rings in groups
+
+### v0.1.0
+- **Added** Initial release
+# BulkActionBar
+
+- Import: @devalok/shilp-sutra/composed/bulk-action-bar
+- Server-safe: No
+- Category: composed
+
+## Props
+    show: boolean (controls visibility)
+    count: number (number of selected items — displayed in badge)
+    onClearSelection: () => void
+    actions: BulkActionBarAction[]
+    className: string
+
+### BulkActionBarAction
+    label: string
+    icon: ComponentType<{ className?: string }> (optional icon component)
+    onClick: () => void
+    color: "default" | "error"
+    disabled: boolean
+
+## Defaults
+    (no optional props with defaults)
+
+## Example
+```jsx
+<BulkActionBar
+  show={selected.length > 0}
+  count={selected.length}
+  onClearSelection={() => setSelected([])}
+  actions={[
+    { label: 'Archive', icon: IconArchive, onClick: archiveSelected },
+    { label: 'Delete', icon: IconTrash, onClick: deleteSelected, color: 'error' },
+  ]}
+/>
+```
+
+## Composability
+- **Standalone floating toolbar** — use with DataTable, TreeView, or any selection-capable UI.
+- **DataTable auto-integration:** DataTable's `bulkActions` prop renders this internally — typically you don't render BulkActionBar directly when using DataTable.
+- **Data-driven actions:** `{ label, icon, onClick, color, disabled }[]`. For destructive confirmation, call ConfirmDialog from the onClick handler.
+- **Portal to body + fixed bottom-center z-50** — independent of parent layout. Check for other fixed elements that might overlap.
+
+## Gotchas
+- Renders via `createPortal` into `document.body` — will not appear during SSR (mounts only client-side)
+- Positioned fixed at bottom-center with `z-50`; ensure no other fixed elements conflict
+- Uses Framer Motion AnimatePresence for slide-in/out animation
+# CommandPalette
+
+- Import: @devalok/shilp-sutra/composed/command-palette
+- Server-safe: No
+- Category: composed
+
+## Props
+    groups?: CommandGroup[] (default: []) — { label: string, items: CommandItem[] }
+    placeholder: string (default: "Search or jump to...")
+    onSearch: (query: string) => void
+    emptyMessage: string (default: "No results found.")
+
+CommandItem shape: { id, label, description?, icon?, shortcut?, onSelect: () => void }
+
+## Defaults
+    placeholder="Search or jump to...", emptyMessage="No results found.", groups=[]
+
+## Example
+```jsx
+<CommandPalette
+  groups={[{
+    label: 'Navigation',
+    items: [{ id: 'dash', label: 'Dashboard', onSelect: () => navigate('/') }],
+  }]}
+/>
+```
+
+## Composability
+- **Built on Dialog (portal) + cmdk-style fuzzy matching.** Global Ctrl+K / Cmd+K by default; customize via `keybinding`.
+- **Groups + items are data-driven.** Each item: `{ id, label, icon?, shortcut?, description?, onSelect }`. Labels accept ReactNode for rich rendering; pair with `filterValue` for typeahead matching against a text representation.
+- **renderLabel hook** lets you highlight matched characters in query (`(query) => ReactNode`).
+- **Controlled / uncontrolled** via `open`+`onOpenChange` or `defaultOpen`.
+- **AppCommandPalette (shell)** is the app-wide variant with CommandRegistry — use that for global palettes with dynamically registered commands.
+
+## Gotchas
+- Opens with Ctrl+K / Cmd+K by default
+- Items animate in with staggered slide-up (30ms delay cascade); groups fade in; active item icon/shortcut highlight in interactive color (v0.15.0)
+
+## Changes
+### v0.15.0
+- **Added** Staggered slide-up entrance animations for items, fade-in for groups/empty state/footer, scale-in for search icon, active item icon/shortcut color transitions
+
+### v0.8.0
+- **Added** Full ARIA combobox pattern (`role="combobox"`, `aria-expanded`, `aria-activedescendant`)
+
+### v0.1.0
+- **Added** Initial release
+# ConfirmDialog
+
+- Import: @devalok/shilp-sutra/composed/confirm-dialog
+- Server-safe: No
+- Category: composed
+
+## Props
+    open: boolean (REQUIRED, controlled)
+    onOpenChange: (open: boolean) => void (REQUIRED)
+    title: string (REQUIRED)
+    description: string (REQUIRED)
+    confirmText: string (default: "Confirm")
+    cancelText: string (default: "Cancel")
+    color: "default" | "error" (controls confirm button color)
+    loading: boolean (default: false, disables buttons and replaces confirm button text with 'Processing...')
+    onConfirm: () => void | Promise<void> (REQUIRED)
+
+## Defaults
+    confirmText="Confirm", cancelText="Cancel", color="default", loading=false
+
+## Example
+```jsx
+const [open, setOpen] = useState(false)
+<ConfirmDialog
+  open={open}
+  onOpenChange={setOpen}
+  title="Delete project?"
+  description="This action cannot be undone."
+  color="error"
+  confirmText="Delete"
+  loading={isDeleting}
+  onConfirm={async () => { await deleteProject(); setOpen(false) }}
+/>
+```
+
+## Composability
+- **Built on AlertDialog** — non-dismissible (no click-outside, Cancel-first focus), portal-rendered.
+- **Controlled-only.** Parent owns `open` + `onOpenChange`.
+- **onConfirm can be async.** `loading=true` replaces confirm text with "Processing..." and disables both buttons. Typical: setLoading(true) → await action() → setLoading(false) + setOpen(false).
+- **Stays open after confirm** — close via onOpenChange. Keeps the modal up on errors or for chained confirmations.
+
+## Gotchas
+- Dialog stays open after confirm — consumer must close it via `onOpenChange`
+- Built on AlertDialog internally
+- Fully controlled — `open` and `onOpenChange` are required
+
+## Changes
+### v0.18.0
+- **Fixed** Converted to `forwardRef` pattern
+
+### v0.1.0
+- **Added** Initial release
+# ContentCard
+
+- Import: @devalok/shilp-sutra/composed/content-card
+- Server-safe: Yes
+- Category: composed
+
+## Props
+    variant: "default" | "outline" | "ghost"
+    padding: "default" | "compact" | "spacious" | "none"
+    header: ReactNode (custom header content)
+    headerTitle: string (simple text header)
+    headerActions: ReactNode (actions in header area)
+    footer: ReactNode
+    children: ReactNode (body)
+
+## Defaults
+    variant="default", padding="default"
+
+## Example
+```jsx
+<ContentCard headerTitle="Team Members" headerActions={<Button size="sm">Add</Button>}>
+  <p>Member list here</p>
+</ContentCard>
+```
+
+## Composability
+- **Server-safe higher-level Card** — wraps ui/Card with conventional header/title/actions/footer slots.
+- **When to use:** List rows, dashboard tiles, any "card with title + optional actions + body + optional footer" pattern. Use raw ui/Card for custom layouts or when you need accent bars.
+- **Slot precedence:** `header` beats `headerTitle`. Use `headerTitle` for simple strings, `header` for rich content.
+- **padding variants** (default/compact/spacious/none) set once on ContentCard; the underlying Card size cascade propagates.
+
+## Gotchas
+- Server-safe: can be imported directly in Next.js Server Components
+- Use `headerTitle` for simple text headers; use `header` for custom header content
+- `header` takes precedence over `headerTitle` if both are provided
+
+## Changes
+### v0.2.0
+- **Added** Identified as server-safe component
+
+### v0.1.0
+- **Added** Initial release
+# DatePicker
+
+- Import: @devalok/shilp-sutra/composed/date-picker
+- Server-safe: No
+- Category: composed
+
+## Props
+
+### DatePicker
+    value?: Date | null
+    onChange?: (date: Date | null) => void
+    placeholder: string (default: "Pick a date")
+    formatStr: string (default: "MMM d, yyyy")
+    minDate: Date
+    maxDate: Date
+    disabledDates: (date: Date) => boolean
+    className: string
+
+### DateRangePicker
+    startDate?: Date | null
+    endDate?: Date | null
+    onChange?: (range: { start: Date | null, end: Date | null }) => void
+    placeholder: string (default: "Pick a date range")
+    formatStr: string (default: "MMM d, yyyy")
+    minDate: Date
+    maxDate: Date
+    disabledDates: (date: Date) => boolean
+    presets: PresetKey[] (shows quick-select sidebar)
+    numberOfMonths: number (default: 1)
+
+### DateTimePicker
+    value: Date | null
+    onChange: (date: Date | null) => void
+    minDate: Date
+    maxDate: Date
+    disabledDates: (date: Date) => boolean
+    timeFormat: "12h" | "24h"
+    minuteStep: number
+    placeholder: string
+    className: string
+
+### TimePicker
+    value?: Date | null (time stored as a Date object)
+    onChange?: (date: Date) => void
+    format: "12h" | "24h" (default: "12h")
+    minuteStep: number (default: 1)
+    secondStep: number (default: 1)
+    showSeconds: boolean (default: false)
+    placeholder: string (default: "Pick a time")
+    disabled: boolean (default: false)
+    className: string
+
+### CalendarGrid
+    currentMonth: Date (REQUIRED)
+    selected?: Date | null
+    rangeStart?: Date | null
+    rangeEnd?: Date | null
+    hoverDate?: Date | null
+    onSelect: (date: Date) => void (REQUIRED)
+    onHover?: (date: Date | null) => void
+    onMonthChange: (date: Date) => void (REQUIRED)
+    onHeaderClick?: () => void
+    disabledDates: (date: Date) => boolean
+    minDate: Date
+    maxDate: Date
+    hidePrevNav: boolean
+    hideNextNav: boolean
+    events: CalendarEvent[] — { date: Date, color?: string, label?: string }
+
+### YearPicker
+    currentYear: number (REQUIRED)
+    selectedYear: number
+    onYearSelect: (year: number) => void (REQUIRED)
+    minDate: Date
+    maxDate: Date
+
+### MonthPicker
+    currentYear: number (REQUIRED)
+    selectedMonth: number (0-11)
+    onMonthSelect: (month: number) => void (REQUIRED)
+    minDate: Date
+    maxDate: Date
+
+### Presets
+    presets: PresetKey[] (REQUIRED)
+    onSelect: (start: Date, end: Date) => void (REQUIRED)
+    className: string
+
+PresetKey: 'today' | 'yesterday' | 'last7days' | 'last30days' | 'thisMonth' | 'lastMonth' | 'thisYear'
+
+### useCalendar hook
+    useCalendar(initialMonth?: Date) => { currentMonth, setCurrentMonth, goToPreviousMonth, goToNextMonth, goToMonth, goToYear }
+
+## Defaults
+    DatePicker: placeholder="Pick a date", formatStr="MMM d, yyyy"
+    DateRangePicker: placeholder="Pick a date range", formatStr="MMM d, yyyy", numberOfMonths=1
+    TimePicker: format="12h", minuteStep=1, secondStep=1, showSeconds=false
+
+## Example
+```jsx
+<DatePicker value={date} onChange={setDate} placeholder="Select date" />
+
+<DateRangePicker
+  startDate={start}
+  endDate={end}
+  onChange={({ start, end }) => { setStart(start); setEnd(end); }}
+/>
+
+<DateTimePicker value={dateTime} onChange={setDateTime} timeFormat="12h" minuteStep={15} />
+
+<TimePicker value={time} onChange={setTime} format="24h" minuteStep={15} />
+```
+
+## Composability
+- **7 sub-components in one kit:** DatePicker, DateRangePicker, DateTimePicker, TimePicker, CalendarGrid, MonthPicker, YearPicker, Presets. Built on Popover (trigger + calendar content) + date-fns.
+- **Layered abstractions:**
+  - High-level: DatePicker / DateRangePicker / DateTimePicker / TimePicker (use these 95% of the time — Popover-wrapped, single-field pickers with formatted value display).
+  - Low-level: CalendarGrid / MonthPicker / YearPicker (use for custom picker layouts, inline calendars, dashboards with embedded date selection).
+- **useCalendar hook** manages month navigation state — use it when building custom picker UI (e.g. inline calendar with custom header).
+- **Presets component** is standalone — drop it next to a DateRangePicker's calendar for quick-select sidebars (Today / Last 7 days / This month / etc.).
+- **Events on calendar:** CalendarGrid accepts `events: { date, color, label }[]` — renders up to 3 colored dots per day cell. Useful for availability / booked-days highlights.
+- **min/max/disabledDates** are shared contract across the whole family — pass the same bounds config to any date picker variant.
+
+## Gotchas
+- TimePicker stores time inside a Date object — only hours/minutes/seconds are meaningful
+- CalendarGrid is a low-level building block — prefer DatePicker/DateRangePicker for most use cases
+- MonthPicker month values are 0-indexed (Jan=0, Dec=11) — same as JavaScript `Date.getMonth()`
+- YearPicker displays a 12-year grid based on the decade of `currentYear`
+- CalendarGrid supports up to 3 event dots per day cell
+- useCalendar is a convenience hook for managing calendar month state
+
+## Changes
+### v0.18.0
+- **Fixed** Added `aria-label` to DatePicker/DateRangePicker trigger buttons
+
+### v0.4.2
+- **Changed** DateRangePicker default `formatStr` from `'MMM d'` to `'MMM d, yyyy'`
+
+### v0.1.0
+- **Added** Initial release
+# DeadlineIndicator
+
+- Import: @devalok/shilp-sutra/composed/deadline-indicator
+- Server-safe: Yes
+- Category: composed
+
+## Props
+    deadline: Date | string (deadline timestamp)
+    warningThreshold: number (minutes before deadline to show warning color)
+    criticalThreshold: number (minutes before deadline to show critical/error color)
+    format: "relative" | "absolute"
+    showIcon: boolean (show clock icon prefix)
+
+## Defaults
+    warningThreshold={1440} (24h), criticalThreshold={240} (4h), format="relative", showIcon={false}
+
+## Example
+```jsx
+<DeadlineIndicator deadline={task.dueDate} />
+<DeadlineIndicator deadline="2026-03-20T17:00:00Z" showIcon format="absolute" />
+<DeadlineIndicator deadline={task.dueDate} warningThreshold={2880} criticalThreshold={480} />
+```
+
+## Composability
+- **Server-safe inline status** — renders a colored text label ("2d left" / "3h left" / "Overdue by 1d") with optional clock icon prefix.
+- **Threshold-driven color:** `warningThreshold` + `criticalThreshold` drive the green→yellow→red progression. Tune per use case (billing deadlines vs. task due dates have different urgency cadences).
+- **Composes inside Card, StatusBadge, DataTable cells** — anywhere a short inline deadline string fits.
+- **Doesn't live-update** — uses `Date.now()` at render time. For ticking timestamps, re-render via a parent interval or use a dedicated "time ago" library.
+- For static absolute timestamps (not relative), set `format="absolute"` — useful when you want the exact date rendered with semantic color coding.
+
+## Gotchas
+- Color is semantic: green (on-track) -> yellow (warning threshold) -> red (critical/overdue)
+- Overdue deadlines show bold red text with "Overdue by Xd/h/m"
+- Relative format uses `Date.now()` at render time — does not live-update (re-render to refresh)
+# EmojiPicker
+
+- Import: @devalok/shilp-sutra/composed/emoji-picker
+- Server-safe: No
+- Category: composed
+
+## Exports
+EmojiPicker, EmojiPickerPopover
+
+## Props
+
+### EmojiPicker
+    onSelect: (emoji: EmojiData) => void
+    theme: "auto" | "light" | "dark"
+    previewPosition: "top" | "bottom" | "none"
+    skinTonePosition: "search" | "preview" | "none"
+    className: string
+
+### EmojiPickerPopover (extends EmojiPicker props)
+    children: ReactNode (trigger element)
+    align: "start" | "center" | "end"
+
+### EmojiData
+    id: string
+    native: string (the emoji character)
+    shortcodes: string
+
+## Defaults
+    theme="auto", previewPosition="none", skinTonePosition="search", align="start"
+
+## Example
+```jsx
+<EmojiPickerPopover onSelect={(emoji) => insertEmoji(emoji.native)}>
+  <Button variant="ghost" size="icon-sm">😀</Button>
+</EmojiPickerPopover>
+
+<EmojiPicker onSelect={handleEmoji} theme="dark" />
+```
+
+## Composability
+- **Two exports:** `EmojiPicker` (inline grid, no trigger) and `EmojiPickerPopover` (trigger + popover wrapper). Use EmojiPickerPopover 95% of the time — trigger-on-click is the standard UX.
+- **Wraps @emoji-mart/react**, lazy-loaded with a Skeleton placeholder while the ~200KB bundle fetches. Don't pre-import unless you need it eagerly.
+- **Trigger composition:** EmojiPickerPopover's `children` is the trigger — wrap any Button/IconButton. Typical pairing is an icon-only IconButton with a 😀 label.
+- **TipTap integration:** Use `createEmojiSuggestion(set?)` factory to create a TipTap suggestion plugin that opens the picker on typing `:emoji`. Works with RichChatInput and RichTextEditor.
+- **Theme matching:** `theme="auto"` reads the `.dark` class on `<html>` — matches the DS dark mode toggle automatically. Override with explicit light/dark.
+- **Emoji sets:** Pass `set="apple" | "google" | ...` for consistent cross-platform emoji art (defaults to native OS glyphs).
+
+## Gotchas
+- Wraps `@emoji-mart/react` which is lazy-loaded — shows a Skeleton placeholder while loading
+- `theme="auto"` reads the `.dark` class on `<html>` to pick light/dark
+- EmojiPickerPopover auto-closes after selection
+
+## Changes
+
+### v0.33.0
+- **Added** `set` prop on EmojiPicker and EmojiPickerPopover — `EmojiSet` type: 'native' | 'apple' | 'google' | 'twitter' | 'facebook'
+- **Added** `EmojiNode` TipTap extension — inline atom node with spritesheet rendering for consistent emoji art styles
+- **Added** `createEmojiSuggestion(set?)` factory — replaces `EmojiSuggestion` named export
+- **Added** `EmojiSet` type exported from barrel
+- **Breaking** `EmojiSuggestion` named export removed — use `createEmojiSuggestion()` factory
+# EmptyState
+
+- Import: @devalok/shilp-sutra/composed/empty-state
+- Server-safe: No
+- Category: composed
+
+Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe due to Framer Motion dependency.
+
+## Props
+    title: string (REQUIRED)
+    description: string
+    icon: ReactNode | ComponentType<{ className?: string }> (default: Devalok chakra icon)
+    action: ReactNode (e.g. a Button)
+    compact: boolean (smaller layout)
+    iconSize: 'sm' | 'md' | 'lg' (default 'md', compact defaults to 'sm') — sm=h-ico-sm, md=h-ico-lg, lg=h-ico-xl
+
+## Defaults
+    iconSize="md" (compact defaults to "sm")
+
+## Example
+```jsx
+<EmptyState
+  title="No tasks found"
+  description="Create your first task to get started."
+  action={<Button>Create Task</Button>}
+  iconSize="lg"
+/>
+```
+
+## Composability
+- **Centered block for "no data" / "no results" states.** Renders icon + title + description + optional action slot.
+- **Icon composition:** Accepts both JSX (`<IconFolder />`) and component references (`IconFolder`). Component refs auto-instantiate with correct sizing. Default icon is the Devalok chakra.
+- **DataTable integration:** Pass an EmptyState component to DataTable's `emptyState` prop; takes precedence over `noResultsText` string.
+- **compact mode** for embedding inside Cards, sidebars, narrow sections. Defaults iconSize to 'sm' in compact mode automatically.
+- **Action slot** typically holds a single primary Button ("Create your first task", "Invite members"). For multi-action, use a div + flex with gap.
+- No longer server-safe (Framer Motion entrance animation).
+
+## Gotchas
+- `icon` accepts both JSX elements (`<IconFolder />`) and component references (`IconFolder`). Component references are auto-instantiated with correct sizing classes.
+- `iconSize` controls icon dimensions regardless of icon type. When `compact=true` and no `iconSize`, defaults to `'sm'`.
+- As of v0.18.0, EmptyState is NOT server-safe (Framer Motion dependency). Use per-component import in client components.
+
+## Changes
+### v0.18.0
+- **Changed** No longer server-safe due to Framer Motion dependency
+
+### v0.16.0
+- **Added** `iconSize?: 'sm' | 'md' | 'lg'` — control icon dimensions
+
+### v0.13.0
+- **Changed** `icon` prop now accepts `React.ComponentType<{ className?: string }>` in addition to `ReactNode` — component references are auto-instantiated
+
+### v0.5.0
+- **Changed** `icon` prop changed from `TablerIcon` (component ref) to `React.ReactNode` — use `icon={<MyIcon />}` instead of `icon={MyIcon}`
+- **Changed** Default icon is now the Devalok swadhisthana chakra (inline SVG)
+
+### v0.2.0
+- **Added** Identified as server-safe component (later reverted in v0.18.0)
+
+### v0.1.0
+- **Added** Initial release
+# ErrorDisplay
+
+- Import: @devalok/shilp-sutra/composed/error-boundary
+- Server-safe: No
+- Category: composed
+
+## Props
+    error: unknown (REQUIRED — Error object, status object, or string)
+    onReset: () => void (optional retry button)
+
+## Defaults
+    None
+
+## Example
+```jsx
+<ErrorDisplay error={error} onReset={() => refetch()} />
+```
+
+## Composability
+- **ErrorDisplay, not ErrorBoundary** — confusingly, the import path is `error-boundary` but the component is `ErrorDisplay`. It renders an error UI; it does NOT catch errors. Pair it with your own ErrorBoundary (from react-error-boundary, Next.js error.tsx, etc.) as the fallback UI.
+- **Auto-detects HTTP status codes** (404, 403, 500) when the `error` object has a `status` field — shows appropriate icon + message.
+- **Dev-only stack trace:** Renders the stack trace only when `process.env.NODE_ENV !== 'production'`. Production users see a clean error page.
+- **onReset for retry:** Pass a callback that re-fetches / resets state. Commonly wired to a react-query `refetch` or router `replace(...)`.
+- Composes with EmptyState for "no data" states (which aren't really errors) — use EmptyState for empty, ErrorDisplay for failed.
+
+## Gotchas
+- Auto-detects HTTP status codes (404, 403, 500) and shows appropriate icon/message
+- Shows stack trace in development mode only
+- The import path is `error-boundary` but the component is named `ErrorDisplay`
+
+## Changes
+### v0.18.0
+- **Added** ErrorBoundary tests (13 new tests)
+
+### v0.1.0
+- **Added** Initial release
+# FilePreview
+
+- Import: @devalok/shilp-sutra/composed/file-preview
+- Server-safe: No
+- Category: composed
+
+## Props
+    url: string (file URL — required)
+    type: "image" | "pdf" | "video" | "audio" | "embed" (auto-detected from URL/mimeType)
+    mimeType: string (helps auto-detection)
+    alt: string (image alt text)
+    initialPage: number (PDF starting page, default 1)
+    fileName: string (displayed in file info bar)
+    fileSize: string (displayed as badge, e.g. "2.4 MB")
+    onError: (error: string) => void (called on load failures)
+
+## Defaults
+    initialPage={1}, type auto-detected
+
+## Features by Type
+
+**Image:** Pinch/scroll zoom (0.1x–8x), double-click toggle, floating toolbar (zoom %/reset/fullscreen), keyboard (+/-/0/F/Esc)
+**PDF:** react-pdf page nav (prev/next + direct input), keyboard (←→), crossfade between pages
+**Video:** Custom branded player, play overlay, auto-hiding controls, progress bar + scrub handle, mute, fullscreen
+**Audio:** Branded mini-player, full-width progress bar with hover tooltip + scrub handle, volume, file name display
+**Embed:** 16:9 aspect ratio, auto-converts YouTube/Vimeo/Figma/Loom URLs, 15s timeout
+
+## Example
+```jsx
+<FilePreview url="/uploads/mockup.png" fileName="mockup.png" fileSize="2.4 MB" />
+<FilePreview url="/docs/contract.pdf" initialPage={3} />
+<FilePreview url="https://youtube.com/watch?v=..." />
+```
+
+## Composability
+- **Type-auto-detection** from URL + mimeType routes to the right renderer (image / pdf / video / audio / embed). For ambiguous URLs, pass `type` explicitly.
+- **Heavy deps are lazy-loaded** — react-pdf (PDF), react-zoom-pan-pinch (Image zoom) are only fetched when first needed. Skeleton placeholder while loading. Don't pre-import.
+- **Composes inside Dialog/Sheet** — common pattern: thumbnail in a list → click to open a Dialog with `<FilePreview>` filling it.
+- **Embed URL normalization:** YouTube/Vimeo/Figma/Loom URLs auto-convert to embed format. Pass the original share URL; FilePreview handles it.
+- **PDF worker from unpkg CDN** — for offline apps, override `pdfjs.GlobalWorkerOptions.workerSrc` in your app entry.
+- **Download + error fallback** built in — if the file fails to load, users still get a download link.
+
+## Gotchas
+- Image/PDF lazy-loaded (Skeleton on first render)
+- PDF worker from unpkg CDN — configure workerSrc for offline apps
+- All types have error fallback with download link
+- Embed URLs auto-converted to embed format
+- Audio player doesn't show separate Download button (integrated in card)
+# FilterBar
+
+- Import: @devalok/shilp-sutra/composed/filter-bar
+- Server-safe: No
+- Category: composed
+
+## Exports
+FilterBar, FilterSelect, FilterMultiSelect
+
+## Props
+
+### FilterBar
+    searchValue: string
+    onSearchChange: (value: string) => void (renders SearchInput when provided)
+    searchPlaceholder: string
+    onClearAll: () => void (renders "Clear all" button when provided)
+    size: "xs" | "sm" | "md" (propagated to all child controls via context)
+    children: ReactNode (FilterSelect / FilterMultiSelect controls)
+
+### FilterSelect
+    label: string
+    value: string
+    onValueChange: (value: string) => void
+    options: { value: string; label: string }[]
+    allLabel: string (label for the "all" option)
+
+### FilterMultiSelect
+    label: string
+    value: string[]
+    onValueChange: (values: string[]) => void
+    options: { value: string; label: string }[]
+
+## Defaults
+    size="sm", searchPlaceholder="Search...", allLabel="All"
+
+## Example
+```jsx
+<FilterBar searchValue={search} onSearchChange={setSearch} onClearAll={clearFilters}>
+  <FilterSelect
+    label="Status"
+    value={status}
+    onValueChange={setStatus}
+    options={[{ value: 'active', label: 'Active' }, { value: 'done', label: 'Done' }]}
+  />
+  <FilterMultiSelect
+    label="Assignees"
+    value={assignees}
+    onValueChange={setAssignees}
+    options={memberOptions}
+  />
+</FilterBar>
+```
+
+## Composability
+- **FilterBar + FilterSelect + FilterMultiSelect** — three-part kit. FilterBar is the toolbar container; FilterSelect/FilterMultiSelect are the individual filter controls.
+- **size propagates via context** from FilterBar to every FilterSelect/FilterMultiSelect child. Don't set size on individual filters.
+- **Children MUST be direct** — the size cascade breaks if filters are wrapped in extra divs. Use React fragments or let them be direct children.
+- **Active filter highlight:** FilterSelect/FilterMultiSelect auto-show an accent border when their value is set (non-empty array for multi, non-"all" for single).
+- **Pair with DataTable or any list:** FilterBar sits above a DataTable/list; `searchValue` + `onSearchChange` drive global filter; individual filters drive column filters via your own state management.
+- **"Clear all" convention:** Passing `onClearAll` renders a Reset button that's your escape hatch — implement it to clear all filter state in one call.
+
+## Gotchas
+- FilterSelect and FilterMultiSelect must be direct children of FilterBar to inherit the size context
+- FilterSelect uses `"all"` as the sentinel value for "no filter" — do not use `"all"` as a real option value
+- Active filters get an accent border highlight automatically
+# FormSection
+
+- Import: @devalok/shilp-sutra/composed/form-section
+- Server-safe: No
+- Category: composed
+
+## Props
+    title: string
+    description: string (subtitle text below the title)
+    collapsible: boolean (wraps content in a Collapsible)
+    defaultOpen: boolean (initial open state when collapsible)
+    children: ReactNode (form fields)
+
+## Defaults
+    collapsible={false}, defaultOpen={true}
+
+## Example
+```jsx
+<FormSection title="General" description="Basic project settings">
+  <FormField .../>
+  <FormField .../>
+</FormSection>
+
+<FormSection title="Advanced" collapsible defaultOpen={false}>
+  <FormField .../>
+</FormSection>
+```
+
+## Composability
+- **Visual grouping of related FormFields.** Wraps its children with a title + description + horizontal rule separator. No state, no context.
+- **collapsible mode** wraps content in a Collapsible — useful for "Advanced settings" or optional form sections. `defaultOpen={false}` for initially-closed.
+- **Pairs with FormField:** Each form control inside should be a FormField for consistent label + helper text + validation. FormSection doesn't auto-wrap; you still structure each field yourself.
+- **Not a page-level header** — for a full form's main heading use PageHeader. FormSection is mid-form, between field groups.
+
+## Gotchas
+- `defaultOpen` only applies when `collapsible={true}` — otherwise the section is always open
+- Renders a horizontal rule between the header and content automatically
+# GlobalLoading
+
+- Import: @devalok/shilp-sutra/composed/global-loading
+- Server-safe: No
+- Category: composed
+
+## Props
+    isLoading: boolean (REQUIRED)
+
+## Defaults
+    None
+
+## Example
+```jsx
+<GlobalLoading isLoading={isNavigating} />
+```
+
+## Composability
+- **Thin top-of-viewport progress bar** — for route-level navigation indicators (NProgress-style). Fixed at the top; z-toast layer.
+- **Wire to router events:** Pair with Next.js `useRouter` + navigation events, or react-router's `useNavigation`, or a custom global loading state in Redux/Zustand. Set `isLoading={true}` during transit, `false` when landed.
+- **Not for in-page loading** — use Spinner, Skeleton, or LoadingSkeleton for component-level loading states. GlobalLoading is strictly for cross-route / full-page transitions.
+- **Auto-unmounts when isLoading=false** — no need to manage visibility via classes or conditional rendering.
+
+## Gotchas
+- Fixed-position bar at top of viewport (z-toast layer)
+- Renders nothing when `isLoading` is false
+
+## Changes
+### v0.18.0
+- **Fixed** Track `setTimeout` with ref, add cleanup on unmount
+
+### v0.1.0
+- **Added** Initial release
+# InlineEdit
+
+- Import: @devalok/shilp-sutra/composed/inline-edit
+- Server-safe: No
+- Category: composed
+
+## Props
+    value: string (current text value)
+    onSave: (newValue: string) => void | Promise<void> (called on commit; async shows spinner)
+    placeholder: string (shown when value is empty)
+    textClassName: string (CSS class for the editable text, e.g. "text-ds-lg font-semibold")
+    readOnly: boolean
+    maxLength: number
+    saving: boolean (external saving state — shows spinner, disables editing)
+
+## Defaults
+    placeholder="Click to edit", readOnly={false}, saving={false}
+
+## Example
+```jsx
+<InlineEdit
+  value={title}
+  onSave={(v) => updateTitle(v)}
+  textClassName="text-ds-lg font-semibold"
+/>
+```
+
+## Composability
+- **contentEditable-based** — the text IS the editor (Notion / Linear / Figma layer-name pattern). No separate input field appears.
+- **Keyboard contract:** Click to focus (auto-selects text, like Finder rename). Type to edit. Enter saves, Escape reverts. Paste strips rich content.
+- **Async save:** `onSave` can return a Promise — InlineEdit shows a spinner and disables editing while pending. On rejection, text reverts to the original value automatically.
+- **Accessibility:** Accepts `aria-label` and `aria-labelledby` (forwarded to the role="textbox" span) — required when the text isn't self-descriptive. Falls back to `placeholder` as label when neither is provided.
+- **Not inside FormField** — InlineEdit is for in-place editing of existing content (task title, project name); use regular FormField + Input for traditional forms.
+- **textClassName for typography control:** Pass `"text-ds-lg font-semibold"` to make it look like a heading without changing the underlying element.
+
+## Gotchas
+- Uses contentEditable — the text IS the editor. No input field appears.
+- Click to focus → cursor appears in text. Type to edit. Enter saves. Escape reverts.
+- Text is auto-selected on focus (like renaming a file in Finder)
+- Paste is restricted to plain text (no rich content)
+- The value is trimmed before calling `onSave`; if unchanged, `onSave` is not called
+- If `onSave` returns a Promise, a spinner is shown and editing is disabled until it resolves
+- On Promise rejection, the text reverts to the original value
+# LoadingSkeleton
+
+- Import: @devalok/shilp-sutra/composed/loading-skeleton
+- Server-safe: Yes
+- Category: composed
+
+Exports: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
+
+## Props
+
+### CardSkeleton
+    className: string
+
+### TableSkeleton
+    rows: number (default: 5)
+    columns: number (default: 4)
+    className: string
+
+### BoardSkeleton
+    columns: number (default: 4)
+    cardsPerColumn: number (default: 3)
+    className: string
+
+### ListSkeleton
+    rows: number (default: 6)
+    showAvatar: boolean (default: true)
+    className: string
+
+## Defaults
+    TableSkeleton: rows=5, columns=4
+    BoardSkeleton: columns=4, cardsPerColumn=3
+    ListSkeleton: rows=6, showAvatar=true
+
+## Example
+```jsx
+<CardSkeleton />
+<TableSkeleton rows={8} columns={5} />
+<BoardSkeleton columns={3} cardsPerColumn={4} />
+<ListSkeleton rows={10} showAvatar={false} />
+```
+
+## Composability
+- **Pre-composed skeleton layouts** — CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton. Each mimics the shape of a common DS layout so users see meaningful loading placeholders.
+- **Built on ui/Skeleton** — for custom loading layouts, use Skeleton directly (rectangle/circle/text variants). These composed versions are just opinionated shape combinations.
+- **Server-safe** — use during SSR for initial-paint skeletons in Next.js app router (while server data streams in).
+- **Pairs with conditional rendering:** `{isLoading ? <TableSkeleton rows={8} /> : <DataTable data={rows} />}`.
+- **PageSkeletons (separate file)** provides full-page placeholders (DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton) — use those for route-level loading states.
+
+## Gotchas
+- Server-safe: can be imported directly in Next.js Server Components
+- These are pre-composed skeleton layouts — for individual skeleton shapes, use the `Skeleton` UI component
+
+## Changes
+### v0.2.0
+- **Added** Identified as server-safe component
+
+### v0.1.0
+- **Added** Initial release
+# MarkdownViewer
+
+- Import: @devalok/shilp-sutra/composed/markdown-viewer
+- Server-safe: No
+- Category: composed
+
+## Props
+    content: string (markdown source)
+    compact: boolean (tighter spacing for inline use)
+    allowHtml: boolean (allow raw HTML in markdown)
+    linkTarget: string (target attribute for links)
+
+## Defaults
+    compact={false}, allowHtml={false}, linkTarget="_blank"
+
+## Example
+```jsx
+<MarkdownViewer content={message.body} />
+<MarkdownViewer content={comment} compact />
+<MarkdownViewer content={trustedHtml} allowHtml />
+```
+
+## Composability
+- **Read-only markdown renderer.** For editing, use RichTextEditor (TipTap-based). MarkdownViewer is strictly for display.
+- **Built on react-markdown + remark-gfm** — GFM tables, strikethrough, task lists supported out of the box.
+- **Syntax highlighting is lazy:** Code blocks with a language fence (```ts, ```python) lazy-load react-syntax-highlighter. First render shows a plain `<pre>` fallback. Don't pre-import.
+- **Security posture:** Raw HTML is stripped by default — `allowHtml={true}` must be explicit, and ONLY for trusted content (XSS vector otherwise).
+- **Links open external by default** (`target="_blank"` + `rel="noopener noreferrer"`). Override via `linkTarget`.
+- **compact mode** for inline use (comments, message bubbles). Default spacing is for article-body content.
+- **Pairs with Chat's Message.Body** — render markdown from user messages safely. Always keep `allowHtml={false}` for user-generated content.
+
+## Gotchas
+- Code blocks with a language fence are syntax-highlighted via `react-syntax-highlighter` (lazy-loaded) — the first render shows a plain `<pre>` fallback
+- GFM (tables, strikethrough, task lists) is supported via `remark-gfm`
+- Raw HTML is stripped by default — only enable `allowHtml` for trusted content
+- Links open in a new tab by default (`target="_blank"` with `rel="noopener noreferrer"`)
+# MasterDetail
+
+- Import: @devalok/shilp-sutra/composed/master-detail
+- Server-safe: No
+- Category: composed
+
+## Compound Components
+MasterDetail (root), MasterDetail.List, MasterDetail.Detail, MasterDetail.ListItem
+
+## Props
+
+### MasterDetail (root)
+    selected: string | null (ID of currently selected item; null = show list on mobile)
+    onBack: () => void (called when mobile back button is pressed)
+    masterWidth: string (master panel width on desktop)
+    breakpoint: "sm" | "md" | "lg" (below this, stacked mobile mode activates)
+
+### MasterDetail.ListItem
+    active: boolean (highlights the item)
+    (extends ButtonHTMLAttributes)
+
+## Defaults
+    selected={null}, masterWidth="280px", breakpoint="md"
+
+## Example
+```jsx
+<MasterDetail selected={selectedId} onBack={() => setSelectedId(null)}>
+  <MasterDetail.List>
+    {items.map((item) => (
+      <MasterDetail.ListItem
+        key={item.id}
+        active={item.id === selectedId}
+        onClick={() => setSelectedId(item.id)}
+      >
+        {item.name}
+      </MasterDetail.ListItem>
+    ))}
+  </MasterDetail.List>
+  <MasterDetail.Detail>
+    {selectedId ? <ItemDetail id={selectedId} /> : <EmptyState />}
+  </MasterDetail.Detail>
+</MasterDetail>
+```
+
+## Composability
+- **Responsive list+detail layout.** Desktop: side-by-side panels. Mobile (below `breakpoint`): stacked, mutually exclusive (list OR detail, controlled by `selected`).
+- **Compound structure:** `MasterDetail.List` contains `MasterDetail.ListItem[]` (interactive). `MasterDetail.Detail` holds the currently-selected view.
+- **onBack is required for mobile** — renders the back button in Detail pane. Omitting it leaves users stranded once they drill into an item on mobile.
+- **SSR gotcha:** Uses `window.matchMedia` — initial SSR render picks desktop mode; hydrates to mobile mode if viewport is narrow. If that causes layout shift, consider rendering this only after mount (via `useState(false)` + `useEffect`).
+- **Pairs with EmptyState** — render EmptyState inside Detail when `selected === null` on desktop ("Pick an item to get started").
+
+## Gotchas
+- On mobile (below breakpoint), List and Detail are mutually exclusive — selecting an item hides the list
+- The `onBack` callback is required for the mobile back button to appear in the Detail pane
+- Uses `window.matchMedia` — SSR renders desktop layout initially, then hydrates to correct mode
+# MemberPicker
+
+- Import: @devalok/shilp-sutra/composed/member-picker
+- Server-safe: No
+- Category: composed
+
+## Props
+    members: MemberPickerMember[] (REQUIRED) — { id, name, avatar? }
+    selectedIds: string[] (REQUIRED)
+    onSelect: (memberId: string) => void (REQUIRED)
+    multiple: boolean (default: false)
+    placeholder: string (default: "Search members...")
+    children: ReactNode (trigger element)
+
+## Defaults
+    multiple=false, placeholder="Search members..."
+
+## Example
+```jsx
+<MemberPicker members={teamMembers} selectedIds={assignees} onSelect={toggleAssignee} multiple>
+  <Button variant="outline">Assign Members</Button>
+</MemberPicker>
+```
+
+## Composability
+- **Trigger + Popover + search list.** Pass any button/element as `children` to act as the trigger. Typical pairing: outline Button that says "Assign" or an IconButton with avatar overflow.
+- **Single vs multi:** `multiple={true}` allows multiple selections; `false` (default) replaces the previous selection. `selectedIds` is always an array in both modes — consumer controls semantics.
+- **onSelect with a single ID:** Fires once per click with one memberId. Toggle logic in multi mode is consumer responsibility (derive the new array from the click).
+- **Avatar display:** Uses ui/Avatar internally — supply `avatar` URL in the member object, fallback to initials from `name`.
+- **For general-purpose multi-select** (non-members), use MultiSelectPopover which has the same popover+search pattern without member-specific avatar rendering.
+
+## Gotchas
+- `children` is used as the trigger element (e.g., a Button)
+- `onSelect` is called with a single `memberId` — toggle logic is up to the consumer
+- When `multiple=false`, selecting a new member replaces the previous selection
+
+## Changes
+### v0.18.0
+- **Fixed** Added `aria-label` to search input
+
+### v0.1.0
+- **Added** Initial release
+# MultiSelectPopover
+
+- Import: @devalok/shilp-sutra/composed/multi-select-popover
+- Server-safe: No
+- Category: composed
+
+## Props
+    items: MultiSelectItem[] (flat list — use `groups` for grouped rendering)
+    groups: MultiSelectGroup[] (grouped items with section headers)
+    value: string[] (currently selected item IDs)
+    onValueChange: (ids: string[]) => void
+    searchPlaceholder: string
+    onSearch: (query: string) => Promise<MultiSelectItem[]> (async search — replaces local filter)
+    searchDebounce: number (debounce for async search in ms)
+    renderItem: (item: MultiSelectItem, selected: boolean) => ReactNode (custom item renderer)
+    emptyMessage: string (message when no items match)
+    maxSelections: number (cap on selections)
+    align: "start" | "center" | "end"
+    width: string | number (popover width)
+    children: ReactNode (trigger element)
+
+### MultiSelectItem
+    id: string
+    label: string
+    image?: string
+    description?: string
+    disabled?: boolean
+
+### MultiSelectGroup
+    label: string
+    items: MultiSelectItem[]
+
+## Defaults
+    searchPlaceholder="Search...", searchDebounce={300}, emptyMessage="No results found", align="start", width={240}
+
+## Example
+```jsx
+<MultiSelectPopover
+  items={[
+    { id: '1', label: 'Alice', image: '/alice.jpg' },
+    { id: '2', label: 'Bob' },
+  ]}
+  value={selected}
+  onValueChange={setSelected}
+>
+  <Button>Assign members</Button>
+</MultiSelectPopover>
+```
+
+## Composability
+- **Generalized multi-select popover** — picks from a fixed list (items) or grouped list (groups), with search, async search, and custom rendering.
+- **Items vs groups (mutually exclusive):** Pass `items` for flat lists, `groups` for sectioned lists. Don't pass both.
+- **Async search via onSearch:** When provided, local filtering is disabled — the callback owns filtering and returns a new list. `searchDebounce` (default 300ms) throttles calls.
+- **renderItem escape hatch:** Pass `(item, selected) => ReactNode` for custom item rendering (avatar + multi-line descriptions, etc.). Built-in default renders image + label + description.
+- **maxSelections behavior:** At the limit, clicking a new item REPLACES the oldest selection (FIFO). `maxSelections={1}` effectively acts as single-select.
+- **MultiSelectPopover vs Combobox vs MemberPicker:**
+  - Combobox = form-field multi-select (typeahead + selection in place)
+  - MultiSelectPopover = button-triggered popup for bulk selection (good for "Assign to" / "Add tags" scenarios)
+  - MemberPicker = MultiSelectPopover specialized for team-member UI
+
+## Gotchas
+- Supply either `items` (flat) or `groups` (sectioned), not both
+- When `onSearch` is provided, local filtering is disabled — the callback must return results
+- Search state resets when the popover closes
+- `maxSelections: 1` acts as single-select — clicking a new item replaces the current one
+
+## Changes
+
+### v0.27.2
+- **Fixed** `maxSelections` at limit now replaces oldest selection instead of blocking. Single-select (`maxSelections: 1`) swaps in the new value.
+
+### v0.26.0
+- **Added** Initial release
+# PageHeader
+
+- Import: @devalok/shilp-sutra/composed/page-header
+- Server-safe: Yes
+- Category: composed
+
+## Props
+    title: string (falls back to last breadcrumb label if omitted)
+    subtitle: string
+    actions: ReactNode (action buttons)
+    breadcrumbs: Breadcrumb[] — { label: string, href?: string }
+    titleClassName: string
+
+## Defaults
+    None
+
+## Example
+```jsx
+<PageHeader
+  title="Project Settings"
+  subtitle="Configure your project preferences"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Projects', href: '/projects' },
+    { label: 'Settings' },
+  ]}
+  actions={<Button>Save</Button>}
+/>
+```
+
+## Composability
+- **Server-safe page-top header** with title + subtitle + breadcrumbs + actions slot. Renders Breadcrumb internally from the `breadcrumbs` array.
+- **Auto-derived title:** If `title` is omitted, the last breadcrumb's `label` becomes the h1. Saves duplication when the page title matches the breadcrumb leaf.
+- **Breadcrumb contract:** Last item should NOT have an `href` (it's the current page — renders as BreadcrumbPage, not a link). Items with `href` render as BreadcrumbLink.
+- **actions slot:** Typically one to three buttons (Save, Cancel, More). For larger action groups, use ButtonGroup or a toolbar.
+- **Not for tabs / sub-navigation** — pair with Tabs rendered below PageHeader for that.
+
+## Gotchas
+- Server-safe: can be imported directly in Next.js Server Components
+- If `title` is omitted, the last breadcrumb's `label` is used as the page title
+- The last breadcrumb should not have an `href` (it represents the current page)
+
+## Changes
+### v0.2.0
+- **Added** Identified as server-safe component
+
+### v0.1.0
+- **Added** Initial release
+# PageSkeletons
+
+- Import: @devalok/shilp-sutra/composed/page-skeletons
+- Server-safe: Yes
+- Category: composed
+
+Exports: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton
+
+## Props
+    className?: string (plus all standard HTML div attributes via React.ComponentPropsWithoutRef<'div'>)
+
+## Defaults
+    None
+
+## Example
+```jsx
+<DashboardSkeleton />
+<ProjectListSkeleton />
+<TaskDetailSkeleton />
+```
+
+## Composability
+- **Full-page skeleton layouts** for route-level loading states. Each mimics a common page shape (dashboard tiles, project list with filters, task detail with sidebar).
+- **Server-safe** — use in Next.js app router `loading.tsx` files for instant route-transition feedback while data streams.
+- **Built on LoadingSkeleton + ui/Skeleton** — these just assemble the pre-built regional skeletons into page-shaped layouts.
+- **When to use which skeleton tier:**
+  - `<Skeleton>` (ui) — single shape for a single element
+  - `<CardSkeleton>` / `<TableSkeleton>` (LoadingSkeleton) — individual region shape
+  - `<DashboardSkeleton>` / etc. (PageSkeletons) — full page placeholder
+- **Fixed layout structure** — the className prop adjusts the outer container, but internal layout isn't customizable. For custom page skeletons, compose LoadingSkeleton pieces yourself.
+
+## Gotchas
+- Server-safe: can be imported directly in Next.js Server Components
+- These are full-page skeleton layouts — for smaller skeleton sections, use LoadingSkeleton components
+- Accept `className` and standard div attributes but render fixed layout structures
+
+## Changes
+### v0.2.0
+- **Added** Identified as server-safe component
+
+### v0.1.0
+- **Added** Initial release
+# PriorityIndicator
+
+- Import: @devalok/shilp-sutra/composed/priority-indicator
+- Server-safe: Yes
+- Category: composed
+
+## Props
+    priority: Priority
+    display: "compact" | "full" (default: "full")
+
+Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
+
+## Defaults
+    display="full"
+
+## Example
+```jsx
+<PriorityIndicator priority="HIGH" />
+<PriorityIndicator priority="low" display="compact" />
+```
+
+## Composability
+- **Server-safe priority label** — icon + color + text for task / issue priority.
+- **Composes inside list rows, DataTable cells, Card headers, task panels** — anywhere a priority flag fits.
+- **display="compact"** shows only the icon (with priority text as title attribute for tooltip). Use in tight cells; use `display="full"` (default) in free space.
+- **Case-insensitive priority** — accepts both UPPERCASE (LOW/MEDIUM/HIGH/URGENT) and lowercase. Designed to match both backend conventions without manual coercion.
+- Color semantics: LOW=success, MEDIUM=warning, HIGH=error, URGENT=error with bolder icon.
+
+## Gotchas
+- Case-insensitive — "low" and "LOW" both work
+- Server-safe: can be imported directly in Next.js Server Components
+- `compact` display shows only the icon; `full` shows icon + text label
+
+## Changes
+### v0.2.0
+- **Added** Identified as server-safe component
+
+### v0.1.0
+- **Added** Initial release
+# RichChatInput
+
+- Import: @devalok/shilp-sutra/composed/rich-chat-input
+- Server-safe: No
+- Category: composed
+
+Compact rich text chat input for unified human+AI workspaces. Built on TipTap.
+
+## Props
+
+### RichChatInputProps
+    onSubmit: (html: string, plainText: string) => void (REQUIRED)
+    placeholder: string (default: "Type a message...")
+    disabled: boolean (default: false)
+    variant: 'compact' | 'expanded' | 'minimal' (default: 'compact')
+    maxRows: number
+    enterBehavior: 'send' | 'newline' (default: 'send')
+    maxLength: number — enables character counter
+    mentions: MentionItem[] — static list for @mention autocomplete
+    onMentionSearch: (query: string) => Promise<MentionItem[]> — async search
+    onMentionSelect: (item: MentionItem) => void
+    onFileUpload: (file: File) => Promise<{ url: string; name: string; size: number }>
+    onImageUpload: (file: File) => Promise<string>
+    slashCommands: SlashCommandGroup[] — enables / command palette
+    onTyping: (isTyping: boolean) => void — typing indicator callback
+    onEmpty: (isEmpty: boolean) => void
+    isStreaming: boolean (default: false) — shows stop button instead of send
+    onCancel: () => void — called when stop button is clicked
+    leadingSlot: ReactNode — rendered above the editor
+    trailingSlot: ReactNode — rendered below the toolbar
+    disclaimer: string — small text below the input
+    toolbar: boolean | ChatToolbarItem[] (default: true)
+
+ChatToolbarItem: 'bold' | 'italic' | 'underline' | 'strike' | 'highlight' | 'code' | 'bulletList' | 'orderedList' | 'mention' | 'emoji' | 'attach' | 'slash'
+
+MentionItem: { id: string; label: string; avatar?: string }
+
+SlashCommand: { id: string; label: string; description?: string; icon?: ComponentType; action: (editor: Editor) => void }
+
+SlashCommandGroup: { label: string; commands: SlashCommand[] }
+
+## Variants
+- `compact` (default) — 2-3 lines, inline toolbar
+- `expanded` — 5+ lines, always-visible toolbar, suited for AI prompts
+- `minimal` — single line, toolbar appears on focus
+
+## Example
+```jsx
+<RichChatInput
+  onSubmit={(html, text) => sendMessage(html)}
+  mentions={teamMembers}
+  onFileUpload={uploadFile}
+  slashCommands={[{ label: 'Actions', commands: [...] }]}
+/>
+
+<RichChatInput
+  variant="expanded"
+  onSubmit={handleSubmit}
+  maxLength={2000}
+  disclaimer="AI-generated content may be inaccurate."
+/>
+
+<RichChatInput
+  variant="minimal"
+  enterBehavior="newline"
+  onSubmit={handleReply}
+/>
+```
+
+## Composability
+- **Chat-specific TipTap editor** — purpose-built for AI + human messaging. Built on RichTextEditor primitives but pre-configured for the chat UX (auto-resize, Enter-to-send, inline toolbar).
+- **Variant drives the UX envelope:**
+  - `compact` — 2-3 line inline (chat bubble composer)
+  - `expanded` — 5+ lines with always-visible toolbar (AI prompt input)
+  - `minimal` — single line, toolbar on focus (reply composer, quick comment)
+- **Toolbar is opt-in per feature:** Icons only appear when their corresponding handler/prop is set. `onFileUpload` → attach button appears. `slashCommands` → slash button appears. `mentions` or `onMentionSearch` → @ button appears.
+- **Composes with Message from ui/chat:** RichChatInput is the composer; Message is the read-only render of the message after send. Use them together for a complete chat UX (RichChatInput at the bottom, MessageList above).
+- **TipTap is bundled** — no need to install `@tiptap/*` directly.
+- **For general rich text editing** (not chat — long-form docs, notes), use RichTextEditor instead.
+- **isStreaming + onCancel** — when the receiving side is streaming a response, show a stop button in place of send. Standard AI chat pattern.
+
+## Gotchas
+- Tiptap is bundled — no need to install `@tiptap/*` packages separately
+- Enter sends by default; use `enterBehavior="newline"` for long-form composition (Cmd/Ctrl+Enter always sends)
+- `maxLength` enables both a character limit and the visual counter in the toolbar
+- File/image upload buttons only appear when the corresponding handler is provided
+- Slash command button only appears when `slashCommands` is provided
+- Mention button only appears when `mentions` or `onMentionSearch` is provided
+
+## Changes
+### v0.33.0
+- **Added** Custom EmojiNode with spritesheet rendering — `emojiSet` prop
+- **Added** `onSchedule` prop — schedule send with smart presets + DateTimePicker, SplitButton UX
+- **Added** `actionButton` prop — composable left-side button (replaces default attach, or pass false to hide)
+- **Added** Animated mic ↔ send button transitions (AnimatePresence)
+- **Changed** Voice recording buttons from outline to soft variant
+- **Fixed** ToolbarButton width for custom-width buttons (e.g. "Refine" with text label)
+
+### v0.32.0
+- Initial release
+# RichTextEditor
+
+- Import: @devalok/shilp-sutra/composed/rich-text-editor
+- Server-safe: No
+- Category: composed
+
+Exports: RichTextEditor, RichTextViewer
+
+## Props
+
+### RichTextEditor
+    content: string (HTML string)
+    placeholder: string (default: "Start writing...")
+    onChange: (html: string) => void
+    className: string
+    editable: boolean (default: true)
+    onImageUpload?: (file: File) => Promise<string> — return URL. If omitted, images paste as base64
+    onFileUpload?: (file: File) => Promise<{ url: string; name: string; size: number }> — enables file attachments
+    mentions?: MentionItem[] — static list for @mention autocomplete
+    onMentionSearch?: (query: string) => Promise<MentionItem[]> — async search, takes precedence over static mentions
+    toolbar?: ToolbarItem[] — whitelist of toolbar items to show. Omit to show all.
+    onMentionSelect?: (item: MentionItem) => void — called when a mention is selected
+
+ToolbarItem: 'bold' | 'italic' | 'underline' | 'strike' | 'highlight' | 'h2' | 'h3' | 'blockquote' | 'bulletList' | 'orderedList' | 'taskList' | 'codeBlock' | 'link' | 'image' | 'file' | 'hr' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'emoji' | 'undo' | 'redo'
+
+MentionItem: { id: string; label: string; avatar?: string }
+
+### RichTextViewer
+    content: string (REQUIRED, HTML string)
+    className: string
+
+## Defaults
+    RichTextEditor: placeholder="Start writing...", editable=true
+
+## Example
+```jsx
+<RichTextEditor content={html} onChange={setHtml} placeholder="Write your message..." />
+
+<RichTextEditor
+  content={html}
+  onChange={setHtml}
+  mentions={[{ id: '1', label: 'Aarav' }]}
+  onImageUpload={async (file) => uploadAndReturnUrl(file)}
+  onFileUpload={async (file) => ({ url: uploadUrl, name: file.name, size: file.size })}
+/>
+
+<RichTextViewer content={savedHtml} />
+```
+
+## Composability
+- **Two exports — editor + viewer.** RichTextEditor for composition; RichTextViewer for read-only rendering of saved HTML. Both share the same prose styling so round-trip display matches the editor.
+- **TipTap v3 bundled** — no `@tiptap/*` install needed. Consumers can't mix in arbitrary TipTap extensions without forking.
+- **Toolbar whitelist via `toolbar` prop:** Pass an array of ToolbarItem names to show only those buttons. Omit to show all. Dividers auto-collapse between empty groups.
+- **Image upload:** Without `onImageUpload`, pasted/dropped images are inlined as base64 (HTML bloats fast). Provide the handler to upload and return a URL.
+- **Mentions:** Static `mentions` array OR async `onMentionSearch` (which takes precedence). The viewer always renders mentions correctly from saved HTML — no mention props needed on the viewer side.
+- **For chat composition specifically** (AI + team chat with streaming / slash commands), use RichChatInput — it's built on the same foundation but pre-configured for chat UX.
+- **Pairs with MarkdownViewer** — many teams use RichTextEditor for compose (WYSIWYG), but render saved content as markdown for simpler serialization. Convert HTML ↔ markdown at the storage boundary.
+
+## Gotchas
+- Tiptap is bundled — no need to install `@tiptap/*` packages separately
+- Emoji picker requires `@emoji-mart/react` + `@emoji-mart/data` peers
+- Images without `onImageUpload` are stored as base64 in HTML — large images bloat content
+- Mention rendering in viewer always works (no mention props needed, just the HTML)
+- Features: bold, italic, underline, strikethrough, highlight, headings, blockquote, lists, task lists, code, links, images, file attachments, mentions, emoji, text alignment, horizontal rule
+
+## Changes
+### v0.33.0
+- **Added** `emojiSet` prop — `EmojiSet` type for consistent emoji art style rendering
+- **Changed** TipTap v2 → v3 upgrade (useEditorState, immediatelyRender: false for SSR, ListKit)
+- **Added** EmojiNode + createEmojiSuggestion(set) registered internally
+
+### v0.30.0
+- **Added** `toolbar` prop — whitelist of `ToolbarItem` names to control which toolbar buttons appear. Dividers render only between groups that have visible items. `ToolbarItem` type exported from barrel.
+
+### v0.18.0
+- **Fixed** Use ref to track internal changes, prevent update loop
+
+### v0.9.0
+- **Changed** All `@tiptap/*` packages moved from peerDependencies to bundled build-time dependencies — consumers no longer need to install tiptap separately
+
+### v0.8.0
+- **Fixed** Emoji picker now renders above the editor (not clipped by overflow)
+- **Fixed** Link/image URL injection prevented via protocol validation
+- **Fixed** Escape key in emoji picker no longer closes parent dialogs
+- **Fixed** Tiptap peer deps tightened to `>=2.27.2 <3.0.0`
+
+### v0.7.0
+- **Added** Initial release — full-featured tiptap-based rich text editing with toolbar, mentions, emoji, image, alignment
+
+### v0.1.1
+- **Fixed** Added content sync effect so editor updates when `content` prop changes externally
+# ScheduleView
+
+- Import: @devalok/shilp-sutra/composed/schedule-view
+- Server-safe: No
+- Category: composed
+
+## Props
+    view: "day" | "week" (REQUIRED)
+    date: Date (REQUIRED — current day or any date in target week)
+    events: ScheduleEvent[] (REQUIRED) — { id, title, start: Date, end: Date, color? }
+    onEventClick?: (event: ScheduleEvent) => void
+    onSlotClick?: (start: Date, end: Date) => void
+    startHour: number (default: 8)
+    endHour: number (default: 18, exclusive)
+    slotDuration: number (minutes, default: 30)
+
+Event colors: "primary" | "success" | "warning" | "error" | "info" | "neutral"
+
+## Defaults
+    startHour=8, endHour=18, slotDuration=30
+
+## Example
+```jsx
+<ScheduleView
+  view="week"
+  date={new Date()}
+  events={calendarEvents}
+  onEventClick={(e) => openEvent(e.id)}
+/>
+```
+
+## Composability
+- **Day / Week calendar view** for time-block display (meetings, shifts, availability). Not a full calendar app — no month view, no drag-to-create.
+- **Event data is consumer-owned:** You pass `events` as an array; ScheduleView doesn't fetch, doesn't cache, doesn't expand recurring events. All scheduling logic lives in your app.
+- **Event click + slot click** — `onEventClick` for existing events; `onSlotClick` for creating new events (fires with start/end of the empty slot).
+- **Color vocabulary matches the DS** — `primary/success/warning/error/info/neutral`. Map your event types to these at the data layer.
+- **endHour is exclusive:** `endHour=18` means the last visible slot starts at 17:30 (with 30min slots). Match your UX expectation: 9-5 typically means `startHour=9, endHour=18`.
+- **Pairs with date-picker/composed** — use DatePicker or DateRangePicker to choose which date to show; pass that as ScheduleView's `date`.
+
+## Gotchas
+- `endHour` is exclusive — `endHour=18` means the last visible slot starts at 17:30 (with default 30min slots)
+- `onSlotClick` fires when clicking an empty time slot — useful for creating new events
+- Events that span outside `startHour`/`endHour` may be clipped
+
+## Changes
+### v0.1.0
+- **Added** Initial release
+# SimpleTooltip
+
+- Import: @devalok/shilp-sutra/composed/simple-tooltip
+- Server-safe: No
+- Category: composed
+
+## Props
+    content: ReactNode (REQUIRED — tooltip content)
+    side: "top" | "right" | "bottom" | "left" (default: "top")
+    align: "start" | "center" | "end" (default: "center")
+    delayDuration: number (ms, default: 300)
+    children: ReactNode (trigger element)
+
+## Defaults
+    side="top", align="center", delayDuration=300
+
+## Example
+```jsx
+<SimpleTooltip content="Edit this item">
+  <IconButton icon={<IconEdit />} aria-label="Edit" />
+</SimpleTooltip>
+```
+
+## Composability
+- **One-liner Tooltip** — wraps TooltipProvider + Tooltip + TooltipTrigger + TooltipContent so consumers don't have to manually compose them for a simple label.
+- **When to use:** 90% of tooltip use cases (icon-only button labels, abbreviated text expansions, secondary info). Use the ui/Tooltip compound for advanced cases (controlled open, nested triggers, custom animations).
+- **Auto-provides its own TooltipProvider** — safe to drop anywhere. You can still wrap a broader TooltipProvider at layout level for shared `delayDuration`; SimpleTooltip respects it if present.
+- **Content must be inert** — same rule as ui/Tooltip. For interactive popped content, use Popover or HoverCard.
+- **Pairs with IconButton** — the canonical pattern for labeled icon buttons.
+
+## Gotchas
+- Wraps the full Tooltip compound (Provider + Tooltip + Trigger + Content) into one component — no need for TooltipProvider
+- Unlike the low-level Tooltip, SimpleTooltip does not require wrapping in a TooltipProvider
+
+## Changes
+### v0.18.0
+- **Fixed** Type definition corrected
+
+### v0.1.0
+- **Added** Initial release
+# StatusBadge
+
+- Import: @devalok/shilp-sutra/composed/status-badge
+- Server-safe: No
+- Category: composed
+
+Note: StatusBadge was server-safe prior to v0.18.0 but is NO LONGER server-safe due to Framer Motion dependency.
+
+## Props
+    status: "active" | "pending" | "approved" | "rejected" | "completed" | "blocked" | "in-progress" | "review" | "cancelled" | "draft"
+    color: "success" | "warning" | "error" | "info" | "neutral" (overrides status styling when set)
+    size: "sm" | "md"
+    label: string (auto-derived from status/color if omitted)
+    hideDot: boolean (default: false)
+    onClick: () => void (makes badge clickable — renders as button with chevron)
+    icon: ReactNode (custom trailing icon — replaces default chevron when clickable)
+
+## Defaults
+    size="md", hideDot=false
+    When neither status nor color is passed, defaults to status='pending' styling
+
+## Example
+```jsx
+<StatusBadge status="active" />
+<StatusBadge status="in-progress" />
+<StatusBadge status="review" label="Needs Review" />
+<StatusBadge color="warning" label="In Review" size="sm" />
+<StatusBadge status="active" onClick={() => openStatusPicker()} />
+```
+
+## Composability
+- **Semantic pill for workflow status.** Built on ui/Badge but with opinionated status → color mapping (active=success, pending=warning, rejected=error, etc.).
+- **status vs color discriminated union:** Pass either `status` (auto-mapped color) or `color` (explicit). Don't pass both — `color` wins if you do.
+- **Interactive mode:** Passing `onClick` renders as a `<button>` with a trailing chevron — common pattern for opening a status picker dropdown. Pair with a Popover or DropdownMenu for the status selector.
+- **Pairs with DataTable, Card headers, activity feeds** — anywhere an inline status pill fits. Use `size="sm"` for dense rows.
+- **StatusBadge vs ui/Badge vs StatusDot:**
+  - StatusBadge = workflow status pill with built-in status semantics
+  - ui/Badge = generic badge with full color/variant/shape control
+  - StatusDot = tiny presence indicator (no label pill)
+
+## Gotchas
+- When `color` is set, it takes priority over `status` for styling
+- Props use a discriminated union — pass either `status` or `color`, not both
+- As of v0.18.0, StatusBadge is NOT server-safe (Framer Motion dependency)
+- When `onClick` is provided, badge renders as a `<button>` with a trailing chevron icon
+- Pass `icon` to replace the default chevron with a custom trailing icon
+
+## Changes
+### v0.29.0
+- **Added** `in-progress` status (accent/blue styling)
+- **Added** `review` status (info styling)
+- **Added** `onClick` prop — renders as a `<button>` with trailing chevron and hover opacity
+- **Added** `icon` prop — custom trailing icon (replaces the default chevron when clickable)
+
+### v0.18.0
+- **Changed** No longer server-safe due to Framer Motion dependency
+
+### v0.8.0
+- **Changed** Props now use discriminated union — pass either `status` or `color`, not both
+
+### v0.2.0
+- **Added** Identified as server-safe component (later reverted in v0.18.0)
+
+### v0.1.0
+- **Added** Initial release
+
+---
+
+# SHELL COMPONENTS
+# Alphabetical within this section.
+# Import from: @devalok/shilp-sutra/shell/<kebab-name>
+
+---
+
+# AppCommandPalette
+
+- Import: @devalok/shilp-sutra/shell/app-command-palette
+- Server-safe: No
+- Category: shell
+
+## Props
+    user?: AppCommandPaletteUser | null — { name, role? } (optional)
+    isAdmin?: boolean (shows admin command groups regardless of user.role; takes precedence over role-based detection)
+    extraGroups?: CommandGroup[]
+    onNavigate?: (path: string) => void
+    onSearch?: (query: string) => void
+    searchResults?: SearchResult[]
+    isSearching?: boolean (shows loading state while search is in progress)
+    onSearchResultSelect?: (result: SearchResult) => void
+
+SearchResult: { id: string, title: string, snippet?: string, entityType: string, projectId?: string | null, metadata?: Record<string, unknown> }
+AppCommandPaletteUser: { name: string, role?: string }
+
+## Defaults
+    None
+
+## Example
+```jsx
+<AppCommandPalette
+  user={{ name: 'John', role: 'admin' }}
+  isAdmin={true}
+  onNavigate={(path) => router.push(path)}
+  searchResults={results}
+  onSearchResultSelect={(r) => router.push(`/${r.entityType}/${r.id}`)}
+/>
+```
+
+## Composability
+- **Shell-level wrapper around composed/CommandPalette** — adds opinionated app conventions: user-aware admin command groups, search result integration, navigation dispatch.
+- **Required setup:** Place inside `<CommandRegistryProvider>` (which owns the list of page items). Typically at app root next to TopBar.
+- **Router integration via onNavigate:** Pass `(path) => router.push(path)` (Next.js) or equivalent for your framework. All page command clicks funnel through this callback.
+- **Server-search integration:** Pass `onSearch` + `searchResults` + `onSearchResultSelect` for async search (API calls). `isSearching` drives a loading state. When these props are omitted, AppCommandPalette falls back to local filtering of registered pages.
+- **Admin gating:** `isAdmin=true` surfaces `adminPages` from CommandRegistry. Takes precedence over `user.role`-based detection so you can force admin mode during testing / impersonation.
+- **For scoped, non-app-wide palettes** (per-page command trees, custom popups), use composed/CommandPalette directly without the Registry layer.
+
+## Gotchas
+- Uses CommandRegistry context for page navigation items (see CommandRegistryProvider)
+- `isAdmin` takes precedence over `user.role` for showing admin command groups
+- Should be placed at the app root level, typically alongside TopBar
+
+## Changes
+### v0.3.0
+- **Fixed** Added missing `'use client'` directive
+
+### v0.1.0
+- **Added** Initial release
+# BottomNavbar
+
+- Import: @devalok/shilp-sutra/shell/bottom-navbar
+- Server-safe: No
+- Category: shell
+
+## Props
+    currentPath?: string (optional)
+    user?: BottomNavbarUser | null (optional)
+    primaryItems?: BottomNavItem[] (max 4 recommended, optional)
+    moreItems?: BottomNavItem[] (overflow items in "More" menu, optional)
+    className?: string
+
+BottomNavItem: { title: string, href: string, icon: ReactNode, exact?: boolean, badge?: number }
+BottomNavbarUser: { name: string, role?: string }
+
+## Defaults
+    None
+
+## Example
+```jsx
+<BottomNavbar
+  currentPath="/dashboard"
+  primaryItems={[
+    { title: 'Home', href: '/', icon: <IconHome /> },
+    { title: 'Tasks', href: '/tasks', icon: <IconChecklist /> },
+  ]}
+/>
+```
+
+## Composability
+- **Mobile-only bottom nav** — fixed to bottom of viewport. Desktop should use AppSidebar instead.
+- **Responsive switch pattern:** Use `useIsMobile()` hook to conditionally render AppSidebar (desktop) or BottomNavbar (mobile). Example:
+  ```jsx
+  const isMobile = useIsMobile()
+  return isMobile ? <BottomNavbar ... /> : <AppSidebar ... />
+  ```
+- **Primary vs overflow:** `primaryItems` (max 4) for the always-visible slots; `moreItems` go into a "More" sheet that opens on tap. Don't exceed 4 primary — the bar becomes cramped.
+- **Router integration via LinkProvider:** Each nav item is rendered using the framework-specific Link component registered in LinkProvider. Without LinkProvider, you get full-page reloads on tap.
+- **Badge numbers** cap at 99+ (same as BadgeIndicator pattern).
+- **Not for desktop:** The viewport-fixed positioning + touch-optimized sizing don't translate well to desktop. Hide behind `md:hidden`.
+
+## Gotchas
+- Designed for mobile viewports — fixed to bottom of screen
+- Max 4 `primaryItems` recommended; overflow goes in `moreItems` shown in a "More" sheet
+- Use with `useIsMobile()` hook to conditionally render instead of AppSidebar
+- Requires LinkProvider for framework-specific link components (e.g., Next.js Link)
+
+## Changes
+### v0.19.0
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
+- **Changed** "More" menu and interactive items bumped accordingly
+
+### v0.18.0
+- **Fixed** Removed incorrect `role="button"` and `tabIndex` from overlay
+
+### v0.16.0
+- **Added** `badge?: number` on `BottomNavItem` — notification count badge (red dot, 99+ cap)
+
+### v0.1.1
+- **Changed** Decoupled from Next.js via LinkProvider
+
+### v0.1.0
+- **Added** Initial release
+# CommandRegistry
+
+- Import: @devalok/shilp-sutra/shell/command-registry
+- Server-safe: No
+- Category: shell
+
+Exports: CommandRegistryProvider, useCommandRegistry
+
+## Props
+
+### CommandRegistryProvider
+    children: ReactNode
+    registry: CommandRegistry (REQUIRED)
+
+CommandRegistry: { pages: CommandPageItem[], adminPages: CommandPageItem[] }
+CommandPageItem: { id: string, label: string, icon: ReactNode, path: string, keywords?: string[] }
+
+### useCommandRegistry hook
+    Returns: CommandRegistry | null
+
+## Defaults
+    None
+
+## Example
+```jsx
+<CommandRegistryProvider
+  registry={{
+    pages: [
+      { id: 'dashboard', label: 'Dashboard', icon: <IconHome />, path: '/dashboard' },
+      { id: 'projects', label: 'Projects', icon: <IconFolder />, path: '/projects' },
+    ],
+    adminPages: [
+      { id: 'users', label: 'Manage Users', icon: <IconUsers />, path: '/admin/users' },
+    ],
+  }}
+>
+  <App />
+</CommandRegistryProvider>
+```
+
+## Composability
+- **Context provider for AppCommandPalette.** Registers page-level navigation items that the command palette surfaces as commands.
+- **Place at app root** — wrap both AppCommandPalette and the rest of the app inside `<CommandRegistryProvider>`. Positioning matters: any AppCommandPalette outside the provider gets `useCommandRegistry() === null` and falls back to minimal functionality.
+- **Separation of pages vs adminPages** — the palette filters based on user role / `isAdmin` flag. Keep admin-only routes in the adminPages array to avoid leaking them to regular users.
+- **useCommandRegistry()** is the consumer hook — returns the full registry or null. Use in your own command-aware components (e.g. a Spotlight-style keyboard-search embed elsewhere in the app).
+- **Works with LinkProvider** — CommandPaletteItems navigate via `onNavigate` prop on AppCommandPalette, which routes to your framework's Link component.
+
+## Gotchas
+- Provides the command registry context consumed by AppCommandPalette
+- Place at app root, wrapping both AppCommandPalette and the rest of the app
+- `useCommandRegistry()` returns `null` if no provider is found — handle this case
+
+## Changes
+### v0.1.0
+- **Added** Initial release
+# LinkProvider
+
+- Import: @devalok/shilp-sutra/shell/link-context
+- Server-safe: No
+- Category: shell
+
+Exports: LinkProvider, useLink
+
+## Props
+
+### LinkProvider
+    component: ForwardRefComponent (e.g. Next.js Link, Remix Link)
+    children: ReactNode
+
+### useLink hook
+    Returns: LinkComponent
+
+## Defaults
+    Without LinkProvider, shell components render plain `<a>` tags
+
+## Example
+```jsx
+import Link from 'next/link'
+
+<LinkProvider component={Link}>
+  <AppSidebar ... />
+  <BottomNavbar ... />
+</LinkProvider>
+```
+
+## Composability
+- **The framework router bridge for all shell components.** Without LinkProvider, AppSidebar / BottomNavbar / TopBar.UserMenu / AppCommandPalette render plain `<a>` tags — that means full page reloads instead of client-side navigation.
+- **Required setup:**
+  ```tsx
+  // Next.js
+  import Link from 'next/link'
+  <LinkProvider component={Link}>
+    <App />
+  </LinkProvider>
+  ```
+- **Place at app root** — above every shell component that renders nav links.
+- **component must be forwardRef** (Next.js Link, Remix Link, react-router Link all qualify). Custom components need to forward ref + forward className + forward all anchor props.
+- **Consumer components use `useLink()`** — returns the registered component or falls back to plain `<a>`. Your own components can consume this hook to integrate with the same router abstraction.
+- **ui-category components don't consume LinkProvider** — they use `asChild` for router integration (e.g. `<Button asChild><NextLink ...>...</NextLink></Button>`). LinkProvider is shell-specific because shell components embed link arrays (can't use asChild per-item without breaking the data-driven API).
+
+## Gotchas
+- Without LinkProvider, shell components render plain `<a>` tags (full page reloads)
+- Place at app root, wrapping all shell components that render navigation links
+- The `component` prop must be a forwardRef component (Next.js Link, Remix Link, etc.)
+
+## Changes
+### v0.1.1
+- **Added** Shell components decoupled from Next.js — replaced hard `next/link` import with polymorphic `LinkProvider`/`useLink` context
+
+### v0.1.0
+- **Added** Initial release (with hardcoded Next.js Link dependency)
+# NotificationCenter
+
+- Import: @devalok/shilp-sutra/shell/notification-center
+- Server-safe: No
+- Category: shell
+
+## Props
+    notifications?: Notification[]
+    unreadCount?: number (derived from notifications if not provided)
+    open?: boolean (controlled mode)
+    onOpenChange?: (open: boolean) => void
+    isLoading?: boolean
+    hasMore?: boolean
+    onFetchMore?: () => void
+    onMarkRead?: (id: string) => void
+    onMarkAllRead?: () => void
+    onNavigate?: (path: string) => void — called when a notification with a route is clicked
+    getNotificationRoute?: (notification: Notification) => string | null — returns route for a notification; defaults to () => null
+    footerSlot?: ReactNode — content rendered in a sticky footer below the scroll area
+    emptyState?: ReactNode — replaces default empty state UI
+    headerActions?: ReactNode — extra action buttons after "Mark all read"
+    popoverClassName?: string — override default popover dimensions
+    onDismiss?: (id: string) => void — when provided, each notification shows a dismiss button
+
+Notification: { id: string, title: string, body?: string | null, tier: 'INFO' | 'IMPORTANT' | 'CRITICAL', isRead: boolean, createdAt: string, entityType?: string | null, entityId?: string | null, projectId?: string | null, project?: { title: string } | null, actions?: NotificationAction[] }
+NotificationAction: { label: string, variant?: 'primary' | 'default' | 'danger', onClick: (id: string) => void }
+
+## Defaults
+    getNotificationRoute defaults to () => null (no hardcoded routes)
+
+## Example
+```jsx
+<NotificationCenter
+  notifications={notifications}
+  onMarkRead={markAsRead}
+  onMarkAllRead={markAllAsRead}
+  onNavigate={(path) => router.push(path)}
+  getNotificationRoute={(n) => n.entityType === 'task' ? `/tasks/${n.entityId}` : null}
+  onDismiss={(id) => dismissNotification(id)}
+  footerSlot={<Link href="/notifications">View all notifications</Link>}
+  emptyState={<p>You're all caught up!</p>}
+  headerActions={<Button variant="ghost" size="sm">Settings</Button>}
+  popoverClassName="w-[480px]"
+/>
+```
+
+## Composability
+- **Bell + Popover + notification list** — renders the bell button with unread count badge and a popover list on click.
+- **Typical placement:** Inside `<TopBar.Right>` — common pattern is `<TopBar.IconButton>` for utility actions PLUS `<NotificationCenter>` for the bell.
+- **No hardcoded routes** — `getNotificationRoute` is the consumer's routing decision. Return the correct path per notification type (task → `/tasks/:id`, comment → `/threads/:id`, etc.) or null for non-routable notifications.
+- **onNavigate** fires when a notification with a route is clicked — wire to your router's push/navigate call.
+- **Pagination:** Pass `hasMore` + `onFetchMore` for infinite-scroll of older notifications.
+- **emptySlot + footerSlot + headerActions** are content slots for customization — keep the bell+popover shell, swap the inside.
+- **Pairs with NotificationPreferences** (separate page component) for letting users configure which notification tiers/channels they want to receive.
+- **onDismiss** is optional — when provided, per-notification X buttons appear. Otherwise mark-as-read is the only dismissal mechanism.
+
+## Gotchas
+- Typically rendered inside TopBar's `notificationSlot` prop
+- `getNotificationRoute` must be provided for clickable notifications — no hardcoded routes
+- Tier dot doubles as read/unread marker (opacity-based)
+- `onDismiss` enables per-notification dismiss buttons when provided
+
+## Changes
+### v0.13.0
+- **Added** `NotificationAction` type and `actions` prop on `Notification` — inline action buttons per notification row
+- **Fixed** Tier dot now doubles as read/unread marker (opacity-based) — removed separate unread indicator dot
+
+### v0.1.1
+- **Changed** Decoupled from Next.js via LinkProvider
+- **Fixed** Added `aria-label` to bell button
+
+### v0.1.0
+- **Added** Initial release
+# NotificationPreferences
+
+- Import: @devalok/shilp-sutra/shell/notification-preferences
+- Server-safe: No
+- Category: shell
+
+## Props
+    preferences?: NotificationPreference[]
+    projects?: NotificationProject[]
+    isLoading?: boolean
+    onSave?: (preference: { projectId, channel, minTier, muted }) => void | Promise<void>
+    onToggleMute?: (preference: NotificationPreference) => void | Promise<void>
+    onUpdateTier?: (preference: NotificationPreference, newTier: string) => void | Promise<void>
+    onDelete?: (preferenceId: string) => void | Promise<void>
+    className?: string
+
+NotificationPreference: { id: string, userId?: string, projectId: string | null, channel: string, minTier: string, muted: boolean }
+NotificationProject: { id: string, title: string }
+
+## Defaults
+    None
+
+## Example
+```jsx
+<NotificationPreferences
+  preferences={prefs}
+  projects={projectList}
+  onSave={handleSavePref}
+  onToggleMute={handleToggleMute}
+  onUpdateTier={handleUpdateTier}
+  onDelete={handleDeletePref}
+/>
+```
+
+## Composability
+- **Full-page preferences UI** — typically rendered on a settings page (`/settings/notifications`). Not an overlay; not a dropdown.
+- **Per-project preferences** — each preference is tied to a project + channel + tier. Users can mute/unmute and adjust tier (INFO / IMPORTANT / CRITICAL threshold) per project-channel combo.
+- **All callback props support Promise<void>** — integrate with server actions / fetch calls without manual loading state management.
+- **Pairs with NotificationCenter** — NotificationCenter shows notifications in real time (driven by these preferences); NotificationPreferences lets users tune the rules.
+- **Data ownership is consumer-side** — you pass `preferences` + `projects`; NotificationPreferences renders. No built-in persistence or sync.
+
+## Gotchas
+- Manages per-project notification preferences (channel, tier, mute)
+- All callback props support async (Promise<void>) for server-side operations
+- Typically rendered on a settings/preferences page
+
+## Changes
+### v0.1.0
+- **Added** Initial release
+# AppSidebar
+
+- Import: @devalok/shilp-sutra/shell/sidebar
+- Server-safe: No
+- Category: shell
+
+## Props
+    currentPath?: string (highlights active nav item)
+    user?: SidebarUser | null — { name, email?, image?, designation?, role? }
+    navGroups?: NavGroup[] — { label: string, items: NavItem[], action?: ReactNode }
+    logo?: ReactNode
+    footerLinks?: Array<{ label: string, href: string }> (DEPRECATED — use footer.links)
+    footer?: SidebarFooterConfig — structured footer (takes precedence over footerLinks)
+    headerSlot?: ReactNode — content between user info and navigation
+    preFooterSlot?: ReactNode — content between navigation and footer
+    preFooterClassName?: string — className on preFooterSlot wrapper div
+    renderItem?: (item: NavItem, defaultRender: () => ReactNode) => ReactNode | null — custom item rendering
+    className?: string
+
+NavItem: { title: string, href: string, icon: ReactNode, exact?: boolean, badge?: string | number, children?: NavSubItem[], defaultOpen?: boolean }
+NavSubItem: { title: string, href: string, icon?: ReactNode, exact?: boolean }
+NavGroup: { label: string, items: NavItem[], action?: ReactNode }
+SidebarUser: { name: string, email?: string, image?: string | null, designation?: string, role?: string }
+SidebarFooterConfig: { links?: Array<{ label: string, href: string }>, version?: string | { label: string, href: string }, slot?: ReactNode, promo?: SidebarPromo }
+SidebarPromo: { text: string, icon?: ReactNode, action?: { label: string, href?: string, onClick?: () => void }, onDismiss?: () => void }
+
+## Defaults
+    None
+
+## Example
+```jsx
+<AppSidebar
+  currentPath="/dashboard"
+  user={{ name: 'Jane', email: 'jane@example.com' }}
+  navGroups={[{
+    label: 'Main',
+    items: [
+      { title: 'Dashboard', href: '/dashboard', icon: <IconHome /> },
+      { title: 'Projects', href: '/projects', icon: <IconFolder />, children: [
+        { title: 'Karm V2', href: '/projects/abc/board' },
+      ]},
+    ],
+  }]}
+  footer={{
+    links: [{ label: 'Terms', href: '/terms' }],
+    version: { label: 'v2.4.1', href: '/changelog' },
+  }}
+/>
+```
+
+## Composability
+- **Opinionated app sidebar** — data-driven via `navGroups`, with user profile header, navigation groups (with optional labels + group actions), and a configurable footer (links + version + optional promo banner).
+- **Required setup (three providers):**
+  - `SidebarProvider` (from ui/sidebar) — owns expanded/collapsed state + cookie persistence
+  - `LinkProvider` — framework router integration for nav item links
+  - `CommandRegistryProvider` (if pairing with AppCommandPalette) — registers the same navGroups so keyboard search finds them
+- **renderItem escape hatch:** Custom per-item rendering (e.g. custom icons per item type, status decorations, hover previews). Return `null` to fall back to default.
+- **Nested navigation:** NavItem's `children: NavSubItem[]` renders a collapsible subsection. Auto-opens if a child matches the current path.
+- **Footer as slot:** `footer` can include links, version info, a ReactNode slot (e.g. theme toggle), and a dismissable promo banner — structure it once, compose.
+- **Pairs with TopBar + BottomNavbar:** Desktop layout = AppSidebar + TopBar. Mobile layout = hide AppSidebar, show BottomNavbar.
+
+## Gotchas
+- Must be wrapped in SidebarProvider (from ui/sidebar)
+- Requires LinkProvider for framework-specific link components
+- `footerLinks` is deprecated — use `footer.links` instead
+- `renderItem` returning `null` falls back to default rendering
+- Collapsible nav items auto-open when a child is active (matching `currentPath`)
+- Badge numbers > 99 display as "99+"
+
+## Changes
+### v0.19.0
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2` for visual hierarchy above app background
+- **Changed** Interactive hover states bumped from `surface-2` to `surface-3`
+
+### v0.18.0
+- **Fixed** `bg-interactive-subtle` changed to `bg-accent-2` (OKLCH migration)
+
+### v0.16.0
+- **Added** `preFooterClassName?: string` — custom className on preFooterSlot wrapper
+
+### v0.14.0
+- **Changed** `footer.version` now accepts `string | { label: string; href: string }` — version can link to changelog
+
+### v0.13.0
+- **Added** `SidebarPromo` type and `footer.promo` prop — dismissable promo/upsell banner
+- **Changed** Footer links and version now render on a single line separated by dividers
+- **Fixed** Collapsible chevron wrapped in fixed-height container to prevent drift
+- **Fixed** Collapsible chevron no longer drifts into child elements when sub-list expands
+
+### v0.10.0
+- **Added** Collapsible nav items with `children` array and `NavSubItem` type
+- **Added** Nav item `badge` prop for counts/labels, caps at 99+
+- **Added** Nav group `action` prop for buttons next to group labels
+- **Added** Structured `footer` prop with `SidebarFooterConfig` — links, version, slot
+- **Added** `headerSlot` and `preFooterSlot` content slots
+- **Added** `renderItem` escape hatch for custom item rendering
+- **Deprecated** `footerLinks` prop — use `footer.links` instead
+
+### v0.1.1
+- **Changed** Decoupled from Next.js via LinkProvider
+
+### v0.1.0
+- **Added** Initial release
+# TopBar
+
+- Import: @devalok/shilp-sutra/shell/top-bar
+- Server-safe: No
+- Category: shell
+
+## Overview
+
+Composition-based application top bar. Uses dot-notation subcomponents for flexible layout.
+
+## Subcomponents
+
+| Component | Purpose |
+|-----------|---------|
+| `TopBar` | Root — bg-surface-2, border-b, sticky. Auto-switches to grid when Center is present. |
+| `TopBar.Left` | Left zone — sidebar trigger, title, breadcrumbs |
+| `TopBar.Center` | Optional center zone — search bar, tabs. Triggers 3-column grid layout. |
+| `TopBar.Right` | Right zone — action buttons, user menu. Gets ml-auto in flex mode. |
+| `TopBar.Section` | Groups items with configurable gap |
+| `TopBar.IconButton` | Circular icon button with tooltip (bg-surface-3, hover:bg-surface-4) |
+| `TopBar.Title` | Page title heading, hidden on mobile |
+| `TopBar.UserMenu` | Avatar dropdown with color mode toggle, profile, logout |
+
+## Props
+
+### TopBar (root)
+    children: ReactNode
+    className?: string
+
+### TopBar.Left / TopBar.Center / TopBar.Right
+    children: ReactNode
+    className?: string
+
+### TopBar.Section
+    gap?: "tight" | "default" | "loose" (default: "default")
+    children: ReactNode
+    className?: string
+
+Gap values: tight = gap-ds-02, default = gap-ds-04, loose = gap-ds-06
+
+### TopBar.IconButton
+    icon: ReactNode
+    tooltip: string
+    ...ButtonHTMLAttributes
+
+### TopBar.Title
+    children: ReactNode
+    className?: string
+
+### TopBar.UserMenu
+    user: TopBarUser — { name, email?, image? }
+    onNavigate?: (path: string) => void
+    onLogout?: () => void
+    userMenuItems?: UserMenuItem[]
+    className?: string
+
+TopBarUser: { name: string, email?: string, image?: string | null }
+UserMenuItem: { label: string, icon?: ReactNode, href?: string, onClick?: () => void, separator?: boolean, color?: string, badge?: string | boolean, disabled?: boolean }
+
+UserMenuItem fields:
+- href — navigates via onNavigate callback
+- onClick — custom action (takes precedence over href)
+- separator — renders a DropdownMenuSeparator before this item
+- color — semantic text color (e.g. "error" for text-error)
+- badge — string for count badge, true for dot indicator
+- disabled — greys out the item
+
+## Example
+
+### Two-zone (standard)
+```jsx
+<TopBar>
+  <TopBar.Left>
+    <SidebarTrigger />
+    <TopBar.Title>Dashboard</TopBar.Title>
+  </TopBar.Left>
+  <TopBar.Right>
+    <TopBar.Section gap="tight">
+      <TopBar.IconButton icon={<IconSearch />} tooltip="Search (Ctrl+K)" onClick={openSearch} />
+      <NotificationCenter notifications={notifications} />
+      <TopBar.IconButton icon={<IconSparkles />} tooltip="AI Chat" onClick={openAI} />
+    </TopBar.Section>
+    <TopBar.UserMenu
+      user={{ name: 'John', email: 'john@example.com' }}
+      onNavigate={(p) => router.push(p)}
+      onLogout={handleLogout}
+      userMenuItems={[
+        { label: 'Changelog', icon: <IconNews />, href: '/changelog', badge: '3' },
+      ]}
+    />
+  </TopBar.Right>
+</TopBar>
+```
+
+### Three-zone (centered search bar)
+```jsx
+<TopBar>
+  <TopBar.Left>
+    <SidebarTrigger />
+    <TopBar.Title>Dashboard</TopBar.Title>
+  </TopBar.Left>
+  <TopBar.Center>
+    <SearchBarTrigger />
+  </TopBar.Center>
+  <TopBar.Right>
+    <TopBar.Section gap="tight">
+      <TopBar.IconButton icon={<IconBell />} tooltip="Notifications" onClick={fn} />
+    </TopBar.Section>
+    <TopBar.UserMenu user={user} onLogout={logout} />
+  </TopBar.Right>
+</TopBar>
+```
+
+## Composability
+- **Composition-based, NOT data-driven.** Use dot-notation subcomponents (`TopBar.Left`, `TopBar.Center`, `TopBar.Right`, `TopBar.Section`, `TopBar.IconButton`, `TopBar.Title`, `TopBar.UserMenu`) to assemble. No "props config" — explicit JSX.
+- **Two-zone vs three-zone layout** — adding `TopBar.Center` flips the root from `flex` to CSS grid (`1fr auto 1fr`) for true centering. Standard apps are two-zone (Left + Right); dashboards with prominent search are three-zone.
+- **Required providers:**
+  - `SidebarProvider` — for SidebarTrigger inside `TopBar.Left` to work
+  - `LinkProvider` — for TopBar.UserMenu's menu items that use `href`
+- **NotificationCenter lives inside TopBar.Right** — it's a complete bell+popover component. Drop it in a TopBar.Section next to other icon buttons.
+- **UserMenu is composable:** `userMenuItems` inserts custom items between the built-in Profile and the color-mode toggle. Each item can navigate (href), run an action (onClick), or show a separator/badge/color decoration.
+- **Responsive hiding:** Actions that shouldn't appear on mobile use `className="hidden md:flex"` on the IconButton — the component doesn't enforce mobile hiding; that's layout responsibility.
+- **Pairs with AppSidebar** — desktop app shell is typically `<TopBar>` + `<AppSidebar>` + main content region.
+
+## Gotchas
+- Without `TopBar.Center`, layout is flex (two-zone). With it, layout switches to CSS grid `1fr auto 1fr` for true centering.
+- `TopBar.IconButton` renders any number of action buttons — no artificial limit. Use responsive hiding (`className="hidden md:flex"`) for mobile.
+- `TopBar.UserMenu` includes Profile link, color mode toggle, and logout automatically. `userMenuItems` are inserted between Profile and the toggle.
+- Requires SidebarProvider wrapper for SidebarTrigger to work.
+
+## Changes
+### v0.19.0
+- **BREAKING** Rewritten as composition API. Old props-based API removed (`pageTitle`, `onSearchClick`, `onAiChatClick`, `notificationSlot`, `mobileLogo` props).
+- **Added** `TopBar.Left`, `TopBar.Center`, `TopBar.Right` zone components
+- **Added** `TopBar.Section` with `gap` prop (`tight` | `default` | `loose`)
+- **Added** `TopBar.IconButton` — reusable circular icon button with tooltip
+- **Added** `TopBar.Title` — responsive page title (hidden on mobile)
+- **Added** `TopBar.UserMenu` — extracted user dropdown as standalone subcomponent
+- **Added** Auto grid/flex layout detection based on Center zone presence
+- **Changed** Background elevated from `bg-surface-1` to `bg-surface-2`
+
+### v0.27.2
+- **Fixed** UserMenu email truncation — long emails now truncate instead of overflowing the dropdown
+
+### v0.7.0
+- **Added** `userMenuItems` prop for custom dropdown items
+
+### v0.1.1
+- **Changed** Decoupled from Next.js via LinkProvider
+- **Fixed** Added `aria-label` to search/AI buttons
+- **Fixed** Added `type="button"` to search/AI/avatar buttons to prevent form submission
+
+### v0.1.0
+- **Added** Initial release

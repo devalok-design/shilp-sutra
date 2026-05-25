@@ -13,7 +13,7 @@ const textareaVariants = cva(
   [
     'flex w-full font-sans resize-y',
     'bg-surface-raised-hover text-surface-fg',
-    'border border-surface-border-strong rounded-ds-md',
+    'border border-surface-border-strong rounded-control',
     'placeholder:text-surface-fg-subtle',
     'hover:bg-surface-raised-active',
     'transition-colors duration-fast-01 ease-productive-standard',

@@ -15,7 +15,7 @@ import { springs } from '../ui/lib/motion'
 // ── Helpers ──
 
 const Box = ({ children, color = 'bg-accent-9' }: { children?: React.ReactNode; color?: string }) => (
-  <div className={`${color} rounded-ds-md p-ds-06 text-accent-fg text-ds-sm font-medium`}>
+  <div className={`${color} rounded-control p-ds-06 text-accent-fg text-ds-sm font-medium`}>
     {children ?? 'Animated content'}
   </div>
 )
@@ -24,7 +24,7 @@ const ToggleButton = ({ on, onClick, label }: { on: boolean; onClick: () => void
   <button
     type="button"
     onClick={onClick}
-    className="rounded-ds-md bg-surface-raised px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-raised-hover transition-colors"
+    className="rounded-control bg-surface-raised px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-raised-hover transition-colors"
   >
     {label ?? (on ? 'Hide' : 'Show')}
   </button>
@@ -118,7 +118,7 @@ function SlideDemo() {
               role="radio"
               aria-checked={direction === dir}
               onClick={() => setDirection(dir)}
-              className={`rounded-ds-sm px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors ${
+              className={`rounded-control-inner px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors ${
                 direction === dir
                   ? 'bg-accent-9 text-accent-fg'
                   : 'bg-surface-raised text-surface-fg hover:bg-surface-raised-hover'
@@ -149,7 +149,7 @@ function CollapseDemo() {
     <div className="flex flex-col items-start gap-ds-05" style={{ maxWidth: 400 }}>
       <ToggleButton on={show} onClick={() => setShow((s) => !s)} label={show ? 'Collapse' : 'Expand'} />
       <MotionCollapse show={show}>
-        <div className="rounded-ds-md border border-surface-border-strong p-ds-05">
+        <div className="rounded-control border border-surface-border-strong p-ds-05">
           <p className="text-ds-sm text-surface-fg">
             This content smoothly expands and collapses using Framer Motion&apos;s native{' '}
             <code>height: &quot;auto&quot;</code> animation. The <code>gentle</code> spring preset is used by
@@ -178,7 +178,7 @@ function StaggerDemo() {
       <MotionStagger key={key} className="flex flex-col gap-ds-03" style={{ maxWidth: 300 }}>
         {items.map((item, i) => (
           <MotionStaggerItem key={i}>
-            <div className="rounded-ds-md bg-surface-raised p-ds-04 text-ds-sm text-surface-fg">
+            <div className="rounded-control bg-surface-raised p-ds-04 text-ds-sm text-surface-fg">
               {i + 1}. {item}
             </div>
           </MotionStaggerItem>
@@ -207,7 +207,7 @@ function SpringPresetsDemo() {
           <div key={preset} className="flex flex-col items-center gap-ds-03">
             <span className="text-ds-xs font-semibold text-surface-fg-muted">{preset}</span>
             <MotionScale key={`${preset}-${key}`} show preset={preset}>
-              <div className="h-16 w-16 rounded-ds-md bg-accent-9" />
+              <div className="h-16 w-16 rounded-control bg-accent-9" />
             </MotionScale>
           </div>
         ))}
@@ -232,7 +232,7 @@ function ReducedMotionDemo() {
   return (
     <MotionProvider reducedMotion={true}>
       <div className="flex flex-col items-start gap-ds-05">
-        <div className="rounded-ds-md border border-warning-7 bg-warning-3 px-ds-04 py-ds-02 text-ds-xs text-surface-fg">
+        <div className="rounded-control border border-warning-7 bg-warning-3 px-ds-04 py-ds-02 text-ds-xs text-surface-fg">
           <code>reducedMotion=true</code> — all animations are instant
         </div>
         <ToggleButton on={show} onClick={() => setShow((s) => !s)} />

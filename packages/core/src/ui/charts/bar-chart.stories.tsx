@@ -176,7 +176,7 @@ export const Dashboard: Story = {
       </h2>
       <div className="grid grid-cols-2 gap-ds-06">
         {/* Bar Chart */}
-        <div className="rounded-ds-lg border border-surface-border p-ds-05">
+        <div className="rounded-surface border border-surface-border p-ds-05">
           <h3 className="mb-ds-04 text-ds-md font-medium text-surface-fg-muted">
             Monthly Revenue
           </h3>
@@ -184,7 +184,7 @@ export const Dashboard: Story = {
         </div>
 
         {/* Line Chart */}
-        <div className="rounded-ds-lg border border-surface-border p-ds-05">
+        <div className="rounded-surface border border-surface-border p-ds-05">
           <h3 className="mb-ds-04 text-ds-md font-medium text-surface-fg-muted">
             Revenue vs Costs
           </h3>
@@ -202,7 +202,7 @@ export const Dashboard: Story = {
         </div>
 
         {/* Area Chart */}
-        <div className="rounded-ds-lg border border-surface-border p-ds-05">
+        <div className="rounded-surface border border-surface-border p-ds-05">
           <h3 className="mb-ds-04 text-ds-md font-medium text-surface-fg-muted">
             Revenue Trend
           </h3>
@@ -216,7 +216,7 @@ export const Dashboard: Story = {
         </div>
 
         {/* Pie Chart */}
-        <div className="rounded-ds-lg border border-surface-border p-ds-05">
+        <div className="rounded-surface border border-surface-border p-ds-05">
           <h3 className="mb-ds-04 text-ds-md font-medium text-surface-fg-muted">
             Leave Status
           </h3>
@@ -224,7 +224,7 @@ export const Dashboard: Story = {
         </div>
 
         {/* Radar Chart */}
-        <div className="rounded-ds-lg border border-surface-border p-ds-05">
+        <div className="rounded-surface border border-surface-border p-ds-05">
           <h3 className="mb-ds-04 text-ds-md font-medium text-surface-fg-muted">
             Skills Assessment
           </h3>
@@ -238,7 +238,7 @@ export const Dashboard: Story = {
         </div>
 
         {/* Gauges + Sparklines */}
-        <div className="rounded-ds-lg border border-surface-border p-ds-05">
+        <div className="rounded-surface border border-surface-border p-ds-05">
           <h3 className="mb-ds-04 text-ds-md font-medium text-surface-fg-muted">
             KPI Summary
           </h3>

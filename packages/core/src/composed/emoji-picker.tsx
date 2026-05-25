@@ -103,9 +103,9 @@ function EmojiPicker({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={springs.snappy}
-          className={cn('rounded-ds-lg', className)}
+          className={cn('rounded-surface', className)}
         >
-          <Skeleton className="h-[435px] w-[352px] rounded-ds-lg" />
+          <Skeleton className="h-[435px] w-[352px] rounded-surface" />
         </motion.div>
       ) : (
         <motion.div
@@ -117,8 +117,8 @@ function EmojiPicker({
         >
           <React.Suspense
             fallback={
-              <div className={cn('rounded-ds-lg', className)}>
-                <Skeleton className="h-[435px] w-[352px] rounded-ds-lg" />
+              <div className={cn('rounded-surface', className)}>
+                <Skeleton className="h-[435px] w-[352px] rounded-surface" />
               </div>
             }
           >

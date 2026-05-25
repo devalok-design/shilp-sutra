@@ -29,7 +29,7 @@ If the framework is not listed, start with [install-vite.md](./install-vite.md) 
 
 | Recipe | What it covers |
 |---|---|
-| [customize-brand.md](./customize-brand.md) | Token override cookbook — change colors, radius, fonts, spacing scale, dark-mode mapping |
+| [customize-brand.md](./customize-brand.md) | Token override cookbook — colors, radius role tokens, `[data-shape]` presets, fonts, spacing scale, dark-mode mapping |
 | [server-components.md](./server-components.md) | Per-component RSC-safety matrix; correct import patterns for Server Components |
 
 ## Diagnostics

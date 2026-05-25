@@ -26,7 +26,7 @@ describe('Avatar', () => {
     // The Radix root gets the CVA class for md + circle
     const root = container.querySelector('.h-ds-md.w-ds-md')
     expect(root).toBeInTheDocument()
-    expect(root?.className).toContain('rounded-ds-full')
+    expect(root?.className).toContain('rounded-pill')
   })
 
   // ── Fallback rendering ─────────────────────────────────────────────────────
@@ -46,7 +46,7 @@ describe('Avatar', () => {
       </Avatar>,
     )
     const fallback = container.querySelector('[data-slot="avatar-fallback"]')
-    expect(fallback?.className).toContain('rounded-ds-none')
+    expect(fallback?.className).toContain('rounded-none')
   })
 
   it('fallback inherits size from parent Avatar for text scaling', () => {

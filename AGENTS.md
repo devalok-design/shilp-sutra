@@ -4,6 +4,14 @@ This file gives AI coding agents (Claude Code, Cursor, Copilot, Codex, Aider) th
 
 If you are a human, read [README.md](./README.md) instead.
 
+> **Using Claude Code, Cursor, Codex, or any [Agent Skills](https://agentskills.io)-compatible tool?** Install the bundled skill once and your agent gets every rule below loaded on demand:
+>
+> ```bash
+> curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash
+> ```
+>
+> Source: [`skills/shilp-sutra/`](./skills/shilp-sutra/). After install, the agent loads `SKILL.md` only when the task is relevant — no context tax until it triggers.
+
 <!-- BEGIN:shilp-sutra-agent-rules -->
 
 ## Read these first, in order

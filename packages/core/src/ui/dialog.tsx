@@ -156,13 +156,13 @@ const DialogContent = React.forwardRef<
               className={cn(
                 'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
                 responsive !== false
-                  ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-ds-xl md:border md:border-surface-border-strong md:shadow-overlay'
-                  : 'left-[50%] top-[50%] max-w-lg rounded-ds-xl border border-surface-border-strong shadow-overlay',
+                  ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-overlay-lg md:border md:border-surface-border-strong md:shadow-overlay'
+                  : 'left-[50%] top-[50%] max-w-lg rounded-overlay-lg border border-surface-border-strong shadow-overlay',
                 className,
               )}
             >
               {children}
-              <DialogPrimitive.Close title="Close" className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-ds-sm text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
+              <DialogPrimitive.Close title="Close" className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
                 <Icon icon={CloseIcon} size="lg" />
                 <span className="sr-only">Close</span>
               </DialogPrimitive.Close>

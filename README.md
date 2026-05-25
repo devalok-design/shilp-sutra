@@ -88,6 +88,23 @@ Customization & diagnostics:
 
 Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract.
 
+### Agent Skill (Claude Code, Cursor, Codex, Aider)
+
+If your editor runs an [Agent Skills](https://agentskills.io)-compatible coding agent, install the bundled skill once. The agent then loads the right reference on demand — setup playbooks, component APIs, troubleshoot tree — without you pasting context every time.
+
+```bash
+# Personal install (~/.claude/skills/shilp-sutra)
+curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash
+
+# Project-scoped (commit to repo so every contributor's agent picks it up)
+mkdir -p .claude/skills && curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | INSTALL_DIR=.claude/skills bash
+
+# Already have @devalok/shilp-sutra installed? The skill ships in the tarball:
+cp -r node_modules/@devalok/shilp-sutra/skill ~/.claude/skills/shilp-sutra
+```
+
+Source: [`skills/shilp-sutra/`](./skills/shilp-sutra/).
+
 ## Mental Model
 
 The design system is organized into three tiers:

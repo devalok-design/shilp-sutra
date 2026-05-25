@@ -69,7 +69,7 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
                     className={cn(
                       'flex items-center gap-ds-01 font-medium',
                       'cursor-pointer select-none',
-                      '-ml-ds-01 rounded-ds-sm px-ds-01 py-ds-01',
+                      '-ml-ds-01 rounded-control-inner px-ds-01 py-ds-01',
                       'hover:bg-surface-raised transition-colors',
                     )}
                     onClick={header.column.getToggleSortingHandler()}
@@ -159,7 +159,7 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
                     placeholder={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : ''}...`}
                     aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
                     className={cn(
-                      'h-ds-xs-plus w-full rounded-ds-md',
+                      'h-ds-xs-plus w-full rounded-control',
                       'border border-surface-border-strong bg-surface-raised-hover',
                       'px-ds-02 text-ds-sm',
                       'text-surface-fg placeholder:text-surface-fg-subtle',

@@ -377,7 +377,7 @@ export const InlineDefault: Story = {
   },
   render: (args) => (
     <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
-      <div className="w-full max-w-md rounded-ds-lg bg-surface-raised p-ds-05">
+      <div className="w-full max-w-md rounded-surface bg-surface-raised p-ds-05">
         <CommandBar {...args} />
       </div>
     </div>
@@ -392,7 +392,7 @@ export const InlineInCard: Story = {
   name: 'Inline / In Card',
   render: () => (
     <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
-      <div className="w-full max-w-md overflow-hidden rounded-ds-xl bg-surface-raised shadow-raised">
+      <div className="w-full max-w-md overflow-hidden rounded-overlay-lg bg-surface-raised shadow-raised">
         <div className="border-b border-surface-border-strong px-ds-05 py-ds-04">
           <div className="flex items-center gap-ds-02b">
             <IconRobot className="h-ico-sm w-ico-sm text-accent-9" />
@@ -442,7 +442,7 @@ export const FloatingDefault: Story = {
           </p>
           <p className="text-ds-sm text-surface-fg-muted">
             Press{' '}
-            <kbd className="rounded-ds-md border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">
+            <kbd className="rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">
               Ctrl+J
             </kbd>{' '}
             or click the button below.
@@ -450,7 +450,7 @@ export const FloatingDefault: Story = {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="rounded-ds-lg border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-sm font-medium text-surface-fg transition-colors hover:bg-surface-raised-hover"
+            className="rounded-surface border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-sm font-medium text-surface-fg transition-colors hover:bg-surface-raised-hover"
           >
             Open CommandBar
           </button>
@@ -492,7 +492,7 @@ export const FloatingWithCommands: Story = {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="rounded-ds-lg border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-sm font-medium text-surface-fg transition-colors hover:bg-surface-raised-hover"
+            className="rounded-surface border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-sm font-medium text-surface-fg transition-colors hover:bg-surface-raised-hover"
           >
             Open CommandBar
           </button>
@@ -749,7 +749,7 @@ export const FullDashboard: Story = {
 
             {/* Conversation */}
             {messages.length > 0 && (
-              <div className="rounded-ds-xl bg-surface-raised p-ds-07 shadow-raised">
+              <div className="rounded-overlay-lg bg-surface-raised p-ds-07 shadow-raised">
                 <AIConversation
                   messages={messages}
                   isProcessing={isConversationProcessing}

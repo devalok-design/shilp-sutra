@@ -12,7 +12,7 @@ type CardSize = 'sm' | 'md' | 'lg'
 const CardSizeContext = React.createContext<CardSize>('md')
 
 const cardVariants = cva(
-  'rounded-ds-lg text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
+  'rounded-surface text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
   {
     variants: {
       variant: {
@@ -119,10 +119,10 @@ const accentSizeClasses: Record<string, Record<number, string>> = {
 }
 
 const accentPositionClasses: Record<string, string> = {
-  left: 'left-0 top-0 bottom-0 rounded-l-ds-lg',
-  top: 'top-0 left-0 right-0 rounded-t-ds-lg',
-  right: 'right-0 top-0 bottom-0 rounded-r-ds-lg',
-  bottom: 'bottom-0 left-0 right-0 rounded-b-ds-lg',
+  left: 'left-0 top-0 bottom-0 rounded-l-surface',
+  top: 'top-0 left-0 right-0 rounded-t-surface',
+  right: 'right-0 top-0 bottom-0 rounded-r-surface',
+  bottom: 'bottom-0 left-0 right-0 rounded-b-surface',
 }
 
 function getAccentPositionClasses(position: string, width: number): string {

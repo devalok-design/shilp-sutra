@@ -70,7 +70,7 @@ const HoverCardContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                'z-popover w-64 rounded-ds-lg border border-surface-border-strong bg-surface-overlay p-ds-05 shadow-floating outline-hidden',
+                'z-popover w-64 rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-05 shadow-floating outline-hidden',
                 className,
               )}
             >

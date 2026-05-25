@@ -39,18 +39,18 @@ export const buttonVariants = cva(
         normal: 'font-normal',
       },
       size: {
-        xs: 'h-ds-xs-plus rounded-ds-md px-ds-03 text-ds-sm gap-ds-02',
-        sm: 'h-ds-sm rounded-ds-md px-ds-04 text-ds-sm gap-ds-02b',
-        md: 'h-ds-md rounded-ds-lg px-ds-05 text-ds-md gap-ds-03',
-        lg: 'h-ds-lg rounded-ds-xl px-ds-06 text-ds-base gap-2.5', /* 10px — no exact DS token */
-        'compact-xs': 'rounded-ds-md px-ds-02 py-[3px] text-ds-sm gap-ds-02',
-        'compact-sm': 'rounded-ds-md px-ds-03 py-[5px] text-ds-sm gap-ds-02b',
-        'compact-md': 'rounded-ds-lg px-ds-04 py-ds-03 text-ds-md gap-ds-03',
-        icon: 'h-ds-md w-ds-md rounded-ds-md',
-        'icon-xs': 'h-ds-xs-plus w-ds-xs-plus rounded-ds-sm',
-        'icon-sm': 'h-ds-sm w-ds-sm rounded-ds-md',
-        'icon-md': 'h-ds-md w-ds-md rounded-ds-md',
-        'icon-lg': 'h-ds-lg w-ds-lg rounded-ds-lg',
+        xs: 'h-ds-xs-plus rounded-control px-ds-03 text-ds-sm gap-ds-02',
+        sm: 'h-ds-sm rounded-control px-ds-04 text-ds-sm gap-ds-02b',
+        md: 'h-ds-md rounded-control px-ds-05 text-ds-md gap-ds-03',
+        lg: 'h-ds-lg rounded-control px-ds-06 text-ds-base gap-2.5',
+        'compact-xs': 'rounded-control px-ds-02 py-[3px] text-ds-sm gap-ds-02',
+        'compact-sm': 'rounded-control px-ds-03 py-[5px] text-ds-sm gap-ds-02b',
+        'compact-md': 'rounded-control px-ds-04 py-ds-03 text-ds-md gap-ds-03',
+        icon: 'h-ds-md w-ds-md rounded-control',
+        'icon-xs': 'h-ds-xs-plus w-ds-xs-plus rounded-control',
+        'icon-sm': 'h-ds-sm w-ds-sm rounded-control',
+        'icon-md': 'h-ds-md w-ds-md rounded-control',
+        'icon-lg': 'h-ds-lg w-ds-lg rounded-control',
       },
     },
     compoundVariants: [
@@ -163,7 +163,7 @@ const BUTTON_TO_ICON_SIZE: Record<string, IconSize> = {
  * `compact-xs` | `compact-sm` | `compact-md` for height-less inline buttons;
  * `icon` | `icon-xs` | `icon-sm` | `icon-md` | `icon-lg` for square icon-only buttons.
  *
- * **Shape:** `"default"` uses per-size border-radius; `"pill"` applies `rounded-full`.
+ * **Shape:** `"default"` uses the `--radius-control` token; `"pill"` applies `rounded-pill` (fully-rounded).
  *
  * **Weight:** `"semibold"` (default) | `"normal"` for lighter labels.
  *
@@ -205,7 +205,7 @@ export interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
-  /** Button shape — 'pill' applies rounded-full for chip/tag-like buttons */
+  /** Button shape — 'pill' applies rounded-pill for chip/tag-like buttons */
   shape?: 'default' | 'pill'
   /** Icon element rendered before children — use <Icon icon={...} /> */
   startIcon?: React.ReactElement | null
@@ -359,7 +359,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const slotProps = {
         className: cn(
           buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
-          resolvedShape === 'pill' && 'rounded-full',
+          resolvedShape === 'pill' && 'rounded-pill',
           resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
           (fullWidth || groupStretch) && 'w-full',
           className,
@@ -476,7 +476,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             weight: resolvedWeight,
             size: resolvedSize,
           }),
-          resolvedShape === 'pill' && 'rounded-full',
+          resolvedShape === 'pill' && 'rounded-pill',
           resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
           (fullWidth || groupStretch) && 'w-full',
           // Asymmetric timing: hover-out is slow+relaxed, hover-in is fast+snappy (applied via hover: override)

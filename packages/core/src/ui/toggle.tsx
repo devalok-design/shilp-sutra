@@ -11,7 +11,7 @@ import { cn } from './lib/utils'
 const MotionToggleRoot = motion.create(TogglePrimitive.Root)
 
 const toggleVariants = cva(
-  'inline-flex items-center justify-center gap-ds-03 rounded-ds-md font-medium transition-colors duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
+  'inline-flex items-center justify-center gap-ds-03 rounded-control font-medium transition-colors duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
   {
     variants: {
       variant: {

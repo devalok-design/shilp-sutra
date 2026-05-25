@@ -2,3 +2,4 @@
 # npm tarball. Source of truth is at repo root; do not edit these copies.
 /MIGRATION.md
 /docs/rollback.md
+/skill/

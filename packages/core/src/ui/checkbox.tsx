@@ -87,7 +87,7 @@ const Checkbox = React.forwardRef<
       defaultChecked={!isControlled && !indeterminate ? defaultChecked : undefined}
       onCheckedChange={handleCheckedChange}
       className={cn(
-        'touch-target peer flex items-center justify-center shrink-0 rounded-ds-sm',
+        'touch-target peer flex items-center justify-center shrink-0 rounded-control-inner',
         checkboxSizeClasses[size],
         'border border-surface-border-strong',
         'bg-surface-raised-hover',

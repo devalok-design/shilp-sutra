@@ -91,15 +91,15 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
             className={cn(
               'group/message relative flex',
               placement === 'end' ? 'justify-end' : 'justify-start',
-              highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-ds-sm',
-              highlight === 'internal' && 'bg-warning-2/50 rounded-ds-sm',
+              highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-control-inner',
+              highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
               className,
             )}
             {...motionProps(props)}
           >
             <div
               className={cn(
-                'max-w-[85%] rounded-ds-2xl px-ds-04 py-ds-03',
+                'max-w-[85%] rounded-bubble px-ds-04 py-ds-03',
                 placement === 'end'
                   ? 'bg-accent-3 text-surface-fg'
                   : 'bg-surface-raised text-surface-fg',
@@ -123,8 +123,8 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
           className={cn(
             'group/message relative flex gap-ds-04',
             grouped && '-mt-ds-01',
-            highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-ds-sm',
-            highlight === 'internal' && 'bg-warning-2/50 rounded-ds-sm',
+            highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-control-inner',
+            highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
             className,
           )}
           {...motionProps(props)}
@@ -177,7 +177,7 @@ function MessageAvatar({
         className={cn(
           sizeClass,
           size === 'sm' ? 'h-5' : 'h-6',
-          'shrink-0 flex items-center justify-center rounded-ds-full bg-surface-raised-hover',
+          'shrink-0 flex items-center justify-center rounded-pill bg-surface-raised-hover',
         )}
       >
         {icon}
@@ -342,7 +342,7 @@ function MessageEditableBody({
           onChange={(e) => setEditDraft(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
-          className="w-full resize-none rounded-ds-sm border border-surface-border-strong bg-surface-raised-hover px-ds-02 py-ds-01 text-[13px] leading-relaxed text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+          className="w-full resize-none rounded-control-inner border border-surface-border-strong bg-surface-raised-hover px-ds-02 py-ds-01 text-[13px] leading-relaxed text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
           rows={2}
         />
         <div className="mt-ds-01 text-ds-xs text-surface-fg-subtle/50">
@@ -356,7 +356,7 @@ function MessageEditableBody({
     <div
       className={cn(
         'text-[13px] leading-relaxed text-surface-fg whitespace-pre-wrap',
-        canEdit && 'cursor-pointer hover:bg-surface-raised-hover rounded-ds-sm transition-colors',
+        canEdit && 'cursor-pointer hover:bg-surface-raised-hover rounded-control-inner transition-colors',
       )}
       onClick={handleStartEdit}
       role={canEdit ? 'button' : undefined}
@@ -397,7 +397,7 @@ function MessageReactions({ reactions, onReact }: MessageReactionsProps) {
           onClick={() => onReact(r.emoji)}
           aria-label={`${r.emoji} ${r.count} reaction${r.count !== 1 ? 's' : ''}${r.reacted ? ', you reacted' : ''}`}
           className={cn(
-            'inline-flex items-center gap-ds-01 rounded-full px-ds-02 py-ds-01 text-ds-xs transition-colors',
+            'inline-flex items-center gap-ds-01 rounded-pill px-ds-02 py-ds-01 text-ds-xs transition-colors',
             r.reacted
               ? 'bg-accent-3 ring-1 ring-accent-6'
               : 'bg-surface-raised-hover hover:bg-surface-raised-active',
@@ -424,7 +424,7 @@ function MessageActions({ children, delay = 100 }: MessageActionsProps) {
     <div
       className={cn(
         'absolute -top-2 right-0 z-10',
-        'flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-raised',
+        'flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-raised',
         'opacity-0 group-hover/message:opacity-100 group-focus-within/message:opacity-100 transition-opacity duration-150',
       )}
       style={{ transitionDelay: `${delay}ms` }}
@@ -458,7 +458,7 @@ function MessageAction({
           onClick={onClick}
           aria-label={label}
           className={cn(
-            'p-ds-02 rounded-ds-sm transition-colors',
+            'p-ds-02 rounded-control-inner transition-colors',
             variant === 'default' &&
               'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-raised-hover',
             variant === 'danger' &&

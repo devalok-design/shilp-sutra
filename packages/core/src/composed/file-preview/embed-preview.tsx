@@ -26,7 +26,7 @@ export default function EmbedPreview({ url, embedUrl, onError }: { url: string; 
   if (error) return <ErrorFallback message="Could not load embed" url={url} />
 
   return (
-    <div className="relative w-full rounded-ds-md overflow-hidden" style={{ aspectRatio: '16 / 9' }}>
+    <div className="relative w-full rounded-control overflow-hidden" style={{ aspectRatio: '16 / 9' }}>
       {!loaded && <Skeleton className="absolute inset-0" />}
       <motion.iframe
         src={embedUrl}

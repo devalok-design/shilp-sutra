@@ -148,7 +148,7 @@ const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
               exit={{ opacity: 0, y: 10 }}
               transition={tweens.fade}
               onClick={handleScrollToBottom}
-              className="absolute bottom-ds-04 left-1/2 z-10 -translate-x-1/2 rounded-full bg-accent-9 px-ds-04 py-ds-02 text-ds-xs font-medium text-accent-fg shadow-raised transition-colors hover:bg-accent-10"
+              className="absolute bottom-ds-04 left-1/2 z-10 -translate-x-1/2 rounded-pill bg-accent-9 px-ds-04 py-ds-02 text-ds-xs font-medium text-accent-fg shadow-raised transition-colors hover:bg-accent-10"
             >
               {newMessageCount} new
             </motion.button>

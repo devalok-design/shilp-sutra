@@ -34,7 +34,7 @@ export function DataTableCards<TData>({
         {Array.from({ length: skeletonRowCount }, (_, i) => (
           <div
             key={`card-skeleton-${i}`}
-            className="rounded-ds-lg border border-surface-border bg-surface-raised p-ds-04"
+            className="rounded-surface border border-surface-border bg-surface-raised p-ds-04"
           >
             <Skeleton variant="text" className="mb-ds-03 h-5 w-2/3" animation="pulse" />
             <div className="flex flex-col gap-ds-02">
@@ -74,7 +74,7 @@ export function DataTableCards<TData>({
             key={row.id}
             role="listitem"
             className={cn(
-              'rounded-ds-lg border border-surface-border bg-surface-raised p-ds-04',
+              'rounded-surface border border-surface-border bg-surface-raised p-ds-04',
               isSelected && 'ring-2 ring-accent-9',
             )}
           >

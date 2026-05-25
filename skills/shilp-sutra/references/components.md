@@ -1,0 +1,673 @@
+<!-- Source: packages/core/llms.txt — do not edit directly. Regenerate with `node scripts/build-skill.mjs`. -->
+
+# @devalok/shilp-sutra
+
+> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps.
+> Built on the same primitives as shadcn/ui but with key API differences.
+> Read this file BEFORE writing any UI code. Do NOT guess from shadcn/ui knowledge.
+
+## QUICK SETUP (AI agents — start here)
+
+If you are setting up shilp-sutra in a consumer project for the first time, **do not improvise**. Use a recipe.
+
+When the package is installed, recipes ship at `node_modules/@devalok/shilp-sutra/docs/recipes/`. Pick one based on the consumer's framework:
+
+| Framework | Recipe file |
+|---|---|
+| Next.js (App Router) | `install-next-app-router.md` |
+| Next.js (Pages Router) | `install-next-pages.md` |
+| Vite + React | `install-vite.md` |
+| Astro | `install-astro.md` |
+| Remix | `install-remix.md` |
+| TanStack Start | `install-tanstack-start.md` |
+| Other React + Tailwind | start from `install-vite.md` and adapt |
+
+Other recipes:
+
+- `customize-brand.md` — token override cookbook (color, radius, font, spacing)
+- `server-components.md` — RSC-safety matrix and import patterns
+- `troubleshoot.md` — decision tree for the 8 most common breakages
+
+The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
+
+## NEW (v0.39.0)
+
+- **Shape presets (`[data-shape]`).** Set on `<html>` (or any subtree) to re-skin roundness across the whole UI. Three ship by default: `sharp` (technical, 2/4/6 px), `slightly-rounded` (default, 6/10/16 px), `rounded` (consumer, 10/16/24 px). Pill shapes (Badge, Switch, Radio, Avatar circle) stay pill regardless.
+- **Semantic radius role tokens.** New: `--radius-control`, `--radius-control-inner`, `--radius-surface`, `--radius-overlay-sm`, `--radius-overlay`, `--radius-overlay-lg`, `--radius-pill`, `--radius-bubble`. Consumers override any role globally or scoped — e.g. `:root { --radius-control: 4px; }`.
+- **Visual changes (no API breaks).** Button no longer scales radius with size (md/lg/xl/lg → all 6px); Input lg matches Button at same height; SegmentedControl items now actually pill; Tabs trigger (contained) matches Button; Tooltip belongs to its own `overlay-sm` tier with Toast; Menubar trigger matches DropdownMenu item; Autocomplete listbox matches Popover. If you preferred old chunky big controls, set `data-shape="rounded"` for v0.38-era feel.
+- **Pre-publish audit gate.** Components in `src/ui/` can no longer use `rounded-ds-*` or bare `rounded-full` — must use semantic roles. Composed/shell migration is v0.40.0 (gate scoped accordingly).
+- See `customize-brand.md` recipe for the full role token list and how to define your own preset.
+
+## BREAKING CHANGES (v0.37.0 — Tailwind 4 CSS-first)
+
+**Setup migration only — component APIs unchanged.** See `MIGRATION.md` at the root of this package (or https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md#v0370--tailwind-4-css-first-migration) for the full guide.
+
+- **No more JS preset.** `tailwind.config.ts` with `presets: [shilpSutra]` is gone. Tokens ship as TW4 `@theme` CSS via a single CSS import. Consumer setup becomes:
+  ```css
+  @import "tailwindcss";
+  @import "@devalok/shilp-sutra/css";
+  ```
+  The `./tailwind` export has been removed in 0.38. Delete any `tailwind.config.ts` that referenced the preset and switch to the CSS import above.
+- **framer-motion is now a required peer dep.** Previously bundled. Install: `pnpm add framer-motion`. Module-scoped React contexts (MotionConfig, LayoutGroup, AnimatePresence) must be single-copy — the peer declaration forces pnpm to dedupe against the consumer's version.
+- **sonner is now an optional peer dep.** Install only if you render `<Toaster />`: `pnpm add sonner`.
+- **tailwindcss peer tightened to `^4.0.0`.** No more `^3.4.0 || ^4.0.0`.
+- **use-sync-external-store moved to our `dependencies`** (from optional peer). Auto-installed transitively.
+- **Node engines floor dropped.** No `engines.node` declared — use any Node 18+.
+- **New export `@devalok/shilp-sutra/css`** — primary consumer entry for TW4 setup.
+- **Source class hygiene:** `w-[--var]` → `w-(--var)`, `theme(spacing.N)` → literal, `bg-gradient-to-*` → `bg-linear-to-*`, bare `shadow` → explicit like `shadow-raised`. Codemod your own code; grep: `grep -rn 'w-\[--\|bg-gradient-to-\|theme(spacing' src/`.
+- **Tokens now expose TW4 namespaces.** Spacing is `--spacing-ds-*` (so `p-ds-03`, not `p-3`). Typography uses `--text-ds-*`, `--leading-ds-*`. Radius has TWO layers: primitive scale (`--radius-ds-sm/md/lg/xl/2xl/full`) AND semantic roles (`--radius-control`, `--radius-surface`, `--radius-overlay-sm/md/lg`, `--radius-pill`, `--radius-bubble`). Components reference roles — consumers swap roles via `[data-shape]` presets or override individual tokens. Z-layer utilities are custom-generated (`z-popover`, `z-dropdown`, etc.).
+- **Dark mode variant:** `@custom-variant dark (&:where(.dark *))` — identical semantics to old `darkMode: 'class'`. `.dark` on `<html>` or `<body>` activates everything below.
+
+## NEW (v0.36.0)
+
+- **Forced-colors (Windows high-contrast) support.** Every semantic color token remaps to system keywords (`Canvas`, `CanvasText`, `Highlight`, `HighlightText`, `LinkText`, `GrayText`, `Mark`, `ButtonText`, `VisitedText`) under `@media (forced-colors: active)`. Focus ring forced via `outline: 2px solid Highlight`, interactive elements get visible borders, decorative grain + skeleton shimmer suppressed. Zero runtime impact when inactive.
+- **FormField auto-wires Label ↔ Input via context.** `<FormField>` now publishes an `inputId`; `<Label>` reads `htmlFor` and `<Input>` reads `id` from context unless either is explicit on the child. Drops the need to hand-generate matching ids.
+- **Toast error assertive a11y.** `toast.error()` renders `role="alert"` + `aria-live="assertive"` + `aria-atomic="true"` so screen readers interrupt speech. Other types remain `role="status"` + polite.
+- **Dev-mode missing-`<Toaster />` warning.** `toast()` called without a mounted `Toaster` logs a one-time console warning in dev. Production-silent.
+- **Design default:** prefer `variant="soft"` over `variant="outline"` for non-primary Button actions. Captured in this file's Component Quick Reference and CLAUDE.md. Outline remains valid on colored bg, toolbars, primary-adjacent hierarchy.
+
+## FIXES (v0.36.0)
+
+- **Alert solid body text illegible.** Was forcing `text-surface-fg-muted` (grey) on top of step-9 saturated bgs and using `text-accent-fg` for warning (white-on-amber failed contrast). Now per-color `text-{info|success|warning|error}-fg` on the root + drops the muted override on solid/filled variants.
+- **Button processing ants drifting outside the button.** Overlay SVG now sized to measured `btnEl.offsetWidth/offsetHeight` with a `ResizeObserver` — no more `calc(100% - 2px)` against the wrapper diverging from the button during width transitions / async-feedback icon swaps.
+- **Per-color `-fg` tokens on non-accent status backgrounds.** Button async success/error, BottomNavbar + TopBar error badges now use `text-error-fg` / `text-success-fg` (not `text-accent-fg`) — brand-swap safe.
+- **Documentation truth fixes.** 6 `data-table-*.md` shipped literal bash template headers (`# $(echo $f | sed ...)`) in `llms-full.txt`; fixed. Button Props block had fake `variant="default"` / `"destructive"` alias claims (removed in 0.32.0); stripped. Badge `truncate` prop added to Props block. `packages/core/CHANGELOG.md` reconstructed from 0.33.x → 0.35.0. README component counts + tech stack updated.
+
+## BREAKING CHANGES (v0.35.0 — World-Class Audit)
+
+- **Dark mode colors:** Solid variant backgrounds darkened for WCAG AA. Step-9 L=0.63→0.54. Warning amber L=0.72→0.57. All solid buttons/badges are noticeably darker in dark mode.
+- **Responsive typography:** Heading sizes 3xl–6xl use `clamp()` for fluid scaling. Headings shrink on mobile.
+- **Body letter spacing:** body-lg (-0.01em), body-md (0em), body-sm (+0.01em), body-xs (+0.02em). Was all -0.02em.
+- **surface-fg-subtle:** Darkened from neutral-8 to neutral-9 in light mode. Tertiary text is more visible.
+- **MessageList:** `isLoadingMore` renamed to `loadingMore`.
+- **AppCommandPalette:** Default Karm routes removed. Use `CommandRegistryProvider` for page registration. `SearchResult` type adds optional `href` field.
+- **NumberInput:** Shape changed from pill to rounded rectangle.
+- **Dependencies:** `@floating-ui/dom`, `@tiptap/*`, `prosemirror-state` moved to devDeps (bundled; consumers no longer install them).
+
+## NEW (v0.35.0)
+
+- **Size props:** Combobox (xs/sm/md/lg), NumberInput (xs/sm/md/lg + state), Slider (sm/md/lg + color), InputOTP (sm/md/lg + state).
+- **Toggle color:** `color` prop on Toggle/ToggleGroup (accent/error/success/neutral).
+- **Tabs vertical:** `orientation="vertical"` for side-nav layout.
+- **Stepper clickable:** `onStepClick` callback for navigating to completed steps.
+- **AlertDialog responsive:** `responsive` prop for mobile bottom-sheet.
+- **Typography:** `code`, `label-plain-lg/md/sm` variants. Tailwind composite utilities: `text-heading-xl`, `text-body-md`, `text-code`, etc.
+- **Layout spacing:** `--spacing-page-x` (responsive 16→24→40px), `--spacing-section-gap`, `--spacing-card-gap`.
+- **Link colors:** `--color-link`, `--color-link-hover`, `--color-link-visited` tokens.
+- **useFormField:** Now wired into Select, Combobox, Autocomplete, Checkbox, Radio, Switch, Slider, InputOTP.
+- **Chart a11y:** Keyboard tooltip access on BarChart/LineChart. `ariaDescription` on ChartContainer.
+- **Dev warnings:** Token-missing CSS detection + MotionProvider hint (dev mode only).
+
+## HISTORICAL: BREAKING CHANGES (v0.33.x — Tailwind 4 + Toolchain)
+
+> **Note:** The v0.33 peer range `^3.4.0 || ^4.0.0` and `@config` directive requirement are superseded by v0.37 (TW4-only, CSS-first, no `@config`). Keep reading if you're upgrading from < 0.33; otherwise skip to v0.37 above.
+
+- **Tailwind CSS 3 → 4:** `outline-none` → `outline-hidden`, `rounded-sm` → `rounded-xs`, `backdrop-blur-sm` → `backdrop-blur-xs`, `!prefix` → `suffix!` important syntax. Consumers using our preset: add `@import "tailwindcss"` + `@config` to your CSS, replace `darkMode: 'class'` with `@variant dark (&:is(.dark *))` in CSS. Peer dep accepts both `^3.4.0 || ^4.0.0`.
+- **tailwind-merge 3.0 → 3.5:** Required for TW4 class recognition.
+- **TypeScript 5.7 → 6.0.2:** `types` defaults to `[]` in TS6. Add explicit `"types": ["node"]` to tsconfig if needed.
+- **ESLint 9 → 10:** Config file lookup starts from linted file directory (not CWD). Verify monorepo configs.
+- **react-zoom-pan-pinch 3 → 4:** `onTransformed` renamed to `onTransform`. Peer dep `^3.0.0 || ^4.0.0`.
+
+## CHANGES (v0.33.1 / v0.33.2)
+
+- Bumped: React 19.2.5, Storybook 10.3.5, Vitest 4.1.4, framer-motion 12.38, @floating-ui/dom 1.7.6, @tabler/icons-react 3.41.1, esbuild 0.28, jsdom 29, Playwright 1.59.1, PostCSS 8.5.9, Prettier 3.8.2, vite-plugin-dts 4.5.4.
+
+## BREAKING CHANGES (v0.33.0)
+
+- **EmojiSuggestion:** Named export removed. Use `createEmojiSuggestion(set?)` factory. Default: `createEmojiSuggestion()` (native set).
+- **Emoji HTML output:** Non-native `emojiSet` renders emoji as `<span data-emoji-id="..." data-emoji-set="..." role="img">native</span>` nodes, not raw Unicode. `plainText` still returns Unicode.
+
+## CHANGES (v0.33.0)
+
+- **RichChatInput v2** — Complete rewrite. Structured output (`html`, `plainText`, `attachments?`, `voiceNote?`). Zone architecture. 4 variants: `compact` (default), `expanded`, `minimal`, `inline`. Props: `onSubmit`, `onSchedule?(msg, date)`, `mentions?`, `slashCommands?`, `onFileUpload?`, `onImageUpload?`, `onVoiceRecord?`, `onTranscribe?`, `replyTo?`, `toolbar?`, `emojiSet?`, `actionButton?`, `enterBehavior?`, `maxLength?`, `isStreaming?`, `disclaimer?`, `sendOptions?`, `leadingSlot?`, `trailingSlot?`.
+- **Custom EmojiNode** — TipTap inline atom node. Renders emoji via spritesheet images for consistent Apple/Google/Twitter/Facebook art styles. `emojiSet` prop on `EmojiPicker`, `EmojiPickerPopover`, `RichChatInput`, `RichTextEditor`. Sets: `native` (default), `apple`, `google`, `twitter`, `facebook`.
+- **SplitButton** (`ui/`) — `[Action | ▼]` button with dropdown. Props: `variant(solid|soft|outline)`, `color`, `size`, `triggerSide(left|right)`, `triggerWidth`, `placement` (Floating UI), `dropdownContent`. Proper ARIA: `role="group"`, `aria-haspopup`, `aria-expanded`.
+- **Schedule Send** — `onSchedule?(msg, date)` on RichChatInput. Smart presets (time-of-day aware) + DateTimePicker. Banner shows scheduled time. Send button morphs to SplitButton.
+- **ButtonGroup rebuild** — Compound component pattern. Button reads position from context, applies radius inline. New props: `disabled` (propagates), `attached` (true/false), `fullWidth`. Tonal dividers for solid/soft/ghost variants. Focus z-index isolation.
+- **TipTap v2 → v3** — `useEditorState`, `immediatelyRender: false` (SSR-safe), `ListKit`. Fixes React 19 `removeChild` crash.
+- **Composable toolbar** — Exported: `ToolbarButton`, `ToolbarDivider`, `ToolbarGroup`, `BoldButton`, `ItalicButton`, `UnderlineButton`, `StrikeButton`, `HighlightButton`, `CodeButton`, `BulletListButton`, `OrderedListButton`, `BlockquoteButton`, `LinkButton`, `EmojiButton`.
+- **Button `disabled`** — Now inherited from ButtonGroup context.
+
+## BREAKING CHANGES (v0.32.0)
+
+- **Button:** `variant="default"` removed (use `"solid"`), `variant="destructive"` removed (use `variant="solid" color="error"`), `color="default"` removed (use `"accent"`).
+- **Chip:** Removed. Use `Badge` instead.
+- **SegmentedControl:** Rewritten. Variants are `"default"` (white pill) and `"solid"` (brand pill). `SegmentedControlItem` no longer exported.
+- **TopBar:** Now renders as `<header>` (was `<div>`).
+- **Sidebar:** Now renders as `<aside>` (was `<div>`).
+- **InfoBlock:** `role="status"` (was `role="alert"`).
+- **Border tokens:** One step darker system-wide.
+- **Dark mode button text:** Pure white `neutral-0` (#fff) on brand-colored buttons.
+- **BottomNavbar:** Bottom padding is now `pb-safe` (safe-area-inset).
+- **iOS inputs:** Forced to `font-size: max(16px, 1em)` on mobile via preset.
+
+## CHANGES (v0.32.0)
+
+- **Mobile Responsiveness:**
+  - Dialog auto-fullScreens on mobile (<768px). Opt out: `<DialogContent responsive={false}>`.
+  - Sheet auto-bottom with swipe-to-dismiss on mobile. Drag handle, 30% threshold. Opt out: `<SheetContent responsive={false}>`.
+  - Popover renders as bottom drawer on mobile automatically.
+  - `.touch-target` utility — 44px invisible hit area for Apple HIG compliance.
+  - `.pt-safe`, `.pb-safe`, `.pl-safe`, `.pr-safe`, `.p-safe` — safe area inset utilities.
+  - `useTouchDevice()` — detects touch capability (vs viewport width).
+  - `useViewportHeight()` — dynamic viewport height via Visual Viewport API.
+  - Sidebar has swipe-to-close on mobile.
+- **DataTable `mobileView="card"`** — Rows render as stacked cards below 640px. First column = card title, rest = label-value pairs.
+- **DataTable `aria-sort`** — Sortable column headers include `aria-sort`.
+- **Charts `ariaLabel` prop** — Configurable screen reader label on all chart components.
+- **SegmentedControl** — Redesigned: `variant="default"` (white pill + shadow-raised) | `variant="solid"` (brand pill). Inset radius, snappy spring animation.
+- **`--shadow-kbd` token** — Keyboard shortcut badge shadow. Use `shadow-kbd` utility.
+- **Checkbox/Radio `size` prop** — `sm | md (default) | lg`.
+
+## CHANGES (v0.31.0)
+- **Alert `size` prop** — `sm | md (default) | lg`. Scales padding, gap, icon, text.
+- **Card `color` prop** — `default | accent | error | success | warning | info | neutral`. Semantic border color.
+- **Card `size` prop** — `sm | md (default) | lg`. Propagated to sub-components via context.
+- **Select `variant` prop** — `default | outline | ghost` on SelectTrigger.
+- **Select `color` prop** — `default | error | success | warning` on SelectTrigger. Sets `aria-invalid` when error.
+- **Tabs `color` prop** — `accent (default) | neutral`. Affects line variant indicator.
+- **Tabs `size` prop** — `sm | md (default) | lg`. Scales height and padding.
+- **Badge `truncate` prop** — Enables ellipsis truncation. Combine with fixed width or `maxWidth`.
+- **New subpath exports** — `./ui/icon`, `./ui/icon-context`, `./ui/icon-group`, `./ui/badge-group`, `./ui/badge-indicator`, `./ui/devalok-grain`, `./ai/types`.
+- **Server-safe fix** — `empty-state`, `priority-indicator`, `status-badge` now correctly get `"use client"` (were incorrectly omitted).
+- **Server-safe detection** — Hardcoded allowlist replaced with `// @server-safe` source annotations.
+
+## CHANGES (v0.30.0)
+- **RichTextEditor `toolbar` prop** — `toolbar?: ToolbarItem[]` whitelist of toolbar items to display. Omit to show all (default). `ToolbarItem` type exported.
+- **`@devalok/shilp-sutra-karm` removed** — Domain components moved to Karm app repo. npm package deprecated.
+- **Warning dark mode fixed** — `warning-*` tokens now have proper dark mode values (higher chroma than category amber).
+- **tailwind-merge fix** — All `text-ds-*` sizes now correctly registered. `cn('text-ds-lg', 'text-accent-11')` no longer strips the color.
+- **AvatarGroup fixes** — Overflow badge text matches avatar size, indicator dots scale with size, aria-labels added.
+
+## BREAKING CHANGES (v0.27.0 — Externalized Dependencies)
+
+FilePreview and MarkdownViewer dependencies are now **external** (not bundled).
+Install them if you use these components:
+
+```bash
+pnpm add react-pdf react-zoom-pan-pinch react-syntax-highlighter
+```
+
+These are optional peerDependencies — consumers who don't use FilePreview or MarkdownViewer are unaffected.
+
+**Next.js optimization:** Add to your `next.config.js`:
+```js
+optimizePackageImports: ['@devalok/shilp-sutra']
+```
+
+## BREAKING CHANGES (v0.23.0 — Semantic Surface & Shadow Tokens)
+
+**Surface tokens renamed:** Numeric `surface-1..4` replaced with semantic names.
+| Old | New | Usage |
+|-----|-----|-------|
+| `bg-surface-1` | `bg-surface-base` | Page background |
+| `bg-surface-1` | `bg-surface-sunken` | Shell chrome (sidebar, topbar), board columns |
+| `bg-surface-1` | `bg-surface-overlay` | Dialogs, popovers, dropdowns, inputs |
+| `bg-surface-2` | `bg-surface-raised` | Cards, widgets, panels |
+| `bg-surface-3` | `bg-surface-raised-hover` | Hover states on raised elements |
+| `bg-surface-4` | `bg-surface-raised-active` | Active/pressed states |
+
+Same pattern for `border-surface-*`, `text-surface-*`, `ring-surface-*`.
+
+**Shadow tokens renamed:** Numeric `shadow-01..05` replaced with semantic names.
+| Old | New |
+|-----|-----|
+| `shadow-01` | `shadow-raised` |
+| `shadow-02` | `shadow-raised-hover` |
+| `shadow-03` | `shadow-floating` |
+| `shadow-04` | `shadow-overlay` |
+| `shadow-05` | (removed — was unused) |
+
+**New surface tokens:**
+- `bg-surface-sunken` — recessed areas (sidebar, board columns, segmented track)
+- `bg-surface-overlay` — floating elements (dialogs, popovers, inputs). Diverges from base in dark mode.
+- `bg-surface-inverted` / `text-surface-inverted-fg` — tooltips, inverted badges
+- `bg-surface-disabled` / `text-surface-fg-disabled` — disabled elements
+- `border-surface-border-subtle` — hairline dividers
+- `bg-backdrop` — dialog/sheet backdrop overlay
+
+**New shadow tokens:**
+- `shadow-glow` — selection/focus accent glow
+- `shadow-inset` — toggle/segmented track deboss
+- `shadow-ring` / `shadow-ring-sm` — focus ring / subtle separator
+
+**Hard rule: never combine explicit border + shadow.** Shadows include a 1px ring layer. Adding a CSS border creates a 2px edge. Use shadow OR border, never both.
+
+**Breaking:** Old numeric aliases (`--color-surface-1..4`, `--shadow-01..05`, Tailwind `bg-surface-1..4`, `shadow-01..05`) have been removed. Use the semantic names listed above.
+
+**Component Decision Matrix:**
+| Building... | Surface | Shadow |
+|-------------|---------|--------|
+| Page/layout | `surface-base` | none |
+| Shell (sidebar/topbar) | `surface-sunken` | `shadow-raised` |
+| Card/widget/panel | `surface-raised` | `shadow-raised` |
+| Card hover | `surface-raised` | `shadow-raised-hover` |
+| Board column/well | `surface-sunken` | none |
+| Popover/menu/dropdown | `surface-overlay` | `shadow-floating` |
+| Dialog/modal/sheet | `surface-overlay` | `shadow-overlay` |
+| Tooltip | `surface-inverted` | `shadow-floating` |
+| Toast | `surface-overlay` | `shadow-floating` |
+| Input (rest) | `surface-overlay` | none |
+| Input (focus) | `surface-overlay` | `shadow-ring` |
+| Button (solid) | accent colors | `shadow-raised` |
+| Button (disabled) | `surface-disabled` | none |
+| Segmented track | `surface-sunken` | `shadow-inset` |
+| Selected item | current surface | `shadow-glow` |
+
+## BREAKING CHANGES (v0.18.0 — Framer Motion + OKLCH)
+
+**New runtime dependency:** `framer-motion@^12.36.0` (bundled). Karm consumers must install `framer-motion@^12.0.0` as peer dep.
+
+**Transitions removed:** `Fade`, `Collapse`, `Grow`, `Slide` from `./ui/transitions` no longer exist. Use `MotionFade`, `MotionCollapse`, `MotionSlide` from `@devalok/shilp-sutra/motion/primitives`.
+
+**CSS keyframe animations removed:** 18 keyframes (`fade-in`, `fade-out`, `slide-up`, `scale-in`, etc.) and their `animate-*` utilities removed from Tailwind preset. Use motion primitives instead.
+
+**`useReducedMotion()` removed:** Use `<MotionProvider reducedMotion="user">` at app root.
+
+**New motion system:**
+- `import { MotionProvider, springs, tweens } from '@devalok/shilp-sutra/motion'`
+- `import { MotionFade, MotionCollapse, MotionSlide, MotionPop, MotionScale, MotionStagger } from '@devalok/shilp-sutra/motion/primitives'`
+- Springs: `springs.snappy`, `springs.smooth`, `springs.bouncy`, `springs.gentle`
+- Tweens: `tweens.fade`, `tweens.colorShift`
+
+**Spinner v2:** New props `state?: 'spinning' | 'success' | 'error'`, `variant?: 'filled' | 'bare'`, `delay?: number`, `onComplete?: () => void`
+
+**Button `onClickAsync`:** New prop `onClickAsync?: (e) => Promise<void>` — auto-manages loading → success/error → idle states. `asyncFeedbackDuration?: number` (default 1500ms).
+
+**Server safety changes:** EmptyState, StatusBadge, PriorityIndicator, Spinner are NOT server-safe (they use Framer Motion). Do NOT import from RSC.
+
+**Build:** `framer-motion` and `sonner` moved from `dependencies` to `devDependencies` (bundled at build time — no consumer install needed for core).
+
+**New APIs in v0.18.0:**
+- Combobox: `accessibleLabel?: string` — custom aria-label for trigger (falls back to placeholder)
+- Slider: multi-thumb support — pass array `defaultValue={[25, 75]}` for range sliders
+
+## CHANGES (v0.16.0)
+- **DataTable server-side features**: `onSort` callback (manual sorting), `pagination` prop (server-side pagination with page/total/onPageChange), `selectedIds` + `selectableFilter` (controlled selection), `loading` shimmer, `emptyState` ReactNode, `singleExpand`, `stickyHeader`, `onRowClick`, `bulkActions` floating bar
+- **DataTable display**: `density?: 'compact' | 'standard' | 'comfortable'` (compact=4px padding, standard=16px, comfortable=32px). `toolbar?: boolean` (column visibility + density + export controls). Column `meta: { align: 'right' }` for numeric columns (auto-applies text-right tabular-nums). Column `meta: { hideBelow: 'md' }` for responsive column hiding (hidden below breakpoint). `selectableFilter?: (row) => boolean` to disable selection on certain rows (e.g. only PENDING rows selectable).
+- **ActivityFeed**: New composed component — `@devalok/shilp-sutra/composed/activity-feed` — vertical timeline with colored dots, actor avatars, expandable detail, compact mode, load more
+- EmptyState: `iconSize?: 'sm' | 'md' | 'lg'` prop for icon dimension control
+- BottomNavbar: `badge?: number` on BottomNavItem for notification counts (99+ cap)
+- AppSidebar: `preFooterClassName?: string` for scrollable preFooterSlot
+
+## CHANGES (v0.15.0)
+- **Input font standardization**: All input sizes (sm, md, lg) now use text-ds-md (14px). Previously lg used text-ds-lg (18px). Affects Input, Select, SearchInput, Textarea.
+- CommandPalette: Staggered slide-up animations for items, fade-in for groups, scale-in search icon, active item color transitions
+
+## CHANGES (v0.14.0)
+- **BREAKING z-index**: Select, Combobox, Autocomplete, DropdownMenu, ContextMenu, Menubar, HoverCard promoted from z-dropdown (1000) to z-popover (1400). Fixes dropdowns rendering behind Sheet/Dialog. If you had custom z-index overrides (e.g. `[data-radix-popper-content-wrapper] { z-index: 1400 !important }`) you can now remove them.
+- TabsTrigger: Added gap-ds-02 (4px) between icon and label
+- AppSidebar: footer.version now accepts string | { label, href } for clickable version links
+
+## CHANGES (v0.13.0)
+- EmptyState: icon prop now accepts ComponentType (e.g. Tabler icon references) in addition to ReactNode
+- NotificationCenter: Notification.actions?: NotificationAction[] — inline action buttons (Approve/Deny) per notification
+- NotificationCenter: Tier dot now doubles as read/unread marker; separate unread dot removed
+- AppSidebar: footer.promo?: SidebarPromo — dismissable promo banner with icon, text, action button
+- AppSidebar: Footer links + version render on same line with · dividers
+- Collapsible: Now uses height-based expand/collapse animation (animate-collapsible-down/up)
+- Tailwind preset: 4 new keyframes + utilities — accordion-down, accordion-up, collapsible-down, collapsible-up
+
+## CHANGES (v0.12.0)
+- Input: Softer resting border (border-subtle instead of border), subtler focus ring (ring-1 ring-focus/50 instead of ring-2 ring-focus)
+- Tailwind preset: 9 animation keyframes + utilities (fade-in, fade-out, slide-up, slide-right, scale-in, scale-out, glow-pulse, scale-bounce, lift)
+- Tailwind preset: Stagger plugins — .delay-stagger (30ms × --stagger-index), .delay-stagger-50 (50ms × --stagger-index)
+
+## BREAKING CHANGES (v0.11.0 — dark mode)
+- Dark mode interactive colors shifted: --color-interactive pink-400→pink-500, --color-interactive-hover pink-300→pink-600, --color-interactive-active pink-200→pink-700, --color-interactive-subtle pink-950→pink-1000
+- Dark mode text status colors shifted: --color-text-error red-200→red-300, --color-text-success green-200→green-300, --color-text-warning yellow-200→yellow-300, --color-text-link blue-200→blue-300, --color-text-brand pink-300→pink-400
+- New primitive token: --pink-1000 (#150208) near-black
+
+## BREAKING CHANGES (v0.8.0)
+- Combobox: Now uses discriminated union. Single: `multiple?: false, value: string, onValueChange: (v: string) => void`. Multiple: `multiple: true, value: string[], onValueChange: (v: string[]) => void`. No more `v as string[]` casts.
+- StatusBadge: Pass either `status` OR `color`, not both (discriminated union).
+- Input/Textarea: Now auto-inherit state, aria-describedby, aria-required from FormField context. Explicit props override.
+
+## BREAKING CHANGES (v0.18.0 — OKLCH token migration, continued)
+- All color primitives migrated from hex (50-950 shades) to OKLCH (12 functional steps)
+- Old shade numbers: --pink-50..950. New step numbers: --pink-1..12 (OKLCH values)
+- Step purposes: 1=app-bg, 2=subtle-bg, 3=component-bg, 4=hover, 5=active, 6=border-subtle, 7=border, 8=border-strong, 9=solid/accent, 10=solid-hover, 11=lo-contrast-text, 12=hi-contrast-text
+- New semantic tokens: --color-accent-{1-12}, --color-secondary-{1-12}, --color-surface-{base,raised,raised-hover,raised-active,sunken,overlay,inverted,disabled}, --color-surface-fg/fg-muted/fg-subtle/border/border-subtle
+- Status tokens: --color-error-{3,7,9,11,fg}, --color-success-{3,7,9,11,fg}, --color-warning-{3,7,9,11,fg}, --color-info-{3,7,9,11,fg}
+- New Tailwind utilities: accent-1..12, secondary-1..12, surface-base/raised/sunken/overlay/inverted/disabled, status/category step utilities
+- Backward compat: ALL old semantic token names preserved as aliases. --color-interactive still works → maps to --color-accent-9
+- Consumer rebranding: override --color-accent-1..12 CSS vars OR use generateScale() utility with a seed color
+- Dark mode: algorithmically derived (OKLCH curves), NOT hex overrides. Surfaces lighten with elevation.
+- If you reference --pink-500 etc directly, migrate: 50→1, 100→2, 200→3, 300→4, 400→5, 500→7, 600→8, 700→9, 800→10, 900→11, 950→12
+
+## v0.22.0 — UI Polish & Micro-Refinement
+
+**Shadows**: All shadow tokens now use 3-layer stacks. Visual change only — same token names. Shadow tokens renamed in v0.23.0 (see breaking changes above).
+
+**Transitions**: All CSS transitions use `ease-productive-standard` easing. Tween presets aligned: `tweens.fade` = 0.11s, `tweens.colorShift` = 0.07s.
+
+**New Tailwind utilities**:
+- `.focus-ring` — double-ring (2px surface + 2px accent), use on custom interactive elements (buttons, cards)
+- `.focus-ring-inset` — inset ring, use on buttons over solid backgrounds
+- `.focus-ring-sm` — 1px subtle ring, use on inputs and small controls
+- `.tabular-nums` — aligned numbers via `font-variant-numeric: tabular-nums`
+
+**Category color utilities** (standalone, not tied to Badge/Chip):
+- 7 colors: teal, amber, slate, indigo, cyan, orange, emerald
+- 4 steps each: bg-category-{color}-{3|7|9|11}, text-category-{color}-{3|7|9|11}, border-category-{color}-{3|7|9|11}
+- Use for: board column accents, status indicators, tag colors, category chips
+
+**Dense size variant (xs)** added to Input, Select, SearchInput, Button, Textarea:
+- xs = 28px height (h-ds-xs-plus), 12px text (text-ds-sm), compact padding
+- Designed for filter bars, toolbar controls, and dense UI contexts
+- Button also gets icon-xs (28×28) for compact icon buttons
+- Size matrix: xs=28px | sm=32px | md=40px (default) | lg=48px
+
+**Separator**: New `variant` prop — `"gradient" | "gradient-left" | "gradient-right"`. Default unchanged.
+
+**Checkbox**: Path-draw animation (stroke draws progressively). Uncontrolled usage now works.
+
+**Tooltip**: Auto-wraps with `<TooltipProvider>` — no manual provider needed. Text color fixed for dark mode.
+
+**Avatar fallback**: Now respects `shape` prop (was always circle). Font size auto-scales with avatar size (v0.22.3).
+
+**AvatarGroup renderAvatar**: Wrapper is positioning-only — pass `size` directly to your Avatar, do NOT use `className="h-full w-full"` (v0.22.3).
+
+**New hover states**: Checkbox, Radio, Switch track, Select items, DropdownMenu items, Combobox trigger.
+
+## AI Command System (v0.25.0+)
+
+New `@devalok/shilp-sutra/ai` module — composable AI command interface.
+
+**CommandBar** — Unified input (hero/inline/floating variants):
+```tsx
+<CommandBar
+  variant="hero"
+  onSubmit={(query) => sendToAI(query)}  // AI submission
+  groups={commandGroups}                 // optional command palette filtering
+  state="idle"                           // idle | typing | processing | responded
+  greeting="Good morning, Mudit."
+  hints={['Add member...', 'Check status...']}
+  agentName="Devadoot"
+  agentIcon={<DevadootIcon state={iconState} />}
+>
+  <AIConversation messages={messages} isProcessing={loading} />
+</CommandBar>
+```
+
+**BlockRenderer** — Renders AI response JSON as DS components:
+```tsx
+<BlockRenderer blocks={response.blocks} onAction={handleAction} customBlocks={myBlocks} />
+```
+
+Block types: `text`, `table`, `confirm`, `success`, `error`, `info`, `loading`, `divider`, `stat_row`.
+
+**AICommandProvider** — Optional context wrapper:
+```tsx
+<AICommandProvider customBlocks={karmBlocks} onAction={handle} agent={{ name: 'Devadoot' }}>
+  {/* CommandBar + AIConversation auto-wire from context */}
+</AICommandProvider>
+```
+
+**DevadootIcon** — Animated Devalok chakra with gradient state animations:
+```tsx
+<DevadootIcon state="processing" size={20} />  // idle | processing | responded | error
+```
+
+## Install & Setup
+
+pnpm add @devalok/shilp-sutra
+
+### Next.js Setup (Required for Next.js + pnpm)
+
+Add to next.config.js:
+```js
+transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"]
+```
+
+// Import components (barrel):
+import { Button, Card, Dialog } from '@devalok/shilp-sutra'
+
+// Import per-component (recommended for Server Components):
+import { Button } from '@devalok/shilp-sutra/ui/button'
+import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
+import { TopBar } from '@devalok/shilp-sutra/shell/top-bar'
+
+// Chat primitives (v0.29.0+):
+import { MessageList, Message, SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator } from '@devalok/shilp-sutra/ui/chat'
+
+// AI command system (v0.25.0+):
+import { CommandBar, AIConversation, BlockRenderer, AICommandProvider, DevadootIcon } from '@devalok/shilp-sutra/ai'
+
+// Toast (imperative, no hook needed):
+import { toast } from '@devalok/shilp-sutra/ui/toast'
+
+// Hooks:
+import { useColorMode } from '@devalok/shilp-sutra/hooks/use-color-mode'
+
+// CSS tokens (import once at app root — already included in /css):
+import '@devalok/shilp-sutra/css'
+
+## CRITICAL: Differences from shadcn/ui
+
+If you have shadcn/ui knowledge, these are the differences that WILL trip you up:
+
+| shadcn/ui pattern | shilp-sutra equivalent | Notes |
+|---|---|---|
+| variant="destructive" | color="error" | Two-axis system: variant=shape, color=intent |
+| size="default" | size="md" | All sizes: sm, md, lg (never "default") |
+| <Select size="lg"> | <SelectTrigger size="lg"> | Size goes on trigger, NOT root |
+| <Chip> | <Badge onClick={...}> | Chip is deprecated, use Badge with onClick |
+| useToast() + toast({ variant }) | toast.success('msg') | Imperative API, no hook needed |
+| Badge variant="destructive" | Badge variant="solid" color="error" | Two-axis: variant + color |
+| Alert + AlertTitle + AlertDescription | <Alert title="..." color="error"> | Single component, not compound |
+| Form + FormField + FormItem + FormLabel + FormControl + FormDescription + FormMessage | FormField + Label + Input + FormHelperText + useFormField() | Simpler API, hook-based a11y wiring |
+| Pagination | PaginationRoot | Root component name differs |
+
+### The Two-Axis Variant System
+
+Many components use TWO props where shadcn uses one:
+- `variant` controls SHAPE/SURFACE: solid, outline, ghost, subtle, filled, etc.
+- `color` controls INTENT/SEMANTICS: default, error, success, warning, info, etc.
+
+Examples:
+  <Button variant="solid" color="error">Delete</Button>       // red solid button
+  <Button variant="soft" color="warning">Pending</Button>     // amber tinted button
+  <Button variant="soft" color="accent">Cancel</Button>       // preferred for secondary actions
+  <Badge variant="solid" color="success">Active</Badge>       // green solid badge
+  <Alert variant="solid" color="warning">Warning!</Alert>     // amber filled alert
+
+**Design preference (Devalok default):** for **secondary** Button actions, reach for `variant="soft"` before `variant="outline"`. Soft feels warmer, brand-consistent, and reads better in data-dense UIs. Use `outline` only when soft's tint would disappear (colored bg, surface-raised), in toolbar/icon-dense contexts, or when you need outline's stronger hierarchy next to a primary action.
+
+Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusBadge
+
+## Component Quick Reference
+
+### Inputs & Controls
+- Button: variant(solid|soft|outline|ghost|link) color(accent|error|success|warning|neutral) size(xs|sm|md|lg|compact-xs|compact-sm|compact-md|icon-xs|icon-sm|icon-md|icon-lg) shape(default|pill) weight(semibold|normal) + loading, startIcon, endIcon, asChild, processing?('ambient'|'working'|'urgent'|boolean — marching ants SVG border, forces soft variant), processingColor?('accent'|'error'|'success'|'warning'|'neutral'), processingDisabled?(boolean, default true — set false for cancel-by-click). onClickAsync auto-activates processing='working' during loading phase. Layout animation always on. Deprecated aliases still work: variant="default"→solid, variant="destructive"→solid+error, color="default"→accent
+- IconButton: icon(ReactNode, required) shape(square|circle) size(sm|md|lg) + aria-label required
+- SplitButton: [Action | ▼] button with dropdown. Props: variant(solid|soft|outline), color, size(xs|sm|md|icon-xs|icon-sm|icon-md), triggerSide(left|right, default right), triggerWidth?(number|string), placement?(Floating UI Placement, default top-end), dropdownContent(ReactNode), open?, onOpenChange?, dropdownLabel?, dropdownIcon?. ARIA: role="group", aria-haspopup="menu", aria-expanded.
+- ButtonGroup: Visually merges adjacent Buttons. Props: variant, color, size, disabled (propagates), orientation(horizontal|vertical), attached(true|false, default true), fullWidth. Compound pattern: Button reads position from context, applies radius + border-removal inline. Tonal dividers for solid/soft/ghost. Focus z-index isolation.
+- Icon: `<Icon icon={IconPlus} />` — context-aware wrapper for Tabler icons. Size tiers: xs(14px) sm(16px) md(18px) lg(20px) xl(24px) 2xl(32px). Default: md. Stroke: light(1.5) regular(2) bold(2.5). Default: regular. Scales per size tier. Reads size from parent Button/IconGroup via IconContext. Explicit props override. Accessibility: aria-hidden by default. Pass label="Add item" for accessible icons. Animation: animate="spin|pulse|bounce|draw". `draw` renders SVG path-draw animation (check/X icons draw progressively via pathLength; other icons fall back to static). State machine: state="idle|loading|success|error". Button integration: startIcon={<Icon icon={IconPlus} />} (NOT raw <IconPlus />). IconGroup: <IconGroup size="sm" gap="tight"> for toolbar patterns.
+- Input: size(xs|sm|md|lg) state(InputState) + startSection(ReactNode), endSection(ReactNode), startSectionClickable(bool), endSectionClickable(bool), startSectionType('icon'|'label'), endSectionType('icon'|'label'), wrapperClassName(string). Container-level focus ring wraps input + sections as one unit. Sections are pointer-events-none by default; use *SectionClickable for interactive content (clear buttons, toggles). Section type auto-inferred: strings→'label' (tinted bg + border separator), React elements→'icon' (fixed-width centered). Override with *SectionType. Flexbox section layout. Icons auto-size via IconProvider per input size. className targets <input>, wrapperClassName targets wrapper div. Type: InputState = 'default' | 'error' | 'warning' | 'success'
+- SearchInput: size(xs|sm|md|lg) + loading, onClear. Delegates to Input v2 sections internally.
+- NumberInput: value + onValueChange, min, max, step (controlled only)
+- Textarea: size(xs|sm|md|lg) state(default|error|warning|success)
+- ColorInput: value(hex string) onChange(value) presets({hex,label}[]|string[]|false, default: 10 named colors) variant('default'|'inline') showPicker(boolean, default:true) defaultFormat('hex'|'rgb'|'hsl') align('start'|'center'|'end') disabled. Popover trigger opens interactive picker (react-colorful) + format switcher + preset swatches + undo/reset. Inline variant renders entire trigger as the color with contrast-aware text.
+- Checkbox: checked, onCheckedChange, error(boolean), indeterminate(boolean)
+- Switch: checked, onCheckedChange, error(boolean), size(sm|md|lg), color(accent|success|warning), thumbIcon(ReactNode)
+- RadioGroup > RadioGroupItem(value)
+- Select > SelectTrigger(size: xs|sm|md|lg) > SelectValue; SelectContent > SelectItem(value)
+- Toggle: variant(default|outline) size(sm|md|lg)
+- ToggleGroup > ToggleGroupItem (variant/size propagate from root)
+- SegmentedControl: variant(default|solid) size(sm|md|lg) options selectedId onSelect. Types: SegmentedControlOption = { id, text, icon? }, SegmentedControlSize = 'sm' | 'md' | 'lg', SegmentedControlVariant = 'default' | 'solid'
+- Slider: standard Radix slider
+
+### Feedback & Notifications
+- Alert: variant(subtle|solid|outline) color(info|success|warning|error|neutral) size(sm|md|lg) + title, onDismiss
+- Banner: color(info|success|warning|error|neutral) + actions?(ReactNode), onDismiss. Mobile flex-wrap for multiple buttons.
+- Toast: imperative API via toast.success/error/warning/info/loading/message/undo/promise/upload/custom — REQUIRES <Toaster> at layout root
+- Spinner: size(sm|md|lg) — renders with role="status"
+- Progress: track size(sm|md|lg), indicator color(default|success|warning|error), autoColor(boolean, auto-shifts color by value: 0-59=default, 60-84=warning, 85-100=success, >100=error)
+
+NOTIFICATION SELECTION GUIDE:
+  - Alert: inline contextual feedback within a form or page section
+  - Banner: persistent page-level notification above content
+  - Toast: transient notification triggered by user action (needs <Toaster>, then call toast.success() etc.)
+
+### Data Display
+- Badge: variant(subtle|solid|outline|soft) color(default|accent|error|success|warning|info|neutral + 7 category colors + custom) size(xs|sm|md|lg) + onClick, onDismiss, selected, disabled, dot, startIcon, endIcon, maxWidth, circle, asChild. Compound: Badge.Indicator(count, max, dot, color, invisible, showZero, placement, children), Badge.Group(max, gap, size, onOverflowClick, children). Custom colors: color="custom" + style={{'--badge-color':'#hex'}}. Grain-ready (has relative/overflow-hidden/isolate).
+- Chip: DEPRECATED — Use `<Badge onClick={...}>` instead. Chip wrapper maps label prop to children for backward compat.
+- Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status?(AvatarStatus) ring?('lead'|'admin'|'client') badge?(number|'dot'|ReactNode) loading?(boolean) > AvatarImage + AvatarFallback(colorSeed?). Types: AvatarStatus = 'online'|'offline'|'busy'|'away', AvatarRing = 'none'|'lead'|'admin'|'client'. Fallback colors are deterministic from name hash (8 categorical). Online dot pulses. Badge pops in with MotionPop.
+- Card: variant(default|elevated|outline|flat) interactive(boolean) accent?(left|top|right|bottom) accentColor?(default|secondary|error|success|warning|info) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
+- Table > TableHeader > TableRow > TableHead; TableBody > TableRow > TableCell; TableFooter; TableCaption
+- Text: variant(TextVariant) as(element). Type: TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
+- Code: variant(inline|block)
+- Skeleton: variant(rectangle|circle|text) animation(pulse|shimmer|none)
+- StatCard: title/label, value, delta, icon, prefix, suffix, comparisonLabel, secondaryLabel, progress, sparkline, onClick, href, accent(default|success|warning|error|info), footer
+- ColorSwatch: color(CSS string) size(sm|md|lg) shape(circle|square|rounded) ring(boolean) — for dynamic runtime colors
+- StatusDot: status(healthy|warning|critical|neutral|inactive) size(sm|md|lg) pulse?(boolean, default true for healthy) label?(string)
+- ProgressRing: value(number) max?(100) size(sm|md|lg) color(default|success|warning|error|info) showValue?(boolean) label?(string). Also: MultiProgressRing for concentric Activity Ring style
+- DevalokGrain: Brand texture overlay — drop inside any element with `relative overflow-hidden isolate`. Props: intensity('subtle'|'medium'|'heavy'), surface('solid'|'soft'), sheen(boolean, inner highlight), animated(boolean, fade-in on mount), hoverIntensify(boolean, parent needs `group` class), tint(CSS color string for directional gradient). No gradient rendered without tint.
+
+### Chat Primitives (ui/chat/)
+Import: `@devalok/shilp-sutra/ui/chat`
+- MessageList: children, autoScroll?(true), newMessageCount?(number, shows floating "N new" pill), onScrollToBottom?(), onLoadMore?(), isLoadingMore?(boolean), emptySlot?(ReactNode), headerSlot?(ReactNode). role="log" aria-live="polite".
+- Message: COMPOUND — variant('flat'|'bubble') placement('start'|'end') highlight?('mention'|'internal') grouped?(boolean) deleted?(boolean) deletedText?(string). Sub-parts: Message.Avatar(src?, fallback?, icon?, size?('sm'|'md')), Message.Content, Message.Author(name, badge?, timestamp?, formattedTimestamp?, timestampFormat?), Message.Body, Message.EditableBody(content, onSave, onCancel?, canEdit?, renderContent?), Message.Reactions(reactions[{emoji,count,reacted}], onReact), Message.Actions(children, delay?), Message.Action(icon, label, onClick, variant?('default'|'danger'))
+- SystemMessage: variant('event'|'alert') icon?(ReactNode) timestamp?(string) children
+- MessageInput: onSubmit(text=>void), placeholder?, disabled?, isStreaming?(boolean, shows stop button), onCancel?(), leadingSlot?, trailingSlot?, disclaimer?(string), sendIcon?(ReactNode). Enter to send, Shift+Enter for newline.
+- DateSeparator: date(Date|string), format?((date)=>string). Shows "Today", "Yesterday", or "Mar 15".
+- UnreadSeparator: label?('NEW'), count?(number). Accent-colored horizontal rule.
+- TypingIndicator: users({name, image?}[]). Shows animated bouncing dots + "Alice is typing..." / "Alice and Bob are typing..." / "Several people are typing..."
+
+### Overlays
+- Dialog > DialogTrigger; DialogContent > DialogHeader > DialogTitle, DialogDescription; [content]; DialogFooter
+- AlertDialog > AlertDialogTrigger; AlertDialogContent > AlertDialogHeader > AlertDialogTitle; AlertDialogFooter > AlertDialogCancel, AlertDialogAction
+- Sheet: side(top|bottom|left|right) > SheetTrigger; SheetContent > SheetHeader > SheetTitle; [content]; SheetFooter
+- Popover > PopoverTrigger; PopoverContent
+- Tooltip: auto-wraps with <TooltipProvider> (no manual provider needed) > Tooltip > TooltipTrigger; TooltipContent
+- HoverCard > HoverCardTrigger; HoverCardContent
+- Collapsible > CollapsibleTrigger; CollapsibleContent
+
+### Navigation
+- Tabs > TabsList(variant: line|contained) > TabsTrigger(value); TabsContent(value) — variant propagates via context
+- Accordion(type: single|multiple) > AccordionItem(value) > AccordionTrigger(chevronPosition?: 'left'|'right', default 'right'); AccordionContent
+- Breadcrumb > BreadcrumbList > BreadcrumbItem > BreadcrumbLink | BreadcrumbPage; BreadcrumbSeparator
+- PaginationRoot > PaginationContent > PaginationItem > PaginationLink(isActive) | PaginationPrevious | PaginationNext | PaginationEllipsis
+- DropdownMenu > DropdownMenuTrigger; DropdownMenuContent > DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem, DropdownMenuRadioGroup > DropdownMenuRadioItem
+- ContextMenu > ContextMenuTrigger (right-click); ContextMenuContent > same sub-components as DropdownMenu
+- Menubar > MenubarMenu > MenubarTrigger; MenubarContent > same sub-components
+- NavigationMenu > NavigationMenuList > NavigationMenuItem > NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink
+
+### Layout
+- Stack: direction(vertical|horizontal) gap(SpacingToken|number) align, justify, wrap
+- Container: maxWidth(default|body|full)
+- Separator: orientation(horizontal|vertical)
+- Sidebar: complex — see llms-full.txt for complete tree
+
+### Form Pattern
+- FormField: state(FormHelperState) > Label + Input + FormHelperText. Type: FormHelperState = 'helper' | 'error' | 'warning' | 'success'
+- useFormField() hook returns { state, helperTextId, required } from FormField context
+- Wire accessibility: const { state, helperTextId } = useFormField(); then aria-describedby={helperTextId}, aria-invalid={state === 'error'}
+- Input/Textarea auto-wire from FormField context (no manual hookup needed). Explicit props override.
+
+### Composed Components
+- ConfirmDialog: open, onOpenChange, title, description, onConfirm + confirmText, cancelText, color(default|error), loading
+- PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)
+- AvatarGroup: users(AvatarUser[]), max?(number), size?(xs|sm|md|lg|xl), showTooltip?, borderColor?('surface-base'|'surface-raised'), onOverflowClick?(), renderAvatar?((user,index)=>ReactNode), expandDirection?('left'|'right'), expandAmount?('compact'|'default'|'wide'). Type: AvatarUser = { name, image?, ring?, indicator?('lead'|'admin'|ReactNode) }. GPU-composited hover expand via translateX. Use expandDirection="left" for right-aligned groups. indicator renders a small dot on avatar: 'lead'=warning-9, 'admin'=accent-9, or custom ReactNode.
+- StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|in-progress|review|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md) onClick?(() => void, renders as button with auto chevron-down icon) icon?(ReactNode, custom trailing icon)
+- ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
+- EmptyState: icon(ReactNode or ComponentType), title(required), description, action(ReactNode), compact
+- PriorityIndicator: priority(Priority) display(compact|full). Type: Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
+- SimpleTooltip: wraps Tooltip compound into single component
+- DatePicker, DateRangePicker, DateTimePicker
+- TimePicker: standalone time selector — value(Date|null), onChange, format('12h'|'24h'), minuteStep, showSeconds, disabled
+- CalendarGrid: low-level calendar widget — currentMonth, selected, rangeStart/End, onSelect, onMonthChange, events(CalendarEvent[])
+- YearPicker: decade year grid — currentYear, selectedYear, onYearSelect, minDate, maxDate
+- MonthPicker: month grid — currentYear, selectedMonth(0-11), onMonthSelect, minDate, maxDate
+- Presets: date range quick-select buttons — presets(PresetKey[]), onSelect(start, end). Keys: today, yesterday, last7days, last30days, thisMonth, lastMonth, thisYear
+- useCalendar: hook for calendar month state — returns currentMonth, goToPreviousMonth, goToNextMonth, goToMonth, goToYear
+- (UploadProgress REMOVED — upload tracking is now built into toast.upload())
+- RichTextEditor: Tiptap editor — bold/italic/underline/strike/highlight, headings, blockquote, lists (bullet/ordered/task), code, links, images (paste/drop/upload), file attachments, @mentions, emoji picker + :shortcode:, text alignment, HR. Props: onImageUpload?, onFileUpload?, mentions?, onMentionSearch?, onMentionSelect?(item: MentionItem), emojiSet?(native|apple|google|twitter|facebook)
+- RichTextViewer: read-only renderer for RichTextEditor HTML content (renders all above content types)
+- RichChatInput: compact rich text chat input for AI/messaging. Output: RichChatInputMessage { html, plainText, attachments?, voiceNote? }. Variants: compact(default), expanded, minimal, inline. Key props: onSubmit(msg), onSchedule?(msg,date), emojiSet?, mentions?, slashCommands?, onFileUpload?, onImageUpload?, onVoiceRecord?, replyTo?, toolbar?(bool|items[]|ReactNode), actionButton?(ReactNode|false), enterBehavior?(send|newline), maxLength?, isStreaming?, onCancel?, disclaimer?, sendOptions?, leadingSlot?, trailingSlot?. Composable toolbar primitives exported: ToolbarButton, ToolbarDivider, ToolbarGroup, BoldButton, ItalicButton, etc.
+- ActivityFeed: items(ActivityItem[]), onLoadMore, loading, hasMore, emptyState, compact, maxInitialItems, groupBy?('time'|'none'), groupLabels?({ today, yesterday, thisWeek, older }), renderItem?((item, index) => ReactNode|undefined, custom renderer per item — return ReactNode for custom, undefined for default). Type: ActivityItem = { id, actor?, action, timestamp, icon?, color?, detail? }. Utility: groupItemsByTime(items, labels) exported.
+- CommandPalette: open, defaultOpen, onOpenChange (controlled/uncontrolled), keybinding(string|string[]|false), maxHeight, emptyState(ReactNode), footerHints(FooterHint[]|false). CommandItem: label(string|ReactNode), description(string|ReactNode), renderLabel(query=>ReactNode), filterValue(string), shortcut(rendered as keycap badges). Keyboard shortcuts rendered per-key with platform-aware Cmd/Ctrl. Reduced-motion support via MotionProvider.
+- MemberPicker: thin wrapper around MultiSelectPopover with Avatar rendering
+- MultiSelectPopover: items/groups, value, onValueChange, searchPlaceholder, onSearch?(async), renderItem?, emptyMessage, maxSelections. Generic multi-select popover with search + checkmarks.
+- FilterBar: searchValue, onSearchChange, onClearAll, size(xs|sm|md). Children: FilterSelect(label, value, onValueChange, options), FilterMultiSelect(label, value, onValueChange, options). Size propagates via context.
+- InlineEdit: value, onSave(string=>void|Promise), placeholder, textClassName, inputSize(xs|sm|md), multiline, readOnly, maxLength, saving. Click-to-edit text → input transition.
+- FormSection: title, description?, collapsible?, defaultOpen?. Titled form section with separator, optional collapse.
+- BulkActionBar: show, count, onClearSelection, actions[{label,icon?,onClick,color?,disabled?}]. Fixed bottom floating bar for multi-select contexts.
+- DeadlineIndicator: deadline(Date|string), warningThreshold?(1440min), criticalThreshold?(240min), format(relative|absolute), showIcon. Color transitions: green→yellow→red→overdue.
+- MasterDetail: selected, onBack, masterWidth, breakpoint(sm|md|lg). Compound: MasterDetail.List, MasterDetail.Detail, MasterDetail.ListItem(active). Desktop=grid, mobile=stacked with back button.
+- MarkdownViewer: content(string), compact?, allowHtml?(false), linkTarget?('_blank'). Renders markdown with design system tokens.
+- EmojiPicker: onSelect(emoji), set?(native|apple|google|twitter|facebook), theme(auto|light|dark). EmojiPickerPopover wraps in Popover. Lazy-loads emoji-mart with set-specific data.
+- EmojiNode: TipTap inline atom node for spritesheet emoji rendering. Attrs: id, native, set, x, y. Use createEmojiSuggestion(set) to wire :shortcode: autocomplete. Export: EmojiNode, EmojiNodeAttrs, createEmojiSuggestion.
+- FilePreview: url, type?(image|pdf|video|audio|embed), mimeType?, alt?. Auto-detects type. Image zoom, PDF iframe, native video/audio, embed for Figma/YouTube/Loom.
+- ErrorDisplay, GlobalLoading
+- Loading skeletons: CardSkeleton, TableSkeleton, BoardSkeleton, ListSkeleton
+- Page skeletons: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton (no props, server-safe)
+
+### Shell Components (app-level layout)
+- TopBar: Composition-based. Subcomponents: TopBar.Left, TopBar.Center (optional, triggers grid), TopBar.Right, TopBar.Section(gap: tight|default|loose), TopBar.IconButton(icon, tooltip), TopBar.Title, TopBar.UserMenu(user, onNavigate?, onLogout?, userMenuItems?). Types: TopBarUser = { name, email?, image? }, UserMenuItem = { label, icon?, href?, onClick?, separator?, color?, badge?, disabled? }
+- AppSidebar: navigation tree with NavItem[], NavGroup[]. Types: NavItem = { title, href, icon, exact?, badge?, children?, defaultOpen? }, NavSubItem = { title, href, icon?, exact? }, NavGroup = { label, items, action? }, SidebarUser = { name, email?, image?, designation?, role? }
+
+### AppSidebar (v0.10.0 additions)
+- NavItem.children?: NavSubItem[] — collapsible sub-list with chevron toggle
+- NavItem.defaultOpen?: boolean — control initial collapsed state
+- NavItem.badge?: string | number — badge on nav item (99+ cap for numbers)
+- NavGroup.action?: ReactNode — action button next to group label
+- footer?: SidebarFooterConfig — structured footer with links, version, slot, promo (replaces footerLinks)
+- headerSlot?: ReactNode — content between user info and navigation
+- preFooterSlot?: ReactNode — content between navigation and footer
+- renderItem?: (item, defaultRender) => ReactNode | null — custom item rendering
+
+- BottomNavbar: mobile navigation, user is optional. Types: BottomNavItem = { title, href, icon, exact?, badge? }, BottomNavbarUser = { name, role? }
+- NotificationCenter: notifications[], onMarkRead, onMarkAllRead, onNavigate, getNotificationRoute?, footerSlot?, emptyState?, headerActions?, popoverClassName?, onDismiss?(id). Types: Notification = { id, title, body?, tier, isRead, createdAt, entityType?, entityId?, projectId?, project?, actions? }, NotificationAction = { label, variant?, onClick }
+- NotificationPreferences: preferences[], projects[], onSave, onToggleMute, onUpdateTier, onDelete. Types: NotificationPreference = { id, userId?, projectId, channel, minTier, muted }, NotificationProject = { id, title }
+- AppCommandPalette: user, isAdmin, onNavigate, onSearch, searchResults, searchResultGroups(SearchResultGroup[]), isSearching, onSearchResultSelect (when provided, consumer owns routing — no internal URL computation), searchResultsLabel(string|((count)=>string)), open, defaultOpen, onOpenChange, keybinding, maxHeight, emptyState, footerHints. Types: SearchResult = { id, title, snippet?, entityType, projectId?, metadata?, icon?(ReactNode), rank?(number), shortcut?(string) }, SearchResultGroup = { label, results: SearchResult[] }, AppCommandPaletteUser = { name, role? }
+- LinkProvider: wraps app with router-agnostic Link component — component(ForwardRefComponent), children. useLink() hook returns the Link component.
+
+### Motion System (Framer Motion)
+- Setup: Wrap app root with `<MotionProvider>` from `@devalok/shilp-sutra/motion`. Handles reduced-motion detection globally.
+- Import presets: `import { springs, tweens, stagger } from '@devalok/shilp-sutra/motion'`
+- Import primitives: `import { MotionFade, MotionScale, MotionPop, MotionSlide, MotionCollapse, MotionStagger, MotionStaggerItem } from '@devalok/shilp-sutra/motion/primitives'`
+- Spring presets (spatial: position, scale, size): snappy (buttons/hover), smooth (dialogs/panels), bouncy (toasts/pop-ins), gentle (collapse/expand)
+- Tween presets (non-spatial: opacity, color): fade (opacity enter/exit), colorShift (hover color/bg)
+- All primitives take `show: boolean` to control mount/unmount via AnimatePresence
+- MotionSlide: additional `direction` prop (up|down|left|right)
+- MotionStagger + MotionStaggerItem: orchestrated stagger with configurable `delay` (default 0.04s)
+- All primitives support `layout`, `layoutId`, `whileInView`, `viewportOnce`, `preset` props
+- useMotion() hook returns { springs, tweens, reducedMotion: boolean }
+- Old Fade/Collapse/Grow/Slide from @devalok/shilp-sutra/ui/transitions are REMOVED — use Motion* equivalents
+
+### Hooks
+- toast: imperative API — import { toast } from '@devalok/shilp-sutra/ui/toast'. Methods: toast.success/error/warning/info/loading/message/undo/promise/upload/custom/dismiss. useToast() is deprecated.
+- useColorMode(): returns { colorMode, setColorMode, toggleColorMode }
+- useMobile(): returns boolean (true if viewport < 768px)
+- useLink(): returns router-agnostic Link component from LinkProvider context (shell/link-context)
+
+## Server-Safe Components (no "use client")
+
+These can be imported directly in Next.js Server Components:
+- UI: Text, Skeleton, Stack, Container, Table (and sub-components), Code, VisuallyHidden
+- Composed: ContentCard, PageHeader, LoadingSkeleton, PageSkeletons, PriorityIndicator
+
+Use per-component imports for server components:
+  import { Text } from '@devalok/shilp-sutra/ui/text'
+  import { PageHeader } from '@devalok/shilp-sutra/composed/page-header'
+
+DO NOT use barrel imports in Server Components — they include "use client" components.
+
+## Common Mistakes -- DO NOT
+
+- DO NOT use variant="destructive" — use color="error"
+- DO NOT use size="default" — use size="md" (or sm, lg)
+- DO NOT put size on <Select> — put it on <SelectTrigger size="md">
+- DO NOT use <Chip> — Chip is deprecated. Use <Badge onClick={...}> instead
+- DO NOT use useToast() hook — use import { toast } from '@devalok/shilp-sutra/ui/toast' (imperative)
+- DO NOT use toast({ title, color }) object syntax — use toast.success('message'), toast.error('message'), etc.
+- DO NOT call toast() without <Toaster /> mounted at your layout root
+- DO NOT use <Alert><AlertTitle>...</AlertTitle></Alert> — use <Alert title="..." />
+- DO NOT import from barrel in Next.js Server Components — use per-component imports
+- DO NOT use variant="secondary" on Button — use variant="outline" or variant="ghost"
+- DO NOT use variant="default" on Button — use variant="solid" (deprecated alias, still works)
+- DO NOT use variant="destructive" on Button — use variant="solid" color="error" (deprecated alias, still works)
+- DO NOT use color="default" on Button — use color="accent" (deprecated alias, still works)
+- DO NOT put variant on individual TabsTrigger — put it on TabsList (propagates via context)

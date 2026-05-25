@@ -27,7 +27,7 @@ export function Legend({ items, position = 'bottom', className }: LegendProps) {
       {items.map((item) => (
         <div key={item.label} className="flex items-center gap-ds-02">
           <span
-            className="inline-block h-3 w-3 shrink-0 rounded-ds-sm"
+            className="inline-block h-3 w-3 shrink-0 rounded-control-inner"
             style={{ backgroundColor: item.color }}
           />
           <span>{item.label}</span>

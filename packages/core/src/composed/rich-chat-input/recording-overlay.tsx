@@ -65,12 +65,12 @@ function RecordingOverlay({
       role="status"
       aria-live="polite"
       aria-label="Recording voice message"
-      className="absolute inset-0 flex items-center gap-ds-03 px-ds-04 py-ds-03 bg-surface-raised-hover rounded-ds-lg z-10"
+      className="absolute inset-0 flex items-center gap-ds-03 px-ds-04 py-ds-03 bg-surface-raised-hover rounded-surface z-10"
     >
       {/* Red pulsing dot */}
       <span
         className={cn(
-          'w-ds-02b h-ds-02b shrink-0 rounded-ds-full bg-error-9',
+          'w-ds-02b h-ds-02b shrink-0 rounded-pill bg-error-9',
           prefersReduced ? 'opacity-100' : pulseAnimation
         )}
         aria-hidden="true"

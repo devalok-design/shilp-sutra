@@ -26,7 +26,7 @@ function DefaultDemo() {
     <MasterDetail
       selected={selected}
       onBack={() => setSelected(null)}
-      className="h-[400px] border border-surface-border rounded-ds-lg overflow-hidden"
+      className="h-[400px] border border-surface-border rounded-surface overflow-hidden"
     >
       <MasterDetail.List>
         {users.map((user) => (
@@ -74,7 +74,7 @@ function NoSelectionDemo() {
     <MasterDetail
       selected={selected}
       onBack={() => setSelected(null)}
-      className="h-[400px] border border-surface-border rounded-ds-lg overflow-hidden"
+      className="h-[400px] border border-surface-border rounded-surface overflow-hidden"
     >
       <MasterDetail.List>
         {users.map((user) => (

@@ -74,7 +74,7 @@ export function LandingSurface() {
           See it run
         </Text>
         <Text variant="heading-xl" className="text-surface-fg">
-          Not a screenshot. A surface.
+          A live surface, rendering as you read.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
           Every piece on this page is shilp-sutra rendering live. Click the activity button —

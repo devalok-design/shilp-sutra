@@ -71,11 +71,8 @@ type Consumer = {
   /** Brand ramp anchors — drives the CSS-var override on the card. */
   hue: number
   chroma: number
-  /**
-   * Optional path under /public for a real product logo / favicon. When
-   * present the BrandTile renders the image; otherwise it falls back to
-   * a brand-coloured letter tile.
-   */
+  /** Optional bundled logo at /public/<path>. When present BrandTile
+   *  renders the image instead of the letter-tile fallback. */
   iconSrc?: string
 }
 
@@ -166,15 +163,13 @@ function useBrandRamp(hue: number, chroma: number): CSSProperties {
 }
 
 /**
- * Brand glyph for a BuiltWith card. Renders, in priority order:
- *   1. A bundled image (iconSrc) when the product has a real logo asset
- *      committed under apps/site/public/ — currently only BharatTools.
- *   2. IconLock tile for internal-only products (no public domain).
- *   3. Brand-coloured letter tile (first char) for everything else.
- *
- * Replaces the previous third-party Google s2 favicon service. Bundled
- * logos are predictable across light + dark mode + offline + CDN-cached;
- * letter tiles are tokenised + react to useBrandRamp.
+ * BrandTile — small per-product glyph used in the BuiltWith cards.
+ * Resolves in priority order:
+ *   1. Bundled product logo (iconSrc) — used by BharatTools today.
+ *   2. IconLock for internal-only products without a public domain.
+ *   3. Brand-coloured letter tile (first char of name) — every other
+ *      consumer. Uses accent-3 bg + accent-11 fg so it follows the
+ *      card's per-product brand ramp via useBrandRamp.
  */
 function BrandTile({
   iconSrc,
@@ -192,9 +187,7 @@ function BrandTile({
 
   if (iconSrc && !errored) {
     return (
-      // Real product logo bundled in /public. Next/Image is overkill for a
-      // small static asset; <img> is fine. The @next/next/no-img-element
-      // rule isn't registered in this flat ESLint config.
+      // Bundled in /public. Next/Image is overkill for a small static asset.
       <img
         src={iconSrc}
         alt={`${name} logo`}

@@ -26,7 +26,6 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 import { FormField, FormHelperText } from '@devalok/shilp-sutra/ui/form'
 import { Input } from '@devalok/shilp-sutra/ui/input'
 import { Label } from '@devalok/shilp-sutra/ui/label'
-import { Progress } from '@devalok/shilp-sutra/ui/progress'
 import {
   Select,
   SelectContent,
@@ -110,18 +109,23 @@ function formatAmount(amount: number, currency: Currency, direction: 'credit' | 
 function MetricTile({
   label,
   value,
+  raw,
   hint,
   tooltip,
 }: {
   label: string
+  /** Display value — usually a compact INR abbreviation (₹2.50 Cr). */
   value: string
+  /** Optional full / unabbreviated form. Surfaced beneath value + in the
+   *  tooltip so the precise amount is one hover away. */
+  raw?: string
   hint?: string
   tooltip: string
 }) {
   return (
     <div className="flex flex-col gap-ds-01 p-ds-04 rounded-ds-md bg-surface-2 border border-surface-border-subtle">
-      <div className="flex items-center gap-ds-02">
-        <Text variant="label-xs" className="text-surface-fg-subtle uppercase tracking-wide">
+      <div className="flex items-center gap-ds-02 min-w-0">
+        <Text variant="label-xs" className="text-surface-fg-subtle uppercase tracking-wide truncate">
           {label}
         </Text>
         <Tooltip>
@@ -129,7 +133,7 @@ function MetricTile({
             <button
               type="button"
               aria-label={`About ${label}`}
-              className="text-surface-fg-subtle hover:text-surface-fg transition-colors duration-fast-01"
+              className="text-surface-fg-subtle hover:text-surface-fg transition-colors duration-fast-01 shrink-0"
             >
               <IconInfoCircle size={12} aria-hidden />
             </button>
@@ -137,9 +141,17 @@ function MetricTile({
           <TooltipContent>{tooltip}</TooltipContent>
         </Tooltip>
       </div>
-      <Text variant="heading-md" className="text-surface-fg text-balance tabular-nums">
+      {/* whitespace-nowrap so values never silently overflow-truncate mid-
+          digit (Amal's #9: ₹2,50,00, was getting cut). tabular-nums keeps
+          amounts dance-free during sorting. */}
+      <Text variant="heading-md" className="text-surface-fg tabular-nums whitespace-nowrap">
         {value}
       </Text>
+      {raw ? (
+        <Text variant="body-xs" className="text-surface-fg-subtle font-mono tabular-nums truncate">
+          {raw}
+        </Text>
+      ) : null}
       {hint ? (
         <Text variant="body-xs" className="text-surface-fg-muted">
           {hint}
@@ -338,18 +350,25 @@ export function LendisShowcase() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-ds-03">
+                {/* 4-up only at lg+. Below that 2-up, since full INR amounts
+                    (₹2,50,00,000 etc.) need ~140px and 4-cols at md silently
+                    truncated mid-digit. Indian-format abbreviation (Cr / L)
+                    keeps the values legible at every breakpoint without
+                    needing per-card width budgets. */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-ds-03">
                   <MetricTile
                     label="Credit line"
-                    value="₹2,50,00,000"
+                    value="₹2.50 Cr"
+                    raw="₹2,50,00,000"
                     hint="Sanctioned"
-                    tooltip="Total sanctioned facility from Lendis Capital, drawable in tranches over 18 months."
+                    tooltip="Total sanctioned facility: ₹2,50,00,000 from Lendis Capital, drawable in tranches over 18 months."
                   />
                   <MetricTile
                     label="Outstanding"
-                    value="₹84,21,450"
+                    value="₹84.21 L"
+                    raw="₹84,21,450"
                     hint="33.7% utilised"
-                    tooltip="Principal drawn minus repayments. Updates daily at 10:00 IST after BBPS reconciliation."
+                    tooltip="Principal drawn minus repayments: ₹84,21,450. Updates daily at 10:00 IST after BBPS reconciliation."
                   />
                   <MetricTile
                     label="Effective IRR"
@@ -359,9 +378,10 @@ export function LendisShowcase() {
                   />
                   <MetricTile
                     label="Next payment"
-                    value="₹4,52,318"
+                    value="₹4.52 L"
+                    raw="₹4,52,318"
                     hint="Due 5 June"
-                    tooltip="EMI auto-debited from operating account on the 5th of each month via NACH mandate."
+                    tooltip="EMI of ₹4,52,318 auto-debited from operating account on the 5th of each month via NACH mandate."
                   />
                 </div>
               </CardContent>
@@ -427,11 +447,28 @@ export function LendisShowcase() {
                     <Text variant="label-sm" className="text-surface-fg-muted">
                       Verification score
                     </Text>
-                    <Text variant="label-sm" className="text-surface-fg font-semibold">
+                    <Text variant="label-sm" className="text-surface-fg font-semibold tabular-nums">
                       {kycScore}%
                     </Text>
                   </div>
-                  <Progress value={kycScore} color="success" />
+                  {/* Manual track + fill so the unfilled portion is visibly
+                      contrasted (Amal's #3: empty portion of the bar should
+                      be visible). DS Progress's default track was rendering
+                      too close to the card's surface-2 background and read
+                      as "complete" instead of "80% of the way". */}
+                  <div
+                    role="progressbar"
+                    aria-label="Verification score"
+                    aria-valuenow={kycScore}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    className="relative h-2 w-full overflow-hidden rounded-pill bg-surface-3 border border-surface-border-subtle"
+                  >
+                    <div
+                      className="absolute inset-y-0 left-0 bg-success-9 rounded-pill transition-[width] duration-moderate-02 ease-productive-standard"
+                      style={{ width: `${kycScore}%` }}
+                    />
+                  </div>
                 </div>
                 <Stepper activeStep={kycActive} orientation="vertical">
                   {kycSteps.map((s) => (

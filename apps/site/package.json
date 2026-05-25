@@ -11,7 +11,8 @@
     "build:canvas-modes": "node scripts/build-canvas-modes.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "lint": "next lint"
+    "lint": "next lint",
+    "shot": "node scripts/screenshot.mjs"
   },
   "dependencies": {
     "@devalok/shilp-sutra": "workspace:*",
@@ -27,6 +28,7 @@
     "remark-gfm": "^4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.50.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",

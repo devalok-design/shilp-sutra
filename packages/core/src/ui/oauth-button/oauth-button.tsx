@@ -303,30 +303,22 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
       ? `${longName}${lastUsed ? ' (last used)' : ''}`
       : undefined
 
-    // Inline "Last used" indicator. Placement depends on label density.
-    // - `compact` (just provider name): a single accent dot at the top-right
-    //   corner. Tight rows have no horizontal room for a pill — the dot
-    //   reads "marked" without overlapping the label.
-    // - Full label: pill on the right edge, room next to "Continue with Google".
+    // "Last used" pill — anchored to the top-right corner of the button,
+    // inside Button's `overflow-hidden` bounds. The corner placement reads as
+    // a notification badge attached to the button instead of competing with
+    // the centered label for horizontal space (v2 used vertical-center
+    // placement which crowded "Google" in compact rows).
     //
-    // Either way aria-label augments the accessible name with "(last used)".
-    let lastUsedNode: React.ReactNode = null
-    if (lastUsed && !iconOnly) {
-      lastUsedNode = compact ? (
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1.5 right-1.5 size-[8px] rounded-full bg-accent-9 ring-2 ring-surface-base"
-        />
-      ) : (
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute right-ds-03 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-pill bg-accent-9 text-accent-fg px-1.5 py-[1px] text-[10px] leading-none font-semibold uppercase tracking-wide"
-        >
-          <span aria-hidden className="size-[5px] rounded-full bg-accent-fg/90" />
-          Last used
-        </span>
-      )
-    }
+    // aria-label augments the accessible name with "(last used)".
+    const lastUsedNode = lastUsed && !iconOnly ? (
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1 right-1 inline-flex items-center gap-[3px] rounded-pill bg-accent-9 text-accent-fg px-1.5 py-[1px] text-[9px] leading-none font-semibold uppercase tracking-wide"
+      >
+        <span aria-hidden className="size-[4px] rounded-full bg-accent-fg/90" />
+        Last used
+      </span>
+    ) : null
 
     const buttonEl = (
       <Button

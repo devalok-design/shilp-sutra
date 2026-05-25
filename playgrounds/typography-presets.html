@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-typography="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Typography Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280); --color-surface: oklch(1 0 0); --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280); --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280); --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-9: oklch(0.55 0.19 340); --color-accent-11: oklch(0.42 0.16 340);
+    --font-sans: -apple-system, system-ui, sans-serif;
+  }
+  :root, [data-typography="default"] { --text-scale-ratio: 1.25; --text-body-size: 16px; --text-label-size: 14px; --text-caption-size: 12px; --text-heading-size: 24px; --text-display-size: 40px; --leading-body: 1.5; --leading-heading: 1.25; --leading-display: 1.1; --tracking-display: -0.02em; --tracking-body: 0; }
+  [data-typography="dense"] { --text-scale-ratio: 1.15; --text-body-size: 14px; --text-label-size: 12px; --text-caption-size: 11px; --text-heading-size: 18px; --text-display-size: 28px; --leading-body: 1.4; --leading-heading: 1.2; --leading-display: 1.1; --tracking-display: -0.01em; --tracking-body: 0; }
+  [data-typography="editorial"] { --text-scale-ratio: 1.333; --text-body-size: 18px; --text-label-size: 15px; --text-caption-size: 13px; --text-heading-size: 30px; --text-display-size: 56px; --leading-body: 1.6; --leading-heading: 1.2; --leading-display: 1.05; --tracking-display: -0.03em; --tracking-body: -0.005em; }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 340px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); line-height: 1.5; }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); line-height: 1.4; }
+  .tokens { margin-top: 20px; font: 10px/1.7 ui-monospace, monospace; border-top: 1px solid var(--color-border); padding-top: 12px; }
+  .tokens h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { display: flex; justify-content: space-between; padding: 1px 0; }
+  .tokens span { color: var(--color-fg-subtle); }
+
+  .preview { padding: 60px 40px; overflow-y: auto; max-width: 760px; }
+  .display { font-size: var(--text-display-size); line-height: var(--leading-display); letter-spacing: var(--tracking-display); font-weight: 700; margin: 0 0 32px; }
+  .heading { font-size: var(--text-heading-size); line-height: var(--leading-heading); font-weight: 600; margin: 32px 0 12px; }
+  .body { font-size: var(--text-body-size); line-height: var(--leading-body); letter-spacing: var(--tracking-body); margin: 0 0 16px; max-width: 64ch; color: var(--color-fg); }
+  .label { font-size: var(--text-label-size); line-height: 1.4; font-weight: 500; margin: 0 0 4px; color: var(--color-fg); }
+  .caption { font-size: var(--text-caption-size); line-height: 1.4; color: var(--color-fg-muted); margin: 0 0 24px; }
+  .scale-chart { display: grid; grid-template-columns: 100px 1fr; gap: 16px; align-items: baseline; margin-top: 40px; padding: 24px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface); }
+  .scale-chart code { font: 11px ui-monospace, monospace; color: var(--color-fg-subtle); }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Typography playground</h1>
+    <p class="sub">Toggle <code>[data-typography]</code> to feel how scale + leading + tracking shift across display, heading, body, label, caption.</p>
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="dense"><strong>Dense</strong><span>Stripe-like — 14px body, 1.15 ratio, tight leading</span></button>
+      <button class="preset-btn active" data-set="default"><strong>Default</strong><span>16px body, 1.25 ratio, balanced</span></button>
+      <button class="preset-btn" data-set="editorial"><strong>Editorial</strong><span>Medium-like — 18px body, 1.333 ratio, loose</span></button>
+    </div>
+    <div class="tokens">
+      <h3>Active role tokens</h3>
+      <div><span>--text-scale-ratio</span><b id="t-r"></b></div>
+      <div><span>--text-display-size</span><b id="t-d"></b></div>
+      <div><span>--text-heading-size</span><b id="t-h"></b></div>
+      <div><span>--text-body-size</span><b id="t-b"></b></div>
+      <div><span>--text-label-size</span><b id="t-l"></b></div>
+      <div><span>--text-caption-size</span><b id="t-cap"></b></div>
+      <div><span>--leading-body</span><b id="t-lb"></b></div>
+      <div><span>--leading-heading</span><b id="t-lh"></b></div>
+      <div><span>--leading-display</span><b id="t-ld"></b></div>
+      <div><span>--tracking-display</span><b id="t-td"></b></div>
+      <div><span>--tracking-body</span><b id="t-tb"></b></div>
+    </div>
+  </aside>
+  <main class="preview">
+    <h1 class="display">Brand voice lives in the type scale.</h1>
+    <p class="body">Three presets, same content. The display headline grows from 28px (dense) through 40px (default) to 56px (editorial). Body shrinks for dense dashboards, grows for content sites. Leading and tracking move in sympathy — dense type sits closer, editorial breathes.</p>
+    <h2 class="heading">A heading at the second level</h2>
+    <p class="body">Body copy. The scale ratio drives how aggressively heading sizes climb above body. <code>1.15</code> keeps everything close; <code>1.333</code> creates dramatic contrast typical of magazine layouts. Leading on body adjusts independently — dense leans 1.4, editorial leans 1.6.</p>
+    <h2 class="heading">Section break</h2>
+    <p class="label">Label / form helper</p>
+    <p class="caption">Caption — small, muted, often metadata.</p>
+    <div class="scale-chart">
+      <code>display</code><div style="font-size: var(--text-display-size); line-height: 1; font-weight: 700; letter-spacing: var(--tracking-display);">Aa</div>
+      <code>heading</code><div style="font-size: var(--text-heading-size); line-height: 1; font-weight: 600;">Aa</div>
+      <code>body</code><div style="font-size: var(--text-body-size); line-height: 1;">Aa Aa Aa</div>
+      <code>label</code><div style="font-size: var(--text-label-size); line-height: 1; font-weight: 500;">Aa Aa Aa</div>
+      <code>caption</code><div style="font-size: var(--text-caption-size); line-height: 1; color: var(--color-fg-muted);">Aa Aa Aa Aa</div>
+    </div>
+  </main>
+</div>
+<script>
+  const H = document.documentElement;
+  const T = [['r','--text-scale-ratio'],['d','--text-display-size'],['h','--text-heading-size'],['b','--text-body-size'],['l','--text-label-size'],['cap','--text-caption-size'],['lb','--leading-body'],['lh','--leading-heading'],['ld','--leading-display'],['td','--tracking-display'],['tb','--tracking-body']];
+  function R() { const cs = getComputedStyle(H); T.forEach(([id, n]) => document.getElementById('t-' + id).textContent = cs.getPropertyValue(n).trim()); }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    H.setAttribute('data-typography', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    R();
+  }));
+  R();
+</script>
+</body>
+</html>

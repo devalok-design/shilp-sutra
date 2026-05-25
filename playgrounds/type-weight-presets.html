@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" data-type-weight="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Type Weight Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280); --color-surface: oklch(1 0 0); --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280); --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280); --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-9: oklch(0.55 0.19 340); --color-accent-11: oklch(0.42 0.16 340);
+    --font-sans: -apple-system, system-ui, sans-serif;
+  }
+  :root, [data-type-weight="default"] { --weight-body: 400; --weight-heading-content: 600; --weight-heading-display: 700; --weight-action: 500; --weight-emphasis: 600; }
+  [data-type-weight="light"] { --weight-body: 350; --weight-heading-content: 500; --weight-heading-display: 600; --weight-action: 500; --weight-emphasis: 500; }
+  [data-type-weight="bold"] { --weight-body: 450; --weight-heading-content: 700; --weight-heading-display: 800; --weight-action: 600; --weight-emphasis: 700; }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; font-weight: var(--weight-body); }
+  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+  .tokens { margin-top: 20px; font: 11px/1.7 ui-monospace, monospace; border-top: 1px solid var(--color-border); padding-top: 12px; }
+  .tokens h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { display: flex; justify-content: space-between; padding: 1px 0; }
+  .tokens span { color: var(--color-fg-subtle); }
+
+  .preview { padding: 60px 40px; overflow-y: auto; max-width: 760px; display: flex; flex-direction: column; gap: 32px; }
+  .display { font-size: 40px; line-height: 1.1; font-weight: var(--weight-heading-display); margin: 0; letter-spacing: -0.02em; }
+  .heading { font-size: 24px; line-height: 1.25; font-weight: var(--weight-heading-content); margin: 0; }
+  .body { font-size: 16px; line-height: 1.5; font-weight: var(--weight-body); margin: 0; color: var(--color-fg); max-width: 64ch; }
+  .em { font-weight: var(--weight-emphasis); color: var(--color-fg); }
+  .btn { display: inline-flex; align-items: center; padding: 10px 18px; background: var(--color-accent-9); color: white; border: none; border-radius: 6px; font: var(--weight-action) 14px var(--font-sans); cursor: pointer; }
+  .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .panel-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Type-weight playground</h1>
+    <p class="sub">Toggle <code>[data-type-weight]</code> to swap the personality of body, heading, display, action, and emphasis weights.</p>
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="light"><strong>Light</strong><span>Apple-like — softer, restrained</span></button>
+      <button class="preset-btn active" data-set="default"><strong>Default</strong><span>Modern SaaS — balanced</span></button>
+      <button class="preset-btn" data-set="bold"><strong>Bold</strong><span>Vercel-like — confident, assertive</span></button>
+    </div>
+    <div class="tokens">
+      <h3>Active role tokens</h3>
+      <div><span>--weight-body</span><b id="t-b"></b></div>
+      <div><span>--weight-heading-content</span><b id="t-hc"></b></div>
+      <div><span>--weight-heading-display</span><b id="t-hd"></b></div>
+      <div><span>--weight-action</span><b id="t-a"></b></div>
+      <div><span>--weight-emphasis</span><b id="t-e"></b></div>
+    </div>
+  </aside>
+  <main class="preview">
+    <div class="panel"><span class="panel-label">Display</span><h1 class="display">Same content, different presence.</h1></div>
+    <div class="panel"><span class="panel-label">Heading + body + emphasis</span>
+      <h2 class="heading">A second-level heading sets the tone</h2>
+      <p class="body">Body copy at the base weight. The <span class="em">emphasis weight</span> shows how nested calls-to-attention shift. Light brands feel hushed; bold brands feel certain. Same words, different room.</p>
+    </div>
+    <div class="panel"><span class="panel-label">Action — button label weight</span>
+      <div><button class="btn">Get started</button></div>
+    </div>
+  </main>
+</div>
+<script>
+  const H = document.documentElement;
+  const T = [['b','--weight-body'],['hc','--weight-heading-content'],['hd','--weight-heading-display'],['a','--weight-action'],['e','--weight-emphasis']];
+  function R() { const cs = getComputedStyle(H); T.forEach(([id, n]) => document.getElementById('t-' + id).textContent = cs.getPropertyValue(n).trim()); }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    H.setAttribute('data-type-weight', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    R();
+  }));
+  R();
+</script>
+</body>
+</html>

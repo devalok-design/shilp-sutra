@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-saturation="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Saturation Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280); --color-surface: oklch(1 0 0); --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280); --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280);
+    --accent-hue: 340; --saturation-multiplier: 1;
+    --color-accent-2: oklch(0.96 calc(0.018 * var(--saturation-multiplier)) var(--accent-hue));
+    --color-accent-3: oklch(0.92 calc(0.032 * var(--saturation-multiplier)) var(--accent-hue));
+    --color-accent-7: oklch(0.66 calc(0.16 * var(--saturation-multiplier)) var(--accent-hue));
+    --color-accent-9: oklch(0.55 calc(0.19 * var(--saturation-multiplier)) var(--accent-hue));
+    --color-accent-11: oklch(0.42 calc(0.16 * var(--saturation-multiplier)) var(--accent-hue));
+    --font-sans: -apple-system, system-ui, sans-serif;
+  }
+  [data-saturation="muted"] { --saturation-multiplier: 0.6; }
+  [data-saturation="default"] { --saturation-multiplier: 1; }
+  [data-saturation="vibrant"] { --saturation-multiplier: 1.35; }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 340px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); line-height: 1.5; }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+  .hue-control { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .hue-control input { width: 100%; }
+  .tokens { margin-top: 20px; font: 11px/1.7 ui-monospace, monospace; border-top: 1px solid var(--color-border); padding-top: 12px; }
+  .tokens h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { display: flex; justify-content: space-between; padding: 1px 0; gap: 8px; }
+  .tokens span { color: var(--color-fg-subtle); }
+
+  .preview { padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 32px; max-width: 880px; }
+  h2 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+  .ramp { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .step { aspect-ratio: 2/1; border-radius: 8px; display: flex; align-items: flex-end; padding: 8px; font: 600 11px ui-monospace, monospace; color: white; mix-blend-mode: difference; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn { padding: 10px 18px; background: var(--color-accent-9); color: white; border: none; border-radius: 6px; font: 500 14px var(--font-sans); cursor: pointer; }
+  .btn.soft { background: var(--color-accent-3); color: var(--color-accent-11); }
+  .btn.outline { background: transparent; color: var(--color-accent-11); border: 1px solid var(--color-accent-7); }
+  .badge { display: inline-flex; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 500; background: var(--color-accent-3); color: var(--color-accent-11); }
+  .badge.success { background: oklch(0.92 calc(0.07 * var(--saturation-multiplier)) 145); color: oklch(0.40 calc(0.12 * var(--saturation-multiplier)) 145); }
+  .badge.warning { background: oklch(0.95 calc(0.08 * var(--saturation-multiplier)) 65); color: oklch(0.40 calc(0.10 * var(--saturation-multiplier)) 65); }
+  .badge.error { background: oklch(0.95 calc(0.07 * var(--saturation-multiplier)) 25); color: oklch(0.42 calc(0.14 * var(--saturation-multiplier)) 25); }
+  .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Saturation playground</h1>
+    <p class="sub">Toggle <code>[data-saturation]</code> to multiply chroma on every step of the accent ramp. Independent from hue.</p>
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="muted"><strong>Muted</strong><span>Stripe-like — 0.6× chroma, restrained</span></button>
+      <button class="preset-btn active" data-set="default"><strong>Default</strong><span>1.0× — current shilp-sutra ramp</span></button>
+      <button class="preset-btn" data-set="vibrant"><strong>Vibrant</strong><span>Notion-newer — 1.35× chroma, punchy</span></button>
+    </div>
+    <div class="hue-control">
+      <label>Accent hue <b id="hueVal">340°</b></label>
+      <input type="range" id="hue" min="0" max="360" value="340">
+    </div>
+    <div class="tokens">
+      <h3>Active</h3>
+      <div><span>--saturation-multiplier</span><b id="t-mul"></b></div>
+      <div><span>accent-9</span><b id="t-9"></b></div>
+      <div><span>accent-3</span><b id="t-3"></b></div>
+      <div><span>accent-11</span><b id="t-11"></b></div>
+    </div>
+  </aside>
+  <main class="preview">
+    <div>
+      <h2>Accent ramp (5 key steps × current saturation)</h2>
+      <div class="ramp">
+        <div class="step" style="background: var(--color-accent-2)">step 2</div>
+        <div class="step" style="background: var(--color-accent-3)">step 3</div>
+        <div class="step" style="background: var(--color-accent-7)">step 7</div>
+        <div class="step" style="background: var(--color-accent-9)">step 9</div>
+        <div class="step" style="background: var(--color-accent-11)">step 11</div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Controls</h2>
+      <div class="row">
+        <button class="btn">Solid (9)</button>
+        <button class="btn soft">Soft (3 + 11)</button>
+        <button class="btn outline">Outline (7 + 11)</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Status badges — saturation also multiplies status chroma</h2>
+      <div class="row">
+        <span class="badge">Accent</span>
+        <span class="badge success">Success</span>
+        <span class="badge warning">Warning</span>
+        <span class="badge error">Error</span>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+  const H = document.documentElement;
+  function R() {
+    const cs = getComputedStyle(H);
+    document.getElementById('t-mul').textContent = cs.getPropertyValue('--saturation-multiplier').trim();
+    document.getElementById('t-9').textContent = cs.getPropertyValue('--color-accent-9').trim();
+    document.getElementById('t-3').textContent = cs.getPropertyValue('--color-accent-3').trim();
+    document.getElementById('t-11').textContent = cs.getPropertyValue('--color-accent-11').trim();
+  }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    H.setAttribute('data-saturation', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    R();
+  }));
+  document.getElementById('hue').addEventListener('input', e => {
+    H.style.setProperty('--accent-hue', e.target.value);
+    document.getElementById('hueVal').textContent = e.target.value + '°';
+    R();
+  });
+  R();
+</script>
+</body>
+</html>

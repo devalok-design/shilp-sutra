@@ -6,17 +6,16 @@ import { CodeBlock } from '../code-block'
 
 interface ResultActionsProps {
   css: string
-  agentPrompt: string
 }
 
 /**
- * Copy buttons + share link for the result page. Client island so the
- * surrounding result page can stay an RSC.
+ * Manual-path buttons: CSS copy + share URL. The headline "Copy AI agent
+ * prompt" CTA moved to the hero (AgentPromptHero) — these are the fallbacks
+ * for users who want to wire the theme by hand.
  */
-export function ResultActions({ css, agentPrompt }: ResultActionsProps) {
+export function ResultActions({ css }: ResultActionsProps) {
   const [cssState, setCssState] = React.useState<'idle' | 'copied'>('idle')
   const [shareState, setShareState] = React.useState<'idle' | 'copied'>('idle')
-  const [promptState, setPromptState] = React.useState<'idle' | 'copied'>('idle')
 
   const copy = async (
     text: string,
@@ -27,7 +26,7 @@ export function ResultActions({ css, agentPrompt }: ResultActionsProps) {
       setState('copied')
       setTimeout(() => setState('idle'), 1500)
     } catch {
-      // clipboard may be blocked — no fallback noise
+      // clipboard blocked — no fallback noise
     }
   }
 
@@ -37,21 +36,14 @@ export function ResultActions({ css, agentPrompt }: ResultActionsProps) {
         <button
           type="button"
           onClick={() => copy(css, setCssState)}
-          className="inline-flex items-center gap-ds-02 rounded-control bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg hover:bg-accent-10"
+          className="inline-flex items-center gap-ds-02 rounded-control border border-surface-border-strong bg-surface-2 px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-3"
         >
           {cssState === 'copied' ? '✓ Copied' : 'Copy CSS'}
         </button>
         <button
           type="button"
-          onClick={() => copy(agentPrompt, setPromptState)}
-          className="inline-flex items-center gap-ds-02 rounded-control border border-accent-7 bg-accent-2 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-11 hover:bg-accent-3"
-        >
-          {promptState === 'copied' ? '✓ Prompt copied' : 'Copy AI agent prompt'}
-        </button>
-        <button
-          type="button"
           onClick={() => copy(window.location.href, setShareState)}
-          className="inline-flex items-center gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-2 px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-3"
+          className="inline-flex items-center gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-2 px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg-muted hover:text-surface-fg hover:bg-surface-3"
         >
           {shareState === 'copied' ? '✓ Share URL copied' : 'Copy share URL'}
         </button>

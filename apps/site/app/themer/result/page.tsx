@@ -5,6 +5,7 @@ import { InstallTabs } from '@/components/install-tabs'
 import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { AgentPromptHero } from '@/components/themer/AgentPromptHero'
 import { PreviewFrame } from '@/components/themer/PreviewFrame'
 import { ResultActions } from '@/components/themer/ResultActions'
 import { ThemeSummaryBar } from '@/components/themer/ThemeSummaryBar'
@@ -22,7 +23,7 @@ import { parseThemerParams } from '@/lib/themer-state'
 export const metadata: Metadata = {
   title: 'Result — Themer',
   description:
-    'Your shilp-sutra theme: install commands, CSS to paste, a live preview, and a share URL.',
+    'Your shilp-sutra theme: one prompt for your AI editor, or install + CSS to paste by hand. Live preview included.',
 }
 
 interface ResultPageProps {
@@ -54,7 +55,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
             <PageHeader
               eyebrow="Themer · Result"
               title={ARCHETYPE_TITLES[archetype]}
-              subtitle="Install. Paste. Ship."
+              subtitle="One prompt for your AI editor. Or paste the CSS by hand."
               description={ARCHETYPE_DESCRIPTIONS[archetype]}
               meta={
                 <ThemeSummaryBar
@@ -70,48 +71,67 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
 
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-ds-06">
               <div className="flex flex-col gap-ds-08">
-                <section className="flex flex-col gap-ds-04">
-                  <div className="flex items-baseline gap-ds-02">
-                    <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-pill bg-accent-9 text-accent-fg text-ds-sm font-semibold">
-                      1
-                    </span>
-                    <h2 className="text-ds-xl font-semibold text-surface-fg">Install</h2>
-                  </div>
-                  <InstallTabs />
-                </section>
+                {/* HERO — pasteable AI agent prompt */}
+                <AgentPromptHero prompt={agentPrompt} />
 
-                <section className="flex flex-col gap-ds-04">
-                  <div className="flex items-baseline gap-ds-02">
-                    <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-pill bg-accent-9 text-accent-fg text-ds-sm font-semibold">
-                      2
-                    </span>
-                    <h2 className="text-ds-xl font-semibold text-surface-fg">Paste this CSS</h2>
-                  </div>
-                  <p className="text-ds-sm text-surface-fg-muted">
-                    Drop into your global stylesheet, <em>after</em> the{' '}
-                    <code className="font-mono text-ds-xs text-surface-fg">@import "@devalok/shilp-sutra/css";</code>{' '}
-                    line. Reloads pick it up immediately. Or — paste the{' '}
-                    <strong className="text-surface-fg font-medium">AI agent prompt</strong> into
-                    Claude Code / Cursor / Codex and have your editor do install + paste in one shot.
-                  </p>
-                  <ResultActions css={css} agentPrompt={agentPrompt} />
-                </section>
-
-                <section className="flex flex-col gap-ds-04">
-                  <div className="flex items-baseline gap-ds-02">
-                    <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-pill bg-accent-9 text-accent-fg text-ds-sm font-semibold">
-                      3
+                {/* MANUAL FALLBACK — install + CSS paste by hand */}
+                <section className="flex flex-col gap-ds-05 border-t border-surface-border-subtle pt-ds-07">
+                  <div className="flex flex-col gap-ds-02 max-w-2xl">
+                    <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+                      Prefer to do it by hand?
                     </span>
                     <h2 className="text-ds-xl font-semibold text-surface-fg">
-                      Verify with a button + card
+                      Install, paste, verify.
                     </h2>
+                    <p className="text-ds-sm text-surface-fg-muted leading-relaxed">
+                      Three steps — about a minute. Skip this section entirely if you used the
+                      prompt above.
+                    </p>
                   </div>
-                  <p className="text-ds-sm text-surface-fg-muted">
-                    Open any page that uses{' '}
-                    <code className="font-mono text-ds-xs text-surface-fg">Button</code> and{' '}
-                    <code className="font-mono text-ds-xs text-surface-fg">Card</code>. The radius
-                    + accent should match the preview on the right.
-                  </p>
+
+                  <div className="flex flex-col gap-ds-06">
+                    <div className="flex flex-col gap-ds-03">
+                      <div className="flex items-baseline gap-ds-02">
+                        <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-pill border border-surface-border-strong bg-surface-2 text-surface-fg text-ds-sm font-semibold">
+                          1
+                        </span>
+                        <h3 className="text-ds-md font-semibold text-surface-fg">Install</h3>
+                      </div>
+                      <InstallTabs />
+                    </div>
+
+                    <div className="flex flex-col gap-ds-03">
+                      <div className="flex items-baseline gap-ds-02">
+                        <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-pill border border-surface-border-strong bg-surface-2 text-surface-fg text-ds-sm font-semibold">
+                          2
+                        </span>
+                        <h3 className="text-ds-md font-semibold text-surface-fg">Paste this CSS</h3>
+                      </div>
+                      <p className="text-ds-sm text-surface-fg-muted">
+                        Drop into your global stylesheet, <em>after</em> the{' '}
+                        <code className="font-mono text-ds-xs text-surface-fg">@import "@devalok/shilp-sutra/css";</code>{' '}
+                        line. Not inside any <code className="font-mono text-ds-xs text-surface-fg">@layer</code>.
+                      </p>
+                      <ResultActions css={css} />
+                    </div>
+
+                    <div className="flex flex-col gap-ds-03">
+                      <div className="flex items-baseline gap-ds-02">
+                        <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-pill border border-surface-border-strong bg-surface-2 text-surface-fg text-ds-sm font-semibold">
+                          3
+                        </span>
+                        <h3 className="text-ds-md font-semibold text-surface-fg">
+                          Verify with a Button + Card
+                        </h3>
+                      </div>
+                      <p className="text-ds-sm text-surface-fg-muted">
+                        Open any page that uses{' '}
+                        <code className="font-mono text-ds-xs text-surface-fg">Button</code> and{' '}
+                        <code className="font-mono text-ds-xs text-surface-fg">Card</code>. Radius
+                        + accent should match the preview on the right.
+                      </p>
+                    </div>
+                  </div>
                 </section>
               </div>
 
@@ -152,10 +172,10 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
                 Want to tweak more?
               </span>
               <p className="text-ds-md text-surface-fg-muted leading-relaxed">
-                This snippet covers the headline tokens — radius, accent ramp. Everything else (font
-                stack, spacing scale, focus ring, texture) is overridable the same way: write the
-                CSS variable in <code className="font-mono text-ds-sm text-surface-fg">:root</code>{' '}
-                and it cascades to every component. See the{' '}
+                The CSS the Themer emits covers role tokens + the accent ramp. Everything else
+                (font stack, spacing scale, focus ring, texture) is overridable the same way: write
+                the CSS variable in <code className="font-mono text-ds-sm text-surface-fg">:root</code>{' '}
+                and it cascades. See the{' '}
                 <Link href="/docs/customize-brand" className="text-accent-11 underline underline-offset-2">
                   customize-brand recipe
                 </Link>{' '}

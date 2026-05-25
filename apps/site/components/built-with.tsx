@@ -71,6 +71,12 @@ type Consumer = {
   /** Brand ramp anchors — drives the CSS-var override on the card. */
   hue: number
   chroma: number
+  /**
+   * Optional path under /public for a real product logo / favicon. When
+   * present the BrandTile renders the image; otherwise it falls back to
+   * a brand-coloured letter tile.
+   */
+  iconSrc?: string
 }
 
 const KARM: Consumer = {
@@ -114,6 +120,8 @@ const SECONDARIES: Consumer[] = [
     uses: ['FileUpload', 'Progress', 'Alert', 'Stepper'],
     hue: 35,
     chroma: 0.18,
+    // Pulled from devalok-design/bharattools-frontend/public/android-chrome-192x192.png
+    iconSrc: '/built-with/bharattools.png',
   },
   {
     name: 'Gurukul',
@@ -158,21 +166,48 @@ function useBrandRamp(hue: number, chroma: number): CSSProperties {
 }
 
 /**
- * Favicon with onError fallback. Google s2 returns a generic globe icon
- * for unknown domains, but it CAN 404 for typos or DNS races. Letter
- * tile fallback uses the active brand ramp via accent-3 / accent-11.
+ * Brand glyph for a BuiltWith card. Renders, in priority order:
+ *   1. A bundled image (iconSrc) when the product has a real logo asset
+ *      committed under apps/site/public/ — currently only BharatTools.
+ *   2. IconLock tile for internal-only products (no public domain).
+ *   3. Brand-coloured letter tile (first char) for everything else.
+ *
+ * Replaces the previous third-party Google s2 favicon service. Bundled
+ * logos are predictable across light + dark mode + offline + CDN-cached;
+ * letter tiles are tokenised + react to useBrandRamp.
  */
-function Favicon({
+function BrandTile({
+  iconSrc,
   domain,
   name,
   size = 36,
 }: {
+  iconSrc?: string
   domain: string | null
   name: string
   size?: number
 }) {
   const [errored, setErrored] = useState(false)
   const px = `${size}px`
+
+  if (iconSrc && !errored) {
+    return (
+      // Real product logo bundled in /public. Next/Image is overkill for a
+      // small static asset; <img> is fine. The @next/next/no-img-element
+      // rule isn't registered in this flat ESLint config.
+      <img
+        src={iconSrc}
+        alt={`${name} logo`}
+        width={size}
+        height={size}
+        loading="lazy"
+        decoding="async"
+        onError={() => setErrored(true)}
+        className="rounded-control-inner shrink-0 border border-surface-border-subtle bg-surface-base object-cover"
+        style={{ width: px, height: px }}
+      />
+    )
+  }
 
   if (!domain) {
     return (
@@ -186,30 +221,14 @@ function Favicon({
     )
   }
 
-  if (errored) {
-    return (
-      <span
-        aria-hidden
-        className="rounded-control-inner bg-accent-3 text-accent-11 border border-accent-7 flex items-center justify-center shrink-0 font-semibold tabular-nums"
-        style={{ width: px, height: px, fontSize: `${Math.max(11, Math.round(size * 0.42))}px` }}
-      >
-        {name.charAt(0).toUpperCase()}
-      </span>
-    )
-  }
-
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={`https://www.google.com/s2/favicons?domain=${domain}&sz=128`}
-      alt={`${name} favicon`}
-      width={size}
-      height={size}
-      loading="lazy"
-      onError={() => setErrored(true)}
-      className="rounded-control-inner shrink-0 border border-surface-border-subtle bg-surface-base"
-      style={{ width: px, height: px }}
-    />
+    <span
+      aria-hidden
+      className="rounded-control-inner bg-accent-3 text-accent-11 border border-accent-7 flex items-center justify-center shrink-0 font-semibold"
+      style={{ width: px, height: px, fontSize: `${Math.max(12, Math.round(size * 0.44))}px` }}
+    >
+      {name.charAt(0).toUpperCase()}
+    </span>
   )
 }
 
@@ -266,7 +285,7 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
         {/* Left — identity + pitch */}
         <div className="flex flex-col gap-ds-05 min-w-0">
           <div className="flex items-center gap-ds-03 min-w-0">
-            <Favicon domain={consumer.domain} name={consumer.name} size={40} />
+            <BrandTile iconSrc={consumer.iconSrc} domain={consumer.domain} name={consumer.name} size={40} />
             <div className="flex flex-col min-w-0">
               <span className="text-ds-xs uppercase tracking-wide text-accent-11 inline-flex items-center gap-ds-02 truncate">
                 <IconSparkles size={12} aria-hidden className="shrink-0" />
@@ -381,7 +400,7 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
           style={{ background: `var(--color-accent-9)` }}
         />
         <div className="relative h-full flex items-center justify-between gap-ds-03 px-ds-04 min-w-0">
-          <Favicon domain={consumer.domain} name={consumer.name} size={32} />
+          <BrandTile iconSrc={consumer.iconSrc} domain={consumer.domain} name={consumer.name} size={32} />
           <Badge variant="soft" color="accent" size="sm" className="shrink-0 truncate max-w-[60%]">
             {consumer.status}
           </Badge>

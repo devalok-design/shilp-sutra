@@ -3,42 +3,86 @@ import { BrandInit } from '@/components/brand-init'
 import { ThemeInit } from '@/components/theme-init'
 import './globals.css'
 
+const SITE_URL = 'https://shilp-sutra.devalok.in'
+const SITE_TITLE = 'shilp-sutra · Devalok Design System'
+const SITE_DESCRIPTION =
+  'Your brand. Every component. Out of the box. A React design system from Devalok. Tailwind 4, OKLCH tokens, 119 components. Public beta v0.40.'
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://shilp-sutra.devalok.in'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'shilp-sutra · Devalok Design System',
+    default: SITE_TITLE,
     template: '%s · shilp-sutra',
   },
-  description:
-    'Your brand. Every component. Out of the box. A React design system from Devalok. Tailwind 4, OKLCH tokens, 119 components. Public beta.',
+  description: SITE_DESCRIPTION,
   applicationName: 'shilp-sutra',
   authors: [{ name: 'Devalok Design and Strategy Studio', url: 'https://devalok.in' }],
+  creator: 'Devalok Design and Strategy Studio',
+  publisher: 'Devalok Design and Strategy Studio',
+  category: 'design system',
   keywords: [
     'design system',
-    'react',
+    'react design system',
     'tailwind 4',
+    'tailwindcss 4',
     'shadcn alternative',
     'radix ui',
     'oklch',
-    'accessible',
+    'oklch tokens',
+    'accessible components',
+    'wcag aa',
     'devalok',
     'shilp-sutra',
+    'rsc safe',
+    'react server components',
+    'next.js components',
+    'framer-motion',
+    'india',
+    'bharat',
   ],
+  alternates: {
+    canonical: SITE_URL,
+  },
+  // Icons + apple-touch-icon are auto-discovered by Next 15 from
+  // app/icon.tsx and app/apple-icon.tsx. No manual icons[] needed.
   openGraph: {
-    title: 'shilp-sutra · Devalok Design System',
-    description:
-      'Your brand. Every component. Out of the box. A React design system from Devalok. Public beta.',
-    url: 'https://shilp-sutra.devalok.in',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
     siteName: 'shilp-sutra',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'shilp-sutra. Your brand. Every component. Out of the box.',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'shilp-sutra · Devalok Design System',
+    title: SITE_TITLE,
     description: 'Your brand. Every component. Out of the box. From Devalok.',
+    creator: '@devalok_in',
+    images: ['/opengraph-image'],
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  formatDetection: {
+    email: false,
+    telephone: false,
+    address: false,
+  },
 }
 
 export const viewport: Viewport = {

@@ -199,7 +199,11 @@ function Favicon({
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
+    // Intentional: <img> with Google favicon service — Next/Image would proxy
+    // through /_next/image for a 32-128px favicon. Not worth the latency.
+    // The @next/next/no-img-element rule is not registered in this flat ESLint
+    // config, so a disable directive errors with "Definition for rule … was
+    // not found".
     <img
       src={`https://www.google.com/s2/favicons?domain=${domain}&sz=128`}
       alt={`${name} favicon`}

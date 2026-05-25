@@ -82,9 +82,21 @@ Step-by-step copy-paste install guides for each major React framework. Designed 
 
 Customization & diagnostics:
 
-- [customize-brand.md](./packages/core/docs/recipes/customize-brand.md) — change colors, radius, fonts, spacing
+- [customize-brand.md](./packages/core/docs/recipes/customize-brand.md) — colors, radius role tokens, `[data-shape]` presets, fonts, spacing
 - [server-components.md](./packages/core/docs/recipes/server-components.md) — RSC-safety matrix
 - [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 8 most common breakages
+
+### Shape presets (v0.39+)
+
+Roundness is a brand axis. Set `data-shape` on `<html>` (or any subtree) to swap the whole UI between three shipped presets:
+
+```html
+<html data-shape="sharp">             <!-- 2-6 px, technical/dev-tool feel -->
+<html data-shape="slightly-rounded">  <!-- 6-16 px, default — modern SaaS -->
+<html data-shape="rounded">           <!-- 10-24 px, friendly/consumer -->
+```
+
+Pill shapes (Badge, Switch, Radio, Avatar circle) stay pill in every preset. Override individual role tokens (`--radius-control`, `--radius-surface`, `--radius-overlay`, `--radius-pill`, …) for fine-grained control. See [customize-brand.md → Shape presets](./packages/core/docs/recipes/customize-brand.md#shape-presets-data-shape) for the role token table + custom-preset cookbook.
 
 Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract.
 

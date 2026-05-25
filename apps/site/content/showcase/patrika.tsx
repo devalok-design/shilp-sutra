@@ -23,7 +23,7 @@ export function PatrikaShowcase() {
         <div className="relative rounded-ds-md overflow-hidden border border-surface-border-subtle aspect-[16/9]">
           <img
             src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80"
-            alt="Open editorial spread — Patrika Vol. iv cover"
+            alt="Open editorial spread, Patrika Vol. iv cover"
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
           />
@@ -31,7 +31,7 @@ export function PatrikaShowcase() {
           <div className="absolute bottom-0 left-0 right-0 p-ds-06 text-white">
             <span className="text-ds-xs uppercase tracking-wider opacity-90">Patrika · Issue 14</span>
             <h2 className="text-ds-2xl font-semibold leading-tight mt-ds-02">
-              Vol. iv — Margins
+              Vol. iv: Margins
             </h2>
           </div>
         </div>
@@ -100,7 +100,7 @@ export function PatrikaShowcase() {
               &ldquo;The most useful design questions are still the oldest ones. They just stopped being asked.&rdquo;
             </Text>
             <Text variant="body-xs" className="text-surface-fg-subtle mt-ds-02">
-              — from the cover essay
+              From the cover essay
             </Text>
           </figure>
         </div>

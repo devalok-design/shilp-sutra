@@ -116,7 +116,7 @@ export function AuroraPlayground() {
             Presets
           </Text>
           <Text variant="body-sm" className="text-surface-fg-muted max-w-2xl">
-            Six Devalok configurations of AuroraBloom — each a complete prop
+            Six Devalok configurations of AuroraBloom. Each one a complete prop
             set with a curated mood. Click any preset to load it into the live
             controls below.
           </Text>
@@ -223,7 +223,7 @@ export function AuroraPlayground() {
                 The library that <span className="text-accent-11">looks like yours.</span>
               </h2>
               <Text variant="body-md" className="text-surface-fg-muted max-w-lg">
-                Tweak a control on the right or pick a preset above — the
+                Tweak a control on the right or pick a preset above. The
                 preview updates live, the curtain cross-fades, no flip.
               </Text>
             </div>
@@ -317,7 +317,7 @@ export function AuroraPlayground() {
 
           <div className="rounded-ds-md border border-surface-border-subtle bg-surface-base px-ds-04 py-ds-03 text-ds-xs text-surface-fg-muted leading-relaxed">
             <strong className="text-surface-fg">Tip:</strong> change the brand from the header
-            dropdown — the aurora <em>cross-fades</em> to the new ramp instead of flipping.
+            dropdown. The aurora <em>cross-fades</em> to the new ramp instead of flipping.
             Toggle theme to see dark / light selection logic at work.
           </div>
         </aside>

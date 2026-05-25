@@ -49,7 +49,7 @@ export function SiteFooter() {
           <div className="col-span-2 md:col-span-2 flex flex-col gap-ds-03">
             <Text variant="heading-sm" className="text-surface-fg">shilp-sutra</Text>
             <Text variant="body-sm" className="text-surface-fg-muted max-w-sm">
-              Your brand. Every component. Out of the box. A React design system from Devalok — Tailwind 4 · OKLCH · 119 components · MIT.
+              Your brand. Every component. Out of the box. A React design system from Devalok. Tailwind 4 · OKLCH · 119 components · MIT.
             </Text>
           </div>
           {linkGroups.map((group) => (

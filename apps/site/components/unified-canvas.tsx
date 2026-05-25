@@ -86,7 +86,7 @@ export function UnifiedCanvas() {
           One library. Many worlds.
         </h2>
         <p className="text-ds-md text-surface-fg-muted leading-relaxed max-w-2xl">
-          Each tab below opens a different product surface — built from the same components, painted by a different brand.
+          Each tab below opens a different product surface. Built from the same components, painted by a different brand.
         </p>
         {/* Industry peek strip — horizontal-scrolls on mobile, wraps on sm+ */}
         <ul

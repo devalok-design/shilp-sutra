@@ -31,9 +31,9 @@ export function Hero() {
           <span className="text-accent-11">Out of the box.</span>
         </h1>
         <Text variant="body-lg" className="text-surface-fg max-w-2xl text-balance">
-          Pick one colour. Watch every button, badge, card, and form match — light mode, dark
-          mode, every screen — instantly. No spreadsheet of hex codes. No config files. Just your
-          brand, everywhere.
+          Pick one colour. Watch every button, badge, card, and form match instantly. Light mode,
+          dark mode, every screen. No spreadsheet of hex codes. No config files. Just your brand,
+          everywhere.
         </Text>
         <div className="w-full max-w-sm sm:max-w-none sm:w-auto flex flex-col sm:flex-row gap-ds-03 mt-ds-03">
           <Link href="/theming" className="w-full sm:w-auto">

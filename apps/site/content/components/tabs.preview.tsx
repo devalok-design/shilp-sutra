@@ -21,7 +21,7 @@ export function TabsHero() {
         </TabsContent>
         <TabsContent value="changelog" className="pt-ds-04">
           <Text variant="body-sm" className="text-surface-fg-muted">
-            v0.39 — Agent Skill bundle, marketing site v1, /theming editor (this site).
+            v0.39 · Agent Skill bundle, marketing site v1, /theming editor (this site).
           </Text>
         </TabsContent>
         <TabsContent value="discussion" className="pt-ds-04">

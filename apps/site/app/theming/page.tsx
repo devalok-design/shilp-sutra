@@ -9,7 +9,7 @@ import { ThemingEditor } from '@/components/theming-editor'
 export const metadata: Metadata = {
   title: 'Theming',
   description:
-    'Build your own brand on shilp-sutra. Live OKLCH editor — pick a hue, see every component recolour, export the CSS.',
+    'Build your own brand on shilp-sutra. Live OKLCH editor. Pick a hue, see every component recolour, export the CSS.',
 }
 
 export default function ThemingPage() {
@@ -23,7 +23,7 @@ export default function ThemingPage() {
               eyebrow="Theming"
               title="Be yourself in OKLCH."
               subtitle="Pick a hue. Set the chroma. The twelve-step ramp generates itself."
-              description="Every component on the site — buttons, badges, alerts, focus rings — recolours live as you move the sliders. Drop the exported CSS into your project and your whole app follows."
+              description="Every component on the site recolours live as you move the sliders. Buttons, badges, alerts, focus rings. Drop the exported CSS into your project and your whole app follows."
               meta={
                 <div className="flex flex-wrap gap-ds-02 text-ds-xs">
                   <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">

@@ -151,7 +151,7 @@ function CommandPaletteDemo() {
           Open palette
         </Button>
         <div className="text-ds-xs text-surface-fg-subtle">
-          Try the shortcut — works from anywhere on this page.
+          Try the shortcut. Works from anywhere on this page.
         </div>
       </div>
 
@@ -169,7 +169,7 @@ function ToastDemo() {
     <DemoCard
       eyebrow="Toast"
       title="The system answers back."
-      caption="Success. Warning. Error. They stack, they breathe, they dismiss when you're done. Fire a few — watch them queue."
+      caption="Success. Warning. Error. They stack, they breathe, they dismiss when you're done. Fire a few. Watch them queue."
     >
       <div className="flex flex-wrap items-center gap-ds-02">
         <Button
@@ -249,7 +249,7 @@ function ComboboxDemo() {
           triggerClassName="w-full"
         />
         <div className="text-ds-xs text-surface-fg-subtle">
-          Try typing &quot;ko&quot; or &quot;bes&quot; — results filter live.
+          Try typing &quot;ko&quot; or &quot;bes&quot;. Results filter live.
         </div>
       </div>
     </DemoCard>

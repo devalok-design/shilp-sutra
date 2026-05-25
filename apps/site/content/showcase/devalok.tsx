@@ -15,7 +15,7 @@ const principles = [
   },
   {
     title: 'Mediums, not masters.',
-    body: 'The work serves the maker and the user. The studio is a vessel — never the centre of the story.',
+    body: 'The work serves the maker and the user. The studio is a vessel, never the centre of the story.',
   },
   {
     title: 'Listen deeply, question deeply, push beyond.',

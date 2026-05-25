@@ -14,7 +14,7 @@ import { getAllShowcases } from '@/lib/showcase-registry'
 export const metadata: Metadata = {
   title: 'Showcase',
   description:
-    'Six fictional industries, one library. SaaS, fintech, D2C, healthcare, editorial, studio — mock UI compositions built with shilp-sutra, each with its own brand ramp. For real consumers, see the built-with strip on the homepage.',
+    'Six fictional industries, one library. SaaS, fintech, D2C, healthcare, editorial, studio. Mock UI compositions built with shilp-sutra, each with its own brand ramp. For real consumers, see the built-with strip on the homepage.',
 }
 
 /**
@@ -44,7 +44,7 @@ export default function ShowcaseIndexPage() {
               eyebrow="Showcase · mock setups"
               title="Six industries. One library."
               subtitle="Same components, six brand ramps, six worlds."
-              description="Every screen below is built from the same shilp-sutra primitives. Only the accent ramp changes. The brands are fictional — built to demonstrate breadth, not to claim partnership. For the real products carrying shilp-sutra today, see the built-with strip on the homepage."
+              description="Every screen below is built from the same shilp-sutra primitives. Only the accent ramp changes. The brands are fictional, built to demonstrate breadth, not to claim partnership. For the real products carrying shilp-sutra today, see the built-with strip on the homepage."
             />
 
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-ds-05">

@@ -25,14 +25,14 @@ export function DevalokBlock() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-08 max-w-3xl">
           <div className="flex flex-col gap-ds-03">
             <Text variant="body-md" className="text-surface-fg-muted">
-              Devalok is a design and strategy studio based in Bharat. A brand-craft house — manifestos,
-              identity systems, packaging, publications. We build Karm, Devalok Hiring, BharatTools,
-              and Gurukul. Shilp Sutra is studio infrastructure made public.
+              Devalok is a design and strategy studio based in Bharat. A brand-craft house that makes
+              manifestos, identity systems, packaging, and publications. We build Karm, Devalok Hiring,
+              BharatTools, and Gurukul. Shilp Sutra is studio infrastructure made public.
             </Text>
             <Text variant="body-md" className="text-surface-fg-muted">
               We needed a way to brand the products we were shipping with AI help without each one
               looking like every other AI-built SaaS. Shilp Sutra fell out of that need. It is open
-              because keeping it private gives us no edge — the edge is the studio that wields it.
+              because keeping it private gives us no edge. The edge is the studio that wields it.
             </Text>
           </div>
           <div className="flex flex-col gap-ds-03">
@@ -40,9 +40,9 @@ export function DevalokBlock() {
               A note to designers
             </Text>
             <Text variant="body-md" className="text-surface-fg-muted">
-              Designers are builders too. Shilp Sutra hands you the base layer so you spend time on the
-              parts that carry the brand — motion, illustration, voice — instead of rebuilding the
-              fifth Button this year.
+              Designers are builders too. Shilp Sutra hands you the base layer. You spend time on the
+              parts that carry the brand. Motion, illustration, voice. Not on rebuilding the fifth
+              Button this year.
             </Text>
           </div>
         </div>

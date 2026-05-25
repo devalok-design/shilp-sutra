@@ -12,7 +12,7 @@ import { SiteHeader } from '@/components/site-header'
 export const metadata: Metadata = {
   title: 'For AI editors',
   description:
-    'Claude Code, Cursor, Codex, Aider. Install the shilp-sutra Agent Skill once and the library lives inside your editor — current shape, current props, current gotchas. Built on the agentskills.io standard.',
+    'Claude Code, Cursor, Codex, Aider. Install the shilp-sutra Agent Skill once and the library lives inside your editor. Current shape, current props, current gotchas. Built on the agentskills.io standard.',
 }
 
 const tools = [
@@ -35,14 +35,14 @@ const resources = [
   {
     icon: IconFileText,
     title: 'llms.txt',
-    body: 'Concise cheatsheet — 660 lines. Setup playbook, peer-dep matrix, breaking changes, design rules. Inject this into any chat.',
+    body: 'Concise cheatsheet, 660 lines. Setup playbook, peer-dep matrix, breaking changes, design rules. Inject this into any chat.',
     cmd: 'curl https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/packages/core/llms.txt',
     href: 'https://github.com/devalok-design/shilp-sutra/blob/main/packages/core/llms.txt',
   },
   {
     icon: IconFileText,
     title: 'llms-full.txt',
-    body: 'Exhaustive per-component reference — 6,900 lines. Every prop, every variant, every example. Reach for this when llms.txt is too brief.',
+    body: 'Exhaustive per-component reference, 6,900 lines. Every prop, every variant, every example. Reach for this when llms.txt is too brief.',
     cmd: 'curl https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/packages/core/llms-full.txt',
     href: 'https://github.com/devalok-design/shilp-sutra/blob/main/packages/core/llms-full.txt',
   },
@@ -162,7 +162,7 @@ export default function AgentsPage() {
                 </Text>
                 <Text variant="body-sm" className="text-surface-fg-muted">
                   Coding agents trained pre-2026 hallucinate component APIs that never existed.
-                  Skill + llms.txt give your agent the current shape of the library — including
+                  Skill + llms.txt give your agent the current shape of the library, including
                   what changed in the last release.
                 </Text>
               </div>

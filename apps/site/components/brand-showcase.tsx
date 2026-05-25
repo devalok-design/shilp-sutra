@@ -38,7 +38,7 @@ export function BrandShowcase() {
           See it fit your kind of work.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          Each tile is a full example — a dashboard, a checkout, a patient record — built from
+          Each tile is a full example. A dashboard, a checkout, a patient record. All built from
           the same shilp-sutra components. Click in to see it run.
         </Text>
       </header>
@@ -78,7 +78,7 @@ export function BrandShowcase() {
 
       <footer className="mt-ds-08 text-center">
         <Text variant="body-sm" className="text-surface-fg-muted">
-          Karm — the project tool that runs Devalok — uses this same library. The pink you see here is the pink Karm ships.
+          Karm, the project tool that runs Devalok, uses this same library. The pink you see here is the pink Karm ships.
         </Text>
       </footer>
     </section>

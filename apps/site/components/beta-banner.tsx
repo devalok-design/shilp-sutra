@@ -80,8 +80,8 @@ export function BetaBanner() {
     >
       <div className="mx-auto max-w-6xl px-page-x py-ds-02 flex flex-wrap items-center justify-between gap-ds-03">
         <p className="text-ds-xs sm:text-ds-sm text-accent-12 max-w-3xl">
-          <strong className="font-semibold">Public beta · v{SHILP_SUTRA_MINOR}</strong>
-          {' — '}
+          <strong className="font-semibold">Public beta · v{SHILP_SUTRA_MINOR}.</strong>
+          {' '}
           APIs may move. Codemods ship for any break touching more than two components.
           {' '}
           <Link

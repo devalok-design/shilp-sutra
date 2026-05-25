@@ -98,7 +98,7 @@ export function LotusShowcase() {
           <span className="text-accent-11">white at the base.</span>
         </h2>
         <Text variant="body-md" className="text-surface-fg-muted max-w-md drop-shadow-sm">
-          Each flower spins, floats, and breathes on its own clock — eleven
+          Each flower spins, floats, and breathes on its own clock. Eleven
           lotuses, none of them in sync, all of them following your brand.
         </Text>
       </div>

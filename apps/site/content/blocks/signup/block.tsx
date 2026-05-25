@@ -6,7 +6,7 @@ import { Text } from '@devalok/shilp-sutra/ui/text'
 
 const benefits = [
   '119 accessible components, one consistent API',
-  'Tailwind 4 CSS-first — no preset, no config file',
+  'Tailwind 4 CSS-first. No preset, no config file',
   'AI agents preconfigured via the bundled Agent Skill',
   'OKLCH design tokens with light + dark generated together',
 ] as const
@@ -43,7 +43,7 @@ export function SignupBlock() {
         </div>
         <footer>
           <Text variant="body-xs" className="text-surface-fg-subtle">
-            "shilp-sutra" — the thread of craft. From the soul, we craft.
+            "shilp-sutra": the thread of craft. From the soul, we craft.
           </Text>
         </footer>
       </aside>

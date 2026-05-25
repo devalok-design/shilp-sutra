@@ -59,7 +59,7 @@ export function CardVariants() {
         </CardHeader>
         <CardContent>
           <Text variant="body-sm" className="text-surface-fg-muted">
-            Cards compose. Add a header row, a body, a footer — or just one of the three. Each piece is
+            Cards compose. Add a header row, a body, a footer, or just one of the three. Each piece is
             optional and uses the same spacing tokens, so density is consistent across the app.
           </Text>
         </CardContent>

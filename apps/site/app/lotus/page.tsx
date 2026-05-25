@@ -8,7 +8,7 @@ import { SiteHeader } from '@/components/site-header'
 export const metadata: Metadata = {
   title: 'Lotus',
   description:
-    'LotusBloom — a five-stage WebGL composition that mimics the daily bloom cycle of Nelumbo nucifera. Sibling to AuroraBloom; same mesh primitives, different choreography.',
+    'LotusBloom. A five-stage WebGL composition that mimics the daily bloom cycle of Nelumbo nucifera. Sibling to AuroraBloom; same mesh primitives, different choreography.',
 }
 
 export default function LotusPage() {
@@ -22,7 +22,7 @@ export default function LotusPage() {
               eyebrow="Lotus"
               title="A field of lotuses."
               subtitle="Eight petals out, six in, every one a little different."
-              description="Each petal gets seeded jitter — rotation ±4°, scale ±10 %, tip distance ±3 px — so no two read identically and the flower feels hand-arranged. Devalok paper grain woven into the petal fill via a single SVG filter; brand colour follows your accent ramp live."
+              description="Each petal gets seeded jitter. Rotation ±4°, scale ±10 %, tip distance ±3 px. No two read identically and the flower feels hand-arranged. Devalok paper grain woven into the petal fill via a single SVG filter; brand colour follows your accent ramp live."
             />
             <LotusShowcase />
           </div>

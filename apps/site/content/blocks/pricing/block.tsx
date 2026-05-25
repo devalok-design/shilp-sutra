@@ -50,7 +50,7 @@ const tiers: Tier[] = [
     name: 'Bespoke',
     price: 'Custom',
     cadence: 'engagement',
-    blurb: 'For brands that need shilp-sutra extended for their stack — design, dev, and decisions.',
+    blurb: 'For brands that need shilp-sutra extended for their stack. Design, dev, and decisions.',
     features: [
       'Everything in Atelier',
       'Custom component design + dev cycle',
@@ -88,7 +88,7 @@ export function PricingBlock() {
           Start free. Pay only when the studio scales with you.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          Three tiers. The free one is the same one Devalok ships internally — no asterisks.
+          Three tiers. The free one is the same one Devalok ships internally. No asterisks.
         </Text>
       </header>
 

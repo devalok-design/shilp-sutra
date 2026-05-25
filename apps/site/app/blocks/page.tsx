@@ -11,7 +11,7 @@ import { getAllBlocks } from '@/lib/blocks-registry'
 export const metadata: Metadata = {
   title: 'Blocks',
   description:
-    'Real pages. Real spacing. Real copy. Multi-component shilp-sutra blocks — dashboards, auth flows, pricing pages, data tables. Copy the source, drop it in, ship.',
+    'Real pages. Real spacing. Real copy. Multi-component shilp-sutra blocks for dashboards, auth flows, pricing pages, data tables. Copy the source, drop it in, ship.',
 }
 
 export default function BlocksIndexPage() {
@@ -25,7 +25,7 @@ export default function BlocksIndexPage() {
             <PageHeader
               eyebrow="Blocks"
               title="Real pages. Real spacing. Real copy."
-              subtitle="Multi-component surfaces lifted from real work — dashboards, sign-up flows, pricing pages, data tables."
+              subtitle="Multi-component surfaces lifted from real work. Dashboards, sign-up flows, pricing pages, data tables."
               description="Each block recolours with the brand switcher. Copy the source, paste, ship."
             />
 

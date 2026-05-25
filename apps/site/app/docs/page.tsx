@@ -74,7 +74,7 @@ const CUSTOMIZE: DocCard[] = [
   {
     slug: 'customize-brand',
     name: 'Customize brand',
-    blurb: 'Override accent ramp, radius, typography. CSS-vars only — no theme provider.',
+    blurb: 'Override accent ramp, radius, typography. CSS-vars only, no theme provider.',
     Icon: IconPalette,
   },
 ]
@@ -108,7 +108,7 @@ export default function DocsIndexPage() {
               eyebrow="Docs"
               title="Pick your stack. Ship in five minutes."
               subtitle="Six framework recipes, plus theming, server components, and troubleshoot."
-              description="Every recipe is the same as the one shipped inside the npm tarball at node_modules/@devalok/shilp-sutra/docs/recipes/ — single source of truth, no drift."
+              description="Every recipe is the same as the one shipped inside the npm tarball at node_modules/@devalok/shilp-sutra/docs/recipes/. Single source of truth, no drift."
             />
 
             <section className="flex flex-col gap-ds-05">
@@ -146,7 +146,7 @@ export default function DocsIndexPage() {
               </div>
               <Text variant="body-sm" className="text-surface-fg-muted max-w-3xl">
                 Install the Agent Skill once. Cursor, Claude Code, Codex, Aider then know every
-                component, every setup step, every gotcha — without you pasting docs into chat.
+                component, every setup step, every gotcha. No more pasting docs into chat.
               </Text>
               <Link
                 href="/agents"

@@ -24,7 +24,7 @@ export function AgentCallout() {
             </h2>
             <p className="text-ds-md text-surface-fg-muted max-w-2xl mt-ds-03">
               Install the Agent Skill once. Cursor, Claude Code, Codex, Aider then write code
-              that compiles the first time — every component, every prop, every gotcha.
+              that compiles the first time. Every component, every prop, every gotcha.
             </p>
           </div>
         </header>

@@ -28,7 +28,7 @@ type Activity = { who: string; initials: string; what: string; when: string; tag
 const activity: Activity[] = [
   { who: 'Goutham', initials: 'GP', what: 'pushed 4 component fixes to Padmavarna v2 audit', when: '12 min ago', tag: 'fix' },
   { who: 'Yogin', initials: 'YS', what: 'opened a PR adding Skeleton variants for charts', when: '38 min ago', tag: 'feat' },
-  { who: 'Amal', initials: 'AM', what: 'reviewed Karm onboarding flow — left 6 comments', when: '1 hr ago', tag: 'review' },
+  { who: 'Amal', initials: 'AM', what: 'reviewed Karm onboarding flow, left 6 comments', when: '1 hr ago', tag: 'review' },
   { who: 'Mudit', initials: 'ML', what: 'cut v0.39 with the Agent Skill bundle and site v1', when: '3 hr ago', tag: 'release' },
 ]
 

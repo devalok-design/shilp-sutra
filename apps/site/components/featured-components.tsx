@@ -32,7 +32,7 @@ export function FeaturedComponents() {
             Try them before you click.
           </h2>
           <p className="text-ds-md text-surface-fg-muted">
-            Six primitives that shape a product&apos;s rhythm — every one rendered live below.
+            Six primitives that shape a product&apos;s rhythm. Every one rendered live below.
             Scroll past for the full 119-component browse.
           </p>
         </header>
@@ -88,7 +88,7 @@ function TabsDemo() {
     <FeatureCard
       slug="Tabs"
       title="Switching panes."
-      caption="Settings, profiles, dashboards — anywhere one view holds several."
+      caption="Settings, profiles, dashboards. Anywhere one view holds several."
     >
       <div className="w-full">
         <Tabs defaultValue="profile">
@@ -99,7 +99,7 @@ function TabsDemo() {
           </TabsList>
           <TabsContent value="profile" className="pt-ds-04">
             <Text variant="body-xs" className="text-surface-fg-subtle">
-              Name, email, locale — the parts of you the app shows.
+              Name, email, locale. The parts of you the app shows.
             </Text>
           </TabsContent>
           <TabsContent value="security" className="pt-ds-04">
@@ -127,7 +127,7 @@ function AccordionDemo() {
     <FeatureCard
       slug="Accordion"
       title="Quiet by default."
-      caption="FAQs, settings groups, dense docs — disclose only what's asked for."
+      caption="FAQs, settings groups, dense docs. Disclose only what's asked for."
     >
       <div className="w-full">
         <Accordion type="single" collapsible defaultValue="a">
@@ -169,7 +169,7 @@ function AvatarStackDemo() {
     <FeatureCard
       slug="Avatar"
       title="Identity, stacked."
-      caption="Team rows, comment threads, attendee lists — initials fall back when photos miss."
+      caption="Team rows, comment threads, attendee lists. Initials fall back when photos miss."
     >
       <div className="flex flex-col items-center gap-ds-04">
         <div className="flex -space-x-2">
@@ -185,7 +185,7 @@ function AvatarStackDemo() {
           ))}
         </div>
         <Text variant="body-xs" className="text-surface-fg-subtle">
-          Hover any avatar — Tooltip names the person.
+          Hover any avatar. Tooltip names the person.
         </Text>
       </div>
     </FeatureCard>
@@ -203,7 +203,7 @@ function FormControlsDemo() {
     <FeatureCard
       slug="Switch · Form controls"
       title="Settings, instantly."
-      caption="Switches, checkboxes, radios — same data attributes, same focus rings, same dark-mode behaviour."
+      caption="Switches, checkboxes, radios. Same data attributes, same focus rings, same dark-mode behaviour."
     >
       <div className="flex flex-col gap-ds-04 w-full max-w-[16rem]">
         <Row label="Push notifications" hint="Mobile + desktop">
@@ -245,7 +245,7 @@ function TooltipDemo() {
     <FeatureCard
       slug="Tooltip"
       title="Help that hides."
-      caption="Sits next to icons until needed. Keyboard-accessible — focus reveals it the same way hover does."
+      caption="Sits next to icons until needed. Keyboard-accessible. Focus reveals it the same way hover does."
     >
       <div className="flex flex-col items-center gap-ds-04">
         <div className="flex items-center gap-ds-04">
@@ -271,7 +271,7 @@ function TooltipDemo() {
           ))}
         </div>
         <Text variant="body-xs" className="text-surface-fg-subtle">
-          Hover or tab through — labels surface with their shortcuts.
+          Hover or tab through. Labels surface with their shortcuts.
         </Text>
       </div>
     </FeatureCard>

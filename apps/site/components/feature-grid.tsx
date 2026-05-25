@@ -15,7 +15,7 @@ const features = [
   {
     icon: IconPalette,
     title: 'Your brand. Live.',
-    body: 'Pick one colour. Every button, badge, alert, and form across the entire library recolours — light mode, dark mode, hover, pressed, focus, every state. No theme provider. No re-render. CSS-vars do the work.',
+    body: 'Pick one colour. Every button, badge, alert, and form across the entire library recolours. Light mode, dark mode, hover, pressed, focus, every state. No theme provider. No re-render. CSS-vars do the work.',
   },
   {
     icon: IconShield,
@@ -30,7 +30,7 @@ const features = [
   {
     icon: IconUsers,
     title: 'For builders, by builders.',
-    body: 'Indie devs, studio teams, designers reaching for code, coding agents — one library, one install. Devalok ships on it; so do Karm, Devalok Hiring, BharatTools, and Gurukul.',
+    body: 'Indie devs, studio teams, designers reaching for code, coding agents. One library, one install. Devalok ships on it; so do Karm, Devalok Hiring, BharatTools, and Gurukul.',
   },
 ] as const
 

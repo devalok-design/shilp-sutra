@@ -8,7 +8,7 @@ import { SiteHeader } from '@/components/site-header'
 export const metadata: Metadata = {
   title: 'Aurora',
   description:
-    'Interactive playground for AuroraBloom — the theme-reactive WebGL aurora curtain from @devalok/shilp-sutra/composed/aurora-bloom.',
+    'Interactive playground for AuroraBloom, the theme-reactive WebGL aurora curtain from @devalok/shilp-sutra/composed/aurora-bloom.',
 }
 
 export default function AuroraPage() {

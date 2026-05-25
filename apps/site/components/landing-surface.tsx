@@ -29,7 +29,7 @@ type Activity = {
 }
 
 const initialActivity: Activity[] = [
-  { who: 'Mudit', initials: 'ML', what: 'shipped v0.39 — Agent Skill + site v1', when: '14 min ago', tag: 'release' },
+  { who: 'Mudit', initials: 'ML', what: 'shipped v0.39 · Agent Skill + site v1', when: '14 min ago', tag: 'release' },
   { who: 'Goutham', initials: 'GP', what: 'pushed Button accessibility audit fixes', when: '38 min ago', tag: 'fix' },
   { who: 'Yogin', initials: 'YS', what: 'reviewed the Atlas showcase composition', when: '1 hr ago', tag: 'review' },
   { who: 'Amal', initials: 'AM', what: 'opened a PR for Skeleton variants', when: '3 hr ago', tag: 'design' },
@@ -77,9 +77,9 @@ export function LandingSurface() {
           A live surface, rendering as you read.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          Every piece on this page is shilp-sutra rendering live. Click the activity button —
+          Every piece on this page is shilp-sutra rendering live. Click the activity button,
           watch a real onClickAsync run, watch a real entry animate in. Switch the brand from the
-          header — watch the colours follow. No demo videos. No marketing stills.
+          header, watch the colours follow. No demo videos. No marketing stills.
         </Text>
       </header>
 

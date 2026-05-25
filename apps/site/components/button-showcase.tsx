@@ -50,7 +50,7 @@ export function ButtonShowcase() {
           We sweat the small stuff.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          A button is just a button — until you click one and something feels wrong. The spinner
+          A button is just a button. Until you click one and something feels wrong. The spinner
           shifts the text. The check never comes. The loading bar lies. Ours don&apos;t do that.
           Click through.
         </Text>
@@ -168,7 +168,7 @@ function ContextualScenes() {
         </Text>
         <Text variant="body-sm" className="text-surface-fg-muted">
           Email, music, banking, social, code, calendar, deploys. Each card lifts a real
-          interaction shape — the variant, colour, size, and compound shape pick themselves
+          interaction shape. The variant, colour, size, and compound shape pick themselves
           from what the user is being asked to do.
         </Text>
       </header>
@@ -250,7 +250,7 @@ function SceneMusic() {
   return (
     <Scene
       product="Music · Spotify-shaped"
-      why="Single icon button as the centre of gravity. Real audio below — press play, hear the actual bhajan. The Button row sits where a real product's custom chrome would."
+      why="Single icon button as the centre of gravity. Real audio below. Press play, hear the actual bhajan. The Button row sits where a real product's custom chrome would."
     >
       <div className="flex flex-col gap-ds-03">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
@@ -321,7 +321,7 @@ function SceneCodeEditor() {
   return (
     <Scene
       product="Code editor · VS Code-shaped"
-      why="ButtonGroup attached. Same context, three sibling actions, shared border radius — reads as one toolbar."
+      why="ButtonGroup attached. Same context, three sibling actions, shared border radius. Reads as one toolbar."
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex items-center gap-ds-02">
@@ -347,7 +347,7 @@ function SceneSocial() {
   return (
     <Scene
       product="Social · X-shaped"
-      why="Ghost variant + icon + counter. Three sibling actions stay quiet until tapped — content does the work."
+      why="Ghost variant + icon + counter. Three sibling actions stay quiet until tapped. Content does the work."
     >
       <div className="flex flex-col gap-ds-03">
         <div className="flex items-center gap-ds-03 min-w-0">
@@ -494,7 +494,7 @@ function SceneNotes() {
   return (
     <Scene
       product="Notes · Notion-shaped"
-      why="One primary, many cousins. SplitButton again — but this time the dropdown is content variety, not delivery options."
+      why="One primary, many cousins. SplitButton again. This time the dropdown is content variety, not delivery options."
     >
       <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">

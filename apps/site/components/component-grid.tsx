@@ -15,7 +15,7 @@ const LAYER_LABELS: Record<Layer | 'all', string> = {
 }
 
 const LAYER_TAGLINE: Record<Layer, string> = {
-  ui: 'Atomic primitives. Inputs, buttons, dialogs, typography — the bricks you reach for first.',
+  ui: 'Atomic primitives. Inputs, buttons, dialogs, typography. The bricks you reach for first.',
   composed: 'Multi-component patterns. Date picker, command palette, page headers, empty states.',
   shell: 'Whole-app frame. Sidebar, top bar, navigation, notification center.',
 }

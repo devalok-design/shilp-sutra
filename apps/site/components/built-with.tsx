@@ -1,12 +1,33 @@
 'use client'
 
-import { useMemo, type CSSProperties } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { IconArrowUpRight, IconLock, IconSparkles } from '@tabler/icons-react'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { generateRamp } from '@/lib/ramp-generator'
+
+/**
+ * Subscribes to the .dark class on <html> via MutationObserver and
+ * returns the live theme. Used by useBrandRamp() so the inline accent
+ * CSS-var override picks the right (light or dark) OKLCH stops.
+ */
+function useThemeMode(): 'light' | 'dark' {
+  const [mode, setMode] = useState<'light' | 'dark'>('light')
+  useEffect(() => {
+    const read = () =>
+      setMode(document.documentElement.classList.contains('dark') ? 'dark' : 'light')
+    read()
+    const observer = new MutationObserver(read)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+    return () => observer.disconnect()
+  }, [])
+  return mode
+}
 
 /**
  * Built-with section — Devalok products carrying shilp-sutra. Per
@@ -18,7 +39,17 @@ import { generateRamp } from '@/lib/ramp-generator'
  * the multi-brand thesis the site sells. The same library, four colours,
  * four products.
  *
- * Versions pinned to consumer package.json at 2026-05-25 — re-verify per
+ * Dark-mode: relies entirely on semantic surface-* and accent-* tokens
+ * which DS remaps in .dark scope. The two oklch fallback values inside
+ * useBrandRamp() are the auto-foreground (white-on-dark-accent /
+ * dark-on-light-accent) and stay correct under both modes because the
+ * accent-9 lightness anchor is mode-neutral.
+ *
+ * Favicons: Google s2 service with onError fallback to a letter-tile so
+ * a missing favicon (Hiring is internal, Gurukul may not have one set
+ * yet) doesn't render a broken-image icon.
+ *
+ * Versions pinned to consumer package.json at 2026-05-25. Re-verify per
  * minor by greping the consumer repos.
  */
 
@@ -35,7 +66,7 @@ type Consumer = {
   href: string | null
   /** Status signal — "Daily use", "Public beta", "Internal", "Open · MIT". */
   status: string
-  /** 3-5 shilp-sutra component names this product leans on most. */
+  /** 3-6 shilp-sutra component names this product leans on most. */
   uses: readonly string[]
   /** Brand ramp anchors — drives the CSS-var override on the card. */
   hue: number
@@ -102,42 +133,82 @@ const SECONDARIES: Consumer[] = [
 /**
  * Inline CSS-var override that re-skins the accent ramp on just this
  * subtree. Same trick the showcase canvas uses for industry brands.
+ *
+ * Dark-mode aware: useThemeMode subscribes to the .dark class on <html>
+ * and picks the matching OKLCH ramp (generateRamp returns both light and
+ * dark stops with different lightness curves). Without this, the inline
+ * override would force light-mode pinks/saffrons even under .dark and
+ * the card would read washed-out / nearly white.
  */
 function useBrandRamp(hue: number, chroma: number): CSSProperties {
+  const mode = useThemeMode()
   return useMemo(() => {
     const ramp = generateRamp(hue, chroma)
+    const stops = mode === 'dark' ? ramp.dark : ramp.light
     const style: Record<string, string> = {}
-    ramp.light.forEach((s) => {
+    stops.forEach((s) => {
       style[`--color-accent-${s.step}`] = s.value
     })
     const accent9L = Number.parseFloat(
-      ramp.light[8].value.match(/oklch\(\s*([0-9.]+)/)?.[1] ?? '0.55',
+      stops[8].value.match(/oklch\(\s*([0-9.]+)/)?.[1] ?? '0.55',
     )
     style['--color-accent-fg'] = accent9L < 0.62 ? 'oklch(0.99 0 0)' : 'oklch(0.13 0 0)'
     return style as CSSProperties
-  }, [hue, chroma])
+  }, [hue, chroma, mode])
 }
 
-function Favicon({ domain, name }: { domain: string | null; name: string }) {
+/**
+ * Favicon with onError fallback. Google s2 returns a generic globe icon
+ * for unknown domains, but it CAN 404 for typos or DNS races. Letter
+ * tile fallback uses the active brand ramp via accent-3 / accent-11.
+ */
+function Favicon({
+  domain,
+  name,
+  size = 36,
+}: {
+  domain: string | null
+  name: string
+  size?: number
+}) {
+  const [errored, setErrored] = useState(false)
+  const px = `${size}px`
+
   if (!domain) {
     return (
       <span
         aria-hidden
-        className="w-9 h-9 rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-surface-fg-subtle flex items-center justify-center shrink-0"
+        className="rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-surface-fg-subtle flex items-center justify-center shrink-0"
+        style={{ width: px, height: px }}
       >
-        <IconLock size={16} />
+        <IconLock size={Math.round(size * 0.44)} />
       </span>
     )
   }
+
+  if (errored) {
+    return (
+      <span
+        aria-hidden
+        className="rounded-control-inner bg-accent-3 text-accent-11 border border-accent-7 flex items-center justify-center shrink-0 font-semibold tabular-nums"
+        style={{ width: px, height: px, fontSize: `${Math.max(11, Math.round(size * 0.42))}px` }}
+      >
+        {name.charAt(0).toUpperCase()}
+      </span>
+    )
+  }
+
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
+      src={`https://www.google.com/s2/favicons?domain=${domain}&sz=128`}
       alt={`${name} favicon`}
-      width={36}
-      height={36}
+      width={size}
+      height={size}
       loading="lazy"
-      className="w-9 h-9 rounded-control-inner shrink-0 border border-surface-border-subtle bg-surface-base"
+      onError={() => setErrored(true)}
+      className="rounded-control-inner shrink-0 border border-surface-border-subtle bg-surface-base"
+      style={{ width: px, height: px }}
     />
   )
 }
@@ -147,11 +218,13 @@ function SwatchStrip({ size = 'md' }: { size?: 'sm' | 'md' }) {
   const steps = [3, 5, 7, 9, 11] as const
   const dim = size === 'sm' ? 'h-1.5' : 'h-2'
   return (
-    <div className={`flex w-full overflow-hidden rounded-pill border border-surface-border-subtle ${dim}`}>
+    <div
+      aria-hidden
+      className={`flex w-full overflow-hidden rounded-pill border border-surface-border-subtle ${dim}`}
+    >
       {steps.map((step) => (
         <span
           key={step}
-          aria-hidden
           className="flex-1"
           style={{ background: `var(--color-accent-${step})` }}
         />
@@ -181,22 +254,23 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
       style={style}
       className="relative overflow-hidden rounded-surface border border-accent-7 shadow-raised bg-gradient-to-br from-accent-2 via-accent-3 to-accent-2"
     >
-      {/* Decorative brand glow in the corner — purely atmospheric */}
+      {/* Decorative brand glow in the corner — purely atmospheric. Sized
+          smaller on mobile so it doesn't dominate the layout. */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -top-20 -right-20 w-64 h-64 rounded-pill opacity-40 blur-3xl"
+        className="pointer-events-none absolute -top-16 -right-16 w-40 h-40 sm:-top-20 sm:-right-20 sm:w-64 sm:h-64 rounded-pill opacity-40 blur-3xl"
         style={{ background: `var(--color-accent-9)` }}
       />
 
-      <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-ds-08 p-ds-06 sm:p-ds-08">
+      <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-ds-06 lg:gap-ds-08 p-ds-05 sm:p-ds-06 lg:p-ds-08">
         {/* Left — identity + pitch */}
-        <div className="flex flex-col gap-ds-05">
-          <div className="flex items-center gap-ds-03">
-            <Favicon domain={consumer.domain} name={consumer.name} />
+        <div className="flex flex-col gap-ds-05 min-w-0">
+          <div className="flex items-center gap-ds-03 min-w-0">
+            <Favicon domain={consumer.domain} name={consumer.name} size={40} />
             <div className="flex flex-col min-w-0">
-              <span className="text-ds-xs uppercase tracking-wide text-accent-11 inline-flex items-center gap-ds-02">
-                <IconSparkles size={12} aria-hidden />
-                Flagship · {consumer.status}
+              <span className="text-ds-xs uppercase tracking-wide text-accent-11 inline-flex items-center gap-ds-02 truncate">
+                <IconSparkles size={12} aria-hidden className="shrink-0" />
+                <span className="truncate">Flagship · {consumer.status}</span>
               </span>
               <Text variant="heading-xl" className="text-surface-fg text-balance">
                 {consumer.name}
@@ -246,8 +320,9 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
           </div>
         </div>
 
-        {/* Right — visual brand evidence */}
-        <div className="flex flex-col gap-ds-04 justify-between">
+        {/* Right — visual brand evidence. Below sm the mock chrome stacks
+            below the identity; on md+ it sits in its own column. */}
+        <div className="flex flex-col gap-ds-04 justify-between min-w-0">
           <div className="flex flex-col gap-ds-03">
             <span className="text-ds-xs uppercase tracking-wide text-surface-fg-subtle">
               The brand it wears
@@ -259,21 +334,22 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
             </div>
           </div>
 
-          {/* Mock product chrome — proves the brand on a real-feeling artifact */}
-          <div className="rounded-control border border-accent-7 bg-surface-base shadow-overlay p-ds-04 flex flex-col gap-ds-03">
-            <div className="flex items-center gap-ds-02">
-              <span className="w-2 h-2 rounded-pill bg-error-9" />
-              <span className="w-2 h-2 rounded-pill bg-warning-9" />
-              <span className="w-2 h-2 rounded-pill bg-success-9" />
+          {/* Mock product chrome — proves the brand on a real-feeling
+              artifact. Hidden below sm to avoid cramping a phone viewport. */}
+          <div className="hidden sm:flex rounded-control border border-accent-7 bg-surface-base shadow-overlay p-ds-04 flex-col gap-ds-03">
+            <div className="flex items-center gap-ds-02 min-w-0">
+              <span aria-hidden className="w-2 h-2 rounded-pill bg-error-9 shrink-0" />
+              <span aria-hidden className="w-2 h-2 rounded-pill bg-warning-9 shrink-0" />
+              <span aria-hidden className="w-2 h-2 rounded-pill bg-success-9 shrink-0" />
               <span className="ml-ds-02 text-ds-xs font-mono text-surface-fg-subtle truncate">
                 {consumer.domain ?? 'internal'}
               </span>
             </div>
             <div className="flex flex-col gap-ds-02">
-              <span className="h-2 w-3/4 rounded-pill bg-accent-9" />
-              <span className="h-1.5 w-full rounded-pill bg-accent-3" />
-              <span className="h-1.5 w-5/6 rounded-pill bg-accent-3" />
-              <span className="h-1.5 w-2/3 rounded-pill bg-accent-3" />
+              <span aria-hidden className="h-2 w-3/4 rounded-pill bg-accent-9" />
+              <span aria-hidden className="h-1.5 w-full rounded-pill bg-accent-3" />
+              <span aria-hidden className="h-1.5 w-5/6 rounded-pill bg-accent-3" />
+              <span aria-hidden className="h-1.5 w-2/3 rounded-pill bg-accent-3" />
             </div>
             <div className="flex items-center justify-between gap-ds-02 pt-ds-01">
               <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-9 text-accent-fg text-[10px] font-semibold uppercase tracking-wide">
@@ -297,27 +373,27 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
       style={style}
       className="group relative flex flex-col gap-ds-04 overflow-hidden rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised hover:shadow-raised-hover hover:border-accent-7 transition-[border-color,box-shadow,transform] duration-fast-02 ease-productive-standard hover:-translate-y-px"
     >
-      {/* Brand wash at top */}
+      {/* Brand wash band at top */}
       <div className="relative h-16 bg-gradient-to-br from-accent-3 to-accent-2 border-b border-surface-border-subtle overflow-hidden">
         <span
           aria-hidden
-          className="absolute -top-10 -right-10 w-32 h-32 rounded-pill opacity-40 blur-2xl"
+          className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-pill opacity-40 blur-2xl"
           style={{ background: `var(--color-accent-9)` }}
         />
-        <div className="relative h-full flex items-center justify-between px-ds-04">
-          <Favicon domain={consumer.domain} name={consumer.name} />
-          <Badge variant="soft" color="accent" size="sm">
+        <div className="relative h-full flex items-center justify-between gap-ds-03 px-ds-04 min-w-0">
+          <Favicon domain={consumer.domain} name={consumer.name} size={32} />
+          <Badge variant="soft" color="accent" size="sm" className="shrink-0 truncate max-w-[60%]">
             {consumer.status}
           </Badge>
         </div>
       </div>
 
-      <div className="flex flex-col gap-ds-03 px-ds-05 pb-ds-05">
-        <div className="flex flex-col gap-ds-01">
+      <div className="flex flex-col gap-ds-03 px-ds-05 pb-ds-05 min-w-0">
+        <div className="flex flex-col gap-ds-01 min-w-0">
           <Text variant="heading-sm" className="text-surface-fg truncate">
             {consumer.name}
           </Text>
-          <Text variant="body-xs" className="text-surface-fg-subtle">
+          <Text variant="body-xs" className="text-surface-fg-subtle truncate">
             {consumer.type}
           </Text>
         </div>
@@ -330,8 +406,8 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
 
         <UsesRow uses={consumer.uses.slice(0, 4)} />
 
-        <footer className="mt-auto flex items-center justify-between gap-ds-02 pt-ds-03 border-t border-surface-border-subtle">
-          <span className="text-ds-xs font-mono text-surface-fg-subtle">
+        <footer className="mt-auto flex items-center justify-between gap-ds-02 pt-ds-03 border-t border-surface-border-subtle min-w-0">
+          <span className="text-ds-xs font-mono text-surface-fg-subtle truncate">
             @{consumer.version}
           </span>
           {consumer.href ? (
@@ -339,7 +415,7 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
               href={consumer.href}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg hover:text-accent-11 transition-colors duration-fast-01"
+              className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg hover:text-accent-11 transition-colors duration-fast-01 shrink-0"
             >
               Visit
               <IconArrowUpRight
@@ -349,7 +425,7 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
               />
             </Link>
           ) : (
-            <span className="text-ds-xs text-surface-fg-subtle italic">No public URL</span>
+            <span className="text-ds-xs text-surface-fg-subtle italic shrink-0">No public URL</span>
           )}
         </footer>
       </div>

@@ -115,7 +115,7 @@ describe('AvatarGroup', () => {
       // The indicator span has ring-1 ring-surface-raised; no such element should exist
       // when indicator is undefined
       const indicatorSpans = Array.from(dots).filter(
-        (el) => el.tagName === 'SPAN' && el.classList.contains('rounded-full') && el.classList.contains('h-2'),
+        (el) => el.tagName === 'SPAN' && el.classList.contains('rounded-pill') && el.classList.contains('h-2'),
       )
       expect(indicatorSpans).toHaveLength(0)
     })

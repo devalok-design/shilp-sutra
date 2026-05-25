@@ -94,7 +94,7 @@ describe('SkeletonAvatar', () => {
 
   it('is circular by default', () => {
     render(<SkeletonAvatar data-testid="sa" />)
-    expect(screen.getByTestId('sa').className).toContain('rounded-ds-full')
+    expect(screen.getByTestId('sa').className).toContain('rounded-pill')
   })
 })
 

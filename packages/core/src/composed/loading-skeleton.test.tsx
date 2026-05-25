@@ -59,13 +59,13 @@ describe('ListSkeleton', () => {
 
   it('renders avatars by default (shrink-0 rounded circles)', () => {
     const { container } = render(<ListSkeleton rows={2} />)
-    const avatars = container.querySelectorAll('[class*="shrink-0"][class*="rounded-ds-full"]')
+    const avatars = container.querySelectorAll('[class*="shrink-0"][class*="rounded-pill"]')
     expect(avatars.length).toBe(2)
   })
 
   it('hides avatars when showAvatar is false', () => {
     const { container } = render(<ListSkeleton showAvatar={false} rows={2} />)
-    const avatars = container.querySelectorAll('[class*="shrink-0"][class*="rounded-ds-full"]')
+    const avatars = container.querySelectorAll('[class*="shrink-0"][class*="rounded-pill"]')
     expect(avatars.length).toBe(0)
   })
 

@@ -160,8 +160,17 @@
   </div>
 
   <div style="margin-top: 40px; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-size: 13px; color: var(--fg-muted); line-height: 1.6;">
-    <strong style="color: var(--fg);">How to pick.</strong> Each card is rendered <em>using</em> the archetype's actual role-token values — that border thickness, that shadow, that radius, those padding, that font weight is what your app will look like under <code>data-archetype="…"</code>. Pick the one that feels right. Reads better than a token table.
+    <strong style="color: var(--fg);">How to pick.</strong> Each card is rendered <em>using</em> the archetype's actual role-token values — that border thickness, that shadow, that radius, those padding, that font weight is what your app will look like under <code>data-archetype="…"</code>. <strong style="color: var(--fg);">Click a card</strong> to lock that archetype and get install steps + CSS.
   </div>
 </main>
+<script>
+  document.querySelectorAll('.arch-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const a = card.dataset.archetype;
+      location.href = `themer-result.html?archetype=${encodeURIComponent(a)}`;
+    });
+    card.style.cursor = 'pointer';
+  });
+</script>
 </body>
 </html>

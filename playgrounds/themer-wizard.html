@@ -138,7 +138,7 @@
       <div class="result-summary"><h2 id="archetypeName"></h2><p id="archetypeDescription"></p></div>
       <div class="result-overrides"><h2>Your tweaks on top</h2><ul id="overrideList"></ul></div>
       <pre class="css-block" id="cssOut"></pre>
-      <div class="nav"><button class="btn ghost" data-back>← Back</button><button class="btn" id="copyBtn">Copy CSS</button></div>
+      <div class="nav"><button class="btn ghost" data-back>← Back</button><button class="btn ghost" id="copyBtn">Copy CSS</button><a class="btn" id="continueBtn" href="themer-result.html" style="text-decoration:none;">Continue → install steps</a></div>
     </div>
   </section>
   <aside class="preview" id="preview">
@@ -287,6 +287,18 @@
     Object.entries(ramp).forEach(([step, [L, C]]) => { lines.push(`  --color-accent-${step}: oklch(${L} ${C} ${state.hue});`); });
     lines.push('}');
     document.getElementById('cssOut').textContent = lines.join('\n');
+
+    // Wire continue button — carry state to result page
+    const continueBtn = document.getElementById('continueBtn');
+    if (continueBtn) {
+      const params = new URLSearchParams();
+      if (state.archetype) params.set('archetype', state.archetype);
+      if (state.density && state.density !== d.density) params.set('density', state.density);
+      if (state.shape && state.shape !== d.shape) params.set('shape', state.shape);
+      if (state.motion && state.motion !== d.motion) params.set('motion', state.motion);
+      params.set('hue', String(state.hue));
+      continueBtn.href = `themer-result.html?${params.toString()}`;
+    }
   };
   document.getElementById('copyBtn').onclick = e => {
     navigator.clipboard.writeText(document.getElementById('cssOut').textContent);

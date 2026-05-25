@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Your Theme</title>
+<style>
+  :root {
+    --bg: oklch(0.985 0.005 280); --surface: oklch(1 0 0); --fg: oklch(0.20 0.02 280);
+    --fg-muted: oklch(0.48 0.02 280); --fg-subtle: oklch(0.62 0.02 280);
+    --border: oklch(0.88 0.01 280);
+    --brand-hue: 340; --brand-chroma: 0.19;
+    --accent-9: oklch(0.55 var(--brand-chroma) var(--brand-hue));
+    --accent-11: oklch(0.42 calc(var(--brand-chroma) * 0.84) var(--brand-hue));
+    --accent-3: oklch(0.94 calc(var(--brand-chroma) * 0.17) var(--brand-hue));
+    --font: -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.55 var(--font); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; padding: 40px 24px 80px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  .eyebrow { display: inline-flex; padding: 3px 10px; background: oklch(0.94 0.04 145); color: oklch(0.32 0.14 145); border-radius: 9999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  h1 { margin: 0 0 6px; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+  .sub { margin: 0; color: var(--fg-muted); font-size: 14px; }
+  .back { font-size: 13px; color: var(--fg-muted); text-decoration: none; }
+  .back:hover { color: var(--fg); }
+
+  .theme-summary { background: var(--accent-3); color: var(--accent-11); padding: 16px 20px; border-radius: 12px; margin-bottom: 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .theme-summary .label { font: 700 11px var(--font); text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
+  .theme-summary code { background: oklch(1 0 0 / 0.4); padding: 3px 8px; border-radius: 4px; font: 12px ui-monospace, monospace; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .panel h2 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+  .panel .panel-sub { margin: 0 0 16px; font-size: 13px; color: var(--fg-muted); line-height: 1.5; }
+
+  .tabs { display: flex; gap: 4px; padding: 4px; background: var(--bg); border-radius: 8px; margin-bottom: 12px; }
+  .tab { flex: 1; padding: 6px 10px; border: none; background: transparent; font: 500 12px var(--font); cursor: pointer; border-radius: 6px; color: var(--fg-muted); }
+  .tab.active { background: var(--surface); color: var(--fg); box-shadow: 0 1px 2px oklch(0 0 0 / 0.06); }
+  pre.install-block, pre.css-block { font: 11px/1.55 ui-monospace, monospace; background: oklch(0.18 0.02 280); color: oklch(0.85 0.005 280); border-radius: 10px; padding: 14px 16px; overflow-x: auto; white-space: pre; margin: 0; }
+  pre.css-block { max-height: 320px; }
+  .step-num { display: inline-flex; width: 22px; height: 22px; background: var(--accent-9); color: white; border-radius: 50%; align-items: center; justify-content: center; font: 700 12px var(--font); margin-right: 8px; }
+
+  .preview-frame {
+    background: var(--bg-pv, var(--bg));
+    border-radius: var(--rs-pv, 10px);
+    border: var(--bw-pv, 1px) solid var(--bc-pv, var(--border));
+    padding: var(--cp-pv, 20px);
+    transition: all 250ms cubic-bezier(0.2, 0, 0.38, 0.9);
+  }
+  .preview-card { background: var(--accent-9); color: white; padding: 18px; border-radius: var(--rc-pv, 8px); margin-bottom: 10px; box-shadow: var(--shad-pv, 0 4px 14px oklch(0 0 0 / 0.06)); }
+  .preview-card h3 { margin: 0 0 4px; font-size: 17px; font-weight: 600; }
+  .preview-card p { margin: 0; font-size: 13px; opacity: 0.92; }
+  .pv-row { background: var(--surface); padding: 14px; border-radius: var(--rc-pv, 8px); border: var(--bw-pv, 1px) solid var(--bc-pv, var(--border)); margin-bottom: 8px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .pv-btn { padding: var(--py-pv, 7px) var(--px-pv, 12px); background: var(--accent-9); color: white; border: none; border-radius: var(--rc-pv, 6px); font: 500 13px var(--font); cursor: pointer; transition: background 100ms; }
+  .pv-btn:hover { background: var(--accent-11); }
+  .pv-btn.outline { background: transparent; color: var(--accent-11); border: 1px solid var(--accent-9); }
+  .pv-badge { display: inline-flex; padding: 2px 9px; background: var(--accent-3); color: var(--accent-11); border-radius: 9999px; font-size: 12px; font-weight: 500; }
+  .pv-input { width: 100%; padding: var(--py-pv, 7px) var(--px-pv, 12px); border: var(--bw-pv, 1px) solid var(--bc-pv, var(--border)); border-radius: var(--rc-pv, 6px); font: 13px var(--font); background: var(--surface); margin-top: 4px; }
+
+  .next-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .next-card {
+    padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    text-decoration: none; color: inherit; transition: border-color 100ms, transform 150ms; cursor: pointer;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .next-card:hover { border-color: var(--accent-9); transform: translateY(-1px); }
+  .next-card strong { font-size: 13px; font-weight: 600; }
+  .next-card span { font-size: 11px; color: var(--fg-muted); }
+
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .btn { padding: 9px 16px; background: var(--accent-9); color: white; border: none; border-radius: 8px; font: 500 13px var(--font); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  .btn:hover { background: var(--accent-11); }
+  .btn.ghost { background: transparent; color: var(--fg-muted); border: 1px solid var(--border); }
+  .btn.ghost:hover { color: var(--fg); }
+  .btn.copied { background: oklch(0.94 0.07 145); color: oklch(0.30 0.14 145); }
+
+  .share-hint { font-size: 12px; color: var(--fg-muted); margin-top: 10px; }
+  .share-hint code { font: 11px ui-monospace, monospace; background: var(--bg); padding: 2px 6px; border-radius: 3px; color: var(--fg); word-break: break-all; }
+</style>
+</head>
+<body>
+<main class="container">
+  <div class="header">
+    <div>
+      <span class="eyebrow">Your theme</span>
+      <h1 id="title">Ready to ship.</h1>
+      <p class="sub">Three short steps. Install the package, paste the CSS, see your app.</p>
+    </div>
+    <a class="back" href="themer-landing.html">← Start over</a>
+  </div>
+
+  <div class="theme-summary">
+    <span class="label">Theme</span>
+    <code id="archetype-summary">data-archetype="stripe"</code>
+    <span id="override-summary" style="font-size: 12px;"></span>
+    <span style="margin-left: auto; font-size: 12px;">Accent <code id="hue-summary">340°</code></span>
+  </div>
+
+  <div class="grid">
+    <section>
+      <div class="panel">
+        <h2><span class="step-num">1</span>Install shilp-sutra</h2>
+        <p class="panel-sub">Pick your package manager. Add the core package + peer deps.</p>
+        <div class="tabs">
+          <button class="tab active" data-pm="pnpm">pnpm</button>
+          <button class="tab" data-pm="npm">npm</button>
+          <button class="tab" data-pm="yarn">yarn</button>
+          <button class="tab" data-pm="bun">bun</button>
+        </div>
+        <pre class="install-block" id="installBlock"></pre>
+      </div>
+
+      <div class="panel" style="margin-top: 16px;">
+        <h2><span class="step-num">2</span>Paste your theme CSS</h2>
+        <p class="panel-sub">Drop this into your global stylesheet. Next.js → <code>app/globals.css</code>. Vite → <code>src/index.css</code>. Astro → <code>src/styles/global.css</code>. Place it AFTER <code>@import "@devalok/shilp-sutra/css"</code>.</p>
+        <pre class="css-block" id="cssOut"></pre>
+        <div class="actions">
+          <button class="btn" id="copyBtn">Copy CSS</button>
+          <button class="btn ghost" id="downloadBtn">Download .css</button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="panel">
+        <h2><span class="step-num">3</span>Preview your theme</h2>
+        <p class="panel-sub">Same demo components your app will render — but with your chosen theme applied.</p>
+        <div class="preview-frame" id="preview">
+          <div class="preview-card">
+            <h3>Welcome to your app</h3>
+            <p>Your accent color, your shape, your density. This is the surface every Card, Dialog, Sheet, and Popover will adopt.</p>
+          </div>
+          <div class="pv-row">
+            <button class="pv-btn">Primary</button>
+            <button class="pv-btn outline">Outline</button>
+            <span class="pv-badge">Beta</span>
+            <span class="pv-badge">Live</span>
+          </div>
+          <div class="pv-row" style="display: block;">
+            <h4 style="margin: 0 0 4px; font-size: 14px; font-weight: 600;">Project Atlas</h4>
+            <p style="margin: 0; font-size: 12px; color: var(--fg-muted);">Sample card content using the chosen role tokens.</p>
+            <input class="pv-input" placeholder="Search projects…">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top: 16px;">
+        <h2>What's next</h2>
+        <p class="panel-sub">Your theme is locked in. Pick where to go from here:</p>
+        <div class="next-grid">
+          <a class="next-card" id="tweak-link" href="themer-wizard.html"><strong>Tweak this theme →</strong><span>Adjust individual axes</span></a>
+          <a class="next-card" href="../packages/core/docs/recipes/customize-brand.md"><strong>Read the recipe →</strong><span>How customization works</span></a>
+          <a class="next-card" href="https://devalok-design.github.io/shilp-sutra" target="_blank" rel="noopener"><strong>Browse Storybook →</strong><span>All 119 components</span></a>
+          <a class="next-card" href="index.html"><strong>Explore axes →</strong><span>13 playgrounds catalog</span></a>
+        </div>
+        <div class="actions">
+          <button class="btn ghost" id="shareBtn">Copy share link</button>
+        </div>
+        <p class="share-hint">Share this URL — anyone who opens it gets the same theme pre-filled. Theme state encoded in: <code id="urlPreview"></code></p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+  const RAMP_LIGHT = [
+    [0.985, 0.06], [0.96, 0.18], [0.92, 0.32], [0.88, 0.48],
+    [0.82, 0.62], [0.74, 0.74], [0.66, 0.84], [0.60, 0.92],
+    [0.54, 1.00], [0.49, 0.95], [0.42, 0.78], [0.20, 0.30],
+  ];
+
+  const ARCH = {
+    linear:  { rs: 6, rc: 4, px: 12, py: 6, cp: 18, bw: 0.5, shad: 'inset 0 0 0 1px oklch(0.90 0.005 280)', bg: 'oklch(0.99 0.003 280)', bc: 'oklch(0.92 0.005 280)' },
+    stripe:  { rs: 10, rc: 6, px: 16, py: 8, cp: 22, bw: 1, shad: '0 1px 2px oklch(0 0 0 / 0.05)', bg: 'oklch(0.985 0.005 280)', bc: 'oklch(0.88 0.01 280)' },
+    apple:   { rs: 20, rc: 12, px: 22, py: 12, cp: 30, bw: 0.5, shad: '0 8px 24px oklch(0 0 0 / 0.06)', bg: 'oklch(0.98 0.003 280)', bc: 'oklch(0.90 0.005 280)' },
+    material:{ rs: 16, rc: 12, px: 18, py: 10, cp: 22, bw: 1, shad: '0 6px 16px oklch(0 0 0 / 0.12)', bg: 'oklch(0.985 0.005 280)', bc: 'oklch(0.88 0.01 280)' },
+    notion:  { rs: 4, rc: 4, px: 14, py: 8, cp: 22, bw: 1, shad: 'inset 0 0 0 1px oklch(0.92 0.005 280)', bg: 'oklch(0.985 0.003 280)', bc: 'oklch(0.92 0.005 280)' },
+    vercel:  { rs: 6, rc: 4, px: 12, py: 6, cp: 18, bw: 1, shad: 'inset 0 0 0 1px oklch(0.90 0.005 280)', bg: 'oklch(0.99 0.002 280)', bc: 'oklch(0.90 0.005 280)' },
+    devalok: { rs: 12, rc: 8, px: 18, py: 10, cp: 22, bw: 1, shad: '0 2px 8px oklch(0.55 0.19 340 / 0.10), 0 1px 2px oklch(0 0 0 / 0.04)', bg: 'oklch(0.985 0.005 340)', bc: 'oklch(0.88 0.015 340)' },
+  };
+  const DENSITY = { compact: { px: 10, py: 4, cp: 14 }, comfortable: {}, spacious: { px: 24, py: 14, cp: 32 } };
+  const SHAPE = { sharp: { rs: 4, rc: 2 }, 'slightly-rounded': { rs: 10, rc: 6 }, rounded: { rs: 16, rc: 10 } };
+
+  function getParams() {
+    const p = new URLSearchParams(location.search);
+    return {
+      archetype: p.get('archetype') || 'stripe',
+      density: p.get('density'),
+      shape: p.get('shape'),
+      motion: p.get('motion'),
+      hue: Number(p.get('hue') || 340),
+      chroma: Number(p.get('chroma') || 0.19),
+    };
+  }
+
+  function renderInstallBlock(pm) {
+    const cmd = { pnpm: 'pnpm add', npm: 'npm install', yarn: 'yarn add', bun: 'bun add' }[pm];
+    const host = document.getElementById('installBlock');
+    while (host.firstChild) host.removeChild(host.firstChild);
+    const comment1 = document.createElement('span');
+    comment1.style.color = 'oklch(0.55 0.005 280)';
+    comment1.textContent = '# Add to your project';
+    host.appendChild(comment1);
+    host.appendChild(document.createTextNode('\n' + cmd + ' @devalok/shilp-sutra\n\n'));
+    const comment2 = document.createElement('span');
+    comment2.style.color = 'oklch(0.55 0.005 280)';
+    comment2.textContent = '# Make sure peer deps are installed';
+    host.appendChild(comment2);
+    host.appendChild(document.createTextNode('\n' + cmd + ' react react-dom framer-motion tailwindcss'));
+  }
+
+  function apply(state) {
+    const html = document.documentElement;
+    html.style.setProperty('--brand-hue', state.hue);
+    html.style.setProperty('--brand-chroma', state.chroma);
+
+    const base = ARCH[state.archetype] || ARCH.stripe;
+    const merged = {
+      ...base,
+      ...(state.density && DENSITY[state.density]),
+      ...(state.shape && SHAPE[state.shape]),
+    };
+    const root = document.getElementById('preview');
+    root.style.setProperty('--rs-pv', merged.rs + 'px');
+    root.style.setProperty('--rc-pv', merged.rc + 'px');
+    root.style.setProperty('--px-pv', merged.px + 'px');
+    root.style.setProperty('--py-pv', merged.py + 'px');
+    root.style.setProperty('--cp-pv', merged.cp + 'px');
+    root.style.setProperty('--bw-pv', merged.bw + 'px');
+    root.style.setProperty('--shad-pv', merged.shad);
+    root.style.setProperty('--bg-pv', merged.bg);
+    root.style.setProperty('--bc-pv', merged.bc);
+
+    document.getElementById('archetype-summary').textContent = `data-archetype="${state.archetype}"`;
+    const overrides = [];
+    if (state.density) overrides.push(`density="${state.density}"`);
+    if (state.shape) overrides.push(`shape="${state.shape}"`);
+    if (state.motion) overrides.push(`motion="${state.motion}"`);
+    document.getElementById('override-summary').textContent = overrides.length ? '+ overrides: ' + overrides.join(' ') : '';
+    document.getElementById('hue-summary').textContent = state.hue + '°';
+
+    const ramp = RAMP_LIGHT.map(([L, c], i) => ({ step: i + 1, value: `oklch(${L.toFixed(3)} ${(c * state.chroma).toFixed(3)} ${state.hue})`, L }));
+    const lines = ['<html'];
+    lines.push(`  data-archetype="${state.archetype}"`);
+    if (state.density) lines.push(`  data-density="${state.density}"`);
+    if (state.shape) lines.push(`  data-shape="${state.shape}"`);
+    if (state.motion) lines.push(`  data-motion="${state.motion}"`);
+    lines.push('>');
+    lines.push('');
+    lines.push('/* In your global stylesheet, AFTER @import "@devalok/shilp-sutra/css": */');
+    lines.push(':root {');
+    ramp.forEach(s => lines.push(`  --color-accent-${s.step}: ${s.value};`));
+    const fgL = ramp[8].L;
+    lines.push(`  --color-accent-fg: ${fgL < 0.55 ? 'oklch(0.99 0 0)' : 'oklch(0.13 0 0)'};`);
+    lines.push('}');
+    document.getElementById('cssOut').textContent = lines.join('\n');
+
+    const titles = { linear: 'Sharp & focused.', stripe: 'Modern & balanced.', apple: 'Soft & calm.', material: 'Bold & layered.', notion: 'Readable & restrained.', vercel: 'Minimal & monochrome.', devalok: 'Warm & signature.' };
+    document.getElementById('title').textContent = (titles[state.archetype] || 'Ready to ship.');
+
+    const tweakUrl = 'themer-wizard.html' + location.search;
+    document.getElementById('tweak-link').href = tweakUrl;
+
+    document.getElementById('urlPreview').textContent = location.search || '(default theme)';
+  }
+
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
+    renderInstallBlock(t.dataset.pm);
+  }));
+
+  document.getElementById('copyBtn').onclick = e => {
+    navigator.clipboard.writeText(document.getElementById('cssOut').textContent);
+    e.target.classList.add('copied'); e.target.textContent = 'Copied ✓';
+    setTimeout(() => { e.target.classList.remove('copied'); e.target.textContent = 'Copy CSS'; }, 1500);
+  };
+  document.getElementById('downloadBtn').onclick = () => {
+    const blob = new Blob([document.getElementById('cssOut').textContent], { type: 'text/css' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'shilp-sutra-theme.css';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+  document.getElementById('shareBtn').onclick = e => {
+    navigator.clipboard.writeText(location.href);
+    e.target.classList.add('copied'); e.target.textContent = 'Link copied ✓';
+    setTimeout(() => { e.target.classList.remove('copied'); e.target.textContent = 'Copy share link'; }, 1500);
+  };
+
+  renderInstallBlock('pnpm');
+  apply(getParams());
+</script>
+</body>
+</html>

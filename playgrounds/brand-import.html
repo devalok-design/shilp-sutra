@@ -114,7 +114,8 @@
         <p class="panel-sub">Copy this block into <code>app/globals.css</code> or wherever you import shilp-sutra.</p>
         <pre id="cssOut"></pre>
         <div class="actions">
-          <button class="btn" id="copyBtn">Copy CSS</button>
+          <a class="btn" id="continueBtn" href="themer-result.html" style="text-decoration: none;">Continue → install steps</a>
+          <button class="btn ghost" id="copyBtn">Copy CSS</button>
           <button class="btn ghost" id="downloadBtn">Download .css</button>
         </div>
       </div>
@@ -221,6 +222,16 @@
     document.getElementById('suggestedName').textContent = suggested.name;
     document.getElementById('suggestedWhy').textContent = suggested.why;
     renderCss(ramp, hue, suggested.name);
+    // Wire the continue button — carries state forward to result page
+    const continueBtn = document.getElementById('continueBtn');
+    if (continueBtn) {
+      const params = new URLSearchParams({
+        archetype: suggested.name.toLowerCase(),
+        hue: String(hue),
+        chroma: String(chroma),
+      });
+      continueBtn.href = `themer-result.html?${params.toString()}`;
+    }
   }
 
   document.getElementById('hue').oninput = e => { update(); document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active')); };

@@ -21,10 +21,20 @@ New exports from `@devalok/shilp-sutra/ui/oauth-button`:
     `dark` (unified Apple-style across all providers).
   - `icon` — drop in a brand-multicolour SVG to replace the default glyph.
   - `iconOnly` — square button with provider name kept in `aria-label`.
-  - `lastUsed` — high-converting "Last used" hint above the button.
+  - `compact` — short label (`"Google"` not `"Continue with Google"`).
+    `aria-label` keeps the long form for screen readers. Good under an
+    explicit "Or sign in with" divider.
+  - `lastUsed` — inline right-edge pill rendered inside the button. The
+    stronger conversion pattern is to combine this with `OAuthGroup`'s
+    `reorderLastUsedFirst`, which promotes the provider to position 0.
   - `helperText` — reassurance copy below.
   - `data-provider` attribute for analytics.
+  - **Dark-mode uniformity:** every brand appearance lands on the same DS
+    surface in dark mode — brand identity comes from the glyph, not the
+    background — so rows stay visually coherent.
 - `OAuthGroup` — stacked layout wrapper with consistent spacing.
+  Optional `reorderLastUsedFirst` pulls a `lastUsed` child to position 0
+  (Stripe-style ordering — a stronger conversion lever than a visual badge).
 - `OAuthDivider` — `or`-style horizontal rule between OAuth and email form.
 - `OAuthConnectionRow` — settings-page row representing a linked provider
   with Disconnect / (re-)Connect action.

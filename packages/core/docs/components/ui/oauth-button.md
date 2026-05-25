@@ -16,7 +16,8 @@
     appearance: "brand" | "outline" | "dark" (default "brand") — visual treatment
     icon: ReactNode — override the default Tabler glyph with a brand-multicolour SVG
     iconOnly: boolean — compact icon-only button; provider name preserved in aria-label
-    lastUsed: boolean — show a "Last used" hint above the button (high-converting UX cue)
+    compact: boolean — short label ("Google" not "Continue with Google"); aria-label keeps long form
+    lastUsed: boolean — inline right-edge pill inside the button (a stronger pattern is reorder, below)
     helperText: ReactNode — reassurance copy rendered below the button
     children: ReactNode — override the default label entirely (i18n / custom copy)
     size: inherited from Button ("xs" | "sm" | "md" | "lg" | compact + icon variants)
@@ -30,6 +31,8 @@
     orientation: "vertical" | "horizontal" (default "vertical")
     gap: "ds-02" | "ds-03" | "ds-04" (default "ds-03")
     fullWidth: boolean (default true) — stretches children to fill width when vertical
+    reorderLastUsedFirst: boolean (default false) — pull the child with lastUsed to position 0
+        (Stripe-style — a stronger conversion lever than a visual badge alone)
 
 ## OAuthDivider props
     label: ReactNode (default "or")

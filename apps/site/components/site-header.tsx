@@ -131,18 +131,17 @@ export function SiteHeader() {
               className="flex items-center gap-ds-02 group min-w-0"
               onClick={() => setOpen(false)}
             >
-              <span
-                className={[
-                  'text-ds-md sm:text-ds-lg font-semibold tracking-tight text-surface-fg truncate',
-                  scrolled ? '' : 'text-halo',
-                ].join(' ')}
-              >
+              <span className="text-ds-md sm:text-ds-lg font-semibold tracking-tight text-surface-fg truncate">
                 shilp-sutra
               </span>
+              {/* At rest the pill is transparent over the bloom, so muted text
+                  gets swallowed. Bump to full-strength surface-fg (mode-aware)
+                  while !scrolled; revert to subtle once the backdrop-blur
+                  scrim is doing the contrast work. */}
               <span
                 className={[
-                  'text-ds-xs text-surface-fg-subtle font-mono mt-0.5 shrink-0 hidden sm:inline',
-                  scrolled ? '' : 'text-halo',
+                  'text-ds-xs font-mono mt-0.5 shrink-0 hidden sm:inline',
+                  scrolled ? 'text-surface-fg-subtle' : 'text-surface-fg',
                 ].join(' ')}
               >
                 v{SHILP_SUTRA_MINOR}
@@ -156,15 +155,17 @@ export function SiteHeader() {
           <nav className="hidden md:flex items-center gap-ds-05">
             {navLinks.map((link) => {
               const isAccent = 'accent' in link && link.accent
+              // At rest the pill chrome is transparent; muted-grey gets
+              // swallowed by the bloom. Use full-strength surface-fg until
+              // backdrop-blur materialises, then step back to muted with a
+              // hover bump so the focused link still surfaces.
               const base = isAccent
                 ? 'inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:text-accent-12 transition-colors duration-fast-01'
-                : 'text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01'
+                : scrolled
+                  ? 'text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01'
+                  : 'text-ds-sm text-surface-fg hover:text-accent-11 transition-colors duration-fast-01'
               return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={[base, scrolled ? '' : 'text-halo'].join(' ')}
-                >
+                <Link key={link.href} href={link.href} className={base}>
                   {isAccent && <span className="w-1.5 h-1.5 rounded-pill bg-accent-9" />}
                   {link.label}
                 </Link>

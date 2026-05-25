@@ -18,20 +18,16 @@ html {
 }
 
 /*
- * Text-halo for content that floats over the AuroraBloom (and other
- * brand-coloured washes) before chrome materialises. Applies a soft halo
- * the colour of the page surface so muted-grey text reads cleanly on
- * any underlying hue. Surface-base auto-flips light <-> dark, so the
- * halo follows the theme without a separate dark-mode rule.
- *
- * Used on:
- *   - SiteHeader nav links + version pill while the pill chrome is
- *     transparent (at rest, pre-scroll).
- *   - Hero eyebrow + trust chips that sit over the bloom.
- *   - LotusShowcase title block.
+ * text-difference — "negative colour" text. mix-blend-mode: difference with
+ * white text inverts against whatever pixel sits behind it, so muted-grey
+ * (or any) text always reads as the complement of the AuroraBloom regardless
+ * of bloom hue or theme. Works only within the same stacking context, so
+ * Hero (className includes `isolate`) is where it makes sense. SiteHeader
+ * is fixed + outside the hero's stacking context, so the bloom can't be
+ * reached from there; that case bumps to text-surface-fg full-strength
+ * while !scrolled instead.
  */
-@utility text-halo {
-  text-shadow:
-    0 0 10px var(--color-surface-base),
-    0 1px 3px color-mix(in oklch, var(--color-surface-base) 70%, transparent);
+@utility text-difference {
+  color: oklch(1 0 0);
+  mix-blend-mode: difference;
 }

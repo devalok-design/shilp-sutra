@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import type { ColumnDef } from '@tanstack/react-table'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconAlertTriangle,
@@ -195,13 +196,11 @@ export function LendisShowcase() {
     setReviewOpen(false)
   }
 
-  // Inline column typing — uses { row: { original: Txn } } pattern to avoid importing ColumnDef.
-  // Cast to unknown[] for DataTable's generic — runtime shape matches TanStack's column-def contract.
-  const columns = [
+  const columns: ColumnDef<Txn, unknown>[] = [
     {
       accessorKey: 'party',
       header: 'Party',
-      cell: ({ row }: { row: { original: Txn } }) => {
+      cell: ({ row }) => {
         const t = row.original
         return (
           <div className="flex items-center gap-ds-03 min-w-0">
@@ -232,7 +231,7 @@ export function LendisShowcase() {
     {
       accessorKey: 'rail',
       header: 'Rail',
-      cell: ({ row }: { row: { original: Txn } }) => (
+      cell: ({ row }) => (
         <Badge variant="soft" color="neutral" size="sm">
           {row.original.rail}
         </Badge>
@@ -241,14 +240,14 @@ export function LendisShowcase() {
     {
       accessorKey: 'date',
       header: 'Posted',
-      cell: ({ row }: { row: { original: Txn } }) => (
+      cell: ({ row }) => (
         <span className="text-ds-xs text-surface-fg-muted whitespace-nowrap">{row.original.date}</span>
       ),
     },
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row }: { row: { original: Txn } }) => {
+      cell: ({ row }) => {
         const s = row.original.status
         const color = s === 'settled' ? 'success' : s === 'pending' ? 'warning' : 'error'
         const StatusIcon = s === 'settled' ? IconCircleCheck : s === 'pending' ? IconClock : IconAlertTriangle
@@ -262,7 +261,7 @@ export function LendisShowcase() {
     {
       accessorKey: 'amount',
       header: () => <span className="block text-right">Amount</span>,
-      cell: ({ row }: { row: { original: Txn } }) => {
+      cell: ({ row }) => {
         const t = row.original
         return (
           <div className="text-right">
@@ -364,7 +363,7 @@ export function LendisShowcase() {
               <CardContent>
                 <DataTable
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  columns={columns as any}
+                  columns={columns}
                   data={filteredTxns}
                   sortable
                   stickyHeader

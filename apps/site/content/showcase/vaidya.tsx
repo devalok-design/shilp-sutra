@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import type { ColumnDef } from '@tanstack/react-table'
 import { motion } from 'framer-motion'
 import {
   IconActivity,
@@ -197,18 +198,16 @@ function Sparkline({ data, status }: { data: number[]; status: VitalStatus }) {
   )
 }
 
-type LabCell = { row: { original: LabRow } }
-
 export function VaidyaShowcase() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>('10:00 am')
   const [specialist, setSpecialist] = useState<string>('cardio')
 
-  const labColumns = useMemo(
+  const labColumns = useMemo<ColumnDef<LabRow, unknown>[]>(
     () => [
       {
         accessorKey: 'test',
         header: 'Test',
-        cell: ({ row }: LabCell) => (
+        cell: ({ row }) => (
           <div className="flex flex-col">
             <span className="text-ds-sm font-semibold text-surface-fg">{row.original.test}</span>
             <span className="text-ds-xs text-surface-fg-subtle">{row.original.drawnOn}</span>
@@ -218,7 +217,7 @@ export function VaidyaShowcase() {
       {
         accessorKey: 'value',
         header: 'Result',
-        cell: ({ row }: LabCell) => {
+        cell: ({ row }) => {
           const r = row.original
           const tone: string =
             r.flag === 'critical'
@@ -236,14 +235,14 @@ export function VaidyaShowcase() {
       {
         accessorKey: 'range',
         header: 'Reference',
-        cell: ({ row }: LabCell) => (
+        cell: ({ row }) => (
           <span className="text-ds-xs text-surface-fg-muted tabular-nums">{row.original.range}</span>
         ),
       },
       {
         accessorKey: 'flag',
         header: 'Flag',
-        cell: ({ row }: LabCell) => {
+        cell: ({ row }) => {
           const b = flagBadge[row.original.flag]
           return (
             <Badge variant="soft" color={b.color} size="sm">
@@ -371,7 +370,7 @@ export function VaidyaShowcase() {
 
               <TabsContent value="labs" className="mt-ds-04">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                <DataTable columns={labColumns as any} data={labRows} density="compact" />
+                <DataTable columns={labColumns} data={labRows} density="compact" />
               </TabsContent>
 
               <TabsContent value="imaging" className="mt-ds-04">

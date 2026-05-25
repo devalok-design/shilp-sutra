@@ -122,6 +122,16 @@ describe('OAuthButton', () => {
     expect(screen.getByTestId('custom-glyph')).toBeInTheDocument()
   })
 
+  it('compact mode shortens the visual label to provider name', () => {
+    render(<OAuthButton provider="google" compact data-testid="g" />)
+    expect(screen.getByTestId('g').textContent?.trim()).toBe('Google')
+  })
+
+  it('compact mode keeps the long form in aria-label', () => {
+    render(<OAuthButton provider="google" compact />)
+    expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument()
+  })
+
   it('has no axe violations (brand)', async () => {
     const { container } = render(<OAuthButton provider="google" />)
     expect(await axe(container)).toHaveNoViolations()
@@ -154,6 +164,32 @@ describe('OAuthGroup', () => {
     )
     expect(screen.getByRole('button', { name: /google/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /apple/i })).toBeInTheDocument()
+  })
+
+  it('reorderLastUsedFirst pulls the lastUsed child to position 0', () => {
+    render(
+      <OAuthGroup reorderLastUsedFirst>
+        <OAuthButton provider="apple" data-testid="apple" />
+        <OAuthButton provider="github" data-testid="github" />
+        <OAuthButton provider="google" lastUsed data-testid="google" />
+      </OAuthGroup>,
+    )
+    const buttons = screen.getAllByRole('button')
+    expect(buttons[0]).toHaveAttribute('data-provider', 'google')
+    expect(buttons[1]).toHaveAttribute('data-provider', 'apple')
+    expect(buttons[2]).toHaveAttribute('data-provider', 'github')
+  })
+
+  it('preserves source order when reorderLastUsedFirst is false', () => {
+    render(
+      <OAuthGroup>
+        <OAuthButton provider="apple" />
+        <OAuthButton provider="github" />
+        <OAuthButton provider="google" lastUsed />
+      </OAuthGroup>,
+    )
+    const buttons = screen.getAllByRole('button')
+    expect(buttons[0]).toHaveAttribute('data-provider', 'apple')
   })
 
   it('horizontal orientation puts items in a row', () => {

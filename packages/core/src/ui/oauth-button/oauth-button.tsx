@@ -84,7 +84,13 @@ const providerIcon: Record<OAuthProvider, React.ComponentType<{ size?: number | 
   passkey: IconFingerprint,
 }
 
-function defaultLabel(provider: OAuthProvider, intent: OAuthIntent): string {
+function providerName(provider: OAuthProvider): string {
+  // Display name for `compact` mode — drops the "a" article on passkey.
+  return provider === 'passkey' ? 'Passkey' : providerDisplay[provider]
+}
+
+function defaultLabel(provider: OAuthProvider, intent: OAuthIntent, compact: boolean): string {
+  if (compact) return providerName(provider)
   const name = providerDisplay[provider]
   switch (intent) {
     case 'signin':
@@ -105,34 +111,47 @@ const providerCopyOverride: Partial<Record<OAuthProvider, Partial<Record<OAuthIn
   },
 }
 
-function resolveLabel(provider: OAuthProvider, intent: OAuthIntent): string {
-  return providerCopyOverride[provider]?.[intent] ?? defaultLabel(provider, intent)
+function resolveLabel(provider: OAuthProvider, intent: OAuthIntent, compact: boolean): string {
+  if (compact) return providerName(provider)
+  return providerCopyOverride[provider]?.[intent] ?? defaultLabel(provider, intent, compact)
+}
+
+/** Long-form name used for aria-label even when compact label is rendered. */
+function resolveAriaName(provider: OAuthProvider, intent: OAuthIntent): string {
+  return providerCopyOverride[provider]?.[intent] ?? defaultLabel(provider, intent, false)
 }
 
 // Brand colour classes per provider — hex values are published brand-page
 // facts (the colour each provider uses on its own sign-in button). Generic
 // providers (sso/email/passkey) have no brand colour → fall through to outline.
+//
+// **Dark-mode strategy:** every provider lands on the *same* DS surface in
+// dark mode (surface-overlay). Mixing inverted per-provider darks in one row
+// looks accidental (some white, some black). In dark mode the brand identity
+// comes from the glyph, not the bg.
+const DARK_UNIFORM = 'dark:bg-surface-overlay dark:text-surface-fg dark:border-surface-border-strong dark:hover:bg-surface-raised-hover dark:active:bg-surface-raised-active'
+
 const brandClasses: Record<OAuthProvider, string> = {
   google:
-    'bg-white text-[#1f1f1f] border-[#dadce0] hover:bg-[#f8f9fa] active:bg-[#f1f3f4] dark:bg-[#131314] dark:text-white dark:border-[#5f6368] dark:hover:bg-[#1e1f20]',
+    `bg-white text-[#1f1f1f] border-[#dadce0] hover:bg-[#f8f9fa] active:bg-[#f1f3f4] ${DARK_UNIFORM}`,
   apple:
-    'bg-black text-white border-black hover:bg-[#1a1a1a] active:bg-[#262626] dark:bg-white dark:text-black dark:border-white dark:hover:bg-[#f0f0f0]',
+    `bg-black text-white border-black hover:bg-[#1a1a1a] active:bg-[#262626] ${DARK_UNIFORM}`,
   github:
-    'bg-[#24292f] text-white border-[#24292f] hover:bg-[#32383f] active:bg-[#1c2025] dark:bg-white dark:text-[#24292f] dark:border-[#d0d7de] dark:hover:bg-[#f6f8fa]',
+    `bg-[#24292f] text-white border-[#24292f] hover:bg-[#32383f] active:bg-[#1c2025] ${DARK_UNIFORM}`,
   microsoft:
-    'bg-white text-[#5e5e5e] border-[#8c8c8c] hover:bg-[#f8f9fa] active:bg-[#f1f3f4] dark:bg-[#2f2f2f] dark:text-white dark:border-[#8c8c8c] dark:hover:bg-[#3a3a3a]',
+    `bg-white text-[#5e5e5e] border-[#8c8c8c] hover:bg-[#f8f9fa] active:bg-[#f1f3f4] ${DARK_UNIFORM}`,
   x:
-    'bg-black text-white border-black hover:bg-[#1a1a1a] active:bg-[#262626] dark:bg-white dark:text-black dark:border-white dark:hover:bg-[#f0f0f0]',
+    `bg-black text-white border-black hover:bg-[#1a1a1a] active:bg-[#262626] ${DARK_UNIFORM}`,
   linkedin:
-    'bg-[#0A66C2] text-white border-[#0A66C2] hover:bg-[#004182] active:bg-[#003a73]',
+    `bg-[#0A66C2] text-white border-[#0A66C2] hover:bg-[#004182] active:bg-[#003a73] ${DARK_UNIFORM}`,
   facebook:
-    'bg-[#1877F2] text-white border-[#1877F2] hover:bg-[#166FE5] active:bg-[#1464D4]',
+    `bg-[#1877F2] text-white border-[#1877F2] hover:bg-[#166FE5] active:bg-[#1464D4] ${DARK_UNIFORM}`,
   discord:
-    'bg-[#5865F2] text-white border-[#5865F2] hover:bg-[#4752C4] active:bg-[#3C45A5]',
+    `bg-[#5865F2] text-white border-[#5865F2] hover:bg-[#4752C4] active:bg-[#3C45A5] ${DARK_UNIFORM}`,
   slack:
-    'bg-surface-base text-surface-fg border-surface-border-strong hover:bg-surface-raised-hover active:bg-surface-raised-active',
+    `bg-surface-base text-surface-fg border-surface-border-strong hover:bg-surface-raised-hover active:bg-surface-raised-active ${DARK_UNIFORM}`,
   gitlab:
-    'bg-[#FC6D26] text-white border-[#FC6D26] hover:bg-[#E24329] active:bg-[#C73A24]',
+    `bg-[#FC6D26] text-white border-[#FC6D26] hover:bg-[#E24329] active:bg-[#C73A24] ${DARK_UNIFORM}`,
   // No brand colour — fall through to DS-neutral outline behaviour.
   sso: '',
   email: '',
@@ -228,7 +247,14 @@ export interface OAuthButtonProps
   icon?: React.ReactNode
   /** Render a compact icon-only button (provider name kept in aria-label) */
   iconOnly?: boolean
-  /** Show "Last used" hint above the button */
+  /**
+   * Short label — renders just the provider name ("Google") instead of the
+   * full "Continue with Google". Use under an explicit "Or sign in with"
+   * divider where the verb is already established. aria-label still gets the
+   * full long form for screen readers.
+   */
+  compact?: boolean
+  /** Show "Last used" hint inline inside the button (right-aligned pill) */
   lastUsed?: boolean
   /** Reassurance copy rendered below the button */
   helperText?: React.ReactNode
@@ -244,6 +270,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
       appearance = 'brand',
       icon,
       iconOnly = false,
+      compact = false,
       lastUsed = false,
       helperText,
       children,
@@ -258,7 +285,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     const DefaultGlyph = providerIcon[provider]
     const iconPx = ICON_PX[size] ?? 18
     const glyphNode = icon ?? <DefaultGlyph size={iconPx} aria-hidden />
-    const label = children ?? resolveLabel(provider, intent)
+    const label = children ?? resolveLabel(provider, intent, compact)
 
     let appearanceClass: string
     if (appearance === 'dark') {
@@ -269,13 +296,25 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
       appearanceClass = ''
     }
 
-    // When lastUsed is set, augment the accessible name so screen readers
-    // announce the hint even though the visual badge is decorative.
-    const ariaLabelForButton = iconOnly
-      ? `${resolveLabel(provider, intent)}${lastUsed ? ' (last used)' : ''}`
-      : lastUsed
-        ? `${resolveLabel(provider, intent)} (last used)`
-        : undefined
+    // aria-label always carries the long-form name so screen readers stay
+    // informative even when the visual label is compact or icon-only.
+    const longName = resolveAriaName(provider, intent)
+    const ariaLabelForButton = iconOnly || compact || lastUsed
+      ? `${longName}${lastUsed ? ' (last used)' : ''}`
+      : undefined
+
+    // Inline "Last used" pill — sits inside the button on the right edge.
+    // Button has `relative isolate overflow-hidden` so this stays inside
+    // the button's visual bounds. Reads as part of the button, not orphan.
+    const lastUsedPill = lastUsed && !iconOnly ? (
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-ds-03 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-pill bg-accent-9 text-accent-fg px-1.5 py-[1px] text-[10px] leading-none font-semibold uppercase tracking-wide"
+      >
+        <span aria-hidden className="size-[5px] rounded-full bg-accent-fg/90" />
+        Last used
+      </span>
+    ) : null
 
     const buttonEl = (
       <Button
@@ -292,27 +331,16 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
         className={cn(appearanceClass, className)}
         {...buttonProps}
       >
-        {iconOnly ? glyphNode : label}
+        {iconOnly ? glyphNode : <>{label}{lastUsedPill}</>}
       </Button>
     )
 
-    if (!lastUsed && !helperText) return buttonEl
+    if (!helperText) return buttonEl
 
     return (
-      <div className={cn('relative inline-flex flex-col', fullWidth && 'w-full')}>
-        {lastUsed ? (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-2 right-ds-03 z-20 inline-flex items-center gap-1 rounded-pill bg-accent-9 text-accent-fg px-ds-02 py-[2px] text-[11px] leading-none font-semibold uppercase tracking-wide ring-2 ring-surface-base shadow-overlay"
-          >
-            <span aria-hidden className="size-[6px] rounded-full bg-accent-fg" />
-            Last used
-          </span>
-        ) : null}
+      <div className={cn('inline-flex flex-col', fullWidth && 'w-full')}>
         {buttonEl}
-        {helperText ? (
-          <span className="mt-ds-02 text-ds-sm text-surface-fg-subtle">{helperText}</span>
-        ) : null}
+        <span className="mt-ds-02 text-ds-sm text-surface-fg-subtle">{helperText}</span>
       </div>
     )
   },
@@ -330,6 +358,13 @@ export interface OAuthGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: 'ds-02' | 'ds-03' | 'ds-04'
   /** Stretch children to fill width (vertical only). Default: true */
   fullWidth?: boolean
+  /**
+   * Move any child with `lastUsed` to position 0. Stripe-style ordering — the
+   * provider the user picked last time becomes the top option, which gives a
+   * stronger conversion lift than a "Last used" badge does on its own.
+   * Default: false (preserve source order).
+   */
+  reorderLastUsedFirst?: boolean
 }
 
 /**
@@ -339,12 +374,33 @@ export interface OAuthGroupProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 const OAuthGroup = React.forwardRef<HTMLDivElement, OAuthGroupProps>(
   (
-    { orientation = 'vertical', gap = 'ds-03', fullWidth = true, className, children, ...props },
+    {
+      orientation = 'vertical',
+      gap = 'ds-03',
+      fullWidth = true,
+      reorderLastUsedFirst = false,
+      className,
+      children,
+      ...props
+    },
     ref,
   ) => {
     const gapClass =
       gap === 'ds-02' ? 'gap-ds-02' : gap === 'ds-04' ? 'gap-ds-04' : 'gap-ds-03'
     const stretch = orientation === 'vertical' && fullWidth
+
+    const ordered = React.useMemo(() => {
+      if (!reorderLastUsedFirst) return children
+      const arr = React.Children.toArray(children)
+      const lastUsedIdx = arr.findIndex(
+        (c) => React.isValidElement(c) && (c.props as { lastUsed?: boolean })?.lastUsed,
+      )
+      if (lastUsedIdx <= 0) return children
+      const next = [...arr]
+      const [pulled] = next.splice(lastUsedIdx, 1)
+      next.unshift(pulled)
+      return next
+    }, [children, reorderLastUsedFirst])
 
     return (
       <div
@@ -358,7 +414,7 @@ const OAuthGroup = React.forwardRef<HTMLDivElement, OAuthGroupProps>(
         )}
         {...props}
       >
-        {children}
+        {ordered}
       </div>
     )
   },

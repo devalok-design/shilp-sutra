@@ -1,5 +1,122 @@
 # @devalok/shilp-sutra
 
+## 0.39.0
+
+### Minor Changes
+
+- [#46](https://github.com/devalok-design/shilp-sutra/pull/46) [`df0589c`](https://github.com/devalok-design/shilp-sutra/commit/df0589c186b0f671d4dd84e60029e97340f1899e) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat(skill): ship as an [Agent Skill](https://agentskills.io)
+
+  Adds a bundled Anthropic Agent Skill at `skills/shilp-sutra/` (and inside the npm tarball at `node_modules/@devalok/shilp-sutra/skill/`) so AI coding agents — Claude Code, Cursor, Codex, Aider, and anything else that speaks the Agent Skills open standard — can load shilp-sutra's setup playbooks, component API, theming cookbook, RSC import patterns, and troubleshoot tree on demand.
+
+  **Why:** Consumers reported that the design system was hard to onboard onto — you had to drill into each Storybook section to discover what was available, and there was no single drop-in for AI agents. The skill is one install away from full coverage:
+
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash
+  ```
+
+  **Layout:**
+  - `skills/shilp-sutra/SKILL.md` — entry, navigation, hard constraints (~135 lines)
+  - `skills/shilp-sutra/references/` — bundled cheatsheet (`components.md`), full reference (`components-full.md`), six setup playbooks, brand customization, RSC matrix, troubleshoot tree
+  - `skills/shilp-sutra/install.sh` — one-liner installer (sparse fetch from GitHub)
+  - `skills/shilp-sutra/README.md` — marketplace listing for skills.sh-style directories
+  - `skills/shilp-sutra/LICENSE` — MIT
+
+  **Single source of truth:** `scripts/build-skill.mjs` regenerates `skills/shilp-sutra/references/` from `packages/core/llms.txt`, `packages/core/llms-full.txt`, and `packages/core/docs/recipes/*.md`. The pre-publish audit gates on drift (`build-skill.mjs --check`) and on spec compliance (name format, description ≤1024 chars, body ≤500 lines per [agentskills.io](https://agentskills.io/specification)), so the skill cannot ship out of sync.
+
+  **npm tarball:** `packages/core/scripts/copy-skill.mjs` runs in the post-build pipeline and copies the skill tree into `packages/core/skill/`. Declared in `files[]`, so `cp -r node_modules/@devalok/shilp-sutra/skill ~/.claude/skills/shilp-sutra` works after any `pnpm add @devalok/shilp-sutra`.
+
+  **No runtime changes.** Package exports, peer deps, and CSS/component APIs are unchanged.
+
+- [#46](https://github.com/devalok-design/shilp-sutra/pull/46) [`df0589c`](https://github.com/devalok-design/shilp-sutra/commit/df0589c186b0f671d4dd84e60029e97340f1899e) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat(tokens, ui): semantic radius roles + `[data-shape]` shape presets
+
+  **Why:** Roundness is a brand axis (sharp = technical, rounded = consumer). Until now consumers could nudge individual `--radius-ds-*` primitives, but the components themselves baked in ad-hoc per-size radii — Button md (10px) was rounder than Button sm (6px), Input lg (10px) was rounder than Button lg (16px) at the same height, SegmentedControl's "pill" wasn't actually pill, Tooltip drifted from the rest of the overlay tier. This release makes radius role-based and consumer-customizable in one shot.
+
+  **What's new:**
+  1. **Eight semantic radius role tokens** in `packages/core/src/tokens/semantic.css` — `--radius-control`, `--radius-control-inner`, `--radius-surface`, `--radius-overlay-sm`, `--radius-overlay`, `--radius-overlay-lg`, `--radius-pill`, `--radius-bubble`. Components reference these, never the primitive `--radius-ds-*` scale.
+  2. **Three shape presets** via `[data-shape]` attribute — set on `<html>` or any subtree:
+     - `sharp` — 2/4/6 px (technical, dev-tool feel — Vercel/Linear/terminal)
+     - `slightly-rounded` (the default if no attribute is set) — 6/10/16 px (modern SaaS — shadcn/Stripe)
+     - `rounded` — 10/16/24 px (friendly, consumer — iOS/Notion)
+  3. **Per-token overrides still work.** Consumers can override any role token globally or scoped:
+     ```css
+     :root {
+       --radius-control: 4px;
+     }
+     .checkout {
+       --radius-control: 8px;
+       --radius-surface: 20px;
+     }
+     ```
+  4. **Pre-publish audit gate.** `pre-publish-audit.mjs` now fails publish if any `rounded-ds-*` or bare `rounded-full` leaks back into `src/ui/**/*.tsx`. Use the role tokens. The gate is scoped to `src/ui/` only; `composed/` and `shell/` migration is the next release.
+
+  **Breaking visual changes (no API breaks):** all changes are class-name swaps in the source; component prop APIs are unchanged. But consumers WILL see these on upgrade:
+
+  | Component                | Before                | After                                | Why                                                     |
+  | ------------------------ | --------------------- | ------------------------------------ | ------------------------------------------------------- |
+  | Button md                | 10px                  | 6px                                  | Killed per-size radius scaling — same role, same radius |
+  | Button lg                | 16px                  | 6px                                  | Same as above                                           |
+  | Button icon-lg           | 10px                  | 6px                                  | Same as above                                           |
+  | Input lg                 | 10px                  | 6px                                  | Now matches Button lg (was inconsistent)                |
+  | Tabs trigger (contained) | 10px                  | 6px                                  | Now matches Button (was inconsistent)                   |
+  | SegmentedControl item    | 10px                  | 9999px                               | Renamed pill is now actually pill                       |
+  | Menubar trigger          | 2px                   | 6px                                  | Now matches DropdownMenu item (was inconsistent)        |
+  | Autocomplete listbox     | 6px                   | 10px                                 | Now matches Popover/DropdownMenu (was inconsistent)     |
+  | ChatMessage bubble       | rounded-ds-2xl (24px) | rounded-bubble (24px → preset-aware) |
+  | Everything else          | unchanged             |
+
+  **If you preferred the chunkier old look:** set `data-shape="rounded"` on your app root to get the v0.38-era feel back for big controls. Or override `--radius-control: 10px` to keep that one value at the old size.
+
+  **Migration:**
+
+  ```diff
+  - <html lang="en">
+  + <html lang="en" data-shape="slightly-rounded">  <!-- optional, this is the default -->
+  ```
+
+  To go sharp:
+
+  ```diff
+  - <html lang="en">
+  + <html lang="en" data-shape="sharp">
+  ```
+
+  **Files touched:** semantic.css (tokens + 3 preset blocks), 100+ source files migrated across `src/ui/`, `src/composed/`, `src/shell/`, `src/ai/`, `src/motion/` (~480 replacements via `scripts/migrate-radius-roles.mjs`), 7 component tests updated to match new class names, `apps/site/` fully migrated and now sets `data-shape="slightly-rounded"` on `<html>`, pre-publish-audit.mjs gate covers the whole package, customize-brand.md recipe rewritten, new Storybook story `Foundations/Shape Presets`.
+
+  **Coverage:** complete adoption across the published package. Token showcase stories (`forced-colors.stories.tsx`, `FoundationsShowcase.tsx`) are intentionally allowlisted — they demonstrate the primitive scale and must continue to render at fixed values.
+
+- [#46](https://github.com/devalok-design/shilp-sutra/pull/46) [`df0589c`](https://github.com/devalok-design/shilp-sutra/commit/df0589c186b0f671d4dd84e60029e97340f1899e) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat: public-launch release — Agent Skill + marketing site
+
+  **Agent Skill (`@devalok/shilp-sutra`):** a fully bundled [Agent Skills](https://agentskills.io)-compatible skill ships in the npm tarball at `node_modules/@devalok/shilp-sutra/skill/` and in the repo at `skills/shilp-sutra/`. AI coding agents — Claude Code, Cursor, Codex, Aider, and any other tool that speaks the open standard — can install once and load setup playbooks, component APIs, theming patterns, and troubleshooting on demand:
+
+  ```bash
+  # Personal install
+  curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash
+
+  # Or, after installing the package:
+  cp -r node_modules/@devalok/shilp-sutra/skill ~/.claude/skills/shilp-sutra
+  ```
+
+  The skill is **built from** the package's own documentation (`llms.txt`, `llms-full.txt`, `docs/recipes/`) by `scripts/build-skill.mjs`. Pre-publish audit gates on drift (`build-skill.mjs --check`) and on spec compliance (name format, description ≤1024 chars, body ≤500 lines per [agentskills.io](https://agentskills.io/specification)), so the skill cannot ship out of sync.
+
+  **Marketing + docs site (shilp-sutra.devalok.in):** a Next.js 15 + Tailwind 4 site eats its own dog food — built entirely from shilp-sutra components. Hosted on Railway. Includes:
+  - Landing page with framework-aware install snippets and the Agent Skill one-liner front-and-centre
+  - `/components` — browseable index of all 119 components, parsed from `docs/components/*.md`, grouped by layer (UI primitives / composed / shell), with search and filter
+  - `/docs/[slug]` — rendered recipes from `packages/core/docs/recipes/` (single source of truth — site reads the same files that ship in the tarball)
+  - Dark mode, OKLCH brand tokens, framer-motion animations
+  - Storybook stays at `devalok-design.github.io/shilp-sutra` for now; will move to a subpath in v2
+
+  **No runtime changes to the package.** Component APIs, peer deps, and CSS unchanged. This release is additive: skill bundle + new docs surface.
+
+  **Site repo layout:**
+
+  ```
+  apps/site/                  # Next 15 marketing/docs site (deploys to Railway)
+  skills/shilp-sutra/         # Anthropic-format Agent Skill (ships in npm tarball as skill/)
+  scripts/build-skill.mjs     # regenerates skill/references/ from source
+  packages/core/scripts/copy-skill.mjs  # copies skill into packages/core/skill/ at build
+  railway.toml                # Docker build config for the site service
+  ```
+
 ## 0.38.0
 
 ### Minor Changes

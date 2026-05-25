@@ -69,7 +69,8 @@ transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
 | `--leading-ds-*` | `leading-ds-tight`, `leading-ds-normal` | ds-namespaced |
 | `--tracking-*` | `tracking-tight`, `tracking-normal` | standard TW namespace |
 | `--font-*`, `--font-weight-*` | `font-sans`, `font-semibold` | standard TW namespace |
-| `--radius`, `--radius-ds-*` | `rounded` (bare), `rounded-ds-lg` | unprefixed + ds-namespaced |
+| `--radius`, `--radius-ds-*` | `rounded` (bare), `rounded-ds-lg` | unprefixed + ds-namespaced primitive scale |
+| `--radius-control`, `--radius-surface`, `--radius-overlay-*`, `--radius-pill`, `--radius-bubble` | `rounded-control`, `rounded-surface`, `rounded-overlay`, `rounded-pill`, `rounded-bubble` | semantic roles (PUBLIC) — components reference these, `[data-shape]` presets remap them |
 | `--shadow-*` | `shadow-raised`, `shadow-overlay` | semantic names only; bare `shadow` is NOT generated (TW4 has no default scale and we don't define `--shadow`) |
 | `--ease-*` | `ease-productive-standard` | semantic names |
 | `--breakpoint-*` | `md:`, `lg:` | standard TW namespace |
@@ -104,6 +105,94 @@ TW4 has no `--z-*` or `--duration-*` auto-namespace, so these are explicit:
 | `!prefix` | `suffix!` |
 
 See `MIGRATION.md#v0370--tailwind-4-css-first-migration` (root of this package).
+
+---
+
+## Shape Presets & Radius Roles (v0.39+)
+
+Radius has TWO layers:
+
+1. **Primitive scale** — `--radius-ds-sm/md/lg/xl/2xl/full` (private; internal building blocks).
+2. **Semantic roles** — `--radius-control`, `--radius-control-inner`, `--radius-surface`, `--radius-overlay-sm/md/lg`, `--radius-pill`, `--radius-bubble`. Components reference roles. Consumers customize these.
+
+### Role token reference
+
+| Token                    | Default (px) | Utility class            | Used by |
+|--------------------------|--------------|--------------------------|---------|
+| `--radius-control`       | 6            | `rounded-control`        | Button, Input, Select, Combobox, Autocomplete, NumberInput, Toggle, ToggleGroup, Tabs trigger (contained), menu items, sidebar menu button, stepper, pagination, code block, InputOTP slot |
+| `--radius-control-inner` | 2            | `rounded-control-inner`  | Checkbox box, +/− buttons, close X buttons, focus rings on text links, small badges, color preset swatches, skeleton text bars, inline Code |
+| `--radius-surface`       | 10           | `rounded-surface`        | Card, StatCard, DataTableCard, Alert, Accordion trigger, FileUpload dropzone, Tabs list (contained) |
+| `--radius-overlay-sm`    | 6            | `rounded-overlay-sm`     | Tooltip, Toast, charts internal tooltip |
+| `--radius-overlay`       | 10           | `rounded-overlay`        | Popover, HoverCard, DropdownMenu / ContextMenu / Menubar content, Select / Combobox / Autocomplete listbox, NavigationMenu viewport, DataTable bulk-actions toolbar, SplitButton dropdown |
+| `--radius-overlay-lg`    | 16           | `rounded-overlay-lg`     | Dialog, AlertDialog, Sheet (top corners), BottomSheet, ColorInput picker panel, ChatMessageInput wrapper, Sidebar inset variant |
+| `--radius-pill`          | 9999         | `rounded-pill`           | Badge, BadgeIndicator, StatusDot, Radio, Switch, Slider, Progress, Avatar circle, SegmentedControl item, ChatMessage reaction button, drag handles |
+| `--radius-bubble`        | 24           | `rounded-bubble`         | ChatMessage bubble |
+
+Bare `rounded-ds-*` and `rounded-full` are BANNED in components (enforced by pre-publish audit gate). Token-showcase stories (`forced-colors.stories.tsx`, `FoundationsShowcase.tsx`) are explicitly allowlisted.
+
+### Shape presets — `[data-shape]`
+
+Apply to `<html>`, app root, or any subtree. Three presets ship by default:
+
+| Preset | control / control-inner | surface | overlay-sm / overlay / overlay-lg | bubble | Feel |
+|---|---|---|---|---|---|
+| `sharp`              | 2 / 0   | 4   | 2 / 4 / 6     | 8  | Vercel / Linear / dev-tool |
+| `slightly-rounded` (default) | 6 / 2   | 10  | 6 / 10 / 16   | 24 | shadcn / Stripe / Notion sidebar |
+| `rounded`            | 10 / 4  | 16  | 10 / 16 / 24  | 32 | iOS / Notion content / consumer |
+
+```html
+<!-- Whole-app preset -->
+<html data-shape="sharp">
+
+<!-- Or scoped per subtree -->
+<div data-shape="rounded">...</div>
+```
+
+`--radius-pill` stays `9999px` in every preset by design — pill shapes are shape-by-meaning, not shape-by-style.
+
+### Per-token consumer overrides
+
+Override any role globally or scoped:
+
+```css
+:root { --radius-control: 4px; }                                /* tighten controls only */
+.checkout { --radius-control: 8px; --radius-surface: 20px; }    /* per-subtree */
+[data-shape="rounded"] .admin { --radius-control: 6px; }        /* extend a preset */
+```
+
+### Custom preset
+
+```css
+[data-shape="brand-soft"] {
+  --radius-control:        8px;
+  --radius-control-inner:  3px;
+  --radius-surface:        14px;
+  --radius-overlay-sm:     8px;
+  --radius-overlay:        14px;
+  --radius-overlay-lg:     20px;
+  --radius-pill:           9999px;
+  --radius-bubble:         28px;
+}
+```
+
+```html
+<html data-shape="brand-soft">
+```
+
+### Migration from `rounded-ds-*` / `rounded-full`
+
+```diff
+- className="rounded-ds-md ..."     → + className="rounded-control ..."
+- className="rounded-ds-lg ..."     → + className="rounded-surface ..."   /* card/panel context */
+- className="rounded-ds-lg ..."     → + className="rounded-overlay ..."   /* popover/dropdown context */
+- className="rounded-ds-xl ..."     → + className="rounded-overlay-lg ..."  /* dialog/sheet */
+- className="rounded-ds-2xl ..."    → + className="rounded-bubble ..."
+- className="rounded-ds-sm ..."     → + className="rounded-control-inner ..."
+- className="rounded-ds-full ..."   → + className="rounded-pill ..."
+- className="rounded-full ..."      → + className="rounded-pill ..."
+```
+
+Re-runnable codemod: `scripts/migrate-radius-roles.mjs` (dry-run by default, `--write` to apply).
 
 ---
 

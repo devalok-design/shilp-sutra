@@ -30,6 +30,14 @@ Other recipes:
 
 The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
 
+## NEW (v0.39.0)
+
+- **Shape presets (`[data-shape]`).** Set on `<html>` (or any subtree) to re-skin roundness across the whole UI. Three ship by default: `sharp` (technical, 2/4/6 px), `slightly-rounded` (default, 6/10/16 px), `rounded` (consumer, 10/16/24 px). Pill shapes (Badge, Switch, Radio, Avatar circle) stay pill regardless.
+- **Semantic radius role tokens.** New: `--radius-control`, `--radius-control-inner`, `--radius-surface`, `--radius-overlay-sm`, `--radius-overlay`, `--radius-overlay-lg`, `--radius-pill`, `--radius-bubble`. Consumers override any role globally or scoped — e.g. `:root { --radius-control: 4px; }`.
+- **Visual changes (no API breaks).** Button no longer scales radius with size (md/lg/xl/lg → all 6px); Input lg matches Button at same height; SegmentedControl items now actually pill; Tabs trigger (contained) matches Button; Tooltip belongs to its own `overlay-sm` tier with Toast; Menubar trigger matches DropdownMenu item; Autocomplete listbox matches Popover. If you preferred old chunky big controls, set `data-shape="rounded"` for v0.38-era feel.
+- **Pre-publish audit gate.** Components in `src/ui/` can no longer use `rounded-ds-*` or bare `rounded-full` — must use semantic roles. Composed/shell migration is v0.40.0 (gate scoped accordingly).
+- See `customize-brand.md` recipe for the full role token list and how to define your own preset.
+
 ## BREAKING CHANGES (v0.37.0 — Tailwind 4 CSS-first)
 
 **Setup migration only — component APIs unchanged.** See `MIGRATION.md` at the root of this package (or https://github.com/devalok-design/shilp-sutra/blob/main/MIGRATION.md#v0370--tailwind-4-css-first-migration) for the full guide.
@@ -47,7 +55,7 @@ The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/t
 - **Node engines floor dropped.** No `engines.node` declared — use any Node 18+.
 - **New export `@devalok/shilp-sutra/css`** — primary consumer entry for TW4 setup.
 - **Source class hygiene:** `w-[--var]` → `w-(--var)`, `theme(spacing.N)` → literal, `bg-gradient-to-*` → `bg-linear-to-*`, bare `shadow` → explicit like `shadow-raised`. Codemod your own code; grep: `grep -rn 'w-\[--\|bg-gradient-to-\|theme(spacing' src/`.
-- **Tokens now expose TW4 namespaces.** Spacing is `--spacing-ds-*` (so `p-ds-03`, not `p-3`). Typography uses `--text-ds-*`, `--leading-ds-*`. Radius is unprefixed (`--radius`, `--radius-ds-*`). Z-layer utilities are custom-generated (`z-popover`, `z-dropdown`, etc.).
+- **Tokens now expose TW4 namespaces.** Spacing is `--spacing-ds-*` (so `p-ds-03`, not `p-3`). Typography uses `--text-ds-*`, `--leading-ds-*`. Radius has TWO layers: primitive scale (`--radius-ds-sm/md/lg/xl/2xl/full`) AND semantic roles (`--radius-control`, `--radius-surface`, `--radius-overlay-sm/md/lg`, `--radius-pill`, `--radius-bubble`). Components reference roles — consumers swap roles via `[data-shape]` presets or override individual tokens. Z-layer utilities are custom-generated (`z-popover`, `z-dropdown`, etc.).
 - **Dark mode variant:** `@custom-variant dark (&:where(.dark *))` — identical semantics to old `darkMode: 'class'`. `.dark` on `<html>` or `<body>` activates everything below.
 
 ## NEW (v0.36.0)

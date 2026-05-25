@@ -17,6 +17,20 @@ All colors use **OKLCH** for perceptual uniformity. Each palette has **12 functi
 
 Toggle dark mode with the toolbar switcher to see all tokens respond automatically.
 
+## Radius — primitive scale + semantic roles
+
+Radius works the same three-tier way:
+
+```
+Tier 1: Primitive scale   --radius-ds-sm/md/lg/xl/2xl/full  (internal building blocks)
+Tier 2: Semantic roles    --radius-control, --radius-surface, --radius-overlay-*,
+                           --radius-pill, --radius-bubble  (what components consume)
+Tier 3: Tailwind           rounded-control, rounded-surface, rounded-overlay-lg,
+                           rounded-pill, rounded-bubble, etc.
+```
+
+Components reference roles, not primitives. That lets the **`[data-shape]` preset switch** on `<html>` (or any subtree) re-skin roundness across the whole UI in one attribute change. See the `Foundations / Shape Presets` story for an interactive demo of all three shipped presets (`sharp`, `slightly-rounded`, `rounded`) and a custom-preset example.
+
 ---
 
 <FoundationsShowcase />

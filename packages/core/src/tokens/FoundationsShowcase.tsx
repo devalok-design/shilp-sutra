@@ -323,22 +323,36 @@ function SpacingScale() {
 
 /* ─── Border Radius ─────────────────────────────────────────────── */
 
-const radiusTokens = [
-  { token: '--radius-none', value: '0' },
-  { token: '--radius-sm', value: '2px' },
-  { token: '--radius-md', value: '6px' },
-  { token: '--radius-lg', value: '10px' },
-  { token: '--radius-xl', value: '16px' },
-  { token: '--radius-2xl', value: '24px' },
-  { token: '--radius-full', value: '9999px' },
+const radiusPrimitiveTokens = [
+  { token: '--radius-ds-none', value: '0' },
+  { token: '--radius-ds-sm', value: '2px' },
+  { token: '--radius-ds-md', value: '6px' },
+  { token: '--radius-ds-lg', value: '10px' },
+  { token: '--radius-ds-xl', value: '16px' },
+  { token: '--radius-ds-2xl', value: '24px' },
+  { token: '--radius-ds-full', value: '9999px' },
+]
+
+const radiusRoleTokens = [
+  { token: '--radius-control-inner', label: 'control-inner', usage: 'Checkbox, +/− buttons, close X, focus rings' },
+  { token: '--radius-control', label: 'control', usage: 'Button, Input, Select, Tabs trigger, menu items' },
+  { token: '--radius-surface', label: 'surface', usage: 'Card, Alert, Accordion, panels' },
+  { token: '--radius-overlay-sm', label: 'overlay-sm', usage: 'Tooltip, Toast' },
+  { token: '--radius-overlay', label: 'overlay', usage: 'Popover, Dropdown content, listbox' },
+  { token: '--radius-overlay-lg', label: 'overlay-lg', usage: 'Dialog, Sheet, BottomSheet, picker' },
+  { token: '--radius-pill', label: 'pill', usage: 'Badge, Switch, Radio, Slider, Avatar circle' },
+  { token: '--radius-bubble', label: 'bubble', usage: 'ChatMessage bubble' },
 ]
 
 function BorderRadiusScale() {
   return (
     <div style={sectionStyle}>
-      <h2 style={headingStyle}>Border Radius</h2>
+      <h2 style={headingStyle}>Border Radius — Primitive Scale</h2>
+      <p style={{ ...labelStyle, marginBottom: '1rem', maxWidth: '52rem' }}>
+        Internal building blocks. Components should NOT reference these directly — use the semantic roles below so the <code>[data-shape]</code> preset switch can remap them.
+      </p>
       <div style={gridStyle}>
-        {radiusTokens.map((r) => (
+        {radiusPrimitiveTokens.map((r) => (
           <div key={r.token} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '5.5rem' }}>
             <div
               style={{
@@ -350,6 +364,30 @@ function BorderRadiusScale() {
               }}
             />
             <span style={labelStyle}>{r.token.replace('--', '')} ({r.value})</span>
+          </div>
+        ))}
+      </div>
+
+      <h2 style={{ ...headingStyle, marginTop: '2rem' }}>Border Radius — Semantic Roles</h2>
+      <p style={{ ...labelStyle, marginBottom: '1rem', maxWidth: '52rem' }}>
+        Public API. Components use these. Three shipped <code>[data-shape]</code> presets (<code>sharp</code>, <code>slightly-rounded</code> (default), <code>rounded</code>) redeclare these tokens to re-skin roundness. Set <code>data-shape</code> on the Storybook root, on <code>&lt;html&gt;</code>, or on any subtree.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(14rem, 1fr))', gap: '1rem' }}>
+        {radiusRoleTokens.map((r) => (
+          <div key={r.token} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem', padding: '0.75rem', border: '1px solid var(--color-surface-border)', borderRadius: 'var(--radius-surface)' }}>
+            <div
+              style={{
+                width: '4rem',
+                height: '4rem',
+                borderRadius: `var(${r.token})`,
+                backgroundColor: 'var(--color-surface-raised)',
+                border: '2px solid var(--color-accent-9)',
+              }}
+            />
+            <div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-surface-fg)' }}>{r.label}</div>
+              <div style={{ ...labelStyle, marginTop: '0.125rem' }}>{r.usage}</div>
+            </div>
           </div>
         ))}
       </div>

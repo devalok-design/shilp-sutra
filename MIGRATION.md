@@ -4,6 +4,124 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.39.0 — Shape presets & semantic radius role tokens
+
+No API breaks. Component prop signatures unchanged. But the visual output of several components shifts because radius is now role-driven, not per-size ad-hoc.
+
+### What changed under the hood
+
+Radius now has TWO layers:
+
+- **Primitive scale** (private, unchanged): `--radius-ds-sm/md/lg/xl/2xl/full`
+- **Semantic roles** (new, public): `--radius-control`, `--radius-control-inner`, `--radius-surface`, `--radius-overlay-sm`, `--radius-overlay`, `--radius-overlay-lg`, `--radius-pill`, `--radius-bubble`
+
+Components reference roles. A new `[data-shape]` attribute on `<html>` (or any subtree) remaps all roles at once. Three presets ship: `sharp`, `slightly-rounded` (default), `rounded`.
+
+### Visual changes consumers see
+
+| Component | Was (px) | Now (px) | Why |
+|---|---|---|---|
+| Button md | 10 | 6 | Per-size radius scaling removed — same role, same radius |
+| Button lg | 16 | 6 | Same |
+| Button icon-lg | 10 | 6 | Same |
+| Input lg | 10 | 6 | Now matches Button at same height |
+| Tabs trigger (contained) | 10 | 6 | Now matches Button |
+| SegmentedControl item | 10 | 9999 | Renamed `pill` is now actually pill |
+| Menubar trigger | 2 | 6 | Now matches DropdownMenu item |
+| Autocomplete listbox | 6 | 10 | Now matches Popover / DropdownMenu |
+| ChatMessage bubble | 24 | 24 (preset-aware) | Now `rounded-bubble` — shifts with preset |
+| Everything else | unchanged | | |
+
+### If you liked the old "chunky big controls" look
+
+Either set the `rounded` preset on `<html>`:
+
+```diff
+- <html lang="en">
++ <html lang="en" data-shape="rounded">
+```
+
+Or override just `--radius-control` to keep the previous v0.38 default:
+
+```css
+:root { --radius-control: 10px; }
+```
+
+### Opting into the preset system
+
+To set the default (slightly-rounded) preset on your app explicitly:
+
+```diff
+- <html lang="en">
++ <html lang="en" data-shape="slightly-rounded">
+```
+
+Scoped overrides also work — apply `data-shape` to any subtree:
+
+```tsx
+<div data-shape="sharp">
+  <DeveloperConsole />
+</div>
+```
+
+### Migrating your own code from `rounded-ds-*` / `rounded-full`
+
+Your existing classes still render (primitive tokens are unchanged), but they're pinned to fixed values and won't respond to `[data-shape]` presets. To opt in, swap to role tokens:
+
+```diff
+- className="rounded-ds-md ..."       /* control-sized, 6px */
++ className="rounded-control ..."
+
+- className="rounded-ds-lg ..."       /* surface context — Card, Alert, panel */
++ className="rounded-surface ..."
+
+- className="rounded-ds-lg ..."       /* overlay context — Popover, Dropdown, listbox */
++ className="rounded-overlay ..."
+
+- className="rounded-ds-xl ..."       /* Dialog, Sheet, picker panel */
++ className="rounded-overlay-lg ..."
+
+- className="rounded-ds-2xl ..."      /* chat bubble */
++ className="rounded-bubble ..."
+
+- className="rounded-ds-sm ..."       /* checkbox box, focus ring, small chip */
++ className="rounded-control-inner ..."
+
+- className="rounded-ds-full ..."     /* and bare rounded-full */
++ className="rounded-pill ..."
+```
+
+A re-runnable codemod lives at `scripts/migrate-radius-roles.mjs` in this repo. Dry-run by default — pass `--write` to apply.
+
+### Custom presets
+
+Define your own `[data-shape="..."]` block:
+
+```css
+[data-shape="brand-soft"] {
+  --radius-control:        8px;
+  --radius-control-inner:  3px;
+  --radius-surface:        14px;
+  --radius-overlay-sm:     8px;
+  --radius-overlay:        14px;
+  --radius-overlay-lg:     20px;
+  --radius-pill:           9999px;
+  --radius-bubble:         28px;
+}
+```
+
+```html
+<html data-shape="brand-soft">
+```
+
+### Reference
+
+- Role token map: `packages/core/llms-full.txt` → "Shape Presets & Radius Roles" section
+- Recipe: `packages/core/docs/recipes/customize-brand.md` → "Shape presets" section
+- Storybook: `Foundations / Shape Presets` story — interactive switcher + custom-preset demo
+
+---
+
 ## v0.38.0 — Deprecation sweep
 
 0.38 removes 8 deprecated APIs that were soft-deprecated in earlier minor releases. All were available as aliases alongside their replacements; this release drops the aliases.

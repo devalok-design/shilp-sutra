@@ -16,3 +16,18 @@ body {
 html {
   scroll-padding-top: 5.5rem;
 }
+
+/*
+ * text-difference — "negative colour" text. mix-blend-mode: difference with
+ * white text inverts against whatever pixel sits behind it, so muted-grey
+ * (or any) text always reads as the complement of the AuroraBloom regardless
+ * of bloom hue or theme. Works only within the same stacking context, so
+ * Hero (className includes `isolate`) is where it makes sense. SiteHeader
+ * is fixed + outside the hero's stacking context, so the bloom can't be
+ * reached from there; that case bumps to text-surface-fg full-strength
+ * while !scrolled instead.
+ */
+@utility text-difference {
+  color: oklch(1 0 0);
+  mix-blend-mode: difference;
+}

@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Themer Wizard</title>
+<style>
+  :root {
+    --bg: oklch(0.985 0.005 280); --surface: oklch(1 0 0); --fg: oklch(0.20 0.02 280);
+    --fg-muted: oklch(0.48 0.02 280); --fg-subtle: oklch(0.62 0.02 280);
+    --border: oklch(0.88 0.01 280); --accent-3: oklch(0.94 0.03 340);
+    --accent-9: oklch(0.55 0.19 340); --accent-11: oklch(0.42 0.16 340);
+    --font: -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.55 var(--font); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 1fr 360px; min-height: 100vh; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+  .wizard { padding: 48px 40px; max-width: 720px; margin: 0 auto; width: 100%; }
+  .step-pill-row { display: flex; gap: 8px; margin-bottom: 32px; }
+  .step-pill { flex: 1; height: 4px; background: var(--border); border-radius: 9999px; transition: background 200ms; }
+  .step-pill.done { background: var(--accent-9); }
+  .step-pill.active { background: var(--accent-9); opacity: 0.5; }
+  h1 { margin: 0 0 8px; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; }
+  .step-num { display: inline-flex; align-items: center; padding: 2px 10px; background: var(--accent-3); color: var(--accent-11); border-radius: 9999px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+  .question { margin: 0 0 8px; font-size: 22px; font-weight: 600; letter-spacing: -0.005em; }
+  .hint { margin: 0 0 24px; color: var(--fg-muted); font-size: 14px; }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+  @media (max-width: 600px) { .choices { grid-template-columns: 1fr; } }
+  .choice { padding: 18px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; text-align: left; font: inherit; transition: border-color 150ms, transform 150ms; display: flex; flex-direction: column; gap: 4px; }
+  .choice:hover { border-color: var(--fg-subtle); }
+  .choice.active { border-color: var(--accent-9); background: var(--accent-3); transform: translateY(-1px); }
+  .choice strong { font-size: 15px; font-weight: 600; }
+  .choice span { font-size: 13px; color: var(--fg-muted); line-height: 1.4; }
+  .color-row { display: flex; gap: 8px; margin: 0 0 32px; flex-wrap: wrap; }
+  .color-swatch { width: 48px; height: 48px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+  .color-swatch.active { border-color: var(--fg); }
+  .hue-control { margin-bottom: 16px; }
+  .hue-control label { display: block; font-size: 12px; color: var(--fg-muted); margin-bottom: 6px; }
+  .hue-control input { width: 100%; }
+  .nav { display: flex; gap: 12px; justify-content: space-between; }
+  .btn { padding: 12px 24px; background: var(--accent-9); color: white; border: none; border-radius: 8px; font: 500 14px var(--font); cursor: pointer; transition: background 100ms; }
+  .btn:hover { background: var(--accent-11); }
+  .btn:disabled { background: var(--border); color: var(--fg-subtle); cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--fg-muted); }
+  .btn.ghost:hover { background: var(--surface); color: var(--fg); }
+  .result h1 { margin-bottom: 16px; }
+  .result-summary { background: var(--accent-3); color: var(--accent-11); padding: 20px 24px; border-radius: 12px; margin-bottom: 24px; }
+  .result-summary h2 { margin: 0 0 8px; font-size: 18px; font-weight: 700; }
+  .result-summary p { margin: 0; font-size: 13px; }
+  .result-overrides { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+  .result-overrides h2 { margin: 0 0 12px; font-size: 14px; font-weight: 600; }
+  .result-overrides ul { margin: 0; padding-left: 20px; font-size: 13px; color: var(--fg-muted); }
+  .result-overrides li { margin-bottom: 4px; }
+  .result-overrides code { font-family: ui-monospace, monospace; background: var(--bg); padding: 1px 5px; border-radius: 3px; color: var(--fg); }
+  .css-block { font: 12px/1.6 ui-monospace, monospace; background: oklch(0.18 0.02 280); color: oklch(0.85 0.005 280); border-radius: 12px; padding: 20px; overflow-x: auto; white-space: pre; margin-bottom: 16px; }
+
+  .preview { background: var(--preview-bg, var(--bg)); padding: 24px; border-left: 1px solid var(--border); position: sticky; top: 0; height: 100vh; overflow-y: auto; transition: background 200ms, padding 200ms; }
+  .preview-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-muted); font-weight: 600; margin: 0 0 16px; }
+  .pv-card { background: var(--preview-surface, var(--surface)); border: var(--preview-border-width, 1px) solid var(--preview-border-color, var(--border)); border-radius: var(--preview-radius-surface, 10px); padding: var(--preview-card-pad, 20px); box-shadow: var(--preview-shadow, 0 1px 2px oklch(0 0 0 / 0.04)); margin-bottom: 12px; transition: all 250ms cubic-bezier(0.2, 0, 0.38, 0.9); }
+  .pv-card h3 { margin: 0 0 6px; font-size: var(--preview-heading-size, 16px); font-weight: var(--preview-heading-weight, 600); line-height: 1.3; }
+  .pv-card p { margin: 0 0 12px; font-size: var(--preview-body-size, 14px); color: var(--fg-muted); line-height: var(--preview-leading-body, 1.5); }
+  .pv-btn { padding: var(--preview-control-y, 8px) var(--preview-control-x, 14px); background: var(--accent-9); color: white; border: none; border-radius: var(--preview-radius-control, 6px); font: var(--preview-action-weight, 500) 13px var(--font); cursor: pointer; transition: all var(--preview-duration, 120ms) cubic-bezier(0.2, 0, 0.38, 0.9); }
+  .pv-btn:hover { transform: var(--preview-hover-transform, translateY(-1px)); background: var(--accent-11); }
+  .pv-btn.outline { background: transparent; color: var(--fg); border: 1px solid var(--preview-border-color, var(--border)); margin-left: 8px; }
+  .pv-input { width: 100%; padding: var(--preview-control-y, 8px) var(--preview-control-x, 14px); border: var(--preview-border-width, 1px) solid var(--preview-border-color, var(--border)); border-radius: var(--preview-radius-control, 6px); font: 13px var(--font); background: var(--preview-surface, var(--surface)); margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <section class="wizard">
+    <div class="step-pill-row">
+      <div class="step-pill" data-step-pill="1"></div>
+      <div class="step-pill" data-step-pill="2"></div>
+      <div class="step-pill" data-step-pill="3"></div>
+      <div class="step-pill" data-step-pill="4"></div>
+      <div class="step-pill" data-step-pill="5"></div>
+    </div>
+    <div class="step" data-step="1">
+      <span class="step-num">Step 1 of 5</span>
+      <h2 class="question">What kind of product are you building?</h2>
+      <p class="hint">Picks an archetype baseline. You can tweak everything later.</p>
+      <div class="choices">
+        <button class="choice" data-archetype="linear"><strong>Dev tool / Productivity</strong><span>Linear, Vercel, Notion sidebar — dense, focused, fast</span></button>
+        <button class="choice" data-archetype="stripe"><strong>SaaS / Business app</strong><span>Stripe, Atlas, Karm — balanced, professional</span></button>
+        <button class="choice" data-archetype="apple"><strong>Consumer / Marketing</strong><span>Apple, modern landing pages — spacious, calm</span></button>
+        <button class="choice" data-archetype="notion"><strong>Content / Editorial</strong><span>Medium, Notion content — readable, restrained</span></button>
+      </div>
+      <div class="nav"><span></span><button class="btn" id="next1" disabled>Next →</button></div>
+    </div>
+    <div class="step" data-step="2" hidden>
+      <span class="step-num">Step 2 of 5</span>
+      <h2 class="question">How dense should screens feel?</h2>
+      <p class="hint">Tight = lots on screen. Roomy = breathing room.</p>
+      <div class="choices">
+        <button class="choice" data-density="compact"><strong>Tight</strong><span>Dashboard / data-heavy</span></button>
+        <button class="choice" data-density="comfortable"><strong>Balanced</strong><span>Most apps — default</span></button>
+        <button class="choice" data-density="spacious"><strong>Roomy</strong><span>Content / consumer</span></button>
+      </div>
+      <div class="nav"><button class="btn ghost" data-back>← Back</button><button class="btn" id="next2" disabled>Next →</button></div>
+    </div>
+    <div class="step" data-step="3" hidden>
+      <span class="step-num">Step 3 of 5</span>
+      <h2 class="question">Sharp or soft corners?</h2>
+      <p class="hint">Shape carries a lot of brand vibe.</p>
+      <div class="choices">
+        <button class="choice" data-shape="sharp"><strong>Sharp</strong><span>Linear, Vercel — technical</span></button>
+        <button class="choice" data-shape="slightly-rounded"><strong>Slightly rounded</strong><span>Modern SaaS — default</span></button>
+        <button class="choice" data-shape="rounded"><strong>Rounded</strong><span>iOS, Notion content — friendly</span></button>
+      </div>
+      <div class="nav"><button class="btn ghost" data-back>← Back</button><button class="btn" id="next3" disabled>Next →</button></div>
+    </div>
+    <div class="step" data-step="4" hidden>
+      <span class="step-num">Step 4 of 5</span>
+      <h2 class="question">How animated should it feel?</h2>
+      <p class="hint">Motion sets brand personality. Off respects reduced-motion always.</p>
+      <div class="choices">
+        <button class="choice" data-motion="off"><strong>Off</strong><span>No transitions — kiosk, accessibility-led</span></button>
+        <button class="choice" data-motion="calm"><strong>Calm</strong><span>Slower, smoother — content apps</span></button>
+        <button class="choice" data-motion="lively"><strong>Lively</strong><span>Snappy, slight bounce — default</span></button>
+      </div>
+      <div class="nav"><button class="btn ghost" data-back>← Back</button><button class="btn" id="next4" disabled>Next →</button></div>
+    </div>
+    <div class="step" data-step="5" hidden>
+      <span class="step-num">Step 5 of 5</span>
+      <h2 class="question">Pick your accent color.</h2>
+      <p class="hint">One hue → full 12-step OKLCH ramp generated for you.</p>
+      <div class="color-row" id="colorRow"></div>
+      <div class="hue-control">
+        <label>Or pick any hue: <span id="hueLabel">340°</span></label>
+        <input type="range" id="hueSlider" min="0" max="360" value="340">
+      </div>
+      <div class="nav"><button class="btn ghost" data-back>← Back</button><button class="btn" id="finish">See result →</button></div>
+    </div>
+    <div class="step result" data-step="result" hidden>
+      <span class="step-num">Done</span>
+      <h1>Your shilp-sutra theme.</h1>
+      <div class="result-summary"><h2 id="archetypeName"></h2><p id="archetypeDescription"></p></div>
+      <div class="result-overrides"><h2>Your tweaks on top</h2><ul id="overrideList"></ul></div>
+      <pre class="css-block" id="cssOut"></pre>
+      <div class="nav"><button class="btn ghost" data-back>← Back</button><button class="btn" id="copyBtn">Copy CSS</button></div>
+    </div>
+  </section>
+  <aside class="preview" id="preview">
+    <p class="preview-label">Live preview</p>
+    <div class="pv-card">
+      <h3>Project Atlas</h3>
+      <p>This preview reacts to your answers live. Each step locks one axis of the theme.</p>
+      <button class="pv-btn">Open</button>
+      <button class="pv-btn outline">Cancel</button>
+      <input class="pv-input" placeholder="Search projects...">
+    </div>
+    <div class="pv-card">
+      <h3>Activity</h3>
+      <p>Cards, inputs, buttons all consume the role tokens your archetype sets. Shape, density, color, motion are wired in.</p>
+    </div>
+  </aside>
+</div>
+<script>
+  const state = { archetype: null, density: null, shape: null, motion: null, hue: 340, step: 1 };
+  const PRESET_COLORS = [
+    { name: 'Pink', hue: 340 }, { name: 'Indigo', hue: 275 }, { name: 'Teal', hue: 195 },
+    { name: 'Emerald', hue: 145 }, { name: 'Amber', hue: 65 }, { name: 'Orange', hue: 35 },
+    { name: 'Red', hue: 25 }, { name: 'Blue', hue: 240 },
+  ];
+  function applyToPreview() {
+    const root = document.getElementById('preview');
+    const html = document.documentElement;
+    html.style.setProperty('--accent-9', `oklch(0.55 0.19 ${state.hue})`);
+    html.style.setProperty('--accent-11', `oklch(0.42 0.16 ${state.hue})`);
+    html.style.setProperty('--accent-3', `oklch(0.94 0.03 ${state.hue})`);
+    const map = {
+      linear: { radS: 6, radC: 4, ctlX: 12, ctlY: 6, cardPad: 18, headSize: 15, bodySize: 14, headW: 600, dur: 100, lead: 1.4, bw: 0.5, shad: 'inset 0 0 0 1px oklch(0.90 0.005 280)', hover: 'none', bg: 'oklch(0.99 0.003 280)' },
+      stripe: { radS: 10, radC: 6, ctlX: 16, ctlY: 8, cardPad: 24, headSize: 16, bodySize: 14, headW: 600, dur: 120, lead: 1.5, bw: 1, shad: '0 1px 2px oklch(0 0 0 / 0.05)', hover: 'translateY(-1px)', bg: 'oklch(0.985 0.005 280)' },
+      apple: { radS: 20, radC: 12, ctlX: 24, ctlY: 14, cardPad: 32, headSize: 18, bodySize: 16, headW: 500, dur: 250, lead: 1.6, bw: 0.5, shad: '0 8px 24px oklch(0 0 0 / 0.06)', hover: 'translateY(-2px)', bg: 'oklch(0.98 0.003 280)' },
+      notion: { radS: 4, radC: 4, ctlX: 12, ctlY: 6, cardPad: 24, headSize: 16, bodySize: 15, headW: 600, dur: 120, lead: 1.6, bw: 1, shad: 'inset 0 0 0 1px oklch(0.92 0.005 280)', hover: 'none', bg: 'oklch(0.985 0.003 280)' },
+    };
+    const base = state.archetype ? map[state.archetype] : map.stripe;
+    const densityMap = { compact: { ctlX: 10, ctlY: 4, cardPad: 14 }, comfortable: {}, spacious: { ctlX: 24, ctlY: 14, cardPad: 36 } };
+    const shapeMap = { sharp: { radS: 4, radC: 2 }, 'slightly-rounded': { radS: 10, radC: 6 }, rounded: { radS: 16, radC: 10 } };
+    const motionMap = { off: { dur: 0, hover: 'none' }, calm: { dur: 320 }, lively: { dur: 120 } };
+    const merged = { ...base, ...(state.density && densityMap[state.density]), ...(state.shape && shapeMap[state.shape]), ...(state.motion && motionMap[state.motion]) };
+    root.style.setProperty('--preview-bg', merged.bg);
+    root.style.setProperty('--preview-surface', 'oklch(1 0 0)');
+    root.style.setProperty('--preview-radius-surface', merged.radS + 'px');
+    root.style.setProperty('--preview-radius-control', merged.radC + 'px');
+    root.style.setProperty('--preview-control-x', merged.ctlX + 'px');
+    root.style.setProperty('--preview-control-y', merged.ctlY + 'px');
+    root.style.setProperty('--preview-card-pad', merged.cardPad + 'px');
+    root.style.setProperty('--preview-heading-size', merged.headSize + 'px');
+    root.style.setProperty('--preview-body-size', merged.bodySize + 'px');
+    root.style.setProperty('--preview-heading-weight', merged.headW);
+    root.style.setProperty('--preview-duration', merged.dur + 'ms');
+    root.style.setProperty('--preview-leading-body', merged.lead);
+    root.style.setProperty('--preview-border-width', merged.bw + 'px');
+    root.style.setProperty('--preview-shadow', merged.shad);
+    root.style.setProperty('--preview-hover-transform', merged.hover);
+  }
+  function show(step) {
+    document.querySelectorAll('.step').forEach(s => s.hidden = s.dataset.step != step);
+    state.step = step;
+    document.querySelectorAll('.step-pill').forEach(p => {
+      const n = +p.dataset.stepPill;
+      p.classList.remove('active', 'done');
+      if (step === 'result' || n < +step) p.classList.add('done');
+      else if (n == +step) p.classList.add('active');
+    });
+  }
+  function bindChoices(stepNum, attr, nextBtnId) {
+    document.querySelectorAll(`.step[data-step="${stepNum}"] .choice`).forEach(c => c.addEventListener('click', () => {
+      document.querySelectorAll(`.step[data-step="${stepNum}"] .choice`).forEach(x => x.classList.toggle('active', x === c));
+      state[attr] = c.dataset[attr];
+      applyToPreview();
+      if (nextBtnId) document.getElementById(nextBtnId).disabled = false;
+    }));
+  }
+  bindChoices(1, 'archetype', 'next1');
+  bindChoices(2, 'density', 'next2');
+  bindChoices(3, 'shape', 'next3');
+  bindChoices(4, 'motion', 'next4');
+  const colorRow = document.getElementById('colorRow');
+  PRESET_COLORS.forEach(c => {
+    const sw = document.createElement('button');
+    sw.className = 'color-swatch';
+    sw.style.background = `oklch(0.55 0.19 ${c.hue})`;
+    sw.title = c.name;
+    if (c.hue === state.hue) sw.classList.add('active');
+    sw.addEventListener('click', () => {
+      state.hue = c.hue;
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.toggle('active', s === sw));
+      document.getElementById('hueSlider').value = c.hue;
+      document.getElementById('hueLabel').textContent = c.hue + '°';
+      applyToPreview();
+    });
+    colorRow.appendChild(sw);
+  });
+  document.getElementById('hueSlider').addEventListener('input', e => {
+    state.hue = +e.target.value;
+    document.getElementById('hueLabel').textContent = e.target.value + '°';
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    applyToPreview();
+  });
+  document.getElementById('next1').onclick = () => show(2);
+  document.getElementById('next2').onclick = () => show(3);
+  document.getElementById('next3').onclick = () => show(4);
+  document.getElementById('next4').onclick = () => show(5);
+  document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => {
+    if (state.step === 'result') show(5);
+    else show(Math.max(1, state.step - 1));
+  }));
+  function appendOverrideLi(list, plain, codeStr, suffix) {
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(plain));
+    if (codeStr) { const code = document.createElement('code'); code.textContent = codeStr; li.appendChild(code); }
+    if (suffix) li.appendChild(document.createTextNode(suffix));
+    list.appendChild(li);
+  }
+  document.getElementById('finish').onclick = () => {
+    show('result');
+    const names = { linear: 'Linear-like', stripe: 'Stripe-like', apple: 'Apple-like', notion: 'Notion-like' };
+    const desc = {
+      linear: 'Sharp + compact + hairline borders + flat surfaces. Optimized for dense screens and fast scanning.',
+      stripe: 'Slightly-rounded + comfortable + crisp borders + subtle shadows. Modern SaaS baseline.',
+      apple: 'Rounded + spacious + hairline + ambient shadows. Restrained type, soft edges, lots of breathing room.',
+      notion: 'Slightly-rounded + spacious + flat + editorial type. Optimized for reading and writing.',
+    };
+    document.getElementById('archetypeName').textContent = names[state.archetype] || 'Custom';
+    document.getElementById('archetypeDescription').textContent = desc[state.archetype] || '';
+    const defs = { linear: { density: 'compact', shape: 'sharp', motion: 'calm' }, stripe: { density: 'comfortable', shape: 'slightly-rounded', motion: 'lively' }, apple: { density: 'spacious', shape: 'rounded', motion: 'calm' }, notion: { density: 'spacious', shape: 'slightly-rounded', motion: 'calm' } };
+    const d = defs[state.archetype] || {};
+    const list = document.getElementById('overrideList');
+    while (list.firstChild) list.removeChild(list.firstChild);
+    if (state.density && state.density !== d.density) appendOverrideLi(list, 'Density override → ', state.density, ` (archetype default: ${d.density})`);
+    if (state.shape && state.shape !== d.shape) appendOverrideLi(list, 'Shape override → ', state.shape, ` (archetype default: ${d.shape})`);
+    if (state.motion && state.motion !== d.motion) appendOverrideLi(list, 'Motion override → ', state.motion, ` (archetype default: ${d.motion})`);
+    appendOverrideLi(list, 'Accent hue → ', state.hue + '°', ' (oklch chroma 0.19)');
+    const lines = ['<html'];
+    lines.push(`     data-archetype="${state.archetype || 'stripe'}"`);
+    if (state.density && state.density !== d.density) lines.push(`     data-density="${state.density}"`);
+    if (state.shape && state.shape !== d.shape) lines.push(`     data-shape="${state.shape}"`);
+    if (state.motion && state.motion !== d.motion) lines.push(`     data-motion="${state.motion}"`);
+    lines.push('>');
+    lines.push('');
+    lines.push('/* Accent ramp override */');
+    lines.push(':root {');
+    const ramp = { 3: [0.92, 0.032], 7: [0.66, 0.16], 9: [0.55, 0.19], 10: [0.49, 0.21], 11: [0.42, 0.16] };
+    Object.entries(ramp).forEach(([step, [L, C]]) => { lines.push(`  --color-accent-${step}: oklch(${L} ${C} ${state.hue});`); });
+    lines.push('}');
+    document.getElementById('cssOut').textContent = lines.join('\n');
+  };
+  document.getElementById('copyBtn').onclick = e => {
+    navigator.clipboard.writeText(document.getElementById('cssOut').textContent);
+    e.target.textContent = 'Copied ✓';
+    setTimeout(() => e.target.textContent = 'Copy CSS', 1500);
+  };
+  show(1);
+  applyToPreview();
+</script>
+</body>
+</html>

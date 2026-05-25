@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Themer · Start Here</title>
+<style>
+  :root {
+    --bg: oklch(0.985 0.005 280); --surface: oklch(1 0 0); --fg: oklch(0.20 0.02 280);
+    --fg-muted: oklch(0.48 0.02 280); --fg-subtle: oklch(0.62 0.02 280);
+    --border: oklch(0.88 0.01 280); --accent-3: oklch(0.94 0.03 340);
+    --accent-9: oklch(0.55 0.19 340); --accent-11: oklch(0.42 0.16 340);
+    --font: -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; font: 16px/1.55 var(--font); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; padding: 64px 24px; }
+  .container { max-width: 880px; margin: 0 auto; width: 100%; }
+  .eyebrow { display: inline-flex; align-items: center; padding: 2px 12px; background: var(--accent-3); color: var(--accent-11); border-radius: 9999px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+  h1 { margin: 0 0 12px; font-size: 36px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.1; }
+  .sub { margin: 0 0 40px; color: var(--fg-muted); font-size: 17px; max-width: 56ch; line-height: 1.5; }
+
+  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 40px; }
+  @media (max-width: 680px) { .path-grid { grid-template-columns: 1fr; } }
+  .path {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 28px; text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; gap: 8px; cursor: pointer;
+    transition: border-color 150ms, transform 200ms, box-shadow 200ms;
+    position: relative; overflow: hidden;
+  }
+  .path::before {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    background: linear-gradient(135deg, var(--accent-3) 0%, transparent 50%);
+    transition: opacity 200ms;
+    z-index: 0;
+  }
+  .path:hover { border-color: var(--accent-9); transform: translateY(-2px); box-shadow: 0 8px 24px oklch(0 0 0 / 0.06); }
+  .path:hover::before { opacity: 1; }
+  .path > * { position: relative; z-index: 1; }
+  .path .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-subtle); font-weight: 700; }
+  .path h2 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.005em; }
+  .path p { margin: 4px 0 0; color: var(--fg-muted); font-size: 14px; line-height: 1.5; }
+  .path .meta { margin-top: 12px; font-size: 12px; color: var(--fg-subtle); display: flex; align-items: center; gap: 8px; }
+  .path .meta::after { content: '→'; margin-left: auto; font-size: 16px; color: var(--accent-9); transition: transform 200ms; }
+  .path:hover .meta::after { transform: translateX(4px); }
+
+  .shortcuts { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .shortcuts h3 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-muted); font-weight: 600; }
+  .shortcut-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .shortcut {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; text-decoration: none; color: var(--fg);
+    font: 500 13px var(--font);
+    transition: border-color 100ms, background 100ms;
+  }
+  .shortcut:hover { border-color: var(--accent-9); background: var(--accent-3); color: var(--accent-11); }
+  .shortcut .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .footer-note { margin-top: 24px; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-size: 13px; color: var(--fg-muted); line-height: 1.6; }
+  .footer-note code { font: 12px ui-monospace, monospace; background: var(--bg); padding: 1px 5px; border-radius: 3px; color: var(--fg); }
+</style>
+</head>
+<body>
+<main class="container">
+  <span class="eyebrow">Themer</span>
+  <h1>Where are you starting from?</h1>
+  <p class="sub">shilp-sutra is customizable across shape, density, color, motion, and more. Pick the path that fits how you work — every path lands at the same place (CSS you can paste into your app).</p>
+
+  <div class="path-grid">
+    <a class="path" href="archetype-gallery.html">
+      <span class="label">For newcomers</span>
+      <h2>I'm new to design systems</h2>
+      <p>Show me the vibes. Pick one. Done. No tokens to learn, no questions to answer — just visual presets you can preview side-by-side.</p>
+      <div class="meta">~30 seconds</div>
+    </a>
+
+    <a class="path" href="brand-import.html">
+      <span class="label">Designer-led</span>
+      <h2>I have a brand to match</h2>
+      <p>Drop in your accent color (or paste a hex). We'll generate the OKLCH ramp, suggest the closest archetype, and ship you the CSS.</p>
+      <div class="meta">~1 minute</div>
+    </a>
+
+    <a class="path" href="themer-wizard.html">
+      <span class="label">Power user</span>
+      <h2>I've used a DS before (shadcn, Material, Radix)</h2>
+      <p>5-question wizard with token-level access. Override individual axes, pick exact values, fine-tune everything. Live preview pane.</p>
+      <div class="meta">~3 minutes · full control</div>
+    </a>
+
+    <a class="path" href="index.html">
+      <span class="label">Just exploring</span>
+      <h2>I want to see what's possible</h2>
+      <p>Browse every axis in isolation. 13 interactive playgrounds covering shape, density, border, elevation, typography, motion, and more.</p>
+      <div class="meta">no commitment</div>
+    </a>
+  </div>
+
+  <div class="shortcuts">
+    <h3>Or skip — pick an archetype directly</h3>
+    <div class="shortcut-row">
+      <a class="shortcut" href="archetype-gallery.html#linear"><span class="dot" style="background: oklch(0.45 0.04 280)"></span>Linear</a>
+      <a class="shortcut" href="archetype-gallery.html#stripe"><span class="dot" style="background: oklch(0.55 0.19 240)"></span>Stripe</a>
+      <a class="shortcut" href="archetype-gallery.html#apple"><span class="dot" style="background: oklch(0.55 0.12 35)"></span>Apple</a>
+      <a class="shortcut" href="archetype-gallery.html#material"><span class="dot" style="background: oklch(0.55 0.20 145)"></span>Material</a>
+      <a class="shortcut" href="archetype-gallery.html#notion"><span class="dot" style="background: oklch(0.55 0.04 60)"></span>Notion</a>
+      <a class="shortcut" href="archetype-gallery.html#vercel"><span class="dot" style="background: oklch(0.20 0.01 280)"></span>Vercel</a>
+      <a class="shortcut" href="archetype-gallery.html#devalok"><span class="dot" style="background: oklch(0.55 0.19 340)"></span>Devalok</a>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <strong>What this is.</strong> A planning surface for v0.40+ customization. None of the paths above are live in production yet — they're proposals. Once approved, they'll ship as <code>shilp-sutra.devalok.in/themer</code>. See <code>docs/plans/2026-05-25-v040-customization-axes.md</code> for the full design.
+  </div>
+</main>
+</body>
+</html>

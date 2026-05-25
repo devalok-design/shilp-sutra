@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Brand Import</title>
+<style>
+  :root {
+    --bg: oklch(0.985 0.005 280); --surface: oklch(1 0 0); --fg: oklch(0.20 0.02 280);
+    --fg-muted: oklch(0.48 0.02 280); --fg-subtle: oklch(0.62 0.02 280);
+    --border: oklch(0.88 0.01 280);
+    --brand-hue: 340; --brand-chroma: 0.19;
+    --accent-9: oklch(0.55 var(--brand-chroma) var(--brand-hue));
+    --accent-11: oklch(0.42 calc(var(--brand-chroma) * 0.84) var(--brand-hue));
+    --accent-3: oklch(0.94 calc(var(--brand-chroma) * 0.17) var(--brand-hue));
+    --font: -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.55 var(--font); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; padding: 40px 24px 80px; }
+  .container { max-width: 1080px; margin: 0 auto; }
+  .header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  h1 { margin: 0 0 4px; font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { margin: 0; color: var(--fg-muted); font-size: 14px; }
+  .back { font-size: 13px; color: var(--fg-muted); text-decoration: none; }
+  .back:hover { color: var(--fg); }
+
+  .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 880px) { .layout { grid-template-columns: 1fr; } }
+
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; }
+  .panel h2 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+  .panel .panel-sub { margin: 0 0 20px; font-size: 13px; color: var(--fg-muted); line-height: 1.5; }
+
+  .input-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .input-row { display: flex; gap: 8px; align-items: center; }
+  .input-row label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-muted); font-weight: 600; min-width: 70px; }
+  input[type=color] { width: 64px; height: 40px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; background: transparent; padding: 0; }
+  input[type=text], input[type=range] { padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font: 13px ui-monospace, monospace; background: var(--surface); flex: 1; }
+  input[type=range] { padding: 0; }
+  .quick-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 100ms, transform 100ms; }
+  .swatch:hover { transform: scale(1.08); }
+  .swatch.active { border-color: var(--fg); }
+
+  .suggestion { margin-top: 24px; padding: 16px; background: var(--accent-3); color: var(--accent-11); border-radius: 12px; font-size: 13px; line-height: 1.5; }
+  .suggestion strong { font-weight: 600; }
+
+  .ramp-display { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-top: 16px; }
+  .ramp-step { aspect-ratio: 1; border-radius: 4px; }
+
+  .preview { background: var(--bg-pv, var(--bg)); border-radius: 14px; padding: 20px; min-height: 100%; transition: background 200ms; }
+  .preview-card { background: var(--accent-9); color: white; padding: 24px; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 4px 16px oklch(var(--brand-hue) var(--brand-chroma) var(--brand-hue) / 0.2); }
+  .preview-card h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
+  .preview-card p { margin: 0; font-size: 13px; opacity: 0.9; }
+  .preview-row { background: var(--surface); padding: 16px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .pv-btn { padding: 8px 14px; background: var(--accent-9); color: white; border: none; border-radius: 6px; font: 500 13px var(--font); cursor: pointer; }
+  .pv-btn.soft { background: var(--accent-3); color: var(--accent-11); }
+  .pv-btn.outline { background: transparent; color: var(--accent-11); border: 1px solid var(--accent-9); }
+  .pv-badge { display: inline-flex; padding: 3px 10px; background: var(--accent-3); color: var(--accent-11); border-radius: 9999px; font-size: 12px; font-weight: 500; }
+
+  .output { margin-top: 24px; }
+  .output pre { font: 11px/1.55 ui-monospace, monospace; background: oklch(0.18 0.02 280); color: oklch(0.85 0.005 280); border-radius: 10px; padding: 16px; overflow-x: auto; white-space: pre; margin: 0 0 12px; max-height: 260px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { padding: 10px 18px; background: var(--accent-9); color: white; border: none; border-radius: 8px; font: 500 14px var(--font); cursor: pointer; }
+  .btn:hover { opacity: 0.92; }
+  .btn.ghost { background: transparent; color: var(--fg-muted); border: 1px solid var(--border); }
+  .btn.ghost:hover { color: var(--fg); }
+</style>
+</head>
+<body>
+<main class="container">
+  <div class="header">
+    <div>
+      <h1>Brand import</h1>
+      <p class="sub">Drop in your accent color. We'll generate a 12-step OKLCH ramp and suggest the closest archetype.</p>
+    </div>
+    <a class="back" href="themer-landing.html">← Themer home</a>
+  </div>
+
+  <div class="layout">
+    <section>
+      <div class="panel">
+        <h2>Your brand color</h2>
+        <p class="panel-sub">Pick or paste a hex. We'll convert to OKLCH and build a ramp around it.</p>
+
+        <div class="input-grid">
+          <div class="input-row">
+            <label>Hex</label>
+            <input type="color" id="hex" value="#d33163">
+            <input type="text" id="hexText" value="#d33163" pattern="#[0-9a-fA-F]{6}">
+          </div>
+          <div class="input-row">
+            <label>Hue <b id="hueLbl" style="font-family: ui-monospace, monospace; font-size: 12px; color: var(--fg); min-width: 40px;">340°</b></label>
+            <input type="range" id="hue" min="0" max="360" value="340">
+          </div>
+          <div class="input-row">
+            <label>Chroma <b id="chrLbl" style="font-family: ui-monospace, monospace; font-size: 12px; color: var(--fg); min-width: 50px;">0.19</b></label>
+            <input type="range" id="chroma" min="0.04" max="0.30" step="0.005" value="0.19">
+          </div>
+        </div>
+
+        <div class="quick-row" id="quickRow"></div>
+
+        <div class="suggestion" id="suggestion">
+          <strong>Closest archetype: <span id="suggestedName">Devalok</span>.</strong><br>
+          <span id="suggestedWhy">Pink-magenta family pairs naturally with the Devalok archetype's grain texture and halo focus rings.</span>
+        </div>
+
+        <div class="ramp-display" id="rampDisplay"></div>
+      </div>
+
+      <div class="output panel" style="margin-top: 16px;">
+        <h2>Drop into your global CSS</h2>
+        <p class="panel-sub">Copy this block into <code>app/globals.css</code> or wherever you import shilp-sutra.</p>
+        <pre id="cssOut"></pre>
+        <div class="actions">
+          <button class="btn" id="copyBtn">Copy CSS</button>
+          <button class="btn ghost" id="downloadBtn">Download .css</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="preview" id="preview">
+      <div class="preview-card">
+        <h3>Live preview</h3>
+        <p>Your brand color in solid form. This card uses accent-9 background with accent-fg text.</p>
+      </div>
+      <div class="preview-row">
+        <button class="pv-btn">Primary</button>
+        <button class="pv-btn soft">Soft</button>
+        <button class="pv-btn outline">Outline</button>
+      </div>
+      <div class="preview-row">
+        <span class="pv-badge">Beta</span>
+        <span class="pv-badge">New</span>
+        <span class="pv-badge">Stable</span>
+      </div>
+      <div class="preview-row" style="display: block;">
+        <h4 style="margin: 0 0 6px; font-size: 14px; font-weight: 600;">Card title</h4>
+        <p style="margin: 0; font-size: 13px; color: var(--fg-muted);">Subtle accent ramp powers tinted backgrounds, soft buttons, badges. Step 3 is the bg, step 11 the fg — both shift with your brand.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+  const RAMP_LIGHT = [
+    [0.985, 0.06], [0.96, 0.18], [0.92, 0.32], [0.88, 0.48],
+    [0.82, 0.62], [0.74, 0.74], [0.66, 0.84], [0.60, 0.92],
+    [0.54, 1.00], [0.49, 0.95], [0.42, 0.78], [0.20, 0.30],
+  ];
+
+  // Closest-archetype heuristic by hue band
+  function suggestArchetype(hue) {
+    if (hue >= 320 || hue < 20) return { name: 'Devalok', why: 'Pink/red family — pairs naturally with the Devalok archetype: grain texture, halo focus rings, balanced rhythm.' };
+    if (hue >= 20 && hue < 60) return { name: 'Apple', why: 'Warm orange/amber — sits well in the Apple archetype: spacious, restrained, hairline borders.' };
+    if (hue >= 60 && hue < 130) return { name: 'Material', why: 'Yellow-green band — Material 3 vibrance fits dramatic shadows + comfortable density.' };
+    if (hue >= 130 && hue < 200) return { name: 'Notion', why: 'Teal/green family — Notion archetype: editorial type, flat surfaces, spacious reading.' };
+    if (hue >= 200 && hue < 270) return { name: 'Stripe', why: 'Blue family — Stripe baseline: balanced, crisp, modern SaaS default.' };
+    if (hue >= 270 && hue < 320) return { name: 'Linear', why: 'Purple/indigo — Linear archetype: sharp corners, compact density, hairline borders. Engineering-led.' };
+    return { name: 'Stripe', why: 'Modern SaaS default.' };
+  }
+
+  function generate(hue, baseChroma) {
+    return RAMP_LIGHT.map(([L, c], i) => ({
+      step: i + 1,
+      value: `oklch(${L.toFixed(3)} ${(c * baseChroma).toFixed(3)} ${hue})`,
+      L,
+    }));
+  }
+
+  function hexToHueChroma(hex) {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h = 0;
+    if (max !== min) {
+      const d = max - min;
+      if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) * 60;
+      else if (max === g) h = ((b - r) / d + 2) * 60;
+      else h = ((r - g) / d + 4) * 60;
+    }
+    // crude chroma estimation
+    const sat = max === 0 ? 0 : (max - min) / max;
+    const chroma = Math.max(0.04, Math.min(0.30, sat * 0.25));
+    return { hue: Math.round(h), chroma: Math.round(chroma * 1000) / 1000 };
+  }
+
+  function renderRamp(ramp) {
+    const host = document.getElementById('rampDisplay');
+    while (host.firstChild) host.removeChild(host.firstChild);
+    for (const s of ramp) {
+      const d = document.createElement('div');
+      d.className = 'ramp-step';
+      d.style.background = s.value;
+      d.title = `step ${s.step}: ${s.value}`;
+      host.appendChild(d);
+    }
+  }
+
+  function renderCss(ramp, hue, suggested) {
+    const lines = [`<html data-archetype="${suggested.toLowerCase()}">`, '', '/* Accent ramp generated for your brand */', ':root {'];
+    ramp.forEach(s => lines.push(`  --color-accent-${s.step}: ${s.value};`));
+    const fgL = ramp[8].L;
+    lines.push(`  --color-accent-fg: ${fgL < 0.55 ? 'oklch(0.99 0 0)' : 'oklch(0.13 0 0)'};`);
+    lines.push('}');
+    document.getElementById('cssOut').textContent = lines.join('\n');
+  }
+
+  function update() {
+    const hue = Number(document.getElementById('hue').value);
+    const chroma = Number(document.getElementById('chroma').value);
+    document.getElementById('hueLbl').textContent = hue + '°';
+    document.getElementById('chrLbl').textContent = chroma.toFixed(3);
+    document.documentElement.style.setProperty('--brand-hue', hue);
+    document.documentElement.style.setProperty('--brand-chroma', chroma);
+    const ramp = generate(hue, chroma);
+    renderRamp(ramp);
+    const suggested = suggestArchetype(hue);
+    document.getElementById('suggestedName').textContent = suggested.name;
+    document.getElementById('suggestedWhy').textContent = suggested.why;
+    renderCss(ramp, hue, suggested.name);
+  }
+
+  document.getElementById('hue').oninput = e => { update(); document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active')); };
+  document.getElementById('chroma').oninput = update;
+
+  document.getElementById('hex').oninput = e => {
+    document.getElementById('hexText').value = e.target.value;
+    const { hue, chroma } = hexToHueChroma(e.target.value);
+    document.getElementById('hue').value = hue;
+    document.getElementById('chroma').value = chroma;
+    update();
+  };
+  document.getElementById('hexText').onchange = e => {
+    const v = e.target.value.trim();
+    if (/^#[0-9a-f]{6}$/i.test(v)) {
+      document.getElementById('hex').value = v;
+      const { hue, chroma } = hexToHueChroma(v);
+      document.getElementById('hue').value = hue;
+      document.getElementById('chroma').value = chroma;
+      update();
+    }
+  };
+
+  const QUICK = [
+    { name: 'Karm pink', hue: 340, chroma: 0.19 },
+    { name: 'BharatTools amber', hue: 35, chroma: 0.18 },
+    { name: 'Gurukul emerald', hue: 145, chroma: 0.15 },
+    { name: 'Atlas blue', hue: 240, chroma: 0.16 },
+    { name: 'Lendis indigo', hue: 275, chroma: 0.20 },
+    { name: 'Mira coral', hue: 25, chroma: 0.18 },
+  ];
+  const qRow = document.getElementById('quickRow');
+  QUICK.forEach(q => {
+    const sw = document.createElement('button');
+    sw.className = 'swatch';
+    sw.style.background = `oklch(0.55 ${q.chroma} ${q.hue})`;
+    sw.title = q.name;
+    sw.onclick = () => {
+      document.getElementById('hue').value = q.hue;
+      document.getElementById('chroma').value = q.chroma;
+      document.querySelectorAll('.swatch').forEach(s => s.classList.toggle('active', s === sw));
+      update();
+    };
+    qRow.appendChild(sw);
+  });
+
+  document.getElementById('copyBtn').onclick = e => {
+    navigator.clipboard.writeText(document.getElementById('cssOut').textContent);
+    e.target.textContent = 'Copied ✓';
+    setTimeout(() => e.target.textContent = 'Copy CSS', 1500);
+  };
+  document.getElementById('downloadBtn').onclick = () => {
+    const text = document.getElementById('cssOut').textContent;
+    const blob = new Blob([text], { type: 'text/css' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'shilp-sutra-brand.css';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  update();
+</script>
+</body>
+</html>

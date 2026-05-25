@@ -44,20 +44,35 @@
 </head>
 <body>
 <main class="container">
-  <span class="ver">v0.40+ planning · revision 2</span>
+  <span class="ver">v0.40+ planning · revision 3</span>
   <h1>Customization axes</h1>
-  <p class="sub">Interactive playgrounds for the next preset axes proposed in <code>docs/plans/2026-05-25-v040-customization-axes.md</code>. Open each one, toggle the controls, watch demos react, copy the CSS.</p>
+  <p class="sub">Interactive playgrounds for the next preset axes proposed in <code>docs/plans/2026-05-25-v040-customization-axes.md</code>. Most consumers should land on <a href="themer-landing.html" style="color: var(--accent-11);"><strong>themer-landing.html</strong></a> first — pick the path that fits how you work.</p>
 
-  <h2 class="cat">Start here — the on-ramp</h2>
+  <h2 class="cat">Themer — entry paths (start here)</h2>
   <div class="grid">
-    <a class="card headline" href="themer-wizard.html">
-      <h3>Themer Wizard <span class="status v40">v0.40</span></h3>
-      <p>5-question flow that picks an archetype, lets you tweak density / shape / motion / accent color, and outputs the full CSS combo. <strong>This is the front door — most consumers should never need to leave it.</strong></p>
-      <div class="tokens"><code>[data-archetype]</code><code>[data-density]</code><code>[data-shape]</code><code>[data-motion]</code><code>--color-accent-*</code></div>
+    <a class="card headline" href="themer-landing.html">
+      <h3>Themer Landing — Persona Triage <span class="status v40">v0.40</span></h3>
+      <p>Front door. 4 entry paths based on how the user works: "I'm new" / "I have a brand" / "I've used a DS" / "Just exploring". <strong>Most consumers should land here first.</strong></p>
+      <div class="tokens"><code>4 paths</code><code>persona-driven</code></div>
+    </a>
+    <a class="card" href="archetype-gallery.html">
+      <h3>Archetype Gallery — for newcomers <span class="status v40">v0.40</span></h3>
+      <p>"I'm new" path. 7-up visual grid — every archetype rendered using its actual role tokens. Click to pick. No questions, no token names.</p>
+      <div class="tokens"><code>visual-first</code><code>~30 seconds</code></div>
+    </a>
+    <a class="card" href="brand-import.html">
+      <h3>Brand Import — designer-led <span class="status v40">v0.40</span></h3>
+      <p>"I have a brand" path. Paste a hex, drag sliders. Generates the OKLCH ramp, suggests the closest archetype, hands you CSS to drop in.</p>
+      <div class="tokens"><code>hex → ramp</code><code>auto-archetype</code></div>
+    </a>
+    <a class="card" href="themer-wizard.html">
+      <h3>Themer Wizard — power-user <span class="status v40">v0.40</span></h3>
+      <p>"I've used a DS before" path. 5-step wizard with token-level access. Override individual axes, fine-tune everything. Live preview pane.</p>
+      <div class="tokens"><code>[data-archetype]</code><code>[data-density]</code><code>[data-shape]</code><code>[data-motion]</code></div>
     </a>
     <a class="card" href="archetypes.html">
-      <h3>Brand archetypes <span class="status v40">v0.40</span></h3>
-      <p>Bundled combos. Linear / Stripe / Apple / Material / Notion / Vercel / Devalok. One <code>data-archetype</code> attribute sets every axis at once.</p>
+      <h3>Brand archetypes (interactive) <span class="status v40">v0.40</span></h3>
+      <p>Same archetypes but with a live switcher and token snapshot. For folks who want to A/B inspect the role tokens behind each archetype.</p>
       <div class="tokens"><code>[data-archetype]</code></div>
     </a>
   </div>

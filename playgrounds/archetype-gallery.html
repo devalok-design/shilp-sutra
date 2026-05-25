@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Archetype Gallery</title>
+<style>
+  :root {
+    --bg: oklch(0.985 0.005 280); --surface: oklch(1 0 0); --fg: oklch(0.20 0.02 280);
+    --fg-muted: oklch(0.48 0.02 280); --fg-subtle: oklch(0.62 0.02 280);
+    --border: oklch(0.88 0.01 280); --accent-9: oklch(0.55 0.19 340);
+    --accent-3: oklch(0.94 0.03 340); --accent-11: oklch(0.42 0.16 340);
+    --font: -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; padding: 40px 24px 80px; }
+  .container { max-width: 1280px; margin: 0 auto; }
+  .header { margin-bottom: 32px; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  h1 { margin: 0 0 4px; font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { margin: 0; color: var(--fg-muted); font-size: 14px; }
+  .back { font-size: 13px; color: var(--fg-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+  .back:hover { color: var(--fg); }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px;
+  }
+
+  .arch-card {
+    background: var(--bg-arch, oklch(0.985 0.005 280));
+    border: var(--bw-arch, 1px) solid var(--bc-arch, oklch(0.88 0.01 280));
+    border-radius: var(--rs-arch, 10px);
+    padding: 0;
+    overflow: hidden;
+    transition: transform 200ms, box-shadow 200ms;
+    cursor: pointer;
+  }
+  .arch-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px oklch(0 0 0 / 0.10); }
+  .arch-head {
+    padding: 20px 24px; border-bottom: 1px solid var(--bc-arch, oklch(0.88 0.01 280));
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .arch-head .info { min-width: 0; }
+  .arch-head h2 { margin: 0 0 4px; font-size: 18px; font-weight: var(--hw-arch, 700); color: var(--fg-arch, oklch(0.20 0.02 280)); letter-spacing: var(--track-arch, -0.005em); }
+  .arch-head .vibe { font-size: 12px; color: var(--fgm-arch, oklch(0.48 0.02 280)); }
+  .arch-head .swatch { width: 36px; height: 36px; border-radius: var(--rc-arch, 6px); background: var(--accent-arch, oklch(0.55 0.19 340)); flex-shrink: 0; }
+
+  .arch-body { padding: 24px; display: flex; flex-direction: column; gap: 14px; color: var(--fg-arch, oklch(0.20 0.02 280)); }
+  .arch-body h3 { margin: 0; font-size: var(--head-arch, 16px); font-weight: var(--hw-arch, 600); }
+  .arch-body p { margin: 0; font-size: var(--body-arch, 13px); color: var(--fgm-arch, oklch(0.48 0.02 280)); line-height: var(--lead-arch, 1.5); }
+  .arch-body .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .arch-body .btn { padding: var(--py-arch, 8px) var(--px-arch, 14px); background: var(--accent-arch, oklch(0.55 0.19 340)); color: white; border: none; border-radius: var(--rc-arch, 6px); font: var(--actW-arch, 500) 13px var(--font); cursor: pointer; box-shadow: var(--shad-arch, 0 1px 2px oklch(0 0 0 / 0.04)); }
+  .arch-body .btn.ghost { background: transparent; color: var(--fg-arch, oklch(0.20 0.02 280)); border: 1px solid var(--bc-arch, oklch(0.88 0.01 280)); box-shadow: none; }
+  .arch-body .input { padding: var(--py-arch, 8px) var(--px-arch, 14px); border: 1px solid var(--bc-arch, oklch(0.88 0.01 280)); border-radius: var(--rc-arch, 6px); font: 13px var(--font); background: var(--bg-arch, oklch(1 0 0)); flex: 1; min-width: 120px; }
+  .pill { display: inline-flex; padding: 2px 10px; border-radius: 9999px; background: var(--accent-soft-arch, oklch(0.94 0.03 340)); color: var(--accent-11-arch, oklch(0.42 0.16 340)); font-size: 11px; font-weight: 500; }
+
+  .arch-foot {
+    padding: 14px 24px; background: oklch(0 0 0 / 0.025);
+    display: flex; gap: 8px; flex-wrap: wrap; font: 10px ui-monospace, monospace; color: var(--fgm-arch, oklch(0.48 0.02 280));
+    border-top: 1px solid var(--bc-arch, oklch(0.88 0.01 280));
+  }
+  .arch-foot code { background: rgba(0,0,0,0.05); padding: 1px 6px; border-radius: 3px; }
+
+  /* Archetype recipes — each card sets its own preview vars */
+  #linear { --bg-arch: oklch(0.99 0.003 280); --fg-arch: oklch(0.18 0.02 280); --fgm-arch: oklch(0.45 0.02 280); --bc-arch: oklch(0.92 0.005 280); --bw-arch: 0.5px; --rs-arch: 6px; --rc-arch: 4px; --px-arch: 12px; --py-arch: 6px; --head-arch: 15px; --body-arch: 13px; --hw-arch: 600; --actW-arch: 500; --lead-arch: 1.4; --track-arch: -0.005em; --shad-arch: inset 0 0 0 1px oklch(0.92 0.005 280); --accent-arch: oklch(0.45 0.04 280); --accent-soft-arch: oklch(0.94 0.01 280); --accent-11-arch: oklch(0.30 0.04 280); }
+  #stripe { --bg-arch: oklch(0.985 0.005 280); --fg-arch: oklch(0.20 0.02 280); --fgm-arch: oklch(0.48 0.02 280); --bc-arch: oklch(0.88 0.01 280); --bw-arch: 1px; --rs-arch: 10px; --rc-arch: 6px; --px-arch: 16px; --py-arch: 8px; --head-arch: 16px; --body-arch: 14px; --hw-arch: 600; --actW-arch: 500; --lead-arch: 1.5; --track-arch: 0; --shad-arch: 0 1px 2px oklch(0 0 0 / 0.05); --accent-arch: oklch(0.55 0.19 240); --accent-soft-arch: oklch(0.94 0.03 240); --accent-11-arch: oklch(0.42 0.16 240); }
+  #apple { --bg-arch: oklch(0.98 0.003 280); --fg-arch: oklch(0.20 0.01 280); --fgm-arch: oklch(0.50 0.01 280); --bc-arch: oklch(0.90 0.005 280); --bw-arch: 0.5px; --rs-arch: 20px; --rc-arch: 12px; --px-arch: 22px; --py-arch: 12px; --head-arch: 18px; --body-arch: 15px; --hw-arch: 500; --actW-arch: 500; --lead-arch: 1.6; --track-arch: -0.015em; --shad-arch: 0 4px 16px oklch(0 0 0 / 0.04), 0 1px 3px oklch(0 0 0 / 0.04); --accent-arch: oklch(0.55 0.12 35); --accent-soft-arch: oklch(0.94 0.02 35); --accent-11-arch: oklch(0.42 0.10 35); }
+  #material { --bg-arch: oklch(0.985 0.005 280); --fg-arch: oklch(0.20 0.02 280); --fgm-arch: oklch(0.48 0.02 280); --bc-arch: oklch(0.88 0.01 280); --bw-arch: 1px; --rs-arch: 16px; --rc-arch: 12px; --px-arch: 18px; --py-arch: 10px; --head-arch: 16px; --body-arch: 14px; --hw-arch: 600; --actW-arch: 500; --lead-arch: 1.5; --track-arch: 0; --shad-arch: 0 4px 12px oklch(0 0 0 / 0.12), 0 2px 4px oklch(0 0 0 / 0.06); --accent-arch: oklch(0.55 0.20 145); --accent-soft-arch: oklch(0.94 0.04 145); --accent-11-arch: oklch(0.40 0.16 145); }
+  #notion { --bg-arch: oklch(0.985 0.003 280); --fg-arch: oklch(0.18 0.01 280); --fgm-arch: oklch(0.50 0.01 280); --bc-arch: oklch(0.92 0.005 280); --bw-arch: 1px; --rs-arch: 4px; --rc-arch: 4px; --px-arch: 14px; --py-arch: 8px; --head-arch: 17px; --body-arch: 15px; --hw-arch: 600; --actW-arch: 500; --lead-arch: 1.65; --track-arch: -0.005em; --shad-arch: inset 0 0 0 1px oklch(0.94 0.005 280); --accent-arch: oklch(0.55 0.04 60); --accent-soft-arch: oklch(0.96 0.01 60); --accent-11-arch: oklch(0.35 0.03 60); }
+  #vercel { --bg-arch: oklch(0.99 0.002 280); --fg-arch: oklch(0.15 0.005 280); --fgm-arch: oklch(0.45 0.01 280); --bc-arch: oklch(0.90 0.005 280); --bw-arch: 1px; --rs-arch: 6px; --rc-arch: 4px; --px-arch: 12px; --py-arch: 6px; --head-arch: 15px; --body-arch: 13px; --hw-arch: 700; --actW-arch: 600; --lead-arch: 1.45; --track-arch: -0.015em; --shad-arch: inset 0 0 0 1px oklch(0.90 0.005 280); --accent-arch: oklch(0.18 0.005 280); --accent-soft-arch: oklch(0.93 0.003 280); --accent-11-arch: oklch(0.15 0.005 280); }
+  #devalok { --bg-arch: oklch(0.985 0.005 340); --fg-arch: oklch(0.20 0.02 340); --fgm-arch: oklch(0.48 0.02 340); --bc-arch: oklch(0.88 0.015 340); --bw-arch: 1px; --rs-arch: 12px; --rc-arch: 8px; --px-arch: 18px; --py-arch: 10px; --head-arch: 16px; --body-arch: 14px; --hw-arch: 600; --actW-arch: 500; --lead-arch: 1.55; --track-arch: -0.005em; --shad-arch: 0 2px 8px oklch(0.55 0.19 340 / 0.10), 0 1px 2px oklch(0 0 0 / 0.04); --accent-arch: oklch(0.55 0.19 340); --accent-soft-arch: oklch(0.94 0.03 340); --accent-11-arch: oklch(0.42 0.16 340); }
+</style>
+</head>
+<body>
+<main class="container">
+  <div class="header">
+    <div>
+      <h1>Archetype gallery</h1>
+      <p class="sub">7 bundled vibes. Same component anatomy in each. Click a card to pick that archetype.</p>
+    </div>
+    <a class="back" href="themer-landing.html">← Themer home</a>
+  </div>
+
+  <div class="grid">
+    <article class="arch-card" id="linear" data-archetype="linear">
+      <div class="arch-head"><div class="info"><h2>Linear</h2><div class="vibe">Sharp · compact · hairline · flat</div></div><div class="swatch"></div></div>
+      <div class="arch-body">
+        <h3>Project Atlas</h3>
+        <p>Dense, focused, fast. Inset borders, no shadows, tight type. Built for product teams who live in keyboards.</p>
+        <div class="row"><button class="btn">Open</button><button class="btn ghost">Cancel</button><span class="pill">Beta</span></div>
+        <input class="input" placeholder="Search…">
+      </div>
+      <div class="arch-foot"><code>shape:sharp</code><code>density:compact</code><code>border:hairline</code><code>elevation:flat</code></div>
+    </article>
+
+    <article class="arch-card" id="stripe" data-archetype="stripe">
+      <div class="arch-head"><div class="info"><h2>Stripe</h2><div class="vibe">Default · balanced · crisp · subtle</div></div><div class="swatch"></div></div>
+      <div class="arch-body">
+        <h3>Project Atlas</h3>
+        <p>Modern SaaS baseline. Crisp 1px borders, subtle shadows, balanced padding. The "safe modern" choice.</p>
+        <div class="row"><button class="btn">Open</button><button class="btn ghost">Cancel</button><span class="pill">Beta</span></div>
+        <input class="input" placeholder="Search…">
+      </div>
+      <div class="arch-foot"><code>shape:slightly-rounded</code><code>density:comfortable</code><code>border:default</code><code>elevation:subtle</code></div>
+    </article>
+
+    <article class="arch-card" id="apple" data-archetype="apple">
+      <div class="arch-head"><div class="info"><h2>Apple</h2><div class="vibe">Rounded · spacious · hairline · ambient</div></div><div class="swatch"></div></div>
+      <div class="arch-body">
+        <h3>Project Atlas</h3>
+        <p>Soft edges, restrained type, ambient shadows. Light weight body. Optimized for marketing pages and content.</p>
+        <div class="row"><button class="btn">Open</button><button class="btn ghost">Cancel</button><span class="pill">Beta</span></div>
+        <input class="input" placeholder="Search…">
+      </div>
+      <div class="arch-foot"><code>shape:rounded</code><code>density:spacious</code><code>border:hairline</code><code>type-weight:light</code></div>
+    </article>
+
+    <article class="arch-card" id="material" data-archetype="material">
+      <div class="arch-head"><div class="info"><h2>Material</h2><div class="vibe">Rounded · standard · default · dramatic</div></div><div class="swatch"></div></div>
+      <div class="arch-body">
+        <h3>Project Atlas</h3>
+        <p>Material 3 baseline. Dramatic shadows, vibrant accents, soft corners. Familiar to mobile-first teams.</p>
+        <div class="row"><button class="btn">Open</button><button class="btn ghost">Cancel</button><span class="pill">Beta</span></div>
+        <input class="input" placeholder="Search…">
+      </div>
+      <div class="arch-foot"><code>shape:rounded</code><code>density:comfortable</code><code>elevation:dramatic</code><code>saturation:vibrant</code></div>
+    </article>
+
+    <article class="arch-card" id="notion" data-archetype="notion">
+      <div class="arch-head"><div class="info"><h2>Notion</h2><div class="vibe">Slightly-rounded · spacious · flat · editorial</div></div><div class="swatch"></div></div>
+      <div class="arch-body">
+        <h3>Project Atlas</h3>
+        <p>Reading and writing optimized. Editorial typography, flat surfaces, generous leading. Restrained accent.</p>
+        <div class="row"><button class="btn">Open</button><button class="btn ghost">Cancel</button><span class="pill">Beta</span></div>
+        <input class="input" placeholder="Search…">
+      </div>
+      <div class="arch-foot"><code>shape:slightly-rounded</code><code>density:spacious</code><code>elevation:flat</code><code>typography:editorial</code></div>
+    </article>
+
+    <article class="arch-card" id="vercel" data-archetype="vercel">
+      <div class="arch-head"><div class="info"><h2>Vercel</h2><div class="vibe">Sharp · compact · default · flat · bold</div></div><div class="swatch"></div></div>
+      <div class="arch-body">
+        <h3>Project Atlas</h3>
+        <p>Bold weight, sharp corners, monochrome accent. Black-and-white minimalism for engineering-led brands.</p>
+        <div class="row"><button class="btn">Open</button><button class="btn ghost">Cancel</button><span class="pill">Beta</span></div>
+        <input class="input" placeholder="Search…">
+      </div>
+      <div class="arch-foot"><code>shape:sharp</code><code>type-weight:bold</code><code>saturation:muted</code><code>elevation:flat</code></div>
+    </article>
+
+    <article class="arch-card" id="devalok" data-archetype="devalok">
+      <div class="arch-head"><div class="info"><h2>Devalok</h2><div class="vibe">Slightly-rounded · comfortable · subtle · grain · halo</div></div><div class="swatch"></div></div>
+      <div class="arch-body">
+        <h3>Project Atlas</h3>
+        <p>Devalok's own signature. Warm-tinted grain on surfaces, halo focus rings, pink accent, balanced rhythm.</p>
+        <div class="row"><button class="btn">Open</button><button class="btn ghost">Cancel</button><span class="pill">Beta</span></div>
+        <input class="input" placeholder="Search…">
+      </div>
+      <div class="arch-foot"><code>shape:slightly-rounded</code><code>texture:grain</code><code>focus-ring:halo</code><code>accent:pink</code></div>
+    </article>
+  </div>
+
+  <div style="margin-top: 40px; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-size: 13px; color: var(--fg-muted); line-height: 1.6;">
+    <strong style="color: var(--fg);">How to pick.</strong> Each card is rendered <em>using</em> the archetype's actual role-token values — that border thickness, that shadow, that radius, those padding, that font weight is what your app will look like under <code>data-archetype="…"</code>. Pick the one that feels right. Reads better than a token table.
+  </div>
+</main>
+</body>
+</html>

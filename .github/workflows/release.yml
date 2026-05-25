@@ -112,6 +112,15 @@ jobs:
       # manual audit enforce the same invariants. Ordering mirrors the
       # audit script so a failure here is debuggable by re-running the
       # same step locally.
+      #
+      # Build runs FIRST so workspace consumers (apps/site) can resolve
+      # @devalok/shilp-sutra/ui/* subpath imports during typecheck. The
+      # site's showcase pages import per-component subpaths from the
+      # package's dist/, so typechecking before build produces TS2307
+      # cascades.
+
+      - name: Build
+        run: pnpm build
 
       - name: Typecheck
         run: pnpm typecheck
@@ -121,9 +130,6 @@ jobs:
 
       - name: Test
         run: pnpm test
-
-      - name: Build
-        run: pnpm build
 
       - name: SSR smoke test (no browser APIs in Node.js)
         run: node packages/core/scripts/ssr-smoke-test.mjs

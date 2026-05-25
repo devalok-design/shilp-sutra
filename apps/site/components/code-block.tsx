@@ -18,7 +18,7 @@ export function CodeBlock({ code, language = 'bash' }: { code: string; language?
   }
 
   return (
-    <div className="relative group rounded-ds-md border border-surface-border bg-surface-overlay overflow-hidden">
+    <div className="relative group rounded-control border border-surface-border bg-surface-overlay overflow-hidden">
       <div className="flex items-center justify-between px-ds-04 py-ds-02 border-b border-surface-border-subtle bg-surface-raised">
         <span className="text-ds-xs font-mono text-surface-fg-muted lowercase">{language}</span>
         <Button

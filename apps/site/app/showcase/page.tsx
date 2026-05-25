@@ -60,7 +60,7 @@ export default function ShowcaseIndexPage() {
                           {entry.industry}
                           <span
                             aria-label="Fictional brand"
-                            className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay border border-surface-border-subtle text-[10px] font-mono text-surface-fg-subtle uppercase tracking-wide"
+                            className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-[10px] font-mono text-surface-fg-subtle uppercase tracking-wide"
                           >
                             Mock
                           </span>
@@ -70,11 +70,11 @@ export default function ShowcaseIndexPage() {
                       <span
                         aria-hidden
                         style={rampSwatchStyle(entry.hue, entry.chroma)}
-                        className="shrink-0 mt-1 inline-flex items-center gap-ds-01 rounded-ds-sm border border-surface-border-subtle p-ds-01"
+                        className="shrink-0 mt-1 inline-flex items-center gap-ds-01 rounded-control-inner border border-surface-border-subtle p-ds-01"
                       >
-                        <span className="w-3 h-3 rounded-full bg-accent-5" />
-                        <span className="w-3 h-3 rounded-full bg-accent-9" />
-                        <span className="w-3 h-3 rounded-full bg-accent-11" />
+                        <span className="w-3 h-3 rounded-pill bg-accent-5" />
+                        <span className="w-3 h-3 rounded-pill bg-accent-9" />
+                        <span className="w-3 h-3 rounded-pill bg-accent-11" />
                       </span>
                     </header>
 
@@ -85,7 +85,7 @@ export default function ShowcaseIndexPage() {
                       {entry.uses.slice(0, 3).map((u) => (
                         <span
                           key={u}
-                          className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-subtle"
+                          className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-subtle"
                         >
                           {u}
                         </span>
@@ -109,7 +109,7 @@ export default function ShowcaseIndexPage() {
               ))}
             </ul>
 
-            <section className="rounded-ds-md border border-surface-border-subtle bg-surface-raised p-ds-06 flex flex-col gap-ds-02">
+            <section className="rounded-control border border-surface-border-subtle bg-surface-raised p-ds-06 flex flex-col gap-ds-02">
               <Text variant="label-sm" className="text-surface-fg-subtle">
                 How this works
               </Text>

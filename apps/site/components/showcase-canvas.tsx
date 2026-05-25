@@ -39,7 +39,7 @@ export function ShowcaseCanvas({
       transition={{ duration: 0.25, ease: 'easeOut' }}
       className={[
         mode === 'dark' ? 'canvas-dark dark' : 'canvas-light',
-        'rounded-ds-md border overflow-hidden',
+        'rounded-control border overflow-hidden',
       ].join(' ')}
       style={brandStyle}
     >

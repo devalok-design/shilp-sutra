@@ -102,7 +102,7 @@ export function UnifiedCanvas() {
         key={`halo-${active.slug}`}
         className={[
           mode === 'dark' ? 'canvas-dark dark' : 'canvas-light',
-          'rounded-ds-lg border border-surface-border bg-surface-base overflow-hidden',
+          'rounded-surface border border-surface-border bg-surface-base overflow-hidden',
         ].join(' ')}
         style={rampInlineStyle(active.hue, active.chroma)}
       >
@@ -110,9 +110,9 @@ export function UnifiedCanvas() {
         <div className="flex items-center justify-between gap-ds-02 px-ds-03 sm:px-ds-05 py-ds-03 bg-surface-raised border-b border-surface-border-subtle">
           <div className="flex items-center gap-ds-03 min-w-0">
             <span className="hidden sm:flex items-center gap-1 shrink-0">
-              <span className="w-2.5 h-2.5 rounded-full bg-error-9" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning-9" />
-              <span className="w-2.5 h-2.5 rounded-full bg-success-9" />
+              <span className="w-2.5 h-2.5 rounded-pill bg-error-9" />
+              <span className="w-2.5 h-2.5 rounded-pill bg-warning-9" />
+              <span className="w-2.5 h-2.5 rounded-pill bg-success-9" />
             </span>
             <span className="flex items-center gap-ds-02 min-w-0">
               <AnimatePresence mode="wait" initial={false}>
@@ -207,7 +207,7 @@ export function UnifiedCanvas() {
                       <span
                         aria-hidden
                         className={[
-                          'w-1.5 h-1.5 rounded-full shrink-0 transition-opacity duration-fast-02 ease-productive-standard',
+                          'w-1.5 h-1.5 rounded-pill shrink-0 transition-opacity duration-fast-02 ease-productive-standard',
                           isActive ? 'opacity-100' : 'opacity-60 group-hover/tab:opacity-100',
                         ].join(' ')}
                         style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}

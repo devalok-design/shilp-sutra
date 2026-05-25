@@ -26,13 +26,13 @@ export default function ThemingPage() {
               description="Every component on the site recolours live as you move the sliders. Buttons, badges, alerts, focus rings. Drop the exported CSS into your project and your whole app follows."
               meta={
                 <div className="flex flex-wrap gap-ds-02 text-ds-xs">
-                  <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
+                  <span className="inline-flex items-center gap-ds-02 rounded-control-inner border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
                     No theme provider. CSS-vars only.
                   </span>
-                  <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
+                  <span className="inline-flex items-center gap-ds-02 rounded-control-inner border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
                     Light + dark generated together.
                   </span>
-                  <span className="inline-flex items-center gap-ds-02 rounded-ds-sm border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
+                  <span className="inline-flex items-center gap-ds-02 rounded-control-inner border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
                     Same algorithm shilp-sutra ships with.
                   </span>
                 </div>

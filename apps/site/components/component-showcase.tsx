@@ -78,7 +78,7 @@ function DemoCard({
   children: React.ReactNode
 }) {
   return (
-    <article className="flex flex-col gap-ds-05 p-ds-06 rounded-ds-lg border border-transparent bg-surface-raised shadow-raised">
+    <article className="flex flex-col gap-ds-05 p-ds-06 rounded-surface border border-transparent bg-surface-raised shadow-raised">
       <header className="flex flex-col">
         <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{eyebrow}</span>
         <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>
@@ -142,7 +142,7 @@ function CommandPaletteDemo() {
         <Button
           startIcon={<IconKeyboard size={14} />}
           endIcon={
-            <span className="inline-flex items-center gap-1 text-ds-xs font-mono px-1.5 py-0.5 rounded-ds-sm border border-surface-border-subtle">
+            <span className="inline-flex items-center gap-1 text-ds-xs font-mono px-1.5 py-0.5 rounded-control-inner border border-surface-border-subtle">
               ⌘K
             </span>
           }

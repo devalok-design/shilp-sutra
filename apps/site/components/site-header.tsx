@@ -102,9 +102,9 @@ export function SiteHeader() {
             // with the right side's button-relative padding.
             'pl-ds-04 pr-ds-02 sm:pl-ds-05 sm:pr-ds-02 py-ds-02',
             // Rounded rectangle — 10px corners on a ~56px bar reads clearly
-            // as a rectangle, not a pill. Earlier 24px (rounded-ds-2xl) was
+            // as a rectangle, not a pill. Earlier 24px (rounded-bubble) was
             // still half the bar height and looked capsule-y.
-            'rounded-ds-lg border',
+            'rounded-surface border',
             // Tween skin properties together so the pill "materializes" on scroll
             // instead of popping. backdrop-filter transitions are supported across
             // modern Chrome/Safari/Firefox.
@@ -156,7 +156,7 @@ export function SiteHeader() {
                       : 'text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01'
                   }
                 >
-                  {isAccent && <span className="w-1.5 h-1.5 rounded-full bg-accent-9" />}
+                  {isAccent && <span className="w-1.5 h-1.5 rounded-pill bg-accent-9" />}
                   {link.label}
                 </Link>
               )
@@ -219,7 +219,7 @@ export function SiteHeader() {
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.2, ease: [0.2, 0, 0.38, 0.9] }}
               style={{ top: `calc(${bannerH}px + 4.75rem)` }}
-              className="md:hidden fixed inset-x-ds-03 sm:inset-x-ds-04 z-popover origin-top rounded-ds-xl border border-surface-border-subtle/70 bg-surface-base/95 backdrop-blur-2xl backdrop-saturate-150 shadow-overlay"
+              className="md:hidden fixed inset-x-ds-03 sm:inset-x-ds-04 z-popover origin-top rounded-overlay-lg border border-surface-border-subtle/70 bg-surface-base/95 backdrop-blur-2xl backdrop-saturate-150 shadow-overlay"
               aria-label="Primary"
             >
               {/* Drawer is nav-only now — GitHub, theme, and BrandSwitcher all
@@ -234,13 +234,13 @@ export function SiteHeader() {
                           href={link.href}
                           onClick={() => setOpen(false)}
                           className={[
-                            'flex items-center gap-ds-02 px-ds-03 py-ds-03 rounded-ds-md text-ds-md',
+                            'flex items-center gap-ds-02 px-ds-03 py-ds-03 rounded-control text-ds-md',
                             isAccent
                               ? 'text-accent-11 hover:bg-accent-2'
                               : 'text-surface-fg hover:bg-surface-raised-hover',
                           ].join(' ')}
                         >
-                          {isAccent && <span className="w-1.5 h-1.5 rounded-full bg-accent-9" />}
+                          {isAccent && <span className="w-1.5 h-1.5 rounded-pill bg-accent-9" />}
                           {link.label}
                         </Link>
                       </li>

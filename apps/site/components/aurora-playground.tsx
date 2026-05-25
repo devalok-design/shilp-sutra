@@ -132,7 +132,7 @@ export function AuroraPlayground() {
                 type="button"
                 onClick={() => applyPreset(id)}
                 className={
-                  'group text-left rounded-ds-md border bg-surface-2 overflow-hidden transition-colors focus-visible:focus-ring ' +
+                  'group text-left rounded-control border bg-surface-2 overflow-hidden transition-colors focus-visible:focus-ring ' +
                   (isActive
                     ? 'border-accent-9 ring-1 ring-accent-9/30'
                     : 'border-surface-border hover:border-surface-border-strong')
@@ -158,7 +158,7 @@ export function AuroraPlayground() {
                       {preset.name}
                     </Text>
                     {isActive && (
-                      <span className="inline-flex items-center rounded-ds-sm bg-accent-3 px-ds-02 py-[1px] text-ds-xs font-mono text-accent-11">
+                      <span className="inline-flex items-center rounded-control-inner bg-accent-3 px-ds-02 py-[1px] text-ds-xs font-mono text-accent-11">
                         active
                       </span>
                     )}
@@ -174,14 +174,14 @@ export function AuroraPlayground() {
                       brand-follows tag instead of static swatches. */}
                   <div className="mt-ds-02 flex items-center gap-ds-02">
                     {preset.props.palette === 'brand' ? (
-                      <span className="inline-flex items-center gap-ds-01 rounded-ds-sm border border-surface-border-subtle bg-surface-base px-ds-02 py-[1px] text-ds-xs font-mono text-surface-fg-subtle">
-                        <span className="w-2 h-2 rounded-full bg-accent-9" aria-hidden />
+                      <span className="inline-flex items-center gap-ds-01 rounded-control-inner border border-surface-border-subtle bg-surface-base px-ds-02 py-[1px] text-ds-xs font-mono text-surface-fg-subtle">
+                        <span className="w-2 h-2 rounded-pill bg-accent-9" aria-hidden />
                         follows brand
                       </span>
                     ) : Array.isArray(preset.props.palette) ? (
                       <div
                         aria-label={`${preset.name} palette`}
-                        className="flex h-3 overflow-hidden rounded-ds-sm border border-surface-border-subtle"
+                        className="flex h-3 overflow-hidden rounded-control-inner border border-surface-border-subtle"
                       >
                         {preset.props.palette.map((hex, i) => (
                           <span
@@ -204,7 +204,7 @@ export function AuroraPlayground() {
       {/* ─── Live preview + controls ──────────────────────────────── */}
       <div className="grid gap-ds-06 lg:grid-cols-[1fr_22rem]">
         <div className="flex flex-col gap-ds-04">
-          <div className="relative isolate overflow-hidden rounded-ds-lg border border-surface-border bg-surface-base h-[28rem]">
+          <div className="relative isolate overflow-hidden rounded-surface border border-surface-border bg-surface-base h-[28rem]">
             <AuroraBloom
               intensity={s.intensity}
               shape={s.shape}
@@ -229,9 +229,9 @@ export function AuroraPlayground() {
             </div>
           </div>
 
-          <details className="rounded-ds-md border border-surface-border bg-surface-2 px-ds-04 py-ds-03 text-ds-sm">
+          <details className="rounded-control border border-surface-border bg-surface-2 px-ds-04 py-ds-03 text-ds-sm">
             <summary className="cursor-pointer text-surface-fg-muted">Show the JSX</summary>
-            <pre className="mt-ds-03 overflow-x-auto rounded-ds-sm bg-surface-base p-ds-04 text-ds-xs font-mono text-surface-fg leading-relaxed">
+            <pre className="mt-ds-03 overflow-x-auto rounded-control-inner bg-surface-base p-ds-04 text-ds-xs font-mono text-surface-fg leading-relaxed">
               <code>{codeSnippet}</code>
             </pre>
           </details>
@@ -305,7 +305,7 @@ export function AuroraPlayground() {
             />
           </ControlRow>
 
-          <div className="flex items-center justify-between rounded-ds-md border border-surface-border bg-surface-2 px-ds-04 py-ds-03">
+          <div className="flex items-center justify-between rounded-control border border-surface-border bg-surface-2 px-ds-04 py-ds-03">
             <Text variant="body-sm" className="text-surface-fg">
               Breathing
             </Text>
@@ -315,7 +315,7 @@ export function AuroraPlayground() {
             />
           </div>
 
-          <div className="rounded-ds-md border border-surface-border-subtle bg-surface-base px-ds-04 py-ds-03 text-ds-xs text-surface-fg-muted leading-relaxed">
+          <div className="rounded-control border border-surface-border-subtle bg-surface-base px-ds-04 py-ds-03 text-ds-xs text-surface-fg-muted leading-relaxed">
             <strong className="text-surface-fg">Tip:</strong> change the brand from the header
             dropdown. The aurora <em>cross-fades</em> to the new ramp instead of flipping.
             Toggle theme to see dark / light selection logic at work.

@@ -1,5 +1,7 @@
 'use client'
 
+import { motion } from 'framer-motion'
+
 import {
   IconArrowUpRight,
   IconBrandGithub,
@@ -28,7 +30,7 @@ const principles = [
   },
   {
     title: 'Mediums, not masters.',
-    body: 'A brand identity, a product surface, a printed page, a retail wall — every medium is a vessel for someone else’s vision. We carry it. We do not centre ourselves in it.',
+    body: 'A brand identity, a product surface, a printed page, a retail wall. Every medium is a vessel for someone else’s vision. We carry it. We do not centre ourselves in it.',
   },
   {
     title: 'Listen deeply, question deeply, push beyond.',
@@ -116,31 +118,48 @@ export function DevalokShowcase() {
             src="https://devalok-public-assets.s3.ap-south-1.amazonaws.com/brand/devalok/logos/chakra-brand.svg"
             alt=""
             aria-hidden
+            width={48}
+            height={48}
+            loading="eager"
+            decoding="async"
             className="w-12 h-12"
           />
           <Badge variant="soft" color="accent">
             The house brand
           </Badge>
         </div>
-        <Text variant="heading-2xl" className="text-surface-fg">
-          आत्मतः शिल्पं कृत्वा
-        </Text>
-        <Text variant="body-lg" className="text-accent-11 italic">
-          Atmatah Shilpam Kritvah
-        </Text>
-        <Text variant="body-lg" className="text-surface-fg">
-          From the soul, we craft.
-        </Text>
-        <Text variant="body-md" className="text-surface-fg-muted">
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="flex flex-col gap-ds-02"
+          role="group"
+          aria-label="Atmatah Shilpam Kritvah. From the soul, we craft."
+        >
+          <Text variant="heading-2xl" className="text-surface-fg text-balance">
+            आत्मतः शिल्पं कृत्वा
+          </Text>
+          <Text variant="body-lg" className="text-accent-11 italic" aria-hidden>
+            Atmatah Shilpam Kritvah
+          </Text>
+          <Text variant="body-lg" className="text-surface-fg text-balance" aria-hidden>
+            From the soul, we craft.
+          </Text>
+        </motion.div>
+        <Text variant="body-md" className="text-surface-fg-muted max-w-[65ch]">
           Devalok is a design and strategy studio in Bengaluru. We work in brand, product, editorial,
-          and place. The studio sits at the meeting point of soul, intention, and execution — three
+          and place. The studio sits at the meeting point of soul, intention, and execution. Three
           stages we refuse to collapse. shilp-sutra is the library we built for ourselves. It powers
           Karm, Manas, Sahayak, Patrika, and every digital surface we ship.
         </Text>
         <img
           src="https://devalok-public-assets.s3.ap-south-1.amazonaws.com/brand/devalok/logos/wordmark-brand.svg"
           alt="Devalok"
-          className="h-8 self-start mt-ds-03"
+          width={160}
+          height={32}
+          loading="eager"
+          decoding="async"
+          className="h-8 w-auto self-start mt-ds-03"
         />
       </header>
 
@@ -156,12 +175,14 @@ export function DevalokShowcase() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-ds-04">
           {principles.map((p) => (
-            <Card key={p.title}>
-              <CardHeader>
-                <CardTitle className="text-[length:var(--typo-heading-sm-size)]">{p.title}</CardTitle>
+            <Card key={p.title} className="shadow-raised">
+              <CardHeader className="min-w-0">
+                <CardTitle className="text-[length:var(--typo-heading-sm-size)] line-clamp-2 text-balance">
+                  {p.title}
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <Text variant="body-sm" className="text-surface-fg-muted">
+              <CardContent className="min-w-0">
+                <Text variant="body-sm" className="text-surface-fg-muted line-clamp-6">
                   {p.body}
                 </Text>
               </CardContent>
@@ -256,11 +277,11 @@ export function DevalokShowcase() {
         </div>
       </section>
 
-      <Card>
+      <Card className="bg-accent-2 border-accent-7 shadow-raised">
         <CardHeader>
           <CardTitle className="text-[length:var(--typo-heading-sm-size)]">House ramp</CardTitle>
           <CardDescription>
-            Three steps on the Devalok accent ramp. We eat our own dogfood — every colour on this
+            Three steps on the Devalok accent ramp. We eat our own dogfood. Every colour on this
             page is read from the same tokens you would consume from the library.
           </CardDescription>
         </CardHeader>
@@ -298,11 +319,13 @@ export function DevalokShowcase() {
           </Text>
         </div>
         <Tabs defaultValue="brand">
-          <TabsList variant="line" color="accent">
-            <TabsTrigger value="brand">Brand</TabsTrigger>
-            <TabsTrigger value="product">Product</TabsTrigger>
-            <TabsTrigger value="editorial">Editorial</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto -mx-ds-02 px-ds-02">
+            <TabsList variant="line" color="accent">
+              <TabsTrigger value="brand">Brand</TabsTrigger>
+              <TabsTrigger value="product">Product</TabsTrigger>
+              <TabsTrigger value="editorial">Editorial</TabsTrigger>
+            </TabsList>
+          </div>
           <TabsContent value="brand">
             <WorkGrid items={work.brand} />
           </TabsContent>
@@ -423,15 +446,15 @@ function WorkGrid({ items }: { items: { name: string; meta: string }[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-ds-04 mt-ds-04">
       {items.map((item) => (
-        <Card key={item.name}>
+        <Card key={item.name} className="shadow-raised">
           <CardHeader>
-            <div className="flex items-center justify-between gap-ds-02">
-              <CardTitle className="text-[length:var(--typo-heading-sm-size)]">
+            <div className="flex items-center justify-between gap-ds-02 min-w-0">
+              <CardTitle className="text-[length:var(--typo-heading-sm-size)] line-clamp-2 min-w-0">
                 {item.name}
               </CardTitle>
               <IconCircleCheck size={14} className="text-accent-11 shrink-0" aria-hidden />
             </div>
-            <CardDescription>{item.meta}</CardDescription>
+            <CardDescription className="line-clamp-3">{item.meta}</CardDescription>
           </CardHeader>
         </Card>
       ))}

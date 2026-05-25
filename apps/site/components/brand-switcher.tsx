@@ -79,7 +79,7 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
           role="listbox"
           aria-label="Brand presets"
           className={[
-            'absolute mt-ds-02 w-72 max-w-[calc(100vw-2rem)] rounded-ds-md',
+            'absolute mt-ds-02 w-72 max-w-[calc(100vw-2rem)] rounded-control',
             'border border-surface-border bg-surface-overlay shadow-overlay z-popover overflow-hidden',
             align === 'start' ? 'left-0' : 'right-0',
           ].join(' ')}
@@ -106,7 +106,7 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
                   >
                     <span
                       aria-hidden
-                      className="w-6 h-6 rounded-full border border-surface-border-subtle shrink-0"
+                      className="w-6 h-6 rounded-pill border border-surface-border-subtle shrink-0"
                       style={{ background: preset.ramp.light[8] }}
                     />
                     <span className="flex flex-col min-w-0 flex-1">

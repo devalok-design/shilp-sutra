@@ -66,13 +66,13 @@ function FeatureCard({
   children: React.ReactNode
 }) {
   return (
-    <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-ds-lg bg-surface-raised border border-transparent shadow-raised transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard hover:border-surface-border-strong hover:shadow-raised-hover hover:-translate-y-px">
+    <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-surface bg-surface-raised border border-transparent shadow-raised transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard hover:border-surface-border-strong hover:shadow-raised-hover hover:-translate-y-px">
       <header className="flex flex-col">
         <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{slug}</span>
         <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>
         <p className="text-ds-sm text-surface-fg-subtle mt-ds-02">{caption}</p>
       </header>
-      <div className="flex-1 rounded-ds-md bg-surface-base border border-surface-border-subtle p-ds-04 flex items-center justify-center min-h-[180px]">
+      <div className="flex-1 rounded-control bg-surface-base border border-surface-border-subtle p-ds-04 flex items-center justify-center min-h-[180px]">
         {children}
       </div>
     </article>
@@ -260,7 +260,7 @@ function TooltipDemo() {
               <TooltipTrigger asChild>
                 <button
                   type="button"
-                  className="w-9 h-9 rounded-ds-sm bg-surface-overlay border border-surface-border-subtle text-surface-fg-muted hover:text-surface-fg hover:border-surface-border-strong transition-colors duration-fast-02 ease-productive-standard flex items-center justify-center focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+                  className="w-9 h-9 rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-surface-fg-muted hover:text-surface-fg hover:border-surface-border-strong transition-colors duration-fast-02 ease-productive-standard flex items-center justify-center focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
                   aria-label={label}
                 >
                   <Icon size={16} />
@@ -291,7 +291,7 @@ function SkeletonDemo() {
     >
       <div className="w-full flex flex-col gap-ds-03">
         <div className="flex items-center gap-ds-03">
-          <Skeleton className="w-10 h-10 rounded-full" />
+          <Skeleton className="w-10 h-10 rounded-pill" />
           <div className="flex flex-col gap-ds-01 flex-1">
             <Skeleton className="h-3 w-2/3" />
             <Skeleton className="h-2 w-1/3" />
@@ -299,8 +299,8 @@ function SkeletonDemo() {
         </div>
         <SkeletonText lines={3} />
         <div className="flex items-center gap-ds-02 mt-ds-02">
-          <Skeleton className="h-8 w-24 rounded-ds-md" />
-          <Skeleton className="h-8 w-16 rounded-ds-md" />
+          <Skeleton className="h-8 w-24 rounded-control" />
+          <Skeleton className="h-8 w-16 rounded-control" />
         </div>
       </div>
     </FeatureCard>

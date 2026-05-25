@@ -68,9 +68,9 @@ export default function AgentsPage() {
             description="We ship an installable skill, two flavours of llms.txt, and AGENTS.md with every release so your coding agent doesn't guess at the library. Install once, never paste docs into chat again."
           />
 
-          <div className="max-w-3xl rounded-ds-md border border-accent-7 bg-accent-2 p-ds-06 mb-ds-12">
+          <div className="max-w-3xl rounded-control border border-accent-7 bg-accent-2 p-ds-06 mb-ds-12">
             <div className="flex items-start gap-ds-04 mb-ds-04">
-              <span className="w-10 h-10 rounded-ds-sm bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
+              <span className="w-10 h-10 rounded-control-inner bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
                 <IconSparkles size={20} />
               </span>
               <div className="flex flex-col">
@@ -101,7 +101,7 @@ export default function AgentsPage() {
               {tools.map((t) => (
                 <li
                   key={t.name}
-                  className="flex flex-col gap-ds-01 p-ds-04 rounded-ds-md border border-surface-border-subtle bg-surface-raised"
+                  className="flex flex-col gap-ds-01 p-ds-04 rounded-control border border-surface-border-subtle bg-surface-raised"
                 >
                   <Text variant="body-sm" className="text-surface-fg">
                     {t.name}
@@ -129,7 +129,7 @@ export default function AgentsPage() {
                 <Card key={r.title}>
                   <CardHeader>
                     <div className="flex items-center gap-ds-03">
-                      <span className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center">
+                      <span className="w-9 h-9 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center">
                         <r.icon size={16} />
                       </span>
                       <CardTitle className="text-[length:var(--typo-heading-sm-size)]">{r.title}</CardTitle>
@@ -137,7 +137,7 @@ export default function AgentsPage() {
                     <CardDescription>{r.body}</CardDescription>
                   </CardHeader>
                   <CardContent className="flex flex-col gap-ds-03">
-                    <pre className="px-ds-03 py-ds-03 rounded-ds-sm border border-surface-border-subtle bg-surface-overlay overflow-x-auto text-ds-xs font-mono text-surface-fg whitespace-pre">
+                    <pre className="px-ds-03 py-ds-03 rounded-control-inner border border-surface-border-subtle bg-surface-overlay overflow-x-auto text-ds-xs font-mono text-surface-fg whitespace-pre">
                       <code>{r.cmd}</code>
                     </pre>
                     <Link href={r.href} target="_blank" rel="noreferrer">

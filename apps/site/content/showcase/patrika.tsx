@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconBookmark,
   IconBookmarkFilled,
@@ -121,7 +122,12 @@ export function PatrikaShowcase() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-09">
         <article className="flex flex-col gap-ds-07">
           {/* Reading-progress strip */}
-          <div className="flex flex-col gap-ds-03">
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.32, ease: 'easeOut' }}
+            className="flex flex-col gap-ds-03"
+          >
             <div className="flex items-center justify-between gap-ds-04">
               <Breadcrumb>
                 <BreadcrumbList>
@@ -143,16 +149,16 @@ export function PatrikaShowcase() {
               </span>
             </div>
             <Progress value={42} size="sm" />
-          </div>
+          </motion.div>
 
           {/* Cover photograph as a captioned figure */}
           <figure className="flex flex-col gap-ds-02">
-            <div className="relative rounded-ds-md overflow-hidden border border-surface-border-subtle aspect-[16/9]">
+            <div className="relative rounded-surface overflow-hidden border border-surface-border-subtle aspect-[16/9]">
               <img
                 src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80"
                 alt="Open editorial spread, Patrika Vol. iv cover"
                 className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
+                loading="eager"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-ds-06 text-white">
@@ -182,11 +188,11 @@ export function PatrikaShowcase() {
               <span className="text-ds-xs text-surface-fg-subtle">Patrika · Issue 14 · 23 May 2026</span>
             </div>
 
-            <Text variant="heading-2xl" className="text-surface-fg">
+            <Text variant="heading-2xl" className="text-surface-fg text-balance">
               We forgot what design was for.
             </Text>
 
-            <Text variant="body-lg" className="text-surface-fg-muted">
+            <Text variant="body-lg" className="text-surface-fg-muted max-w-prose">
               For most of the last century, design served a question: what would make this object
               better to live with? Then somewhere between Helvetica and the App Store, the question
               quietly changed. This is a working theory about what changed, and what we might do
@@ -236,7 +242,7 @@ export function PatrikaShowcase() {
 
           {/* Body */}
           <div className="flex flex-col gap-ds-05">
-            <Text variant="body-md" className="text-surface-fg">
+            <Text variant="body-md" className="text-surface-fg max-w-prose">
               <span
                 aria-hidden="true"
                 className="float-left mr-ds-03 mt-ds-01 text-[3.5rem] leading-[0.85] font-serif font-semibold text-accent-11"
@@ -251,7 +257,7 @@ export function PatrikaShowcase() {
               designed so much as optimised.
             </Text>
 
-            <Text variant="body-md" className="text-surface-fg">
+            <Text variant="body-md" className="text-surface-fg max-w-prose">
               Optimisation and design look similar from the outside. Both involve careful people
               making careful decisions about size, weight, colour, position. Both produce artefacts
               that are measurably better than the artefacts they replace. The difference is what
@@ -275,21 +281,21 @@ export function PatrikaShowcase() {
               , and the longer we pretend they are, the worse our objects get.
             </Text>
 
-            <figure className="my-ds-03 pl-ds-06 border-l-4 border-accent-9">
-              <Text variant="heading-md" className="text-surface-fg italic font-serif">
+            <figure className="my-ds-03 pl-ds-05 sm:pl-ds-06 border-l-4 border-accent-9 max-w-prose">
+              <p className="text-surface-fg italic font-serif text-ds-lg sm:text-ds-xl leading-snug">
                 “The most useful design questions are still the oldest ones. They just stopped
                 being asked, because they stopped being measurable.”
-              </Text>
+              </p>
               <figcaption className="text-ds-xs text-surface-fg-subtle mt-ds-03">
                 From the cover essay, Vol. iv
               </figcaption>
             </figure>
 
-            <Text variant="heading-md" className="text-surface-fg mt-ds-03">
+            <Text variant="heading-md" className="text-surface-fg mt-ds-03 max-w-prose text-balance">
               What the old question used to do
             </Text>
 
-            <Text variant="body-md" className="text-surface-fg">
+            <Text variant="body-md" className="text-surface-fg max-w-prose">
               The old question, the one about living-with, was wider than the new question. It
               swept up considerations the metric will never see: how the object feels on the third
               day, how it ages, how it sits in a room beside other objects, how a stranger reads
@@ -298,7 +304,7 @@ export function PatrikaShowcase() {
               not the metrics you can ship a release against.
             </Text>
 
-            <Text variant="body-md" className="text-surface-fg">
+            <Text variant="body-md" className="text-surface-fg max-w-prose">
               So they fall out of the brief, quietly, the way an unloved photograph falls out of an
               album. Nobody removes them. They are simply not invited to the next meeting, and the
               next meeting, and the next. After a while the brief is just the metric, and the
@@ -306,7 +312,7 @@ export function PatrikaShowcase() {
               difference.
             </Text>
 
-            <Card className="bg-accent-2 border-accent-7">
+            <Card className="bg-accent-2 border-accent-7 max-w-prose">
               <CardHeader className="pb-ds-02">
                 <CardTitle className="text-[length:var(--typo-heading-sm-size)] text-accent-12">
                   What this means, in practice
@@ -322,7 +328,7 @@ export function PatrikaShowcase() {
               </CardContent>
             </Card>
 
-            <Text variant="body-md" className="text-surface-fg">
+            <Text variant="body-md" className="text-surface-fg max-w-prose">
               I do not think this is anybody’s fault, exactly. Optimisation is honest work. The
               people doing it are usually kinder, smarter, and more diligent than the systems they
               are inside. But systems are heavier than people, and a system that only measures one
@@ -331,7 +337,7 @@ export function PatrikaShowcase() {
               be seen, in the room, on the wall, in the brief, in the review.
             </Text>
 
-            <Text variant="body-md" className="text-surface-fg">
+            <Text variant="body-md" className="text-surface-fg max-w-prose">
               That is what Patrika is, for me: an attempt to keep the older question visible. The
               whole issue lives at patrika.devalok.in. Take it apart in the margins.
             </Text>
@@ -347,14 +353,26 @@ export function PatrikaShowcase() {
                 aria-pressed={liked}
                 onClick={toggleLike}
                 startIcon={
-                  liked ? (
-                    <IconHeartFilled size={16} className="text-accent-11" />
-                  ) : (
-                    <IconHeart size={16} />
-                  )
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={liked ? 'liked' : 'unliked'}
+                      initial={liked ? { scale: 1 } : false}
+                      animate={liked ? { scale: [1, 1.2, 1] } : { scale: 1 }}
+                      transition={{ duration: 0.18, ease: 'easeOut' }}
+                      className="inline-flex"
+                    >
+                      {liked ? (
+                        <IconHeartFilled size={16} className="text-accent-11" />
+                      ) : (
+                        <IconHeart size={16} />
+                      )}
+                    </motion.span>
+                  </AnimatePresence>
                 }
               >
-                <span className="tabular-nums">{likes}</span>
+                <span className="tabular-nums" aria-live="polite">
+                  {likes}
+                </span>
               </Button>
               <Button
                 variant="ghost"
@@ -362,7 +380,19 @@ export function PatrikaShowcase() {
                 aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark article'}
                 aria-pressed={bookmarked}
                 onClick={() => setBookmarked((b) => !b)}
-                startIcon={bookmarked ? <IconBookmarkFilled size={16} /> : <IconBookmark size={16} />}
+                startIcon={
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={bookmarked ? 'saved' : 'unsaved'}
+                      initial={bookmarked ? { scale: 1 } : false}
+                      animate={bookmarked ? { scale: [1, 1.2, 1] } : { scale: 1 }}
+                      transition={{ duration: 0.18, ease: 'easeOut' }}
+                      className="inline-flex"
+                    >
+                      {bookmarked ? <IconBookmarkFilled size={16} /> : <IconBookmark size={16} />}
+                    </motion.span>
+                  </AnimatePresence>
+                }
               >
                 {bookmarked ? 'Saved' : 'Save'}
               </Button>
@@ -408,10 +438,10 @@ export function PatrikaShowcase() {
                         <span className="text-ds-xs uppercase tracking-wider text-accent-11">
                           {e.kicker}
                         </span>
-                        <span className="text-ds-md text-surface-fg font-semibold">
+                        <span className="text-ds-md text-surface-fg font-semibold line-clamp-2">
                           {e.title}
                         </span>
-                        <span className="text-ds-xs text-surface-fg-subtle">
+                        <span className="text-ds-xs text-surface-fg-subtle truncate">
                           {e.author} · {e.read}
                         </span>
                       </div>
@@ -452,9 +482,11 @@ export function PatrikaShowcase() {
                       key={l.subject}
                       className="flex flex-col gap-ds-01 pb-ds-04 border-b border-surface-border-subtle last:border-b-0 last:pb-0"
                     >
-                      <span className="text-ds-xs text-surface-fg-subtle">{l.from}</span>
-                      <span className="text-ds-md text-surface-fg font-semibold">{l.subject}</span>
-                      <span className="text-ds-sm text-surface-fg-muted italic">
+                      <span className="text-ds-xs text-surface-fg-subtle truncate">{l.from}</span>
+                      <span className="text-ds-md text-surface-fg font-semibold line-clamp-2">
+                        {l.subject}
+                      </span>
+                      <span className="text-ds-sm text-surface-fg-muted italic line-clamp-3">
                         “{l.preview}”
                       </span>
                     </li>
@@ -474,9 +506,9 @@ export function PatrikaShowcase() {
                 <a
                   key={r.title}
                   href="#"
-                  className="group flex flex-col gap-ds-03 rounded-ds-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+                  className="group flex flex-col gap-ds-03 rounded-surface bg-surface-raised border border-surface-border shadow-raised hover:shadow-raised-hover hover:border-surface-border-strong transition-shadow duration-fast-02 ease-productive-standard overflow-hidden focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
                 >
-                  <div className="relative aspect-[4/3] rounded-ds-md overflow-hidden border border-surface-border-subtle">
+                  <div className="relative aspect-[4/3] overflow-hidden border-b border-surface-border-subtle">
                     <img
                       src={r.image}
                       alt=""
@@ -485,11 +517,11 @@ export function PatrikaShowcase() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="flex flex-col gap-ds-01">
+                  <div className="flex flex-col gap-ds-01 p-ds-04 pt-ds-02">
                     <span className="text-ds-xs uppercase tracking-wider text-accent-11">
                       {r.kicker}
                     </span>
-                    <span className="text-ds-md text-surface-fg font-semibold group-hover:text-accent-11 transition-colors duration-fast-02 ease-productive-standard">
+                    <span className="text-ds-md text-surface-fg font-semibold line-clamp-2 group-hover:text-accent-11 transition-colors duration-fast-02 ease-productive-standard">
                       {r.title}
                     </span>
                     <span className="text-ds-xs text-surface-fg-subtle inline-flex items-center gap-ds-02">
@@ -512,20 +544,21 @@ export function PatrikaShowcase() {
                   <AvatarFallback>ML</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col min-w-0">
-                  <Text variant="body-md" className="text-surface-fg font-medium">
+                  <Text variant="body-md" className="text-surface-fg font-medium truncate">
                     Mudit Lal
                   </Text>
-                  <Text variant="body-xs" className="text-surface-fg-subtle">
+                  <Text variant="body-xs" className="text-surface-fg-subtle truncate">
                     Editor, Patrika
                   </Text>
                 </div>
               </div>
-              <Text variant="body-sm" className="text-surface-fg-muted">
+              <Text variant="body-sm" className="text-surface-fg-muted line-clamp-3">
                 Writes about design, slow media, and the small economics of independent publishing.
                 Based in Bengaluru.
               </Text>
               <Button
-                variant={following ? 'soft' : 'outline'}
+                variant="soft"
+                color="accent"
                 size="sm"
                 fullWidth
                 onClick={() => setFollowing((f) => !f)}
@@ -578,7 +611,7 @@ export function PatrikaShowcase() {
                           >
                             {entry.title}
                           </span>
-                          <span className="text-ds-xs text-surface-fg-subtle">
+                          <span className="text-ds-xs text-surface-fg-subtle truncate">
                             {entry.author} · {entry.read}
                           </span>
                         </span>
@@ -609,7 +642,7 @@ export function PatrikaShowcase() {
                 />
               </FormField>
               <Button
-                variant="soft"
+                variant="solid"
                 color="accent"
                 size="md"
                 fullWidth

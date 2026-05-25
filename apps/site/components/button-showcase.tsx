@@ -204,7 +204,7 @@ function Scene({
         <span className={CARD_EYEBROW + ' mb-0'}>{product}</span>
         <p className="text-ds-sm text-surface-fg-subtle line-clamp-2">{why}</p>
       </header>
-      <div className="rounded-ds-md bg-surface-overlay border border-surface-border-subtle p-ds-04">
+      <div className="rounded-control bg-surface-overlay border border-surface-border-subtle p-ds-04">
         {children}
       </div>
     </article>
@@ -255,7 +255,7 @@ function SceneMusic() {
       <div className="flex flex-col gap-ds-03">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
           <div className="flex items-center gap-ds-03 min-w-0">
-            <span className="w-10 h-10 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+            <span className="w-10 h-10 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
               <IconBrandSpotify size={18} />
             </span>
             <div className="flex flex-col min-w-0">
@@ -283,7 +283,7 @@ function SceneMusic() {
           controls
           preload="metadata"
           src="https://archive.org/download/24SriBhairavarKavasam/27%20Jai%20Bhairav%20Deva.mp3"
-          className="w-full rounded-ds-md"
+          className="w-full rounded-control"
         >
           Your browser does not support audio playback.
         </audio>
@@ -572,7 +572,7 @@ function DropdownLink({
   return (
     <button
       type="button"
-      className="flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-ds-sm text-left hover:bg-surface-raised-hover transition-colors duration-fast-01"
+      className="flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-control-inner text-left hover:bg-surface-raised-hover transition-colors duration-fast-01"
     >
       <span className="text-surface-fg-subtle shrink-0">{icon}</span>
       <span className="flex flex-col flex-1 min-w-0">
@@ -620,7 +620,7 @@ function SegmentedSwitch<T extends string>({
       <div
         role="tablist"
         aria-label="Options"
-        className="relative inline-flex items-center gap-ds-01 p-ds-01 rounded-ds-md bg-surface-overlay border border-surface-border-subtle"
+        className="relative inline-flex items-center gap-ds-01 p-ds-01 rounded-control bg-surface-overlay border border-surface-border-subtle"
       >
         {options.map((opt) => {
           const active = opt.id === value
@@ -632,7 +632,7 @@ function SegmentedSwitch<T extends string>({
               aria-selected={active}
               onClick={() => onChange(opt.id)}
               className={[
-                'relative z-[1] px-ds-03 py-ds-02 rounded-ds-sm text-ds-xs font-medium transition-colors duration-fast-01',
+                'relative z-[1] px-ds-03 py-ds-02 rounded-control-inner text-ds-xs font-medium transition-colors duration-fast-01',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 active ? 'text-accent-11' : 'text-surface-fg-muted hover:text-surface-fg',
               ].join(' ')}
@@ -640,7 +640,7 @@ function SegmentedSwitch<T extends string>({
               {active && (
                 <motion.span
                   layoutId={`switch-pill-${options.map((o) => o.id).join('-')}`}
-                  className="absolute inset-0 rounded-ds-sm bg-accent-3"
+                  className="absolute inset-0 rounded-control-inner bg-accent-3"
                   transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                 />
               )}

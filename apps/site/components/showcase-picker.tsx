@@ -25,7 +25,7 @@ export function ShowcasePicker({ currentSlug }: { currentSlug: string }) {
                 <span className={CARD_EYEBROW + ' mb-0'}>{e.industry.split(' · ')[0]}</span>
                 <span
                   aria-hidden
-                  className="w-4 h-4 rounded-full border border-surface-border shrink-0"
+                  className="w-4 h-4 rounded-pill border border-surface-border shrink-0"
                   style={{ background: `oklch(0.55 ${e.chroma} ${e.hue})` }}
                 />
               </header>

@@ -49,7 +49,7 @@ const FIELD: Position[] = [
 
 export function LotusShowcase() {
   return (
-    <div className="relative isolate overflow-hidden rounded-ds-lg border border-surface-border bg-surface-base h-[80vh] min-h-[44rem]">
+    <div className="relative isolate overflow-hidden rounded-surface border border-surface-border bg-surface-base h-[80vh] min-h-[44rem]">
       {/* Atmospheric aurora backdrop — soft + diffuse so the lotuses read
           ON the field, not get absorbed by it. The opacity wrapper drops
           the mesh saturation to mood-only; AuroraBloom doesn't expose an

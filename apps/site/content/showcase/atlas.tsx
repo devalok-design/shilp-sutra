@@ -229,14 +229,14 @@ export function AtlasShowcase() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-05">
           <div className="flex flex-col gap-ds-05">
             <Card>
-              <CardHeader className="flex flex-row items-start justify-between gap-ds-04">
+              <CardHeader className="flex flex-col sm:flex-row items-start sm:justify-between gap-ds-04">
                 <div className="flex flex-col gap-ds-02 min-w-0">
                   <CardDescription>Friday, May 24</CardDescription>
-                  <CardTitle>Welcome back, Mudit.</CardTitle>
-                  <Text variant="body-sm" className="text-surface-fg-muted mt-ds-01">
+                  <CardTitle className="text-balance">Welcome back, Mudit.</CardTitle>
+                  <Text variant="body-sm" className="text-surface-fg-muted mt-ds-01 text-balance max-w-prose">
                     Four projects active, 88 tasks moving. The team is mostly heads-down today.
                   </Text>
-                  <div className="mt-ds-03 w-full max-w-xs">
+                  <div className="mt-ds-03 w-full max-w-xs min-w-0">
                     <Combobox
                       options={workspaces}
                       value={workspace}
@@ -274,7 +274,7 @@ export function AtlasShowcase() {
                         </SheetDescription>
                       </SheetHeader>
                       <div className="flex flex-col gap-ds-03 py-ds-04">
-                        <div className="flex flex-col gap-ds-02 rounded-ds-md border border-surface-border-subtle bg-surface-2 p-ds-04">
+                        <div className="flex flex-col gap-ds-02 rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-04 min-w-0">
                           <Text variant="body-sm" className="text-surface-fg-subtle">Suggested name</Text>
                           <span className="text-ds-md font-semibold text-surface-fg">Discovery sprint</span>
                           <span className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
@@ -396,6 +396,7 @@ export function AtlasShowcase() {
                             layout
                             initial={{ opacity: 0, y: 4 }}
                             animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.22, ease: [0.2, 0, 0.38, 0.9] }}
                             className="flex flex-col gap-ds-02"
                           >
                             <span className="text-ds-xs uppercase tracking-wide text-surface-fg-subtle">
@@ -411,7 +412,7 @@ export function AtlasShowcase() {
                                     <AvatarFallback>{item.initials}</AvatarFallback>
                                   </Avatar>
                                   <div className="flex flex-col min-w-0 flex-1">
-                                    <span className="text-ds-sm text-surface-fg">
+                                    <span className="text-ds-sm text-surface-fg line-clamp-2">
                                       <span className="font-semibold">{item.who}</span>{' '}
                                       <span className="text-surface-fg-muted">{item.text}</span>
                                     </span>
@@ -443,11 +444,11 @@ export function AtlasShowcase() {
                             />
                           </div>
                           <div className="flex flex-col min-w-0 flex-1">
-                            <span className="text-ds-sm font-semibold text-surface-fg line-clamp-1">{m.name}</span>
-                            <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">{m.role}</span>
+                            <span className="text-ds-sm font-semibold text-surface-fg truncate">{m.name}</span>
+                            <span className="text-ds-xs text-surface-fg-subtle mt-ds-01 truncate">{m.role}</span>
                           </div>
-                          <Badge variant="soft" color="neutral" size="sm">{m.tz}</Badge>
-                          <span className="text-ds-xs text-surface-fg-subtle tabular-nums w-16 text-right">
+                          <Badge variant="soft" color="neutral" size="sm" className="shrink-0">{m.tz}</Badge>
+                          <span className="text-ds-xs text-surface-fg-subtle tabular-nums w-16 text-right shrink-0">
                             {m.lastActive}
                           </span>
                         </li>
@@ -491,10 +492,10 @@ export function AtlasShowcase() {
                         />
                       </div>
                       <div className="flex flex-col min-w-0 flex-1">
-                        <span className="text-ds-sm font-semibold text-surface-fg line-clamp-1">{m.name}</span>
-                        <span className="text-ds-xs text-surface-fg-subtle mt-ds-01 line-clamp-1">{m.role}</span>
+                        <span className="text-ds-sm font-semibold text-surface-fg truncate">{m.name}</span>
+                        <span className="text-ds-xs text-surface-fg-subtle mt-ds-01 truncate">{m.role}</span>
                       </div>
-                      <span className="text-ds-xs text-surface-fg-subtle tabular-nums">{m.tz}</span>
+                      <span className="text-ds-xs text-surface-fg-subtle tabular-nums shrink-0">{m.tz}</span>
                     </li>
                   ))}
                 </ul>
@@ -525,10 +526,10 @@ export function AtlasShowcase() {
                       key={c.name}
                       className="flex items-center gap-ds-02 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer"
                     >
-                      <IconHash size={12} className="text-surface-fg-subtle" />
-                      <span className="text-ds-sm text-surface-fg flex-1 line-clamp-1">{c.name}</span>
+                      <IconHash size={12} className="text-surface-fg-subtle shrink-0" />
+                      <span className="text-ds-sm text-surface-fg flex-1 min-w-0 truncate">{c.name}</span>
                       {c.unread > 0 && (
-                        <Badge variant="soft" color="accent" size="sm">
+                        <Badge variant="soft" color="accent" size="sm" className="shrink-0">
                           {c.unread}
                         </Badge>
                       )}

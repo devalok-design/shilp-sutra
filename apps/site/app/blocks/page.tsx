@@ -48,7 +48,7 @@ export default function BlocksIndexPage() {
                       {b.tags.slice(1).map((t) => (
                         <span
                           key={t}
-                          className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-subtle"
+                          className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-subtle"
                         >
                           {t}
                         </span>
@@ -59,7 +59,7 @@ export default function BlocksIndexPage() {
               ))}
             </ul>
 
-            <div className="rounded-ds-md border border-surface-border-subtle bg-surface-raised p-ds-06 flex flex-col gap-ds-02">
+            <div className="rounded-control border border-surface-border-subtle bg-surface-raised p-ds-06 flex flex-col gap-ds-02">
               <Text variant="label-sm" className="text-surface-fg-subtle">
                 More coming
               </Text>

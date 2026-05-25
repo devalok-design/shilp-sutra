@@ -75,7 +75,7 @@ const components: Components = {
     }
     return (
       <code
-        className="font-mono text-[0.9em] px-1.5 py-0.5 rounded-ds-sm bg-surface-overlay text-surface-fg border border-surface-border-subtle"
+        className="font-mono text-[0.9em] px-1.5 py-0.5 rounded-control-inner bg-surface-overlay text-surface-fg border border-surface-border-subtle"
         {...rest}
       >
         {children}
@@ -83,12 +83,12 @@ const components: Components = {
     )
   },
   pre: ({ children }) => (
-    <pre className="my-ds-04 px-ds-04 py-ds-04 rounded-ds-md border border-surface-border bg-surface-overlay overflow-x-auto">
+    <pre className="my-ds-04 px-ds-04 py-ds-04 rounded-control border border-surface-border bg-surface-overlay overflow-x-auto">
       {children}
     </pre>
   ),
   table: (props) => (
-    <div className="my-ds-05 overflow-x-auto rounded-ds-md border border-surface-border">
+    <div className="my-ds-05 overflow-x-auto rounded-control border border-surface-border">
       <table className="w-full text-ds-sm" {...props} />
     </div>
   ),

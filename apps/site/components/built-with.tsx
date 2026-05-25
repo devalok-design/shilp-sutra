@@ -96,12 +96,12 @@ export function BuiltWith() {
                     width={32}
                     height={32}
                     loading="lazy"
-                    className="rounded-ds-sm shrink-0 border border-surface-border-subtle"
+                    className="rounded-control-inner shrink-0 border border-surface-border-subtle"
                   />
                 ) : (
                   <span
                     aria-hidden
-                    className="w-8 h-8 rounded-ds-sm bg-surface-overlay border border-surface-border-subtle text-surface-fg-subtle flex items-center justify-center shrink-0"
+                    className="w-8 h-8 rounded-control-inner bg-surface-overlay border border-surface-border-subtle text-surface-fg-subtle flex items-center justify-center shrink-0"
                   >
                     <IconLock size={14} />
                   </span>

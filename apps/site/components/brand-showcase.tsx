@@ -55,7 +55,7 @@ export function BrandShowcase() {
               <span className={CARD_EYEBROW + ' mb-0'}>{b.industry}</span>
               <span
                 aria-hidden
-                className="w-5 h-5 rounded-full border border-surface-border shrink-0"
+                className="w-5 h-5 rounded-pill border border-surface-border shrink-0"
                 style={{ background: `oklch(0.55 ${b.chroma} ${b.hue})` }}
               />
             </header>

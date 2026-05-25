@@ -62,7 +62,7 @@ export default function Page() {
           />
         </div>
 
-        <div className="rounded-ds-md border border-surface-border bg-surface-raised p-ds-06 flex flex-col gap-ds-04">
+        <div className="rounded-control border border-surface-border bg-surface-raised p-ds-06 flex flex-col gap-ds-04">
           <Text variant="label-sm" className="text-surface-fg-subtle">
             On a specific framework?
           </Text>
@@ -74,7 +74,7 @@ export default function Page() {
               <li key={fw.slug}>
                 <Link
                   href={`/docs/${fw.slug}`}
-                  className="flex items-center justify-between gap-ds-03 rounded-ds-sm px-ds-04 py-ds-03 hover:bg-surface-raised-hover transition-colors duration-fast-01 group"
+                  className="flex items-center justify-between gap-ds-03 rounded-control-inner px-ds-04 py-ds-03 hover:bg-surface-raised-hover transition-colors duration-fast-01 group"
                 >
                   <Text variant="body-sm" className="text-surface-fg group-hover:text-surface-fg">
                     {fw.name}

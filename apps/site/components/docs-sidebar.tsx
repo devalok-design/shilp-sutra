@@ -68,7 +68,7 @@ export function DocsSidebar({
                 setOpenMap((m) => ({ ...m, [group.key]: !m[group.key] }))
               }
               className={[
-                'flex items-center justify-between gap-ds-02 px-ds-03 py-ds-02 rounded-ds-sm text-left',
+                'flex items-center justify-between gap-ds-02 px-ds-03 py-ds-02 rounded-control-inner text-left',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 isDesktop
                   ? 'cursor-default'
@@ -98,7 +98,7 @@ export function DocsSidebar({
                       <Link
                         href={`/docs/${doc.slug}`}
                         className={[
-                          'block px-ds-03 py-ds-02 rounded-ds-sm text-ds-sm transition-colors duration-fast-01',
+                          'block px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
                           isActive
                             ? 'bg-accent-3 text-accent-11 font-medium'
                             : 'text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg',

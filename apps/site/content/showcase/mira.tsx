@@ -181,12 +181,13 @@ export function MiraShowcase() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-ds-06">
           {/* Hero photograph + colour wash */}
-          <div className="relative rounded-ds-md overflow-hidden border border-surface-border-subtle min-h-[480px] flex items-end isolate">
+          <div className="relative rounded-surface overflow-hidden border border-surface-border-subtle min-h-[480px] aspect-[4/5] sm:aspect-auto flex items-end isolate shadow-raised">
             <img
               src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=900&q=80"
               alt="Hand-spun cotton kurta, photographed in Bangalore studio"
               className="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
+              loading="eager"
+              decoding="async"
             />
             <AnimatePresence initial={false}>
               <motion.div
@@ -203,27 +204,34 @@ export function MiraShowcase() {
               />
             </AnimatePresence>
 
-            <div className="relative z-[1] p-ds-05 flex items-end justify-between w-full text-surface-fg-inverted">
-              <div className="flex flex-col gap-ds-02">
+            <div className="relative z-[1] p-ds-05 flex items-end justify-between gap-ds-03 w-full text-surface-fg-inverted">
+              <div className="flex flex-col gap-ds-02 min-w-0 flex-1">
                 <Badge variant="solid" color="accent" size="sm">
-                  Slow-made · {activeColour.name}
+                  <span className="truncate">Slow-made · {activeColour.name}</span>
                 </Badge>
-                <span className="text-ds-xs text-surface-fg-inverted/80">{activeColour.story}</span>
+                <span className="text-ds-xs text-surface-fg-inverted/80 line-clamp-2">{activeColour.story}</span>
               </div>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-md"
-                    aria-label={favourite ? 'Saved to your shelf' : 'Save to your shelf'}
-                    aria-pressed={favourite}
-                    onClick={toggleFavourite}
+                  <motion.span
+                    key={favourite ? 'on' : 'off'}
+                    animate={favourite ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    className="inline-flex shrink-0"
                   >
-                    <IconHeart
-                      size={20}
-                      className={favourite ? 'fill-accent-9 text-accent-9' : 'text-surface-fg-inverted'}
-                    />
-                  </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-md"
+                      aria-label={favourite ? 'Saved to your shelf' : 'Save to your shelf'}
+                      aria-pressed={favourite}
+                      onClick={toggleFavourite}
+                    >
+                      <IconHeart
+                        size={20}
+                        className={favourite ? 'fill-accent-9 text-accent-9' : 'text-surface-fg-inverted'}
+                      />
+                    </Button>
+                  </motion.span>
                 </TooltipTrigger>
                 <TooltipContent>{favourite ? 'Saved' : 'Save to your shelf'}</TooltipContent>
               </Tooltip>
@@ -254,7 +262,7 @@ export function MiraShowcase() {
                   <TooltipContent>Fair Trade certified weavers</TooltipContent>
                 </Tooltip>
               </div>
-              <Text variant="heading-xl" className="text-surface-fg">
+              <Text variant="heading-xl" className="text-surface-fg text-balance">
                 The khadi shirt, in{' '}
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span
@@ -269,11 +277,11 @@ export function MiraShowcase() {
                   </motion.span>
                 </AnimatePresence>
               </Text>
-              <div className="flex items-center gap-ds-03 mt-ds-01">
-                <Text variant="heading-md" className="text-surface-fg">
+              <div className="flex items-center flex-wrap gap-ds-03 mt-ds-01">
+                <Text variant="heading-md" className="text-surface-fg tabular-nums">
                   ₹4,800
                 </Text>
-                <Text variant="body-sm" className="text-surface-fg-subtle">
+                <Text variant="body-sm" className="text-surface-fg-subtle tabular-nums">
                   / $58 USD
                 </Text>
                 <Badge variant="soft" color="success" size="sm">
@@ -281,15 +289,25 @@ export function MiraShowcase() {
                 </Badge>
               </div>
               <div className="flex items-center gap-ds-02 text-ds-xs text-surface-fg-muted mt-ds-01">
-                <span className="inline-flex items-center gap-ds-01">
+                <span
+                  className="inline-flex items-center gap-ds-01"
+                  role="img"
+                  aria-label="4.8 out of 5 stars"
+                >
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <IconStarFilled key={i} size={11} className={i < 4 ? 'text-accent-9' : 'text-surface-border'} />
+                    <IconStarFilled
+                      key={i}
+                      size={11}
+                      aria-hidden
+                      className={i < 4 ? 'text-accent-9' : 'text-surface-border'}
+                    />
                   ))}
                 </span>
-                <span>4.8 · 312 reviews</span>
-                <span className="text-surface-border">·</span>
+                <span className="tabular-nums">4.8 · 312 reviews</span>
+                <span className="sr-only">Based on 312 verified customer reviews.</span>
+                <span className="text-surface-border" aria-hidden>·</span>
                 <span className="inline-flex items-center gap-ds-01">
-                  <IconMapPin size={11} /> Ships from Bangalore
+                  <IconMapPin size={11} aria-hidden /> Ships from Bangalore
                 </span>
               </div>
             </header>
@@ -299,7 +317,7 @@ export function MiraShowcase() {
               <Text variant="label-sm" className="text-surface-fg-muted">
                 Colour · <span className="text-surface-fg">{activeColour.name}</span>
               </Text>
-              <div className="flex items-center gap-ds-03">
+              <div className="flex items-center gap-ds-03 overflow-x-auto pb-ds-01 -mx-ds-01 px-ds-01 [scrollbar-width:thin]">
                 {COLOURS.map((c) => {
                   const active = c.id === colour
                   return (
@@ -310,7 +328,7 @@ export function MiraShowcase() {
                           aria-label={`${c.name}: ${c.story}`}
                           aria-pressed={active}
                           onClick={() => setColour(c.id)}
-                          className="relative w-9 h-9 rounded-full border border-surface-border-subtle transition-transform duration-fast-01 hover:scale-105 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
+                          className="relative w-9 h-9 shrink-0 rounded-full border border-surface-border-subtle transition-transform duration-fast-01 hover:scale-105 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
                           style={{ background: c.value }}
                         >
                           {active && (
@@ -422,22 +440,22 @@ export function MiraShowcase() {
                         return (
                           <div
                             key={i}
-                            className="flex items-center gap-ds-03 p-ds-03 rounded-ds-md border border-surface-border-subtle"
+                            className="flex items-center gap-ds-03 p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2"
                           >
                             <span
-                              className="w-10 h-10 rounded-ds-sm shrink-0 border border-surface-border-subtle"
+                              className="w-10 h-10 rounded-control shrink-0 border border-surface-border-subtle"
                               style={{ background: lineColour.value }}
                               aria-hidden
                             />
                             <div className="flex flex-col flex-1 min-w-0">
-                              <span className="text-ds-sm text-surface-fg font-semibold line-clamp-1">
+                              <span className="text-ds-sm text-surface-fg font-semibold truncate">
                                 Mira · {lineColour.name}
                               </span>
-                              <span className="text-ds-xs text-surface-fg-subtle line-clamp-1">
+                              <span className="text-ds-xs text-surface-fg-subtle truncate">
                                 Size {line.size} · {lineBlend.label}
                               </span>
                             </div>
-                            <span className="text-ds-sm text-surface-fg">₹4,800</span>
+                            <span className="text-ds-sm text-surface-fg tabular-nums shrink-0">₹4,800</span>
                           </div>
                         )
                       })
@@ -448,7 +466,7 @@ export function MiraShowcase() {
                           <Text variant="label-sm" className="text-surface-fg-muted">
                             Subtotal
                           </Text>
-                          <Text variant="heading-sm" className="text-surface-fg">
+                          <Text variant="heading-sm" className="text-surface-fg tabular-nums">
                             ₹{(cart.length * 4800).toLocaleString('en-IN')}
                           </Text>
                         </div>
@@ -484,7 +502,7 @@ export function MiraShowcase() {
 
           <TabsContent value="description" className="pt-ds-04">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-05">
-              <Text variant="body-md" className="text-surface-fg-muted">
+              <Text variant="body-md" className="text-surface-fg-muted max-w-prose">
                 A hand-spun cotton kurta cut for the long Indian summer. The warp is mill-spun Pollachi
                 cotton; the weft is khadi yarn spun on a Channapatna charkha. Mandarin collar, side-vent
                 hemline, mother-of-pearl buttons. Each piece softens with every wash and holds its colour
@@ -533,31 +551,36 @@ export function MiraShowcase() {
                   <Avatar size="md">
                     <AvatarFallback colorSeed={r.name}>{r.initials}</AvatarFallback>
                   </Avatar>
-                  <div className="flex flex-col gap-ds-01 flex-1">
-                    <div className="flex items-center gap-ds-02 flex-wrap">
-                      <span className="text-ds-md text-surface-fg font-semibold">{r.name}</span>
+                  <div className="flex flex-col gap-ds-01 flex-1 min-w-0">
+                    <div className="flex items-center gap-ds-02 flex-wrap min-w-0">
+                      <span className="text-ds-md text-surface-fg font-semibold truncate max-w-[14ch]">{r.name}</span>
                       <Badge variant="soft" color="success" size="xs">
-                        <IconCheck size={10} className="mr-ds-01" />
+                        <IconCheck size={10} className="mr-ds-01" aria-hidden />
                         Verified buyer
                       </Badge>
-                      <span className="text-ds-xs text-surface-fg-subtle">· {r.location}</span>
+                      <span className="text-ds-xs text-surface-fg-subtle truncate">· {r.location}</span>
                     </div>
                     <div className="flex items-center gap-ds-02">
-                      <span className="inline-flex items-center gap-ds-01">
+                      <span
+                        className="inline-flex items-center gap-ds-01"
+                        role="img"
+                        aria-label={`${r.rating} out of 5 stars`}
+                      >
                         {Array.from({ length: 5 }).map((_, i) => (
                           <IconStarFilled
                             key={i}
                             size={11}
+                            aria-hidden
                             className={i < r.rating ? 'text-accent-9' : 'text-surface-border'}
                           />
                         ))}
                       </span>
-                      <span className="text-ds-xs text-surface-fg-subtle">{r.daysAgo} days ago</span>
+                      <span className="text-ds-xs text-surface-fg-subtle tabular-nums">{r.daysAgo} days ago</span>
                     </div>
-                    <Text variant="body-md" className="text-surface-fg font-semibold mt-ds-01">
+                    <Text variant="body-md" className="text-surface-fg font-semibold mt-ds-01 text-balance">
                       {r.title}
                     </Text>
-                    <Text variant="body-sm" className="text-surface-fg-muted">
+                    <Text variant="body-sm" className="text-surface-fg-muted line-clamp-3 max-w-prose">
                       {r.body}
                     </Text>
                   </div>
@@ -574,19 +597,20 @@ export function MiraShowcase() {
               <img
                 src="https://images.unsplash.com/photo-1604608672516-f1b9b1d1f5e8?auto=format&fit=crop&w=700&q=80"
                 alt="A weaver at a pit loom in Channapatna"
-                className="rounded-ds-md border border-surface-border-subtle w-full"
+                className="rounded-surface border border-surface-border-subtle w-full aspect-[4/5] object-cover"
                 loading="lazy"
+                decoding="async"
               />
               <div className="flex flex-col gap-ds-03">
-                <Text variant="heading-sm" className="text-surface-fg">
+                <Text variant="heading-sm" className="text-surface-fg text-balance">
                   Three hands made this piece.
                 </Text>
-                <Text variant="body-md" className="text-surface-fg-muted">
+                <Text variant="body-md" className="text-surface-fg-muted max-w-prose">
                   The yarn is spun by Lakshmi on a charkha in Channapatna, woven by Murugan at a pit loom
                   the next village over, and dyed by the Singh family in Sanganer. We pay each step on
                   per-piece rates the artisan sets, and we publish the breakdown on every order receipt.
                 </Text>
-                <Text variant="body-md" className="text-surface-fg-muted">
+                <Text variant="body-md" className="text-surface-fg-muted max-w-prose">
                   Mira is named after Mira Behn, who spent her life learning to spin so she could teach
                   others. The everyday kurta is our version of that practice: one shirt, made slowly, for
                   the next ten years of your wardrobe.
@@ -597,26 +621,26 @@ export function MiraShowcase() {
 
           <TabsContent value="shipping" className="pt-ds-04">
             <div className="flex flex-col gap-ds-03">
-              <Text variant="body-md" className="text-surface-fg-muted">
+              <Text variant="body-md" className="text-surface-fg-muted max-w-prose">
                 Hand-finished and shipped from our studio in Bangalore. Wrapped in unbleached khadi and a
                 recycled-card box. Tracked, signed, and carbon-offset on the courier leg.
               </Text>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-ds-03 text-ds-sm">
-                <li className="p-ds-03 rounded-ds-md border border-surface-border-subtle">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 shadow-raised">
                   <div className="text-surface-fg font-semibold">India</div>
-                  <div className="text-surface-fg-muted">3 working days · free over ₹2,500</div>
+                  <div className="text-surface-fg-muted tabular-nums">3 working days · free over ₹2,500</div>
                 </li>
-                <li className="p-ds-03 rounded-ds-md border border-surface-border-subtle">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 shadow-raised">
                   <div className="text-surface-fg font-semibold">USA · UK · EU</div>
-                  <div className="text-surface-fg-muted">7-9 working days · flat $14 · DDP</div>
+                  <div className="text-surface-fg-muted tabular-nums">7-9 working days · flat $14 · DDP</div>
                 </li>
-                <li className="p-ds-03 rounded-ds-md border border-surface-border-subtle">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 shadow-raised">
                   <div className="text-surface-fg font-semibold">Singapore · Australia</div>
-                  <div className="text-surface-fg-muted">5-7 working days · flat $14</div>
+                  <div className="text-surface-fg-muted tabular-nums">5-7 working days · flat $14</div>
                 </li>
-                <li className="p-ds-03 rounded-ds-md border border-surface-border-subtle">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 shadow-raised">
                   <div className="text-surface-fg font-semibold">Rest of world</div>
-                  <div className="text-surface-fg-muted">10-14 working days · flat $22</div>
+                  <div className="text-surface-fg-muted tabular-nums">10-14 working days · flat $22</div>
                 </li>
               </ul>
             </div>
@@ -636,8 +660,14 @@ export function MiraShowcase() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-ds-04">
             {RELATED.map((r) => (
               <Card key={r.name} interactive size="sm">
-                <div className="relative h-40 rounded-t-ds-md overflow-hidden -m-ds-04 mb-ds-03 border-b border-surface-border-subtle">
-                  <img src={r.img} alt={r.name} className="w-full h-full object-cover" loading="lazy" />
+                <div className="relative aspect-[4/3] rounded-t-ds-md overflow-hidden -m-ds-04 mb-ds-03 border-b border-surface-border-subtle">
+                  <img
+                    src={r.img}
+                    alt={r.name}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   {r.tag && (
                     <div className="absolute top-ds-02 left-ds-02">
                       <Badge variant="solid" color="accent" size="xs">
@@ -646,13 +676,13 @@ export function MiraShowcase() {
                     </div>
                   )}
                 </div>
-                <CardHeader className="p-0">
-                  <CardTitle className="text-[length:var(--typo-heading-sm-size)]">{r.name}</CardTitle>
-                  <CardDescription>{r.sub}</CardDescription>
+                <CardHeader className="p-0 min-w-0">
+                  <CardTitle className="text-[length:var(--typo-heading-sm-size)] truncate">{r.name}</CardTitle>
+                  <CardDescription className="line-clamp-2">{r.sub}</CardDescription>
                 </CardHeader>
-                <CardContent className="p-0 pt-ds-03 flex items-center justify-between">
-                  <span className="text-ds-sm text-surface-fg font-semibold">{r.inr}</span>
-                  <span className="text-ds-xs text-surface-fg-subtle">{r.usd}</span>
+                <CardContent className="p-0 pt-ds-03 flex items-center justify-between gap-ds-02 min-w-0">
+                  <span className="text-ds-sm text-surface-fg font-semibold tabular-nums truncate">{r.inr}</span>
+                  <span className="text-ds-xs text-surface-fg-subtle tabular-nums shrink-0">{r.usd}</span>
                 </CardContent>
               </Card>
             ))}

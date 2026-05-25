@@ -49,7 +49,7 @@ export function FeatureGrid() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-06">
           {features.map((f) => (
             <article key={f.title} className={CARD_RESTING + ' flex flex-col gap-ds-03'}>
-              <div className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center">
                 <f.icon size={18} />
               </div>
               <h3 className="text-ds-md text-surface-fg font-semibold">{f.title}</h3>

@@ -137,7 +137,7 @@ export default function DocsIndexPage() {
               <DocsSection eyebrow="Troubleshoot" title="When things break." items={TROUBLESHOOT} />
             </div>
 
-            <section className="rounded-ds-md border border-surface-border-subtle bg-surface-raised p-ds-06 flex flex-col gap-ds-03">
+            <section className="rounded-control border border-surface-border-subtle bg-surface-raised p-ds-06 flex flex-col gap-ds-03">
               <div className="flex items-center gap-ds-02">
                 <IconCode size={16} className="text-surface-fg-subtle" />
                 <Text variant="label-sm" className="text-surface-fg-subtle">
@@ -196,7 +196,7 @@ function DocLinkCard({ item }: { item: DocCard }) {
         className={CARD_INTERACTIVE + ' flex flex-col gap-ds-03 h-full'}
       >
         <div className="flex items-start justify-between gap-ds-03">
-          <span className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+          <span className="w-9 h-9 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
             <item.Icon size={18} />
           </span>
           <IconArrowRight

@@ -83,13 +83,13 @@ export function LandingSurface() {
         </Text>
       </header>
 
-      <div className="rounded-ds-md border border-surface-border bg-surface-base overflow-hidden">
+      <div className="rounded-control border border-surface-border bg-surface-base overflow-hidden">
         <div className="flex items-center justify-between gap-ds-03 px-ds-05 py-ds-03 bg-surface-raised border-b border-surface-border-subtle">
           <div className="flex items-center gap-ds-02">
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-error-9" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning-9" />
-              <span className="w-2.5 h-2.5 rounded-full bg-success-9" />
+              <span className="w-2.5 h-2.5 rounded-pill bg-error-9" />
+              <span className="w-2.5 h-2.5 rounded-pill bg-warning-9" />
+              <span className="w-2.5 h-2.5 rounded-pill bg-success-9" />
             </span>
             <Text variant="label-sm" className="text-surface-fg-subtle ml-ds-02">
               shilp-sutra · live
@@ -97,7 +97,7 @@ export function LandingSurface() {
           </div>
           <Badge variant="soft" color="success" size="sm">
             <span className="inline-flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-success-9 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-pill bg-success-9 animate-pulse" />
               streaming
             </span>
           </Badge>
@@ -148,7 +148,7 @@ export function LandingSurface() {
                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                         transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                         className={[
-                          'flex items-start gap-ds-03 px-ds-03 -mx-ds-03 py-ds-03 rounded-ds-md border-b border-surface-border-subtle last:border-b-0',
+                          'flex items-start gap-ds-03 px-ds-03 -mx-ds-03 py-ds-03 rounded-control border-b border-surface-border-subtle last:border-b-0',
                           'hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard',
                           a.isNew && 'border-l-2 border-l-accent-9 pl-ds-03 bg-accent-2',
                         ]
@@ -195,7 +195,7 @@ export function LandingSurface() {
                         <Avatar size="sm">
                           <AvatarFallback>{m.initials}</AvatarFallback>
                         </Avatar>
-                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-success-9 border-2 border-surface-base" />
+                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-pill bg-success-9 border-2 border-surface-base" />
                       </span>
                       <div className="flex flex-col min-w-0">
                         <Text variant="body-sm" className="text-surface-fg truncate">
@@ -266,8 +266,8 @@ function Tick({
   hint: string
 }) {
   return (
-    <li className="group/row flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer">
-      <span className="w-8 h-8 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+    <li className="group/row flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-control hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard cursor-pointer">
+      <span className="w-8 h-8 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
         <Icon size={14} />
       </span>
       <div className="flex flex-col flex-1 min-w-0">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
@@ -137,7 +137,7 @@ function MetricTile({
           <TooltipContent>{tooltip}</TooltipContent>
         </Tooltip>
       </div>
-      <Text variant="heading-md" className="text-surface-fg">
+      <Text variant="heading-md" className="text-surface-fg text-balance tabular-nums">
         {value}
       </Text>
       {hint ? (
@@ -152,6 +152,16 @@ function MetricTile({
 export function LendisShowcase() {
   const [txns, setTxns] = useState<Txn[]>(initialTxns)
   const [filter, setFilter] = useState<'all' | 'credit' | 'debit' | 'pending' | 'failed'>('all')
+
+  // Clear the "just now" highlight a beat after insertion so the accent tint
+  // doesn't linger. AnimatePresence on the badge handles the fade.
+  useEffect(() => {
+    if (!txns.some((t) => t.isNew)) return
+    const id = window.setTimeout(() => {
+      setTxns((rows) => rows.map((r) => (r.isNew ? { ...r, isNew: false } : r)))
+    }, 2400)
+    return () => window.clearTimeout(id)
+  }, [txns])
 
   const [beneficiary, setBeneficiary] = useState('yogin')
   const [purpose, setPurpose] = useState('salary')
@@ -215,12 +225,23 @@ export function LendisShowcase() {
             </span>
             <div className="flex flex-col min-w-0">
               <span className="text-ds-sm text-surface-fg font-semibold truncate inline-flex items-center gap-ds-02">
-                {t.party}
-                {t.isNew ? (
-                  <Badge variant="soft" color="accent" size="sm">
-                    just now
-                  </Badge>
-                ) : null}
+                <span className="truncate">{t.party}</span>
+                <AnimatePresence initial={false}>
+                  {t.isNew ? (
+                    <motion.span
+                      key="just-now"
+                      initial={{ opacity: 0, scale: 0.92 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.92 }}
+                      transition={{ duration: 0.22, ease: 'easeOut' }}
+                      className="shrink-0"
+                    >
+                      <Badge variant="soft" color="accent" size="sm">
+                        just now
+                      </Badge>
+                    </motion.span>
+                  ) : null}
+                </AnimatePresence>
               </span>
               <span className="text-ds-xs text-surface-fg-subtle truncate">{t.ref}</span>
             </div>
@@ -297,7 +318,7 @@ export function LendisShowcase() {
                     <CardDescription className="inline-flex items-center gap-ds-02">
                       <IconBuildingBank size={14} aria-hidden /> Operating account · IDFC First Bank
                     </CardDescription>
-                    <CardTitle className="text-ds-2xl">Lendis · Series A working capital</CardTitle>
+                    <CardTitle className="text-ds-2xl text-balance">Lendis · Series A working capital</CardTitle>
                   </div>
                   <div className="flex items-center gap-ds-02">
                     <Badge variant="soft" color="accent">
@@ -310,7 +331,7 @@ export function LendisShowcase() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-ds-03">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-ds-03">
                   <MetricTile
                     label="Credit line"
                     value="₹2,50,00,000"
@@ -422,7 +443,7 @@ export function LendisShowcase() {
                   />
                 </FormField>
 
-                <div className="flex items-center gap-ds-03 p-ds-03 rounded-ds-md bg-surface-2 border border-surface-border-subtle">
+                <div className="flex items-center gap-ds-03 p-ds-03 rounded-ds-md bg-surface-2 border border-surface-border-subtle min-w-0">
                   <Avatar size="sm">
                     <AvatarFallback>
                       {beneficiaries.find((b) => b.value === beneficiary)?.label.slice(0, 2).toUpperCase() ?? 'YS'}
@@ -480,12 +501,13 @@ export function LendisShowcase() {
                 <AnimatePresence initial={false}>
                   {reviewOpen ? (
                     <motion.div
+                      key="review-panel"
                       layout
                       initial={{ opacity: 0, y: -8, height: 0 }}
                       animate={{ opacity: 1, y: 0, height: 'auto' }}
                       exit={{ opacity: 0, y: -8, height: 0 }}
-                      transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-                      className="flex flex-col gap-ds-03 p-ds-04 rounded-ds-md border border-accent-7 bg-accent-2"
+                      transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                      className="flex flex-col gap-ds-03 p-ds-04 rounded-ds-md border border-accent-7 bg-accent-2 shadow-overlay"
                     >
                       <div className="flex items-center justify-between">
                         <Text variant="label-md" className="text-surface-fg font-semibold">
@@ -497,19 +519,19 @@ export function LendisShowcase() {
                       </div>
                       <dl className="grid grid-cols-2 gap-ds-02 text-ds-xs">
                         <dt className="text-surface-fg-subtle">To</dt>
-                        <dd className="text-surface-fg text-right truncate">
+                        <dd className="text-surface-fg text-right truncate min-w-0">
                           {beneficiaries.find((b) => b.value === beneficiary)?.label.split(' · ')[0]}
                         </dd>
                         <dt className="text-surface-fg-subtle">Amount</dt>
-                        <dd className="text-surface-fg text-right font-semibold tabular-nums">
+                        <dd className="text-surface-fg text-right font-semibold tabular-nums min-w-0">
                           ₹{amountNum.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </dd>
                         <dt className="text-surface-fg-subtle">Purpose</dt>
-                        <dd className="text-surface-fg text-right">
+                        <dd className="text-surface-fg text-right truncate min-w-0">
                           {purposes.find((p) => p.value === purpose)?.label}
                         </dd>
                         <dt className="text-surface-fg-subtle">Settlement</dt>
-                        <dd className="text-surface-fg text-right">
+                        <dd className="text-surface-fg text-right truncate min-w-0">
                           {amountNum > 200000 ? 'Within 2 banking hours' : 'Near-instant'}
                         </dd>
                       </dl>

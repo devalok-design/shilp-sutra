@@ -164,7 +164,7 @@ export function ThemingEditor() {
                   type="button"
                   onClick={() => pickPreset(p.hue, p.chroma)}
                   className={[
-                    'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-md border text-ds-xs transition-colors duration-fast-01',
+                    'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control border text-ds-xs transition-colors duration-fast-01',
                     isActive
                       ? 'border-accent-9 bg-accent-3 text-accent-11'
                       : 'border-surface-border-subtle bg-surface-raised text-surface-fg-muted hover:border-surface-border',
@@ -172,7 +172,7 @@ export function ThemingEditor() {
                 >
                   <span
                     aria-hidden
-                    className="w-3 h-3 rounded-full"
+                    className="w-3 h-3 rounded-pill"
                     style={{ background: `oklch(0.55 ${p.chroma} ${p.hue})` }}
                   />
                   {p.name}
@@ -186,7 +186,7 @@ export function ThemingEditor() {
           <Text variant="label-sm" className="text-surface-fg-subtle">
             12-step ramp (light)
           </Text>
-          <div className="grid grid-cols-12 gap-1 h-12 rounded-ds-md overflow-hidden border border-surface-border-subtle">
+          <div className="grid grid-cols-12 gap-1 h-12 rounded-control overflow-hidden border border-surface-border-subtle">
             {ramp.light.map((s) => (
               <div
                 key={`l-${s.step}`}
@@ -199,7 +199,7 @@ export function ThemingEditor() {
           <Text variant="label-sm" className="text-surface-fg-subtle">
             12-step ramp (dark)
           </Text>
-          <div className="grid grid-cols-12 gap-1 h-12 rounded-ds-md overflow-hidden border border-surface-border-subtle">
+          <div className="grid grid-cols-12 gap-1 h-12 rounded-control overflow-hidden border border-surface-border-subtle">
             {ramp.dark.map((s) => (
               <div
                 key={`d-${s.step}`}
@@ -228,7 +228,7 @@ export function ThemingEditor() {
           </Text>
         </header>
 
-        <div className="flex flex-col gap-ds-05 p-ds-06 rounded-ds-md bg-surface-raised border border-surface-border-subtle">
+        <div className="flex flex-col gap-ds-05 p-ds-06 rounded-control bg-surface-raised border border-surface-border-subtle">
           <div className="flex flex-wrap items-center gap-ds-02">
             <Button>Solid</Button>
             <Button variant="soft">Soft</Button>
@@ -250,11 +250,11 @@ export function ThemingEditor() {
             <input
               type="email"
               placeholder="namaskar@devalok.in"
-              className="w-full h-ds-md px-ds-04 rounded-ds-md border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
+              className="w-full h-ds-md px-ds-04 rounded-control border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
             />
           </div>
 
-          <div className="rounded-ds-md border border-accent-7 bg-accent-2 p-ds-05">
+          <div className="rounded-control border border-accent-7 bg-accent-2 p-ds-05">
             <Text variant="label-sm" className="text-accent-11">
               Brand-tinted notice
             </Text>
@@ -279,7 +279,7 @@ export function ThemingEditor() {
               {copied ? 'Copied' : 'Copy'}
             </Button>
           </div>
-          <pre className="px-ds-04 py-ds-04 rounded-ds-md border border-surface-border bg-surface-overlay overflow-x-auto text-ds-xs font-mono leading-relaxed text-surface-fg whitespace-pre max-h-96">
+          <pre className="px-ds-04 py-ds-04 rounded-control border border-surface-border bg-surface-overlay overflow-x-auto text-ds-xs font-mono leading-relaxed text-surface-fg whitespace-pre max-h-96">
             <code>{css}</code>
           </pre>
           <Text variant="body-xs" className="text-surface-fg-subtle">
@@ -329,7 +329,7 @@ function SliderField({
         step={step}
         value={value}
         onChange={(e) => onChange(Number.parseFloat(e.target.value))}
-        className="w-full h-3 sm:h-2 appearance-none rounded-full cursor-pointer touch-none outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 sm:[&::-webkit-slider-thumb]:w-4 sm:[&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-surface-overlay [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface-fg [&::-webkit-slider-thumb]:shadow-raised [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6 sm:[&::-moz-range-thumb]:w-4 sm:[&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-surface-overlay [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-surface-fg"
+        className="w-full h-3 sm:h-2 appearance-none rounded-pill cursor-pointer touch-none outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 sm:[&::-webkit-slider-thumb]:w-4 sm:[&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-pill [&::-webkit-slider-thumb]:bg-surface-overlay [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface-fg [&::-webkit-slider-thumb]:shadow-raised [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6 sm:[&::-moz-range-thumb]:w-4 sm:[&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-pill [&::-moz-range-thumb]:bg-surface-overlay [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-surface-fg"
         style={{ background: track }}
       />
     </label>

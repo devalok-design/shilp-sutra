@@ -43,7 +43,7 @@ export function PreviewCodeTabs({
           <div
             role="tablist"
             aria-label="View"
-            className="relative inline-flex items-center gap-ds-01 p-ds-01 rounded-ds-md bg-surface-raised border border-surface-border-subtle"
+            className="relative inline-flex items-center gap-ds-01 p-ds-01 rounded-control bg-surface-raised border border-surface-border-subtle"
           >
             {(['preview', 'code'] as const).map((id) => {
               const active = tab === id
@@ -57,7 +57,7 @@ export function PreviewCodeTabs({
                   disabled={disabled}
                   onClick={() => setTab(id)}
                   className={[
-                    'relative z-[1] inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-sm text-ds-sm transition-colors duration-fast-01',
+                    'relative z-[1] inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
                     'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                     disabled && 'opacity-40 cursor-not-allowed',
                     active && !disabled ? 'text-surface-fg' : 'text-surface-fg-muted hover:text-surface-fg',
@@ -68,7 +68,7 @@ export function PreviewCodeTabs({
                   {active && (
                     <motion.span
                       layoutId="preview-code-tab-pill"
-                      className="absolute inset-0 rounded-ds-sm bg-surface-overlay shadow-raised"
+                      className="absolute inset-0 rounded-control-inner bg-surface-overlay shadow-raised"
                       transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
@@ -95,11 +95,11 @@ export function PreviewCodeTabs({
       </div>
 
       {tab === 'preview' ? (
-        <div className="p-ds-08 rounded-ds-md border border-surface-border bg-surface-base">
+        <div className="p-ds-08 rounded-control border border-surface-border bg-surface-base">
           {preview}
         </div>
       ) : (
-        <pre className="rounded-ds-md border border-surface-border bg-surface-overlay overflow-x-auto p-ds-05 text-ds-sm font-mono leading-relaxed text-surface-fg whitespace-pre">
+        <pre className="rounded-control border border-surface-border bg-surface-overlay overflow-x-auto p-ds-05 text-ds-sm font-mono leading-relaxed text-surface-fg whitespace-pre">
           <code>{code}</code>
         </pre>
       )}

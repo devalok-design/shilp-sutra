@@ -10,9 +10,9 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 export function AgentCallout() {
   return (
     <section className="mx-auto max-w-4xl px-page-x py-ds-12">
-      <div className="rounded-ds-lg border border-accent-7 bg-accent-2 p-ds-08 flex flex-col gap-ds-05">
+      <div className="rounded-surface border border-accent-7 bg-accent-2 p-ds-08 flex flex-col gap-ds-05">
         <header className="flex items-start gap-ds-04">
-          <div className="w-10 h-10 rounded-ds-sm bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-control-inner bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
             <IconSparkles size={20} />
           </div>
           <div className="flex flex-col">

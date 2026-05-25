@@ -62,7 +62,7 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search 119 components…"
             aria-label="Search components"
-            className="w-full h-ds-md pl-[2.5rem] pr-ds-04 rounded-ds-lg border border-surface-border bg-surface-raised text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
+            className="w-full h-ds-md pl-[2.5rem] pr-ds-04 rounded-surface border border-surface-border bg-surface-raised text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
           />
         </div>
         <div role="tablist" aria-label="Filter by group" className="flex items-center gap-ds-01 flex-wrap">
@@ -76,7 +76,7 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
                 aria-selected={isActive}
                 onClick={() => setActiveLayer(layer)}
                 className={[
-                  'px-ds-04 py-ds-02 rounded-ds-md text-ds-sm font-medium transition-colors duration-fast-01',
+                  'px-ds-04 py-ds-02 rounded-control text-ds-sm font-medium transition-colors duration-fast-01',
                   isActive
                     ? 'bg-accent-3 text-accent-11'
                     : 'text-surface-fg-muted hover:bg-surface-raised-hover',
@@ -91,7 +91,7 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
       </div>
 
       {activeLayer !== 'all' && (
-        <div className="px-ds-04 py-ds-03 rounded-ds-sm bg-surface-raised border border-surface-border-subtle">
+        <div className="px-ds-04 py-ds-03 rounded-control-inner bg-surface-raised border border-surface-border-subtle">
           <Text variant="body-sm" className="text-surface-fg-muted">
             {LAYER_TAGLINE[activeLayer]}
           </Text>
@@ -118,11 +118,11 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
                 </div>
                 <code className="text-ds-xs font-mono text-surface-fg-subtle truncate">{item.importPath}</code>
                 <div className="flex flex-wrap items-center gap-ds-02 mt-auto pt-ds-02">
-                  <span className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-overlay text-ds-xs text-surface-fg-subtle font-mono">
+                  <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-overlay text-ds-xs text-surface-fg-subtle font-mono">
                     {LAYER_LABELS[item.layer]}
                   </span>
                   {item.serverSafe && (
-                    <span className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-success-3 text-success-11 text-ds-xs font-mono">
+                    <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-success-3 text-success-11 text-ds-xs font-mono">
                       rsc-safe
                     </span>
                   )}

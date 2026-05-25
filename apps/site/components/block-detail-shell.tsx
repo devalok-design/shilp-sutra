@@ -35,7 +35,7 @@ export function BlockDetailShell({
         <div
           role="tablist"
           aria-label="View"
-          className="inline-flex items-center gap-ds-01 rounded-ds-md border border-surface-border bg-surface-raised p-ds-01"
+          className="inline-flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-raised p-ds-01"
         >
           <button
             type="button"
@@ -43,7 +43,7 @@ export function BlockDetailShell({
             aria-selected={tab === 'preview'}
             onClick={() => setTab('preview')}
             className={[
-              'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-sm text-ds-sm transition-colors duration-fast-01',
+              'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
               tab === 'preview' ? 'bg-surface-overlay text-surface-fg shadow-raised' : 'text-surface-fg-muted',
             ].join(' ')}
           >
@@ -56,7 +56,7 @@ export function BlockDetailShell({
             aria-selected={tab === 'code'}
             onClick={() => setTab('code')}
             className={[
-              'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-sm text-ds-sm transition-colors duration-fast-01',
+              'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
               tab === 'code' ? 'bg-surface-overlay text-surface-fg shadow-raised' : 'text-surface-fg-muted',
             ].join(' ')}
           >
@@ -78,11 +78,11 @@ export function BlockDetailShell({
       </div>
 
       {tab === 'preview' ? (
-        <div className="rounded-ds-md border border-surface-border bg-surface-base overflow-hidden">
+        <div className="rounded-control border border-surface-border bg-surface-base overflow-hidden">
           {children}
         </div>
       ) : (
-        <pre className="rounded-ds-md border border-surface-border bg-surface-overlay overflow-x-auto p-ds-05 text-ds-xs font-mono leading-relaxed text-surface-fg whitespace-pre max-h-[720px]">
+        <pre className="rounded-control border border-surface-border bg-surface-overlay overflow-x-auto p-ds-05 text-ds-xs font-mono leading-relaxed text-surface-fg whitespace-pre max-h-[720px]">
           <code>{source}</code>
         </pre>
       )}
@@ -95,7 +95,7 @@ export function BlockDetailShell({
           {uses.map((u) => (
             <span
               key={u}
-              className="inline-flex items-center px-ds-02 py-[1px] rounded-ds-sm bg-surface-raised border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
+              className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-raised border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
             >
               {u}
             </span>

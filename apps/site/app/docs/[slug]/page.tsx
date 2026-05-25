@@ -59,7 +59,7 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
               {prev ? (
                 <Link
                   href={`/docs/${prev}`}
-                  className="flex flex-col items-start gap-ds-02 p-ds-04 rounded-ds-md border border-surface-border-subtle hover:border-surface-border transition-colors duration-fast-01"
+                  className="flex flex-col items-start gap-ds-02 p-ds-04 rounded-control border border-surface-border-subtle hover:border-surface-border transition-colors duration-fast-01"
                 >
                   <span className="inline-flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle">
                     <IconArrowLeft size={14} /> Previous
@@ -74,7 +74,7 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
               {next ? (
                 <Link
                   href={`/docs/${next}`}
-                  className="flex flex-col items-end gap-ds-02 p-ds-04 rounded-ds-md border border-surface-border-subtle hover:border-surface-border transition-colors duration-fast-01 text-right"
+                  className="flex flex-col items-end gap-ds-02 p-ds-04 rounded-control border border-surface-border-subtle hover:border-surface-border transition-colors duration-fast-01 text-right"
                 >
                   <span className="inline-flex items-center gap-ds-02 text-ds-xs text-surface-fg-subtle">
                     Next <IconArrowRight size={14} />

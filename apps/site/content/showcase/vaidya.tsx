@@ -208,9 +208,9 @@ export function VaidyaShowcase() {
         accessorKey: 'test',
         header: 'Test',
         cell: ({ row }) => (
-          <div className="flex flex-col">
-            <span className="text-ds-sm font-semibold text-surface-fg">{row.original.test}</span>
-            <span className="text-ds-xs text-surface-fg-subtle">{row.original.drawnOn}</span>
+          <div className="flex flex-col min-w-0">
+            <span className="text-ds-sm font-semibold text-surface-fg truncate">{row.original.test}</span>
+            <span className="text-ds-xs text-surface-fg-subtle truncate">{row.original.drawnOn}</span>
           </div>
         ),
       },
@@ -261,7 +261,7 @@ export function VaidyaShowcase() {
         {/* Identity card */}
         <Card>
           <CardHeader>
-            <div className="flex items-start gap-ds-04">
+            <div className="flex flex-col md:flex-row md:items-start gap-ds-04">
               <Avatar size="lg">
                 <AvatarFallback>RS</AvatarFallback>
               </Avatar>
@@ -269,7 +269,7 @@ export function VaidyaShowcase() {
                 <Text variant="label-sm" className="text-surface-fg-subtle">
                   Patient, MRN 4382-019
                 </Text>
-                <Text variant="heading-md" className="text-surface-fg">
+                <Text variant="heading-md" className="text-surface-fg text-balance truncate">
                   Rohan Suri
                 </Text>
                 <div className="flex flex-wrap items-center gap-ds-02">
@@ -282,10 +282,10 @@ export function VaidyaShowcase() {
                   <Badge variant="soft" color="error" size="sm" startIcon={<IconDroplet size={10} />}>
                     O+ blood group
                   </Badge>
-                  <Badge variant="soft" color="warning" size="sm">
+                  <Badge variant="soft" color="error" size="sm" startIcon={<IconAlertTriangle size={10} />}>
                     Allergy: Sulfa drugs
                   </Badge>
-                  <Badge variant="soft" color="warning" size="sm">
+                  <Badge variant="soft" color="error" size="sm" startIcon={<IconAlertTriangle size={10} />}>
                     Allergy: Penicillin
                   </Badge>
                 </div>
@@ -352,10 +352,10 @@ export function VaidyaShowcase() {
                           <IconPill size={16} />
                         </span>
                         <div className="flex flex-col flex-1 min-w-0">
-                          <span className="text-ds-md text-surface-fg font-semibold">
+                          <span className="text-ds-md text-surface-fg font-semibold truncate">
                             {m.name} <span className="text-surface-fg-muted font-normal">{m.strength}</span>
                           </span>
-                          <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">
+                          <span className="text-ds-xs text-surface-fg-subtle mt-ds-01 line-clamp-1">
                             {m.schedule}, since {m.startedOn}
                           </span>
                         </div>
@@ -390,9 +390,9 @@ export function VaidyaShowcase() {
                   {visits.map((v) => (
                     <AccordionItem key={v.id} value={v.id}>
                       <AccordionTrigger>
-                        <div className="flex flex-col items-start text-left">
-                          <span className="text-ds-md text-surface-fg font-semibold">{v.title}</span>
-                          <span className="text-ds-xs text-surface-fg-subtle mt-ds-01">
+                        <div className="flex flex-col items-start text-left min-w-0 flex-1">
+                          <span className="text-ds-md text-surface-fg font-semibold truncate w-full">{v.title}</span>
+                          <span className="text-ds-xs text-surface-fg-subtle mt-ds-01 line-clamp-1">
                             {v.date}, {v.clinician}
                           </span>
                         </div>
@@ -456,7 +456,7 @@ export function VaidyaShowcase() {
               />
             </label>
 
-            <div className="grid grid-cols-2 gap-ds-02">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-ds-02">
               {slots.map((s) => {
                 const active = selectedSlot === s.time
                 const stateLabel = !s.available ? 'booked' : active ? 'selected' : 'available'
@@ -469,7 +469,7 @@ export function VaidyaShowcase() {
                     aria-pressed={active}
                     onClick={() => setSelectedSlot(s.time)}
                     className={[
-                      'relative flex items-center justify-center gap-ds-02 h-10 rounded-ds-md border text-ds-sm transition-colors duration-fast-01',
+                      'relative flex items-center justify-center gap-ds-02 h-10 rounded-control border text-ds-sm tabular-nums transition-colors duration-fast-01',
                       'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                       !s.available && 'border-surface-border-subtle text-surface-fg-subtle line-through cursor-not-allowed',
                       s.available && !active && 'border-surface-border-subtle text-surface-fg hover:border-accent-9 hover:bg-accent-2',
@@ -481,7 +481,7 @@ export function VaidyaShowcase() {
                     {active && (
                       <motion.span
                         layoutId="vaidya-slot-pill"
-                        className="absolute inset-0 -m-px rounded-ds-md border-2 border-accent-9 bg-accent-3"
+                        className="absolute inset-0 -m-px rounded-control border-2 border-accent-9 bg-accent-3"
                         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                       />
                     )}
@@ -505,9 +505,9 @@ export function VaidyaShowcase() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-[length:var(--typo-heading-sm-size)]">Care team</CardTitle>
-            <Button variant="ghost" size="icon-sm" aria-label="Call primary clinician">
+          <CardHeader className="flex flex-row items-center justify-between gap-ds-03">
+            <CardTitle className="text-[length:var(--typo-heading-sm-size)] truncate min-w-0">Care team</CardTitle>
+            <Button variant="ghost" size="icon-sm" aria-label="Call primary clinician" className="shrink-0">
               <IconPhoneCall size={14} />
             </Button>
           </CardHeader>
@@ -530,7 +530,7 @@ export function VaidyaShowcase() {
                   <Text variant="body-sm" className="text-surface-fg truncate">
                     {c.name}
                   </Text>
-                  <Text variant="body-xs" className="text-surface-fg-subtle truncate">
+                  <Text variant="body-xs" className="text-surface-fg-subtle line-clamp-1">
                     {c.role}
                   </Text>
                 </div>
@@ -553,12 +553,20 @@ function VitalTile({ vital }: { vital: Vital }) {
   const trendTone =
     vital.status === 'normal' ? 'text-success-11' : vital.status === 'watch' ? 'text-warning-11' : 'text-error-11'
 
+  const trendDescription =
+    vital.trend === 'up' ? 'trending up' : vital.trend === 'down' ? 'trending down' : 'stable'
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Card className="p-ds-04 sm:p-ds-05 flex flex-col gap-ds-03 cursor-help">
-          <div className="flex items-center justify-between">
-            <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{vital.label}</span>
+        <Card
+          tabIndex={0}
+          role="group"
+          aria-label={`${vital.label}, ${vital.value} ${vital.unit}, ${trendDescription}`}
+          className="p-ds-04 sm:p-ds-05 flex flex-col gap-ds-03 cursor-help focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+        >
+          <div className="flex items-center justify-between gap-ds-02 min-w-0">
+            <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide truncate">{vital.label}</span>
             <span
               className={[
                 'w-7 h-7 rounded-ds-sm flex items-center justify-center',
@@ -579,7 +587,10 @@ function VitalTile({ vital }: { vital: Vital }) {
               </span>
               <span className="text-ds-sm font-normal text-surface-fg-subtle ml-ds-01">{vital.unit}</span>
             </div>
-            <Sparkline data={vital.sparkline} status={vital.status} />
+            <span className="inline-flex items-center">
+              <Sparkline data={vital.sparkline} status={vital.status} />
+              <span className="sr-only">7-reading trend, {trendDescription}</span>
+            </span>
           </div>
           <div className="flex items-center justify-between">
             <Badge size="sm" variant="soft" color={chipColor}>

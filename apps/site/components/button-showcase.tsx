@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LayoutGroup, motion } from 'framer-motion'
 import {
   IconArrowRight,
@@ -17,8 +17,10 @@ import {
   IconHeart,
   IconMail,
   IconMessageCircle,
+  IconPlayerPause,
   IconPlayerPlay,
   IconPlayerSkipForward,
+  IconVolume,
   IconPlus,
   IconRepeat,
   IconRocket,
@@ -245,14 +247,77 @@ function SceneEmail() {
   )
 }
 
-/* Music player — Jai Bhairav Deva. Real audio, hot-linked from archive.org. */
+/* Music player — Jai Bhairav Deva. Real audio hot-linked from archive.org.
+   The Spotify-styled chrome IS the player: Play toggles real playback,
+   the progress strip reflects audio.currentTime, the audio element itself
+   is hidden (no duplicate native controls). */
 function SceneMusic() {
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [progress, setProgress] = useState(0) // 0..1
+  const [time, setTime] = useState<{ current: number; duration: number }>({
+    current: 0,
+    duration: 0,
+  })
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    const onPlay = () => setIsPlaying(true)
+    const onPause = () => setIsPlaying(false)
+    const onEnded = () => setIsPlaying(false)
+    const onTime = () => {
+      const cur = audio.currentTime
+      const dur = audio.duration || 0
+      setTime({ current: cur, duration: dur })
+      setProgress(dur > 0 ? cur / dur : 0)
+    }
+    const onLoaded = () => setTime((t) => ({ ...t, duration: audio.duration || 0 }))
+    audio.addEventListener('play', onPlay)
+    audio.addEventListener('pause', onPause)
+    audio.addEventListener('ended', onEnded)
+    audio.addEventListener('timeupdate', onTime)
+    audio.addEventListener('loadedmetadata', onLoaded)
+    return () => {
+      audio.removeEventListener('play', onPlay)
+      audio.removeEventListener('pause', onPause)
+      audio.removeEventListener('ended', onEnded)
+      audio.removeEventListener('timeupdate', onTime)
+      audio.removeEventListener('loadedmetadata', onLoaded)
+    }
+  }, [])
+
+  const toggle = () => {
+    const audio = audioRef.current
+    if (!audio) return
+    if (audio.paused) {
+      void audio.play().catch(() => {
+        /* autoplay/network errors swallowed; the UI keeps showing Play */
+      })
+    } else {
+      audio.pause()
+    }
+  }
+
+  const skip = (delta: number) => () => {
+    const audio = audioRef.current
+    if (!audio) return
+    audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + delta))
+  }
+
+  const onScrub = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const audio = audioRef.current
+    if (!audio) return
+    const p = Number(e.target.value) / 1000
+    audio.currentTime = p * (audio.duration || 0)
+  }
+
   return (
     <Scene
       product="Music · Spotify-shaped"
-      why="Single icon button as the centre of gravity. Real audio below. Press play, hear the actual bhajan. The Button row sits where a real product's custom chrome would."
+      why="One Button row driving real audio. Play toggles playback, the progress strip tracks position, scrubbing seeks. No native browser chrome."
     >
-      <div className="flex flex-col gap-ds-03">
+      <div className="flex flex-col gap-ds-04">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
           <div className="flex items-center gap-ds-03 min-w-0">
             <span className="w-10 h-10 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
@@ -267,29 +332,81 @@ function SceneMusic() {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-ds-01">
-            <Button variant="ghost" size="icon-sm" aria-label="Previous">
+          <div className="flex items-center gap-ds-01 shrink-0">
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Back 10 seconds"
+              onClick={skip(-10)}
+            >
               <IconPlayerSkipForward size={14} className="rotate-180" />
             </Button>
-            <Button variant="solid" size="icon-lg" shape="pill" aria-label="Play">
-              <IconPlayerPlay size={16} />
+            <Button
+              variant="solid"
+              size="icon-lg"
+              shape="pill"
+              aria-label={isPlaying ? 'Pause' : 'Play'}
+              aria-pressed={isPlaying}
+              onClick={toggle}
+            >
+              {isPlaying ? <IconPlayerPause size={16} /> : <IconPlayerPlay size={16} />}
             </Button>
-            <Button variant="ghost" size="icon-sm" aria-label="Next">
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Forward 10 seconds"
+              onClick={skip(10)}
+            >
               <IconPlayerSkipForward size={14} />
             </Button>
           </div>
         </div>
+
+        {/* Progress strip — input range overlay on a styled track. The native
+            input is invisible but accepts pointer + keyboard input; the
+            visible track + fill mirrors audio.currentTime. */}
+        <div className="relative flex items-center gap-ds-03 text-ds-xs text-surface-fg-subtle font-mono tabular-nums">
+          <span className="shrink-0 w-9 text-right">{formatTime(time.current)}</span>
+          <div className="relative flex-1 h-1.5 rounded-pill bg-surface-overlay overflow-hidden">
+            <div
+              className="absolute inset-y-0 left-0 bg-accent-9 rounded-pill"
+              style={{ width: `${progress * 100}%` }}
+              aria-hidden
+            />
+            <input
+              type="range"
+              min={0}
+              max={1000}
+              value={Math.round(progress * 1000)}
+              onChange={onScrub}
+              aria-label="Seek"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+          </div>
+          <span className="shrink-0 w-9">{formatTime(time.duration)}</span>
+          <span className="hidden sm:inline-flex items-center text-surface-fg-subtle shrink-0 ml-ds-01">
+            <IconVolume size={12} aria-hidden />
+          </span>
+        </div>
+
         <audio
-          controls
+          ref={audioRef}
           preload="metadata"
           src="https://archive.org/download/24SriBhairavarKavasam/27%20Jai%20Bhairav%20Deva.mp3"
-          className="w-full rounded-control"
+          className="hidden"
         >
           Your browser does not support audio playback.
         </audio>
       </div>
     </Scene>
   )
+}
+
+function formatTime(seconds: number) {
+  if (!Number.isFinite(seconds) || seconds < 0) return '0:00'
+  const m = Math.floor(seconds / 60)
+  const s = Math.floor(seconds % 60)
+  return `${m}:${s.toString().padStart(2, '0')}`
 }
 
 /* Streaming subscribe */

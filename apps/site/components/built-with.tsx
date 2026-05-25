@@ -1,12 +1,33 @@
 'use client'
 
-import { useMemo, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { IconArrowUpRight, IconLock, IconSparkles } from '@tabler/icons-react'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { generateRamp } from '@/lib/ramp-generator'
+
+/**
+ * Subscribes to the .dark class on <html> via MutationObserver and
+ * returns the live theme. Used by useBrandRamp() so the inline accent
+ * CSS-var override picks the right (light or dark) OKLCH stops.
+ */
+function useThemeMode(): 'light' | 'dark' {
+  const [mode, setMode] = useState<'light' | 'dark'>('light')
+  useEffect(() => {
+    const read = () =>
+      setMode(document.documentElement.classList.contains('dark') ? 'dark' : 'light')
+    read()
+    const observer = new MutationObserver(read)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+    return () => observer.disconnect()
+  }, [])
+  return mode
+}
 
 /**
  * Built-with section — Devalok products carrying shilp-sutra. Per
@@ -112,22 +133,28 @@ const SECONDARIES: Consumer[] = [
 /**
  * Inline CSS-var override that re-skins the accent ramp on just this
  * subtree. Same trick the showcase canvas uses for industry brands.
- * Works in dark mode because --color-accent-* IS the public reactive
- * surface in both light and dark scopes.
+ *
+ * Dark-mode aware: useThemeMode subscribes to the .dark class on <html>
+ * and picks the matching OKLCH ramp (generateRamp returns both light and
+ * dark stops with different lightness curves). Without this, the inline
+ * override would force light-mode pinks/saffrons even under .dark and
+ * the card would read washed-out / nearly white.
  */
 function useBrandRamp(hue: number, chroma: number): CSSProperties {
+  const mode = useThemeMode()
   return useMemo(() => {
     const ramp = generateRamp(hue, chroma)
+    const stops = mode === 'dark' ? ramp.dark : ramp.light
     const style: Record<string, string> = {}
-    ramp.light.forEach((s) => {
+    stops.forEach((s) => {
       style[`--color-accent-${s.step}`] = s.value
     })
     const accent9L = Number.parseFloat(
-      ramp.light[8].value.match(/oklch\(\s*([0-9.]+)/)?.[1] ?? '0.55',
+      stops[8].value.match(/oklch\(\s*([0-9.]+)/)?.[1] ?? '0.55',
     )
     style['--color-accent-fg'] = accent9L < 0.62 ? 'oklch(0.99 0 0)' : 'oklch(0.13 0 0)'
     return style as CSSProperties
-  }, [hue, chroma])
+  }, [hue, chroma, mode])
 }
 
 /**

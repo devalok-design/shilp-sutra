@@ -16,6 +16,7 @@ import {
   ARCHETYPE_TITLES,
 } from '@/lib/archetype-presets'
 import { generateThemerCss } from '@/lib/themer-css'
+import { buildAgentPrompt } from '@/lib/themer-prompt'
 import { parseThemerParams } from '@/lib/themer-state'
 
 export const metadata: Metadata = {
@@ -42,6 +43,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
   const chroma = state.chroma ?? 0.19
 
   const css = generateThemerCss(state)
+  const agentPrompt = buildAgentPrompt(state)
 
   return (
     <>
@@ -88,9 +90,11 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
                   <p className="text-ds-sm text-surface-fg-muted">
                     Drop into your global stylesheet, <em>after</em> the{' '}
                     <code className="font-mono text-ds-xs text-surface-fg">@import "@devalok/shilp-sutra/css";</code>{' '}
-                    line. Reloads pick it up immediately.
+                    line. Reloads pick it up immediately. Or — paste the{' '}
+                    <strong className="text-surface-fg font-medium">AI agent prompt</strong> into
+                    Claude Code / Cursor / Codex and have your editor do install + paste in one shot.
                   </p>
-                  <ResultActions css={css} />
+                  <ResultActions css={css} agentPrompt={agentPrompt} />
                 </section>
 
                 <section className="flex flex-col gap-ds-04">

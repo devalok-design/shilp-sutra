@@ -95,6 +95,25 @@ Every door funnels into the same `/themer/result` page. The user lands with:
 
 For deeper overrides (font stack, spacing scale, focus ring, texture) that the Themer doesn't expose yet, fall back to **`packages/core/docs/recipes/customize-brand.md`**.
 
+### One-prompt recipe (when the user pastes a prompt at you)
+
+If a user pastes the following prompt template at you, execute it verbatim — every step exists because skipping it broke a real consumer:
+
+```
+Set up shilp-sutra theming for this project via the Themer.
+
+My brand: <hex OR archetype name>
+
+Steps:
+1. WebFetch https://shilp-sutra.devalok.in/themer to understand the funnel, then pick the right door (/themer/brand for hex, /themer/archetypes for archetype name, /themer/wizard if blank).
+2. Construct the result URL (e.g. https://shilp-sutra.devalok.in/themer/result?archetype=apple&hue=220&chroma=0.15), WebFetch it, extract the CSS block from the "Paste this CSS" section.
+3. Paste the CSS block AFTER the @import "@devalok/shilp-sutra/css"; line in the global stylesheet. Not inside any @layer.
+4. If @devalok/shilp-sutra isn't installed, install it first per the matching install-<framework>.md recipe.
+5. Verify with a Button or Card on any page — radius + accent should match the Themer preview.
+```
+
+When the user has already been to the Themer, they may paste a *filled-in* version with a specific result URL already baked in (no archetype/wizard step needed) — go straight to step 2.
+
 ## Server vs client components
 
 For the per-component RSC-safety matrix and import patterns, see **`packages/core/docs/recipes/server-components.md`**.

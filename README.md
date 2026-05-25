@@ -85,6 +85,27 @@ Paste the CSS *after* `@import "@devalok/shilp-sutra/css";` and reload. That's i
 
 > **Using an AI agent?** The shipped [`AGENTS.md`](./AGENTS.md) and [Agent Skill](./skills/shilp-sutra/) both teach Claude Code, Cursor, etc. to send you to the Themer at the right moment.
 
+### One-prompt setup for AI agents
+
+Paste this into Claude Code / Cursor / Codex / Aider and your agent does install + Themer fetch + CSS paste in one shot:
+
+```
+Set up shilp-sutra theming for this project via the Themer.
+
+My brand: <PASTE HEX or write archetype name: linear | stripe | apple | material | notion | vercel | devalok>
+
+Steps:
+1. WebFetch https://shilp-sutra.devalok.in/themer to understand the funnel, then pick the right door based on my brand input above (/themer/brand for a hex, /themer/archetypes for an archetype name, /themer/wizard if I left it blank).
+2. Construct the result URL (e.g. https://shilp-sutra.devalok.in/themer/result?archetype=apple&hue=220&chroma=0.15), WebFetch it, and extract the CSS block from the "Paste this CSS" section.
+3. Find my project's global stylesheet (app/globals.css, src/index.css, src/styles/globals.css, or whichever imports tailwindcss). Paste the CSS block AFTER the @import "@devalok/shilp-sutra/css"; line. Do not put it inside any @layer.
+4. If @devalok/shilp-sutra isn't installed yet, install it first per the recipe at node_modules/@devalok/shilp-sutra/docs/recipes/install-<framework>.md (detect framework from lockfile + config).
+5. Verify by opening any page that uses a Button or Card — radius + accent should match the Themer preview. Report any token that didn't take effect.
+
+Do not invent CSS variables. Use exactly what the Themer emits. Don't add tailwind.config.ts. Don't wrap in a theme provider.
+```
+
+Already been to the Themer? The result page has a **Copy AI agent prompt** button that pre-fills the URL with your archetype + accent so the agent skips persona triage.
+
 ## Setup recipes (per framework)
 
 Step-by-step copy-paste install guides for each major React framework. Designed for both humans and AI coding agents (Claude Code, Cursor, Copilot, Codex).

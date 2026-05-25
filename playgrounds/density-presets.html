@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en" data-density="comfortable">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Density Preset Playground</title>
+<style>
+  /* ─── ROLE TOKENS — defaults match "comfortable" ─────────────────── */
+  :root {
+    --color-bg: oklch(0.985 0.005 280);
+    --color-surface: oklch(1 0 0);
+    --color-surface-2: oklch(0.96 0.005 280);
+    --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280);
+    --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280);
+    --color-border-strong: oklch(0.78 0.015 280);
+    --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-9: oklch(0.55 0.19 340);
+    --color-accent-11: oklch(0.42 0.16 340);
+    --radius-control: 6px;
+    --radius-surface: 10px;
+    --radius-overlay: 10px;
+    --font-sans: -apple-system, system-ui, sans-serif;
+
+    /* DENSITY ROLE TOKENS — what this playground demonstrates */
+    --space-control-x: 16px;
+    --space-control-y: 8px;
+    --space-stack: 24px;
+    --space-cluster: 12px;
+    --space-card-pad: 24px;
+    --space-page-y: 32px;
+    --height-control-sm: 32px;
+    --height-control-md: 40px;
+    --height-control-lg: 48px;
+  }
+
+  /* COMPACT — Linear / Vercel / dev-tool feel */
+  [data-density="compact"] {
+    --space-control-x: 10px;
+    --space-control-y: 4px;
+    --space-stack: 16px;
+    --space-cluster: 8px;
+    --space-card-pad: 16px;
+    --space-page-y: 20px;
+    --height-control-sm: 28px;
+    --height-control-md: 32px;
+    --height-control-lg: 40px;
+  }
+
+  /* COMFORTABLE — DEFAULT, shadcn/Stripe/Notion-sidebar feel */
+  [data-density="comfortable"] {
+    --space-control-x: 16px;
+    --space-control-y: 8px;
+    --space-stack: 24px;
+    --space-cluster: 12px;
+    --space-card-pad: 24px;
+    --space-page-y: 32px;
+    --height-control-sm: 32px;
+    --height-control-md: 40px;
+    --height-control-lg: 48px;
+  }
+
+  /* SPACIOUS — iOS / Notion-content / consumer feel */
+  [data-density="spacious"] {
+    --space-control-x: 24px;
+    --space-control-y: 14px;
+    --space-stack: 40px;
+    --space-cluster: 16px;
+    --space-card-pad: 36px;
+    --space-page-y: 48px;
+    --height-control-sm: 40px;
+    --height-control-md: 52px;
+    --height-control-lg: 60px;
+  }
+
+  /* ─── PLAYGROUND CHROME ─────────────────────────────────────────── */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: 100vh;
+    transition: gap 200ms ease;
+  }
+  .sidebar {
+    background: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+    padding: 24px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .sidebar h1 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .sidebar .sub {
+    margin: 0 0 24px;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+  .preset-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  .preset-group label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-fg-muted);
+    font-weight: 600;
+  }
+  .preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 10px 14px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    transition: border-color 150ms, background 150ms;
+  }
+  .preset-btn:hover { border-color: var(--color-border-strong); }
+  .preset-btn.active {
+    border-color: var(--color-accent-9);
+    background: var(--color-accent-3);
+  }
+  .preset-btn strong { font-size: 13px; font-weight: 600; color: var(--color-fg); }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+  .tokens {
+    margin-top: 24px;
+    font: 11px/1.7 ui-monospace, "SF Mono", monospace;
+    border-top: 1px solid var(--color-border);
+    padding-top: 16px;
+  }
+  .tokens h3 {
+    margin: 0 0 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-fg-muted);
+    font-weight: 600;
+    font-family: var(--font-sans);
+  }
+  .tokens div {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    color: var(--color-fg);
+  }
+  .tokens div span { color: var(--color-fg-subtle); }
+  .copy-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+  }
+  .copy-btn:hover { border-color: var(--color-border-strong); }
+  .copy-btn.copied { background: var(--color-accent-3); color: var(--color-accent-11); border-color: var(--color-accent-9); }
+
+  /* ─── PREVIEW AREA — mock components driven by role tokens ──────── */
+  .preview {
+    padding: var(--space-page-y);
+    overflow-y: auto;
+    transition: padding 200ms ease;
+  }
+  .preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack);
+    max-width: 720px;
+    transition: gap 200ms ease;
+  }
+  .preview-section h2 {
+    margin: 0;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-fg-muted);
+    font-weight: 600;
+  }
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-surface);
+    padding: var(--space-card-pad);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-cluster);
+    transition: padding 200ms ease, gap 200ms ease;
+  }
+  .card h3 { margin: 0; font-size: 16px; font-weight: 600; }
+  .card p { margin: 0; font-size: 14px; color: var(--color-fg-muted); line-height: 1.5; }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-cluster);
+    flex-wrap: wrap;
+    transition: gap 200ms ease;
+  }
+  .btn {
+    height: var(--height-control-md);
+    padding: 0 var(--space-control-x);
+    background: var(--color-accent-9);
+    color: white;
+    border: none;
+    border-radius: var(--radius-control);
+    font: 500 14px/1 var(--font-sans);
+    cursor: pointer;
+    transition: height 200ms ease, padding 200ms ease, background 150ms;
+  }
+  .btn:hover { background: var(--color-accent-11); }
+  .btn.outline {
+    background: transparent;
+    color: var(--color-fg);
+    border: 1px solid var(--color-border-strong);
+  }
+  .btn.sm { height: var(--height-control-sm); padding: 0 calc(var(--space-control-x) * 0.75); font-size: 13px; }
+  .btn.lg { height: var(--height-control-lg); padding: 0 calc(var(--space-control-x) * 1.25); font-size: 15px; }
+  .input {
+    height: var(--height-control-md);
+    padding: 0 var(--space-control-x);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-control);
+    font: 14px var(--font-sans);
+    background: var(--color-surface);
+    color: var(--color-fg);
+    min-width: 240px;
+    transition: height 200ms ease, padding 200ms ease;
+  }
+  .input:focus { outline: 2px solid var(--color-accent-9); outline-offset: 2px; }
+  .menu {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-overlay);
+    padding: calc(var(--space-control-y) * 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 220px;
+  }
+  .menu-item {
+    padding: var(--space-control-y) var(--space-control-x);
+    border-radius: var(--radius-control);
+    font-size: 14px;
+    cursor: pointer;
+    transition: padding 200ms ease;
+  }
+  .menu-item:hover { background: var(--color-surface-2); }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: var(--color-accent-3);
+    color: var(--color-accent-11);
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Density playground</h1>
+    <p class="sub">Toggle <code>[data-density]</code> to see how every gap, padding, and control height shifts in lockstep. Same role tokens, three preset values.</p>
+
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="compact">
+        <strong>Compact</strong><span>Linear / Vercel / dev-tool feel</span>
+      </button>
+      <button class="preset-btn active" data-set="comfortable">
+        <strong>Comfortable</strong><span>Default — shadcn / Stripe / Notion-sidebar</span>
+      </button>
+      <button class="preset-btn" data-set="spacious">
+        <strong>Spacious</strong><span>iOS / Notion-content / consumer</span>
+      </button>
+    </div>
+
+    <div class="tokens">
+      <h3>Active role tokens</h3>
+      <div><span>--space-control-x</span><b id="t-cx"></b></div>
+      <div><span>--space-control-y</span><b id="t-cy"></b></div>
+      <div><span>--space-stack</span><b id="t-stack"></b></div>
+      <div><span>--space-cluster</span><b id="t-cluster"></b></div>
+      <div><span>--space-card-pad</span><b id="t-card"></b></div>
+      <div><span>--space-page-y</span><b id="t-page"></b></div>
+      <div><span>--height-control-sm</span><b id="t-hsm"></b></div>
+      <div><span>--height-control-md</span><b id="t-hmd"></b></div>
+      <div><span>--height-control-lg</span><b id="t-hlg"></b></div>
+      <button class="copy-btn" id="copyBtn">Copy CSS for active preset</button>
+    </div>
+  </aside>
+
+  <main class="preview">
+    <section class="preview-section">
+      <h2>Controls — height + padding scale</h2>
+      <div class="row">
+        <button class="btn sm">Small</button>
+        <button class="btn">Medium</button>
+        <button class="btn lg">Large</button>
+        <button class="btn outline">Outline</button>
+        <input class="input" placeholder="Search...">
+      </div>
+
+      <h2>Card — padding + inner gap scale</h2>
+      <div class="card">
+        <h3>Card title</h3>
+        <p>This card's <code>padding</code> reads from <code>--space-card-pad</code>, and the gap between its children reads from <code>--space-cluster</code>. Compact → 16px / 8px. Spacious → 36px / 16px.</p>
+        <div class="row">
+          <button class="btn sm">Save</button>
+          <button class="btn sm outline">Cancel</button>
+          <span class="badge">Beta</span>
+        </div>
+      </div>
+
+      <h2>Menu — item padding + outer gap scale</h2>
+      <div class="menu">
+        <div class="menu-item">New project</div>
+        <div class="menu-item">Open recent</div>
+        <div class="menu-item">Preferences</div>
+        <div class="menu-item">Sign out</div>
+      </div>
+
+      <h2>Stack — section-level vertical rhythm</h2>
+      <div class="card"><h3>Section A</h3><p>Gap below = --space-stack.</p></div>
+      <div class="card"><h3>Section B</h3><p>Compact = 16px, spacious = 40px.</p></div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const HTML = document.documentElement;
+  const TOKENS = ['cx:--space-control-x', 'cy:--space-control-y', 'stack:--space-stack', 'cluster:--space-cluster', 'card:--space-card-pad', 'page:--space-page-y', 'hsm:--height-control-sm', 'hmd:--height-control-md', 'hlg:--height-control-lg'];
+  function refresh() {
+    const cs = getComputedStyle(HTML);
+    TOKENS.forEach(t => {
+      const [id, name] = t.split(':');
+      document.getElementById('t-' + id).textContent = cs.getPropertyValue(name).trim();
+    });
+  }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    HTML.setAttribute('data-density', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    refresh();
+  }));
+  document.getElementById('copyBtn').addEventListener('click', e => {
+    const cs = getComputedStyle(HTML);
+    const preset = HTML.getAttribute('data-density');
+    const lines = [`[data-density="${preset}"] {`];
+    TOKENS.forEach(t => {
+      const [, name] = t.split(':');
+      lines.push(`  ${name}: ${cs.getPropertyValue(name).trim()};`);
+    });
+    lines.push('}');
+    navigator.clipboard.writeText(lines.join('\n'));
+    e.target.classList.add('copied');
+    e.target.textContent = 'Copied!';
+    setTimeout(() => { e.target.classList.remove('copied'); e.target.textContent = 'Copy CSS for active preset'; }, 1500);
+  });
+  refresh();
+</script>
+</body>
+</html>

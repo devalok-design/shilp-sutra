@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-archetype="stripe">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Brand Archetype Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280);
+    --color-surface: oklch(1 0 0);
+    --color-surface-2: oklch(0.96 0.005 280);
+    --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280);
+    --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-9: oklch(0.55 0.19 340);
+    --color-accent-11: oklch(0.42 0.16 340);
+    --font-sans: -apple-system, system-ui, sans-serif;
+  }
+
+  /* ── Default role tokens (overridden per-archetype) ─────────────── */
+  :root, [data-archetype="stripe"] {
+    --radius-control: 6px;
+    --radius-surface: 10px;
+    --radius-overlay-lg: 16px;
+    --radius-pill: 9999px;
+    --space-control-x: 16px;
+    --space-control-y: 8px;
+    --space-stack: 24px;
+    --space-card-pad: 24px;
+    --height-control: 40px;
+    --border-control-width: 1px;
+    --border-control-color: oklch(0.78 0.015 280);
+    --border-surface-width: 1px;
+    --border-surface-color: oklch(0.88 0.01 280);
+    --shadow-raised: 0 1px 2px oklch(0.15 0.02 260 / 0.05), 0 0.5px 0 oklch(0.15 0.02 260 / 0.04);
+    --shadow-overlay: 0 16px 48px oklch(0.15 0.02 260 / 0.12);
+    --duration-quick: 120ms;
+    --duration-standard: 220ms;
+    --ease-control: cubic-bezier(0.2, 0, 0.38, 0.9);
+  }
+
+  [data-archetype="linear"] {
+    --radius-control: 4px; --radius-surface: 6px; --radius-overlay-lg: 8px;
+    --space-control-x: 10px; --space-control-y: 4px; --space-stack: 16px; --space-card-pad: 16px; --height-control: 32px;
+    --border-control-width: 0.5px; --border-control-color: oklch(0.85 0.01 280 / 0.7);
+    --border-surface-width: 0.5px; --border-surface-color: oklch(0.90 0.005 280 / 0.7);
+    --shadow-raised: inset 0 0 0 1px oklch(0.90 0.005 280);
+    --shadow-overlay: 0 4px 12px oklch(0.15 0.02 260 / 0.06);
+    --duration-quick: 100ms; --duration-standard: 180ms;
+    --ease-control: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  [data-archetype="apple"] {
+    --radius-control: 12px; --radius-surface: 20px; --radius-overlay-lg: 28px;
+    --space-control-x: 24px; --space-control-y: 14px; --space-stack: 40px; --space-card-pad: 36px; --height-control: 52px;
+    --border-control-width: 0.5px; --border-control-color: oklch(0.82 0.01 280 / 0.5);
+    --border-surface-width: 0.5px; --border-surface-color: oklch(0.88 0.005 280 / 0.5);
+    --shadow-raised: 0 1px 2px oklch(0.15 0.02 260 / 0.03), 0 4px 12px oklch(0.15 0.02 260 / 0.04);
+    --shadow-overlay: 0 24px 64px oklch(0.15 0.02 260 / 0.16), 0 8px 24px oklch(0.15 0.02 260 / 0.08);
+    --duration-quick: 180ms; --duration-standard: 360ms;
+    --ease-control: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-archetype="material"] {
+    --radius-control: 12px; --radius-surface: 16px; --radius-overlay-lg: 28px;
+    --space-control-x: 20px; --space-control-y: 12px; --space-stack: 24px; --space-card-pad: 24px; --height-control: 48px;
+    --border-control-width: 1px; --border-control-color: oklch(0.78 0.015 280);
+    --border-surface-width: 0; --border-surface-color: transparent;
+    --shadow-raised: 0 4px 8px oklch(0.15 0.02 260 / 0.12), 0 2px 4px oklch(0.15 0.02 260 / 0.08);
+    --shadow-overlay: 0 24px 64px oklch(0.15 0.02 260 / 0.20), 0 12px 24px oklch(0.15 0.02 260 / 0.12);
+    --duration-quick: 150ms; --duration-standard: 300ms;
+    --ease-control: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  [data-archetype="notion"] {
+    --radius-control: 4px; --radius-surface: 4px; --radius-overlay-lg: 4px;
+    --space-control-x: 12px; --space-control-y: 6px; --space-stack: 24px; --space-card-pad: 20px; --height-control: 36px;
+    --border-control-width: 1px; --border-control-color: oklch(0.88 0.01 280);
+    --border-surface-width: 1px; --border-surface-color: oklch(0.92 0.005 280);
+    --shadow-raised: inset 0 0 0 1px oklch(0.92 0.005 280);
+    --shadow-overlay: 0 8px 24px oklch(0.15 0.02 260 / 0.08);
+    --duration-quick: 100ms; --duration-standard: 180ms;
+    --ease-control: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 340px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid oklch(0.88 0.01 280); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; background: var(--color-surface); border: 1px solid oklch(0.88 0.01 280); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); line-height: 1.4; }
+  .tokens { margin-top: 20px; font: 10px/1.6 ui-monospace, monospace; border-top: 1px solid oklch(0.88 0.01 280); padding-top: 12px; }
+  .tokens h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { display: flex; justify-content: space-between; padding: 1px 0; }
+  .tokens span { color: var(--color-fg-subtle); }
+
+  .preview { padding: var(--space-stack); overflow-y: auto; max-width: 760px; transition: padding 250ms ease; }
+  .section { display: flex; flex-direction: column; gap: var(--space-stack); transition: gap 250ms ease; }
+  h2 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+
+  .card { background: var(--color-surface); border: var(--border-surface-width) solid var(--border-surface-color); border-radius: var(--radius-surface); padding: var(--space-card-pad); box-shadow: var(--shadow-raised); transition: all 250ms var(--ease-control); }
+  .card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+  .card p { margin: 0; color: var(--color-fg-muted); font-size: 14px; line-height: 1.5; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; align-items: center; }
+  .btn { height: var(--height-control); padding: 0 var(--space-control-x); background: var(--color-accent-9); color: white; border: var(--border-control-width) solid var(--color-accent-9); border-radius: var(--radius-control); font: 500 14px var(--font-sans); cursor: pointer; transition: all var(--duration-quick) var(--ease-control); }
+  .btn:hover { background: var(--color-accent-11); border-color: var(--color-accent-11); }
+  .btn.outline { background: transparent; color: var(--color-fg); border-color: var(--border-control-color); }
+  .input { height: var(--height-control); padding: 0 var(--space-control-x); border: var(--border-control-width) solid var(--border-control-color); border-radius: var(--radius-control); font: 14px var(--font-sans); background: var(--color-surface); min-width: 220px; }
+  .pill { display: inline-flex; padding: 4px 12px; background: var(--color-accent-3); color: var(--color-accent-11); border-radius: var(--radius-pill); font-size: 12px; font-weight: 500; }
+
+  .dialog { background: var(--color-surface); border: var(--border-surface-width) solid var(--border-surface-color); border-radius: var(--radius-overlay-lg); padding: var(--space-card-pad); box-shadow: var(--shadow-overlay); }
+  .dialog h3 { margin: 0 0 8px; font-size: 18px; font-weight: 600; }
+  .dialog p { margin: 0 0 16px; color: var(--color-fg-muted); }
+  .dialog .row { justify-content: flex-end; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Brand archetype playground</h1>
+    <p class="sub">Each archetype is a bundled preset combining shape + density + border + elevation + motion. One <code>data-archetype</code> attribute switches all five.</p>
+
+    <div class="preset-group">
+      <label>Archetype</label>
+      <button class="preset-btn" data-set="linear"><strong>Linear</strong><span>Sharp · compact · hairline · flat · calm</span></button>
+      <button class="preset-btn active" data-set="stripe"><strong>Stripe</strong><span>Slightly-rounded · comfortable · default · subtle · lively</span></button>
+      <button class="preset-btn" data-set="apple"><strong>Apple</strong><span>Rounded · spacious · hairline · subtle · calm</span></button>
+      <button class="preset-btn" data-set="material"><strong>Material</strong><span>Rounded · comfortable · default · dramatic · lively</span></button>
+      <button class="preset-btn" data-set="notion"><strong>Notion</strong><span>Slightly-rounded · spacious · default · flat · calm</span></button>
+    </div>
+
+    <div class="tokens">
+      <h3>Active token snapshot</h3>
+      <div><span>radius-control</span><b id="t-rc"></b></div>
+      <div><span>radius-surface</span><b id="t-rs"></b></div>
+      <div><span>radius-overlay-lg</span><b id="t-rol"></b></div>
+      <div><span>height-control</span><b id="t-hc"></b></div>
+      <div><span>space-card-pad</span><b id="t-scp"></b></div>
+      <div><span>border-surface-width</span><b id="t-bsw"></b></div>
+      <div><span>duration-quick</span><b id="t-dq"></b></div>
+      <div><span>duration-standard</span><b id="t-ds"></b></div>
+    </div>
+  </aside>
+
+  <main class="preview">
+    <div class="section">
+      <div><h2>Hero card</h2>
+        <div class="card">
+          <h3>Welcome to Atlas</h3>
+          <p>One archetype attribute on the root drives every visible token. Switch presets and watch the whole vibe shift in lockstep.</p>
+          <div class="row">
+            <button class="btn">Get started</button>
+            <button class="btn outline">View docs</button>
+            <span class="pill">Beta</span>
+          </div>
+        </div>
+      </div>
+
+      <div><h2>Form fragment</h2>
+        <div class="card">
+          <div class="row">
+            <input class="input" placeholder="you@example.com">
+            <button class="btn">Subscribe</button>
+          </div>
+        </div>
+      </div>
+
+      <div><h2>Dialog</h2>
+        <div class="dialog">
+          <h3>Confirm subscription</h3>
+          <p>Each archetype reframes this confirmation — flat with hairline borders for Apple, dramatic shadow + rounded radii for Material, inset rings for Linear.</p>
+          <div class="row">
+            <button class="btn outline">Cancel</button>
+            <button class="btn">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const HTML = document.documentElement;
+  const TOKENS = [['rc','--radius-control'],['rs','--radius-surface'],['rol','--radius-overlay-lg'],['hc','--height-control'],['scp','--space-card-pad'],['bsw','--border-surface-width'],['dq','--duration-quick'],['ds','--duration-standard']];
+  function refresh() { const cs = getComputedStyle(HTML); TOKENS.forEach(([id, n]) => document.getElementById('t-' + id).textContent = cs.getPropertyValue(n).trim()); }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    HTML.setAttribute('data-archetype', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    refresh();
+  }));
+  refresh();
+</script>
+</body>
+</html>

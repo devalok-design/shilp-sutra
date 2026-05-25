@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" data-motion="lively">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Motion Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280);
+    --color-surface: oklch(1 0 0);
+    --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280);
+    --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280);
+    --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-9: oklch(0.55 0.19 340);
+    --color-accent-11: oklch(0.42 0.16 340);
+    --font-sans: -apple-system, system-ui, sans-serif;
+    --radius-control: 8px;
+    --radius-surface: 12px;
+
+    --duration-instant: 0ms;
+    --duration-quick: 120ms;
+    --duration-standard: 220ms;
+    --duration-slow: 400ms;
+    --ease-control: cubic-bezier(0.2, 0, 0.38, 0.9);
+    --ease-overlay: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-attention: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  [data-motion="off"] {
+    --duration-instant: 0ms; --duration-quick: 0ms; --duration-standard: 0ms; --duration-slow: 0ms;
+    --ease-control: linear; --ease-overlay: linear; --ease-attention: linear;
+  }
+
+  [data-motion="calm"] {
+    --duration-instant: 0ms;
+    --duration-quick: 180ms;
+    --duration-standard: 360ms;
+    --duration-slow: 620ms;
+    --ease-control: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-overlay: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-attention: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  [data-motion="lively"] {
+    --duration-instant: 0ms;
+    --duration-quick: 120ms;
+    --duration-standard: 220ms;
+    --duration-slow: 400ms;
+    --ease-control: cubic-bezier(0.2, 0, 0.38, 0.9);
+    --ease-overlay: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-attention: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root, [data-motion] {
+      --duration-instant: 0ms !important; --duration-quick: 0ms !important;
+      --duration-standard: 0ms !important; --duration-slow: 0ms !important;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+  .tokens { margin-top: 24px; font: 11px/1.7 ui-monospace, monospace; border-top: 1px solid var(--color-border); padding-top: 16px; }
+  .tokens h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { display: flex; justify-content: space-between; padding: 2px 0; }
+  .tokens span { color: var(--color-fg-subtle); }
+  .copy-btn { margin-top: 12px; width: 100%; padding: 8px; border: 1px solid var(--color-border); background: var(--color-surface); border-radius: 6px; cursor: pointer; font: 12px var(--font-sans); }
+  .copy-btn.copied { background: var(--color-accent-3); color: var(--color-accent-11); border-color: var(--color-accent-9); }
+
+  .preview { padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 40px; max-width: 720px; }
+  h2 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+  .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); padding: 24px; }
+
+  /* Button — feels --duration-quick / --ease-control */
+  .btn { padding: 10px 18px; background: var(--color-accent-9); color: white; border: none; border-radius: var(--radius-control); font: 500 14px var(--font-sans); cursor: pointer; transition: transform var(--duration-quick) var(--ease-control), background var(--duration-quick) var(--ease-control); }
+  .btn:hover { background: var(--color-accent-11); }
+  .btn:active { transform: scale(0.96); }
+
+  /* Toggle — feels --duration-standard / --ease-control */
+  .toggle { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; }
+  .toggle input { display: none; }
+  .toggle .track { width: 44px; height: 26px; background: var(--color-border); border-radius: 13px; position: relative; transition: background var(--duration-standard) var(--ease-control); }
+  .toggle .thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: white; border-radius: 50%; box-shadow: 0 1px 3px oklch(0 0 0 / 0.2); transition: transform var(--duration-standard) var(--ease-control); }
+  .toggle input:checked + .track { background: var(--color-accent-9); }
+  .toggle input:checked + .track .thumb { transform: translateX(18px); }
+
+  /* Drawer — feels --duration-slow / --ease-overlay */
+  .drawer-trigger { padding: 10px 18px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-control); font: 500 14px var(--font-sans); cursor: pointer; }
+  .drawer-host { position: relative; height: 200px; overflow: hidden; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); margin-top: 12px; }
+  .drawer { position: absolute; inset: 0 0 0 auto; width: 280px; background: var(--color-accent-3); border-left: 1px solid var(--color-border); padding: 24px; transform: translateX(100%); transition: transform var(--duration-slow) var(--ease-overlay); }
+  .drawer.open { transform: translateX(0); }
+  .drawer h3 { margin: 0 0 8px; font-size: 16px; }
+  .drawer p { margin: 0; font-size: 13px; color: var(--color-accent-11); }
+
+  /* Badge attention pulse — feels --ease-attention */
+  .pulse-btn { padding: 10px 16px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-control); cursor: pointer; font: 500 14px var(--font-sans); }
+  .pulse { display: inline-flex; align-items: center; padding: 4px 10px; background: var(--color-accent-3); color: var(--color-accent-11); border-radius: 9999px; font-size: 12px; font-weight: 500; transition: transform var(--duration-standard) var(--ease-attention); }
+  .pulse.animate { transform: scale(1.18); }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Motion playground</h1>
+    <p class="sub">Toggle <code>[data-motion]</code> to feel how durations + eases shift across controls, overlays, and attention cues. <code>off</code> respects <code>prefers-reduced-motion</code>.</p>
+
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="off"><strong>Off</strong><span>0ms everywhere</span></button>
+      <button class="preset-btn" data-set="calm"><strong>Calm</strong><span>Slower, softer eases</span></button>
+      <button class="preset-btn active" data-set="lively"><strong>Lively</strong><span>Default — snappy + slight bounce on attention</span></button>
+    </div>
+
+    <div class="tokens">
+      <h3>Active role tokens</h3>
+      <div><span>--duration-instant</span><b id="t-i"></b></div>
+      <div><span>--duration-quick</span><b id="t-q"></b></div>
+      <div><span>--duration-standard</span><b id="t-s"></b></div>
+      <div><span>--duration-slow</span><b id="t-sl"></b></div>
+      <div><span>--ease-control</span><b id="t-ec" style="font-size:9px"></b></div>
+      <div><span>--ease-overlay</span><b id="t-eo" style="font-size:9px"></b></div>
+      <div><span>--ease-attention</span><b id="t-ea" style="font-size:9px"></b></div>
+      <button class="copy-btn" id="copyBtn">Copy CSS for active preset</button>
+    </div>
+  </aside>
+
+  <main class="preview">
+    <div class="panel">
+      <h2>Button — duration-quick + ease-control</h2>
+      <button class="btn">Hover + press me</button>
+    </div>
+
+    <div class="panel">
+      <h2>Toggle — duration-standard + ease-control</h2>
+      <label class="toggle">
+        <input type="checkbox" id="tog" checked>
+        <div class="track"><div class="thumb"></div></div>
+        <span>Notifications</span>
+      </label>
+    </div>
+
+    <div class="panel">
+      <h2>Drawer — duration-slow + ease-overlay</h2>
+      <button class="drawer-trigger" id="drawerBtn">Toggle drawer</button>
+      <div class="drawer-host">
+        <div class="drawer" id="drawer">
+          <h3>Filter panel</h3>
+          <p>Slides in with --duration-slow + --ease-overlay. Calm preset eases out smoother; lively snaps.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Attention cue — ease-attention (overshoot)</h2>
+      <button class="pulse-btn" id="pulseBtn">Trigger badge pop</button>
+      <div style="margin-top: 16px;"><span class="pulse" id="pulse">2 new</span></div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const HTML = document.documentElement;
+  const TOKENS = ['i:--duration-instant', 'q:--duration-quick', 's:--duration-standard', 'sl:--duration-slow', 'ec:--ease-control', 'eo:--ease-overlay', 'ea:--ease-attention'];
+  function refresh() { const cs = getComputedStyle(HTML); TOKENS.forEach(t => { const [id, n] = t.split(':'); document.getElementById('t-' + id).textContent = cs.getPropertyValue(n).trim(); }); }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    HTML.setAttribute('data-motion', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    refresh();
+  }));
+  document.getElementById('drawerBtn').addEventListener('click', () => document.getElementById('drawer').classList.toggle('open'));
+  document.getElementById('pulseBtn').addEventListener('click', () => {
+    const p = document.getElementById('pulse');
+    p.classList.add('animate');
+    setTimeout(() => p.classList.remove('animate'), 250);
+  });
+  document.getElementById('copyBtn').addEventListener('click', e => {
+    const cs = getComputedStyle(HTML); const p = HTML.getAttribute('data-motion');
+    const lines = [`[data-motion="${p}"] {`];
+    TOKENS.forEach(t => { const [, n] = t.split(':'); lines.push(`  ${n}: ${cs.getPropertyValue(n).trim()};`); });
+    lines.push('}');
+    navigator.clipboard.writeText(lines.join('\n'));
+    e.target.classList.add('copied'); e.target.textContent = 'Copied!';
+    setTimeout(() => { e.target.classList.remove('copied'); e.target.textContent = 'Copy CSS for active preset'; }, 1500);
+  });
+  refresh();
+</script>
+</body>
+</html>

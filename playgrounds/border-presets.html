@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" data-border="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Border Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280);
+    --color-surface: oklch(1 0 0);
+    --color-surface-2: oklch(0.96 0.005 280);
+    --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280);
+    --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-accent-9: oklch(0.55 0.19 340);
+    --color-accent-11: oklch(0.42 0.16 340);
+    --color-accent-3: oklch(0.94 0.03 340);
+    --radius-control: 6px;
+    --radius-surface: 10px;
+    --font-sans: -apple-system, system-ui, sans-serif;
+
+    /* BORDER ROLE TOKENS — defaults = "default" */
+    --border-control-width: 1px;
+    --border-control-color: oklch(0.78 0.015 280);
+    --border-surface-width: 1px;
+    --border-surface-color: oklch(0.88 0.01 280);
+    --border-overlay-width: 1px;
+    --border-overlay-color: oklch(0.85 0.012 280);
+    --border-divider-width: 1px;
+    --border-divider-color: oklch(0.90 0.005 280);
+  }
+
+  [data-border="hairline"] {
+    --border-control-width: 0.5px;
+    --border-control-color: oklch(0.82 0.01 280 / 0.7);
+    --border-surface-width: 0.5px;
+    --border-surface-color: oklch(0.90 0.005 280 / 0.7);
+    --border-overlay-width: 0.5px;
+    --border-overlay-color: oklch(0.88 0.008 280 / 0.7);
+    --border-divider-width: 0.5px;
+    --border-divider-color: oklch(0.92 0.005 280 / 0.5);
+  }
+
+  [data-border="default"] {
+    --border-control-width: 1px;
+    --border-control-color: oklch(0.78 0.015 280);
+    --border-surface-width: 1px;
+    --border-surface-color: oklch(0.88 0.01 280);
+    --border-overlay-width: 1px;
+    --border-overlay-color: oklch(0.85 0.012 280);
+    --border-divider-width: 1px;
+    --border-divider-color: oklch(0.90 0.005 280);
+  }
+
+  [data-border="pronounced"] {
+    --border-control-width: 2px;
+    --border-control-color: oklch(0.40 0.04 280);
+    --border-surface-width: 2px;
+    --border-surface-color: oklch(0.50 0.03 280);
+    --border-overlay-width: 2px;
+    --border-overlay-color: oklch(0.45 0.04 280);
+    --border-divider-width: 1.5px;
+    --border-divider-color: oklch(0.60 0.02 280);
+  }
+
+  [data-border="none"] {
+    --border-control-width: 0;
+    --border-control-color: transparent;
+    --border-surface-width: 0;
+    --border-surface-color: transparent;
+    --border-overlay-width: 0;
+    --border-overlay-color: transparent;
+    --border-divider-width: 0;
+    --border-divider-color: transparent;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: var(--border-divider-width) solid var(--border-divider-color); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 14px; background: var(--color-surface); border: 1px solid oklch(0.88 0.01 280); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+  .tokens { margin-top: 24px; font: 11px/1.7 ui-monospace, monospace; border-top: 1px solid oklch(0.88 0.01 280); padding-top: 16px; }
+  .tokens h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { display: flex; justify-content: space-between; padding: 2px 0; }
+  .tokens span { color: var(--color-fg-subtle); }
+  .copy-btn { margin-top: 12px; width: 100%; padding: 8px; border: 1px solid oklch(0.88 0.01 280); background: var(--color-surface); border-radius: 6px; cursor: pointer; font: 12px var(--font-sans); }
+  .copy-btn.copied { background: var(--color-accent-3); color: var(--color-accent-11); border-color: var(--color-accent-9); }
+
+  .preview { padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 32px; max-width: 760px; }
+  h2 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+  .card { background: var(--color-surface); border: var(--border-surface-width) solid var(--border-surface-color); border-radius: var(--radius-surface); padding: 24px; }
+  .card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+  .card p { margin: 0; color: var(--color-fg-muted); }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .btn { height: 40px; padding: 0 16px; background: transparent; color: var(--color-fg); border: var(--border-control-width) solid var(--border-control-color); border-radius: var(--radius-control); font: 500 14px var(--font-sans); cursor: pointer; }
+  .btn.solid { background: var(--color-accent-9); color: white; border-color: var(--color-accent-9); }
+  .input { height: 40px; padding: 0 12px; border: var(--border-control-width) solid var(--border-control-color); border-radius: var(--radius-control); font: 14px var(--font-sans); background: var(--color-surface); min-width: 240px; }
+  .menu { background: var(--color-surface); border: var(--border-overlay-width) solid var(--border-overlay-color); border-radius: 10px; padding: 6px; display: flex; flex-direction: column; gap: 2px; width: 240px; box-shadow: 0 4px 16px oklch(0 0 0 / 0.06); }
+  .menu-item { padding: 8px 12px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+  .menu-item:hover { background: var(--color-surface-2); }
+  .divider { height: var(--border-divider-width); background: var(--border-divider-color); margin: 12px 0; }
+  .badge { display: inline-flex; padding: 4px 10px; background: var(--color-accent-3); color: var(--color-accent-11); border-radius: 9999px; font-size: 12px; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Border playground</h1>
+    <p class="sub">Toggle <code>[data-border]</code> to see how stroke weight + color shift across controls, surfaces, overlays, and dividers in lockstep.</p>
+
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="hairline"><strong>Hairline</strong><span>Apple-like — 0.5px ghost edges</span></button>
+      <button class="preset-btn active" data-set="default"><strong>Default</strong><span>Crisp 1px — most SaaS</span></button>
+      <button class="preset-btn" data-set="pronounced"><strong>Pronounced</strong><span>2px solid — bold brand</span></button>
+      <button class="preset-btn" data-set="none"><strong>None</strong><span>No borders — relies on shadows</span></button>
+    </div>
+
+    <div class="tokens">
+      <h3>Active role tokens</h3>
+      <div><span>--border-control-width</span><b id="t-cw"></b></div>
+      <div><span>--border-control-color</span><b id="t-cc"></b></div>
+      <div><span>--border-surface-width</span><b id="t-sw"></b></div>
+      <div><span>--border-surface-color</span><b id="t-sc"></b></div>
+      <div><span>--border-overlay-width</span><b id="t-ow"></b></div>
+      <div><span>--border-overlay-color</span><b id="t-oc"></b></div>
+      <div><span>--border-divider-width</span><b id="t-dw"></b></div>
+      <div><span>--border-divider-color</span><b id="t-dc"></b></div>
+      <button class="copy-btn" id="copyBtn">Copy CSS for active preset</button>
+    </div>
+  </aside>
+
+  <main class="preview">
+    <div><h2>Card — uses surface borders</h2>
+      <div class="card">
+        <h3>Project Atlas</h3>
+        <p>Card border width + color reads from <code>--border-surface-*</code>. Hairline gives Apple-like ghost edges; pronounced gives bold brand strokes.</p>
+        <div class="row">
+          <button class="btn solid">Open</button>
+          <button class="btn">Cancel</button>
+          <input class="input" placeholder="Enter project name...">
+        </div>
+      </div>
+    </div>
+
+    <div><h2>Menu / Popover — uses overlay borders</h2>
+      <div class="menu">
+        <div class="menu-item">New project</div>
+        <div class="menu-item">Open recent</div>
+        <div class="divider"></div>
+        <div class="menu-item">Preferences</div>
+        <div class="menu-item">Sign out</div>
+      </div>
+    </div>
+
+    <div><h2>Controls — outline border</h2>
+      <div class="row">
+        <button class="btn">Outline</button>
+        <button class="btn">Default</button>
+        <button class="btn">Bordered</button>
+        <input class="input" placeholder="Field with border-control-*">
+        <span class="badge">Beta</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const HTML = document.documentElement;
+  const TOKENS = ['cw:--border-control-width', 'cc:--border-control-color', 'sw:--border-surface-width', 'sc:--border-surface-color', 'ow:--border-overlay-width', 'oc:--border-overlay-color', 'dw:--border-divider-width', 'dc:--border-divider-color'];
+  function refresh() {
+    const cs = getComputedStyle(HTML);
+    TOKENS.forEach(t => { const [id, name] = t.split(':'); document.getElementById('t-' + id).textContent = cs.getPropertyValue(name).trim(); });
+  }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    HTML.setAttribute('data-border', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    refresh();
+  }));
+  document.getElementById('copyBtn').addEventListener('click', e => {
+    const cs = getComputedStyle(HTML);
+    const preset = HTML.getAttribute('data-border');
+    const lines = [`[data-border="${preset}"] {`];
+    TOKENS.forEach(t => { const [, name] = t.split(':'); lines.push(`  ${name}: ${cs.getPropertyValue(name).trim()};`); });
+    lines.push('}');
+    navigator.clipboard.writeText(lines.join('\n'));
+    e.target.classList.add('copied'); e.target.textContent = 'Copied!';
+    setTimeout(() => { e.target.classList.remove('copied'); e.target.textContent = 'Copy CSS for active preset'; }, 1500);
+  });
+  refresh();
+</script>
+</body>
+</html>

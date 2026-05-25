@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en" data-elevation="subtle">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Elevation Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.97 0.005 280);
+    --color-surface: oklch(1 0 0);
+    --color-surface-2: oklch(0.96 0.005 280);
+    --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280);
+    --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280);
+    --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-9: oklch(0.55 0.19 340);
+    --color-accent-11: oklch(0.42 0.16 340);
+    --radius-control: 6px;
+    --radius-surface: 12px;
+    --radius-overlay-lg: 16px;
+    --font-sans: -apple-system, system-ui, sans-serif;
+
+    /* ELEVATION ROLE TOKENS — defaults = "subtle" */
+    --shadow-raised:      0 1px 2px oklch(0.15 0.02 260 / 0.04), 0 0.5px 0 oklch(0.15 0.02 260 / 0.04);
+    --shadow-raised-hover: 0 2px 4px oklch(0.15 0.02 260 / 0.06), 0 1px 2px oklch(0.15 0.02 260 / 0.04);
+    --shadow-floating:    0 4px 12px oklch(0.15 0.02 260 / 0.08), 0 2px 4px oklch(0.15 0.02 260 / 0.04);
+    --shadow-overlay:     0 16px 48px oklch(0.15 0.02 260 / 0.12), 0 4px 16px oklch(0.15 0.02 260 / 0.06);
+    --shadow-pressed:     inset 0 1px 2px oklch(0.15 0.02 260 / 0.06);
+  }
+
+  [data-elevation="flat"] {
+    --shadow-raised:      inset 0 0 0 1px oklch(0.88 0.01 280);
+    --shadow-raised-hover: inset 0 0 0 1px oklch(0.78 0.015 280);
+    --shadow-floating:    0 1px 2px oklch(0.15 0.02 260 / 0.03);
+    --shadow-overlay:     0 4px 12px oklch(0.15 0.02 260 / 0.06);
+    --shadow-pressed:     inset 0 1px 2px oklch(0.15 0.02 260 / 0.04);
+  }
+
+  [data-elevation="subtle"] {
+    --shadow-raised:      0 1px 2px oklch(0.15 0.02 260 / 0.04), 0 0.5px 0 oklch(0.15 0.02 260 / 0.04);
+    --shadow-raised-hover: 0 2px 4px oklch(0.15 0.02 260 / 0.06), 0 1px 2px oklch(0.15 0.02 260 / 0.04);
+    --shadow-floating:    0 4px 12px oklch(0.15 0.02 260 / 0.08), 0 2px 4px oklch(0.15 0.02 260 / 0.04);
+    --shadow-overlay:     0 16px 48px oklch(0.15 0.02 260 / 0.12), 0 4px 16px oklch(0.15 0.02 260 / 0.06);
+    --shadow-pressed:     inset 0 1px 2px oklch(0.15 0.02 260 / 0.06);
+  }
+
+  [data-elevation="dramatic"] {
+    --shadow-raised:      0 4px 12px oklch(0.15 0.02 260 / 0.12), 0 2px 4px oklch(0.15 0.02 260 / 0.08), 0 0 0 1px oklch(0.15 0.02 260 / 0.03);
+    --shadow-raised-hover: 0 8px 24px oklch(0.15 0.02 260 / 0.16), 0 4px 8px oklch(0.15 0.02 260 / 0.10);
+    --shadow-floating:    0 16px 40px oklch(0.15 0.02 260 / 0.18), 0 8px 16px oklch(0.15 0.02 260 / 0.10);
+    --shadow-overlay:     0 32px 80px oklch(0.15 0.02 260 / 0.24), 0 12px 32px oklch(0.15 0.02 260 / 0.14);
+    --shadow-pressed:     inset 0 2px 4px oklch(0.15 0.02 260 / 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; transition: transform 200ms ease; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+  .tokens { margin-top: 24px; font: 11px/1.5 ui-monospace, monospace; border-top: 1px solid var(--color-border); padding-top: 16px; }
+  .tokens h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { padding: 6px 0; border-bottom: 1px dashed oklch(0.92 0.005 280); }
+  .tokens .role { color: var(--color-fg-subtle); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+  .tokens .val { word-break: break-word; color: var(--color-fg); }
+  .copy-btn { margin-top: 12px; width: 100%; padding: 8px; border: 1px solid var(--color-border); background: var(--color-surface); border-radius: 6px; cursor: pointer; font: 12px var(--font-sans); }
+  .copy-btn.copied { background: var(--color-accent-3); color: var(--color-accent-11); border-color: var(--color-accent-9); }
+
+  .preview { padding: 48px; overflow-y: auto; display: flex; flex-direction: column; gap: 40px; max-width: 880px; }
+  h2 { margin: 0 0 16px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+  .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: var(--color-surface); border-radius: var(--radius-surface); padding: 24px; box-shadow: var(--shadow-raised); transition: box-shadow 200ms ease; }
+  .card.hover { box-shadow: var(--shadow-raised-hover); }
+  .card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+  .card p { margin: 0; color: var(--color-fg-muted); font-size: 13px; }
+  .popover { background: var(--color-surface); border-radius: 10px; padding: 12px; width: 240px; box-shadow: var(--shadow-floating); }
+  .popover h4 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+  .popover p { margin: 0; font-size: 13px; color: var(--color-fg-muted); }
+  .dialog { background: var(--color-surface); border-radius: var(--radius-overlay-lg); padding: 32px; width: 380px; box-shadow: var(--shadow-overlay); }
+  .dialog h3 { margin: 0 0 12px; font-size: 18px; font-weight: 600; }
+  .dialog p { margin: 0 0 20px; color: var(--color-fg-muted); }
+  .dialog .row { display: flex; gap: 8px; justify-content: flex-end; }
+  .btn { height: 36px; padding: 0 14px; background: var(--color-accent-9); color: white; border: none; border-radius: var(--radius-control); font: 500 13px var(--font-sans); cursor: pointer; }
+  .btn.outline { background: transparent; color: var(--color-fg); border: 1px solid var(--color-border); }
+  .btn.pressed { box-shadow: var(--shadow-pressed); transform: translateY(1px); }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Elevation playground</h1>
+    <p class="sub">Toggle <code>[data-elevation]</code> to see how shadow language shifts. Flat collapses raised shadows to inset borders; dramatic adds heavy ambient + key shadows.</p>
+
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="flat"><strong>Flat</strong><span>Notion / Linear — inset rings, no shadows</span></button>
+      <button class="preset-btn active" data-set="subtle"><strong>Subtle</strong><span>Default — Stripe / modern SaaS</span></button>
+      <button class="preset-btn" data-set="dramatic"><strong>Dramatic</strong><span>Consumer apps — floating, layered</span></button>
+    </div>
+
+    <div class="tokens">
+      <h3>Active role tokens</h3>
+      <div><div class="role">--shadow-raised</div><div class="val" id="t-raised"></div></div>
+      <div><div class="role">--shadow-raised-hover</div><div class="val" id="t-raised-h"></div></div>
+      <div><div class="role">--shadow-floating</div><div class="val" id="t-floating"></div></div>
+      <div><div class="role">--shadow-overlay</div><div class="val" id="t-overlay"></div></div>
+      <div><div class="role">--shadow-pressed</div><div class="val" id="t-pressed"></div></div>
+      <button class="copy-btn" id="copyBtn">Copy CSS for active preset</button>
+    </div>
+  </aside>
+
+  <main class="preview">
+    <div><h2>Cards — raised (rest + hover)</h2>
+      <div class="card-row">
+        <div class="card"><h3>Resting</h3><p>Uses <code>--shadow-raised</code>.</p></div>
+        <div class="card hover"><h3>Hovered</h3><p>Uses <code>--shadow-raised-hover</code>.</p></div>
+      </div>
+    </div>
+
+    <div><h2>Popover — floating</h2>
+      <div class="popover">
+        <h4>Quick filters</h4>
+        <p>Floating overlay uses <code>--shadow-floating</code>. Dramatic preset makes it pop off the page.</p>
+      </div>
+    </div>
+
+    <div><h2>Dialog — overlay (highest)</h2>
+      <div class="dialog">
+        <h3>Confirm delete</h3>
+        <p>Modal-level shadow comes from <code>--shadow-overlay</code>. Flat preset drops this dramatically.</p>
+        <div class="row"><button class="btn outline">Cancel</button><button class="btn">Delete</button></div>
+      </div>
+    </div>
+
+    <div><h2>Pressed state</h2>
+      <button class="btn pressed">Pressed button</button>
+    </div>
+  </main>
+</div>
+
+<script>
+  const HTML = document.documentElement;
+  const TOKENS = ['raised:--shadow-raised', 'raised-h:--shadow-raised-hover', 'floating:--shadow-floating', 'overlay:--shadow-overlay', 'pressed:--shadow-pressed'];
+  function refresh() { const cs = getComputedStyle(HTML); TOKENS.forEach(t => { const [id, n] = t.split(':'); document.getElementById('t-' + id).textContent = cs.getPropertyValue(n).trim(); }); }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    HTML.setAttribute('data-elevation', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    refresh();
+  }));
+  document.getElementById('copyBtn').addEventListener('click', e => {
+    const cs = getComputedStyle(HTML); const p = HTML.getAttribute('data-elevation');
+    const lines = [`[data-elevation="${p}"] {`];
+    TOKENS.forEach(t => { const [, n] = t.split(':'); lines.push(`  ${n}: ${cs.getPropertyValue(n).trim()};`); });
+    lines.push('}');
+    navigator.clipboard.writeText(lines.join('\n'));
+    e.target.classList.add('copied'); e.target.textContent = 'Copied!';
+    setTimeout(() => { e.target.classList.remove('copied'); e.target.textContent = 'Copy CSS for active preset'; }, 1500);
+  });
+  refresh();
+</script>
+</body>
+</html>

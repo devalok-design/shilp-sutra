@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — v0.40+ Customization Playgrounds</title>
+<style>
+  :root {
+    --bg: oklch(0.985 0.005 280); --surface: oklch(1 0 0);
+    --fg: oklch(0.20 0.02 280); --fg-muted: oklch(0.48 0.02 280); --fg-subtle: oklch(0.62 0.02 280);
+    --border: oklch(0.88 0.01 280); --accent: oklch(0.55 0.19 340);
+    --accent-3: oklch(0.94 0.03 340); --accent-11: oklch(0.42 0.16 340);
+    --font: -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.6 var(--font); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; padding: 60px 40px; }
+  .container { max-width: 880px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { margin: 0 0 32px; color: var(--fg-muted); }
+  .ver { display: inline-flex; align-items: center; padding: 2px 10px; background: var(--accent-3); color: var(--accent-11); border-radius: 9999px; font-size: 12px; font-weight: 500; margin-bottom: 24px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-decoration: none; color: inherit; transition: border-color 150ms, transform 200ms; display: flex; flex-direction: column; gap: 8px; }
+  .card:hover { border-color: var(--fg-subtle); transform: translateY(-1px); }
+  .card h2 { margin: 0; font-size: 17px; font-weight: 600; }
+  .card p { margin: 0; color: var(--fg-muted); font-size: 14px; }
+  .card .tokens { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .card .tokens code { font: 11px ui-monospace, monospace; background: var(--bg); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; color: var(--fg); }
+  .status { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 4px; font: 600 10px var(--font); text-transform: uppercase; letter-spacing: 0.05em; margin-left: 8px; }
+  .status.v40 { background: oklch(0.94 0.04 195); color: oklch(0.40 0.16 195); }
+  .status.v41 { background: oklch(0.94 0.04 270); color: oklch(0.40 0.16 270); }
+  .status.v42 { background: oklch(0.96 0.02 30); color: oklch(0.45 0.10 30); }
+  .note { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 40px; font-size: 13px; color: var(--fg-muted); line-height: 1.6; }
+  .note strong { color: var(--fg); font-weight: 600; }
+  .note code { font: 12px ui-monospace, monospace; background: var(--bg); padding: 1px 5px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<main class="container">
+  <span class="ver">v0.40+ planning</span>
+  <h1>Customization axes</h1>
+  <p class="sub">Interactive playgrounds for the next preset axes proposed in <code>docs/plans/2026-05-25-v040-customization-axes.md</code>. Each plays the role of <code>[data-shape]</code> on a different axis. Toggle the controls, watch the demo react, copy the CSS.</p>
+
+  <div class="grid">
+    <a class="card" href="density-presets.html">
+      <h2>Density<span class="status v40">v0.40</span></h2>
+      <p>compact / comfortable / spacious. Every padding, gap, and control height scales in lockstep.</p>
+      <div class="tokens"><code>--space-control-x</code><code>--space-stack</code><code>--height-control-md</code><code>--space-card-pad</code></div>
+    </a>
+
+    <a class="card" href="border-presets.html">
+      <h2>Border<span class="status v40">v0.40</span></h2>
+      <p>hairline / default / pronounced / none. Edge weight + color across controls, surfaces, overlays, dividers.</p>
+      <div class="tokens"><code>--border-control-width</code><code>--border-surface-color</code><code>--border-overlay-width</code></div>
+    </a>
+
+    <a class="card" href="elevation-presets.html">
+      <h2>Elevation<span class="status v40">v0.40</span></h2>
+      <p>flat / subtle / dramatic. Shadow language — flat collapses raised to inset rings, dramatic adds heavy ambient.</p>
+      <div class="tokens"><code>--shadow-raised</code><code>--shadow-floating</code><code>--shadow-overlay</code></div>
+    </a>
+
+    <a class="card" href="ramp-generator.html">
+      <h2>Accent ramp generator<span class="status v40">v0.40</span></h2>
+      <p>One hue + chroma → full 12-step OKLCH ramp with dark mode pair. Promote the site's existing helper to a public utility.</p>
+      <div class="tokens"><code>--color-accent-1..12</code><code>--color-accent-fg</code></div>
+    </a>
+
+    <a class="card" href="motion-presets.html">
+      <h2>Motion<span class="status v41">v0.41</span></h2>
+      <p>off / calm / lively. Duration + ease for controls, overlays, attention cues. Honors prefers-reduced-motion.</p>
+      <div class="tokens"><code>--duration-quick</code><code>--duration-standard</code><code>--ease-control</code></div>
+    </a>
+
+    <a class="card" href="archetypes.html">
+      <h2>Brand archetypes<span class="status v41">v0.41</span></h2>
+      <p>Combo bundles. linear / stripe / apple / material / notion. One attribute sets shape + density + border + elevation + motion.</p>
+      <div class="tokens"><code>[data-archetype]</code></div>
+    </a>
+  </div>
+
+  <div class="note">
+    <strong>How to read these.</strong> Each playground is self-contained — no build, no dependencies. Open in any browser. The sidebar exposes preset switches; the right pane shows mock shilp-sutra components reacting to the role tokens. The token-snapshot section shows the active values; <code>Copy CSS</code> exports the active preset block ready to drop into your global stylesheet.<br><br>
+    <strong>Status badges.</strong> <span class="status v40">v0.40</span> = approved as the next major release; <span class="status v41">v0.41</span> = follow-up; <span class="status v42">v0.42</span> = power-user feature (component-level overrides, JS theme API).<br><br>
+    <strong>Plan.</strong> Full design + audit gate + codemod approach is in <code>docs/plans/2026-05-25-v040-customization-axes.md</code>. After you click through these playgrounds, approve/skip/defer per axis and we ship implementations one PR at a time, same shape as <code>v0.39</code>.
+  </div>
+</main>
+</body>
+</html>

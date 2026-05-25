@@ -269,6 +269,14 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
       appearanceClass = ''
     }
 
+    // When lastUsed is set, augment the accessible name so screen readers
+    // announce the hint even though the visual badge is decorative.
+    const ariaLabelForButton = iconOnly
+      ? `${resolveLabel(provider, intent)}${lastUsed ? ' (last used)' : ''}`
+      : lastUsed
+        ? `${resolveLabel(provider, intent)} (last used)`
+        : undefined
+
     const buttonEl = (
       <Button
         ref={ref}
@@ -277,9 +285,10 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
         size={iconOnly ? ICON_ONLY_SIZE[size] ?? 'icon-md' : size}
         fullWidth={fullWidth && !iconOnly}
         startIcon={iconOnly ? undefined : (glyphNode as React.ReactElement)}
-        aria-label={iconOnly ? resolveLabel(provider, intent) : undefined}
+        aria-label={ariaLabelForButton}
         data-provider={provider}
         data-oauth-appearance={appearance}
+        data-last-used={lastUsed || undefined}
         className={cn(appearanceClass, className)}
         {...buttonProps}
       >
@@ -294,8 +303,9 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
         {lastUsed ? (
           <span
             aria-hidden="true"
-            className="absolute -top-2 right-3 z-10 inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-ds-02 py-[1px] text-[10px] font-semibold uppercase tracking-wide shadow-raised"
+            className="pointer-events-none absolute -top-2 right-ds-03 z-20 inline-flex items-center gap-1 rounded-pill bg-accent-9 text-accent-fg px-ds-02 py-[2px] text-[11px] leading-none font-semibold uppercase tracking-wide ring-2 ring-surface-base shadow-overlay"
           >
+            <span aria-hidden className="size-[6px] rounded-full bg-accent-fg" />
             Last used
           </span>
         ) : null}

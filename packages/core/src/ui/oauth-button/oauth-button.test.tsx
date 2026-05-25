@@ -89,8 +89,8 @@ describe('OAuthButton', () => {
   })
 
   it('sets the data-oauth-variant attribute', () => {
-    render(<OAuthButton provider="google" variant="dark" data-testid="g" />)
-    expect(screen.getByTestId('g')).toHaveAttribute('data-oauth-variant', 'dark')
+    render(<OAuthButton provider="google" variant="ghost" data-testid="g" />)
+    expect(screen.getByTestId('g')).toHaveAttribute('data-oauth-variant', 'ghost')
   })
 
   it('forwards onClick', async () => {
@@ -149,7 +149,7 @@ describe('OAuthButton', () => {
     expect(screen.getByTestId('fn-badge')).toHaveTextContent('Recent →')
   })
 
-  it.each(['solid', 'soft', 'outline', 'ghost', 'dark'] as const)(
+  it.each(['solid', 'soft', 'outline', 'ghost'] as const)(
     'sets data-oauth-variant="%s"',
     (variant) => {
       render(<OAuthButton provider="google" variant={variant} data-testid="b" />)

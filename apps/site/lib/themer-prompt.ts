@@ -16,13 +16,19 @@ export const AGENT_PROMPT_TEMPLATE = `Set up shilp-sutra theming for this projec
 My brand: <PASTE HEX or write archetype name: linear | stripe | apple | material | notion | vercel | devalok>
 
 Steps:
-1. WebFetch https://shilp-sutra.devalok.in/themer to understand the funnel, then pick the right door based on my brand input above (/themer/brand for a hex, /themer/archetypes for an archetype name, /themer/wizard if I left it blank).
-2. Construct the result URL (e.g. https://shilp-sutra.devalok.in/themer/result?archetype=apple&hue=220&chroma=0.15), WebFetch it, and extract the CSS block from the "Paste this CSS" section.
-3. Find my project's global stylesheet (app/globals.css, src/index.css, src/styles/globals.css, or whichever imports tailwindcss). Paste the CSS block AFTER the @import "@devalok/shilp-sutra/css"; line. Do not put it inside any @layer.
+1. Map my brand input to query params:
+   - archetype name → archetype=<name>
+   - hex like #d946a6 → resolve to OKLCH hue (0-360) and pick a chroma in 0.10-0.20, then hue=<n>&chroma=<n>
+   - blank → archetype=devalok&hue=340&chroma=0.19
+2. Fetch the JSON contract:
+     GET https://shilp-sutra.devalok.in/themer/result.json?<params>
+   Response shape:
+     { archetype, density, shape, motion, hue, chroma, css, pasteAfter, pasteLocation, doNotPasteInside }
+3. Find my project's global stylesheet (app/globals.css, src/index.css, src/styles/globals.css, or whichever imports tailwindcss). Paste the response \`css\` field AFTER the line in \`pasteAfter\`. Do not put it inside any \`@layer\`.
 4. If @devalok/shilp-sutra isn't installed yet, install it first per the recipe at node_modules/@devalok/shilp-sutra/docs/recipes/install-<framework>.md (detect framework from lockfile + config).
-5. Verify by opening any page that uses a Button or Card — radius + accent should match the Themer preview. Report any token that didn't take effect.
+5. Verify by opening any page that uses a Button or Card — radius + accent should match the Themer preview at https://shilp-sutra.devalok.in/themer/result?<params>. Report any token that didn't take effect.
 
-Do not invent CSS variables. Use exactly what the Themer emits. Don't add tailwind.config.ts. Don't wrap in a theme provider.`
+Do not invent CSS variables. Use exactly what the JSON \`css\` field contains. Don't add tailwind.config.ts. Don't wrap in a theme provider.`
 
 /**
  * Build a prompt with the user's themer state baked into the URL so the agent
@@ -36,17 +42,21 @@ export function buildAgentPrompt(state: ThemerState, origin = 'https://shilp-sut
   if (state.motion) params.set('motion', state.motion)
   if (state.hue != null) params.set('hue', String(Math.round(state.hue)))
   if (state.chroma != null) params.set('chroma', state.chroma.toFixed(3))
-  const resultUrl = `${origin}/themer/result?${params.toString()}`
+  const qs = params.toString()
+  const jsonUrl = `${origin}/themer/result.json?${qs}`
+  const previewUrl = `${origin}/themer/result?${qs}`
 
   return `Set up shilp-sutra theming for this project. I've already picked a theme via the Themer.
 
-Theme URL: ${resultUrl}
+Theme JSON:    ${jsonUrl}
+Theme preview: ${previewUrl}
 
 Steps:
-1. WebFetch the Theme URL above. Extract the CSS block from the "Paste this CSS" section.
-2. Find my project's global stylesheet (app/globals.css, src/index.css, src/styles/globals.css, or whichever imports tailwindcss). Paste the CSS block AFTER the @import "@devalok/shilp-sutra/css"; line. Do not put it inside any @layer.
+1. Fetch the Theme JSON URL. Response shape:
+     { archetype, density, shape, motion, hue, chroma, css, pasteAfter, pasteLocation, doNotPasteInside }
+2. Find my project's global stylesheet (app/globals.css, src/index.css, src/styles/globals.css, or whichever imports tailwindcss). Paste the response \`css\` field AFTER the line in \`pasteAfter\`. Do not put it inside any \`@layer\`.
 3. If @devalok/shilp-sutra isn't installed yet, install it first per the recipe at node_modules/@devalok/shilp-sutra/docs/recipes/install-<framework>.md (detect framework from lockfile + config).
-4. Verify by opening any page that uses a Button or Card — radius + accent should match the Themer preview at the URL above. Report any token that didn't take effect.
+4. Verify by opening any page that uses a Button or Card — radius + accent should match the Theme preview URL above. Report any token that didn't take effect.
 
-Do not invent CSS variables. Use exactly what the Themer emits. Don't add tailwind.config.ts. Don't wrap in a theme provider.`
+Do not invent CSS variables. Use exactly what the JSON \`css\` field contains. Don't add tailwind.config.ts. Don't wrap in a theme provider.`
 }

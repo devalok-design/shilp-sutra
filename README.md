@@ -89,20 +89,25 @@ Paste the CSS *after* `@import "@devalok/shilp-sutra/css";` and reload. That's i
 
 Paste this into Claude Code / Cursor / Codex / Aider and your agent does install + Themer fetch + CSS paste in one shot:
 
-```
+````
 Set up shilp-sutra theming for this project via the Themer.
 
 My brand: <PASTE HEX or write archetype name: linear | stripe | apple | material | notion | vercel | devalok>
 
 Steps:
-1. WebFetch https://shilp-sutra.devalok.in/themer to understand the funnel, then pick the right door based on my brand input above (/themer/brand for a hex, /themer/archetypes for an archetype name, /themer/wizard if I left it blank).
-2. Construct the result URL (e.g. https://shilp-sutra.devalok.in/themer/result?archetype=apple&hue=220&chroma=0.15), WebFetch it, and extract the CSS block from the "Paste this CSS" section.
-3. Find my project's global stylesheet (app/globals.css, src/index.css, src/styles/globals.css, or whichever imports tailwindcss). Paste the CSS block AFTER the @import "@devalok/shilp-sutra/css"; line. Do not put it inside any @layer.
+1. Map my brand input to query params:
+   - archetype name → archetype=<name>
+   - hex like #d946a6 → resolve to OKLCH hue (0-360) + chroma in 0.10-0.20 → hue=<n>&chroma=<n>
+   - blank → archetype=devalok&hue=340&chroma=0.19
+2. Fetch the JSON contract:
+     GET https://shilp-sutra.devalok.in/themer/result.json?<params>
+   Response: { archetype, density, shape, motion, hue, chroma, css, pasteAfter, pasteLocation, doNotPasteInside }
+3. Find my project's global stylesheet (app/globals.css, src/index.css, src/styles/globals.css, or whichever imports tailwindcss). Paste the response `css` field AFTER the line in `pasteAfter`. Do not put it inside any `@layer`.
 4. If @devalok/shilp-sutra isn't installed yet, install it first per the recipe at node_modules/@devalok/shilp-sutra/docs/recipes/install-<framework>.md (detect framework from lockfile + config).
-5. Verify by opening any page that uses a Button or Card — radius + accent should match the Themer preview. Report any token that didn't take effect.
+5. Verify by opening any page that uses a Button or Card — radius + accent should match https://shilp-sutra.devalok.in/themer/result?<params>. Report any token that didn't take effect.
 
-Do not invent CSS variables. Use exactly what the Themer emits. Don't add tailwind.config.ts. Don't wrap in a theme provider.
-```
+Do not invent CSS variables. Use exactly what the JSON `css` field contains. Don't add tailwind.config.ts. Don't wrap in a theme provider.
+````
 
 Already been to the Themer? The result page has a **Copy AI agent prompt** button that pre-fills the URL with your archetype + accent so the agent skips persona triage.
 

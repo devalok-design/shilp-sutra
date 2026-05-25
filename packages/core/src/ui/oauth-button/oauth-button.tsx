@@ -40,18 +40,17 @@ export type OAuthProvider =
 export type OAuthIntent = 'continue' | 'signin' | 'signup'
 
 /**
- * Visual treatment for the button. Mirrors the Button component's variant axis
- * with one extra "dark" entry for row coherence across providers.
- * - `solid`   — provider's brand background colour. Highest recognition (default).
- * - `soft`    — tinted, low-emphasis (DS surface-raised). Glyph carries brand identity.
- * - `outline` — DS-neutral outline. Best for uniform rows on neutral backgrounds.
- * - `ghost`   — transparent, no border. For dense / in-toolbar contexts.
- * - `dark`    — unified Apple-style black-on-white (light) / white-on-black (dark)
- *               across all providers, for visual consistency.
+ * Visual treatment — 1:1 with Button's variant axis. OAuthButton is a thin
+ * wrapper over Button, so every variant renders pixel-for-pixel identical
+ * to a regular Button at the same variant + size. Brand identity lives in
+ * the glyph (override via `icon` for a brand-multicolour SVG), not the
+ * button surface.
+ *
+ * - `solid` (default) | `soft` | `outline` | `ghost`
  */
-export type OAuthVariant = 'solid' | 'soft' | 'outline' | 'ghost' | 'dark'
+export type OAuthVariant = 'solid' | 'soft' | 'outline' | 'ghost'
 
-/** @deprecated Use `OAuthVariant`. `brand` maps to `solid`. */
+/** @deprecated Use `OAuthVariant`. brand/dark map to solid; outline passes through. */
 export type OAuthAppearance = 'brand' | 'outline' | 'dark'
 
 // ── Static metadata ─────────────────────────────────────────────
@@ -127,45 +126,12 @@ function resolveAriaName(provider: OAuthProvider, intent: OAuthIntent): string {
   return providerCopyOverride[provider]?.[intent] ?? defaultLabel(provider, intent, false)
 }
 
-// Brand colour classes per provider — hex values are published brand-page
-// facts (the colour each provider uses on its own sign-in button). Generic
-// providers (sso/email/passkey) have no brand colour → fall through to outline.
-//
-// **Dark-mode strategy:** every provider lands on the *same* DS surface in
-// dark mode (surface-overlay). Mixing inverted per-provider darks in one row
-// looks accidental (some white, some black). In dark mode the brand identity
-// comes from the glyph, not the bg.
-const DARK_UNIFORM = 'dark:bg-surface-overlay dark:text-surface-fg dark:border-surface-border-strong dark:hover:bg-surface-raised-hover dark:active:bg-surface-raised-active'
-
-const brandClasses: Record<OAuthProvider, string> = {
-  google:
-    `bg-white text-[#1f1f1f] border-[#dadce0] hover:bg-[#f8f9fa] active:bg-[#f1f3f4] ${DARK_UNIFORM}`,
-  apple:
-    `bg-black text-white border-black hover:bg-[#1a1a1a] active:bg-[#262626] ${DARK_UNIFORM}`,
-  github:
-    `bg-[#24292f] text-white border-[#24292f] hover:bg-[#32383f] active:bg-[#1c2025] ${DARK_UNIFORM}`,
-  microsoft:
-    `bg-white text-[#5e5e5e] border-[#8c8c8c] hover:bg-[#f8f9fa] active:bg-[#f1f3f4] ${DARK_UNIFORM}`,
-  x:
-    `bg-black text-white border-black hover:bg-[#1a1a1a] active:bg-[#262626] ${DARK_UNIFORM}`,
-  linkedin:
-    `bg-[#0A66C2] text-white border-[#0A66C2] hover:bg-[#004182] active:bg-[#003a73] ${DARK_UNIFORM}`,
-  facebook:
-    `bg-[#1877F2] text-white border-[#1877F2] hover:bg-[#166FE5] active:bg-[#1464D4] ${DARK_UNIFORM}`,
-  discord:
-    `bg-[#5865F2] text-white border-[#5865F2] hover:bg-[#4752C4] active:bg-[#3C45A5] ${DARK_UNIFORM}`,
-  slack:
-    `bg-surface-base text-surface-fg border-surface-border-strong hover:bg-surface-raised-hover active:bg-surface-raised-active ${DARK_UNIFORM}`,
-  gitlab:
-    `bg-[#FC6D26] text-white border-[#FC6D26] hover:bg-[#E24329] active:bg-[#C73A24] ${DARK_UNIFORM}`,
-  // No brand colour — fall through to DS-neutral outline behaviour.
-  sso: '',
-  email: '',
-  passkey: '',
-}
-
-const darkUnifiedClasses =
-  'bg-surface-fg text-surface-base border-surface-fg hover:opacity-90 active:opacity-80 dark:bg-surface-base dark:text-surface-fg dark:border-surface-fg dark:hover:opacity-90'
+// **Visual treatment:** OAuthButton is a thin wrapper over `<Button>` — every
+// height, padding, radius, border, hover, focus, active, and disabled state is
+// the DS Button's. We do NOT inject per-provider hex backgrounds: brand
+// identity lives in the glyph (Tabler default; consumer can pass a real
+// multicolour SVG via `icon`). This guarantees pixel-for-pixel consistency
+// with every other button in the system at every variant.
 
 const ICON_PX: Record<string, number> = {
   xs: 14,
@@ -316,47 +282,12 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     const glyphNode = icon ?? <DefaultGlyph size={iconPx} aria-hidden />
     const label = children ?? resolveLabel(provider, intent, compact)
 
-    // Resolve final variant. `appearance` is a deprecated alias kept for
-    // back-compat — map "brand" → "solid", others pass through.
+    // Resolve final variant. `appearance` is a deprecated alias mapped to
+    // the closest DS variant — brand/dark both collapse to solid since
+    // OAuthButton no longer injects per-provider brand colours.
     const variant: OAuthVariant =
       variantProp ??
-      (appearance === 'brand' ? 'solid' : appearance === 'outline' ? 'outline' : appearance === 'dark' ? 'dark' : 'solid')
-
-    // Map OAuth variant → Button variant + className override.
-    //
-    // For variants that don't need a brand background (soft/ghost/outline),
-    // we pass straight through to Button and let the DS variant do the
-    // styling — keeps OAuthButton visually consistent with every other
-    // button in the system at those treatments. For variants that DO carry
-    // the provider's brand colour (solid, dark), we render Button as
-    // outline and overlay the brand classes.
-    const hasBrand = !!brandClasses[provider]
-    let buttonVariant: NonNullable<ButtonProps['variant']>
-    let variantClass = ''
-    switch (variant) {
-      case 'solid':
-        if (hasBrand) {
-          buttonVariant = 'outline'
-          variantClass = brandClasses[provider]
-        } else {
-          // sso / email / passkey — no brand colour, use DS solid neutral
-          buttonVariant = 'solid'
-        }
-        break
-      case 'soft':
-        buttonVariant = 'soft'
-        break
-      case 'ghost':
-        buttonVariant = 'ghost'
-        break
-      case 'dark':
-        buttonVariant = 'outline'
-        variantClass = darkUnifiedClasses
-        break
-      case 'outline':
-      default:
-        buttonVariant = 'outline'
-    }
+      (appearance === 'outline' ? 'outline' : 'solid')
 
     // aria-label always carries the long-form name so screen readers stay
     // informative even when the visual label is compact or icon-only.
@@ -385,7 +316,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     const buttonEl = (
       <Button
         ref={ref}
-        variant={buttonVariant}
+        variant={variant}
         color="neutral"
         size={iconOnly ? ICON_ONLY_SIZE[size] ?? 'icon-md' : size}
         fullWidth={fullWidth && !iconOnly}
@@ -394,7 +325,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
         data-provider={provider}
         data-oauth-variant={variant}
         data-last-used={lastUsed || undefined}
-        className={cn(variantClass, className)}
+        className={className}
         {...buttonProps}
       >
         {iconOnly ? glyphNode : label}

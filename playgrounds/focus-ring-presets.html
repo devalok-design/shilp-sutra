@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-focus-ring="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Focus Ring Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280); --color-surface: oklch(1 0 0); --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280); --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280); --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-9: oklch(0.55 0.19 340); --color-accent-11: oklch(0.42 0.16 340);
+    --font-sans: -apple-system, system-ui, sans-serif;
+    --radius-control: 6px; --radius-surface: 10px;
+  }
+  :root, [data-focus-ring="default"] { --focus-ring-width: 2px; --focus-ring-offset: 2px; --focus-ring-color: var(--color-accent-9); --focus-ring-style: solid; --focus-ring-bg-on: 0; }
+  [data-focus-ring="hairline"] { --focus-ring-width: 1.5px; --focus-ring-offset: 0px; --focus-ring-color: var(--color-accent-9); --focus-ring-style: solid; --focus-ring-bg-on: 0; }
+  [data-focus-ring="halo"] { --focus-ring-width: 4px; --focus-ring-offset: 2px; --focus-ring-color: oklch(0.55 0.19 340 / 0.35); --focus-ring-style: solid; --focus-ring-bg-on: 0; }
+  [data-focus-ring="inset"] { --focus-ring-width: 0px; --focus-ring-offset: 0px; --focus-ring-color: transparent; --focus-ring-style: solid; --focus-ring-bg-on: 1; }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+  .tokens { margin-top: 20px; font: 11px/1.7 ui-monospace, monospace; border-top: 1px solid var(--color-border); padding-top: 12px; }
+  .tokens h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { display: flex; justify-content: space-between; padding: 1px 0; }
+  .tokens span { color: var(--color-fg-subtle); }
+  .hint { margin-top: 16px; padding: 12px; background: var(--color-accent-3); color: var(--color-accent-11); border-radius: 8px; font-size: 12px; line-height: 1.5; }
+
+  .preview { padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 32px; max-width: 720px; }
+  h2 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+  .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); padding: 24px; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn { padding: 10px 18px; background: var(--color-accent-9); color: white; border: none; border-radius: var(--radius-control); font: 500 14px var(--font-sans); cursor: pointer; outline: none; transition: outline-offset 100ms, background 100ms; }
+  .btn:focus-visible { outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color); outline-offset: var(--focus-ring-offset); background: color-mix(in oklch, var(--color-accent-9), oklch(0.5 0.2 340) calc(15% * var(--focus-ring-bg-on))); }
+  .btn.outline { background: transparent; color: var(--color-fg); border: 1px solid var(--color-border); }
+  .btn.outline:focus-visible { outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color); outline-offset: var(--focus-ring-offset); background: color-mix(in oklch, transparent, var(--color-accent-3) calc(100% * var(--focus-ring-bg-on))); }
+  .input { padding: 10px 14px; border: 1px solid var(--color-border); border-radius: var(--radius-control); font: 14px var(--font-sans); min-width: 240px; outline: none; background: var(--color-surface); }
+  .input:focus-visible { outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color); outline-offset: var(--focus-ring-offset); border-color: var(--color-accent-9); }
+  a.link { color: var(--color-accent-11); text-decoration: underline; padding: 4px; border-radius: 4px; outline: none; }
+  a.link:focus-visible { outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+  .nav { display: flex; gap: 4px; padding: 8px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-control); }
+  .nav-item { padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; color: var(--color-fg-muted); outline: none; border: none; background: transparent; font: inherit; }
+  .nav-item:focus-visible { outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color); outline-offset: var(--focus-ring-offset); background: color-mix(in oklch, var(--color-surface), var(--color-accent-3) calc(100% * var(--focus-ring-bg-on))); }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Focus ring playground</h1>
+    <p class="sub">Toggle <code>[data-focus-ring]</code> and Tab through the focusable elements on the right to see how the ring renders.</p>
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="hairline"><strong>Hairline</strong><span>Linear — 1.5px solid, no offset</span></button>
+      <button class="preset-btn active" data-set="default"><strong>Default</strong><span>2px solid, 2px offset</span></button>
+      <button class="preset-btn" data-set="halo"><strong>Halo</strong><span>Apple-like — 4px translucent ring</span></button>
+      <button class="preset-btn" data-set="inset"><strong>Inset (bg-only)</strong><span>Material — no ring, bg change indicates focus</span></button>
+    </div>
+    <div class="tokens">
+      <h3>Active role tokens</h3>
+      <div><span>--focus-ring-width</span><b id="t-w"></b></div>
+      <div><span>--focus-ring-offset</span><b id="t-o"></b></div>
+      <div><span>--focus-ring-style</span><b id="t-s"></b></div>
+      <div><span>--focus-ring-bg-on</span><b id="t-b"></b></div>
+    </div>
+    <div class="hint">Press <strong>Tab</strong> to move focus across elements →</div>
+  </aside>
+  <main class="preview">
+    <div class="panel"><h2>Buttons</h2>
+      <div class="row">
+        <button class="btn" id="firstBtn">Primary</button>
+        <button class="btn outline">Outline</button>
+        <button class="btn">Another</button>
+      </div>
+    </div>
+    <div class="panel"><h2>Input</h2><input class="input" placeholder="Tab into me"></div>
+    <div class="panel"><h2>Inline link</h2><p>A sentence with an <a class="link" href="#" onclick="event.preventDefault()">in-line link</a> that takes focus on Tab.</p></div>
+    <div class="panel"><h2>Tab bar</h2>
+      <nav class="nav">
+        <button class="nav-item">Home</button><button class="nav-item">Projects</button>
+        <button class="nav-item">Activity</button><button class="nav-item">Settings</button>
+      </nav>
+    </div>
+  </main>
+</div>
+<script>
+  const H = document.documentElement;
+  function R() {
+    const cs = getComputedStyle(H);
+    document.getElementById('t-w').textContent = cs.getPropertyValue('--focus-ring-width').trim();
+    document.getElementById('t-o').textContent = cs.getPropertyValue('--focus-ring-offset').trim();
+    document.getElementById('t-s').textContent = cs.getPropertyValue('--focus-ring-style').trim();
+    document.getElementById('t-b').textContent = cs.getPropertyValue('--focus-ring-bg-on').trim();
+  }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    H.setAttribute('data-focus-ring', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    R();
+    setTimeout(() => document.getElementById('firstBtn').focus(), 50);
+  }));
+  R();
+</script>
+</body>
+</html>

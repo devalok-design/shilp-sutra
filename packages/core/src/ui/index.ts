@@ -360,6 +360,9 @@ export { Link, type LinkProps } from './link'
 
 // OAuth / Social sign-in
 export {
+  getOAuthLabel,
+  getOAuthName,
+  OAuth,
   type OAuthAppearance,
   OAuthButton,
   type OAuthButtonProps,
@@ -367,6 +370,8 @@ export {
   type OAuthConnectionRowProps,
   OAuthDivider,
   type OAuthDividerProps,
+  OAuthGlyph,
+  type OAuthGlyphProps,
   OAuthGroup,
   type OAuthGroupProps,
   type OAuthIntent,

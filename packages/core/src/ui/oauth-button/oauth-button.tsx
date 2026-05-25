@@ -167,14 +167,6 @@ const brandClasses: Record<OAuthProvider, string> = {
 const darkUnifiedClasses =
   'bg-surface-fg text-surface-base border-surface-fg hover:opacity-90 active:opacity-80 dark:bg-surface-base dark:text-surface-fg dark:border-surface-fg dark:hover:opacity-90'
 
-// soft + ghost don't carry provider brand colour on the surface — the glyph
-// carries the identity. Keeps rows visually coherent in low-emphasis contexts.
-const softClasses =
-  'bg-surface-raised text-surface-fg border-transparent hover:bg-surface-raised-hover active:bg-surface-raised-active'
-
-const ghostClasses =
-  'bg-transparent text-surface-fg border-transparent hover:bg-surface-raised-hover active:bg-surface-raised-active'
-
 const ICON_PX: Record<string, number> = {
   xs: 14,
   sm: 16,
@@ -330,23 +322,40 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
       variantProp ??
       (appearance === 'brand' ? 'solid' : appearance === 'outline' ? 'outline' : appearance === 'dark' ? 'dark' : 'solid')
 
-    let variantClass: string
+    // Map OAuth variant → Button variant + className override.
+    //
+    // For variants that don't need a brand background (soft/ghost/outline),
+    // we pass straight through to Button and let the DS variant do the
+    // styling — keeps OAuthButton visually consistent with every other
+    // button in the system at those treatments. For variants that DO carry
+    // the provider's brand colour (solid, dark), we render Button as
+    // outline and overlay the brand classes.
+    const hasBrand = !!brandClasses[provider]
+    let buttonVariant: NonNullable<ButtonProps['variant']>
+    let variantClass = ''
     switch (variant) {
       case 'solid':
-        variantClass = brandClasses[provider] || ''
+        if (hasBrand) {
+          buttonVariant = 'outline'
+          variantClass = brandClasses[provider]
+        } else {
+          // sso / email / passkey — no brand colour, use DS solid neutral
+          buttonVariant = 'solid'
+        }
         break
       case 'soft':
-        variantClass = softClasses
+        buttonVariant = 'soft'
         break
       case 'ghost':
-        variantClass = ghostClasses
+        buttonVariant = 'ghost'
         break
       case 'dark':
+        buttonVariant = 'outline'
         variantClass = darkUnifiedClasses
         break
       case 'outline':
       default:
-        variantClass = ''
+        buttonVariant = 'outline'
     }
 
     // aria-label always carries the long-form name so screen readers stay
@@ -376,7 +385,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     const buttonEl = (
       <Button
         ref={ref}
-        variant="outline"
+        variant={buttonVariant}
         color="neutral"
         size={iconOnly ? ICON_ONLY_SIZE[size] ?? 'icon-md' : size}
         fullWidth={fullWidth && !iconOnly}
@@ -610,3 +619,72 @@ const OAuthConnectionRow = React.forwardRef<HTMLDivElement, OAuthConnectionRowPr
 OAuthConnectionRow.displayName = 'OAuthConnectionRow'
 
 export { OAuthConnectionRow }
+
+// ── OAuthGlyph (atomic glyph render) ───────────────────────────
+
+export interface OAuthGlyphProps extends Omit<React.SVGAttributes<SVGElement>, 'children'> {
+  provider: OAuthProvider
+  /** Glyph pixel size. Default 18. */
+  size?: number
+}
+
+/**
+ * Render just the provider glyph — useful when building a custom OAuth
+ * trigger (e.g. an icon-button inside a Tooltip, or a provider chip on a
+ * profile card). Defaults to the Tabler glyph; the icon prop on
+ * `OAuthButton` is the right escape hatch for the brand multi-colour mark.
+ */
+const OAuthGlyph = React.forwardRef<SVGSVGElement, OAuthGlyphProps>(
+  ({ provider, size = 18, ...props }, ref) => {
+    const Cmp = providerIcon[provider] as React.ComponentType<{
+      size?: number
+      'aria-hidden'?: boolean
+      ref?: React.Ref<SVGSVGElement>
+    }>
+    return <Cmp ref={ref} size={size} aria-hidden {...(props as Record<string, unknown>)} />
+  },
+)
+OAuthGlyph.displayName = 'OAuthGlyph'
+
+export { OAuthGlyph }
+
+// ── Static helpers (composable building blocks) ────────────────
+
+/**
+ * Resolve the visible label for a provider × intent combo. Useful when
+ * rendering OAuth UIs outside of `OAuthButton` (e.g. a Confirm dialog
+ * "Disconnect from Google?" title).
+ */
+export function getOAuthLabel(provider: OAuthProvider, intent: OAuthIntent = 'continue', compact = false): string {
+  return resolveLabel(provider, intent, compact)
+}
+
+/** Display name for a provider, ready for sentence interpolation. */
+export function getOAuthName(provider: OAuthProvider): string {
+  return providerName(provider)
+}
+
+// ── Compound namespace ─────────────────────────────────────────
+
+/**
+ * Namespaced API — drop-in alternative to importing each piece separately.
+ *
+ * @example
+ * import { OAuth } from '@devalok/shilp-sutra/ui/oauth-button'
+ *
+ * <OAuth.Group reorderLastUsedFirst>
+ *   <OAuth.Button provider="google" lastUsed />
+ *   <OAuth.Button provider="passkey" />
+ *   <OAuth.Divider />
+ *   <OAuth.Button provider="sso" variant="ghost" />
+ * </OAuth.Group>
+ */
+export const OAuth = {
+  Button: OAuthButton,
+  Group: OAuthGroup,
+  Divider: OAuthDivider,
+  ConnectionRow: OAuthConnectionRow,
+  Glyph: OAuthGlyph,
+  getLabel: getOAuthLabel,
+  getName: getOAuthName,
+} as const

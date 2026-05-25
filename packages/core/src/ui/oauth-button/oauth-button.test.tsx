@@ -4,9 +4,13 @@ import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
 import {
+  getOAuthLabel,
+  getOAuthName,
+  OAuth,
   OAuthButton,
   OAuthConnectionRow,
   OAuthDivider,
+  OAuthGlyph,
   OAuthGroup,
   type OAuthProvider,
 } from './oauth-button'
@@ -260,6 +264,40 @@ describe('OAuthDivider', () => {
   it('has separator role', () => {
     render(<OAuthDivider />)
     expect(screen.getByRole('separator')).toBeInTheDocument()
+  })
+})
+
+describe('OAuthGlyph', () => {
+  it('renders the provider glyph', () => {
+    render(<OAuthGlyph provider="google" data-testid="g" size={24} />)
+    const el = screen.getByTestId('g')
+    expect(el).toBeInTheDocument()
+    expect(el.tagName.toLowerCase()).toBe('svg')
+    expect(el).toHaveAttribute('width', '24')
+  })
+})
+
+describe('OAuth namespace + helpers', () => {
+  it('OAuth.Button is OAuthButton', () => {
+    expect(OAuth.Button).toBe(OAuthButton)
+  })
+
+  it('OAuth.Group / Divider / ConnectionRow / Glyph map through', () => {
+    expect(OAuth.Group).toBe(OAuthGroup)
+    expect(OAuth.Divider).toBe(OAuthDivider)
+    expect(OAuth.ConnectionRow).toBe(OAuthConnectionRow)
+    expect(OAuth.Glyph).toBe(OAuthGlyph)
+  })
+
+  it('getOAuthLabel resolves the verb', () => {
+    expect(getOAuthLabel('google', 'signin')).toBe('Sign in with Google')
+    expect(getOAuthLabel('google', 'continue', true)).toBe('Google')
+    expect(getOAuthLabel('passkey', 'signup')).toBe('Create a passkey')
+  })
+
+  it('getOAuthName returns the display name', () => {
+    expect(getOAuthName('github')).toBe('GitHub')
+    expect(getOAuthName('passkey')).toBe('Passkey')
   })
 })
 

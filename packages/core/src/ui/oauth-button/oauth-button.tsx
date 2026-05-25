@@ -402,7 +402,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
           <span
             aria-hidden="true"
             data-last-used-badge=""
-            className="pointer-events-none absolute -top-[10px] -right-1 z-10"
+            className="pointer-events-none absolute -top-[10px] -right-2 z-10"
           >
             {renderedBadge}
           </span>

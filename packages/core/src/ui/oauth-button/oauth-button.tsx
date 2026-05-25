@@ -365,7 +365,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     // the default pill. `lastUsedLabel` swaps just the text inside it.
     // aria-label augments the accessible name with "(last used)".
     const defaultBadge = (
-      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-1.5 py-[2px] text-[9px] leading-none font-semibold uppercase tracking-wide shadow-overlay">
+      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-2 py-1 text-[9px] leading-none font-semibold uppercase tracking-wide shadow-overlay">
         {lastUsedLabel}
       </span>
     )
@@ -402,7 +402,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
           <span
             aria-hidden="true"
             data-last-used-badge=""
-            className="pointer-events-none absolute -top-2 right-ds-03 z-10"
+            className="pointer-events-none absolute -top-[10px] right-2 z-10"
           >
             {renderedBadge}
           </span>

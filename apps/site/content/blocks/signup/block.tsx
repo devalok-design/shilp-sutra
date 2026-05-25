@@ -66,9 +66,9 @@ export function SignupBlock() {
           </header>
 
           <OAuthGroup>
-            <OAuthButton provider="google" size="lg" lastUsed />
-            <OAuthButton provider="apple" size="lg" />
-            <OAuthButton provider="github" size="lg" />
+            <OAuthButton provider="google" lastUsed />
+            <OAuthButton provider="apple" />
+            <OAuthButton provider="github" />
           </OAuthGroup>
 
           <OAuthDivider />
@@ -81,7 +81,7 @@ export function SignupBlock() {
               <input
                 type="text"
                 placeholder="Mudit Lal"
-                className="h-ds-md px-ds-04 rounded-ds-md border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
+                className="h-ds-md px-ds-04 rounded-control border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
               />
             </label>
 
@@ -92,7 +92,7 @@ export function SignupBlock() {
               <input
                 type="email"
                 placeholder="namaskar@devalok.in"
-                className="h-ds-md px-ds-04 rounded-ds-md border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
+                className="h-ds-md px-ds-04 rounded-control border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
               />
             </label>
 
@@ -103,11 +103,11 @@ export function SignupBlock() {
               <input
                 type="password"
                 placeholder="At least 12 characters"
-                className="h-ds-md px-ds-04 rounded-ds-md border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
+                className="h-ds-md px-ds-04 rounded-control border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
               />
             </label>
 
-            <Button size="lg" startIcon={<IconMail size={16} />} type="submit">
+            <Button startIcon={<IconMail size={16} />} type="submit">
               Create account
             </Button>
           </form>

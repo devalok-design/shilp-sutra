@@ -80,7 +80,14 @@ const gapMap: Record<string, string> = {
   'ds-13': 'gap-ds-13',
 } as const
 
-const Stack = React.forwardRef<HTMLElement, StackProps>(
+// Polymorphic component type — preserves T across the call site so element-
+// specific props (e.g. `<Stack as="ul">` accepting `<ul>` props) typecheck.
+// Standard polymorphic-component pattern; see text.tsx for the same shape.
+type StackComponent = (<T extends React.ElementType = 'div'>(
+  props: StackProps<T> & { ref?: React.ComponentPropsWithRef<T>['ref'] },
+) => React.ReactElement | null) & { displayName?: string }
+
+const StackImpl = React.forwardRef<HTMLElement, StackProps>(
   ({ as, direction = 'vertical', gap, align, justify, wrap, className, children, ...props }, ref) => {
     const Component = as || 'div'
     return React.createElement(
@@ -102,6 +109,8 @@ const Stack = React.forwardRef<HTMLElement, StackProps>(
     )
   },
 )
-Stack.displayName = 'Stack'
+StackImpl.displayName = 'Stack'
+
+const Stack = StackImpl as unknown as StackComponent
 
 export { type SpacingToken, Stack, type StackProps }

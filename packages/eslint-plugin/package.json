@@ -1,0 +1,64 @@
+{
+  "name": "@devalok/eslint-plugin-shilp-sutra",
+  "version": "0.1.0",
+  "description": "ESLint rules for @devalok/shilp-sutra — catches deprecated APIs, peer-cliff barrel imports, TW3-era utility classnames, and ships autofixes that turn breaking-change migrations into one-command codemods.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "docs/rules",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "shilp-sutra",
+    "devalok",
+    "design-system",
+    "react",
+    "tailwind"
+  ],
+  "author": "Devalok Design & Strategy Studios",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devalok-design/shilp-sutra.git",
+    "directory": "packages/eslint-plugin"
+  },
+  "homepage": "https://github.com/devalok-design/shilp-sutra/tree/main/packages/eslint-plugin",
+  "bugs": "https://github.com/devalok-design/shilp-sutra/issues",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "peerDependencies": {
+    "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/utils": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/rule-tester": "^8.0.0",
+    "eslint": "^10.2.0",
+    "tsup": "^8.3.5",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.4"
+  }
+}

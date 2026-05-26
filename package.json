@@ -23,7 +23,7 @@
     "test:storybook": "vitest --project storybook",
     "test:storybook:ci": "vitest run --project storybook",
     "changeset": "changeset",
-    "version-packages": "changeset version",
+    "version-packages": "changeset version && node scripts/sync-skill-version.mjs",
     "release": "pnpm build && changeset publish"
   },
   "devDependencies": {

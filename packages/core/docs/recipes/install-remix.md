@@ -25,6 +25,21 @@ Optional:
 pnpm add sonner   # only if rendering <Toaster />
 ```
 
+### 2a. Optional peer dependencies (install ONLY when importing the matching subpath)
+
+Some components ship hard peers as optional. **Install BEFORE first import** or Remix's Vite build will fail with `Failed to resolve import`. Skip if you only use core components.
+
+| When you import…                                          | Install                                                                                                |
+|-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `@devalok/shilp-sutra/ui/charts/*`                         | `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
+| `@devalok/shilp-sutra/ui/data-table`                       | `pnpm add @tanstack/react-table @tanstack/react-virtual`                                                |
+| `@devalok/shilp-sutra/composed/date-picker` (+ DateRange, DateTime, Calendar) | `pnpm add date-fns`                                                                       |
+| `@devalok/shilp-sutra/composed/rich-text-editor` (+ RichChatInput, RichTextViewer) | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`            |
+| `@devalok/shilp-sutra/ui/input-otp`                        | `pnpm add input-otp`                                                                                    |
+| `@devalok/shilp-sutra/composed/file-preview`               | `pnpm add react-pdf react-zoom-pan-pinch`                                                               |
+| `@devalok/shilp-sutra/composed/markdown-viewer`            | `pnpm add react-markdown react-syntax-highlighter`                                                      |
+| Any `Icon` / `IconButton` with Tabler icons                | `pnpm add @tabler/icons-react`                                                                          |
+
 ## 3. Wire Tailwind 4 in `vite.config.ts`
 
 ```ts

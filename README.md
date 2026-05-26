@@ -128,7 +128,7 @@ Customization & diagnostics:
 
 - [customize-brand.md](./packages/core/docs/recipes/customize-brand.md) — change colors, radius, fonts, spacing
 - [server-components.md](./packages/core/docs/recipes/server-components.md) — RSC-safety matrix
-- [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 8 most common breakages
+- [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 12 most common breakages
 
 Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract.
 

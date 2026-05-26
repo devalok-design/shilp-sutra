@@ -8,10 +8,9 @@ You are in this recipe if **all** of these are true:
 
 - `package.json` lists `"next"` at version `^13.0.0` or higher
 - An `app/` directory exists at the project root or under `src/`
-- An `app/layout.tsx` (or `.jsx`) file exists
-- No `pages/` directory at the project root, OR `pages/` exists but only contains `_app.{js,tsx}` and `_document.{js,tsx}` (legacy artifacts)
+- An `app/layout.{tsx,jsx}` file exists
 
-If `pages/` is the primary router, use [install-next-pages.md](./install-next-pages.md).
+If a `pages/` directory exists at the project root AND contains route files (not just `_app`/`_document` legacy artifacts from older `create-next-app` versions), use [install-next-pages.md](./install-next-pages.md). `create-next-app@16+` no longer scaffolds `pages/` for App Router projects.
 
 ## 2. Install dependencies
 
@@ -46,6 +45,23 @@ Add brand assets package if you need Devalok or Karm logos:
 ```bash
 pnpm add @devalok/shilp-sutra-brand
 ```
+
+### 2a. Optional peer dependencies (install ONLY when importing the matching subpath)
+
+Some components depend on third-party libraries that ship as optional peers. **Install BEFORE first import** of the matching component, or `next build` will exit with `Module not found`. Skip entirely if you only use core components (`Button`, `Text`, `Stack`, `Dialog`, `Toast`, `Form*`, `Input`, `Card`, etc.).
+
+| When you import…                                          | Install                                                                                                |
+|-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `@devalok/shilp-sutra/ui/charts/*` (BarChart, LineChart, …)| `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
+| `@devalok/shilp-sutra/ui/data-table`                       | `pnpm add @tanstack/react-table @tanstack/react-virtual`                                                |
+| `@devalok/shilp-sutra/composed/date-picker` (+ DateRange, DateTime, Calendar) | `pnpm add date-fns`                                                                       |
+| `@devalok/shilp-sutra/composed/rich-text-editor` (+ RichChatInput, RichTextViewer) | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`            |
+| `@devalok/shilp-sutra/ui/input-otp`                        | `pnpm add input-otp`                                                                                    |
+| `@devalok/shilp-sutra/composed/file-preview`               | `pnpm add react-pdf react-zoom-pan-pinch`                                                               |
+| `@devalok/shilp-sutra/composed/markdown-viewer`            | `pnpm add react-markdown react-syntax-highlighter`                                                      |
+| Any `Icon` / `IconButton` use with Tabler icons            | `pnpm add @tabler/icons-react`                                                                          |
+
+> These aren't in core deps so consumers who never render a chart, OTP input, or rich-text editor don't pay the install / bundle cost. One-time decision at install.
 
 ## 3. Configure PostCSS
 
@@ -211,8 +227,8 @@ If anything is off, see [troubleshoot.md](./troubleshoot.md).
   }
   ```
   For npm/yarn/bun equivalents, see [troubleshoot.md](./troubleshoot.md).
-- **Server Component imports.** Use per-component imports (`@devalok/shilp-sutra/ui/text`) inside Server Components. The barrel import `@devalok/shilp-sutra/ui` pulls client-only code and breaks RSC. See [server-components.md](./server-components.md).
-- **`p-3` vs `p-ds-03`.** Our spacing namespace is `--spacing-ds-*` to avoid collision with consumer numeric spacing. Use `p-ds-04`, not `p-4`.
+- **Per-component imports keep RSC fast AND avoid peer-dep cliffs.** Inside Server Components, prefer `@devalok/shilp-sutra/ui/text`, `…/composed/page-header`, etc. The barrel `@devalok/shilp-sutra/ui` re-exports many client components — including some with hard peer-dep imports (e.g. `input-otp`) — so it both inflates the client bundle and forces those peers to be installed even when you never render those components. See [server-components.md](./server-components.md) for the full RSC-safety matrix.
+- **`p-3` vs `p-ds-03` — both are valid.** DS spacing uses the `--spacing-ds-*` namespace (`p-ds-04`, `gap-ds-03`); Tailwind 4's default numeric scale (`p-4`, `gap-2`) coexists by design. Pick `p-ds-*` for values that should track DS theme changes (card padding, form gaps); pick `p-N` for one-off layout values (section breathing room). Do NOT mass-codemod `p-4` → `p-ds-04` — that is not what the package intends.
 - **Bare `shadow` is dead.** Tailwind 4 has no `--shadow-DEFAULT`. Use `shadow-raised`, `shadow-overlay`, or `shadow-floating`.
 
 ## 9. What you should NOT do

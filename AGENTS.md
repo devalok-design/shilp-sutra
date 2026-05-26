@@ -61,15 +61,15 @@ If the framework is not in the table, fall back to **`install-vite.md`** (closes
   ```
 - **`framer-motion` is a required peer dep** (`^12`). The consumer must install it. Module-scoped contexts (`MotionConfig`, `LayoutGroup`, `AnimatePresence`) silently break if two copies resolve.
 - **`sonner` is an optional peer.** Install only when rendering `<Toaster />`.
-- **Per-component imports for React Server Components.** `@devalok/shilp-sutra/ui/text` is server-safe. The barrel import `@devalok/shilp-sutra/ui` pulls client code and will fail in RSC contexts.
-- **Spacing namespace is `--spacing-ds-*`.** Use `p-ds-04`, not `p-4`. Typography is `text-ds-body-md`, etc.
+- **Per-component imports keep RSC fast AND avoid peer-dep cliffs.** `@devalok/shilp-sutra/ui/text` is server-safe and pulls only its own peers. The barrel `@devalok/shilp-sutra/ui` re-exports every component — including ones with hard peer-dep requirements (e.g. `input-otp`) — so it forces those peers to be installed even when you never render those components. With all peers installed the barrel also works in RSC (Next 16 honours each per-component `"use client"`), but the client bundle is larger than necessary. Prefer per-component imports for new code; existing barrel usage is not an emergency.
+- **Spacing tokens use the `--spacing-ds-*` namespace** (utilities like `p-ds-04`, `gap-ds-03`). Tailwind 4's default numeric scale (`p-4`, `gap-2`) **coexists by design** — both are valid. Pick `p-ds-*` when the value should track DS theme changes (a card's internal padding, a form row's gap); pick `p-N` for one-off layout values (a hero section's vertical breathing room). Do NOT mass-codemod `p-4` → `p-ds-04` — that is not what the package authors did. Typography composites use `text-ds-body-md`, etc.
 - **Bare `shadow` is dead in Tailwind 4.** Use `shadow-raised`, `shadow-overlay`, `shadow-floating`.
 - **Do not invent variant names.** Variant names live in CVA source. Grep `packages/core/src/ui/<component>.tsx` or check `llms-full.txt` for the authoritative list.
 - **Default to `variant="soft"`** over `variant="outline"` for non-primary Button actions.
 
 ## When something fails
 
-Read **`packages/core/docs/recipes/troubleshoot.md`** before retrying or guessing. It is a decision tree covering the eight most common breakages (Tailwind not detecting tokens, framer-motion duplicates, missing `transpilePackages`, wrong CSS import order, dark mode not toggling, RSC import errors, font 404s, hydration mismatches).
+Read **`packages/core/docs/recipes/troubleshoot.md`** before retrying or guessing. It is a decision tree covering the twelve most common breakages (Tailwind not detecting tokens, framer-motion duplicates, missing `transpilePackages`, wrong CSS import order, dark mode not toggling, RSC import errors, font 404s, hydration mismatches, missing optional peer deps, bare `shadow` class, `<Toaster />` not mounted, Storybook MCP 404).
 
 ## Branding and customization
 

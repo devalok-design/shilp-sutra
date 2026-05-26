@@ -689,6 +689,29 @@ gate('SKILL.md follows agentskills.io spec', () => {
   return true
 })
 
+// Gate: SKILL.md `metadata.version` MUST equal packages/core/package.json#version.
+// Drift means consumers see a skill that claims to describe an older package
+// version than the one they actually installed. Caught manually 2026-05-25 when
+// 0.39.0 shipped with skill still at 0.38.0. `pnpm version-packages` chains
+// `node scripts/sync-skill-version.mjs` to keep them aligned.
+gate('skill/SKILL.md metadata.version matches packages/core/package.json#version', () => {
+  const skillPaths = [
+    join(ROOT, 'skills/shilp-sutra/SKILL.md'),
+    join(ROOT, 'packages/core/skill/SKILL.md'),
+  ]
+  const pkgVersion = coreVersion
+  for (const p of skillPaths) {
+    if (!existsSync(p)) continue
+    const content = readFileSync(p, 'utf-8')
+    const m = content.match(/^\s*version:\s*["']([^"']+)["']/m)
+    if (!m) return `${p.replace(ROOT, '').replace(/\\/g, '/')}: metadata.version not found in frontmatter`
+    if (m[1] !== pkgVersion) {
+      return `${p.replace(ROOT, '').replace(/\\/g, '/')}: metadata.version is "${m[1]}", expected "${pkgVersion}". Bump in skills/shilp-sutra/SKILL.md and rerun \`node scripts/build-skill.mjs\` (post-build copies into packages/core/skill/).`
+    }
+  }
+  return true
+})
+
 // --- New Gates (added by ecosystem audit 2026-04-06) ---
 console.log('\n\x1b[36mComponent Hygiene\x1b[0m')
 

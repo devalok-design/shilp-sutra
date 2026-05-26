@@ -4,6 +4,69 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.40.0 — Barrel peer-cliff cleanup
+
+**Breaking.** Twelve symbols that statically pulled optional peer dependencies have been removed from their parent barrels (`/ui`, `/composed`, `/ai`, `/ai/blocks`). They remain fully available via their per-component subpath.
+
+### Why
+
+Optional peer deps (`input-otp`, `sonner`, `date-fns`, `@emoji-mart/*`, `@tiptap/*`, `react-pdf`, `react-zoom-pan-pinch`, `react-markdown`, `react-syntax-highlighter`, `remark-gfm`) were declared `peerDependenciesMeta.optional = true` but the components that needed them were re-exported from the corresponding barrel with **static** ESM `import` statements. Result: a fresh consumer who wrote `import { Text } from '@devalok/shilp-sutra/ui'` without installing `input-otp` got:
+
+```
+Module not found: Can't resolve 'input-otp'
+```
+
+…at `next build`/`vite build` time. "Optional" was a lie at the bundler level. This release closes that cliff for every affected component.
+
+### Search-and-replace migration table
+
+For each symbol below, change ONLY the import path. Prop / type signatures are unchanged.
+
+| Symbol(s) | Old (no longer works) | New (in 0.40.0+) | Peer it pulls |
+|---|---|---|---|
+| `InputOTP`, `InputOTPGroup`, `InputOTPSeparator`, `InputOTPSlot`, `InputOTPProps` | `from '@devalok/shilp-sutra/ui'` | `from '@devalok/shilp-sutra/ui/input-otp'` | `input-otp` |
+| `toast`, `formatFileSize`, `ToastActionOptions`, `ToastOptions`, `ToastProps`, `ToastType`, `ToastUndoOptions`, `ToastUploadOptions`, `UploadFile` | `from '@devalok/shilp-sutra/ui'` | `from '@devalok/shilp-sutra/ui/toast'` | `sonner` |
+| `Toaster`, `ToasterProps` | `from '@devalok/shilp-sutra/ui'` | `from '@devalok/shilp-sutra/ui/toaster'` | `sonner` |
+| `DatePicker`, `DateRangePicker`, `DateTimePicker`, `TimePicker`, `CalendarGrid`, `MonthPicker`, `YearPicker`, `Presets`, `useCalendar`, all related `*Props` + `CalendarEvent` + `PresetKey` | `from '@devalok/shilp-sutra/composed'` | `from '@devalok/shilp-sutra/composed/date-picker'` | `date-fns` |
+| `EmojiPicker`, `EmojiPickerPopover`, `EmojiData`, `EmojiPickerProps`, `EmojiPickerPopoverProps`, `EmojiSet` | `from '@devalok/shilp-sutra/composed'` | `from '@devalok/shilp-sutra/composed/emoji-picker'` | `@emoji-mart/data` + `@emoji-mart/react` |
+| `EmojiNode`, `EmojiNodeAttrs` | `from '@devalok/shilp-sutra/composed'` | `from '@devalok/shilp-sutra/composed/extensions/emoji-node'` (new in 0.40.0) | `@tiptap/*` |
+| `createEmojiSuggestion` | `from '@devalok/shilp-sutra/composed'` | `from '@devalok/shilp-sutra/composed/extensions/emoji-suggestion'` (new in 0.40.0) | `@tiptap/*` |
+| `FilePreview`, `FilePreviewProps` | `from '@devalok/shilp-sutra/composed'` | `from '@devalok/shilp-sutra/composed/file-preview'` | `react-pdf` + `react-zoom-pan-pinch` |
+| `MarkdownViewer`, `MarkdownViewerProps` | `from '@devalok/shilp-sutra/composed'` | `from '@devalok/shilp-sutra/composed/markdown-viewer'` | `react-markdown` + `react-syntax-highlighter` + `remark-gfm` |
+| `RichChatInput`, `AudioPlayer`, `AudioWaveform`, `useVoiceRecorder`, all related `*Props` + `*Message` | `from '@devalok/shilp-sutra/composed'` | `from '@devalok/shilp-sutra/composed/rich-chat-input'` | `@tiptap/*` |
+| `RichTextEditor`, `RichTextViewer`, `RichTextEditorProps`, `RichTextViewerProps`, `MentionItem`, `ToolbarItem` | `from '@devalok/shilp-sutra/composed'` | `from '@devalok/shilp-sutra/composed/rich-text-editor'` | `@tiptap/*` |
+| `BlockRenderer`, `BlockRendererProps` | `from '@devalok/shilp-sutra/ai'` | `from '@devalok/shilp-sutra/ai/block-renderer'` | `react-markdown` + `remark-gfm` (transitively via TextBlock/ErrorBlock) |
+| `ErrorBlock` | `from '@devalok/shilp-sutra/ai'` OR `from '@devalok/shilp-sutra/ai/blocks'` | `from '@devalok/shilp-sutra/ai/blocks/error'` (new in 0.40.0) | `react-markdown` + `remark-gfm` |
+| `TextBlock` | `from '@devalok/shilp-sutra/ai'` OR `from '@devalok/shilp-sutra/ai/blocks'` | `from '@devalok/shilp-sutra/ai/blocks/text'` (new in 0.40.0) | `react-markdown` + `remark-gfm` |
+
+The seven other AI blocks (`BlockTable`, `ConfirmBlock`, `DividerBlock`, `InfoBlock`, `LoadingBlock`, `StatRowBlock`, `SuccessBlock`) have no peer-dep imports and remain available via `from '@devalok/shilp-sutra/ai/blocks'` (the sub-barrel) or `from '@devalok/shilp-sutra/ai'` (the main barrel).
+
+### Codemod helper
+
+Most consumers can do this with a single `sed` per symbol family. Example for the toast family:
+
+```bash
+# Replace barrel imports of toast / Toaster with per-component imports
+grep -rl "from '@devalok/shilp-sutra/ui'" src/ | xargs sed -i.bak \
+  -e "s|import { \\(.*\\)toast\\(.*\\)} from '@devalok/shilp-sutra/ui'|import { toast } from '@devalok/shilp-sutra/ui/toast'\\nimport { \\1\\2} from '@devalok/shilp-sutra/ui'|"
+```
+
+(Adjust per project — the regex assumes a single `toast` import on the line. For multi-symbol lines, splitting by hand is faster than perfecting the regex.)
+
+### Per-chart subpaths added (non-breaking)
+
+`/ui/charts/<chart>` subpaths are now exported for `area-chart`, `bar-chart`, `chart-container`, `gauge-chart`, `line-chart`, `pie-chart`, `radar-chart`, `sparkline`. The `/ui/charts` barrel still works and still pulls all 9 d3-\* peers — but if you only need `BarChart`, `import { BarChart } from '@devalok/shilp-sutra/ui/charts/bar-chart'` pulls only the d3-\* peers it actually needs (`d3-scale`, `d3-axis`, `d3-selection`).
+
+### What didn't change
+
+- All per-component subpaths existed before 0.40.0 (except the 4 new ones noted above). Consumers already importing per-component need zero changes.
+- Component APIs, prop signatures, types, runtime behavior, default styles: all unchanged.
+- Storybook stories, tests, internal imports inside the DS itself: all use relative paths and were never affected.
+
+### Why this isn't behind a flag
+
+There is no good additive solution. Tree-shaking can't drop a static `import 'sonner'` if `sonner` isn't on disk — the resolver fails before tree-shaking runs. Lazy-imports (`import('sonner')`) move the failure from build-time to runtime, which is worse. Removing the barrel re-export is the only fix.
+
 ## v0.39.0 — Shape presets & semantic radius role tokens
 
 No API breaks. Component prop signatures unchanged. But the visual output of several components shifts because radius is now role-driven, not per-size ad-hoc.

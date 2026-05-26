@@ -3,7 +3,10 @@
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { IconProvider } from './icon-context'
+import type { IconInput } from './lib/icon-input'
 import { springs } from './lib/motion'
+import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
 
 type StepState = 'completed' | 'active' | 'pending'
@@ -136,7 +139,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
 interface StepProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string
   description?: string
-  icon?: React.ReactNode
+  icon?: IconInput
 }
 
 type StepInternalProps = StepProps & { _index?: number }
@@ -159,7 +162,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
             state === 'pending' && 'bg-surface-raised text-surface-fg-subtle border border-surface-border-strong',
           )}
         >
-          {icon || (state === 'completed' ? (
+          {icon ? <IconProvider size="sm">{normalizeIcon(icon)}</IconProvider> : (state === 'completed' ? (
             <svg
               className="w-ico-sm h-ico-sm"
               viewBox="0 0 24 24"

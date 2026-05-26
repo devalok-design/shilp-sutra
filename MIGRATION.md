@@ -4,6 +4,76 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.41.0 — Icon API unification
+
+**Non-breaking.** Type widening only — no consumer changes required.
+
+Every icon-accepting prop across the design system now takes the same shape: **`IconInput`**. Before 0.41 there were six distinct prop types for the same conceptual "icon":
+
+| Old shape | Components |
+|---|---|
+| `React.ReactElement \| null` | Button (startIcon/endIcon), IconButton (icon), Badge (startIcon/endIcon) |
+| `React.ReactNode` | 14 components (Combobox option, Stepper step, TreeItem, OAuthButton, AppCommandPalette, CommandRegistry, BottomNavbar, Sidebar's three NavItem types, TopBar, Chat.Message.Avatar, SystemMessage, AIConversation, ActivityFeed, CommandPalette item) |
+| `React.ReactNode \| React.ComponentType<{className}>` | EmptyState, StatCard (dual-detect logic duplicated in both source files) |
+| `React.ComponentType<{className?}>` | SegmentedControl (option), SlashCommand |
+| `IconProps['icon']` (strict Tabler ref) | BulkActionBar (action), Chat.Message.Action |
+| `React.ForwardRefExoticComponent<any>` | Toast (internal, sonner pass-through — unchanged) |
+
+All six collapse to `IconInput`:
+
+```ts
+type IconInput =
+  | React.ReactElement
+  | React.ComponentType<{ className?: string; size?: number | string }>
+  | null
+  | undefined
+```
+
+### Migration
+
+For every prop now typed as `IconInput`, all four shapes work identically:
+
+```tsx
+<Button startIcon={<Icon icon={IconPlus} />}>OK</Button>   // canonical
+<Button startIcon={<IconPlus />}>OK</Button>                // raw Tabler element
+<Button startIcon={IconPlus}>OK</Button>                    // component ref
+<Button startIcon={<span>+</span>}>OK</Button>              // custom node
+```
+
+**Calls that worked before still work.** Type widening only.
+
+**You can now delete `className="h-4 w-4"` overrides** on icon-prop usages — `IconProvider` wires size through context. Stories cleanup is voluntary; behavior unchanged.
+
+**Strict-to-loose call sites that newly compile:**
+- `SegmentedControl options[*].icon` previously rejected `<IconX />` instantiated elements (only accepted bare `IconX` refs). Now both work.
+- `BulkActionBar actions[*].icon` previously rejected non-Tabler nodes. Now accepts any `IconInput`.
+- `Message.Action` same.
+- `EmptyState` no longer needs the dual `<X />` / `X` differentiation in your call sites.
+
+### What got removed internally
+
+- Five duplicate `iconSizeMap` declarations (Badge, Combobox, EmptyState, StatCard, etc.) → one shared `<IconProvider size={token}>` per call site
+- Two duplicate dual-detect branches (`React.isValidElement(icon) || ('$$typeof' in icon)`) — replaced with `normalizeIcon()`
+- The orphan `IconProps['icon']` references in BulkActionBar + Chat.Message.Action
+
+### Helpers exported (for consumer composability)
+
+```ts
+import type { IconInput } from '@devalok/shilp-sutra/ui/lib/icon-input'
+import { normalizeIcon } from '@devalok/shilp-sutra/ui/lib/normalize-icon'
+
+// In your own component:
+function MyCard({ icon }: { icon: IconInput }) {
+  return (
+    <div>
+      <IconProvider size="md">{normalizeIcon(icon)}</IconProvider>
+    </div>
+  )
+}
+```
+
+Use these in custom wrappers that consume our icon-style props.
+
 ## v0.40.0 — Barrel peer-cliff cleanup
 
 **Breaking.** Twelve symbols that statically pulled optional peer dependencies have been removed from their parent barrels (`/ui`, `/composed`, `/ai`, `/ai/blocks`). They remain fully available via their per-component subpath.

@@ -13,6 +13,9 @@
 import * as React from 'react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { IconProvider } from '../ui/icon-context'
+import type { IconInput } from '../ui/lib/icon-input'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import {
   Collapsible,
   CollapsibleContent,
@@ -46,14 +49,16 @@ import { useLink } from './link-context'
 export interface NavSubItem {
   title: string
   href: string
-  icon?: React.ReactNode
+  /** Optional icon. Accepts any `IconInput`. */
+  icon?: IconInput
   exact?: boolean
 }
 
 export interface NavItem {
   title: string
   href: string
-  icon: React.ReactNode
+  /** Icon for this nav item. Accepts any `IconInput`. */
+  icon: IconInput
   /** When true, the route matches only when the path is exactly equal */
   exact?: boolean
   /** Badge rendered on the right side of the nav item */
@@ -82,8 +87,8 @@ export interface SidebarUser {
 export interface SidebarPromo {
   /** Promo message text */
   text: string
-  /** Optional icon rendered before the text */
-  icon?: React.ReactNode
+  /** Optional icon rendered before the text. Accepts any `IconInput`. */
+  icon?: IconInput
   /** Action button rendered in the promo banner */
   action?: { label: string; href?: string; onClick?: () => void }
   /** When provided, renders a dismiss (X) button that calls this handler */
@@ -227,7 +232,7 @@ function NavLink({
                 aria-current={isActive ? 'page' : undefined}
               >
                 <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true">
-                  {item.icon}
+                  <IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider>
                 </span>
                 <span className="text-ds-base">{item.title}</span>
               </Link>
@@ -258,7 +263,7 @@ function NavLink({
                       >
                         {child.icon && (
                           <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0" aria-hidden="true">
-                            {child.icon}
+                            <IconProvider size="sm">{normalizeIcon(child.icon)}</IconProvider>
                           </span>
                         )}
                         <span>{child.title}</span>
@@ -291,7 +296,7 @@ function NavLink({
           aria-label={item.title}
           aria-current={isActive ? 'page' : undefined}
         >
-          <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true">{item.icon}</span>
+          <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true"><IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider></span>
           <span className="text-ds-base">{item.title}</span>
         </Link>
       </SidebarMenuButton>
@@ -450,7 +455,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                 <div className="flex flex-col gap-ds-03">
                   {footer.promo.icon && (
                     <span className="text-accent-11 [&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">
-                      {footer.promo.icon}
+                      <IconProvider size="md">{normalizeIcon(footer.promo.icon)}</IconProvider>
                     </span>
                   )}
                   <div className="flex min-w-0 flex-col gap-ds-03">

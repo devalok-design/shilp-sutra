@@ -506,6 +506,34 @@ Components named directly after their file (`Button` → `ui/button`, `Card` →
 
 **When in doubt:** `cat node_modules/@devalok/shilp-sutra/package.json | jq '.exports | keys'` lists every available subpath in the installed version.
 
+## ICON API — one shape across every component (v0.41.0+)
+
+Every icon-accepting prop in the design system (`startIcon`, `endIcon`, `icon`, etc. — see list below) takes the **`IconInput`** type. Pass any of these four shapes interchangeably:
+
+```tsx
+import { IconPlus } from '@tabler/icons-react'
+import { Icon } from '@devalok/shilp-sutra/ui/icon'
+
+<Button startIcon={<Icon icon={IconPlus} />}>Add</Button>   // canonical
+<Button startIcon={<IconPlus />}>Add</Button>                // raw Tabler element
+<Button startIcon={IconPlus}>Add</Button>                    // component ref
+<Button startIcon={<span>+</span>}>Add</Button>              // custom node
+```
+
+All four work identically at the call site. The component wraps its icon slot in `<IconProvider size={...}>` so size + stroke flow via React context — no `className="h-4 w-4"` overrides needed.
+
+**Components on the unified API:** Button, IconButton, Badge, Combobox, SegmentedControl, Stepper, StatCard, TreeItem (TreeNode.icon), OAuthButton (icon + linkedIcon), Chat.Message.Avatar, Chat.Message.Action, Chat.SystemMessage, AIConversation (agent.icon), AICommandProvider (agent.icon), CommandBar (item.icon), EmptyState (kills the dual ReactNode|ComponentType signature), BulkActionBar (action.icon), ActivityFeed (item.icon), CommandPalette (item.icon), TopBar (UserMenuItem.icon, TopBar.IconButton.icon), Sidebar (NavItem.icon, NavSubItem.icon, footer.promo.icon), BottomNavbar (item.icon), AppCommandPalette (SearchResult.icon), CommandRegistry (CommandPageItem.icon).
+
+**Internals** (`<Toaster>`, `<Toast>`'s success/error icons) use Sonner's own type contract and don't accept consumer-passed icons — that's by design.
+
+**When to use which shape:**
+- `<Icon icon={IconX} />` when you want explicit size/stroke control (size flows from context if not set)
+- `<IconX />` when you trust the surrounding `IconProvider` and don't need stroke control
+- `IconX` (raw ref) when you want the helper to do the wrapping for you (auto-wraps to `<Icon icon={IconX} />`)
+- Custom node when the "icon" is actually `<span>$</span>` or an emoji
+
+**Migration:** zero consumer changes needed if you were already passing valid React content. Components that previously took strict `IconProps['icon']` (BulkActionBar, Message.Action) or `ComponentType<{className}>` (SegmentedControl) now also accept the other three shapes. Strict-to-loose type widening — no breaking calls.
+
 ## CRITICAL: Differences from shadcn/ui
 
 If you have shadcn/ui knowledge, these are the differences that WILL trip you up:

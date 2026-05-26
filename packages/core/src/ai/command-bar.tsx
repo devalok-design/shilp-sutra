@@ -33,7 +33,9 @@ import {
   DialogTitle,
 } from '../ui/dialog'
 import { Icon } from '../ui/icon'
+import { IconProvider } from '../ui/icon-context'
 import { getIsMac, getModifierDisplay,matchesKeybinding } from '../ui/lib/keybinding'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { springs,tweens } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 import { VisuallyHidden } from '../ui/visually-hidden'
@@ -701,7 +703,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                         )}
                         aria-hidden="true"
                       >
-                        {item.icon}
+                        <IconProvider size="sm">{normalizeIcon(item.icon)}</IconProvider>
                       </span>
                     )}
                     <div className="flex flex-1 flex-col">

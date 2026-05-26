@@ -8,7 +8,9 @@ import * as React from 'react'
 
 import { useFormField } from './form'
 import { Icon } from './icon'
-import type { IconSize } from './icon-context'
+import { IconProvider, type IconSize } from './icon-context'
+import type { IconInput } from './lib/icon-input'
+import { normalizeIcon } from './lib/normalize-icon'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -67,7 +69,7 @@ export interface ComboboxOption {
   value: string
   label: string
   description?: string
-  icon?: React.ReactNode
+  icon?: IconInput
   disabled?: boolean
 }
 
@@ -526,7 +528,9 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                           >
                             {option.icon && (
                               <span className="flex h-ico-sm w-ico-sm items-center justify-center shrink-0">
-                                {option.icon}
+                                <IconProvider size={resolvedIconSize}>
+                                  {normalizeIcon(option.icon)}
+                                </IconProvider>
                               </span>
                             )}
                             <span className="flex flex-1 flex-col">

@@ -12,6 +12,8 @@ import { ProcessingOverlay } from './button-processing'
 import { Icon } from './icon'
 import type { IconSize } from './icon-context'
 import { IconProvider } from './icon-context'
+import type { IconInput } from './lib/icon-input'
+import { normalizeIcon } from './lib/normalize-icon'
 import { motionProps,springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
@@ -208,9 +210,9 @@ export interface ButtonProps
   /** Button shape — 'pill' applies rounded-pill for chip/tag-like buttons */
   shape?: 'default' | 'pill'
   /** Icon element rendered before children — use <Icon icon={...} /> */
-  startIcon?: React.ReactElement | null
+  startIcon?: IconInput
   /** Icon element rendered after children — use <Icon icon={...} /> */
-  endIcon?: React.ReactElement | null
+  endIcon?: IconInput
   /** Show loading spinner and disable button */
   loading?: boolean
   /** Where to render the spinner: replaces startIcon, endIcon, or centers over children */
@@ -391,7 +393,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (startIcon) {
         return (
           <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.start, dimIcon && 'opacity-90')}>
-            {startIcon}
+            {normalizeIcon(startIcon)}
           </span>
         )
       }
@@ -409,7 +411,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (endIcon) {
         return (
           <span className={cn('inline-flex shrink-0 items-center justify-center pointer-events-none', inset.end, dimIcon && 'opacity-90')}>
-            {endIcon}
+            {normalizeIcon(endIcon)}
           </span>
         )
       }

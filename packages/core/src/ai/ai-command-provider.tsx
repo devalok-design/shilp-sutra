@@ -2,12 +2,13 @@
 
 import * as React from 'react'
 
+import type { IconInput } from '../ui/lib/icon-input'
 import type { BlockComponentProps } from './types'
 
 export interface AICommandContext {
   customBlocks: Record<string, React.ComponentType<BlockComponentProps<any>>>
   onAction?: (actionId: string, type: 'confirm' | 'cancel' | 'undo') => void
-  agent?: { name: string; icon?: React.ReactNode }
+  agent?: { name: string; icon?: IconInput }
 }
 
 const AICommandCtx = React.createContext<AICommandContext | null>(null)
@@ -20,7 +21,7 @@ export interface AICommandProviderProps {
   children: React.ReactNode
   customBlocks?: Record<string, React.ComponentType<BlockComponentProps<any>>>
   onAction?: (actionId: string, type: 'confirm' | 'cancel' | 'undo') => void
-  agent?: { name: string; icon?: React.ReactNode }
+  agent?: { name: string; icon?: IconInput }
 }
 
 const EMPTY_BLOCKS: Record<string, React.ComponentType<BlockComponentProps<any>>> = {}

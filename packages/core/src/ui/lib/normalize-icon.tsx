@@ -51,29 +51,37 @@ export function normalizeIcon(
   // renders as-is.
   if (React.isValidElement(input)) return input
 
-  // Component ref shape. Two flavors:
-  //   - Tabler icons / forwardRef components → typeof input === 'object' and
-  //     input.$$typeof is REACT_FORWARD_REF_TYPE.
-  //   - Plain function components → typeof input === 'function'.
-  // Both wrap into `<Icon icon={…} />` so they participate in IconContext.
-  if (isIconComponentRef(input)) {
+  // ForwardRef component (Tabler icons + anything built with React.forwardRef).
+  // Wrap in <Icon /> so it participates in IconContext (size + stroke flow
+  // from any surrounding IconProvider).
+  if (isForwardRefComponent(input)) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return <Icon icon={input as any} size={fallbackSize} />
+  }
+
+  // Plain function/class component — render directly. The component is
+  // responsible for its own sizing; we don't force <Icon> wrapping because
+  // <Icon>'s type expects a ForwardRef shape and passing arbitrary props
+  // would generate React warnings.
+  if (typeof input === 'function') {
+    const Component = input as React.ComponentType<{
+      className?: string
+      size?: number | string
+    }>
+    return <Component />
   }
 
   return null
 }
 
 /**
- * True for ForwardRef components (Tabler icons) AND for plain function
- * components. False for instantiated JSX elements and arbitrary objects.
+ * True only for `React.forwardRef`-shaped components (Tabler icons fit
+ * this). React tags forwardRef objects with `$$typeof` (a symbol) and a
+ * `render` function.
  */
-function isIconComponentRef(value: unknown): boolean {
+function isForwardRefComponent(value: unknown): boolean {
   if (value == null) return false
-  if (typeof value === 'function') return true
-  if (typeof value === 'object') {
-    const v = value as { $$typeof?: symbol; render?: unknown }
-    return typeof v.$$typeof === 'symbol' && typeof v.render === 'function'
-  }
-  return false
+  if (typeof value !== 'object') return false
+  const v = value as { $$typeof?: symbol; render?: unknown }
+  return typeof v.$$typeof === 'symbol' && typeof v.render === 'function'
 }

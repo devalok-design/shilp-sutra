@@ -5,6 +5,9 @@ import * as React from 'react'
 
 import { Checkbox } from '../checkbox'
 import { Icon } from '../icon'
+import { IconProvider } from '../icon-context'
+import type { IconInput } from '../lib/icon-input'
+import { normalizeIcon } from '../lib/normalize-icon'
 import { cn } from '../lib/utils'
 import { useTreeContext } from './tree-view'
 
@@ -13,8 +16,8 @@ export interface TreeItemProps {
   itemId: string
   /** Primary label content */
   label: React.ReactNode
-  /** Optional icon rendered before the label */
-  icon?: React.ReactNode
+  /** Optional icon rendered before the label. Accepts any `IconInput`. */
+  icon?: IconInput
   /** Secondary label rendered after the primary label */
   secondaryLabel?: React.ReactNode
   /** Action buttons rendered at the end of the row */
@@ -176,7 +179,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           {/* Icon */}
           {icon && (
             <span className="flex shrink-0 items-center text-surface-fg-subtle">
-              {icon}
+              <IconProvider size="sm">{normalizeIcon(icon)}</IconProvider>
             </span>
           )}
 

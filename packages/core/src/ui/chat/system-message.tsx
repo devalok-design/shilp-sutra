@@ -4,10 +4,13 @@ import { IconAlertCircle } from '@tabler/icons-react'
 import * as React from 'react'
 
 import { Icon } from '../icon'
+import { IconProvider } from '../icon-context'
+import type { IconInput } from '../lib/icon-input'
+import { normalizeIcon } from '../lib/normalize-icon'
 import { cn } from '../lib/utils'
 
 export interface SystemMessageProps extends React.HTMLAttributes<HTMLDivElement> {
-  icon?: React.ReactNode
+  icon?: IconInput
   timestamp?: string
   variant?: 'event' | 'alert'
   children: React.ReactNode
@@ -31,7 +34,7 @@ const SystemMessage = React.forwardRef<HTMLDivElement, SystemMessageProps>(
           {...props}
         >
           <div className="flex items-center gap-ds-03 rounded-surface bg-error-3 px-ds-04 py-ds-03">
-            {icon ?? <Icon icon={IconAlertCircle} size="sm" />}
+            <IconProvider size="sm">{normalizeIcon(icon) ?? <Icon icon={IconAlertCircle} />}</IconProvider>
             <span className="text-ds-sm text-error-11">{children}</span>
             {timestamp && (
               <span className="text-ds-sm text-error-11/60">
@@ -53,7 +56,7 @@ const SystemMessage = React.forwardRef<HTMLDivElement, SystemMessageProps>(
         )}
         {...props}
       >
-        {icon}
+        <IconProvider size="xs">{normalizeIcon(icon)}</IconProvider>
         <span className="flex-1">{children}</span>
         {timestamp && <span>{formatTime(timestamp)}</span>}
       </div>

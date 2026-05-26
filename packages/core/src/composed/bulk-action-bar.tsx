@@ -7,7 +7,8 @@ import { createPortal } from 'react-dom'
 
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import { Icon, type IconProps } from '../ui/icon'
+import { Icon } from '../ui/icon'
+import type { IconInput } from '../ui/lib/icon-input'
 import { springs } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 
@@ -17,7 +18,7 @@ import { cn } from '../ui/lib/utils'
 
 export interface BulkActionBarAction {
   label: string
-  icon?: IconProps['icon']
+  icon?: IconInput
   onClick: () => void
   color?: 'accent' | 'error'
   disabled?: boolean
@@ -97,7 +98,7 @@ const ActionButton = React.forwardRef<HTMLDivElement, { action: BulkActionBarAct
         color={action.color === 'error' ? 'error' : 'accent'}
         disabled={action.disabled}
         onClick={action.requiresConfirmation ? () => setConfirming(true) : action.onClick}
-        startIcon={action.icon ? <Icon icon={action.icon} /> : undefined}
+        startIcon={action.icon ?? undefined}
         tabIndex={-1}
       >
         {action.label}

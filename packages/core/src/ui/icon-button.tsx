@@ -3,6 +3,8 @@
 import * as React from 'react'
 
 import { Button, type ButtonProps } from './button'
+import type { IconInput } from './lib/icon-input'
+import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
 
 /** Map friendly sizes to icon-* sizes for the underlying Button */
@@ -46,8 +48,14 @@ type IconButtonSize = 'sm' | 'md' | 'lg'
  */
 export interface IconButtonProps
   extends Omit<ButtonProps, 'startIcon' | 'endIcon' | 'fullWidth' | 'loadingPosition' | 'children' | 'size' | 'shape'> {
-  /** The icon element to render — must be `<Icon icon={...} />` */
-  icon: React.ReactElement
+  /**
+   * The icon to render. Accepts any `IconInput`:
+   * - `<Icon icon={IconPlus} />` (canonical — size flows from context)
+   * - `<IconPlus />` (raw Tabler element — passes through)
+   * - `IconPlus` (Tabler component ref — auto-wrapped in `<Icon>`)
+   * - Custom `<span>$</span>` or any ReactElement.
+   */
+  icon: IconInput
   /** Accessible label — required for icon-only buttons (WCAG AA) */
   'aria-label': string
   /** Button shape. Default: 'square' */
@@ -67,7 +75,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         loadingPosition="center"
         {...props}
       >
-        {icon}
+        {normalizeIcon(icon)}
       </Button>
     )
   },

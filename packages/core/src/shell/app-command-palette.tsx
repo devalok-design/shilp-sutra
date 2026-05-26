@@ -14,6 +14,7 @@ import { useCallback, useMemo } from 'react'
 
 import { type CommandGroup, type CommandItem, CommandPalette, type CommandPaletteProps, type FooterHint } from '../composed/command-palette'
 import { Icon } from '../ui/icon'
+import type { IconInput } from '../ui/lib/icon-input'
 import { cn } from '../ui/lib/utils'
 import { useCommandRegistry } from './command-registry'
 
@@ -29,7 +30,7 @@ export interface SearchResult {
   projectId?: string | null
   metadata?: Record<string, unknown>
   /** Custom icon for this result. Overrides the default entity-type icon. */
-  icon?: React.ReactNode
+  icon?: IconInput
   /** Relevance score for sorting (higher = more relevant). */
   rank?: number
   /** Keyboard shortcut hint to display on this result. */

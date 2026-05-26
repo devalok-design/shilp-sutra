@@ -18,6 +18,8 @@ import {
 import * as React from 'react'
 
 import { Button, type ButtonProps } from '../button'
+import type { IconInput } from '../lib/icon-input'
+import { normalizeIcon } from '../lib/normalize-icon'
 import { cn } from '../lib/utils'
 
 // ── Types ───────────────────────────────────────────────────────
@@ -220,8 +222,8 @@ export interface OAuthButtonProps
   variant?: OAuthVariant
   /** @deprecated Use `variant`. `appearance="brand"` maps to `variant="solid"`. */
   appearance?: OAuthAppearance
-  /** Override the default glyph (e.g. brand-multicolour SVG) */
-  icon?: React.ReactNode
+  /** Override the default glyph (e.g. brand-multicolour SVG). Accepts any `IconInput`. */
+  icon?: IconInput
   /** Render a compact icon-only button (provider name kept in aria-label) */
   iconOnly?: boolean
   /**
@@ -279,7 +281,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     const size: NonNullable<ButtonProps['size']> = sizeProp ?? 'md'
     const DefaultGlyph = providerIcon[provider]
     const iconPx = ICON_PX[size] ?? 18
-    const glyphNode = icon ?? <DefaultGlyph size={iconPx} aria-hidden />
+    const glyphNode = normalizeIcon(icon) ?? <DefaultGlyph size={iconPx} aria-hidden />
     const label = children ?? resolveLabel(provider, intent, compact)
 
     // Resolve final variant. `appearance` is a deprecated alias mapped to
@@ -479,8 +481,8 @@ export interface OAuthConnectionRowProps extends React.HTMLAttributes<HTMLDivEle
   actionLabel?: React.ReactNode
   /** Disable the action button */
   disabled?: boolean
-  /** Override the default glyph */
-  icon?: React.ReactNode
+  /** Override the default glyph. Accepts any `IconInput`. */
+  icon?: IconInput
 }
 
 /**
@@ -521,7 +523,7 @@ const OAuthConnectionRow = React.forwardRef<HTMLDivElement, OAuthConnectionRowPr
         {...props}
       >
         <div className="flex items-center gap-ds-03 min-w-0">
-          {icon ?? <DefaultGlyph size={24} aria-hidden />}
+          {normalizeIcon(icon) ?? <DefaultGlyph size={24} aria-hidden />}
           <div className="flex flex-col min-w-0">
             <span className="text-ds-md font-semibold text-surface-fg truncate">{name}</span>
             {accountLabel ? (

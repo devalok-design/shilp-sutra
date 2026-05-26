@@ -11,7 +11,10 @@ import * as React from 'react'
 
 import { useMotion } from '../motion/motion-provider'
 import { Icon } from '../ui/icon'
+import { IconProvider } from '../ui/icon-context'
+import type { IconInput } from '../ui/lib/icon-input'
 import { durations,springs } from '../ui/lib/motion'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { cn } from '../ui/lib/utils'
 import { useAICommand } from './ai-command-provider'
 import { BlockRenderer } from './block-renderer'
@@ -35,7 +38,7 @@ export interface AIConversationProps {
   /** Granular processing steps shown during the processing state. */
   processingSteps?: ProcessingStep[]
   /** Agent identity displayed as a header on assistant messages. */
-  agent?: { name: string; icon?: React.ReactNode }
+  agent?: { name: string; icon?: IconInput }
   /** Called when user interacts with an action block (confirm/cancel/undo). */
   onAction?: (actionId: string, type: 'confirm' | 'cancel' | 'undo') => void
   /** Map of custom block type names to React components for extensible rendering. */
@@ -85,11 +88,11 @@ function AgentHeader({
   icon,
 }: {
   name: string
-  icon?: React.ReactNode
+  icon?: IconInput
 }) {
   return (
     <div className="flex items-center gap-ds-02b mb-ds-03">
-      {icon && <span className="h-4 w-4 flex items-center justify-center">{icon}</span>}
+      {icon && <span className="h-4 w-4 flex items-center justify-center"><IconProvider size="sm">{normalizeIcon(icon)}</IconProvider></span>}
       <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
         {name}
       </span>
@@ -135,7 +138,7 @@ function AssistantMessage({
   customBlocks,
 }: {
   message: ConversationMessage
-  agent: { name: string; icon?: React.ReactNode }
+  agent: { name: string; icon?: IconInput }
   onAction?: (actionId: string, type: 'confirm' | 'cancel' | 'undo') => void
   customBlocks?: Record<string, React.ComponentType<BlockComponentProps<any>>>
 }) {
@@ -161,7 +164,7 @@ function ProcessingIndicator({
   reducedMotion,
 }: {
   steps?: ProcessingStep[]
-  agent: { name: string; icon?: React.ReactNode }
+  agent: { name: string; icon?: IconInput }
   reducedMotion: boolean
 }) {
   // Step visualization

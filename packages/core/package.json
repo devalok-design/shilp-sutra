@@ -800,11 +800,20 @@
     "docs/rollback.md",
     "fonts",
     "skill",
+    "AGENTS.md",
     "MIGRATION.md",
     "README.md",
     "llms.txt",
     "llms-full.txt"
   ],
+  "agents": {
+    "skills": [
+      {
+        "name": "shilp-sutra",
+        "path": "./skill"
+      }
+    ]
+  },
   "scripts": {
     "build": "vite build && node scripts/post-build.mjs",
     "build:tokens": "node scripts/copy-tokens.mjs",
@@ -814,7 +823,8 @@
     "lint": "eslint src/",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "postinstall": "node scripts/welcome.mjs"
   },
   "peerDependencies": {
     "@emoji-mart/data": "^1.0.0",

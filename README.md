@@ -128,26 +128,33 @@ Customization & diagnostics:
 
 - [customize-brand.md](./packages/core/docs/recipes/customize-brand.md) — change colors, radius, fonts, spacing
 - [server-components.md](./packages/core/docs/recipes/server-components.md) — RSC-safety matrix
-- [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 12 most common breakages
+- [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 13 most common breakages
 
 Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract.
 
-### Agent Skill (Claude Code, Cursor, Codex, Aider)
+### Agent Skill (Claude Code, Cursor, Codex, Aider, …)
 
-If your editor runs an [Agent Skills](https://agentskills.io)-compatible coding agent, install the bundled skill once. The agent then loads the right reference on demand — setup playbooks, component APIs, troubleshoot tree — without you pasting context every time.
+If your editor runs an [Agent Skills](https://agentskills.io)-compatible coding agent, install the bundled skill once. The agent then loads the right reference on demand — setup playbooks, component APIs, troubleshoot tree — without you pasting context every time. Three install paths:
 
 ```bash
-# Personal install (~/.claude/skills/shilp-sutra)
-curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash
+# 1. Auto-discovery (recommended, no shilp-sutra-specific commands)
+#    The package declares an `agents` field in its package.json per the
+#    npm-agentskills convention. Any package that adopts it gets picked up
+#    by these tools:
+pnpm dlx @codemcp/agentskills export   # writes ./.claude/skills, ./.cursor/skills, ./.github/skills
+# OR
+pnpm dlx agentskills export --target claude   # alternate CLI, same spec
 
-# Project-scoped (commit to repo so every contributor's agent picks it up)
-mkdir -p .claude/skills && curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | INSTALL_DIR=.claude/skills bash
-
-# Already have @devalok/shilp-sutra installed? The skill ships in the tarball:
+# 2. Manual copy (zero deps, one command)
 cp -r node_modules/@devalok/shilp-sutra/skill ~/.claude/skills/shilp-sutra
+
+# 3. Curl install (works without @devalok/shilp-sutra installed yet)
+curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash
+# Project-scoped variant (commit to repo so every contributor's agent picks it up):
+mkdir -p .claude/skills && curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | INSTALL_DIR=.claude/skills bash
 ```
 
-Source: [`skills/shilp-sutra/`](./skills/shilp-sutra/).
+Source: [`skills/shilp-sutra/`](./skills/shilp-sutra/). The `agents` field in [`packages/core/package.json`](./packages/core/package.json) is the discovery contract.
 
 ## Mental Model
 

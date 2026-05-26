@@ -1,6 +1,10 @@
 # AGENTS.md
 
-This file gives AI coding agents (Claude Code, Cursor, Copilot, Codex, Aider) the instructions they need to work with **Shilp Sutra** (`@devalok/shilp-sutra`) — both inside this repository and inside any consumer project that depends on it.
+This file tells AI coding agents (Codex, Cursor, GitHub Copilot, Aider, Windsurf, Devin, Jules, Gemini CLI, Zed, Warp, JetBrains Junie, and any [agentskills.io](https://agentskills.io)-compatible tool) **how to consume `@devalok/shilp-sutra` inside a downstream app**. It ships inside the npm tarball at `node_modules/@devalok/shilp-sutra/AGENTS.md`, so any agent that auto-discovers AGENTS.md from the project root will also find this one alongside the recipes.
+
+> **Anthropic Claude Code users:** Claude Code doesn't auto-load `AGENTS.md` yet. Symlink it (`ln -s AGENTS.md CLAUDE.md`) or copy the contents into your own `CLAUDE.md` so the same rules apply.
+>
+> **Working *on* shilp-sutra (the design-system repo itself)?** That's covered by [`CLAUDE.md`](./CLAUDE.md) — internal architecture, build pipeline, audit gates, publish flow.
 
 If you are a human, read [README.md](./README.md) instead.
 
@@ -69,7 +73,7 @@ If the framework is not in the table, fall back to **`install-vite.md`** (closes
 
 ## When something fails
 
-Read **`packages/core/docs/recipes/troubleshoot.md`** before retrying or guessing. It is a decision tree covering the twelve most common breakages (Tailwind not detecting tokens, framer-motion duplicates, missing `transpilePackages`, wrong CSS import order, dark mode not toggling, RSC import errors, font 404s, hydration mismatches, missing optional peer deps, bare `shadow` class, `<Toaster />` not mounted, Storybook MCP 404).
+Read **`packages/core/docs/recipes/troubleshoot.md`** before retrying or guessing. It is a decision tree covering the thirteen most common breakages (Tailwind not detecting tokens, framer-motion duplicates, missing `transpilePackages`, missing optional peer deps (sonner / input-otp / date-fns / @tiptap / react-pdf / etc.), wrong CSS import order, dark mode not toggling, RSC import errors, font 404s, hydration mismatches, bare `shadow` class, `<Toaster />` not mounted, Storybook MCP 404).
 
 ## Branding and customization
 

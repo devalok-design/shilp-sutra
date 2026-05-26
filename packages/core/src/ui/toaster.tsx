@@ -9,8 +9,17 @@ import { registerToaster } from './toast-registry'
 /**
  * Toaster — mount once at your root layout to enable toast notifications.
  *
+ * **⚠ Peer dependency required:** `sonner`. Without it your build fails with
+ * `Cannot find module 'sonner'`. Install:
+ * ```bash
+ * pnpm add sonner    # or: npm i sonner / yarn add sonner / bun add sonner
+ * ```
+ * `sonner` is listed as an optional peer because consumers who never render
+ * `<Toaster />` shouldn't pay the install cost — but once you import this
+ * component, it becomes effectively required.
+ *
  * @example
- * import { Toaster } from '@devalok/shilp-sutra'
+ * import { Toaster } from '@devalok/shilp-sutra/ui/toaster'
  *
  * export default function RootLayout({ children }: { children: React.ReactNode }) {
  *   return (
@@ -24,7 +33,7 @@ import { registerToaster } from './toast-registry'
  * }
  *
  * // Then from any component:
- * import { toast } from '@devalok/shilp-sutra'
+ * import { toast } from '@devalok/shilp-sutra/ui/toast'
  * toast.success('Saved!')
  */
 export interface ToasterProps {

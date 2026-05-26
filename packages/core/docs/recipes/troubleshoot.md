@@ -97,6 +97,28 @@ transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"],
 
 If `@devalok/shilp-sutra-brand` is not installed, list only `@devalok/shilp-sutra`.
 
+## Symptom: Build error `Cannot find module 'sonner' / 'input-otp' / 'date-fns' / '@tiptap/react' / 'react-pdf' / 'react-markdown' / '@emoji-mart/react'`
+
+**Diagnosis:** an optional peer dependency is missing. Each component below has a peer it pulls only when imported. Install the matching peer (always BEFORE the first import):
+
+| You imported (per-component subpath) | Install                                                                                       |
+|--------------------------------------|-----------------------------------------------------------------------------------------------|
+| `…/ui/toaster` or `…/ui/toast`       | `pnpm add sonner`                                                                             |
+| `…/ui/input-otp`                     | `pnpm add input-otp`                                                                          |
+| `…/composed/date-picker`             | `pnpm add date-fns`                                                                           |
+| `…/composed/emoji-picker`            | `pnpm add @emoji-mart/data @emoji-mart/react`                                                 |
+| `…/composed/extensions/emoji-node` or `…/extensions/emoji-suggestion` | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`                    |
+| `…/composed/rich-text-editor`        | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`                    |
+| `…/composed/rich-chat-input`         | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`                    |
+| `…/composed/file-preview`            | `pnpm add react-pdf react-zoom-pan-pinch`                                                     |
+| `…/composed/markdown-viewer`         | `pnpm add react-markdown react-syntax-highlighter remark-gfm`                                 |
+| `…/ai/block-renderer`, `…/ai/blocks/text`, `…/ai/blocks/error` | `pnpm add react-markdown remark-gfm`                                                          |
+| Any `…/ui/charts/*`                  | `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
+
+These ship as **optional** peers so consumers who never render the matching component don't pay the install cost. Once you import the component, the peer becomes required. Each affected component's JSDoc carries the same install hint — hover the import in your editor to see it inline.
+
+For the full table in your framework's install recipe, see `install-<framework>.md → §2a. Optional peer dependencies`.
+
 ## Symptom: Hydration warning on every page load (Next.js)
 
 **Diagnosis:** `next-themes` writes the `class` attribute on `<html>` before React hydrates, causing a server/client class mismatch.

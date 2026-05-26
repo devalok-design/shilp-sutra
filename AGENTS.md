@@ -20,13 +20,15 @@ If you are a human, read [README.md](./README.md) instead.
 
 ## Read these first, in order
 
-1. **`packages/core/llms.txt`** — concise current-API cheatsheet. Setup playbook, peer-dep matrix, breaking changes, design preferences.
-2. **`packages/core/docs/recipes/<framework>.md`** — copy-paste install + setup for the user's framework.
-3. **`packages/core/llms-full.txt`** — exhaustive per-component reference (props, variants, examples). Read only when llms.txt is insufficient.
-4. **`MIGRATION.md`** — only if upgrading across versions.
+1. **`packages/core/llms-quick.txt`** — ≤15K-token fast-path summary. Setup, peer-cliff matrix, import paths, top 30 components. Start here if you're answering quickly.
+2. **`packages/core/llms.txt`** — concise current-API cheatsheet (~27K tokens). Reach for this when `llms-quick.txt` isn't enough — covers more components + recent CHANGELOG sections.
+3. **`packages/core/docs/recipes/<framework>.md`** — copy-paste install + setup for the user's framework.
+4. **`packages/core/llms-full.txt`** — exhaustive per-component reference (~140K tokens, props/variants/examples). Read only when `llms.txt` is insufficient.
+5. **`MIGRATION.md`** — only if upgrading across versions.
 
 When the package is installed in a consumer project, the same files live at:
 
+- `node_modules/@devalok/shilp-sutra/llms-quick.txt`
 - `node_modules/@devalok/shilp-sutra/llms.txt`
 - `node_modules/@devalok/shilp-sutra/llms-full.txt`
 - `node_modules/@devalok/shilp-sutra/docs/recipes/`

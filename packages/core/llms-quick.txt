@@ -1,0 +1,247 @@
+# @devalok/shilp-sutra — quick reference for AI agents
+
+> Tailwind 4 + React 19 + CVA design system. 110+ components, OKLCH tokens, framer-motion. **Not shadcn/ui** — APIs diverge in ways noted below.
+>
+> This file is the ≤15K-token fast-path summary. Reach for `llms.txt` (~27K tokens) or `llms-full.txt` (~140K tokens) only when this isn't enough.
+
+## SETUP (consumer install, ~5 min)
+
+```bash
+pnpm add @devalok/shilp-sutra framer-motion next-themes
+pnpm add -D tailwindcss@^4 @tailwindcss/postcss   # or @tailwindcss/vite
+```
+
+Then 4 files:
+
+```css
+/* globals.css — order matters */
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+```
+
+```ts
+// next.config.ts — only if Next.js
+transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"]
+```
+
+```tsx
+// app/layout.tsx — Next App Router
+<html lang="en" suppressHydrationWarning>   {/* required for next-themes */}
+  <body><Providers>{children}</Providers></body>
+</html>
+```
+
+```tsx
+// app/providers.tsx
+'use client'
+import { ThemeProvider } from 'next-themes'
+import { Toaster } from '@devalok/shilp-sutra/ui/toaster'
+export function Providers({ children }) {
+  return <ThemeProvider attribute="class" defaultTheme="system" enableSystem>{children}<Toaster /></ThemeProvider>
+}
+```
+
+Per-framework recipes: `node_modules/@devalok/shilp-sutra/docs/recipes/install-<framework>.md` (six recipes — Next App Router, Next Pages, Vite, Astro, Remix, TanStack Start).
+
+**Theme it in 30 seconds:** https://shilp-sutra.devalok.in/themer — outputs a copy-pasteable CSS block (12-step OKLCH ramp + role tokens). Paste *after* the `@devalok/shilp-sutra/css` import.
+
+## OPTIONAL PEER DEPENDENCIES (install BEFORE first import)
+
+| When you import…                                          | Install                                                                                                |
+|-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `@devalok/shilp-sutra/ui/charts/*`                         | `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
+| `@devalok/shilp-sutra/ui/data-table`                       | `pnpm add @tanstack/react-table @tanstack/react-virtual`                                                |
+| `@devalok/shilp-sutra/composed/date-picker` (+ DateRange, DateTime, Calendar) | `pnpm add date-fns`                                                                       |
+| `@devalok/shilp-sutra/composed/rich-text-editor` (+ RichChatInput, RichTextViewer) | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`            |
+| `@devalok/shilp-sutra/ui/input-otp`                        | `pnpm add input-otp`                                                                                    |
+| `@devalok/shilp-sutra/composed/file-preview`               | `pnpm add react-pdf react-zoom-pan-pinch`                                                               |
+| `@devalok/shilp-sutra/composed/markdown-viewer`            | `pnpm add react-markdown react-syntax-highlighter remark-gfm`                                           |
+| `@devalok/shilp-sutra/ui/toaster` or `…/ui/toast`          | `pnpm add sonner`                                                                                       |
+| Tabler icons in `<Icon>`, `<Button startIcon>`, etc.       | `pnpm add @tabler/icons-react`                                                                          |
+
+## HARD CONSTRAINTS
+
+1. **Tailwind 4 only.** No `tailwind.config.ts presets: [shilpSutra]` — that was removed in 0.38. CSS-only setup as above.
+2. **`framer-motion@^12` required peer.** Single copy — configure pnpm/yarn overrides if you see duplicates.
+3. **`sonner@^2`** required only when you render `<Toaster />` or call `toast.*`. Optional otherwise.
+4. **Per-component imports keep RSC fast AND avoid peer-dep cliffs.** Barrel `@devalok/shilp-sutra/ui` works in client contexts but inflates client bundle and forces optional peers to be installed. Prefer `…/ui/text`, `…/ui/dialog`, etc. The barrel **no longer** re-exports peer-cliff symbols (`Toaster`, `toast`, `InputOTP`, `DatePicker`, `RichTextEditor`, `EmojiPicker`, `FilePreview`, `MarkdownViewer`, `BlockRenderer`, `ErrorBlock`, `TextBlock`) as of 0.40.0 — import per-component.
+5. **Spacing namespace is `--spacing-ds-*`.** `p-ds-04`, `gap-ds-03` — these DO NOT replace TW4 default `p-4`, `gap-2`. Both coexist by design. Pick `p-ds-*` for values that should track DS theme changes, `p-N` for one-off layout values.
+6. **Bare `shadow` class renders no shadow in TW4.** Use `shadow-raised` (cards), `shadow-floating` (dropdowns), `shadow-overlay` (dialogs), `shadow-ring` (focus).
+7. **Variant names must match CVA source exactly** — invented variant names silently no-op (CVA falls back to defaults). Grep `packages/core/src/ui/<component>.tsx` if in doubt.
+8. **Default to `variant="soft"`** over `variant="outline"` for non-primary Button actions. Outline only on colored backgrounds or where primary/secondary hierarchy needs a hard border.
+
+## ICON API (one shape across every component, v0.41.0+)
+
+Every icon-accepting prop (`startIcon`, `endIcon`, `icon`, …) takes `IconInput`:
+
+```tsx
+import { IconPlus } from '@tabler/icons-react'
+import { Icon } from '@devalok/shilp-sutra/ui/icon'
+
+<Button startIcon={<Icon icon={IconPlus} />}>Add</Button>   // canonical
+<Button startIcon={<IconPlus />}>Add</Button>                // raw Tabler element
+<Button startIcon={IconPlus}>Add</Button>                    // component ref
+<Button startIcon={<span>+</span>}>Add</Button>              // custom node
+```
+
+All four work. Size flows from `<IconProvider>` context — don't pass `className="h-4 w-4"`. On 22 components: Button, IconButton, Badge, Combobox, SegmentedControl, Stepper, StatCard, TreeItem, OAuthButton, Chat.Message.*, AIConversation, EmptyState, BulkActionBar, ActivityFeed, CommandPalette, TopBar, Sidebar, BottomNavbar, AppCommandPalette, CommandRegistry.
+
+## IMPORT PATH CHEATSHEET (don't guess)
+
+| Component / API                                | Exact import path |
+|------------------------------------------------|----|
+| `FormField`, `FormHelperText`, `useFormField`  | `@devalok/shilp-sutra/ui/form` (NOT `ui/form-field`)|
+| `Label`                                        | `@devalok/shilp-sutra/ui/label`|
+| `AppSidebar`                                   | `@devalok/shilp-sutra/shell/sidebar` (NOT `shell/app-sidebar`)|
+| `TopBar`, `TopBar.*`                           | `@devalok/shilp-sutra/shell/top-bar`|
+| `BottomNavbar`                                 | `@devalok/shilp-sutra/shell/bottom-navbar`|
+| `AppCommandPalette`                            | `@devalok/shilp-sutra/shell/app-command-palette`|
+| `NotificationCenter`                           | `@devalok/shilp-sutra/shell/notification-center`|
+| `CommandPalette` (lower-level)                 | `@devalok/shilp-sutra/composed/command-palette`|
+| `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `RadarChart`, `GaugeChart`, `Sparkline`, `ChartContainer`, `Legend` | `@devalok/shilp-sutra/ui/charts` (or per-chart subpath `…/ui/charts/bar-chart`) |
+| `DataTable`                                    | `@devalok/shilp-sutra/ui/data-table`|
+| **`DatePicker`** family                        | `@devalok/shilp-sutra/composed/date-picker` **(per-component required since 0.40)** |
+| **`Toaster`**                                  | `@devalok/shilp-sutra/ui/toaster` **(per-component required since 0.40, pulls `sonner`)** |
+| **`toast`**                                    | `@devalok/shilp-sutra/ui/toast` **(per-component required since 0.40)** |
+| **`InputOTP`** family                          | `@devalok/shilp-sutra/ui/input-otp` **(per-component required since 0.40)** |
+| **`EmojiPicker`**                              | `@devalok/shilp-sutra/composed/emoji-picker` **(per-component since 0.40)** |
+| **`FilePreview`**                              | `@devalok/shilp-sutra/composed/file-preview` **(per-component since 0.40)** |
+| **`MarkdownViewer`**                           | `@devalok/shilp-sutra/composed/markdown-viewer` **(per-component since 0.40)** |
+| **`RichTextEditor`** / **`RichChatInput`**     | `@devalok/shilp-sutra/composed/rich-{text-editor,chat-input}` **(per-component since 0.40)** |
+| **`BlockRenderer`**, **`ErrorBlock`**, **`TextBlock`** | `@devalok/shilp-sutra/ai/{block-renderer,blocks/error,blocks/text}` **(per-component since 0.40)** |
+| `useColorMode`                                 | `@devalok/shilp-sutra/hooks/use-color-mode`|
+| `MotionProvider`, `springs`, `tweens`          | `@devalok/shilp-sutra/motion`|
+
+Components whose import path is the kebab-case of their name (`Button` → `ui/button`, `Card` → `ui/card`, `Avatar` → `ui/avatar`, `Stack` → `ui/stack`, `Text` → `ui/text`) follow the obvious rule. The table above lists the ones that DON'T.
+
+## TWO-AXIS VARIANT SYSTEM (vs shadcn's one-axis)
+
+Many components take BOTH `variant` (shape/surface) AND `color` (intent/semantics):
+
+```tsx
+<Button variant="solid"   color="error">Delete</Button>     // red solid
+<Button variant="soft"    color="warning">Pending</Button>  // amber tinted
+<Button variant="outline" color="accent">Cancel</Button>    // bordered
+<Badge  variant="solid"   color="success">Active</Badge>    // green solid
+<Alert  variant="subtle"  color="info" title="Note" />      // tinted blue
+```
+
+Components with the two-axis system: **Button, Badge, Alert, Banner, Progress, StatusBadge**.
+
+## TOP DIFFERENCES FROM SHADCN/UI (will trip you up)
+
+| shadcn pattern | shilp-sutra equivalent |
+|---|---|
+| `variant="destructive"` | `color="error"` |
+| `size="default"` | `size="md"` (always — never "default") |
+| `<Select size="lg">` | `<SelectTrigger size="lg">` (size on trigger, NOT root) |
+| `<Chip>` | `<Badge onClick={...}>` (Chip removed 0.32) |
+| `useToast() + toast({variant})` | `import { toast }`, then `toast.success('msg')` |
+| `Badge variant="destructive"` | `Badge variant="solid" color="error"` |
+| `Alert + AlertTitle + AlertDescription` | `<Alert title="..." color="error">` (single component) |
+| `Form + FormField + FormItem + FormLabel + FormControl + …` | `<FormField>` + `<Label>` + `<Input>` + `<FormHelperText>` + `useFormField()` hook |
+
+## COMMON MISTAKES — DO NOT
+
+- DO NOT use `variant="destructive"` — use `color="error"`
+- DO NOT use `variant="default"` on Button — use `variant="solid"`
+- DO NOT use `size="default"` — use `size="md"`
+- DO NOT put `size` on `<Select>` — put it on `<SelectTrigger size="md">`
+- DO NOT use `<Chip>` — use `<Badge onClick={...}>`
+- DO NOT call `useToast()` hook — use `import { toast } from '@devalok/shilp-sutra/ui/toast'`
+- DO NOT call `toast({title, color})` object form — use `toast.success('message', { description })`
+- DO NOT call `toast()` without `<Toaster />` mounted
+- DO NOT use `<Alert><AlertTitle>...</AlertTitle></Alert>` — use `<Alert title="..." />`
+- DO NOT codemod `p-4` → `p-ds-04` — both coexist by design
+- DO NOT use bare `shadow` class — pick `shadow-raised` / `shadow-floating` / `shadow-overlay`
+- DO NOT use `tailwind.config.ts presets: [shilpSutra]` — JS preset removed 0.38
+- DO NOT use `bg-surface-1..4` — renamed to `bg-surface-{base,raised,raised-hover,raised-active}` in 0.23
+- DO NOT use `shadow-01..05` — renamed to `shadow-{raised,raised-hover,floating,overlay}` in 0.23
+- DO NOT use TW3 `bg-gradient-to-*` — use TW4 `bg-linear-to-*` (since 0.37)
+- DO NOT use TW3 `w-[--var]` — use TW4 `w-(--var)` (since 0.37)
+- DO NOT pass `children` to `<IconButton>` — use the `icon` prop
+
+## TOP 30 COMPONENTS QUICK-REF
+
+### Inputs & buttons
+- **Button**: variant(solid|soft|outline|ghost|link) color(accent|error|success|warning|neutral) size(xs|sm|md|lg|compact-xs|compact-sm|compact-md|icon-xs|icon-sm|icon-md|icon-lg) shape(default|pill) + loading, startIcon, endIcon, asChild, processing, onClickAsync
+- **IconButton**: icon(IconInput, required) shape(square|circle) size(sm|md|lg) + aria-label required. Children rejected by type.
+- **SplitButton**: `[Action | ▼]` with dropdown. triggerSide, dropdownContent.
+- **Input**: size(xs|sm|md|lg) state(default|error|warning|success) + startSection, endSection (auto-typed icon vs label).
+- **NumberInput**: value + onValueChange + min/max/step.
+- **Textarea**, **SearchInput**, **ColorInput**.
+- **Checkbox**: checked, onCheckedChange, indeterminate, error, size.
+- **Switch**: checked, onCheckedChange, error, size, color, thumbIcon.
+- **RadioGroup > RadioGroupItem**.
+- **Select > SelectTrigger(size) > SelectValue; SelectContent > SelectItem**.
+- **Combobox**: discriminated union — `multiple?: false` (value: string) | `multiple: true` (value: string[]).
+- **Autocomplete**, **Slider**, **Toggle**, **ToggleGroup**, **SegmentedControl**.
+- **FormField + Label + Input + FormHelperText + useFormField()** — replaces shadcn's Form + FormItem + FormControl + FormDescription + FormMessage.
+
+### Display
+- **Text**: variant(heading-2xl..xs, body-lg..xs, label-lg..xs, caption, overline, code). Polymorphic `as` prop.
+- **Stack**: direction(vertical|horizontal) gap(SpacingToken) align/justify/wrap.
+- **Container**, **Separator**.
+- **Card**: variant(default|elevated|outline|flat) accent(left|top|right|bottom). Compound: CardHeader > CardTitle, CardDescription; CardContent; CardFooter.
+- **Badge**: variant(subtle|solid|outline|soft) color(default|accent|error|success|warning|info|neutral + 7 categories + custom) size(xs|sm|md|lg) + onClick, onDismiss, dot, startIcon, endIcon, truncate. Compound: Badge.Indicator, Badge.Group.
+- **Avatar**: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status, ring, badge.
+- **Spinner**, **Progress** (autoColor!), **Skeleton**, **StatCard**, **StatusDot**, **ColorSwatch**.
+- **Alert**: variant(subtle|solid|outline) color(info|success|warning|error|neutral) + title, onDismiss. Single component, not compound.
+- **Banner**: color(...) + actions, onDismiss. Mobile-responsive.
+- **Toast**: imperative `toast.success('msg')` / `.error/.warning/.info/.loading/.message/.promise/.upload/.custom`. Requires `<Toaster />`.
+
+### Overlays
+- **Dialog**: compound (DialogTrigger; DialogContent > DialogHeader > DialogTitle; …; DialogFooter). Mobile auto-fullscreens.
+- **AlertDialog**: same compound, mobile bottom-sheet via `responsive` prop.
+- **Sheet**: side(top|bottom|left|right). Mobile auto-bottom + swipe-to-dismiss.
+- **Popover**, **Tooltip** (auto-wraps Provider), **HoverCard**, **Collapsible**.
+
+### Navigation
+- **Tabs**: TabsList(variant: line|contained) > TabsTrigger; TabsContent. color, size, orientation.
+- **Accordion**: AccordionItem > AccordionTrigger; AccordionContent.
+- **Breadcrumb**, **PaginationRoot**, **DropdownMenu**, **ContextMenu**, **Menubar**, **NavigationMenu**.
+
+### Composed (per-component subpaths)
+- **DatePicker**, **DateRangePicker**, **DateTimePicker**, **TimePicker**, **CalendarGrid** — `@devalok/shilp-sutra/composed/date-picker`. Needs `date-fns` peer.
+- **EmptyState**: icon(IconInput) + title, description, action, compact, iconSize.
+- **CommandPalette**, **AppCommandPalette**, **MultiSelectPopover**, **MemberPicker**, **MasterDetail**, **ActivityFeed**, **PageHeader**, **InlineEdit**, **FormSection**, **BulkActionBar**, **DeadlineIndicator**.
+- **RichTextEditor**, **RichTextViewer**, **RichChatInput** — needs `@tiptap/*` peers.
+- **FilePreview**, **MarkdownViewer**, **EmojiPicker**.
+
+### Shell
+- **TopBar**: Composition-based. `TopBar.Left/Center/Right/Section/IconButton/Title/UserMenu`.
+- **AppSidebar**: `NavItem[]` + `NavGroup[]` + `footer.{links,version,promo,slot}`.
+- **BottomNavbar**: mobile.
+- **NotificationCenter**, **NotificationPreferences**, **LinkProvider**.
+
+### AI module
+- **CommandBar**, **AIConversation**, **BlockRenderer** (per-component, pulls `react-markdown`), **AICommandProvider**, **DevadootIcon**.
+- AI blocks (barrel-safe): BlockTable, ConfirmBlock, DividerBlock, InfoBlock, LoadingBlock, StatRowBlock, SuccessBlock.
+- AI blocks (per-component required): ErrorBlock (`/ai/blocks/error`), TextBlock (`/ai/blocks/text`).
+
+## SERVER-SAFE COMPONENTS (`@server-safe` annotation in source)
+
+UI: `Text`, `Skeleton`, `Stack`, `Container`, `Table` (+ sub), `Code`, `VisuallyHidden`.
+Composed: `ContentCard`, `PageHeader`, `LoadingSkeleton`, `PageSkeletons`, `PriorityIndicator`.
+
+Use per-component subpaths in Server Components: `import { Text } from '@devalok/shilp-sutra/ui/text'`.
+
+## TROUBLESHOOTING
+
+13 symptoms with diagnosis + fix at `node_modules/@devalok/shilp-sutra/docs/recipes/troubleshoot.md`. Most common:
+
+- **`Cannot find module 'sonner'` / `'input-otp'` / `'date-fns'`** → missing optional peer; install per the matrix above.
+- **Spacing utilities don't apply** → Tailwind not seeing `node_modules/@devalok/shilp-sutra/dist`; ensure `transpilePackages` in `next.config` OR Tailwind 4 auto-discovery.
+- **`<Toaster />` mounted but `toast()` silent** → check sonner peer installed + Toaster mounted ONCE at layout root.
+- **Hydration warning on every page** → add `suppressHydrationWarning` to `<html>` (needed for next-themes).
+- **Bare `shadow` produces no shadow** → TW4 has no `--shadow-DEFAULT`; pick `shadow-raised`/`-floating`/`-overlay`.
+
+## NEED MORE?
+
+- `llms.txt` — full ~27K-token reference (this file is the slice)
+- `llms-full.txt` — exhaustive per-component prop tables (~140K tokens)
+- `docs/recipes/install-<framework>.md` — per-framework setup with edge cases
+- `docs/recipes/customize-brand.md` — token override cookbook
+- `MIGRATION.md` — every breaking change since 0.18
+
+This file regenerates from `llms.txt` when component APIs change; expect it to track v0.41+ closely.

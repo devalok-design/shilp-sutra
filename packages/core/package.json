@@ -804,6 +804,7 @@
     "MIGRATION.md",
     "README.md",
     "llms.txt",
+    "llms-quick.txt",
     "llms-full.txt"
   ],
   "agents": {

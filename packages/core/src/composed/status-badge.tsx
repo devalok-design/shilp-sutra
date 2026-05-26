@@ -6,7 +6,10 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
 import { Icon } from '../ui/icon'
+import { IconProvider } from '../ui/icon-context'
+import type { IconInput } from '../ui/lib/icon-input'
 import { motionProps } from '../ui/lib/motion'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { cn } from '../ui/lib/utils'
 
 const statusBadgeVariants = cva(
@@ -69,7 +72,7 @@ interface StatusBadgeBaseProps extends Omit<React.HTMLAttributes<HTMLSpanElement
   hideDot?: boolean
   size?: VariantProps<typeof statusBadgeVariants>['size']
   onClick?: () => void
-  icon?: React.ReactNode
+  icon?: IconInput
 }
 
 interface StatusBadgeWithStatus extends StatusBadgeBaseProps {
@@ -94,7 +97,7 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
     const clickableClasses = isClickable ? 'cursor-pointer hover:opacity-80 transition-opacity' : undefined
 
     const trailingIcon = icon != null
-      ? icon
+      ? <IconProvider size="xs">{normalizeIcon(icon)}</IconProvider>
       : isClickable
         ? <Icon icon={IconChevronDown} size="xs" className="text-current/50 -mr-0.5 shrink-0" />
         : null

@@ -712,6 +712,79 @@ gate('skill/SKILL.md metadata.version matches packages/core/package.json#version
   return true
 })
 
+// Gate: Icon API discipline. Every component that exposes an `icon`-shaped
+// prop (icon, startIcon, endIcon, leftIcon, rightIcon) must route through
+// the normalize-icon helper to participate in IconProvider context. Wave 5
+// F-10 unified the API; this gate catches regressions where a new
+// component lands with the old raw-render pattern.
+//
+// Allowlist exists for components where the icon is internal-config-only
+// (Toast's per-type icon table) or where the value is forwarded to a child
+// component whose own call to normalize-icon covers it.
+gate('Icon-prop components import normalize-icon', () => {
+  const ALLOWLIST = new Set([
+    'src/ui/toast.tsx',                  // sonner pass-through; internal config, not consumer prop
+    'src/ui/icon.tsx',                   // the Icon component itself
+    'src/ui/icon-button.tsx',            // routes through Button's normalize
+    'src/ui/tree-view/use-tree.ts',      // type-only TreeNode export, no render here
+    'src/composed/extensions/slash-command.tsx',  // tiptap extension, internal
+    'src/composed/error-boundary.tsx',   // internal Tabler refs in config
+    'src/composed/priority-indicator.tsx',  // internal Tabler refs in PRIORITY_CONFIG dict
+    'src/composed/rich-chat-input.tsx',  // ChatToolbarItem.icon — tiptap toolbar shape, ComponentType<{className}> by design
+    'src/composed/bulk-action-bar.tsx',  // forwards action.icon to Button.startIcon which does normalize
+    'src/composed/activity-feed.tsx',    // vestigial type, no render
+    'src/shell/command-registry.tsx',    // type-only export, no render path here
+    'src/shell/app-command-palette.tsx', // forwards SearchResult.icon to CommandPalette which normalizes
+    'src/ai/ai-command-provider.tsx',    // type-only, forwards to conversation
+  ])
+
+  const ICON_PROP_PATTERN = /^\s*(icon|startIcon|endIcon|leftIcon|rightIcon)\??:/m
+
+  const candidates = []
+  for (const layer of ['ui', 'composed', 'shell', 'ai']) {
+    const dir = join(ROOT, 'packages/core/src', layer)
+    if (!existsSync(dir)) continue
+    const files = globSync(`${dir}/**/*.{ts,tsx}`)
+    for (const fullPath of files) {
+      const rel = fullPath.replace(/\\/g, '/').split('/packages/core/')[1]
+      if (!rel) continue
+      if (rel.includes('.test.') || rel.includes('.stories.') || rel.includes('/__tests__/')) continue
+
+      const source = readFileSync(fullPath, 'utf-8')
+      if (!ICON_PROP_PATTERN.test(source)) continue
+
+      const usesNormalize = source.includes('normalize-icon')
+      if (usesNormalize) continue
+      if (ALLOWLIST.has(rel)) continue
+
+      candidates.push(rel)
+    }
+  }
+
+  if (candidates.length === 0) return true
+  return (
+    `${candidates.length} component(s) declare an icon-shaped prop but do not import normalize-icon:\n` +
+    candidates.map((c) => `       ${c}`).join('\n') +
+    `\n     If the icon is consumer-facing, route it through normalize-icon + IconProvider. ` +
+    `If it's internal-config-only, add the path to ALLOWLIST in scripts/pre-publish-audit.mjs.`
+  )
+})
+
+// Gate: llms-quick.txt exists and is under the token budget. The whole point
+// of the quick file is that AI agents can read it in one shot — if it grows
+// past ~15K tokens (≈60KB at the standard 4 chars/token rate), it loses its
+// purpose and we should re-trim it instead of letting it drift.
+gate('llms-quick.txt ≤ 15K tokens (≈60KB)', () => {
+  const quick = join(ROOT, 'packages/core/llms-quick.txt')
+  if (!existsSync(quick)) return 'packages/core/llms-quick.txt missing — see F-18 in MIGRATION.md v0.41 entry'
+  const content = readFileSync(quick, 'utf-8')
+  const approxTokens = Math.ceil(content.length / 4)
+  if (approxTokens > 15000) {
+    return `llms-quick.txt is ~${approxTokens} tokens (${content.length} chars). Cap is 15K — trim before publishing. The quick file's value is fitting in one Read; let llms.txt absorb the overflow.`
+  }
+  return true
+})
+
 // --- New Gates (added by ecosystem audit 2026-04-06) ---
 console.log('\n\x1b[36mComponent Hygiene\x1b[0m')
 

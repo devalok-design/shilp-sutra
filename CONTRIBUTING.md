@@ -116,6 +116,18 @@ Before removing a public API:
 
 The v0.38 deprecation sweep is the canonical example — see commits `dff85b37`...`ec5112be` and `MIGRATION.md#v0380--deprecation-sweep`.
 
+### Codemod policy
+
+**Any breaking change that touches more than two components MUST ship with an automated migration.** Small breaks can be hand-migrated, but cross-component sweeps without automation create migration walls that stall consumer upgrades.
+
+Rules:
+
+1. **Threshold: >2 components touched.** Count consumer-facing component exports impacted. Renames, prop signature changes, default-value flips, removed variants, and barrel→subpath moves all count. A token-only break (no component code change) does not.
+2. **The migration vehicle is [`@devalok/eslint-plugin-shilp-sutra`](./packages/eslint-plugin).** Add a rule to its `migration` preset that detects the old shape and autofixes it. This is what shipped for the 0.40.0 barrel peer-cliff cleanup (`prefer-per-component-import`) and the TW3→TW4 class renames — autofix-driven migration beats a standalone jscodeshift repo because consumers already run ESLint. (The earlier plan referenced a separate `@devalok/shilp-sutra-codemods` repo; that was superseded by the plugin — do not reference it.)
+3. **The migration ships in the same PR as the breaking change.** The break is not mergeable without it. Reviewer checks: `pnpm changeset` body names the rule, `MIGRATION.md` references it, the rule has test cases.
+4. **Consumer migration is one command:** `pnpm eslint --fix --config node_modules/@devalok/eslint-plugin-shilp-sutra/migration src/`. Document in `MIGRATION.md` next to the manual instructions — codemod first, manual as fallback.
+5. **Backfill on demand, not retroactively.** No obligation for breaks shipped before this policy. Backfill only if a consumer explicitly asks during their upgrade.
+
 ### Public API surface
 
 The "public API" includes:
@@ -134,3 +146,28 @@ Internal-only:
 - Test fixtures, Storybook stories, the Vite playground app
 
 If a change touches public-API surface, it's a real semver event. Err toward the higher bump.
+
+## Beta SLA
+
+> Active for the `0.40.0` public beta window. See [docs/plans/2026-05-24-beta-release-plan.md](./docs/plans/2026-05-24-beta-release-plan.md) for the full beta plan.
+
+The beta SLA scopes maintainer commitment honestly — bot ack is automated, human commitment is to **triage**, not fix.
+
+| Category | Definition | Bot ack | Human triage | Fix posture |
+|---|---|---|---|---|
+| **Urgent** | Install-break, runtime crash on supported framework, or security. Reproduces on documented setup. Not solvable by re-reading docs. | Immediate (auto-comment) | ≤48h best-effort | Top of queue; ETA posted in issue |
+| **Normal** | API ambiguity, agent-trap, doc gap, behavior contradicting docs. | Immediate | Weekly Monday | Batched into next minor |
+| **Nice-to-have** | Polish, preference, feature request. | Immediate | Weekly Monday | "If it fits" — no commitment |
+
+**Bot ack** = auto-comment via [`agent-feedback-ack`](./.github/workflows/agent-feedback-ack.yml) GitHub Action. Means "we received this." Not "a human has read it."
+
+**Human SLA scopes triage, not fix.** Fix ETAs are issue-specific and posted in the issue after triage. We do not promise calendar fix times — one maintainer, real life.
+
+**Urgent definition** (objective, baked into [`ai-agent-feedback.yml`](./.github/ISSUE_TEMPLATE/ai-agent-feedback.yml)) — ALL of:
+- Reproduces on documented setup (recipe-followed install)
+- Breaks: install OR initial render OR build OR security
+- Not solvable by re-reading existing docs
+
+NOT urgent: visual preference, missing-feature request, doc confusion (= normal/doc-gap), breaks only on undocumented framework or post-modification, already-known issue with a workaround.
+
+Maintainer reserves the right to reclassify during triage; reclassification is the norm, not a slight.

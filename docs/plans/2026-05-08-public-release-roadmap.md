@@ -121,9 +121,9 @@ Tools that wrap shilp-sutra and make consumer DX better. Each is a separate, opt
 
 | # | Item | Tag | Effort | Status |
 |---|---|---|---|---|
-| 1.5.1 | `@devalok/eslint-plugin-shilp-sutra` — rules: no bare `shadow`, prefer `Stack` over `flex` divs, prefer `variant="soft"` over `variant="outline"` for non-primary, no `p-N` (use `p-ds-N`), no removed APIs (e.g. `variant="filled"` on Alert), per-component-import preference | P1 | M (3-5 days) | ❌ |
-| 1.5.2 | Codemod policy in `CONTRIBUTING.md` — any breaking change touching >2 components SHIPS a codemod (`@devalok/shilp-sutra-codemods`) using jscodeshift | P0 | S | ❌ |
-| 1.5.3 | `@devalok/shilp-sutra-codemods` package — repo for past + future codemods. Backfill v0.38 deprecation-sweep codemod retroactively | P1 | M (3-4 days) | ❌ |
+| 1.5.1 | `@devalok/eslint-plugin-shilp-sutra` — **DONE 2026-05-27 (`@0.2.0`)**: 12 rules incl. `no-bare-shadow`, deprecated-API catches, TW3→TW4 class autofixes, `prefer-per-component-import`. (Dropped the `no-p-N` rule — `p-N` and `p-ds-N` coexist by design; see CONTRIBUTING cadence guidance instead.) | P1 | M | ✅ |
+| 1.5.2 | Codemod policy in `CONTRIBUTING.md`. **DONE 2026-05-27** — shipped, but the vehicle is the `@devalok/eslint-plugin-shilp-sutra` `migration` preset, NOT a standalone jscodeshift repo (superseded; see 1.5.3). | P0 | S | ✅ |
+| 1.5.3 | ~~`@devalok/shilp-sutra-codemods` jscodeshift package~~ **SUPERSEDED 2026-05-27** — replaced by `@devalok/eslint-plugin-shilp-sutra@0.2.0`. Autofix ESLint rules are the migration mechanism (consumers already run ESLint); no separate codemod repo. The standalone repo was never built. | P1 | — | ✅ |
 | 1.5.4 | Storybook MCP server productization — currently dev-only at `localhost:6006/mcp`. Decide: leave as dev-only OR publish standalone | P3 | M | ❌ — strategic Q below |
 | 1.5.5 | VS Code snippets package (`shilp-sutra-snippets`) — `bn` → `<Button variant="…">…</Button>` etc. Skip full extension; snippets give 80% value | P2 | S | ❌ |
 

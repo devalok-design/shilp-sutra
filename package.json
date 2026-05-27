@@ -98,6 +98,9 @@
       "esbuild",
       "sharp"
     ],
+    "overrides": {
+      "@typescript-eslint/rule-tester": "8.58.2"
+    },
     "peerDependencyRules": {
       "allowedVersions": {
         "@emoji-mart/react>react": "19",

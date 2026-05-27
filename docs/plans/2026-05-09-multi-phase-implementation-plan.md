@@ -108,8 +108,8 @@ The biggest single piece of pre-1.0 work. Touches every CVA component.
 - Migrate Switch (currently 3), Toggle (currently 4 different), Slider (currently 4 no-neutral), ConfirmDialog (currently 2-only)
 - Remove `color="default"` from Card, Select-trigger, Progress, StatCard.accent
 
-**Codemod (`@devalok/shilp-sutra-codemods`):**
-- jscodeshift transforms for each renamed/removed axis
+**Codemod** *(SUPERSEDED 2026-05-27: shipped as `@devalok/eslint-plugin-shilp-sutra` autofix rules, not a standalone jscodeshift repo):*
+- ESLint `migration`-preset rules for each renamed/removed axis (autofix), e.g. `prefer-per-component-import` for the 0.40.0 barrel moves
 - Backward-compat aliases live for one minor (deprecated with dev warning, removed in 0.40.0)
 
 #### 1.4 — Enforcement tooling MVP (2-3 days)
@@ -307,18 +307,15 @@ Expand from Phase-1 MVP to full rule set:
 
 Ship as separate npm package: `@devalok/eslint-plugin-shilp-sutra@1.0.0`
 
-#### 4.2 — `@devalok/shilp-sutra-codemods` v1 (3-4 days)
+#### 4.2 — Migration autofixes (SUPERSEDED — folded into the ESLint plugin)
 
-Consolidated codemod package. Each transform is jscodeshift + dry-run + diff-mode.
+**2026-05-27:** the standalone `@devalok/shilp-sutra-codemods` jscodeshift package was never built and is dropped. Migration automation lives in `@devalok/eslint-plugin-shilp-sutra`'s `migration` preset instead — consumers already run ESLint, so autofix rules beat a separate codemod CLI. Already shipped: `prefer-per-component-import` (0.40.0 barrel moves), `no-bg-gradient-to` / `no-css-var-bracket` / `no-tailwind-config-preset` (TW3→TW4).
 
-Backfill historical codemods retroactively:
-- `v0.38-deprecation-sweep` (variant=filled→solid, action→actions, startIcon→startSection, etc.)
-- `v0.39-variant-normalization` (Card/Alert/Badge/Banner/Toggle migration)
-- `v0.40-i18n-extraction` (auto-prop-extraction skeleton — humans complete)
-- `v0.40-rtl-codemod` (logical properties)
-- `v0.41-state-api-alignment` (boolean error → state enum)
+Future per-version migration rules to add to the preset as those breaks land:
+- variant-normalization (Card/Alert/Badge/Banner/Toggle)
+- state-api-alignment (boolean error → state enum)
 
-Usage: `npx @devalok/shilp-sutra-codemods v0.39-variant-normalization src/`
+Usage: `pnpm eslint --fix --config node_modules/@devalok/eslint-plugin-shilp-sutra/migration src/`
 
 #### 4.3 — `@devalok/shilp-sutra-snippets` (VS Code) (1 day)
 

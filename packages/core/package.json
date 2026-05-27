@@ -800,6 +800,7 @@
     "docs/rollback.md",
     "fonts",
     "skill",
+    "scripts/welcome.mjs",
     "AGENTS.md",
     "MIGRATION.md",
     "README.md",
@@ -825,7 +826,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "prepublishOnly": "pnpm build",
-    "postinstall": "node scripts/welcome.mjs"
+    "postinstall": "node scripts/welcome.mjs || true"
   },
   "peerDependencies": {
     "@emoji-mart/data": "^1.0.0",

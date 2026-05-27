@@ -42,12 +42,6 @@ Add only if you will render `<Toaster />`:
 pnpm add sonner
 ```
 
-Add brand assets package if you need Devalok or Karm logos:
-
-```bash
-pnpm add @devalok/shilp-sutra-brand
-```
-
 ### 2a. Optional peer dependencies (install ONLY when importing the matching subpath)
 
 Some components depend on third-party libraries that ship as optional peers. **Install BEFORE first import** of the matching component, or `next build` will exit with `Module not found`. Skip entirely if you only use core components (`Button`, `Text`, `Stack`, `Dialog`, `Toast`, `Form*`, `Input`, `Card`, etc.).
@@ -121,7 +115,7 @@ Edit `next.config.{ts,js,mjs}`. Add the `transpilePackages` field:
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"],
+  transpilePackages: ["@devalok/shilp-sutra"],
 };
 
 export default nextConfig;

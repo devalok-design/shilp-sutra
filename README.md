@@ -16,16 +16,14 @@ The Devalok Design System -- tokens, components, and patterns for React & Next.j
 | Package | Description |
 | --- | --- |
 | `@devalok/shilp-sutra` | Tailwind 4 CSS-first tokens, 78 UI primitives, 29 composed components, 8 shell components, 5 AI components |
-| `@devalok/shilp-sutra-brand` | Brand logos and SVG/PNG/WebP assets (Devalok, Karm) |
-
-> **Note:** Domain-specific components (board, tasks, chat, dashboard, client, admin) previously published as `@devalok/shilp-sutra-karm` have been moved to their respective consumer app repositories.
+| `@devalok/eslint-plugin-shilp-sutra` | ESLint rules — deprecated-API catches, peer-cliff barrel-import detection, TW3→TW4 autofixes |
 
 ```bash
 # Core (required)
 pnpm add @devalok/shilp-sutra
 
-# Brand assets (optional)
-pnpm add @devalok/shilp-sutra-brand
+# Lint rules + migration autofixes (recommended)
+pnpm add -D @devalok/eslint-plugin-shilp-sutra
 ```
 
 ## Quick Setup
@@ -54,19 +52,32 @@ That's it — tokens, utilities, the dark variant, and compiled class scanning a
 ### 3. Transpile our packages in `next.config.ts`
 
 ```ts
-transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
+transpilePackages: ['@devalok/shilp-sutra'],
 ```
 
 ### 4. Use components
 
 ```tsx
 import { Button, Dialog, Input } from '@devalok/shilp-sutra/ui'
-import { PageHeader, DatePicker } from '@devalok/shilp-sutra/composed'
+import { PageHeader } from '@devalok/shilp-sutra/composed'
+import { DatePicker } from '@devalok/shilp-sutra/composed/date-picker'
 import { AppSidebar, TopBar } from '@devalok/shilp-sutra/shell'
-import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
 ```
 
 > **Upgrading from 0.36 or earlier?** Read [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration).
+
+### 5. Lint + autofix migrations (recommended)
+
+`@devalok/eslint-plugin-shilp-sutra` catches deprecated APIs, peer-cliff barrel imports, and TW3-era class names — most with autofixes that turn breaking-change upgrades into one command.
+
+```ts
+// eslint.config.ts (flat config, ESLint 9+)
+import shilpSutra from '@devalok/eslint-plugin-shilp-sutra'
+
+export default [shilpSutra.configs['flat/recommended']]
+```
+
+Three presets: `recommended` (daily), `strict` (everything at error), `migration` (one-shot codemod — run `pnpm eslint --fix` with the migration config when upgrading). See [`packages/eslint-plugin/README.md`](./packages/eslint-plugin/README.md).
 
 ## Make it look like you — the Themer
 
@@ -304,14 +315,7 @@ Only install the packages you actually use:
 | `@devalok/shilp-sutra/hooks` | `useToast`, `useColorMode`, `useIsMobile` |
 | `@devalok/shilp-sutra/fonts/*` | Inter and Ranade variable font files (WOFF2) |
 
-### @devalok/shilp-sutra-brand
-
-| Import path | Contents |
-| --- | --- |
-| `@devalok/shilp-sutra-brand` | All brand logos |
-| `@devalok/shilp-sutra-brand/devalok` | Devalok logos (full, mark, wordmark) |
-| `@devalok/shilp-sutra-brand/karm` | Karm logos (full, mark, wordmark) |
-| `@devalok/shilp-sutra-brand/assets/*` | Raw SVG/PNG/WebP assets |
+> Devalok/Karm first-party brand logos live in a separate `@devalok/shilp-sutra-brand` package — internal to Devalok apps and not required to use the design system.
 
 ## UI Components
 

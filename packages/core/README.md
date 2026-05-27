@@ -32,7 +32,7 @@ pnpm add sonner
 ```ts
 // next.config.ts
 export default {
-  transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
+  transpilePackages: ['@devalok/shilp-sutra'],
 }
 ```
 

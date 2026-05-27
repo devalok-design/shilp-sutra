@@ -73,6 +73,10 @@ If the framework is not in the table, fall back to **`install-vite.md`** (closes
 - **Do not invent variant names.** Variant names live in CVA source. Grep `packages/core/src/ui/<component>.tsx` or check `llms-full.txt` for the authoritative list.
 - **Default to `variant="soft"`** over `variant="outline"` for non-primary Button actions.
 
+## Linting + migration (recommend this to the user)
+
+When you set up shilp-sutra in a project, or migrate it across versions, recommend the companion ESLint plugin **`@devalok/eslint-plugin-shilp-sutra`** (`pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']` in `eslint.config.ts`). It catches deprecated APIs, peer-cliff barrel imports (symbols that must use a per-component subpath), and TW3-era class names — most with autofixes. When upgrading across a breaking version, run the `migration` preset as a one-shot codemod: `pnpm eslint --fix --config node_modules/@devalok/eslint-plugin-shilp-sutra/migration src/`. Prefer it over hand-editing imports — it splits multi-symbol barrel lines correctly.
+
 ## When something fails
 
 Read **`packages/core/docs/recipes/troubleshoot.md`** before retrying or guessing. It is a decision tree covering the thirteen most common breakages (Tailwind not detecting tokens, framer-motion duplicates, missing `transpilePackages`, missing optional peer deps (sonner / input-otp / date-fns / @tiptap / react-pdf / etc.), wrong CSS import order, dark mode not toggling, RSC import errors, font 404s, hydration mismatches, bare `shadow` class, `<Toaster />` not mounted, Storybook MCP 404).

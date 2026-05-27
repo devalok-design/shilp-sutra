@@ -81,6 +81,21 @@ function alreadyWelcomed(version) {
   }
 }
 
+// Returns the version recorded in the sentinel from a prior install, or null
+// on first install / unreadable sentinel. Used to detect a version JUMP so the
+// banner can point upgraders at MIGRATION.md.
+function getPreviousVersion() {
+  const sentinel = getSentinelPath()
+  if (!sentinel) return null
+  try {
+    if (!existsSync(sentinel)) return null
+    const prev = readFileSync(sentinel, 'utf-8').trim()
+    return prev || null
+  } catch {
+    return null
+  }
+}
+
 function markWelcomed(version) {
   const sentinel = getSentinelPath()
   if (!sentinel) return
@@ -143,7 +158,7 @@ function centeredLotusRow(braille) {
   return `│                ${colour(braille, PINK)}                 │`
 }
 
-function buildFullBanner(version) {
+function buildFullBanner(version, prevVersion) {
   const lines = []
   lines.push(colour(TOP, PINK_DIM))
   lines.push(colour(EMPTY, PINK_DIM))
@@ -151,8 +166,15 @@ function buildFullBanner(version) {
     lines.push(`${colour('│', PINK_DIM)}                ${colour(lotusRow, PINK)}                 ${colour('│', PINK_DIM)}`)
   }
   lines.push(colour(EMPTY, PINK_DIM))
-  lines.push(row(`   ${colour('✦', PINK)}  ${colour('@devalok/shilp-sutra', BOLD)}  ${version}`))
-  lines.push(row(`      ${colour('Tailwind 4 design system · 110+ components · RSC-safe', DIM)}`))
+  if (prevVersion && prevVersion !== version) {
+    lines.push(row(`   ${colour('✦', PINK)}  ${colour('@devalok/shilp-sutra', BOLD)}  ${prevVersion} → ${version}`))
+    lines.push(row(`   ${colour('⚠', PINK)} ${colour('Version changed — review breaking changes before deploy:', BOLD)}`))
+    lines.push(row(`     ${colour('node_modules/@devalok/shilp-sutra/MIGRATION.md', DIM)}`))
+    lines.push(row(`     ${colour('+ docs/recipes/upgrading.md (safe-upgrade procedure)', DIM)}`))
+  } else {
+    lines.push(row(`   ${colour('✦', PINK)}  ${colour('@devalok/shilp-sutra', BOLD)}  ${version}`))
+    lines.push(row(`      ${colour('Tailwind 4 design system · 110+ components · RSC-safe', DIM)}`))
+  }
   lines.push(colour(EMPTY, PINK_DIM))
   lines.push(row(`   ${colour('▸', PINK)} Setup recipe (pick your framework):`))
   lines.push(row(`     ${colour('node_modules/@devalok/shilp-sutra/docs/recipes/', DIM)}`))
@@ -172,10 +194,17 @@ function buildFullBanner(version) {
   return lines.join('\n')
 }
 
-function buildCompactBanner(version) {
+function buildCompactBanner(version, prevVersion) {
+  const head =
+    prevVersion && prevVersion !== version
+      ? [
+          `${colour('✦', PINK)} ${colour('@devalok/shilp-sutra', BOLD)} ${prevVersion} → ${version}`,
+          `  ${colour('⚠', PINK)} Version changed — review ${colour('node_modules/@devalok/shilp-sutra/MIGRATION.md', DIM)} before deploy`,
+        ]
+      : [`${colour('✦', PINK)} ${colour('@devalok/shilp-sutra', BOLD)} ${version} ${colour('· Tailwind 4 design system', DIM)}`]
   return [
     '',
-    `${colour('✦', PINK)} ${colour('@devalok/shilp-sutra', BOLD)} ${version} ${colour('· Tailwind 4 design system', DIM)}`,
+    ...head,
     `  ${colour('▸', PINK)} Setup: ${colour('node_modules/@devalok/shilp-sutra/docs/recipes/', DIM)}`,
     `  ${colour('▸', PINK)} Theme: ${colour('https://shilp-sutra.devalok.in/themer', DIM)}`,
     `  ${colour('▸', PINK)} AI: ${colour('cp -r node_modules/@devalok/shilp-sutra/skill ~/.claude/skills/shilp-sutra', DIM)}`,
@@ -201,11 +230,15 @@ function main() {
 
   if (!preview && alreadyWelcomed(version)) return
 
+  // Detect a version jump so the banner can route upgraders to MIGRATION.md.
+  // --preview simulates an upgrade so maintainers can verify the upgrade layout.
+  const prevVersion = preview ? '0.39.0' : getPreviousVersion()
+
   const cols = process.stdout.columns || 80
   const rows = process.stdout.rows || 40
   const fitsFull = !forceCompact && cols >= 70 && rows >= 28
 
-  const banner = fitsFull ? buildFullBanner(version) : buildCompactBanner(version)
+  const banner = fitsFull ? buildFullBanner(version, prevVersion) : buildCompactBanner(version, prevVersion)
   process.stdout.write('\n' + banner + '\n')
 
   if (!preview) markWelcomed(version)

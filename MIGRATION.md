@@ -8,9 +8,9 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 This release pairs one breaking change (barrel peer-cliff cleanup) with one non-breaking type widening (Icon API unification). Read the breaking section first.
 
-### Icon API unification (non-breaking)
+### Icon API unification (mostly non-breaking — one narrowing)
 
-**Type widening only — no consumer changes required.**
+**Mostly non-breaking, with one narrowing for `React.ReactNode`-typed props.** For the 14 components whose `icon` prop was previously `React.ReactNode`, `IconInput` accepts **less** — it excludes `string`, `number`, and iterables. If you store icons in a `Record<string, React.ReactNode>` map or a `icon?: React.ReactNode` field and pass them to a migrated component, `tsc` will fail even though the runtime JSX is valid. **Fix: retype the icon source to `React.ReactElement`** (or import `IconInput`). Known affected props: `CommandItem.icon` (CommandBar/CommandPalette), `ActivityItem.icon` (ActivityFeed), `Chat.Message.Avatar` `icon`. For props that were `ComponentType`-only the change is a genuine widening (accepts more). Build-time only — no runtime impact.
 
 Every icon-accepting prop across the design system now takes the same shape: **`IconInput`**. Before 0.40 there were six distinct prop types for the same conceptual "icon":
 
@@ -44,7 +44,7 @@ For every prop now typed as `IconInput`, all four shapes work identically:
 <Button startIcon={<span>+</span>}>OK</Button>              // custom node
 ```
 
-**Calls that worked before still work.** Type widening only.
+**Calls passing a JSX element or component ref still work.** The exception is the narrowing above: if your icon *source* is annotated `React.ReactNode` (a map value or field type), retype it to `React.ReactElement` — one-line per source, not per call site.
 
 **You can now delete `className="h-4 w-4"` overrides** on icon-prop usages — `IconProvider` wires size through context. Stories cleanup is voluntary; behavior unchanged.
 

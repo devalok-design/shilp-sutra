@@ -1,6 +1,5 @@
 # @devalok/eslint-plugin-shilp-sutra
-
-## 0.2.0
+## 0.2.0
 
 ### Minor Changes
 
@@ -76,3 +75,4 @@
   - F-22 (runtime Toaster peer warning) — `prefer-per-component-import` catches the cliff at edit time instead
 
   Closes tbf-tracker F-11.
+

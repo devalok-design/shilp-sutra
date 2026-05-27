@@ -24,7 +24,7 @@ If you are a human, read [README.md](./README.md) instead.
 2. **`packages/core/llms.txt`** — concise current-API cheatsheet (~27K tokens). Reach for this when `llms-quick.txt` isn't enough — covers more components + recent CHANGELOG sections.
 3. **`packages/core/docs/recipes/<framework>.md`** — copy-paste install + setup for the user's framework.
 4. **`packages/core/llms-full.txt`** — exhaustive per-component reference (~140K tokens, props/variants/examples). Read only when `llms.txt` is insufficient.
-5. **`MIGRATION.md`** — only if upgrading across versions.
+5. **`packages/core/docs/recipes/upgrading.md`** + **`MIGRATION.md`** — read BOTH before any version bump. See the hard constraint below.
 
 When the package is installed in a consumer project, the same files live at:
 
@@ -60,6 +60,7 @@ If the framework is not in the table, fall back to **`install-vite.md`** (closes
 
 ## Hard constraints (these break things if violated)
 
+- **On any version bump, do not report it safe before reading the COMPLETE changelog + `MIGRATION.md` for the target version.** Breaking entries are often ordered last (changesets sorts by file, not severity), and breaks are frequently type-level — a prop type narrowed (`React.ReactNode` → a tighter type fails `tsc` for values that compiled before) or a symbol moved from a barrel to a per-component subpath. Grep your codebase for the moved/narrowed symbols, run `typecheck` + `build`, and use the `@devalok/eslint-plugin-shilp-sutra` migration preset for the mechanical edits. Full procedure: `packages/core/docs/recipes/upgrading.md`.
 - **Tailwind 4 only.** Do NOT create `tailwind.config.ts` with `presets: [shilpSutra]`. The JS preset was removed in 0.38. Setup uses CSS imports:
   ```css
   @import "tailwindcss";

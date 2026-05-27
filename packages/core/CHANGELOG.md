@@ -1,5 +1,513 @@
 # @devalok/shilp-sutra
 
+## 0.40.0
+
+### Minor Changes
+
+- [#57](https://github.com/devalok-design/shilp-sutra/pull/57) [`eb20cc0`](https://github.com/devalok-design/shilp-sutra/commit/eb20cc097cc09ed8bec7bd206acf9a86d2eed906) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat: F-10 — Icon API unification across 22 components (single `IconInput` type)
+
+  **Non-breaking.** Type widening only. Every call site that compiled before keeps compiling.
+
+  ## Why
+
+  Before this release the design system had **6 distinct prop type signatures for the same conceptual "icon"** across 22+ icon-accepting components: `React.ReactElement`, `React.ReactNode`, `React.ReactNode | ComponentType<{className}>`, `ComponentType<{className}>`, `IconProps['icon']`, and (in Toast internals) `ForwardRefExoticComponent<any>`. Consumers had to memorize per-component conventions. Stories drifted. Five separate `iconSizeMap` declarations cropped up across component sources. Dual-detect logic was duplicated in EmptyState + StatCard. Twenty-three of twenty-five components silently ignored size context.
+
+  ## What changed
+
+  ### Foundation (new exports)
+
+  ```ts
+  import type { IconInput } from '@devalok/shilp-sutra/ui/lib/icon-input'
+  import { normalizeIcon } from '@devalok/shilp-sutra/ui/lib/normalize-icon'
+
+  type IconInput =
+    | React.ReactElement
+    | React.ComponentType<{ className?: string; size?: number | string }>
+    | null
+    | undefined
+
+  function normalizeIcon(
+    input: IconInput,
+    fallbackSize?: IconSize,
+  ): React.ReactNode
+  ```
+
+  `normalizeIcon` passes React elements through, wraps Tabler-shaped forwardRef refs in `<Icon icon={…} />` (so they participate in `IconContext`), and renders plain function components directly. Falls through to `null` for `null`/`undefined`. 16 vitest tests cover all branches + the type compatibility surface.
+
+  ### Consumer-facing API: every icon prop accepts all four shapes
+
+  ```tsx
+  <Button startIcon={<Icon icon={IconPlus} />}>OK</Button>   // canonical
+  <Button startIcon={<IconPlus />}>OK</Button>                // raw Tabler element
+  <Button startIcon={IconPlus}>OK</Button>                    // component ref
+  <Button startIcon={<span>+</span>}>OK</Button>              // custom node
+  ```
+
+  ### 22 components migrated
+
+  | Layer          | Components                                                                                                                                                                                                           |
+  | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | ui (P1)        | Button, IconButton                                                                                                                                                                                                   |
+  | ui leaf (P2)   | Badge, Combobox, SegmentedControl, Stepper, StatCard, TreeItem (TreeNode.icon), OAuthButton (icon + linkedIcon)                                                                                                      |
+  | chat + ai (P3) | Chat.Message.Avatar, Chat.Message.Action, Chat.SystemMessage, AIConversation (agent.icon), AICommandProvider (agent.icon), CommandBar (item.icon)                                                                    |
+  | composed (P4)  | EmptyState (kill dual-detect), BulkActionBar (loosen from IconProps['icon']), ActivityFeed, CommandPalette                                                                                                           |
+  | shell (P5)     | TopBar (UserMenuItem + TopBar.IconButton), Sidebar (NavItem + NavSubItem + footer.promo — three sites collapsed to one), BottomNavbar, AppCommandPalette (SearchResult.icon), CommandRegistry (CommandPageItem.icon) |
+
+  ### Internals collapsed
+  - 5 duplicate `iconSizeMap` declarations across Badge/Combobox/EmptyState/StatCard/etc. → one shared `<IconProvider size={token}>` pattern at each call site
+  - 2 duplicate dual-detect branches (`isValidElement(icon) || '$$typeof' in icon`) → one shared `normalizeIcon()` helper
+  - `React.createElement(icon, {className})` workarounds across EmptyState/StatCard → call through `normalizeIcon`
+
+  ### Strict-to-loose newly-accepted call sites
+  - `SegmentedControl options[*].icon` previously rejected `<IconX />` instantiated elements (only accepted bare component refs)
+  - `BulkActionBar actions[*].icon` previously rejected non-Tabler nodes
+  - `Chat.Message.Action.icon` previously required `IconProps['icon']` strict Tabler shape
+  - All three now accept `IconInput`
+
+  ### Tests
+  - 16 new tests in `src/ui/__tests__/normalize-icon.test.tsx` covering all four input shapes, IconProvider context propagation, type compatibility, and the `React.isValidElement` vs forwardRef vs plain-function-component decision tree.
+  - `src/composed/empty-state.test.tsx` rewritten to assert px-rendered sizing via `IconProvider` (the new contract) instead of className-based sizing (the old leak).
+
+  ### Not in this patch
+  - **Toast internal icons** (`TOAST_TYPE_CONFIG.icon`) keep their sonner ForwardRefExoticComponent shape. Internal config, not a consumer prop — out of scope.
+  - **Stories cleanup** (remove `className="h-4 w-4"` overrides from `.stories.tsx`) — voluntary, behavior unchanged.
+  - **`pre-publish-audit` Icon API gate** — deferred. The current test coverage + typecheck catches regressions for now.
+
+  ## Closes
+  - tbf-tracker F-10 (Icon API consistency) — full scope. Promoted from "accept both at edges" to deep three-layer unification (type alias + normalizer + per-component IconProvider).
+
+  ## Migration checklist for consumers
+  1. **Nothing required.** All existing call sites continue to compile.
+  2. **Voluntary cleanup:** delete `className="h-4 w-4"` (or similar) overrides on icon prop usages — `IconProvider` now sizes correctly via context.
+  3. **New API in your own wrappers:** import `IconInput` + `normalizeIcon` for components that accept icons-like props.
+
+  See `MIGRATION.md → v0.40.0` for the full per-component before/after.
+
+- [#57](https://github.com/devalok-design/shilp-sutra/pull/57) [`a2596bd`](https://github.com/devalok-design/shilp-sutra/commit/a2596bdb206502ac5dc868ca1fd764b77006ef6c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat: F-18 `llms-quick.txt` + F-10 P7 stories cleanup + F-10 P8 Icon API audit gate + StatusBadge migration
+
+  Three small wins finishing Wave 5.
+
+  ## F-18 — `llms-quick.txt` ships in the npm tarball
+
+  New file `packages/core/llms-quick.txt` (~4.5K tokens, 247 lines). Strict slice of `llms.txt` covering setup, peer-cliff matrix, hard constraints, Icon API contract, import-path cheatsheet, two-axis variant system, shadcn-difference table, top 30 components quick-ref, server-safe list, and the 13-symptom troubleshoot index. Fits in one Read call on every major AI agent (Claude Code, Cursor, Codex, Aider) without truncation.
+
+  `AGENTS.md` updated to route agents to `llms-quick.txt` first, then `llms.txt` (~27K tokens), then `llms-full.txt` (~140K tokens) on demand.
+
+  New pre-publish-audit gate `llms-quick.txt ≤ 15K tokens (≈60KB)` blocks future drift — if the slice creeps past the budget, the file loses its read-in-one-shot value and the audit forces a re-trim.
+
+  ## F-10 P7 — stories cleanup
+
+  Removed redundant `className="h-4 w-4"` icon overrides from stories that serve as docs:
+  - `combobox.stories.tsx` — five `icon: <IconUser className="h-4 w-4" />` patterns simplified to `icon: <IconUser />`. `IconProvider` now sizes the icon from Combobox's size context, no className needed.
+  - `Introduction.mdx` — Tabler icons section rewritten to teach the canonical `<Icon icon={X} />` shape + the IconInput contract (all four shapes work), replacing the old `<IconX className="h-4 w-4" />` recommendation.
+
+  `toggle.stories.tsx`, `toggle-group.stories.tsx`, and other `.stories.tsx` files with `className="h-4 w-4"` were left alone — they pass icons as children (not as props), where className is the right escape hatch.
+
+  ## F-10 P8 — pre-publish-audit Icon API gate
+
+  New gate `Icon-prop components import normalize-icon`. Scans `src/{ui,composed,shell,ai}/**/*.{ts,tsx}` for any component declaring `icon`, `startIcon`, `endIcon`, `leftIcon`, or `rightIcon` as a prop. Requires that the file imports `normalize-icon` OR appears on an explicit allowlist.
+
+  Allowlist (13 entries) covers:
+  - Internal sonner pass-through (`toast.tsx`)
+  - Type-only exports that don't render (`use-tree.ts`, `command-registry.tsx`, `ai-command-provider.tsx`)
+  - Components forwarding icon props to another component that normalizes (`bulk-action-bar.tsx` → Button, `app-command-palette.tsx` → CommandPalette)
+  - Internal Tabler config dicts (`error-boundary.tsx`, `priority-indicator.tsx`)
+  - TipTap extension components with deliberately distinct shapes (`slash-command.tsx`, `rich-chat-input.tsx` ChatToolbarItem)
+  - The `Icon` component itself and `IconButton` (routes through Button)
+
+  Future component additions with an icon-shaped prop fail audit until either migrated or allowlisted with a reviewable comment.
+
+  ## Plus — StatusBadge missed in Wave 5, migrated
+
+  The audit gate caught `composed/status-badge.tsx` declaring `icon?: React.ReactNode` without going through `normalize-icon`. Migrated. `StatusBadge.icon` now takes `IconInput`; the trailing icon slot wraps in `<IconProvider size="xs">{normalizeIcon(icon)}</IconProvider>`. Consumer-facing call sites unchanged.
+
+  ## Closes
+  - tbf-tracker F-18 (`llms-quick.txt` for AI-agent read-cap fit)
+  - tbf-tracker F-10 P7 (stories cleanup, voluntary surface)
+  - tbf-tracker F-10 P8 (audit gate against drift)
+
+  ## Skipped intentionally
+  - **CLI (F-15)** — analysis showed ~25% of consumers benefit; the same engineering hours invested in F-18 / better recipes / Themer integration ship higher-leverage wins. Tracked for re-evaluation in 6 months once we have install telemetry.
+
+  Wave 5 complete: F-10 (Icon API), F-11 (ESLint plugin), F-18 (quick file), F-22 (Toaster runtime warn) → subsumed by F-11's `prefer-per-component-import`, F-23 (TW3→TW4 codemod) → subsumed by F-11's autofix rules. F-15 (init CLI) deferred.
+
+- [#57](https://github.com/devalok-design/shilp-sutra/pull/57) [`4c2b111`](https://github.com/devalok-design/shilp-sutra/commit/4c2b111174762b50d9a3c146c8c062bf0af0605c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat(ui): add `OAuthButton` — brand-aware social/login buttons
+
+  A purpose-built component for "Sign in with X" flows that previously had to be
+  hand-assembled from `Button + IconBrandGoogle`. The Tabler-glyph approach had
+  no shared copy convention across providers, no per-provider loading state, and
+  no row pattern. This component bakes in the conventions that matter for
+  conversion (brand colours, "Last used" hint, helper copy, iconOnly rows,
+  linked-state for settings pages).
+
+  New exports from `@devalok/shilp-sutra/ui/oauth-button`:
+  - `OAuthButton` — composes on `Button`, inherits async/loading/sizes.
+    - 13 providers: `google` `apple` `github` `microsoft` `x` `linkedin`
+      `facebook` `discord` `slack` `gitlab` `sso` `email` `passkey`
+    - `intent`: `continue` (default) / `signin` / `signup` drives the label.
+    - `appearance`: `brand` (provider colour) / `outline` (DS neutral) /
+      `dark` (unified Apple-style across all providers).
+    - `icon` — drop in a brand-multicolour SVG to replace the default glyph.
+    - `iconOnly` — square button with provider name kept in `aria-label`.
+    - `compact` — short label (`"Google"` not `"Continue with Google"`).
+      `aria-label` keeps the long form for screen readers. Good under an
+      explicit "Or sign in with" divider.
+    - `lastUsed` — inline right-edge pill rendered inside the button. The
+      stronger conversion pattern is to combine this with `OAuthGroup`'s
+      `reorderLastUsedFirst`, which promotes the provider to position 0.
+    - `helperText` — reassurance copy below.
+    - `data-provider` attribute for analytics.
+    - **Dark-mode uniformity:** every brand appearance lands on the same DS
+      surface in dark mode — brand identity comes from the glyph, not the
+      background — so rows stay visually coherent.
+  - `OAuthGroup` — stacked layout wrapper with consistent spacing.
+    Optional `reorderLastUsedFirst` pulls a `lastUsed` child to position 0
+    (Stripe-style ordering — a stronger conversion lever than a visual badge).
+  - `OAuthDivider` — `or`-style horizontal rule between OAuth and email form.
+  - `OAuthConnectionRow` — settings-page row representing a linked provider
+    with Disconnect / (re-)Connect action.
+
+  Default glyphs are sourced from `@tabler/icons-react` (already a peer dep).
+  Pass `icon={<YourBrandSvg />}` to replace any glyph — useful when you want a
+  provider's official multicolour mark from their own brand-guidelines page.
+
+- [#57](https://github.com/devalok-design/shilp-sutra/pull/57) [`da368f0`](https://github.com/devalok-design/shilp-sutra/commit/da368f01bd62480a0a6896f1bad4b09f9d8d12ea) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat!: barrel peer-cliff cleanup — remove 12 hard-peer re-exports from `/ui`, `/composed`, `/ai`, `/ai/blocks` barrels
+
+  **Breaking.** Twelve symbols that statically `import` optional peer dependencies have been removed from their parent barrels. Every symbol remains fully available via its per-component subpath. Search-and-replace migration is one line per symbol; full table in `MIGRATION.md` under `v0.40.0 — Barrel peer-cliff cleanup`.
+
+  ## Why
+
+  `peerDependenciesMeta.<peer>.optional = true` was a lie at the bundler level: barrels statically re-exported components whose source files contained top-level `import 'sonner'`, `import 'date-fns'`, `import { OTPInput } from 'input-otp'`, `import { useEditor } from '@tiptap/react'`, etc. Fresh consumer doing `import { Text } from '@devalok/shilp-sutra/ui'` without those peers installed → `Module not found: Can't resolve '<peer>'` at `next build` / `vite build` / `astro build`. Surfaced repeatedly across `tbf-tracker` (F-02), `hiring-platform`, and karm-v2.
+
+  Tree-shaking can't drop a static import if the resolver fails first. Lazy-importing moves the failure to runtime, which is worse. Removing the barrel re-export is the only fix.
+
+  ## What moved
+
+  | Symbol family                                                                                                                                         | Old barrel          | New per-component subpath                                     | Peer pulled                                                       |
+  | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------- |
+  | `InputOTP*`                                                                                                                                           | `/ui`               | `/ui/input-otp`                                               | `input-otp`                                                       |
+  | `toast`, `formatFileSize`, `Toast*`                                                                                                                   | `/ui`               | `/ui/toast`                                                   | `sonner`                                                          |
+  | `Toaster`, `ToasterProps`                                                                                                                             | `/ui`               | `/ui/toaster`                                                 | `sonner`                                                          |
+  | `DatePicker`, `DateRangePicker`, `DateTimePicker`, `TimePicker`, `CalendarGrid`, `MonthPicker`, `YearPicker`, `Presets`, `useCalendar` + all `*Props` | `/composed`         | `/composed/date-picker`                                       | `date-fns`                                                        |
+  | `EmojiPicker`, `EmojiPickerPopover` + types                                                                                                           | `/composed`         | `/composed/emoji-picker`                                      | `@emoji-mart/data`, `@emoji-mart/react`                           |
+  | `EmojiNode`, `EmojiNodeAttrs`                                                                                                                         | `/composed`         | `/composed/extensions/emoji-node` (**new subpath in 0.40.0**) | `@tiptap/*`                                                       |
+  | `createEmojiSuggestion`                                                                                                                               | `/composed`         | `/composed/extensions/emoji-suggestion` (**new subpath**)     | `@tiptap/*`                                                       |
+  | `FilePreview` + types                                                                                                                                 | `/composed`         | `/composed/file-preview`                                      | `react-pdf`, `react-zoom-pan-pinch`                               |
+  | `MarkdownViewer` + types                                                                                                                              | `/composed`         | `/composed/markdown-viewer`                                   | `react-markdown`, `react-syntax-highlighter`, `remark-gfm`        |
+  | `RichChatInput`, `AudioPlayer`, `AudioWaveform`, `useVoiceRecorder` + types                                                                           | `/composed`         | `/composed/rich-chat-input`                                   | `@tiptap/*`                                                       |
+  | `RichTextEditor`, `RichTextViewer` + types                                                                                                            | `/composed`         | `/composed/rich-text-editor`                                  | `@tiptap/*`                                                       |
+  | `BlockRenderer`, `BlockRendererProps`                                                                                                                 | `/ai`               | `/ai/block-renderer`                                          | `react-markdown`, `remark-gfm` (transitive via Text/Error blocks) |
+  | `ErrorBlock`                                                                                                                                          | `/ai`, `/ai/blocks` | `/ai/blocks/error` (**new subpath**)                          | `react-markdown`, `remark-gfm`                                    |
+  | `TextBlock`                                                                                                                                           | `/ai`, `/ai/blocks` | `/ai/blocks/text` (**new subpath**)                           | `react-markdown`, `remark-gfm`                                    |
+
+  Seven other AI blocks (`BlockTable`, `ConfirmBlock`, `DividerBlock`, `InfoBlock`, `LoadingBlock`, `StatRowBlock`, `SuccessBlock`) are peer-cliff-free and stay in both `/ai` and `/ai/blocks` barrels.
+
+  ## Per-chart subpaths added (non-breaking)
+
+  New: `/ui/charts/area-chart`, `/ui/charts/bar-chart`, `/ui/charts/chart-container`, `/ui/charts/gauge-chart`, `/ui/charts/line-chart`, `/ui/charts/pie-chart`, `/ui/charts/radar-chart`, `/ui/charts/sparkline`. The `/ui/charts` barrel still works and still pulls all 9 d3-\* peers. Per-chart subpath pulls only the d3-\* peers that specific chart needs — `BarChart` = `d3-scale` + `d3-axis` + `d3-selection`; `PieChart`/`RadarChart` = `d3-shape` only. Documented in `llms.txt` as the preferred form for d3-conscious consumers.
+
+  ## Build / packaging
+  - `packages/core/vite.config.ts` — 8 new chart entries + 4 new ai/composed peer-cliff entries added to `explicitEntries`.
+  - `packages/core/package.json#exports` — 12 new subpath entries (4 newly-added per-cliff + 8 per-chart).
+  - No change to `peerDependenciesMeta` — peers stay `optional`. The lie was elsewhere.
+
+  ## What didn't change
+  - Component APIs, prop signatures, types, runtime behavior, default styles, accessibility.
+  - Per-component subpaths that already existed in 0.39.x — consumers already importing per-component need zero changes.
+  - Stories, tests, internal DS imports — all use relative paths, none were ever affected.
+
+  ## Impact
+  - `tbf-tracker` (fresh-consumer audit, 18 findings) — closes F-02 (`input-otp` cliff) + F-03 (per-chart subpaths). Other findings tracked separately.
+  - `hiring-platform` — closes F-22 (silent sonner peer) docs angle; runtime warning still scheduled for Wave 4.
+  - `karm-v2` 0.37→0.40 upgrade — uses `DatePicker`, `toast`, `Toaster`, `MarkdownViewer`, `RichTextEditor`. Estimated 80-120 line touchpoints; mostly one-line `from '@devalok/shilp-sutra/composed'` → `'@devalok/shilp-sutra/composed/date-picker'` etc. Migration recipe in MIGRATION.md.
+
+- [#57](https://github.com/devalok-design/shilp-sutra/pull/57) [`5605a76`](https://github.com/devalok-design/shilp-sutra/commit/5605a760663f6d4dfaf69d7c8d7aaf0b0240cb2a) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat: polymorphic types for `Text`, `Stack`, `Container` — element-specific attrs now typecheck
+
+  Components with an `as` prop now widen their accepted props based on the
+  rendered element. Previously the `as` prop accepted any element at runtime
+  but TypeScript only allowed props of the default element (`<p>` for `Text`,
+  `<div>` for `Stack` + `Container`).
+
+  ## Before
+
+  ```tsx
+  import { Text } from '@devalok/shilp-sutra/ui/text'
+
+  // Runtime: works. TypeScript: ERROR.
+  ;<Text as="label" htmlFor="email">
+    Email
+  </Text>
+  //                ^^^^^^^ Property 'htmlFor' does not exist on type
+  //                        '... & Omit<ComponentPropsWithRef<"p">, ...>'.
+  //                        Did you mean 'for'?
+  ```
+
+  Same shape for `<Stack as="ul" role="list">`, `<Container as="main" aria-label>`.
+
+  ## After
+
+  All `as`-prop components now use a polymorphic type signature that preserves
+  the generic across the call site. Element-specific attrs (`htmlFor` on
+  `<label>`, `href`/`target` on `<a>`, `aria-label` on `<nav>`, etc.) typecheck
+  correctly.
+
+  ```tsx
+  <Text as="label" htmlFor="email">Email</Text>      // OK
+  <Text as="a" href="/x" target="_blank">link</Text> // OK
+  <Stack as="ul" role="list">items</Stack>           // OK
+  <Stack as="nav" aria-label="primary">items</Stack> // OK
+  <Container as="main" aria-label="main">…</Container> // OK
+  ```
+
+  Default behavior unchanged — `<Text>`, `<Stack>`, `<Container>` without `as`
+  keep their original element + accept original attrs.
+
+  ## Why not just use the generic at the impl?
+
+  `React.forwardRef` can't keep a generic parameter live across its return
+  type — at the call site, `T` would be erased to the default. Fix is the
+  standard polymorphic-component cast pattern (Radix, Mantine, Chakra all use
+  the same shape):
+
+  ```ts
+  type TextComponent = <T extends React.ElementType = 'p'>(
+    props: TextProps<T> & { ref?: React.ComponentPropsWithRef<T>['ref'] }
+  ) => React.ReactElement | null
+
+  const TextImpl = React.forwardRef<HTMLElement, TextProps>(...)
+  const Text = TextImpl as unknown as TextComponent
+  ```
+
+  Runtime: identical. Types: strictly wider.
+
+  ## Files
+  - `packages/core/src/ui/text.tsx` — `TextComponent` cast added; `as?: React.ElementType` → `as?: T`.
+  - `packages/core/src/ui/stack.tsx` — `StackComponent` cast added.
+  - `packages/core/src/ui/container.tsx` — `ContainerComponent` cast added.
+  - `packages/core/src/ui/__tests__/polymorphic-types.test.tsx` — new
+    11-test typetest suite using Vitest's `expectTypeOf` covering `<label>`,
+    `<a>`, `<nav>`, `<ul>`, `<main>`, `<section>`. Includes a
+    `@ts-expect-error` regression check that `htmlFor` on `<p>` (the default
+    for `<Text>`) still errors — we widen, we don't break.
+
+  ## Breaking
+
+  None. Strictly accepts more valid code. Existing code that typechecks today
+  keeps typechecking.
+
+  ## Closes
+  - tbf-tracker F-01 — `<Text as="label" htmlFor="...">` and
+    `<Stack as="ul">` now typecheck.
+
+- [#57](https://github.com/devalok-design/shilp-sutra/pull/57) [`7eb7799`](https://github.com/devalok-design/shilp-sutra/commit/7eb77993cd4e12437b8fab75ca4fc73a752b3cfc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat: Wave 4 — agent-friendly install experience
+
+  Three changes that make the package easier to onboard for both human developers and AI coding agents (Codex, Cursor, Copilot, Aider, Claude Code, Windsurf, …):
+
+  ## AGENTS.md ships inside the npm tarball
+
+  The repo-root `AGENTS.md` is now copied into the package at publish time and is available to consumers at `node_modules/@devalok/shilp-sutra/AGENTS.md`. The 25+ tools that auto-discover `AGENTS.md` from a project root (Codex, Cursor, Copilot, Aider, Windsurf, Devin, Jules, Gemini CLI, Zed, Warp, JetBrains Junie, …) will now also find ours alongside the recipes.
+
+  AGENTS.md is reframed as purely consumer-facing: "how to use shilp-sutra in a downstream app". Maintainer-internal docs (build pipeline, audit gates, internal patterns) stay in the repo-root `CLAUDE.md` and are not shipped.
+
+  > Anthropic Claude Code doesn't auto-load AGENTS.md yet — symlink it (`ln -s AGENTS.md CLAUDE.md`) or copy the contents into your own CLAUDE.md so the same rules apply.
+
+  Files: `packages/core/package.json#files` now includes `AGENTS.md`; `packages/core/scripts/copy-root-docs.mjs` copies repo-root AGENTS.md → `packages/core/AGENTS.md` at build time (gitignored, identical to the existing MIGRATION.md flow).
+
+  ## `agents` field per npm-agentskills convention
+
+  `packages/core/package.json` now declares an `agents` field per the [npm-agentskills](https://github.com/onmax/npm-agentskills) spec:
+
+  ```json
+  {
+    "agents": {
+      "skills": [{ "name": "shilp-sutra", "path": "./skill" }]
+    }
+  }
+  ```
+
+  Consumers running `pnpm dlx @codemcp/agentskills export` (or `pnpm dlx agentskills export --target claude`) will auto-discover the bundled skill and copy it into `.claude/skills/`, `.cursor/skills/`, `.github/skills/`, etc. No package-specific install command needed — opt into the emerging cross-tool convention.
+
+  The existing manual paths (`cp -r node_modules/@devalok/shilp-sutra/skill ~/.claude/skills/shilp-sutra` and the curl installer) still work and are documented as fallbacks in the README.
+
+  ## Pretty postinstall welcome banner
+
+  `packages/core/scripts/welcome.mjs` (new) prints a Devalok-branded ASCII-lotus + setup hint when consumers install the package for the first time per major.minor:
+
+  ```
+  ╭───────────────────────────────────────────────────────────────╮
+  │         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                 │
+  │         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠟⠹⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                 │
+  │              … (13-row Braille lotus) …                       │
+  │                                                               │
+  │   ✦  @devalok/shilp-sutra  0.40.0                             │
+  │      Tailwind 4 design system · 110+ components · RSC-safe    │
+  │                                                               │
+  │   ▸ Setup recipe (pick your framework):                       │
+  │     node_modules/@devalok/shilp-sutra/docs/recipes/           │
+  │                                                               │
+  │   ▸ Theme it in 30 seconds:                                   │
+  │     https://shilp-sutra.devalok.in/themer                     │
+  │                                                               │
+  │   ▸ Wire your AI agent (Claude Code / Cursor / Codex):        │
+  │     cp -r node_modules/@devalok/shilp-sutra/skill \           │
+  │        ~/.claude/skills/shilp-sutra                           │
+  │                                                               │
+  │   Disable this banner: SHILP_SUTRA_NO_WELCOME=1               │
+  │                                                               │
+  │   Built by Devalok · devalok.in                               │
+  ╰───────────────────────────────────────────────────────────────╯
+  ```
+
+  ### Safety guards (all silent failures, never throws)
+  - `process.env.CI` set → silent
+  - `process.env.SHILP_SUTRA_NO_WELCOME=1` → opt-out
+  - `process.env.NO_COLOR` → strip ANSI
+  - `process.stdout.isTTY === false` → silent (piped builds, Docker)
+  - `npm_config_loglevel === 'silent'` → silent
+  - `INIT_CWD` absent OR inside the package itself → silent (dev install)
+  - Sentinel `node_modules/.shilp-sutra-welcomed` carries the version → re-fires only on version change
+  - Terminal narrower than 70 cols / shorter than 28 rows → falls back to 6-line compact banner
+  - Try/catch wraps everything → consumer install can never break because of this script
+
+  ### Preview mode for maintainers
+
+  `node packages/core/scripts/welcome.mjs --preview` (or `--compact`) bypasses all guards. Used to verify rendering before publish.
+
+  ### Note for pnpm consumers
+
+  Modern `pnpm` blocks postinstall scripts on dependencies by default for supply-chain safety. First-time pnpm consumers will see:
+
+  ```
+  WARN  postinstall scripts blocked — run `pnpm approve-builds` to allow
+  ```
+
+  …then the banner appears on the next install. `npm`/`yarn`/`bun` consumers see it immediately. This is the modern pnpm contract — same shape as `esbuild`, `sharp`, `husky`, etc.
+
+  ## Updated troubleshoot.md
+
+  New symptom entry: `Cannot find module 'sonner' / 'input-otp' / 'date-fns' / '@tiptap/react' / …`. Table maps each Wave-2 peer-cliff component to the install command. Counts ticked: 13 symptoms total (was 12).
+
+  `<Toaster />`'s JSDoc also gained an ⚠ peer-required callout — IDE hover shows the `pnpm add sonner` hint inline.
+
+  ## What this patch does NOT include
+  - **F-22 runtime warning when Toaster mounts without sonner** — not achievable. `toaster.tsx` static-imports sonner, so if the peer is missing the file never loads and runtime code never runs. Replaced with louder JSDoc + the new troubleshoot table above.
+  - **Consumer AGENTS.md mutation (F-17)** — deferred to Wave 5 init CLI. No file mutation in postinstall.
+
+  ## Closes
+  - tbf-tracker F-08a (ship AGENTS.md in tarball)
+  - tbf-tracker F-08b (postinstall hint — implemented as pretty banner)
+  - tbf-tracker F-16 (skill discoverability — via npm-agentskills convention)
+  - hiring-platform F-22 (sonner peer surface — JSDoc + troubleshoot, runtime warn not possible)
+
+### Patch Changes
+
+- [#57](https://github.com/devalok-design/shilp-sutra/pull/57) [`f63e869`](https://github.com/devalok-design/shilp-sutra/commit/f63e8698f325ae7ecfef600c538f686092716d67) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - docs(recipes/llms/skill/AGENTS): close docs drift surfaced by three downstream consumer audits
+
+  Three independent consumer audits against 0.39.0 landed in the last 48 hours
+  (`tbf-tracker`, `hiring-platform`, `karm-v2` [#44](https://github.com/devalok-design/shilp-sutra/issues/44)). None reported runtime or
+  type bugs — every finding was a documentation gap, a stale claim, or an AI
+  agent following a doc rule that produced no-op churn. This patch fixes the
+  documentation-only subset. No component code, types, runtime behavior, peer
+  deps, or exports changed — safe to install over 0.39.0 with zero consumer
+  edits.
+
+  **Recipes** (`packages/core/docs/recipes/`)
+  - All six install recipes (Next App Router, Next Pages, Vite, Astro, Remix,
+    TanStack Start) now carry a `2a. Optional peer dependencies` table with
+    exact `pnpm add` commands for `d3-*` (charts), `@tanstack/react-table` +
+    `@tanstack/react-virtual` (DataTable), `date-fns` (date pickers), `@tiptap/*`
+    (RichTextEditor), `input-otp`, `react-pdf` + `react-zoom-pan-pinch`
+    (FilePreview), `react-markdown` + `react-syntax-highlighter`
+    (MarkdownViewer), `@tabler/icons-react`. The README's "Optional Peer
+    Dependencies" section existed but the per-framework recipes never linked
+    to it — AI agents following the recipe linearly only discovered missing
+    peers at the first `next build` failure.
+  - `install-next-app-router.md` §1 — dropped stale "OR `pages/` exists with
+    only `_app`/`_document`" clause. `create-next-app@16+` no longer scaffolds
+    `pages/` for App Router projects.
+  - `install-next-app-router.md` §8 — `p-3` vs `p-ds-03` rule reworded. DS
+    spacing tokens (`p-ds-04`) and TW4 numeric scale (`p-4`) coexist by design
+    per `tokens/semantic.css:68` — both are valid. The previous "use p-ds-04,
+    not p-4" framing was pushing consumers (and their AI agents) into
+    churn-PR territory. Explicitly say "do NOT mass-codemod" now.
+
+  **`llms.txt`** (`packages/core/llms.txt`)
+  - New "IMPORT PATH CHEATSHEET" section enumerating the exact subpath for
+    every component whose import path is NOT the kebab-case of its name
+    (`FormField` → `ui/form`, `AppSidebar` → `shell/sidebar`, charts barrel,
+    date-picker family, AI primitives, motion primitives, hooks). Fresh AI
+    agents no longer have to guess and hit a TS error before learning the
+    truth.
+  - `IconButton` entry rewritten to make the `icon=` prop vs `children`
+    constraint loud: type omits `children` deliberately, raw
+    `<IconButton><Icon /></IconButton>` is a TS error, correct form is
+    `<IconButton icon={<Icon icon={X} />} aria-label="…" />`. Surfaced by
+    hiring-platform's "discovery cost: I tried `children` first" note.
+  - `toast` entry rewritten to spell out the positional signature
+    `toast.success(message, options?)`. Previously implied object-first API
+    (Mantine / Chakra-style), which hiring-platform reporter assumed and got
+    wrong. Concrete examples for `success`, `error` with `description`,
+    `promise`, `upload`. Reminder that calls without a mounted `<Toaster />`
+    are no-ops.
+
+  **Root docs**
+  - `README.md`: troubleshoot.md tagline `8 most common breakages` → `12 most
+common` (file actually has 12 `## Symptom:` headers).
+  - `AGENTS.md`: line 64 "barrel will fail in RSC contexts" rewritten. With
+    all peers installed Next 16 honours each per-file `"use client"` and the
+    barrel works in RSC — what it does fail on is the peer-dep cliff
+    (`input-otp` in `src/ui/index.ts:49`, etc.). New wording covers both:
+    "Per-component imports keep RSC fast AND avoid peer-dep cliffs … the
+    barrel forces hard peers to be installed AND inflates the client bundle.
+    Existing barrel usage is not an emergency." Closes karm-v2 [#44](https://github.com/devalok-design/shilp-sutra/issues/44) sub-A.
+  - `AGENTS.md`: line 65 "Use `p-ds-04`, not `p-4`" rewritten — explicit
+    coexistence stance, "do NOT mass-codemod". Matches the design intent in
+    `tokens/semantic.css:68`. Closes karm-v2 [#44](https://github.com/devalok-design/shilp-sutra/issues/44) sub-B.
+  - `AGENTS.md`: troubleshoot tagline → "twelve most common breakages" with
+    matching list (Tailwind tokens, framer-motion duplicates,
+    `transpilePackages`, CSS import order, dark mode, RSC errors, font 404s,
+    hydration, missing optional peer deps, bare `shadow`, missing
+    `<Toaster />`, Storybook MCP 404).
+
+  **Agent Skill** (`skills/shilp-sutra/SKILL.md` + bundled
+  `packages/core/skill/SKILL.md`)
+  - `metadata.version` `0.38.0` → `0.39.0` to match shipped package version.
+    Skill had drifted one release behind.
+  - Description "eight most common breakages" → "twelve most common".
+  - New `scripts/sync-skill-version.mjs` chained into `pnpm version-packages`
+    (`changeset version && node scripts/sync-skill-version.mjs`). Future
+    changeset bumps now auto-update both skill source and bundled copy.
+
+  **CI gate** (`scripts/pre-publish-audit.mjs`)
+  - New gate: `skill/SKILL.md metadata.version matches
+packages/core/package.json#version`. Checks both
+    `skills/shilp-sutra/SKILL.md` (source) and `packages/core/skill/SKILL.md`
+    (build artifact). Blocks future drift recurrence.
+
+  **Investigated, no code change needed**
+  - `hiring-platform` reported "Button height is more than Input height in
+    comparable sizes". Verified via Playwright @2x against fresh storybook
+    build: heights identical at every size (xs=28, sm=32, md=40, lg=48) and
+    border-radii identical (`rounded-control` = 6px everywhere). Both
+    components use the same `h-ds-*` and `rounded-control` semantic role
+    tokens — confirmed across source, fresh build, and pixel measurements.
+    Original observation was against a stale local storybook-static built
+    before commit `e698df94` (shape-presets radius unification). Closed
+    without code change.
+
+  **What this patch does NOT cover** (tracked for 0.40.0 / 0.41.0)
+  - Build / packaging: F-02 (barrel `input-otp` static-export drop), F-03
+    (per-chart d3 split) → Wave 2.
+  - Type system: F-01 (polymorphic Text/Stack generic loss) → Wave 3.
+  - Agent integration: F-08a/b (ship AGENTS.md in tarball, postinstall hint,
+    optional managed-block injection into consumer AGENTS.md), F-22
+    (`<Toaster />` runtime warning when sonner missing) → Wave 4.
+  - DX tooling: F-10 (icon API consistency), F-11 (eslint plugin — now
+    open-question per F-19 coexistence stance), F-15 (init CLI), F-18
+    (`llms-quick.txt` split), F-23 (TW3→TW4 codemod) → Wave 5.
+
+  Each remaining finding will be its own changeset.
+
 ## 0.39.0
 
 ### Minor Changes

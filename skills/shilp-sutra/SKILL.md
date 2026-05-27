@@ -33,7 +33,7 @@ Q2. What does the user want to do?
     b) Change colors/fonts/radius    → references/customize-brand.md
     c) Server Components / Next.js   → references/server-components.md
     d) Something is broken           → references/troubleshoot.md
-    e) Upgrading from older version  → fetch MIGRATION.md from repo or node_modules
+    e) Upgrading from older version  → references/upgrading.md (then MIGRATION.md for the target version)
 ```
 
 ## First-time setup
@@ -56,6 +56,7 @@ Every line in those recipes is there because skipping it broke a real consumer. 
 
 These are non-negotiable. Violating any of them produces runtime errors that look unrelated to the design system.
 
+0. **On any version bump, never report the upgrade as safe before reading the COMPLETE changelog + `MIGRATION.md` for the target version.** Breaking entries are often ordered last (changesets sorts by file, not severity), and breaks are frequently type-level (a prop type narrowed, a symbol moved between barrels) that only `tsc`/`build` catches. Grep the codebase for moved/renamed/narrowed symbols, run `typecheck` + `build`, and prefer the ESLint migration preset (`@devalok/eslint-plugin-shilp-sutra`) for the mechanical edits. Full procedure: `references/upgrading.md`.
 1. **Tailwind 4 only.** Do not create `tailwind.config.ts` with `presets: [shilpSutra]`. The JS preset was removed in 0.38. Setup is CSS-only:
    ```css
    @import "tailwindcss";

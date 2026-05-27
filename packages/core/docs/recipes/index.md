@@ -31,6 +31,7 @@ If the framework is not listed, start with [install-vite.md](./install-vite.md) 
 |---|---|
 | [customize-brand.md](./customize-brand.md) | Token override cookbook — colors, radius role tokens, `[data-shape]` presets, fonts, spacing scale, dark-mode mapping. **Start here**, or skip ahead to the Themer ↓ |
 | [server-components.md](./server-components.md) | Per-component RSC-safety matrix; correct import patterns for Server Components |
+| [upgrading.md](./upgrading.md) | How to bump versions safely — read the full breaking surface, find affected call sites, autofix with the ESLint plugin, typecheck before deploy |
 
 ### The fast path: Themer
 

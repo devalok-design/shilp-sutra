@@ -1,6 +1,5 @@
 # @devalok/shilp-sutra-brand
-
-## 0.6.2
+## 0.6.2
 
 ### Patch Changes
 
@@ -63,8 +62,7 @@
   **Consumer impact:** no API change. `<DevalokLogo color="auto" />` still switches between brand (light) and white (dark) — it just does so without crashing RSC hydration. If you were using a plain `<img>` workaround, you can now swap back to the component.
 
   Added a dedicated `devalok-logo.hydration.test.tsx` regression test that renders with `renderToString` in both light and dark DOM states and asserts the server output is deterministic.
-
-## 0.6.1-next.0
+## 0.6.1-next.0
 
 ### Patch Changes
 

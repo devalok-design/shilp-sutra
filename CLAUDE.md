@@ -130,6 +130,18 @@ To add a legitimate exception, add the filename to `SURFACE1_ALLOWLIST` in `scri
 
 **If docs slip past a publish** (happened with 0.36.0's llms.txt gap): publish a patch immediately. Don't wait.
 
+### HARD RULE: a type NARROWING is breaking — never label it "non-breaking" (learned 2026-05-27, 0.40.0)
+
+Before writing "non-breaking" / "type widening only" on any prop-type change, classify the direction **per prop**, against the prop's PREVIOUS type:
+
+- **Widening** (old type ⊂ new type) → accepts more → non-breaking. Safe to label.
+- **Narrowing** (new type ⊂ old type) → accepts less → **BREAKING**. A consumer whose value was valid under the old type now fails `tsc`.
+- **Mixed** → it's breaking. Label it breaking and name which props narrowed.
+
+`React.ReactNode` is the widest icon type (`ReactElement | string | number | boolean | null | undefined | Iterable`). Anything tighter than it — e.g. `IconInput` (`ReactElement | ComponentType | null | undefined`) — is a **narrowing** for every prop that was `ReactNode`. 0.40.0's F-10 unification was labeled "type widening only"; it widened the `ComponentType`-only props but **narrowed the 14 `ReactNode` props**, breaking 3 karm-v2 call sites (devalok-design/shilp-sutra#61). The `/publish-release` checklist's "if types changed, it IS breaking" box was read and still passed — don't repeat that.
+
+When unsure whether old ⊂ new or new ⊂ old, write a `@ts-expect-error`/`expectTypeOf` probe with a value valid under the old type (a `Record<string, ReactNode>` entry, a `string`) and check it still compiles against the new type. If it doesn't, it's a narrowing → breaking.
+
 ## Storybook MCP Server
 
 When the Storybook dev server is running (`pnpm dev`), an MCP server at `localhost:6006/mcp` provides AI agents with:

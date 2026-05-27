@@ -2,6 +2,14 @@
 
 ## 0.40.0
 
+<!-- breaking-summary:start -->
+> ### ⚠️ Breaking in 0.40.0
+>
+> - feat!: barrel peer-cliff cleanup — remove 12 hard-peer re-exports from `/ui`, `/composed`, `/ai`, `/ai/blocks` barrels
+>
+> See [`MIGRATION.md`](../../MIGRATION.md) and `docs/recipes/upgrading.md` before bumping.
+<!-- breaking-summary:end -->
+
 ### Minor Changes
 
 - [#57](https://github.com/devalok-design/shilp-sutra/pull/57) [`eb20cc0`](https://github.com/devalok-design/shilp-sutra/commit/eb20cc097cc09ed8bec7bd206acf9a86d2eed906) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat: F-10 — Icon API unification across 22 components (single `IconInput` type)

@@ -21,7 +21,7 @@ Then 4 files:
 
 ```ts
 // next.config.ts — only if Next.js
-transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"]
+transpilePackages: ["@devalok/shilp-sutra"]
 ```
 
 ```tsx
@@ -44,6 +44,8 @@ export function Providers({ children }) {
 Per-framework recipes: `node_modules/@devalok/shilp-sutra/docs/recipes/install-<framework>.md` (six recipes — Next App Router, Next Pages, Vite, Astro, Remix, TanStack Start).
 
 **Theme it in 30 seconds:** https://shilp-sutra.devalok.in/themer — outputs a copy-pasteable CSS block (12-step OKLCH ramp + role tokens). Paste *after* the `@devalok/shilp-sutra/css` import.
+
+**Lint + migrate:** `pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']`. Catches deprecated APIs, peer-cliff barrel imports, TW3 classes — most autofixable. Use the `migration` preset (`pnpm eslint --fix`) when upgrading across breaking versions.
 
 ## OPTIONAL PEER DEPENDENCIES (install BEFORE first import)
 

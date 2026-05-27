@@ -115,9 +115,19 @@ For each symbol below, change ONLY the import path. Prop / type signatures are u
 
 The seven other AI blocks (`BlockTable`, `ConfirmBlock`, `DividerBlock`, `InfoBlock`, `LoadingBlock`, `StatRowBlock`, `SuccessBlock`) have no peer-dep imports and remain available via `from '@devalok/shilp-sutra/ai/blocks'` (the sub-barrel) or `from '@devalok/shilp-sutra/ai'` (the main barrel).
 
-#### Codemod helper
+#### Codemod helper (recommended)
 
-Most consumers can do this with a single `sed` per symbol family. Example for the toast family:
+The fastest path is the official ESLint plugin — its `prefer-per-component-import` rule detects every peer-cliff symbol still imported from a barrel and **autofixes the import path** for you:
+
+```bash
+pnpm add -D @devalok/eslint-plugin-shilp-sutra
+# one-shot codemod across your source
+pnpm eslint --fix --config node_modules/@devalok/eslint-plugin-shilp-sutra/migration src/
+```
+
+Or wire `shilpSutra.configs['flat/migration']` into your `eslint.config.ts` and run `eslint --fix`. The rule splits multi-symbol barrel lines correctly, which the `sed` approach below cannot.
+
+<details><summary>Manual <code>sed</code> fallback (single-symbol lines only)</summary>
 
 ```bash
 # Replace barrel imports of toast / Toaster with per-component imports
@@ -125,7 +135,9 @@ grep -rl "from '@devalok/shilp-sutra/ui'" src/ | xargs sed -i.bak \
   -e "s|import { \\(.*\\)toast\\(.*\\)} from '@devalok/shilp-sutra/ui'|import { toast } from '@devalok/shilp-sutra/ui/toast'\\nimport { \\1\\2} from '@devalok/shilp-sutra/ui'|"
 ```
 
-(Adjust per project — the regex assumes a single `toast` import on the line. For multi-symbol lines, splitting by hand is faster than perfecting the regex.)
+(Adjust per project — the regex assumes a single `toast` import on the line. For multi-symbol lines, the ESLint autofix above is far more reliable.)
+
+</details>
 
 #### Per-chart subpaths added (non-breaking)
 

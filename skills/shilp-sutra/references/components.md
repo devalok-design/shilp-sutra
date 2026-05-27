@@ -443,7 +443,7 @@ pnpm add @devalok/shilp-sutra
 
 Add to next.config.js:
 ```js
-transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"]
+transpilePackages: ["@devalok/shilp-sutra"]
 ```
 
 // Import components (barrel):

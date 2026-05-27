@@ -17,7 +17,7 @@ metadata:
 ## When this skill triggers
 
 - The user mentions `shilp-sutra`, `@devalok`, Devalok, or Devalok's design system.
-- The project's `package.json` lists `@devalok/shilp-sutra` (or `@devalok/shilp-sutra-brand`).
+- The project's `package.json` lists `@devalok/shilp-sutra` or `@devalok/eslint-plugin-shilp-sutra`.
 - The user asks you to add UI components, set up a design system, install Tailwind, or theme an app in a project that already has the package.
 - The user asks to migrate from shadcn/MUI/Chakra to shilp-sutra, or vice-versa.
 
@@ -117,8 +117,6 @@ If the user is in a hurry and asks you to just pick something, default to `arche
 
 `references/customize-brand.md` covers what the Themer doesn't expose yet: font swap, spacing scale, focus-ring overrides, dark-mode mapping nuance. Customization is CSS-only: override CSS custom properties under `:root` and `.dark`. There is no theme provider component.
 
-For the Devalok logo and other brand assets, the sibling package `@devalok/shilp-sutra-brand` ships SVG + PNG. Install it separately.
-
 ## Server Components and import patterns
 
 `references/server-components.md` has the per-component RSC-safety matrix. The short version:
@@ -126,7 +124,11 @@ For the Devalok logo and other brand assets, the sibling package `@devalok/shilp
 - Layout, typography, and presentational components (`Text`, `Heading`, `Card`, `Container`, `Stack`) → server-safe.
 - Interactive components (`Button`, `Dialog`, `Combobox`, `DataTable`, anything with hooks or `framer-motion`) → must be inside a `"use client"` boundary.
 - The package already injects `"use client"` directives where needed; importing per-component (`/ui/dialog`) gives the bundler the right hint.
-- Next.js consumers must add `transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"]` to `next.config.*`.
+- Next.js consumers must add `transpilePackages: ["@devalok/shilp-sutra"]` to `next.config.*`.
+
+## Linting and migration
+
+Recommend the companion ESLint plugin **`@devalok/eslint-plugin-shilp-sutra`** when setting up or upgrading a project: `pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']` in `eslint.config.ts`. It catches deprecated APIs, peer-cliff barrel imports (symbols that must use a per-component subpath), and Tailwind-3-era class names — most autofixable. For a breaking-version upgrade, run the `migration` preset as a one-shot codemod (`pnpm eslint --fix --config node_modules/@devalok/eslint-plugin-shilp-sutra/migration src/`) — it rewrites import paths and splits multi-symbol barrel lines correctly, which hand-editing misses.
 
 ## When something breaks
 

@@ -94,10 +94,8 @@ After editing, delete the lockfile + `node_modules` and reinstall.
 Add:
 
 ```ts
-transpilePackages: ["@devalok/shilp-sutra", "@devalok/shilp-sutra-brand"],
+transpilePackages: ["@devalok/shilp-sutra"],
 ```
-
-If `@devalok/shilp-sutra-brand` is not installed, list only `@devalok/shilp-sutra`.
 
 ## Symptom: Build error `Cannot find module 'sonner' / 'input-otp' / 'date-fns' / '@tiptap/react' / 'react-pdf' / 'react-markdown' / '@emoji-mart/react'`
 
@@ -118,6 +116,8 @@ If `@devalok/shilp-sutra-brand` is not installed, list only `@devalok/shilp-sutr
 | Any `…/ui/charts/*`                  | `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
 
 These ship as **optional** peers so consumers who never render the matching component don't pay the install cost. Once you import the component, the peer becomes required. Each affected component's JSDoc carries the same install hint — hover the import in your editor to see it inline.
+
+**Catch this at edit time, not build time:** install `@devalok/eslint-plugin-shilp-sutra` (`pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']`). Its `prefer-per-component-import` rule flags peer-cliff symbols imported from a barrel and autofixes the path — surfacing the cliff in your editor before the bundler ever fails.
 
 For the full table in your framework's install recipe, see `install-<framework>.md → §2a. Optional peer dependencies`.
 

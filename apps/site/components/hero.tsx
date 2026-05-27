@@ -4,7 +4,6 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 import { AuroraBloom } from '@/components/aurora-bloom'
-import { SHILP_SUTRA_MINOR } from '@/lib/version'
 
 export function Hero() {
   return (
@@ -12,18 +11,17 @@ export function Hero() {
       <AuroraBloom />
       {/* pt accounts for floating pill (~70–80px). Aurora-bloom reaches up to the
           true top of the section so the pill sits *over* the bloom — magic stays. */}
-      <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-12 pb-ds-09 md:pt-ds-13 md:pb-ds-12 lg:pt-[10rem] lg:pb-[8rem] flex flex-col items-center text-center gap-ds-05 md:gap-ds-06">
-        <Text variant="label-md" className="text-surface-fg-muted">
+      <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-13 pb-ds-12 md:pt-[8rem] md:pb-[7rem] lg:pt-[13rem] lg:pb-[10rem] flex flex-col items-center text-center gap-ds-06 md:gap-ds-08">
+        <Text variant="label-md" className="text-surface-fg-muted text-difference">
           From{' '}
           <Link
             href="https://devalok.in"
             target="_blank"
             rel="noreferrer"
-            className="underline underline-offset-2 decoration-surface-border-subtle hover:decoration-accent-11 hover:text-accent-11 transition-colors duration-fast-01"
+            className="hover:text-accent-11 transition-colors duration-fast-01"
           >
             Devalok
           </Link>
-          {' · '}Public beta v{SHILP_SUTRA_MINOR}
         </Text>
         <h1 className="text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-3xl text-balance">
           Your brand. Every component.
@@ -47,7 +45,7 @@ export function Hero() {
         </div>
         {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
             Three capability-led chips per docs/copy/shilp-sutra-copy-context.md §10. */}
-        <ul className="mt-ds-06 w-full max-w-2xl grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 gap-ds-02 text-ds-xs text-surface-fg-muted">
+        <ul className="mt-ds-08 w-full max-w-2xl grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 gap-ds-02 text-ds-xs text-surface-fg-muted text-difference">
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="w-1.5 h-1.5 rounded-pill bg-success-9" />
             Powers Karm, Hiring + studio tools

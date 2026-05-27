@@ -28,7 +28,33 @@ Other recipes:
 - `server-components.md` — RSC-safety matrix and import patterns
 - `troubleshoot.md` — decision tree for the 8 most common breakages
 
+## The Themer (fast path for branding)
+
+Before hand-writing CSS variables, point the user at **https://shilp-sutra.devalok.in/themer** — one funnel, four doors. Each door drops the user at a result page with install commands + a copy-pasteable CSS block (role tokens + 12-step OKLCH accent ramp) + a shareable URL.
+
+| User context | URL |
+|---|---|
+| "Make it look like Linear / Stripe / Apple / Material / Notion / Vercel / Devalok" | `/themer/archetypes` |
+| "Here's our brand color: `#…`" | `/themer/brand` |
+| "Not sure" | `/themer/wizard` |
+| "Show me a sample result" | `/themer/result?archetype=devalok` |
+
+Paste the snippet *after* `@import "@devalok/shilp-sutra/css";` in the global stylesheet. No `tailwind.config.ts`, no theme provider, no JS bundle. Fall through to `customize-brand.md` only for tokens the Themer doesn't expose yet (font stack, spacing scale, focus ring).
+
 The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
+
+## NEW (v0.40.0)
+
+- **OAuthButton.** Brand-aware social/login buttons. Subpath: `@devalok/shilp-sutra/ui/oauth-button`. 13 providers (`google` `apple` `github` `microsoft` `x` `linkedin` `facebook` `discord` `slack` `gitlab` `sso` `email` `passkey`). Props: `provider`, `intent` (`continue|signin|signup`), `appearance` (`brand|outline|dark`), `icon` (override default glyph), `iconOnly`, `compact` (renders just "Google" instead of "Continue with Google"; aria-label keeps long form), `lastUsed` (inline right-edge pill inside button), `helperText`. Inherits Button async/loading/sizes. Siblings: `OAuthGroup` (with `reorderLastUsedFirst` for Stripe-style ordering), `OAuthDivider`, `OAuthConnectionRow` (settings-page linked state). Default glyphs from Tabler peer dep; pass `icon` to drop in a brand's official multicolour SVG. In dark mode every brand appearance lands on the same DS surface — brand identity comes from the glyph, not the bg, so rows stay visually coherent.
+- **Icon API unification.** Every icon-accepting prop (`startIcon`, `endIcon`, `icon`, `leftIcon`, `rightIcon`) across 22 components now takes one type: **`IconInput`**. Pass a rendered element (`<Icon icon={IconPlus} />` or `<IconPlus />`), a component ref (`IconPlus`), or any custom node — all four shapes work interchangeably. Type widening only; every call that compiled before still compiles. Helpers exported for your own wrappers: `import type { IconInput } from '@devalok/shilp-sutra/ui/lib/icon-input'` + `import { normalizeIcon } from '@devalok/shilp-sutra/ui/lib/normalize-icon'`. `IconProvider` now sizes icons via context — delete `className="h-4 w-4"` overrides.
+- **Polymorphic `Text` / `Stack` / `Container`.** The `as` prop now widens accepted attributes to the rendered element: `<Text as="label" htmlFor="email">`, `<Text as="a" href="/x">`, `<Stack as="ul" role="list">`, `<Container as="main" aria-label>` all typecheck. Default element behavior unchanged.
+- **Agent-friendly install experience.** `AGENTS.md` now ships in the tarball (`node_modules/@devalok/shilp-sutra/AGENTS.md`), discoverable by 25+ agent tools. `package.json` declares an `agents` field (npm-agentskills convention) so `pnpm dlx @codemcp/agentskills export` auto-installs the bundled skill. New postinstall welcome banner (silent in CI / non-TTY / `SHILP_SUTRA_NO_WELCOME=1`). `troubleshoot.md` gained peer-cliff symptom entries.
+- **`llms-quick.txt`.** New ≤15K-token fast-path summary in the tarball — fits in one Read on any agent. Read order is now `llms-quick.txt` → `llms.txt` → `llms-full.txt`.
+- **Companion package `@devalok/eslint-plugin-shilp-sutra`** (first release). 12 rules — deprecated-API catches, peer-cliff barrel-import detection, TW3→TW4 classname autofixes. `pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']`. Three presets: `recommended`, `strict`, `migration` (one-shot codemod).
+
+## BREAKING CHANGES (v0.40.0)
+
+- **Barrel peer-cliff cleanup.** 12 symbols that statically import optional peers were removed from their parent barrels (`/ui`, `/composed`, `/ai`, `/ai/blocks`) — they now import ONLY via per-component subpath. Affected: `Toaster`/`toast` (→ `/ui/toaster`, `/ui/toast`), `InputOTP*` (→ `/ui/input-otp`), `DatePicker*` (→ `/composed/date-picker`), `EmojiPicker*` (→ `/composed/emoji-picker`), `FilePreview` (→ `/composed/file-preview`), `MarkdownViewer` (→ `/composed/markdown-viewer`), `RichTextEditor*`/`RichChatInput*` (→ their subpaths), `BlockRenderer`/`ErrorBlock`/`TextBlock` (→ `/ai/*`). Fixes `Module not found: Can't resolve 'sonner'`/etc. at consumer build time. Full before/after table in `MIGRATION.md → v0.40.0`. Per-chart subpaths (`/ui/charts/bar-chart`, etc.) added non-breaking alongside.
 
 ## NEW (v0.39.0)
 
@@ -443,6 +469,85 @@ import { useColorMode } from '@devalok/shilp-sutra/hooks/use-color-mode'
 // CSS tokens (import once at app root — already included in /css):
 import '@devalok/shilp-sutra/css'
 
+## IMPORT PATH CHEATSHEET (don't guess — these subpaths are NOT always the kebab-case of the component name)
+
+> **0.40.0 — barrel peer-cliff cleanup.** Components below marked `MANDATORY per-component` were removed from their parent barrel (`/ui`, `/composed`, `/ai`, `/ai/blocks`) because they statically import optional peers (`input-otp`, `sonner`, `date-fns`, `@emoji-mart/*`, `react-pdf`, `react-zoom-pan-pinch`, `react-markdown`, `remark-gfm`, `react-syntax-highlighter`, `@tiptap/*`). Fresh consumers using the barrel were getting `Module not found` at build time. The per-component subpath is now the ONLY way to import them. See MIGRATION.md → "v0.40.0 — barrel peer-cliff cleanup" for the full before/after.
+
+Common confusions to memorize:
+
+| Component / API                                | Exact import path                                              |
+|------------------------------------------------|----------------------------------------------------------------|
+| `FormField`, `FormHelperText`, `useFormField`  | `@devalok/shilp-sutra/ui/form`            (NOT `ui/form-field`)|
+| `Label`                                        | `@devalok/shilp-sutra/ui/label`                                |
+| `AppSidebar`                                   | `@devalok/shilp-sutra/shell/sidebar`      (NOT `shell/app-sidebar`)|
+| `TopBar`, `TopBar.*`                           | `@devalok/shilp-sutra/shell/top-bar`                           |
+| `BottomNavbar`                                 | `@devalok/shilp-sutra/shell/bottom-navbar`                     |
+| `AppCommandPalette`                            | `@devalok/shilp-sutra/shell/app-command-palette`               |
+| `CommandRegistryProvider`, `useCommandRegistry`| `@devalok/shilp-sutra/shell/command-registry`                  |
+| `NotificationCenter`                           | `@devalok/shilp-sutra/shell/notification-center`               |
+| `NotificationPreferences`                      | `@devalok/shilp-sutra/shell/notification-preferences`          |
+| `LinkProvider`, `useLink`                      | `@devalok/shilp-sutra/shell/link-context`                      |
+| `CommandPalette` (lower-level palette)         | `@devalok/shilp-sutra/composed/command-palette`                |
+| `BarChart`, `LineChart`, `AreaChart`, `PieChart`, `RadarChart`, `GaugeChart`, `Sparkline`, `ChartContainer`, `Legend` | `@devalok/shilp-sutra/ui/charts` (full barrel, pulls all 9 d3-\* peers) — **prefer per-chart subpath when possible: `/ui/charts/bar-chart`, `/ui/charts/line-chart`, `/ui/charts/area-chart`, `/ui/charts/pie-chart`, `/ui/charts/radar-chart`, `/ui/charts/gauge-chart`, `/ui/charts/sparkline`, `/ui/charts/chart-container`** (each pulls only the d3-\* peers it needs — BarChart needs `d3-scale` + `d3-axis` + `d3-selection`; PieChart/RadarChart need only `d3-shape`) |
+| `DataTable`                                    | `@devalok/shilp-sutra/ui/data-table`                           |
+| `DataTableToolbar`                             | `@devalok/shilp-sutra/ui/data-table-toolbar`                   |
+| `DatePicker`, `DateRangePicker`, `DateTimePicker`, `TimePicker`, `CalendarGrid`, `YearPicker`, `MonthPicker`, `Presets`, `useCalendar` | `@devalok/shilp-sutra/composed/date-picker` **MANDATORY per-component (0.40.0+)** — pulls `date-fns` |
+| `Toaster`                                      | `@devalok/shilp-sutra/ui/toaster` **MANDATORY per-component (0.40.0+)** — pulls `sonner`           |
+| `toast`                                        | `@devalok/shilp-sutra/ui/toast` **MANDATORY per-component (0.40.0+)** — pulls `sonner`             |
+| `InputOTP`, `InputOTPGroup`, `InputOTPSeparator`, `InputOTPSlot` | `@devalok/shilp-sutra/ui/input-otp` **MANDATORY per-component (0.40.0+)** — pulls `input-otp` |
+| `EmojiPicker`, `EmojiPickerPopover`, `EmojiData`, `EmojiSet` | `@devalok/shilp-sutra/composed/emoji-picker` **MANDATORY per-component (0.40.0+)** — pulls `@emoji-mart/data` + `@emoji-mart/react` |
+| `EmojiNode`, `EmojiNodeAttrs`                  | `@devalok/shilp-sutra/composed/extensions/emoji-node` **MANDATORY per-component (0.40.0+)** — pulls `@tiptap/*` |
+| `createEmojiSuggestion`                        | `@devalok/shilp-sutra/composed/extensions/emoji-suggestion` **MANDATORY per-component (0.40.0+)** — pulls `@tiptap/*` |
+| `FilePreview`, `FilePreviewProps`              | `@devalok/shilp-sutra/composed/file-preview` **MANDATORY per-component (0.40.0+)** — pulls `react-pdf` + `react-zoom-pan-pinch` |
+| `MarkdownViewer`                               | `@devalok/shilp-sutra/composed/markdown-viewer` **MANDATORY per-component (0.40.0+)** — pulls `react-markdown` + `react-syntax-highlighter` + `remark-gfm` |
+| `RichChatInput`, `AudioPlayer`, `AudioWaveform`, `useVoiceRecorder` | `@devalok/shilp-sutra/composed/rich-chat-input` **MANDATORY per-component (0.40.0+)** — pulls `@tiptap/*` |
+| `RichTextEditor`, `RichTextViewer`, `MentionItem`, `ToolbarItem` | `@devalok/shilp-sutra/composed/rich-text-editor` **MANDATORY per-component (0.40.0+)** — pulls `@tiptap/*` |
+| `MessageList`, `Message`, `SystemMessage`, `MessageInput`, `DateSeparator`, `UnreadSeparator`, `TypingIndicator` | `@devalok/shilp-sutra/ui/chat` |
+| `CommandBar`                                   | `@devalok/shilp-sutra/ai/command-bar`     (also re-exported from `/ai`) |
+| `AIConversation`                               | `@devalok/shilp-sutra/ai/conversation`                         |
+| `BlockRenderer`                                | `@devalok/shilp-sutra/ai/block-renderer` **MANDATORY per-component (0.40.0+)** — transitively pulls `react-markdown` + `remark-gfm` via ErrorBlock/TextBlock |
+| `AICommandProvider`                            | `@devalok/shilp-sutra/ai/ai-command-provider`                  |
+| `DevadootIcon`                                 | `@devalok/shilp-sutra/ai`                                      |
+| `ErrorBlock`                                   | `@devalok/shilp-sutra/ai/blocks/error` **MANDATORY per-component (0.40.0+)** — pulls `react-markdown` + `remark-gfm` |
+| `TextBlock`                                    | `@devalok/shilp-sutra/ai/blocks/text` **MANDATORY per-component (0.40.0+)** — pulls `react-markdown` + `remark-gfm` |
+| `BlockTable`, `ConfirmBlock`, `DividerBlock`, `InfoBlock`, `LoadingBlock`, `StatRowBlock`, `SuccessBlock` | `@devalok/shilp-sutra/ai/blocks` (barrel — these 7 are peer-cliff-free) |
+| `useColorMode`                                 | `@devalok/shilp-sutra/hooks/use-color-mode`                    |
+| `useMobile`                                    | `@devalok/shilp-sutra/hooks/use-mobile`                        |
+| `MotionProvider`, `springs`, `tweens`, `stagger`, `useMotion` | `@devalok/shilp-sutra/motion`                  |
+| `MotionFade`, `MotionScale`, `MotionPop`, `MotionSlide`, `MotionCollapse`, `MotionStagger`, `MotionStaggerItem` | `@devalok/shilp-sutra/motion/primitives` |
+
+Components named directly after their file (`Button` → `ui/button`, `Card` → `ui/card`, `Avatar` → `ui/avatar`, `Stack` → `ui/stack`, `Text` → `ui/text`, etc.) follow the kebab-case-of-name rule. The table above is for the ones that DON'T.
+
+**When in doubt:** `cat node_modules/@devalok/shilp-sutra/package.json | jq '.exports | keys'` lists every available subpath in the installed version.
+
+## ICON API — one shape across every component (v0.40.0+)
+
+Every icon-accepting prop in the design system (`startIcon`, `endIcon`, `icon`, etc. — see list below) takes the **`IconInput`** type. Pass any of these four shapes interchangeably:
+
+```tsx
+import { IconPlus } from '@tabler/icons-react'
+import { Icon } from '@devalok/shilp-sutra/ui/icon'
+
+<Button startIcon={<Icon icon={IconPlus} />}>Add</Button>   // canonical
+<Button startIcon={<IconPlus />}>Add</Button>                // raw Tabler element
+<Button startIcon={IconPlus}>Add</Button>                    // component ref
+<Button startIcon={<span>+</span>}>Add</Button>              // custom node
+```
+
+All four work identically at the call site. The component wraps its icon slot in `<IconProvider size={...}>` so size + stroke flow via React context — no `className="h-4 w-4"` overrides needed.
+
+**Components on the unified API:** Button, IconButton, Badge, Combobox, SegmentedControl, Stepper, StatCard, TreeItem (TreeNode.icon), OAuthButton (icon + linkedIcon), Chat.Message.Avatar, Chat.Message.Action, Chat.SystemMessage, AIConversation (agent.icon), AICommandProvider (agent.icon), CommandBar (item.icon), EmptyState (kills the dual ReactNode|ComponentType signature), BulkActionBar (action.icon), ActivityFeed (item.icon), CommandPalette (item.icon), TopBar (UserMenuItem.icon, TopBar.IconButton.icon), Sidebar (NavItem.icon, NavSubItem.icon, footer.promo.icon), BottomNavbar (item.icon), AppCommandPalette (SearchResult.icon), CommandRegistry (CommandPageItem.icon).
+
+**Internals** (`<Toaster>`, `<Toast>`'s success/error icons) use Sonner's own type contract and don't accept consumer-passed icons — that's by design.
+
+**When to use which shape:**
+- `<Icon icon={IconX} />` when you want explicit size/stroke control (size flows from context if not set)
+- `<IconX />` when you trust the surrounding `IconProvider` and don't need stroke control
+- `IconX` (raw ref) when you want the helper to do the wrapping for you (auto-wraps to `<Icon icon={IconX} />`)
+- Custom node when the "icon" is actually `<span>$</span>` or an emoji
+
+**Migration:** zero consumer changes needed if you were already passing valid React content. Components that previously took strict `IconProps['icon']` (BulkActionBar, Message.Action) or `ComponentType<{className}>` (SegmentedControl) now also accept the other three shapes. Strict-to-loose type widening — no breaking calls.
+
 ## CRITICAL: Differences from shadcn/ui
 
 If you have shadcn/ui knowledge, these are the differences that WILL trip you up:
@@ -480,7 +585,7 @@ Components with two-axis system: Button, Badge, Alert, Banner, Progress, StatusB
 
 ### Inputs & Controls
 - Button: variant(solid|soft|outline|ghost|link) color(accent|error|success|warning|neutral) size(xs|sm|md|lg|compact-xs|compact-sm|compact-md|icon-xs|icon-sm|icon-md|icon-lg) shape(default|pill) weight(semibold|normal) + loading, startIcon, endIcon, asChild, processing?('ambient'|'working'|'urgent'|boolean — marching ants SVG border, forces soft variant), processingColor?('accent'|'error'|'success'|'warning'|'neutral'), processingDisabled?(boolean, default true — set false for cancel-by-click). onClickAsync auto-activates processing='working' during loading phase. Layout animation always on. Deprecated aliases still work: variant="default"→solid, variant="destructive"→solid+error, color="default"→accent
-- IconButton: icon(ReactNode, required) shape(square|circle) size(sm|md|lg) + aria-label required
+- IconButton: icon(ReactNode, required as PROP — NOT children) shape(square|circle) size(sm|md|lg) + aria-label required. **Children rejected by type** (`Omit<ButtonProps, 'children'>`); pass the icon via `icon=` prop. Correct: `<IconButton icon={<Icon icon={IconArrowRight} />} aria-label="Submit" />`. Wrong: `<IconButton><Icon icon={IconArrowRight} /></IconButton>` (TS error). Wrap with `<Icon icon={…} />` (not raw Tabler `<IconX />`) so the size context cascades.
 - SplitButton: [Action | ▼] button with dropdown. Props: variant(solid|soft|outline), color, size(xs|sm|md|icon-xs|icon-sm|icon-md), triggerSide(left|right, default right), triggerWidth?(number|string), placement?(Floating UI Placement, default top-end), dropdownContent(ReactNode), open?, onOpenChange?, dropdownLabel?, dropdownIcon?. ARIA: role="group", aria-haspopup="menu", aria-expanded.
 - ButtonGroup: Visually merges adjacent Buttons. Props: variant, color, size, disabled (propagates), orientation(horizontal|vertical), attached(true|false, default true), fullWidth. Compound pattern: Button reads position from context, applies radius + border-removal inline. Tonal dividers for solid/soft/ghost. Focus z-index isolation.
 - Icon: `<Icon icon={IconPlus} />` — context-aware wrapper for Tabler icons. Size tiers: xs(14px) sm(16px) md(18px) lg(20px) xl(24px) 2xl(32px). Default: md. Stroke: light(1.5) regular(2) bold(2.5). Default: regular. Scales per size tier. Reads size from parent Button/IconGroup via IconContext. Explicit props override. Accessibility: aria-hidden by default. Pass label="Add item" for accessible icons. Animation: animate="spin|pulse|bounce|draw". `draw` renders SVG path-draw animation (check/X icons draw progressively via pathLength; other icons fall back to static). State machine: state="idle|loading|success|error". Button integration: startIcon={<Icon icon={IconPlus} />} (NOT raw <IconPlus />). IconGroup: <IconGroup size="sm" gap="tight"> for toolbar patterns.
@@ -638,7 +743,7 @@ Import: `@devalok/shilp-sutra/ui/chat`
 - Old Fade/Collapse/Grow/Slide from @devalok/shilp-sutra/ui/transitions are REMOVED — use Motion* equivalents
 
 ### Hooks
-- toast: imperative API — import { toast } from '@devalok/shilp-sutra/ui/toast'. Methods: toast.success/error/warning/info/loading/message/undo/promise/upload/custom/dismiss. useToast() is deprecated.
+- toast: imperative API — import { toast } from '@devalok/shilp-sutra/ui/toast'. **Signature is `(message: string, options?: { description?, duration?, action?, … })`** (sonner-style positional, NOT object-first). Examples: `toast.success('Saved')`, `toast.error('Failed to fetch', { description: 'Check your network', duration: 7000 })`, `toast.promise(fn, { loading: '…', success: '…', error: '…' })`, `toast.upload(file, { onProgress, onComplete })`. Methods: toast.success/error/warning/info/loading/message/undo/promise/upload/custom/dismiss. useToast() is deprecated. Mount `<Toaster />` at layout root or `toast()` calls are no-ops + log a dev warning.
 - useColorMode(): returns { colorMode, setColorMode, toggleColorMode }
 - useMobile(): returns boolean (true if viewport < 768px)
 - useLink(): returns router-agnostic Link component from LinkProvider context (shell/link-context)

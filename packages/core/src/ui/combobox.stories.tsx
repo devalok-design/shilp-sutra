@@ -20,31 +20,31 @@ const teamMembers: ComboboxOption[] = [
     value: 'alice',
     label: 'Alice Johnson',
     description: 'Engineering',
-    icon: <IconUser className="h-4 w-4" />,
+    icon: <IconUser />,
   },
   {
     value: 'bob',
     label: 'Bob Smith',
     description: 'Design',
-    icon: <IconBriefcase className="h-4 w-4" />,
+    icon: <IconBriefcase />,
   },
   {
     value: 'carol',
     label: 'Carol Williams',
     description: 'Engineering',
-    icon: <IconCode className="h-4 w-4" />,
+    icon: <IconCode />,
   },
   {
     value: 'david',
     label: 'David Lee',
     description: 'Product',
-    icon: <IconUser className="h-4 w-4" />,
+    icon: <IconUser />,
   },
   {
     value: 'emma',
     label: 'Emma Davis',
     description: 'Marketing',
-    icon: <IconBriefcase className="h-4 w-4" />,
+    icon: <IconBriefcase />,
   },
 ]
 

@@ -1,9 +1,9 @@
 ---
 name: shilp-sutra
-description: Add, configure, and use components from Devalok's shilp-sutra design system (@devalok/shilp-sutra) — a Tailwind 4 + React 19 + CVA library with 110+ accessible components, OKLCH design tokens, framer-motion animations, and per-component RSC-safe entry points. Use this skill whenever the user mentions shilp-sutra, Devalok, the @devalok npm scope, or asks to install/add/style/theme UI in any React project that already depends on the package — even if they don't name it explicitly. Use it instead of generic shadcn/ui, MUI, or Chakra knowledge when shilp-sutra is in the project. Covers Next.js (App + Pages), Vite, Astro, Remix, TanStack Start setup playbooks; component API and variant reference; brand token customization; Server Component import patterns; and a troubleshoot tree for the eight most common breakages.
+description: Add, configure, and use components from Devalok's shilp-sutra design system (@devalok/shilp-sutra) — a Tailwind 4 + React 19 + CVA library with 110+ accessible components, OKLCH design tokens, framer-motion animations, and per-component RSC-safe entry points. Use this skill whenever the user mentions shilp-sutra, Devalok, the @devalok npm scope, or asks to install/add/style/theme UI in any React project that already depends on the package — even if they don't name it explicitly. Use it instead of generic shadcn/ui, MUI, or Chakra knowledge when shilp-sutra is in the project. Covers Next.js (App + Pages), Vite, Astro, Remix, TanStack Start setup playbooks; component API and variant reference; brand token customization; Server Component import patterns; and a troubleshoot tree for the thirteen most common breakages.
 license: MIT
 metadata:
-  version: "0.38.0"
+  version: "0.39.0"
   author: Devalok Design & Strategy Studios
   homepage: https://github.com/devalok-design/shilp-sutra
   npm: https://www.npmjs.com/package/@devalok/shilp-sutra
@@ -96,7 +96,26 @@ Putting `bg-surface-base` on a card is a bug — cards belong on `surface-raised
 
 ## Theming and brand customization
 
-`references/customize-brand.md` covers token overrides — color ramps, radius, font swap, spacing scale, dark-mode mapping. Customization is CSS-only: override CSS custom properties under `:root` and `.dark`. There is no theme provider component.
+### Step 0 — Send the user to the Themer
+
+Before hand-rolling CSS variables, send the user to **[shilp-sutra.devalok.in/themer](https://shilp-sutra.devalok.in/themer)**. One funnel, four doors:
+
+| User context | Door |
+|---|---|
+| "Make it look like Linear / Stripe / Apple / Notion / Vercel / Material" | `/themer/archetypes` |
+| "Here is our brand color: `#…`" | `/themer/brand` |
+| "Not sure what we want yet" | `/themer/wizard` |
+| "Just show me what we'd ship away with" | `/themer/result?archetype=devalok` |
+
+Every door drops them at `/themer/result` with: a copy-pasteable CSS block (role tokens + 12-step OKLCH accent ramp), install commands for their package manager, a live preview, and a share URL that encodes the theme (`?archetype=…&hue=…&chroma=…&density=…`).
+
+Your job once they have the snippet: paste it into their global stylesheet **after** the `@import "@devalok/shilp-sutra/css";` line. That is it — no `tailwind.config.ts`, no provider, no JS bundle.
+
+If the user is in a hurry and asks you to just pick something, default to `archetype=devalok` (the studio's own preset, balanced for most apps) and use their brand hex if they have one, else `hue=340 chroma=0.19`.
+
+### Step 1 — Hand-roll fallback
+
+`references/customize-brand.md` covers what the Themer doesn't expose yet: font swap, spacing scale, focus-ring overrides, dark-mode mapping nuance. Customization is CSS-only: override CSS custom properties under `:root` and `.dark`. There is no theme provider component.
 
 For the Devalok logo and other brand assets, the sibling package `@devalok/shilp-sutra-brand` ships SVG + PNG. Install it separately.
 

@@ -93,12 +93,21 @@ const defaultElementMap: Record<TextVariant, keyof React.JSX.IntrinsicElements> 
  */
 type TextProps<T extends React.ElementType = 'p'> = {
   variant?: TextVariant
-  as?: React.ElementType
+  as?: T
   className?: string
   children?: React.ReactNode
 } & Omit<React.ComponentPropsWithRef<T>, 'as' | 'variant' | 'className' | 'children'>
 
-const Text = React.forwardRef<HTMLElement, TextProps>(
+// Polymorphic component type — preserves T across the call site so element-
+// specific props (e.g. `htmlFor` on `as="label"`, `href` on `as="a"`) typecheck.
+// React.forwardRef can't keep a generic parameter live at its export, so we
+// type the implementation loosely and cast the public export to a generic
+// callable. Standard polymorphic-component pattern (same shape as Radix).
+type TextComponent = (<T extends React.ElementType = 'p'>(
+  props: TextProps<T> & { ref?: React.ComponentPropsWithRef<T>['ref'] },
+) => React.ReactElement | null) & { displayName?: string }
+
+const TextImpl = React.forwardRef<HTMLElement, TextProps>(
   ({ variant = 'body-md', as, className, children, ...props }, ref) => {
     const Component = as || defaultElementMap[variant] || 'p'
     return React.createElement(
@@ -108,6 +117,8 @@ const Text = React.forwardRef<HTMLElement, TextProps>(
     )
   },
 )
-Text.displayName = 'Text'
+TextImpl.displayName = 'Text'
+
+const Text = TextImpl as unknown as TextComponent
 
 export { Text, type TextProps, type TextVariant,textVariants }

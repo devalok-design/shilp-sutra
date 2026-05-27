@@ -18,6 +18,8 @@ If both `app/` and `pages/` exist, prefer [install-next-app-router.md](./install
 
 Same dependencies as the App Router recipe — see [install-next-app-router.md § 2](./install-next-app-router.md#2-install-dependencies). Replace `next-themes`'s `attribute="class"` setup with the same on Pages Router (it works identically).
 
+**Optional peer dependencies** — if you'll render `<DataTable>`, any chart, `<DatePicker>`, `<RichTextEditor>`, `<InputOTP>`, `<FilePreview>`, `<MarkdownViewer>`, or use Tabler icons, install the matching peers BEFORE first import. Full table at [install-next-app-router.md § 2a](./install-next-app-router.md#2a-optional-peer-dependencies-install-only-when-importing-the-matching-subpath) — identical for Pages Router.
+
 ## 3. PostCSS
 
 Same as App Router — see [§ 3](./install-next-app-router.md#3-configure-postcss).

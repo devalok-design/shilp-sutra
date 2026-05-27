@@ -7,7 +7,9 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
 
 import { Icon } from './icon'
+import type { IconInput } from './lib/icon-input'
 import { durations,springs } from './lib/motion'
+import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
 
 // ── Color map — single source of truth for all badge color × variant combos ──
@@ -119,8 +121,8 @@ interface BadgeProps
   /** Semantic intent or category color. Use `"custom"` with `--badge-color` CSS variable. */
   color?: BadgeColor
   asChild?: boolean
-  startIcon?: React.ReactElement | null
-  endIcon?: React.ReactElement | null
+  startIcon?: IconInput
+  endIcon?: IconInput
   dot?: boolean
   onDismiss?: () => void
   selected?: boolean
@@ -278,7 +280,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
 
         {/* Start icon */}
         {startIcon && (
-          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{startIcon}</span>
+          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{normalizeIcon(startIcon)}</span>
         )}
 
         {/* Children — with optional truncation */}
@@ -295,7 +297,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
 
         {/* End icon */}
         {endIcon && (
-          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{endIcon}</span>
+          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{normalizeIcon(endIcon)}</span>
         )}
 
         {/* Dismiss button */}

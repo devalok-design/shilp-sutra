@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" data-feedback="combo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shilp-sutra — Interactive Feedback Preset Playground</title>
+<style>
+  :root {
+    --color-bg: oklch(0.985 0.005 280); --color-surface: oklch(1 0 0); --color-fg: oklch(0.20 0.02 280);
+    --color-fg-muted: oklch(0.48 0.02 280); --color-fg-subtle: oklch(0.62 0.02 280);
+    --color-border: oklch(0.88 0.01 280); --color-accent-3: oklch(0.94 0.03 340);
+    --color-accent-7: oklch(0.66 0.16 340);
+    --color-accent-9: oklch(0.55 0.19 340); --color-accent-10: oklch(0.49 0.21 340); --color-accent-11: oklch(0.42 0.16 340);
+    --font-sans: -apple-system, system-ui, sans-serif;
+    --radius-control: 8px;
+  }
+  :root, [data-feedback="combo"] { --fb-hover-bg-shift: 1; --fb-hover-transform: translateY(-1px); --fb-active-transform: scale(0.97); --fb-pressed-shadow: 0 0 0 0 transparent; --fb-duration: 120ms; }
+  [data-feedback="color"] { --fb-hover-bg-shift: 1; --fb-hover-transform: none; --fb-active-transform: none; --fb-pressed-shadow: inset 0 1px 2px oklch(0 0 0 / 0.10); --fb-duration: 100ms; }
+  [data-feedback="scale"] { --fb-hover-bg-shift: 0; --fb-hover-transform: scale(1.025); --fb-active-transform: scale(0.95); --fb-pressed-shadow: 0 0 0 0 transparent; --fb-duration: 160ms; }
+  [data-feedback="lift"] { --fb-hover-bg-shift: 0.3; --fb-hover-transform: translateY(-2px); --fb-active-transform: translateY(0); --fb-pressed-shadow: 0 0 0 0 transparent; --fb-duration: 180ms; }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px var(--font-sans); background: var(--color-bg); color: var(--color-fg); -webkit-font-smoothing: antialiased; }
+  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+  .sidebar { background: var(--color-surface); border-right: 1px solid var(--color-border); padding: 24px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .sub { margin: 0 0 24px; font-size: 12px; color: var(--color-fg-muted); }
+  .preset-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-weight: 600; }
+  .preset-btn { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+  .preset-btn.active { border-color: var(--color-accent-9); background: var(--color-accent-3); }
+  .preset-btn strong { font-size: 13px; font-weight: 600; }
+  .preset-btn span { font-size: 11px; color: var(--color-fg-muted); }
+  .tokens { margin-top: 20px; font: 11px/1.7 ui-monospace, monospace; border-top: 1px solid var(--color-border); padding-top: 12px; }
+  .tokens h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-fg-muted); font-family: var(--font-sans); font-weight: 600; }
+  .tokens div { display: flex; justify-content: space-between; padding: 1px 0; gap: 8px; }
+  .tokens span { color: var(--color-fg-subtle); }
+
+  .preview { padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 32px; max-width: 720px; }
+  h2 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-fg-muted); font-weight: 600; }
+  .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 28px; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn { padding: 12px 22px; background: var(--color-accent-9); color: white; border: none; border-radius: var(--radius-control); font: 500 14px var(--font-sans); cursor: pointer; transition: transform var(--fb-duration) cubic-bezier(0.2, 0, 0.38, 0.9), background var(--fb-duration), box-shadow var(--fb-duration); }
+  .btn:hover { transform: var(--fb-hover-transform); background: color-mix(in oklch, var(--color-accent-9), var(--color-accent-10) calc(100% * var(--fb-hover-bg-shift))); }
+  .btn:active { transform: var(--fb-active-transform); box-shadow: var(--fb-pressed-shadow); }
+  .btn.outline { background: transparent; color: var(--color-fg); border: 1px solid var(--color-border); }
+  .btn.outline:hover { background: color-mix(in oklch, var(--color-surface), var(--color-accent-3) calc(100% * var(--fb-hover-bg-shift))); }
+  .card-clickable { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px; cursor: pointer; transition: transform var(--fb-duration), border-color var(--fb-duration); }
+  .card-clickable:hover { transform: var(--fb-hover-transform); border-color: color-mix(in oklch, var(--color-border), var(--color-accent-7) calc(100% * var(--fb-hover-bg-shift))); }
+  .card-clickable:active { transform: var(--fb-active-transform); }
+  .card-clickable h3 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+  .card-clickable p { margin: 0; color: var(--color-fg-muted); font-size: 13px; }
+  .hint { background: var(--color-accent-3); color: var(--color-accent-11); padding: 12px 16px; border-radius: 10px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Interactive feedback playground</h1>
+    <p class="sub">Toggle <code>[data-feedback]</code> to feel how hover and active are conveyed — color shift, scale, lift, or combo.</p>
+    <div class="preset-group">
+      <label>Preset</label>
+      <button class="preset-btn" data-set="color"><strong>Color</strong><span>Linear — bg shifts on hover, inset on press</span></button>
+      <button class="preset-btn" data-set="scale"><strong>Scale</strong><span>iOS — scale up on hover, scale down on press</span></button>
+      <button class="preset-btn" data-set="lift"><strong>Lift</strong><span>Material lite — translateY on hover</span></button>
+      <button class="preset-btn active" data-set="combo"><strong>Combo</strong><span>Default — slight translate + bg shift</span></button>
+    </div>
+    <div class="tokens">
+      <h3>Active role tokens</h3>
+      <div><span>--fb-hover-bg-shift</span><b id="t-bg"></b></div>
+      <div><span>--fb-hover-transform</span><b id="t-ht"></b></div>
+      <div><span>--fb-active-transform</span><b id="t-at"></b></div>
+      <div><span>--fb-pressed-shadow</span><b id="t-ps" style="font-size:9px"></b></div>
+      <div><span>--fb-duration</span><b id="t-d"></b></div>
+    </div>
+  </aside>
+  <main class="preview">
+    <p class="hint">Hover and click each control below. The feel changes per preset.</p>
+    <div class="panel">
+      <h2>Buttons</h2>
+      <div class="row">
+        <button class="btn">Primary action</button>
+        <button class="btn outline">Outline action</button>
+        <button class="btn">Another primary</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Clickable cards</h2>
+      <div class="row" style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="card-clickable"><h3>Atlas</h3><p>SaaS workspace dashboard</p></div>
+        <div class="card-clickable"><h3>Lendis</h3><p>Fintech transfer review</p></div>
+        <div class="card-clickable"><h3>Mira</h3><p>D2C commerce launchpad</p></div>
+        <div class="card-clickable"><h3>Patrika</h3><p>Editorial reader</p></div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+  const H = document.documentElement;
+  function R() {
+    const cs = getComputedStyle(H);
+    document.getElementById('t-bg').textContent = cs.getPropertyValue('--fb-hover-bg-shift').trim();
+    document.getElementById('t-ht').textContent = cs.getPropertyValue('--fb-hover-transform').trim();
+    document.getElementById('t-at').textContent = cs.getPropertyValue('--fb-active-transform').trim();
+    document.getElementById('t-ps').textContent = cs.getPropertyValue('--fb-pressed-shadow').trim();
+    document.getElementById('t-d').textContent = cs.getPropertyValue('--fb-duration').trim();
+  }
+  document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => {
+    H.setAttribute('data-feedback', b.dataset.set);
+    document.querySelectorAll('.preset-btn').forEach(x => x.classList.toggle('active', x === b));
+    R();
+  }));
+  R();
+</script>
+</body>
+</html>

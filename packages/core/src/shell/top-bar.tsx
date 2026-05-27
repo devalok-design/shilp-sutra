@@ -19,6 +19,9 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { Icon } from '../ui/icon'
+import { IconProvider } from '../ui/icon-context'
+import type { IconInput } from '../ui/lib/icon-input'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { cn } from '../ui/lib/utils'
 import {
   Tooltip,
@@ -39,8 +42,8 @@ export interface TopBarUser {
 export interface UserMenuItem {
   /** Display label */
   label: string
-  /** Optional icon (ReactNode) */
-  icon?: React.ReactNode
+  /** Optional icon. Accepts any `IconInput`. */
+  icon?: IconInput
   /** Navigate via onNavigate when clicked */
   href?: string
   /** Custom click handler */
@@ -187,7 +190,7 @@ TopBarSection.displayName = 'TopBar.Section'
 
 interface TopBarIconButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  icon: React.ReactNode
+  icon: IconInput
   tooltip: string
 }
 
@@ -208,7 +211,7 @@ const TopBarIconButton = React.forwardRef<
         {...props}
       >
         <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm" aria-hidden="true">
-          {icon}
+          <IconProvider size="sm">{normalizeIcon(icon)}</IconProvider>
         </span>
       </button>
     </TooltipTrigger>
@@ -341,7 +344,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
                         textColor,
                       )}
                     >
-                      {item.icon}
+                      <IconProvider size="sm">{normalizeIcon(item.icon)}</IconProvider>
                     </span>
                   )}
                   <span className={cn('text-ds-md', textColor)}>

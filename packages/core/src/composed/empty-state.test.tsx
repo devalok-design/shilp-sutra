@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import * as React from 'react'
 import { describe, expect,it } from 'vitest'
 
 import { describeConformance } from '../test-utils/conformance'
@@ -48,12 +49,22 @@ describe('EmptyState', () => {
     expect(screen.getByTestId('custom-icon')).toBeInTheDocument()
   })
 
-  it('renders a component-type icon', () => {
-    function MyIcon({ className }: { className?: string }) {
-      return <span data-testid="component-icon" className={className}>icon</span>
+  it('renders a component-type icon (plain function component)', () => {
+    function MyIcon() {
+      return <span data-testid="component-icon">icon</span>
     }
     render(<EmptyState title="Component Icon" icon={MyIcon} />)
     expect(screen.getByTestId('component-icon')).toBeInTheDocument()
+  })
+
+  it('renders a Tabler-style forwardRef icon', () => {
+    const TablerIcon = React.forwardRef<SVGSVGElement, { size?: number }>(
+      function TablerIcon({ size }, ref) {
+        return <svg ref={ref} data-testid="tabler-icon" width={size} height={size} />
+      },
+    )
+    render(<EmptyState title="Tabler" icon={TablerIcon} />)
+    expect(screen.getByTestId('tabler-icon')).toBeInTheDocument()
   })
 
   it('merges custom className', () => {
@@ -63,44 +74,47 @@ describe('EmptyState', () => {
     expect(container.firstElementChild).toHaveClass('my-empty')
   })
 
-  describe('iconSize prop', () => {
-    const TestIcon = ({ className }: { className?: string }) => (
-      <svg data-testid="test-icon" className={className} aria-hidden="true">
-        <circle cx="16" cy="16" r="16" />
-      </svg>
+  describe('iconSize prop — forwardRef icons get px sizing via IconProvider', () => {
+    // Tabler-style icon. Reads width/height from the props it's passed.
+    const TestIcon = React.forwardRef<SVGSVGElement, { size?: number; width?: number; height?: number }>(
+      function TestIcon({ width, height, size }, ref) {
+        const w = width ?? size
+        const h = height ?? size
+        return <svg ref={ref} data-testid="test-icon" width={w} height={h} aria-hidden="true" />
+      },
     )
 
-    it('defaults to md icon size (h-ico-lg)', () => {
+    function getSvgSize() {
+      const svg = screen.getByTestId('test-icon')
+      return [svg.getAttribute('width'), svg.getAttribute('height')] as const
+    }
+
+    it('default (md): icon renders at xl token = 24px', () => {
       render(<EmptyState title="Default" icon={TestIcon} />)
-      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
-      expect(cls).toContain('h-ico-lg')
+      expect(getSvgSize()).toEqual(['24', '24'])
     })
 
-    it('applies sm icon size', () => {
+    it('sm iconSize: md token = 18px', () => {
       render(<EmptyState title="Small" icon={TestIcon} iconSize="sm" />)
-      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
-      expect(cls).toContain('h-ico-sm')
+      expect(getSvgSize()).toEqual(['18', '18'])
     })
 
-    it('applies lg icon size', () => {
+    it('lg iconSize: 2xl token = 32px', () => {
       render(<EmptyState title="Large" icon={TestIcon} iconSize="lg" />)
-      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
-      expect(cls).toContain('h-ico-xl')
+      expect(getSvgSize()).toEqual(['32', '32'])
     })
 
-    it('defaults to sm when compact and no explicit iconSize', () => {
+    it('compact defaults to sm (md token = 18px)', () => {
       render(<EmptyState title="Compact" icon={TestIcon} compact />)
-      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
-      expect(cls).toContain('h-ico-sm')
+      expect(getSvgSize()).toEqual(['18', '18'])
     })
 
-    it('respects explicit iconSize over compact default', () => {
+    it('explicit iconSize beats compact default', () => {
       render(<EmptyState title="Compact lg" icon={TestIcon} compact iconSize="lg" />)
-      const cls = screen.getByTestId('test-icon').getAttribute('class') ?? ''
-      expect(cls).toContain('h-ico-xl')
+      expect(getSvgSize()).toEqual(['32', '32'])
     })
 
-    it('applies icon size to container when icon is ReactNode', () => {
+    it('ReactNode icon (raw SVG) — not auto-sized, rendered as-is', () => {
       render(
         <EmptyState
           title="ReactNode icon"
@@ -108,8 +122,7 @@ describe('EmptyState', () => {
           iconSize="lg"
         />,
       )
-      const nodeIcon = screen.getByTestId('node-icon')
-      expect(nodeIcon.parentElement!.className).toContain('h-ico-xl')
+      expect(screen.getByTestId('node-icon')).toBeInTheDocument()
     })
   })
 })

@@ -5,8 +5,11 @@ import { motion } from 'framer-motion'
 import * as React from 'react'
 
 import { Avatar, AvatarFallback,AvatarImage } from '../avatar'
-import { Icon, type IconProps } from '../icon'
+import { Icon } from '../icon'
+import { IconProvider } from '../icon-context'
+import type { IconInput } from '../lib/icon-input'
 import { motionProps,springs } from '../lib/motion'
+import { normalizeIcon } from '../lib/normalize-icon'
 import { cn } from '../lib/utils'
 import { Tooltip, TooltipContent,TooltipTrigger } from '../tooltip'
 
@@ -142,7 +145,7 @@ MessageRoot.displayName = 'Message'
 export interface MessageAvatarProps {
   src?: string | null
   fallback?: string
-  icon?: React.ReactNode
+  icon?: IconInput
   size?: 'sm' | 'md'
   children?: React.ReactNode
 }
@@ -180,7 +183,7 @@ function MessageAvatar({
           'shrink-0 flex items-center justify-center rounded-pill bg-surface-raised-hover',
         )}
       >
-        {icon}
+        <IconProvider size={size === 'sm' ? 'xs' : 'sm'}>{normalizeIcon(icon)}</IconProvider>
       </div>
     )
   }
@@ -438,7 +441,7 @@ MessageActions.displayName = 'Message.Actions'
 // ── Action (single icon button) ──────────────────────────────────────────
 
 export interface MessageActionProps {
-  icon: IconProps['icon']
+  icon: IconInput
   label: string
   onClick: () => void
   variant?: 'default' | 'danger'
@@ -465,7 +468,7 @@ function MessageAction({
               'text-surface-fg-subtle hover:text-error-11 hover:bg-surface-raised-hover',
           )}
         >
-          <Icon icon={icon} size="xs" />
+          <IconProvider size="xs">{normalizeIcon(icon)}</IconProvider>
         </button>
       </TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>

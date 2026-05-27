@@ -12,7 +12,10 @@ import * as React from 'react'
 import { useCallback,useEffect, useRef, useState } from 'react'
 
 import { Icon } from '../ui/icon'
+import { IconProvider } from '../ui/icon-context'
+import type { IconInput } from '../ui/lib/icon-input'
 import { springs } from '../ui/lib/motion'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { cn } from '../ui/lib/utils'
 import { useLink } from './link-context'
 
@@ -23,7 +26,8 @@ import { useLink } from './link-context'
 export interface BottomNavItem {
   title: string
   href: string
-  icon: React.ReactNode
+  /** Icon for this nav item. Accepts any `IconInput`. */
+  icon: IconInput
   /** When true, the route matches only when the path is exactly equal */
   exact?: boolean
   /** Notification badge count. 0 or undefined = hidden, 1–99 = shown, >99 = "99+" */
@@ -109,7 +113,7 @@ function BottomNavLink({
             />
           )}
           <div className="relative p-ds-03">
-            <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">{item.icon}</span>
+            <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true"><IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider></span>
             {item.badge != null && <NavBadge count={item.badge} />}
           </div>
           <span className="text-center">{item.title}</span>
@@ -214,7 +218,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                       : 'text-surface-fg-subtle hover:bg-surface-raised-hover',
                   )}
                 >
-                  <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md">{item.icon}</span>
+                  <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md"><IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider></span>
                   <span className="text-center">
                     {item.title}
                   </span>

@@ -44,18 +44,32 @@ The system is published as two packages:
 
 Shilp Sutra uses [**Tabler Icons**](https://tabler.io/icons) (`@tabler/icons-react`) -- a collection of 5,000+ MIT-licensed, stroke-based icons on a consistent 24x24 grid.
 
+Wrap them in `<Icon icon={…} />` so they pick up the size + stroke from surrounding `<IconProvider>` context (every shilp-sutra component sets up its own provider, so you usually don't need to touch sizing manually).
+
 ```tsx
 import { IconPlus, IconSearch, IconSettings } from '@tabler/icons-react'
+import { Icon } from '@devalok/shilp-sutra/ui/icon'
 
-// Size via Tailwind classes (recommended)
-<IconPlus className="h-4 w-4" />
+// Canonical — size flows from the surrounding component's IconProvider
+<Icon icon={IconPlus} />
 
-// Size via prop
-<IconSearch size={18} />
+// Explicit size override
+<Icon icon={IconSearch} size="sm" />     // sm = 16px
 
-// Custom stroke width (default: 2)
-<IconSettings className="h-5 w-5" stroke={1.5} />
+// Custom stroke weight
+<Icon icon={IconSettings} stroke="light" />   // 1.5
 ```
+
+Every component that accepts an icon prop (`Button.startIcon`, `IconButton.icon`, `Badge.startIcon`, `NavItem.icon`, etc.) takes the **`IconInput`** type — pass any of these four shapes:
+
+```tsx
+<Button startIcon={<Icon icon={IconPlus} />}>Add</Button>   // canonical
+<Button startIcon={<IconPlus />}>Add</Button>                // raw Tabler element
+<Button startIcon={IconPlus}>Add</Button>                    // component ref
+<Button startIcon={<span>+</span>}>Add</Button>              // custom node
+```
+
+All four work identically — no `className="h-4 w-4"` overrides needed; the component sets its own size context.
 
 For the type of an icon component, use `Icon` from `@tabler/icons-react`:
 

@@ -9,6 +9,7 @@ The Devalok Design System -- tokens, components, and patterns for React & Next.j
 [![provenance](https://img.shields.io/badge/provenance-sigstore-success?logo=npm)](https://docs.npmjs.com/generating-provenance-statements)
 [![Storybook](https://img.shields.io/badge/Storybook-ff4785?logo=storybook&logoColor=white)](https://devalok-design.github.io/shilp-sutra/)
 [![AI agents ready](https://img.shields.io/badge/AI%20agents-AGENTS.md-7c3aed)](./AGENTS.md)
+[![Themer](https://img.shields.io/badge/Themer-shilp--sutra.devalok.in%2Fthemer-d946a6)](https://shilp-sutra.devalok.in/themer)
 
 ## Packages
 
@@ -67,6 +68,49 @@ import { DevalokLogo } from '@devalok/shilp-sutra-brand/devalok'
 
 > **Upgrading from 0.36 or earlier?** Read [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration).
 
+## Make it look like you — the Themer
+
+**[shilp-sutra.devalok.in/themer](https://shilp-sutra.devalok.in/themer)** — one funnel, four doors. Skip the CSS-variable cookbook:
+
+| If you say… | Open |
+|---|---|
+| "Make it look like Linear / Stripe / Apple / Material / Notion / Vercel / Devalok" | [/themer/archetypes](https://shilp-sutra.devalok.in/themer/archetypes) |
+| "Here is our brand color" | [/themer/brand](https://shilp-sutra.devalok.in/themer/brand) |
+| "Not sure what we want yet" | [/themer/wizard](https://shilp-sutra.devalok.in/themer/wizard) |
+| "Show me a sample result page" | [/themer/result?archetype=devalok](https://shilp-sutra.devalok.in/themer/result?archetype=devalok) |
+
+Every door lands on the same result page: install commands for your package manager, a copy-pasteable CSS block (role tokens + 12-step OKLCH ramp), a live preview, and a share URL that encodes the theme.
+
+Paste the CSS *after* `@import "@devalok/shilp-sutra/css";` and reload. That's it — no `tailwind.config.ts`, no theme provider, no JS bundle.
+
+> **Using an AI agent?** The shipped [`AGENTS.md`](./AGENTS.md) and [Agent Skill](./skills/shilp-sutra/) both teach Claude Code, Cursor, etc. to send you to the Themer at the right moment.
+
+### One-prompt setup for AI agents
+
+Paste this into Claude Code / Cursor / Codex / Aider and your agent does install + Themer fetch + CSS paste in one shot:
+
+````
+Set up shilp-sutra theming for this project via the Themer.
+
+My brand: <PASTE HEX or write archetype name: linear | stripe | apple | material | notion | vercel | devalok>
+
+Steps:
+1. Map my brand input to query params:
+   - archetype name → archetype=<name>
+   - hex like #d946a6 → resolve to OKLCH hue (0-360) + chroma in 0.10-0.20 → hue=<n>&chroma=<n>
+   - blank → archetype=devalok&hue=340&chroma=0.19
+2. Fetch the JSON contract:
+     GET https://shilp-sutra.devalok.in/themer/result.json?<params>
+   Response: { archetype, density, shape, motion, hue, chroma, css, pasteAfter, pasteLocation, doNotPasteInside }
+3. Find my project's global stylesheet (app/globals.css, src/index.css, src/styles/globals.css, or whichever imports tailwindcss). Paste the response `css` field AFTER the line in `pasteAfter`. Do not put it inside any `@layer`.
+4. If @devalok/shilp-sutra isn't installed yet, install it first per the recipe at node_modules/@devalok/shilp-sutra/docs/recipes/install-<framework>.md (detect framework from lockfile + config).
+5. Verify by opening any page that uses a Button or Card — radius + accent should match https://shilp-sutra.devalok.in/themer/result?<params>. Report any token that didn't take effect.
+
+Do not invent CSS variables. Use exactly what the JSON `css` field contains. Don't add tailwind.config.ts. Don't wrap in a theme provider.
+````
+
+Already been to the Themer? The result page has a **Copy AI agent prompt** button that pre-fills the URL with your archetype + accent so the agent skips persona triage.
+
 ## Setup recipes (per framework)
 
 Step-by-step copy-paste install guides for each major React framework. Designed for both humans and AI coding agents (Claude Code, Cursor, Copilot, Codex).
@@ -84,7 +128,7 @@ Customization & diagnostics:
 
 - [customize-brand.md](./packages/core/docs/recipes/customize-brand.md) — colors, radius role tokens, `[data-shape]` presets, fonts, spacing
 - [server-components.md](./packages/core/docs/recipes/server-components.md) — RSC-safety matrix
-- [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 8 most common breakages
+- [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 13 most common breakages
 
 ### Shape presets (v0.39+)
 
@@ -100,22 +144,29 @@ Pill shapes (Badge, Switch, Radio, Avatar circle) stay pill in every preset. Ove
 
 Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract.
 
-### Agent Skill (Claude Code, Cursor, Codex, Aider)
+### Agent Skill (Claude Code, Cursor, Codex, Aider, …)
 
-If your editor runs an [Agent Skills](https://agentskills.io)-compatible coding agent, install the bundled skill once. The agent then loads the right reference on demand — setup playbooks, component APIs, troubleshoot tree — without you pasting context every time.
+If your editor runs an [Agent Skills](https://agentskills.io)-compatible coding agent, install the bundled skill once. The agent then loads the right reference on demand — setup playbooks, component APIs, troubleshoot tree — without you pasting context every time. Three install paths:
 
 ```bash
-# Personal install (~/.claude/skills/shilp-sutra)
-curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash
+# 1. Auto-discovery (recommended, no shilp-sutra-specific commands)
+#    The package declares an `agents` field in its package.json per the
+#    npm-agentskills convention. Any package that adopts it gets picked up
+#    by these tools:
+pnpm dlx @codemcp/agentskills export   # writes ./.claude/skills, ./.cursor/skills, ./.github/skills
+# OR
+pnpm dlx agentskills export --target claude   # alternate CLI, same spec
 
-# Project-scoped (commit to repo so every contributor's agent picks it up)
-mkdir -p .claude/skills && curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | INSTALL_DIR=.claude/skills bash
-
-# Already have @devalok/shilp-sutra installed? The skill ships in the tarball:
+# 2. Manual copy (zero deps, one command)
 cp -r node_modules/@devalok/shilp-sutra/skill ~/.claude/skills/shilp-sutra
+
+# 3. Curl install (works without @devalok/shilp-sutra installed yet)
+curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | bash
+# Project-scoped variant (commit to repo so every contributor's agent picks it up):
+mkdir -p .claude/skills && curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | INSTALL_DIR=.claude/skills bash
 ```
 
-Source: [`skills/shilp-sutra/`](./skills/shilp-sutra/).
+Source: [`skills/shilp-sutra/`](./skills/shilp-sutra/). The `agents` field in [`packages/core/package.json`](./packages/core/package.json) is the discovery contract.
 
 ## Mental Model
 

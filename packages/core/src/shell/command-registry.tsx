@@ -2,6 +2,8 @@
 
 import * as React from 'react'
 
+import type { IconInput } from '../ui/lib/icon-input'
+
 // -----------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------
@@ -9,7 +11,7 @@ import * as React from 'react'
 export interface CommandPageItem {
   id: string
   label: string
-  icon: React.ReactNode
+  icon: IconInput
   path: string
   keywords?: string[]
 }

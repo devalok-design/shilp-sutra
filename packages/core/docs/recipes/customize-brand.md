@@ -2,6 +2,21 @@
 
 Override colors, radius, fonts, and spacing without forking the package. All customization happens through CSS custom properties — no JS configuration.
 
+## The fast path: use the Themer
+
+Before hand-writing variables, try **[shilp-sutra.devalok.in/themer](https://shilp-sutra.devalok.in/themer)**. It is one funnel with four entry doors:
+
+- **Pick an archetype** — Linear, Stripe, Apple, Material, Notion, Vercel, or Devalok. Click → result page.
+- **Use my brand color** — paste a hex or dial OKLCH. Auto-generates the 12-step ramp and suggests an archetype.
+- **Walk me through it** — five-question wizard composes the answers into a theme.
+- **Just exploring** — land on a sample result page to see what you ship away with.
+
+Every door drops you at the same result screen: a copy-pasteable CSS block (role tokens + 12-step OKLCH accent ramp), install commands for your package manager, and a share URL that encodes the theme.
+
+Paste the snippet into your global stylesheet *after* the `@import "@devalok/shilp-sutra/css";` line. That's the whole flow — no `tailwind.config.ts`, no theme provider, no JS bundle.
+
+The rest of this doc covers what to do if the Themer doesn't expose a token you need to override (font stack, spacing scale, focus ring) — fall through to the hand-written cases below.
+
 ## How tokens layer
 
 Shilp Sutra's tokens are organized in three tiers:

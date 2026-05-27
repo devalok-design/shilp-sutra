@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { formatRelativeTime } from '../ui/lib/date-utils'
+import type { IconInput } from '../ui/lib/icon-input'
 import { tweens } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 import { Skeleton } from '../ui/skeleton'
@@ -18,7 +19,7 @@ export interface ActivityItem {
   actor?: { name: string; image?: string }
   action: string | React.ReactNode
   timestamp: Date | string
-  icon?: React.ReactNode
+  icon?: IconInput
   color?: 'default' | 'success' | 'warning' | 'error' | 'info'
   detail?: React.ReactNode
 }

@@ -57,7 +57,16 @@ const autoEntries = collectEntries([
 const explicitEntries: Record<string, string> = {
   'ui/chat/index': resolve(__dirname, 'src/ui/chat/index.ts'),
   'ui/charts/index': resolve(__dirname, 'src/ui/charts/index.ts'),
+  'ui/charts/area-chart': resolve(__dirname, 'src/ui/charts/area-chart.tsx'),
+  'ui/charts/bar-chart': resolve(__dirname, 'src/ui/charts/bar-chart.tsx'),
+  'ui/charts/chart-container': resolve(__dirname, 'src/ui/charts/chart-container.tsx'),
+  'ui/charts/gauge-chart': resolve(__dirname, 'src/ui/charts/gauge-chart.tsx'),
+  'ui/charts/line-chart': resolve(__dirname, 'src/ui/charts/line-chart.tsx'),
+  'ui/charts/pie-chart': resolve(__dirname, 'src/ui/charts/pie-chart.tsx'),
+  'ui/charts/radar-chart': resolve(__dirname, 'src/ui/charts/radar-chart.tsx'),
+  'ui/charts/sparkline': resolve(__dirname, 'src/ui/charts/sparkline.tsx'),
   'ui/tree-view/index': resolve(__dirname, 'src/ui/tree-view/index.ts'),
+  'ui/oauth-button/index': resolve(__dirname, 'src/ui/oauth-button/index.ts'),
   'ui/lib/utils': resolve(__dirname, 'src/ui/lib/utils.ts'),
   'ui/lib/motion': resolve(__dirname, 'src/ui/lib/motion.ts'),
   'ui/lib/date-utils': resolve(__dirname, 'src/ui/lib/date-utils.ts'),
@@ -72,7 +81,11 @@ const explicitEntries: Record<string, string> = {
   'ai/block-renderer': resolve(__dirname, 'src/ai/block-renderer.tsx'),
   'ai/ai-command-provider': resolve(__dirname, 'src/ai/ai-command-provider.tsx'),
   'ai/blocks/index': resolve(__dirname, 'src/ai/blocks/index.ts'),
+  'ai/blocks/text': resolve(__dirname, 'src/ai/blocks/text.tsx'),
+  'ai/blocks/error': resolve(__dirname, 'src/ai/blocks/error.tsx'),
   'ai/types': resolve(__dirname, 'src/ai/types.ts'),
+  'composed/extensions/emoji-node': resolve(__dirname, 'src/composed/extensions/emoji-node.tsx'),
+  'composed/extensions/emoji-suggestion': resolve(__dirname, 'src/composed/extensions/emoji-suggestion.tsx'),
 }
 
 export default defineConfig({

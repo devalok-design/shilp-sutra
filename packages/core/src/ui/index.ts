@@ -46,7 +46,9 @@ export { FileUpload, type FileUploadProps } from './file-upload'
 // Form Controls
 export { Checkbox, type CheckboxProps } from './checkbox'
 export { FormField, type FormFieldProps, type FormHelperState, FormHelperText, type FormHelperTextProps,useFormField } from './form'
-export { InputOTP, InputOTPGroup, type InputOTPProps,InputOTPSeparator, InputOTPSlot } from './input-otp'
+// InputOTP removed from barrel in 0.40.0 — hard peer `input-otp` was breaking
+// fresh-consumer builds. Import per-component instead:
+//   import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@devalok/shilp-sutra/ui/input-otp'
 export { NumberInput, type NumberInputProps, type NumberInputSize, type NumberInputState,numberInputWrapperVariants } from './number-input'
 export { RadioGroup, RadioGroupItem, type RadioGroupItemProps,type RadioGroupProps } from './radio'
 export { SearchInput, type SearchInputProps } from './search-input'
@@ -118,18 +120,11 @@ export {
   SheetTitle,
   SheetTrigger,
 } from './sheet'
-export {
-  formatFileSize,
-  toast,
-  type ToastActionOptions,
-  type ToastOptions,
-  type ToastProps,
-  type ToastType,
-  type ToastUndoOptions,
-  type ToastUploadOptions,
-  type UploadFile,
-} from './toast'
-export { Toaster, type ToasterProps } from './toaster'
+// toast + Toaster removed from barrel in 0.40.0 — hard peer `sonner` was
+// breaking fresh-consumer builds when consumers imported other UI symbols
+// from the barrel without sonner installed. Import per-component instead:
+//   import { toast, formatFileSize, type ToastOptions } from '@devalok/shilp-sutra/ui/toast'
+//   import { Toaster } from '@devalok/shilp-sutra/ui/toaster'
 export { Tooltip, TooltipContent, type TooltipContentProps,TooltipProvider, TooltipTrigger } from './tooltip'
 // ---------------------------------------------------------------------------
 // Notifications — pick the right one:
@@ -357,6 +352,27 @@ export {
 
 // Other
 export { Link, type LinkProps } from './link'
+
+// OAuth / Social sign-in
+export {
+  getOAuthLabel,
+  getOAuthName,
+  OAuth,
+  type OAuthAppearance,
+  OAuthButton,
+  type OAuthButtonProps,
+  OAuthConnectionRow,
+  type OAuthConnectionRowProps,
+  OAuthDivider,
+  type OAuthDividerProps,
+  OAuthGlyph,
+  type OAuthGlyphProps,
+  OAuthGroup,
+  type OAuthGroupProps,
+  type OAuthIntent,
+  type OAuthProvider,
+  type OAuthVariant,
+} from './oauth-button'
 
 // Utilities
 export { formatRelativeTime } from './lib/date-utils'

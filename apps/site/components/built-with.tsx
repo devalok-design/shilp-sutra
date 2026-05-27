@@ -71,6 +71,9 @@ type Consumer = {
   /** Brand ramp anchors — drives the CSS-var override on the card. */
   hue: number
   chroma: number
+  /** Optional bundled logo at /public/<path>. When present BrandTile
+   *  renders the image instead of the letter-tile fallback. */
+  iconSrc?: string
 }
 
 const KARM: Consumer = {
@@ -114,6 +117,8 @@ const SECONDARIES: Consumer[] = [
     uses: ['FileUpload', 'Progress', 'Alert', 'Stepper'],
     hue: 35,
     chroma: 0.18,
+    // Pulled from devalok-design/bharattools-frontend/public/android-chrome-192x192.png
+    iconSrc: '/built-with/bharattools.png',
   },
   {
     name: 'Gurukul',
@@ -158,21 +163,44 @@ function useBrandRamp(hue: number, chroma: number): CSSProperties {
 }
 
 /**
- * Favicon with onError fallback. Google s2 returns a generic globe icon
- * for unknown domains, but it CAN 404 for typos or DNS races. Letter
- * tile fallback uses the active brand ramp via accent-3 / accent-11.
+ * BrandTile — small per-product glyph used in the BuiltWith cards.
+ * Resolves in priority order:
+ *   1. Bundled product logo (iconSrc) — used by BharatTools today.
+ *   2. IconLock for internal-only products without a public domain.
+ *   3. Brand-coloured letter tile (first char of name) — every other
+ *      consumer. Uses accent-3 bg + accent-11 fg so it follows the
+ *      card's per-product brand ramp via useBrandRamp.
  */
-function Favicon({
+function BrandTile({
+  iconSrc,
   domain,
   name,
   size = 36,
 }: {
+  iconSrc?: string
   domain: string | null
   name: string
   size?: number
 }) {
   const [errored, setErrored] = useState(false)
   const px = `${size}px`
+
+  if (iconSrc && !errored) {
+    return (
+      // Bundled in /public. Next/Image is overkill for a small static asset.
+      <img
+        src={iconSrc}
+        alt={`${name} logo`}
+        width={size}
+        height={size}
+        loading="lazy"
+        decoding="async"
+        onError={() => setErrored(true)}
+        className="rounded-control-inner shrink-0 border border-surface-border-subtle bg-surface-base object-cover"
+        style={{ width: px, height: px }}
+      />
+    )
+  }
 
   if (!domain) {
     return (
@@ -186,34 +214,14 @@ function Favicon({
     )
   }
 
-  if (errored) {
-    return (
-      <span
-        aria-hidden
-        className="rounded-control-inner bg-accent-3 text-accent-11 border border-accent-7 flex items-center justify-center shrink-0 font-semibold tabular-nums"
-        style={{ width: px, height: px, fontSize: `${Math.max(11, Math.round(size * 0.42))}px` }}
-      >
-        {name.charAt(0).toUpperCase()}
-      </span>
-    )
-  }
-
   return (
-    // Intentional: <img> with Google favicon service — Next/Image would proxy
-    // through /_next/image for a 32-128px favicon. Not worth the latency.
-    // The @next/next/no-img-element rule is not registered in this flat ESLint
-    // config, so a disable directive errors with "Definition for rule … was
-    // not found".
-    <img
-      src={`https://www.google.com/s2/favicons?domain=${domain}&sz=128`}
-      alt={`${name} favicon`}
-      width={size}
-      height={size}
-      loading="lazy"
-      onError={() => setErrored(true)}
-      className="rounded-control-inner shrink-0 border border-surface-border-subtle bg-surface-base"
-      style={{ width: px, height: px }}
-    />
+    <span
+      aria-hidden
+      className="rounded-control-inner bg-accent-3 text-accent-11 border border-accent-7 flex items-center justify-center shrink-0 font-semibold"
+      style={{ width: px, height: px, fontSize: `${Math.max(12, Math.round(size * 0.44))}px` }}
+    >
+      {name.charAt(0).toUpperCase()}
+    </span>
   )
 }
 
@@ -237,16 +245,29 @@ function SwatchStrip({ size = 'md' }: { size?: 'sm' | 'md' }) {
   )
 }
 
-function UsesRow({ uses }: { uses: readonly string[] }) {
+function UsesRow({ uses, max }: { uses: readonly string[]; max?: number }) {
+  const limit = max ?? uses.length
+  const visible = uses.slice(0, limit)
+  const overflow = uses.length - visible.length
   return (
     <ul className="flex flex-wrap items-center gap-ds-02">
-      {uses.map((c) => (
+      {visible.map((c) => (
         <li key={c}>
           <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-ds-xs font-mono">
             {c}
           </span>
         </li>
       ))}
+      {overflow > 0 ? (
+        <li>
+          <span
+            className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-overlay text-surface-fg-subtle text-ds-xs font-mono"
+            title={uses.slice(limit).join(', ')}
+          >
+            +{overflow} more
+          </span>
+        </li>
+      ) : null}
     </ul>
   )
 }
@@ -270,7 +291,7 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
         {/* Left — identity + pitch */}
         <div className="flex flex-col gap-ds-05 min-w-0">
           <div className="flex items-center gap-ds-03 min-w-0">
-            <Favicon domain={consumer.domain} name={consumer.name} size={40} />
+            <BrandTile iconSrc={consumer.iconSrc} domain={consumer.domain} name={consumer.name} size={40} />
             <div className="flex flex-col min-w-0">
               <span className="text-ds-xs uppercase tracking-wide text-accent-11 inline-flex items-center gap-ds-02 truncate">
                 <IconSparkles size={12} aria-hidden className="shrink-0" />
@@ -357,10 +378,10 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
             </div>
             <div className="flex items-center justify-between gap-ds-02 pt-ds-01">
               <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-9 text-accent-fg text-[10px] font-semibold uppercase tracking-wide">
-                Action
+                Send for review
               </span>
               <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-[10px] font-medium">
-                Secondary
+                Save draft
               </span>
             </div>
           </div>
@@ -372,27 +393,53 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
 
 function SecondaryCard({ consumer }: { consumer: Consumer }) {
   const style = useBrandRamp(consumer.hue, consumer.chroma)
-  return (
-    <article
-      style={style}
-      className="group relative flex flex-col gap-ds-04 overflow-hidden rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised hover:shadow-raised-hover hover:border-accent-7 transition-[border-color,box-shadow,transform] duration-fast-02 ease-productive-standard hover:-translate-y-px"
-    >
-      {/* Brand wash band at top */}
-      <div className="relative h-16 bg-gradient-to-br from-accent-3 to-accent-2 border-b border-surface-border-subtle overflow-hidden">
+  const isInteractive = Boolean(consumer.href)
+
+  // Amal #1: cards that look like links should be links. Hover lift +
+  // arrow chevron are dropped entirely on internal-only cards so they
+  // stop suggesting interaction they can't deliver.
+  const cardClass = [
+    'group relative flex flex-col gap-ds-04 overflow-hidden rounded-surface border bg-surface-raised shadow-raised h-full',
+    isInteractive
+      ? 'border-surface-border-subtle hover:shadow-raised-hover hover:border-accent-7 hover:-translate-y-px focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base transition-[border-color,box-shadow,transform] duration-fast-02 ease-productive-standard cursor-pointer'
+      : 'border-surface-border-subtle',
+  ].join(' ')
+
+  const body = (
+    <article style={style} className={cardClass}>
+      <div className="relative h-16 bg-gradient-to-br from-accent-3 to-accent-2 border-b border-surface-border-subtle overflow-hidden shrink-0">
         <span
           aria-hidden
           className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-pill opacity-40 blur-2xl"
           style={{ background: `var(--color-accent-9)` }}
         />
         <div className="relative h-full flex items-center justify-between gap-ds-03 px-ds-04 min-w-0">
-          <Favicon domain={consumer.domain} name={consumer.name} size={32} />
-          <Badge variant="soft" color="accent" size="sm" className="shrink-0 truncate max-w-[60%]">
-            {consumer.status}
-          </Badge>
+          <BrandTile
+            iconSrc={consumer.iconSrc}
+            domain={consumer.domain}
+            name={consumer.name}
+            size={32}
+          />
+          <div className="flex items-center gap-ds-02 shrink-0">
+            <Badge variant="soft" color="accent" size="sm" className="truncate max-w-[8rem]">
+              {consumer.status}
+            </Badge>
+            {isInteractive ? (
+              <span
+                aria-hidden
+                className="inline-flex items-center justify-center w-6 h-6 rounded-control-inner bg-surface-base/70 backdrop-blur-sm border border-surface-border-subtle text-surface-fg group-hover:bg-accent-9 group-hover:text-accent-fg group-hover:border-accent-9 transition-colors duration-fast-02 ease-productive-standard"
+              >
+                <IconArrowUpRight
+                  size={12}
+                  className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-fast-02 ease-productive-standard"
+                />
+              </span>
+            ) : null}
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-ds-03 px-ds-05 pb-ds-05 min-w-0">
+      <div className="flex flex-1 flex-col gap-ds-03 px-ds-05 pb-ds-05 min-w-0">
         <div className="flex flex-col gap-ds-01 min-w-0">
           <Text variant="heading-sm" className="text-surface-fg truncate">
             {consumer.name}
@@ -402,38 +449,50 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
           </Text>
         </div>
 
-        <Text variant="body-sm" className="text-surface-fg-muted line-clamp-3">
+        {/* Amal #2: fixed-height clamp on the pitch + chip-row reservation
+            so every card reserves the same vertical space regardless of
+            copy length. Footers line up across the row. */}
+        <Text
+          variant="body-sm"
+          className="text-surface-fg-muted line-clamp-3 min-h-[3.75rem]"
+        >
           {consumer.pitch}
         </Text>
 
         <SwatchStrip size="sm" />
 
-        <UsesRow uses={consumer.uses.slice(0, 4)} />
+        <div className="min-h-[1.5rem]">
+          <UsesRow uses={consumer.uses} max={3} />
+        </div>
 
         <footer className="mt-auto flex items-center justify-between gap-ds-02 pt-ds-03 border-t border-surface-border-subtle min-w-0">
           <span className="text-ds-xs font-mono text-surface-fg-subtle truncate">
-            @{consumer.version}
+            shilp-sutra@{consumer.version}
           </span>
-          {consumer.href ? (
-            <Link
-              href={consumer.href}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg hover:text-accent-11 transition-colors duration-fast-01 shrink-0"
-            >
-              Visit
-              <IconArrowUpRight
-                size={12}
-                aria-hidden
-                className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-fast-02 ease-productive-standard"
-              />
-            </Link>
+          {isInteractive ? (
+            <span className="text-ds-xs text-surface-fg group-hover:text-accent-11 transition-colors duration-fast-01 shrink-0">
+              Open {consumer.name.split(' ')[0]} →
+            </span>
           ) : (
             <span className="text-ds-xs text-surface-fg-subtle italic shrink-0">No public URL</span>
           )}
         </footer>
       </div>
     </article>
+  )
+
+  return isInteractive && consumer.href ? (
+    <Link
+      href={consumer.href}
+      target="_blank"
+      rel="noreferrer"
+      className="block h-full"
+      aria-label={`Open ${consumer.name} (${consumer.status})`}
+    >
+      {body}
+    </Link>
+  ) : (
+    body
   )
 }
 

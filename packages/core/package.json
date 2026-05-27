@@ -275,6 +275,11 @@
       "import": "./dist/ui/number-input.js",
       "default": "./dist/ui/number-input.js"
     },
+    "./ui/oauth-button": {
+      "types": "./dist/ui/oauth-button/index.d.ts",
+      "import": "./dist/ui/oauth-button/index.js",
+      "default": "./dist/ui/oauth-button/index.js"
+    },
     "./ui/pagination": {
       "types": "./dist/ui/pagination.d.ts",
       "import": "./dist/ui/pagination.js",
@@ -435,6 +440,46 @@
       "import": "./dist/ui/charts/index.js",
       "default": "./dist/ui/charts/index.js"
     },
+    "./ui/charts/area-chart": {
+      "types": "./dist/ui/charts/area-chart.d.ts",
+      "import": "./dist/ui/charts/area-chart.js",
+      "default": "./dist/ui/charts/area-chart.js"
+    },
+    "./ui/charts/bar-chart": {
+      "types": "./dist/ui/charts/bar-chart.d.ts",
+      "import": "./dist/ui/charts/bar-chart.js",
+      "default": "./dist/ui/charts/bar-chart.js"
+    },
+    "./ui/charts/chart-container": {
+      "types": "./dist/ui/charts/chart-container.d.ts",
+      "import": "./dist/ui/charts/chart-container.js",
+      "default": "./dist/ui/charts/chart-container.js"
+    },
+    "./ui/charts/gauge-chart": {
+      "types": "./dist/ui/charts/gauge-chart.d.ts",
+      "import": "./dist/ui/charts/gauge-chart.js",
+      "default": "./dist/ui/charts/gauge-chart.js"
+    },
+    "./ui/charts/line-chart": {
+      "types": "./dist/ui/charts/line-chart.d.ts",
+      "import": "./dist/ui/charts/line-chart.js",
+      "default": "./dist/ui/charts/line-chart.js"
+    },
+    "./ui/charts/pie-chart": {
+      "types": "./dist/ui/charts/pie-chart.d.ts",
+      "import": "./dist/ui/charts/pie-chart.js",
+      "default": "./dist/ui/charts/pie-chart.js"
+    },
+    "./ui/charts/radar-chart": {
+      "types": "./dist/ui/charts/radar-chart.d.ts",
+      "import": "./dist/ui/charts/radar-chart.js",
+      "default": "./dist/ui/charts/radar-chart.js"
+    },
+    "./ui/charts/sparkline": {
+      "types": "./dist/ui/charts/sparkline.d.ts",
+      "import": "./dist/ui/charts/sparkline.js",
+      "default": "./dist/ui/charts/sparkline.js"
+    },
     "./ui/tree-view": {
       "types": "./dist/ui/tree-view/index.d.ts",
       "import": "./dist/ui/tree-view/index.js",
@@ -514,6 +559,16 @@
       "types": "./dist/composed/file-preview.d.ts",
       "import": "./dist/composed/file-preview.js",
       "default": "./dist/composed/file-preview.js"
+    },
+    "./composed/extensions/emoji-node": {
+      "types": "./dist/composed/extensions/emoji-node.d.ts",
+      "import": "./dist/composed/extensions/emoji-node.js",
+      "default": "./dist/composed/extensions/emoji-node.js"
+    },
+    "./composed/extensions/emoji-suggestion": {
+      "types": "./dist/composed/extensions/emoji-suggestion.d.ts",
+      "import": "./dist/composed/extensions/emoji-suggestion.js",
+      "default": "./dist/composed/extensions/emoji-suggestion.js"
     },
     "./composed/filter-bar": {
       "types": "./dist/composed/filter-bar.d.ts",
@@ -721,6 +776,16 @@
       "import": "./dist/ai/blocks/index.js",
       "default": "./dist/ai/blocks/index.js"
     },
+    "./ai/blocks/error": {
+      "types": "./dist/ai/blocks/error.d.ts",
+      "import": "./dist/ai/blocks/error.js",
+      "default": "./dist/ai/blocks/error.js"
+    },
+    "./ai/blocks/text": {
+      "types": "./dist/ai/blocks/text.d.ts",
+      "import": "./dist/ai/blocks/text.js",
+      "default": "./dist/ai/blocks/text.js"
+    },
     "./ai/types": {
       "types": "./dist/ai/types.d.ts",
       "import": "./dist/ai/types.js",
@@ -735,11 +800,22 @@
     "docs/rollback.md",
     "fonts",
     "skill",
+    "scripts/welcome.mjs",
+    "AGENTS.md",
     "MIGRATION.md",
     "README.md",
     "llms.txt",
+    "llms-quick.txt",
     "llms-full.txt"
   ],
+  "agents": {
+    "skills": [
+      {
+        "name": "shilp-sutra",
+        "path": "./skill"
+      }
+    ]
+  },
   "scripts": {
     "build": "vite build && node scripts/post-build.mjs",
     "build:tokens": "node scripts/copy-tokens.mjs",
@@ -749,7 +825,8 @@
     "lint": "eslint src/",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "postinstall": "node scripts/welcome.mjs || true"
   },
   "peerDependencies": {
     "@emoji-mart/data": "^1.0.0",

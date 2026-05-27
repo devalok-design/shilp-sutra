@@ -16,7 +16,14 @@ const maxWidthMap = {
   full: 'max-w-full',
 } as const
 
-const Container = React.forwardRef<HTMLElement, ContainerProps>(
+// Polymorphic component type — preserves T across the call site so element-
+// specific props (e.g. `<Container as="main">` accepting <main> props)
+// typecheck. Standard polymorphic-component pattern; see text.tsx + stack.tsx.
+type ContainerComponent = (<T extends React.ElementType = 'div'>(
+  props: ContainerProps<T> & { ref?: React.ComponentPropsWithRef<T>['ref'] },
+) => React.ReactElement | null) & { displayName?: string }
+
+const ContainerImpl = React.forwardRef<HTMLElement, ContainerProps>(
   ({ as, maxWidth = 'default', className, children, ...props }, ref) => {
     const Component = as || 'div'
     return React.createElement(
@@ -30,6 +37,8 @@ const Container = React.forwardRef<HTMLElement, ContainerProps>(
     )
   },
 )
-Container.displayName = 'Container'
+ContainerImpl.displayName = 'Container'
+
+const Container = ContainerImpl as unknown as ContainerComponent
 
 export { Container, type ContainerProps }

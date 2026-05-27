@@ -4,9 +4,12 @@ Devalok Design System -- tokens, components, and patterns for React & Next.js.
 
 [![npm](https://img.shields.io/npm/v/@devalok/shilp-sutra)](https://www.npmjs.com/package/@devalok/shilp-sutra)
 [![Storybook](https://img.shields.io/badge/Storybook-ff4785?logo=storybook&logoColor=white)](https://devalok-design.github.io/shilp-sutra/)
+[![Themer](https://img.shields.io/badge/Themer-shilp--sutra.devalok.in%2Fthemer-d946a6)](https://shilp-sutra.devalok.in/themer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 For full documentation, setup guides, and architecture details, see the [monorepo README](https://github.com/devalok-design/shilp-sutra#readme).
+
+> **Want to brand it?** Skip the CSS cookbook — open **[the Themer](https://shilp-sutra.devalok.in/themer)**. Pick an archetype (Linear / Stripe / Apple / Material / Notion / Vercel / Devalok), or paste your brand hex, or take a 5-question wizard. Lands you at a result page with install commands + a CSS block to paste.
 
 ## Install
 

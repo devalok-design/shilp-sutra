@@ -42,6 +42,30 @@ export default function ThemingPage() {
             <ThemingEditor />
 
             <section className="border-t border-surface-border-subtle pt-ds-08">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-ds-04 rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-05">
+                <div className="flex flex-col gap-ds-02">
+                  <Text variant="label-sm" className="text-surface-fg-subtle">
+                    Not sure where to start?
+                  </Text>
+                  <Text variant="heading-sm" className="text-surface-fg">
+                    Try the Themer.
+                  </Text>
+                  <Text variant="body-sm" className="text-surface-fg-muted">
+                    Four entry doors — pick an archetype, paste your brand color, take a wizard, or
+                    just see a result page. Each drops you at install + CSS to paste, no editing
+                    required.
+                  </Text>
+                </div>
+                <Link
+                  href="/themer"
+                  className="inline-flex shrink-0 items-center gap-ds-02 rounded-control bg-accent-9 px-ds-05 py-ds-03 text-ds-sm font-medium text-accent-fg hover:bg-accent-10"
+                >
+                  Open the Themer →
+                </Link>
+              </div>
+            </section>
+
+            <section className="border-t border-surface-border-subtle pt-ds-08">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-06">
                 <div className="flex flex-col gap-ds-02">
                   <Text variant="label-sm" className="text-surface-fg-subtle">

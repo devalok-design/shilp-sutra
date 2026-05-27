@@ -1,9 +1,11 @@
 import { useCallback,useState } from 'react'
 
+import type { IconInput } from '../lib/icon-input'
+
 export interface TreeNode {
   id: string
   label: string
-  icon?: React.ReactNode
+  icon?: IconInput
   children?: TreeNode[]
   disabled?: boolean
 }

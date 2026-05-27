@@ -29,8 +29,12 @@ If the framework is not listed, start with [install-vite.md](./install-vite.md) 
 
 | Recipe | What it covers |
 |---|---|
-| [customize-brand.md](./customize-brand.md) | Token override cookbook — colors, radius role tokens, `[data-shape]` presets, fonts, spacing scale, dark-mode mapping |
+| [customize-brand.md](./customize-brand.md) | Token override cookbook — colors, radius role tokens, `[data-shape]` presets, fonts, spacing scale, dark-mode mapping. **Start here**, or skip ahead to the Themer ↓ |
 | [server-components.md](./server-components.md) | Per-component RSC-safety matrix; correct import patterns for Server Components |
+
+### The fast path: Themer
+
+Don't want to write CSS variables by hand? Use **[shilp-sutra.devalok.in/themer](https://shilp-sutra.devalok.in/themer)** — one funnel, four doors (pick an archetype, paste your brand color, take a wizard, or just explore). Every door drops you at a result page with a CSS snippet to paste, install commands, and a share URL.
 
 ## Diagnostics
 

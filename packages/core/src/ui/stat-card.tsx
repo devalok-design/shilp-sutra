@@ -5,8 +5,11 @@ import { motion } from 'framer-motion'
 import * as React from 'react'
 
 import { Icon } from './icon'
+import { IconProvider } from './icon-context'
+import type { IconInput } from './lib/icon-input'
 import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
+import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
 
 /**
@@ -63,7 +66,7 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
     value: string
     direction: 'up' | 'down' | 'neutral'
   }
-  icon?: React.ReactNode | React.ComponentType<{ className?: string }>
+  icon?: IconInput
   loading?: boolean
   /** Comparison period label shown after delta, e.g. "vs last month" */
   comparisonLabel?: string
@@ -276,9 +279,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                 transition={springs.snappy}
                 aria-hidden="true"
               >
-                {typeof icon === 'function'
-                  ? <Icon icon={icon as React.ForwardRefExoticComponent<any>} size="lg" />
-                  : icon}
+                <IconProvider size="lg">{normalizeIcon(icon, 'lg')}</IconProvider>
               </motion.span>
             )}
           </div>

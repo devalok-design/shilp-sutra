@@ -20,7 +20,10 @@ import {
   DialogTitle,
 } from '../ui/dialog'
 import { Icon } from '../ui/icon'
+import { IconProvider } from '../ui/icon-context'
+import type { IconInput } from '../ui/lib/icon-input'
 import { springs,tweens } from '../ui/lib/motion'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { cn } from '../ui/lib/utils'
 import { VisuallyHidden } from '../ui/visually-hidden'
 
@@ -34,7 +37,7 @@ export interface CommandItem {
   label: string | React.ReactNode
   /** Optional description — string or ReactNode. */
   description?: string | React.ReactNode
-  icon?: React.ReactNode
+  icon?: IconInput
   /** Keyboard shortcut hint displayed as keycap badges (e.g., "G D", "Ctrl+N"). */
   shortcut?: string
   /** Custom render override for the label. Receives the current search query for match highlighting. */
@@ -449,7 +452,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                           )}
                           aria-hidden="true"
                         >
-                          {item.icon}
+                          <IconProvider size="sm">{normalizeIcon(item.icon)}</IconProvider>
                         </span>
                       )}
                       <div className="flex flex-1 flex-col">

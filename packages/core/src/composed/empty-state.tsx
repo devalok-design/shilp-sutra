@@ -3,17 +3,27 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
 
+import { IconProvider, type IconSize } from '../ui/icon-context'
+import type { IconInput } from '../ui/lib/icon-input'
 import { tweens } from '../ui/lib/motion'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { cn } from '../ui/lib/utils'
 
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
-  icon?: React.ReactNode | React.ComponentType<{ className?: string }>
+  /** Icon. Accepts any `IconInput`. Falls back to the Devalok chakra glyph. */
+  icon?: IconInput
   title: string
   description?: string
   action?: React.ReactNode
   compact?: boolean
   /** Icon size. Defaults to 'sm' when compact, 'md' otherwise. */
   iconSize?: 'sm' | 'md' | 'lg'
+}
+
+const ICON_SIZE_TO_TOKEN: Record<'sm' | 'md' | 'lg', IconSize> = {
+  sm: 'md',
+  md: 'xl',
+  lg: '2xl',
 }
 
 const DevalokChakraIcon = ({ className }: { className?: string }) => (
@@ -44,25 +54,16 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
   ) => {
     const reducedMotion = useReducedMotion()
     const resolvedIconSize = iconSize ?? (compact ? 'sm' : 'md')
-    const iconSizeMap = {
+    const iconSizeClass = {
       sm: 'h-ico-sm w-ico-sm',
       md: 'h-ico-lg w-ico-lg',
       lg: 'h-ico-xl w-ico-xl',
-    } as const
-    const iconSizeClass = iconSizeMap[resolvedIconSize]
-    const isComponentType =
-      icon != null && !React.isValidElement(icon) && (typeof icon === 'function' || (typeof icon === 'object' && '$$typeof' in (icon as object)))
-    const resolvedIcon = icon
-      ? isComponentType
-        ? React.createElement(icon as React.ComponentType<{ className?: string }>, {
-            className: cn('text-surface-fg-subtle', iconSizeClass),
-          })
-        : icon
-      : (
-        <DevalokChakraIcon
-          className={cn('text-surface-fg-subtle', iconSizeClass)}
-        />
-      )
+    }[resolvedIconSize]
+    const iconToken = ICON_SIZE_TO_TOKEN[resolvedIconSize]
+    const normalized = normalizeIcon(icon, iconToken)
+    const resolvedIcon = normalized ?? (
+      <DevalokChakraIcon className={cn('text-surface-fg-subtle', iconSizeClass)} />
+    )
 
     return (
       <div
@@ -76,14 +77,13 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       >
         <motion.div
           className={cn(
-            'flex items-center justify-center rounded-overlay-lg bg-surface-raised',
+            'flex items-center justify-center rounded-overlay-lg bg-surface-raised text-surface-fg-subtle',
             compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
-            !isComponentType && icon != null && iconSizeClass,
           )}
           animate={reducedMotion ? {} : { y: [0, -4, 0] }}
           transition={reducedMotion ? {} : { repeat: Infinity, duration: 3, ease: 'easeInOut' }}
         >
-          {resolvedIcon}
+          <IconProvider size={iconToken}>{resolvedIcon}</IconProvider>
         </motion.div>
 
         <motion.div

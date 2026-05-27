@@ -3,6 +3,9 @@
 import { LayoutGroup,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { IconProvider } from './icon-context'
+import type { IconInput } from './lib/icon-input'
+import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
 
 /* ── Types ─────────────────────────────────────────────────── */
@@ -13,8 +16,8 @@ export type SegmentedControlVariant = 'default' | 'solid'
 export interface SegmentedControlOption {
   id: string
   text: string
-  /** Optional icon component rendered before the text label. */
-  icon?: React.ComponentType<{ className?: string }>
+  /** Optional icon rendered before the text label. Accepts any `IconInput`. */
+  icon?: IconInput
 }
 
 export interface SegmentedControlProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSelect'> {
@@ -135,7 +138,6 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
         <LayoutGroup id={instanceId}>
           {options.map((option) => {
             const isSelected = option.id === selectedId
-            const OptionIcon = option.icon
 
             return (
               <button
@@ -169,8 +171,12 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
                 )}
 
                 {/* Content (above pill via z-index) */}
-                {OptionIcon && (
-                  <OptionIcon className={cn('relative z-[1] shrink-0', iconSize)} />
+                {option.icon && (
+                  <span className={cn('relative z-[1] shrink-0 inline-flex items-center justify-center', iconSize)}>
+                    <IconProvider size={size === 'lg' ? 'sm' : 'xs'}>
+                      {normalizeIcon(option.icon)}
+                    </IconProvider>
+                  </span>
                 )}
                 <span className="relative z-[1]">{option.text}</span>
               </button>

@@ -123,6 +123,16 @@ When the user has already been to the Themer, they may paste a *filled-in* versi
 
 The JSON endpoint is the stable contract — agents and tooling should prefer it over scraping `/themer/result`'s HTML.
 
+### Shape roundness — `[data-shape]` presets (v0.39+)
+
+Components reference semantic radius role tokens (`--radius-control`, `--radius-surface`, `--radius-overlay-*`, `--radius-pill`, `--radius-bubble`), NOT primitive `rounded-ds-*`. Three presets ship: `sharp`, `slightly-rounded` (default), `rounded`. Set on `<html>` or any subtree:
+
+```html
+<html data-shape="sharp">
+```
+
+Consumers can override any role globally (`:root { --radius-control: 4px; }`) or per-scope. When writing your own UI on top of shilp-sutra, prefer the role utilities (`rounded-control`, `rounded-surface`, `rounded-overlay`, `rounded-pill`, `rounded-bubble`) over `rounded-ds-*` so your styles respond to the preset switch.
+
 ## Server vs client components
 
 For the per-component RSC-safety matrix and import patterns, see **`packages/core/docs/recipes/server-components.md`**.

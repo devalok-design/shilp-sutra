@@ -70,7 +70,7 @@ Per-framework recipes: `node_modules/@devalok/shilp-sutra/docs/recipes/install-<
 7. **Variant names must match CVA source exactly** — invented variant names silently no-op (CVA falls back to defaults). Grep `packages/core/src/ui/<component>.tsx` if in doubt.
 8. **Default to `variant="soft"`** over `variant="outline"` for non-primary Button actions. Outline only on colored backgrounds or where primary/secondary hierarchy needs a hard border.
 
-## ICON API (one shape across every component, v0.41.0+)
+## ICON API (one shape across every component, v0.40.0+)
 
 Every icon-accepting prop (`startIcon`, `endIcon`, `icon`, …) takes `IconInput`:
 
@@ -244,4 +244,4 @@ Use per-component subpaths in Server Components: `import { Text } from '@devalok
 - `docs/recipes/customize-brand.md` — token override cookbook
 - `MIGRATION.md` — every breaking change since 0.18
 
-This file regenerates from `llms.txt` when component APIs change; expect it to track v0.41+ closely.
+This file regenerates from `llms.txt` when component APIs change; expect it to track v0.40+ closely.

@@ -776,7 +776,7 @@ gate('Icon-prop components import normalize-icon', () => {
 // purpose and we should re-trim it instead of letting it drift.
 gate('llms-quick.txt ≤ 15K tokens (≈60KB)', () => {
   const quick = join(ROOT, 'packages/core/llms-quick.txt')
-  if (!existsSync(quick)) return 'packages/core/llms-quick.txt missing — see F-18 in MIGRATION.md v0.41 entry'
+  if (!existsSync(quick)) return 'packages/core/llms-quick.txt missing — see F-18 in MIGRATION.md v0.40 entry'
   const content = readFileSync(quick, 'utf-8')
   const approxTokens = Math.ceil(content.length / 4)
   if (approxTokens > 15000) {

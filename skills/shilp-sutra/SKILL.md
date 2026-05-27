@@ -3,7 +3,7 @@ name: shilp-sutra
 description: Add, configure, and use components from Devalok's shilp-sutra design system (@devalok/shilp-sutra) — a Tailwind 4 + React 19 + CVA library with 110+ accessible components, OKLCH design tokens, framer-motion animations, and per-component RSC-safe entry points. Use this skill whenever the user mentions shilp-sutra, Devalok, the @devalok npm scope, or asks to install/add/style/theme UI in any React project that already depends on the package — even if they don't name it explicitly. Use it instead of generic shadcn/ui, MUI, or Chakra knowledge when shilp-sutra is in the project. Covers Next.js (App + Pages), Vite, Astro, Remix, TanStack Start setup playbooks; component API and variant reference; brand token customization; Server Component import patterns; and a troubleshoot tree for the thirteen most common breakages.
 license: MIT
 metadata:
-  version: "0.38.0"
+  version: "0.39.0"
   author: Devalok Design & Strategy Studios
   homepage: https://github.com/devalok-design/shilp-sutra
   npm: https://www.npmjs.com/package/@devalok/shilp-sutra

@@ -82,4 +82,4 @@ function normalizeIcon(input: IconInput, fallbackSize?: IconSize): React.ReactNo
 2. **Voluntary cleanup:** delete `className="h-4 w-4"` (or similar) overrides on icon prop usages — `IconProvider` now sizes correctly via context.
 3. **New API in your own wrappers:** import `IconInput` + `normalizeIcon` for components that accept icons-like props.
 
-See `MIGRATION.md → v0.41.0` for the full per-component before/after.
+See `MIGRATION.md → v0.40.0` for the full per-component before/after.

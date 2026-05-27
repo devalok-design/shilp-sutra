@@ -41,9 +41,21 @@ Paste the snippet *after* `@import "@devalok/shilp-sutra/css";` in the global st
 
 The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
 
-## NEW (v0.39.0)
+## NEW (v0.40.0)
 
 - **OAuthButton.** Brand-aware social/login buttons. Subpath: `@devalok/shilp-sutra/ui/oauth-button`. 13 providers (`google` `apple` `github` `microsoft` `x` `linkedin` `facebook` `discord` `slack` `gitlab` `sso` `email` `passkey`). Props: `provider`, `intent` (`continue|signin|signup`), `appearance` (`brand|outline|dark`), `icon` (override default glyph), `iconOnly`, `compact` (renders just "Google" instead of "Continue with Google"; aria-label keeps long form), `lastUsed` (inline right-edge pill inside button), `helperText`. Inherits Button async/loading/sizes. Siblings: `OAuthGroup` (with `reorderLastUsedFirst` for Stripe-style ordering), `OAuthDivider`, `OAuthConnectionRow` (settings-page linked state). Default glyphs from Tabler peer dep; pass `icon` to drop in a brand's official multicolour SVG. In dark mode every brand appearance lands on the same DS surface — brand identity comes from the glyph, not the bg, so rows stay visually coherent.
+- **Icon API unification.** Every icon-accepting prop (`startIcon`, `endIcon`, `icon`, `leftIcon`, `rightIcon`) across 22 components now takes one type: **`IconInput`**. Pass a rendered element (`<Icon icon={IconPlus} />` or `<IconPlus />`), a component ref (`IconPlus`), or any custom node — all four shapes work interchangeably. Type widening only; every call that compiled before still compiles. Helpers exported for your own wrappers: `import type { IconInput } from '@devalok/shilp-sutra/ui/lib/icon-input'` + `import { normalizeIcon } from '@devalok/shilp-sutra/ui/lib/normalize-icon'`. `IconProvider` now sizes icons via context — delete `className="h-4 w-4"` overrides.
+- **Polymorphic `Text` / `Stack` / `Container`.** The `as` prop now widens accepted attributes to the rendered element: `<Text as="label" htmlFor="email">`, `<Text as="a" href="/x">`, `<Stack as="ul" role="list">`, `<Container as="main" aria-label>` all typecheck. Default element behavior unchanged.
+- **Agent-friendly install experience.** `AGENTS.md` now ships in the tarball (`node_modules/@devalok/shilp-sutra/AGENTS.md`), discoverable by 25+ agent tools. `package.json` declares an `agents` field (npm-agentskills convention) so `pnpm dlx @codemcp/agentskills export` auto-installs the bundled skill. New postinstall welcome banner (silent in CI / non-TTY / `SHILP_SUTRA_NO_WELCOME=1`). `troubleshoot.md` gained peer-cliff symptom entries.
+- **`llms-quick.txt`.** New ≤15K-token fast-path summary in the tarball — fits in one Read on any agent. Read order is now `llms-quick.txt` → `llms.txt` → `llms-full.txt`.
+- **Companion package `@devalok/eslint-plugin-shilp-sutra`** (first release). 12 rules — deprecated-API catches, peer-cliff barrel-import detection, TW3→TW4 classname autofixes. `pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']`. Three presets: `recommended`, `strict`, `migration` (one-shot codemod).
+
+## BREAKING CHANGES (v0.40.0)
+
+- **Barrel peer-cliff cleanup.** 12 symbols that statically import optional peers were removed from their parent barrels (`/ui`, `/composed`, `/ai`, `/ai/blocks`) — they now import ONLY via per-component subpath. Affected: `Toaster`/`toast` (→ `/ui/toaster`, `/ui/toast`), `InputOTP*` (→ `/ui/input-otp`), `DatePicker*` (→ `/composed/date-picker`), `EmojiPicker*` (→ `/composed/emoji-picker`), `FilePreview` (→ `/composed/file-preview`), `MarkdownViewer` (→ `/composed/markdown-viewer`), `RichTextEditor*`/`RichChatInput*` (→ their subpaths), `BlockRenderer`/`ErrorBlock`/`TextBlock` (→ `/ai/*`). Fixes `Module not found: Can't resolve 'sonner'`/etc. at consumer build time. Full before/after table in `MIGRATION.md → v0.40.0`. Per-chart subpaths (`/ui/charts/bar-chart`, etc.) added non-breaking alongside.
+
+## NEW (v0.39.0)
+
 - **Shape presets (`[data-shape]`).** Set on `<html>` (or any subtree) to re-skin roundness across the whole UI. Three ship by default: `sharp` (technical, 2/4/6 px), `slightly-rounded` (default, 6/10/16 px), `rounded` (consumer, 10/16/24 px). Pill shapes (Badge, Switch, Radio, Avatar circle) stay pill regardless.
 - **Semantic radius role tokens.** New: `--radius-control`, `--radius-control-inner`, `--radius-surface`, `--radius-overlay-sm`, `--radius-overlay`, `--radius-overlay-lg`, `--radius-pill`, `--radius-bubble`. Consumers override any role globally or scoped — e.g. `:root { --radius-control: 4px; }`.
 - **Visual changes (no API breaks).** Button no longer scales radius with size (md/lg/xl/lg → all 6px); Input lg matches Button at same height; SegmentedControl items now actually pill; Tabs trigger (contained) matches Button; Tooltip belongs to its own `overlay-sm` tier with Toast; Menubar trigger matches DropdownMenu item; Autocomplete listbox matches Popover. If you preferred old chunky big controls, set `data-shape="rounded"` for v0.38-era feel.
@@ -506,7 +518,7 @@ Components named directly after their file (`Button` → `ui/button`, `Card` →
 
 **When in doubt:** `cat node_modules/@devalok/shilp-sutra/package.json | jq '.exports | keys'` lists every available subpath in the installed version.
 
-## ICON API — one shape across every component (v0.41.0+)
+## ICON API — one shape across every component (v0.40.0+)
 
 Every icon-accepting prop in the design system (`startIcon`, `endIcon`, `icon`, etc. — see list below) takes the **`IconInput`** type. Pass any of these four shapes interchangeably:
 

@@ -4,11 +4,15 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
-## v0.41.0 — Icon API unification
+## v0.40.0 — Barrel peer-cliff cleanup + Icon API unification
 
-**Non-breaking.** Type widening only — no consumer changes required.
+This release pairs one breaking change (barrel peer-cliff cleanup) with one non-breaking type widening (Icon API unification). Read the breaking section first.
 
-Every icon-accepting prop across the design system now takes the same shape: **`IconInput`**. Before 0.41 there were six distinct prop types for the same conceptual "icon":
+### Icon API unification (non-breaking)
+
+**Type widening only — no consumer changes required.**
+
+Every icon-accepting prop across the design system now takes the same shape: **`IconInput`**. Before 0.40 there were six distinct prop types for the same conceptual "icon":
 
 | Old shape | Components |
 |---|---|
@@ -29,7 +33,7 @@ type IconInput =
   | undefined
 ```
 
-### Migration
+#### Migration
 
 For every prop now typed as `IconInput`, all four shapes work identically:
 
@@ -50,13 +54,13 @@ For every prop now typed as `IconInput`, all four shapes work identically:
 - `Message.Action` same.
 - `EmptyState` no longer needs the dual `<X />` / `X` differentiation in your call sites.
 
-### What got removed internally
+#### What got removed internally
 
 - Five duplicate `iconSizeMap` declarations (Badge, Combobox, EmptyState, StatCard, etc.) → one shared `<IconProvider size={token}>` per call site
 - Two duplicate dual-detect branches (`React.isValidElement(icon) || ('$$typeof' in icon)`) — replaced with `normalizeIcon()`
 - The orphan `IconProps['icon']` references in BulkActionBar + Chat.Message.Action
 
-### Helpers exported (for consumer composability)
+#### Helpers exported (for consumer composability)
 
 ```ts
 import type { IconInput } from '@devalok/shilp-sutra/ui/lib/icon-input'
@@ -74,11 +78,11 @@ function MyCard({ icon }: { icon: IconInput }) {
 
 Use these in custom wrappers that consume our icon-style props.
 
-## v0.40.0 — Barrel peer-cliff cleanup
+### Barrel peer-cliff cleanup (breaking)
 
 **Breaking.** Twelve symbols that statically pulled optional peer dependencies have been removed from their parent barrels (`/ui`, `/composed`, `/ai`, `/ai/blocks`). They remain fully available via their per-component subpath.
 
-### Why
+#### Why
 
 Optional peer deps (`input-otp`, `sonner`, `date-fns`, `@emoji-mart/*`, `@tiptap/*`, `react-pdf`, `react-zoom-pan-pinch`, `react-markdown`, `react-syntax-highlighter`, `remark-gfm`) were declared `peerDependenciesMeta.optional = true` but the components that needed them were re-exported from the corresponding barrel with **static** ESM `import` statements. Result: a fresh consumer who wrote `import { Text } from '@devalok/shilp-sutra/ui'` without installing `input-otp` got:
 
@@ -88,7 +92,7 @@ Module not found: Can't resolve 'input-otp'
 
 …at `next build`/`vite build` time. "Optional" was a lie at the bundler level. This release closes that cliff for every affected component.
 
-### Search-and-replace migration table
+#### Search-and-replace migration table
 
 For each symbol below, change ONLY the import path. Prop / type signatures are unchanged.
 
@@ -111,7 +115,7 @@ For each symbol below, change ONLY the import path. Prop / type signatures are u
 
 The seven other AI blocks (`BlockTable`, `ConfirmBlock`, `DividerBlock`, `InfoBlock`, `LoadingBlock`, `StatRowBlock`, `SuccessBlock`) have no peer-dep imports and remain available via `from '@devalok/shilp-sutra/ai/blocks'` (the sub-barrel) or `from '@devalok/shilp-sutra/ai'` (the main barrel).
 
-### Codemod helper
+#### Codemod helper
 
 Most consumers can do this with a single `sed` per symbol family. Example for the toast family:
 
@@ -123,17 +127,17 @@ grep -rl "from '@devalok/shilp-sutra/ui'" src/ | xargs sed -i.bak \
 
 (Adjust per project — the regex assumes a single `toast` import on the line. For multi-symbol lines, splitting by hand is faster than perfecting the regex.)
 
-### Per-chart subpaths added (non-breaking)
+#### Per-chart subpaths added (non-breaking)
 
 `/ui/charts/<chart>` subpaths are now exported for `area-chart`, `bar-chart`, `chart-container`, `gauge-chart`, `line-chart`, `pie-chart`, `radar-chart`, `sparkline`. The `/ui/charts` barrel still works and still pulls all 9 d3-\* peers — but if you only need `BarChart`, `import { BarChart } from '@devalok/shilp-sutra/ui/charts/bar-chart'` pulls only the d3-\* peers it actually needs (`d3-scale`, `d3-axis`, `d3-selection`).
 
-### What didn't change
+#### What didn't change
 
 - All per-component subpaths existed before 0.40.0 (except the 4 new ones noted above). Consumers already importing per-component need zero changes.
 - Component APIs, prop signatures, types, runtime behavior, default styles: all unchanged.
 - Storybook stories, tests, internal imports inside the DS itself: all use relative paths and were never affected.
 
-### Why this isn't behind a flag
+#### Why this isn't behind a flag
 
 There is no good additive solution. Tree-shaking can't drop a static `import 'sonner'` if `sonner` isn't on disk — the resolver fails before tree-shaking runs. Lazy-imports (`import('sonner')`) move the failure from build-time to runtime, which is worse. Removing the barrel re-export is the only fix.
 

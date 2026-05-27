@@ -72,6 +72,12 @@ function isExported(name, content) {
 const EXCLUDED_FILES = new Set([
   'data-table.tsx',
   'data-table-toolbar.tsx',
+  // v0.40.0 barrel peer-cliff cleanup — removed from /ui barrel because they
+  // statically import optional peers (input-otp, sonner). Per-component subpath
+  // (/ui/input-otp, /ui/toast, /ui/toaster) is the only import path now.
+  'input-otp.tsx',
+  'toast.tsx',
+  'toaster.tsx',
 ])
 
 // Scan all src/ui/**/*.tsx recursively

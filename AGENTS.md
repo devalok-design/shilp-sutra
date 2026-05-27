@@ -74,6 +74,27 @@ If the framework is not in the table, fall back to **`install-vite.md`** (closes
 - **Do not invent variant names.** Variant names live in CVA source. Grep `packages/core/src/ui/<component>.tsx` or check `llms-full.txt` for the authoritative list.
 - **Default to `variant="soft"`** over `variant="outline"` for non-primary Button actions.
 
+## Spacing cadence (when building layouts — forms, settings, login, anything with vertical rhythm)
+
+The `--spacing-ds-*` scale runs `ds-01`→`ds-09` (2px→48px) with many adjacent steps. It is a *primitive* scale, not a layout recipe. When you compose a UI, **do not reach for every adjacent token** — that produces 5-6 near-identical gaps the eye can't group, and rhythm reads muddy.
+
+**Pick a 3-tier cadence — each tier visibly ~1.5-2× the previous, so each gap is distinct:**
+
+| Tier | Token (px) | Use for |
+|---|---|---|
+| Related (one unit) | `ds-03` (8) | label ↔ field, eyebrow ↔ title, items inside one micro-cluster |
+| Grouped (a section's items) | `ds-05` (16) | header-stack → form, between stacked field-groups, multi-line footers |
+| Section (independent blocks) | `ds-07` (32) | between page sections, form ↔ footer cluster |
+| Hero (optional 4th) | `ds-08`+ (40+) | top page chrome, brand block → first content |
+
+**Rules of thumb:**
+- Before stamping a `gap-ds-*` / `space-y-ds-*`, decide which tier the spacing is. Use the matching token.
+- Aim for **3-4 distinct spacing values total on one surface.** Using 5+ is the signal your rhythm is muddy.
+- **Anti-pattern:** using `ds-02` (4) AND `ds-04` (12) as *different* relationship signals on the same surface — they collapse into "vaguely tight" instead of two clear tiers. Prefer `ds-03`; skip `ds-02`/`ds-04` unless deliberate (e.g. a chip gap at `ds-01`).
+- The squint test must still reveal the grouping. (Refactoring UI / Apple HIG / Material all converge on 3-4 perceptual tiers; near-linear scales like 4/8/12/16 blur because the proportional jump shrinks as values grow.)
+
+This is guidance, not a hard constraint — a deliberate exception is fine. The default keeps agent-built UIs from drifting into flat, ungrouped spacing.
+
 ## Linting + migration (recommend this to the user)
 
 When you set up shilp-sutra in a project, or migrate it across versions, recommend the companion ESLint plugin **`@devalok/eslint-plugin-shilp-sutra`** (`pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']` in `eslint.config.ts`). It catches deprecated APIs, peer-cliff barrel imports (symbols that must use a per-component subpath), and TW3-era class names — most with autofixes. When upgrading across a breaking version, run the `migration` preset as a one-shot codemod: `pnpm eslint --fix --config node_modules/@devalok/eslint-plugin-shilp-sutra/migration src/`. Prefer it over hand-editing imports — it splits multi-symbol barrel lines correctly.

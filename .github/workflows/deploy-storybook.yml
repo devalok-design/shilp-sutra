@@ -41,6 +41,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Build the library FIRST: apps/site imports @devalok/shilp-sutra via
+      # per-component subpaths, whose .d.ts only exist after the build. Running
+      # typecheck before the build fails with TS2307 (module not found) +
+      # cascading TS7006 implicit-any on callback params whose types come from
+      # those unresolved modules. ci.yml fixed this in f559bd40; mirror it here.
+      - name: Build library
+        run: pnpm build
+
       - name: Typecheck
         run: pnpm typecheck
 
@@ -52,9 +60,6 @@ jobs:
 
       - name: Test
         run: pnpm test
-
-      - name: Build library
-        run: pnpm build
 
       - name: Build Storybook
         run: pnpm build-storybook

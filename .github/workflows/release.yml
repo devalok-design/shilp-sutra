@@ -134,6 +134,16 @@ jobs:
       - name: SSR smoke test (no browser APIs in Node.js)
         run: node packages/core/scripts/ssr-smoke-test.mjs
 
+      # Regenerate skill references from sources BEFORE the audit's drift
+      # gate runs. The skill refs are auto-copied from llms.txt /
+      # llms-full.txt / docs/recipes/*.md by `build-skill.mjs`; without a
+      # regen here, any PR that edits a source file but doesn't also commit
+      # the regenerated ref makes the audit fail post-merge (the email-spam
+      # we hit on 2026-05-27 and again on 2026-05-28). Generating here lets
+      # the audit compare like-for-like.
+      - name: Regenerate Agent Skill references
+        run: node scripts/build-skill.mjs
+
       # Pre-publish audit runs every HARD gate (git state, version/CHANGELOG
       # consistency, docs coverage, token audits, TW4 migration hygiene).
       # Previously this only ran on a developer's laptop via /publish-release.

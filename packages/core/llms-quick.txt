@@ -47,6 +47,8 @@ Per-framework recipes: `node_modules/@devalok/shilp-sutra/docs/recipes/install-<
 
 **Lint + migrate:** `pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']`. Catches deprecated APIs, peer-cliff barrel imports, TW3 classes — most autofixable. Use the `migration` preset (`pnpm eslint --fix`) when upgrading across breaking versions.
 
+**Machine-readable breaks:** `node_modules/@devalok/shilp-sutra/BREAKING.json` lists every breaking change per version as structured data (moves, narrowings, removals). Read this for programmatic upgrade planning instead of parsing CHANGELOG prose. Schema: `BREAKING.schema.json`.
+
 ## OPTIONAL PEER DEPENDENCIES (install BEFORE first import)
 
 | When you import…                                          | Install                                                                                                |

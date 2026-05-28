@@ -16,6 +16,25 @@ A version bump is **not** safe-by-default. Breaking changes in this design syste
 
 ## Step 2 — find affected call sites in your code
 
+**Fastest path — read the machine-readable manifest:**
+
+```bash
+# Lists every break per version as structured data (moves, narrowings, removals)
+cat node_modules/@devalok/shilp-sutra/BREAKING.json
+```
+
+Or programmatically:
+
+```js
+import manifest from '@devalok/shilp-sutra/BREAKING.json'
+// manifest.versions["0.40.0"].moved        → [{ symbol, from, to, peer, eslintRule }, …]
+// manifest.versions["0.40.0"].narrowed     → [{ prop, components, from, to, fix }, …]
+```
+
+Schema: `@devalok/shilp-sutra/BREAKING.schema.json`. AI agents should prefer this over prose-parsing CHANGELOG.
+
+**Or grep manually:**
+
 ```bash
 # Symbols moved out of barrels (0.40.0 peer-cliff cleanup example):
 grep -rn "from '@devalok/shilp-sutra/ui'" src/ | grep -E "Toaster|toast|InputOTP"

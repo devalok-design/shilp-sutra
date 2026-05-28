@@ -16,6 +16,7 @@ import { execSync } from 'child_process'
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join, resolve } from 'path'
 import { globSync } from 'node:fs'
+import { validate as validateBreakingManifest } from './validate-breaking-manifest.mjs'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const PASS = '\x1b[32m✓\x1b[0m'
@@ -783,6 +784,17 @@ gate('llms-quick.txt ≤ 15K tokens (≈60KB)', () => {
     return `llms-quick.txt is ~${approxTokens} tokens (${content.length} chars). Cap is 15K — trim before publishing. The quick file's value is fitting in one Read; let llms.txt absorb the overflow.`
   }
   return true
+})
+
+// Gate: BREAKING.json manifest validates + a current-version with a breaking
+// CHANGELOG signal has a corresponding manifest entry. Mirrors the
+// /publish-release narrowing-is-breaking checklist with tooling teeth — if a
+// `feat!` lands without structured manifest data, AI agents and migration
+// tooling can't answer "what breaks" programmatically.
+gate('BREAKING.json manifest valid + complete for current version', () => {
+  const r = validateBreakingManifest()
+  if (r.ok) return true
+  return r.errors.map((e) => `       ${e}`).join('\n').replace(/^ +/, '')
 })
 
 // --- New Gates (added by ecosystem audit 2026-04-06) ---

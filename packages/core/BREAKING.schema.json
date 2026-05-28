@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shilp-sutra.devalok.in/breaking-manifest.schema.json",
+  "title": "shilp-sutra BREAKING manifest",
+  "description": "Machine-readable record of breaking changes per published version. Lets AI agents and migration tools answer 'what breaks between X and Y?' programmatically instead of parsing CHANGELOG prose. Cumulative — every prior version's breaks remain so a consumer jumping 0.37 → 0.41 can see every break in range.",
+  "type": "object",
+  "required": ["package", "versions"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "package": {
+      "type": "string",
+      "description": "npm package name this manifest covers.",
+      "examples": ["@devalok/shilp-sutra"]
+    },
+    "versions": {
+      "type": "object",
+      "description": "Map of semver version → breaking-change record. A version only appears if it had at least one breaking change. Non-breaking releases are absent (an empty object would falsely signal 'this version had breaks I forgot to document').",
+      "patternProperties": {
+        "^\\d+\\.\\d+\\.\\d+$": { "$ref": "#/$defs/versionEntry" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "versionEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "All breaks shipped in this version. Every present field is an array; omit empty fields entirely. A consumer planning an upgrade reads the union of all entries between current and target version.",
+      "properties": {
+        "summary": {
+          "type": "string",
+          "description": "One-line human summary of the version's breaks. Mirrors the `> ⚠️ Breaking in X.Y.Z` callout in CHANGELOG."
+        },
+        "migrationDoc": {
+          "type": "string",
+          "description": "Relative path inside the package tarball to the human migration guide for this version.",
+          "examples": ["MIGRATION.md#v0400--barrel-peer-cliff-cleanup--icon-api-unification"]
+        },
+        "moved": {
+          "type": "array",
+          "description": "Symbols whose import path changed. Old path no longer exports the symbol; new path does. Consumer fix is a search-and-replace of the import path; prop/type signatures are unchanged.",
+          "items": { "$ref": "#/$defs/move" }
+        },
+        "narrowed": {
+          "type": "array",
+          "description": "Prop types that accept LESS than before. A consumer value valid under the old type may now fail tsc. Not a runtime break. The fix is typically retyping the value's source.",
+          "items": { "$ref": "#/$defs/narrowing" }
+        },
+        "removed": {
+          "type": "array",
+          "description": "Symbols (components, props, variants, exports) deleted with no replacement on the same path. If a renamed-with-deprecation, list under `renamed` instead.",
+          "items": { "$ref": "#/$defs/removal" }
+        },
+        "renamed": {
+          "type": "array",
+          "description": "Symbols whose name changed in place (same import path, new export name) or whose prop name changed (same component, new prop name).",
+          "items": { "$ref": "#/$defs/rename" }
+        },
+        "notes": {
+          "type": "array",
+          "description": "Free-form breaking changes that don't fit the structured categories above (e.g. visual-only changes, DOM structure shifts, default-value flips). Reader must check these manually — the migration is NOT one-shot autofixable.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "move": {
+      "type": "object",
+      "required": ["symbol", "from", "to"],
+      "additionalProperties": false,
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "description": "Exported name as it appears in an import statement.",
+          "examples": ["Toaster", "DatePicker"]
+        },
+        "from": {
+          "type": "string",
+          "description": "Old import path (no longer exports this symbol after this version).",
+          "examples": ["@devalok/shilp-sutra/ui"]
+        },
+        "to": {
+          "type": "string",
+          "description": "New import path (exports this symbol going forward).",
+          "examples": ["@devalok/shilp-sutra/ui/toaster"]
+        },
+        "peer": {
+          "type": "string",
+          "description": "Optional. If this move was driven by a peer-cliff cleanup, the peer dependency the new subpath pulls.",
+          "examples": ["sonner", "input-otp", "date-fns"]
+        },
+        "eslintRule": {
+          "type": "string",
+          "description": "Optional. The `@devalok/eslint-plugin-shilp-sutra` rule that autofixes this move.",
+          "examples": ["prefer-per-component-import"]
+        }
+      }
+    },
+    "narrowing": {
+      "type": "object",
+      "required": ["prop", "components", "from", "to", "fix"],
+      "additionalProperties": false,
+      "properties": {
+        "prop": {
+          "type": "string",
+          "description": "Prop name whose type narrowed.",
+          "examples": ["icon", "startIcon"]
+        },
+        "components": {
+          "type": "array",
+          "description": "Components whose this-prop narrowed. List each affected component explicitly — the same prop name on a component whose type was already narrower than the new type is NOT affected.",
+          "items": { "type": "string" },
+          "examples": [["CommandItem", "ActivityItem", "Chat.Message.Avatar"]]
+        },
+        "from": {
+          "type": "string",
+          "description": "Previous TypeScript type, as a string. Use the exact source form.",
+          "examples": ["React.ReactNode"]
+        },
+        "to": {
+          "type": "string",
+          "description": "New TypeScript type, as a string. Must be a subset of `from` (otherwise it's a widening, not a narrowing).",
+          "examples": ["IconInput"]
+        },
+        "fix": {
+          "type": "string",
+          "description": "One-line consumer fix. Should be actionable from the type alone.",
+          "examples": ["Retype the icon source from React.ReactNode to React.ReactElement."]
+        }
+      }
+    },
+    "removal": {
+      "type": "object",
+      "required": ["symbol", "where"],
+      "additionalProperties": false,
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "examples": ["variant=\"filled\""]
+        },
+        "where": {
+          "type": "string",
+          "description": "What the symbol was on — a component, an import path, or a token namespace.",
+          "examples": ["Alert", "@devalok/shilp-sutra/tailwind"]
+        },
+        "replacement": {
+          "type": "string",
+          "description": "Optional. If a replacement exists at the same site, name it. If there is none, omit.",
+          "examples": ["variant=\"solid\""]
+        },
+        "deprecatedSince": {
+          "type": "string",
+          "description": "Optional. The version that first emitted a deprecation warning, if a cycle was observed.",
+          "examples": ["0.32.0"]
+        }
+      }
+    },
+    "rename": {
+      "type": "object",
+      "required": ["from", "to", "where"],
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "type": "string",
+          "examples": ["isLoadingMore"]
+        },
+        "to": {
+          "type": "string",
+          "examples": ["loadingMore"]
+        },
+        "where": {
+          "type": "string",
+          "description": "Component or import path the rename applies to.",
+          "examples": ["MessageList"]
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["prop", "export", "variant"],
+          "default": "prop"
+        }
+      }
+    }
+  }
+}

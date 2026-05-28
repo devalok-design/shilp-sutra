@@ -65,6 +65,8 @@
     },
     "./css": "./dist/tokens/shilp-sutra.css",
     "./tokens": "./dist/tokens/index.css",
+    "./BREAKING.json": "./BREAKING.json",
+    "./BREAKING.schema.json": "./BREAKING.schema.json",
     "./ui": {
       "types": "./dist/ui/index.d.ts",
       "import": "./dist/ui/index.js",
@@ -802,6 +804,8 @@
     "skill",
     "scripts/welcome.mjs",
     "AGENTS.md",
+    "BREAKING.json",
+    "BREAKING.schema.json",
     "MIGRATION.md",
     "README.md",
     "llms.txt",

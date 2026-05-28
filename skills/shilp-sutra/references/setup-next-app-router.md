@@ -4,6 +4,8 @@
 
 > Setup recipe for adding `@devalok/shilp-sutra` to a Next.js 13+ App Router project.
 
+> **Tested cold-install on:** Next 16.2.6 + React 19.2 + Turbopack + pnpm 10.30 + Node 22 + Windows 11 (2026-05-25). Earlier versions of Next 13/14/15 are still supported on this recipe; deltas called out inline.
+
 ## 1. Detect the framework
 
 You are in this recipe if **all** of these are true:
@@ -61,27 +63,35 @@ Some components depend on third-party libraries that ship as optional peers. **I
 
 ## 3. Configure PostCSS
 
-Create or update `postcss.config.mjs` at the project root:
+**Next 14+ scaffolds this for you.** Verify `postcss.config.mjs` (or `.js` / `.cjs` / `.json`) at the project root contains:
 
 ```js
-export default {
+const config = {
   plugins: {
     "@tailwindcss/postcss": {},
   },
 };
+
+export default config;
 ```
 
-If a `postcss.config.{js,cjs,json}` already exists, merge the plugin in. Do not delete the existing file.
+If the file is missing, create it with the contents above. If another PostCSS file exists with different plugins, merge `@tailwindcss/postcss` in — do not delete the existing file.
 
 ## 4. Wire Tailwind 4 + design tokens
 
-Locate the global CSS file. Common paths in priority order:
+### 4a. Locate the global CSS file
 
-- `app/globals.css`
-- `src/app/globals.css`
-- `app/global.css`
+Next 13+ default location depends on the `--src-dir` choice at scaffold time:
 
-If none exists, create `app/globals.css`. Set the file contents to (or merge into):
+- `src/app/globals.css` — default since Next 14 when scaffolded without `--src-dir false`. **Most common in Next 16+ defaults.**
+- `app/globals.css` — when scaffolded with `--src-dir false` (no `src/`).
+- `app/global.css` — older Next 13 scaffolds.
+
+If none exists, create at whichever path matches the project's existing `app/` location.
+
+### 4b. Replace the scaffold's CSS with the shilp-sutra setup
+
+A fresh `create-next-app` scaffold writes a `globals.css` with `:root` color vars, an `@theme inline` block linked to Geist font vars, a `prefers-color-scheme` dark override, and a `body { font-family: Arial }` block. **Replace the entire file** with the shilp-sutra setup unless you have a specific reason to keep scaffold styles:
 
 ```css
 @import "tailwindcss";
@@ -90,7 +100,11 @@ If none exists, create `app/globals.css`. Set the file contents to (or merge int
 
 **Order matters.** `tailwindcss` MUST come first. The shilp-sutra `/css` entry registers `@theme` blocks that the Tailwind import must process.
 
-If the project has its own theme overrides, place them AFTER both imports:
+If you want to keep the scaffold's color/font vars alongside shilp-sutra tokens (rare — usually you want one or the other), put scaffold's `@theme inline` / `:root` / `body` blocks AFTER the shilp-sutra import. Otherwise the scaffold's `body { font-family: Arial }` will compete with shilp-sutra's font setup.
+
+### 4c. Optional: add your own theme overrides
+
+Place after both imports:
 
 ```css
 @import "tailwindcss";
@@ -101,11 +115,15 @@ If the project has its own theme overrides, place them AFTER both imports:
 }
 ```
 
-Import the CSS file once from `app/layout.tsx` (it should already be imported in a fresh `create-next-app` project):
+### 4d. Ensure CSS is imported from the layout
+
+The CSS import in `app/layout.tsx` (or `src/app/layout.tsx`) should already exist in a fresh scaffold:
 
 ```tsx
 import "./globals.css";
 ```
+
+If you removed the Geist-font import from layout.tsx (see § 6), keep this CSS import line.
 
 ## 5. Configure `transpilePackages`
 
@@ -124,6 +142,8 @@ export default nextConfig;
 If a `transpilePackages` array already exists, append to it. Do not replace.
 
 Without `transpilePackages`, Next will refuse to load our pre-built `dist/*.js` because it ships native ESM that does not match Next's CJS-leaning loader for `node_modules`.
+
+**Turbopack:** as of Next 16, Turbopack is the default bundler (`next dev` and `next build`). `transpilePackages` is respected by both Turbopack and the Webpack backend. Tested on Turbopack 16.2 cold-install (2026-05-25); no extra config needed.
 
 ## 6. Scaffold the Providers wrapper
 
@@ -151,13 +171,21 @@ export function Providers({ children }: { children: ReactNode }) {
 - Drop the `Toaster` import and its JSX usage
 - Skip installing `sonner`
 
-Mount `<Providers>` from `app/layout.tsx`:
+Mount `<Providers>` from `app/layout.tsx` (or `src/app/layout.tsx`). **Replace the scaffold's layout** with the version below — the scaffold imports `next/font/google` (Geist) and applies font-variable classes to `<html>`, which you don't need when shilp-sutra ships its own fonts:
 
 ```tsx
+import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+  title: "Your app",
+  description: "Built with shilp-sutra",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
@@ -168,11 +196,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
+Specifically, **remove these scaffold lines**:
+
+- `import { Geist, Geist_Mono } from "next/font/google";`
+- The `const geistSans = Geist({...})` and `const geistMono = Geist_Mono({...})` blocks
+- The `className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}` on `<html>`
+- The `className="min-h-full flex flex-col"` on `<body>`
+
+If you want to keep Geist alongside shilp-sutra's fonts, leave the `Geist` imports — but know that shilp-sutra's `font-sans` token resolves to Inter (body) and Ranade (display), not to the scaffold's `--font-geist-sans`. Loading both is wasted bytes.
+
 `suppressHydrationWarning` on `<html>` is required because `next-themes` writes the `class` attribute before React hydrates. Without it, every page logs a hydration warning.
 
 ## 7. Verify the install
 
-Replace the contents of `app/page.tsx`:
+Replace the contents of `app/page.tsx` (or `src/app/page.tsx`). The scaffold's `page.tsx` imports `next/image` and renders the Vercel marketing layout — replace the whole file:
 
 ```tsx
 import { Button } from "@devalok/shilp-sutra/ui/button";
@@ -211,6 +248,7 @@ If anything is off, see [troubleshoot.md](./troubleshoot.md).
 ## 8. Common gotchas
 
 - **CSS import order.** `tailwindcss` BEFORE `@devalok/shilp-sutra/css`. Reversing the order silently produces a build with no design-system utilities.
+- **Scaffold's `body { font-family: Arial }` overrides shilp-sutra fonts.** The `create-next-app` `globals.css` template sets `font-family: Arial, Helvetica, sans-serif` on `<body>`. If you kept the scaffold's body styles, they win the cascade over shilp-sutra's `font-sans`. § 4b says to replace the whole file — follow it.
 - **Multiple `framer-motion` copies.** Run `pnpm why framer-motion`. If it shows more than one resolved version, contexts (`MotionConfig`, `LayoutGroup`, `AnimatePresence`) silently break. Fix:
   ```jsonc
   // package.json
@@ -224,7 +262,9 @@ If anything is off, see [troubleshoot.md](./troubleshoot.md).
   ```
   For npm/yarn/bun equivalents, see [troubleshoot.md](./troubleshoot.md).
 - **Per-component imports keep RSC fast AND avoid peer-dep cliffs.** Inside Server Components, prefer `@devalok/shilp-sutra/ui/text`, `…/composed/page-header`, etc. The barrel `@devalok/shilp-sutra/ui` re-exports many client components — including some with hard peer-dep imports (e.g. `input-otp`) — so it both inflates the client bundle and forces those peers to be installed even when you never render those components. See [server-components.md](./server-components.md) for the full RSC-safety matrix.
-- **`p-3` vs `p-ds-03` — both are valid.** DS spacing uses the `--spacing-ds-*` namespace (`p-ds-04`, `gap-ds-03`); Tailwind 4's default numeric scale (`p-4`, `gap-2`) coexists by design. Pick `p-ds-*` for values that should track DS theme changes (card padding, form gaps); pick `p-N` for one-off layout values (section breathing room). Do NOT mass-codemod `p-4` → `p-ds-04` — that is not what the package intends.
+- **`p-3` vs `p-ds-03` — both are valid.** DS spacing uses the `--spacing-ds-*` namespace (`p-ds-04`, `gap-ds-03`); Tailwind 4's default numeric scale (`p-4`, `gap-2`) coexists by design. Pick `p-ds-*` for values that should track DS theme changes (card padding, form gaps); pick `p-N` for one-off layout values (section breathing room). Do NOT mass-codemod `p-4` → `p-ds-04` — that is not what the package intends. For layout rhythm, pick a 3-tier cadence (`ds-03` related / `ds-05` grouped / `ds-07` section), not every adjacent token.
+- **Auto-generated `pnpm-workspace.yaml`.** `pnpm 10+` writes a `pnpm-workspace.yaml` at the project root on first install with `ignoredBuiltDependencies` entries. This is harmless for a standalone app, but if you're nesting this project inside a larger monorepo, delete this file and use the parent monorepo's workspace config instead.
+- **Auto-generated `AGENTS.md`.** `create-next-app` writes an `AGENTS.md` with managed `<!-- BEGIN:nextjs-agent-rules -->` / `<!-- END:nextjs-agent-rules -->` markers. Shilp Sutra's agent rules use `<!-- BEGIN:shilp-sutra-agent-rules -->` markers — they coexist cleanly. If you install the shilp-sutra Agent Skill (see the repo root `AGENTS.md` for the one-liner), it adds its block alongside Next's, not over it.
 - **Bare `shadow` is dead.** Tailwind 4 has no `--shadow-DEFAULT`. Use `shadow-raised`, `shadow-overlay`, or `shadow-floating`.
 
 ## 9. What you should NOT do

@@ -49,6 +49,7 @@ The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/t
 - **Agent-friendly install experience.** `AGENTS.md` now ships in the tarball (`node_modules/@devalok/shilp-sutra/AGENTS.md`), discoverable by 25+ agent tools. `package.json` declares an `agents` field (npm-agentskills convention) so `pnpm dlx @codemcp/agentskills export` auto-installs the bundled skill. New postinstall welcome banner (silent in CI / non-TTY / `SHILP_SUTRA_NO_WELCOME=1`). `troubleshoot.md` gained peer-cliff symptom entries.
 - **`llms-quick.txt`.** New ≤15K-token fast-path summary in the tarball — fits in one Read on any agent. Read order is now `llms-quick.txt` → `llms.txt` → `llms-full.txt`.
 - **Companion package `@devalok/eslint-plugin-shilp-sutra`** (first release). 12 rules — deprecated-API catches, peer-cliff barrel-import detection, TW3→TW4 classname autofixes. `pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']`. Three presets: `recommended`, `strict`, `migration` (one-shot codemod).
+- **Machine-readable `BREAKING.json` manifest** (v0.40.2+). Structured record of every breaking change per version (moves, narrowings, removals, renames). At `node_modules/@devalok/shilp-sutra/BREAKING.json` after install; subpath export `@devalok/shilp-sutra/BREAKING.json`. AI agents and migration tooling read this instead of parsing CHANGELOG prose. Schema at `BREAKING.schema.json`. Pre-publish-audit gate enforces a manifest entry for every release with a breaking CHANGELOG signal.
 
 ## BREAKING CHANGES (v0.40.0)
 

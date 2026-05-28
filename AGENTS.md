@@ -25,6 +25,7 @@ If you are a human, read [README.md](./README.md) instead.
 3. **`packages/core/docs/recipes/<framework>.md`** — copy-paste install + setup for the user's framework.
 4. **`packages/core/llms-full.txt`** — exhaustive per-component reference (~140K tokens, props/variants/examples). Read only when `llms.txt` is insufficient.
 5. **`packages/core/docs/recipes/upgrading.md`** + **`MIGRATION.md`** — read BOTH before any version bump. See the hard constraint below.
+6. **`node_modules/@devalok/shilp-sutra/BREAKING.json`** — machine-readable manifest of every breaking change per version (moves, type narrowings, removals, renames). Read this programmatically when planning an upgrade — schema in `BREAKING.schema.json`. Lets you answer "does my code import any of these moved symbols?" without parsing CHANGELOG prose.
 
 When the package is installed in a consumer project, the same files live at:
 
@@ -60,7 +61,7 @@ If the framework is not in the table, fall back to **`install-vite.md`** (closes
 
 ## Hard constraints (these break things if violated)
 
-- **On any version bump, do not report it safe before reading the COMPLETE changelog + `MIGRATION.md` for the target version.** Breaking entries are often ordered last (changesets sorts by file, not severity), and breaks are frequently type-level — a prop type narrowed (`React.ReactNode` → a tighter type fails `tsc` for values that compiled before) or a symbol moved from a barrel to a per-component subpath. Grep your codebase for the moved/narrowed symbols, run `typecheck` + `build`, and use the `@devalok/eslint-plugin-shilp-sutra` migration preset for the mechanical edits. Full procedure: `packages/core/docs/recipes/upgrading.md`.
+- **On any version bump, do not report it safe before reading the COMPLETE changelog + `MIGRATION.md` for the target version.** Breaking entries are often ordered last (changesets sorts by file, not severity), and breaks are frequently type-level — a prop type narrowed (`React.ReactNode` → a tighter type fails `tsc` for values that compiled before) or a symbol moved from a barrel to a per-component subpath. **Fastest path: parse `node_modules/@devalok/shilp-sutra/BREAKING.json` for the version range** — it has the structured break data so you can grep your codebase for affected symbols deterministically. Then run `typecheck` + `build` and use the `@devalok/eslint-plugin-shilp-sutra` `migration` preset for the mechanical edits. Full procedure: `packages/core/docs/recipes/upgrading.md`.
 - **Tailwind 4 only.** Do NOT create `tailwind.config.ts` with `presets: [shilpSutra]`. The JS preset was removed in 0.38. Setup uses CSS imports:
   ```css
   @import "tailwindcss";

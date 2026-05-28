@@ -127,6 +127,7 @@ Rules:
 3. **The migration ships in the same PR as the breaking change.** The break is not mergeable without it. Reviewer checks: `pnpm changeset` body names the rule, `MIGRATION.md` references it, the rule has test cases.
 4. **Consumer migration is one command:** `pnpm eslint --fix --config node_modules/@devalok/eslint-plugin-shilp-sutra/migration src/`. Document in `MIGRATION.md` next to the manual instructions — codemod first, manual as fallback.
 5. **Backfill on demand, not retroactively.** No obligation for breaks shipped before this policy. Backfill only if a consumer explicitly asks during their upgrade.
+6. **Every break also gets a machine-readable entry in [`packages/core/BREAKING.json`](./packages/core/BREAKING.json).** Same PR. Categorise: `moved` (import-path change), `narrowed` (type accepts less), `renamed`, `removed`, or `notes` (anything else). Schema is `BREAKING.schema.json`. AI agents and migration tooling read this manifest instead of parsing CHANGELOG prose. The `pre-publish-audit` gate fails if a release has a `feat!` / `**Breaking.` CHANGELOG signal without a corresponding manifest entry.
 
 ### Public API surface
 

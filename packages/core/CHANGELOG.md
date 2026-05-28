@@ -1,5 +1,73 @@
 # @devalok/shilp-sutra
 
+## 0.41.0
+
+### Minor Changes
+
+- [#72](https://github.com/devalok-design/shilp-sutra/pull/72) [`1bb9bd9`](https://github.com/devalok-design/shilp-sutra/commit/1bb9bd9bd6fb84672d0258c43233cf15907b86aa) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - feat(release): ship a machine-readable `BREAKING.json` manifest
+
+  Closes the structured-data half of devalok-design/shilp-sutra#62. AI agents and migration tooling can now answer "what breaks between X and Y?" programmatically instead of parsing CHANGELOG prose.
+
+  ### What ships
+  - **`packages/core/BREAKING.json`** — manifest of every breaking change per version, categorised: `moved` (import-path change), `narrowed` (prop type accepts less), `removed`, `renamed`, `notes`. Populated with the full 0.40.0 data: all 27 barrel→subpath moves + the 17-component Icon API narrowing (`React.ReactNode` → `IconInput`), with peer-dep and eslint-rule cross-refs on each move.
+  - **`packages/core/BREAKING.schema.json`** — canonical JSON Schema for the manifest. Editors auto-validate via `$schema`.
+  - **Two new subpath exports** — `@devalok/shilp-sutra/BREAKING.json` and `@devalok/shilp-sutra/BREAKING.schema.json`. Consumers can `import manifest from '@devalok/shilp-sutra/BREAKING.json'`.
+  - **Tarball ships both files** (added to `files[]`).
+
+  ### What the publish mechanism enforces
+  - **New pre-publish-audit gate** (`scripts/validate-breaking-manifest.mjs`) — runs as part of every release:
+    - manifest structurally valid (required fields, allowed fields, array shapes)
+    - every `moved.to` path resolves against the current `package.json#exports` (catches stale manifest entries pointing at non-existent subpaths)
+    - **discipline check:** if the current version's CHANGELOG section contains a breaking signal (`feat!` / `**Breaking.`) AND the manifest has no entry for that version → audit fails. Mirrors the `/publish-release` narrowing-is-breaking checklist with tooling teeth.
+
+  ### Consumer usage
+
+  ```js
+  import manifest from '@devalok/shilp-sutra/BREAKING.json'
+
+  const fromV = '0.39.0'
+  const toV = '0.40.0'
+  // Versions between fromV+1 and toV
+  const breaksInRange = Object.entries(manifest.versions).filter(
+    ([v]) => v > fromV && v <= toV,
+  )
+  // breaksInRange.flatMap(([_, e]) => e.moved) → every import-path change to apply
+  // breaksInRange.flatMap(([_, e]) => e.narrowed) → every type narrowing to inspect
+  ```
+
+  Recipes (`docs/recipes/upgrading.md`), `AGENTS.md`, `llms.txt`, and `llms-quick.txt` now route agents at the manifest first, prose second.
+
+  ### Why minor, not patch
+
+  New tarball-shipped file + two new subpath exports = new public API surface. Per `CONTRIBUTING.md → Versioning`, any new public surface is a real semver event → minor under 0.x.
+
+  ### What this does NOT cover
+  - The `migrate` CLI from [#62](https://github.com/devalok-design/shilp-sutra/issues/62) item [#5](https://github.com/devalok-design/shilp-sutra/issues/5) — deferred. The eslint plugin's `migration` preset already does the mechanical autofixes; a CLI wrapper that reads `BREAKING.json` is a future build.
+  - Backfill of pre-0.40.0 breaking changes — added on demand, not retroactively (per the existing codemod policy).
+
+### Patch Changes
+
+- [#48](https://github.com/devalok-design/shilp-sutra/pull/48) [`513ea40`](https://github.com/devalok-design/shilp-sutra/commit/513ea408dbbc57c020c0777d60cf1c8b860120c3) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - docs(recipes): fix Next.js App Router cold-install friction surfaced by dogfood test
+
+  A cold-install dogfood test against `pnpm create next-app@latest` on Next 16.2.6 + Turbopack + React 19.2 + pnpm 10.30 (2026-05-25) surfaced seven friction points in `install-next-app-router.md`. Recipe still worked end-to-end, but every friction point was a place an AI agent could trip naively. This release updates the recipe.
+
+  ### What changed
+  - **Added "Tested on" matrix** at the top of the recipe so agents know the exact stack we last verified against.
+  - **`src/app/globals.css` is now listed as the priority-1 location** for the global CSS file (Next 14+ default; was priority-2 in the old recipe).
+  - **§ 4b now explicitly tells agents to replace the entire scaffold `globals.css`**, not just append. The scaffold writes `:root` color vars, an `@theme inline` block linked to Geist font vars, a `prefers-color-scheme` block, and a `body { font-family: Arial }` block — any of which can silently override shilp-sutra tokens.
+  - **§ 5 calls out Turbopack** as the Next 16 default and confirms `transpilePackages` is respected.
+  - **§ 3 PostCSS step rewritten** to say "verify or create" — Next 14+ scaffolds the correct file. Agents were burning cycles re-creating it.
+  - **§ 6 layout.tsx replacement now explicitly lists the scaffold lines to remove** — `next/font/google` Geist imports, the `${geistSans.variable}` className on `<html>`, and the `min-h-full flex flex-col` className on `<body>`. Naive agents kept the Geist imports running alongside shilp-sutra's fonts.
+  - **§ 7 page.tsx replacement notes the scaffold's existing Vercel marketing layout** so agents know they're replacing real content.
+  - **§ 8 gotchas adds three new entries**:
+    - Scaffold's `body { font-family: Arial }` wins the cascade over shilp-sutra fonts if kept (most common silent break).
+    - Auto-generated `pnpm-workspace.yaml` from pnpm 10+ — harmless standalone, broken inside a monorepo.
+    - Auto-generated `AGENTS.md` from `create-next-app` uses `<!-- BEGIN:nextjs-agent-rules -->` markers; shilp-sutra's use `<!-- BEGIN:shilp-sutra-agent-rules -->` — they coexist, but worth knowing.
+
+  ### Why patch, not minor
+
+  Recipe content updates that clarify existing setup do not widen public API surface. They make the same recipe land successfully on more environments. No new exports, no behavior change, no new dependency.
+
 ## 0.40.1
 
 ### Patch Changes

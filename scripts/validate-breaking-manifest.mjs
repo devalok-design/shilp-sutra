@@ -105,7 +105,11 @@ export function validate() {
     }
   }
 
-  // Discipline gate: current version with breaking CHANGELOG signal MUST have a manifest entry.
+  // Discipline gate: current version with breaking CHANGELOG signal MUST have
+  // a manifest entry. Scan only TOP-LEVEL bullets' headlines (mirrors
+  // prepend-breaking-summary.mjs's per-bullet scope) — scanning the whole
+  // section false-triggers on quoted/documented prose like `**Breaking.`
+  // inside a changeset body.
   if (existsSync(CHANGELOG_PATH)) {
     const changelog = readFileSync(CHANGELOG_PATH, 'utf-8').replace(/\r\n/g, '\n')
     const head = changelog.search(/^## /m)
@@ -115,10 +119,30 @@ export function validate() {
       const section = changelog.slice(head, nextRel === -1 ? changelog.length : head + 3 + nextRel)
       const versionMatch = section.match(/^## (\S+)/)
       if (versionMatch && versionMatch[1] === currentVersion) {
-        const BREAKING_RE = /\b(?:feat|fix|perf|refactor|build|chore)!|!:|(?<!non[- ])\*\*Breaking[.:]/i
-        if (BREAKING_RE.test(section) && !manifest.versions[currentVersion]) {
+        // Match the Conventional Commits `!` marker only — unambiguous.
+        // Drop `**Breaking.` from the detector: it appears in prose too often
+        // (e.g. inside a changeset body documenting another version's break).
+        // The CC marker is the maintainer's explicit signal.
+        const BREAKING_RE = /\b(?:feat|fix|perf|refactor|build|chore)!|!:/i
+        // Per top-level bullet (line starting with `- `), test the first
+        // ~5 lines of its scope. Nested bullets and prose paragraphs are
+        // skipped — they document, they don't signal.
+        const lines = section.split('\n')
+        let hasBreaking = false
+        for (let i = 0; i < lines.length; i++) {
+          if (!/^- /.test(lines[i])) continue
+          let scope = lines[i]
+          for (let j = i + 1; j < lines.length && j < i + 5 && !/^- /.test(lines[j]) && !/^## /.test(lines[j]); j++) {
+            scope += '\n' + lines[j]
+          }
+          if (BREAKING_RE.test(scope)) {
+            hasBreaking = true
+            break
+          }
+        }
+        if (hasBreaking && !manifest.versions[currentVersion]) {
           fail(
-            `CHANGELOG.md ${currentVersion} contains a breaking signal (feat! / **Breaking.) but BREAKING.json has no entry for ${currentVersion}. Add the structured break data so AI agents and migration tooling can read it programmatically (see packages/core/BREAKING.schema.json).`,
+            `CHANGELOG.md ${currentVersion} contains a Conventional-Commits breaking marker (feat!/fix!/!:) but BREAKING.json has no entry for ${currentVersion}. Add the structured break data so AI agents and migration tooling can read it programmatically (see packages/core/BREAKING.schema.json).`,
           )
         }
       }

@@ -4,6 +4,14 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.41.0 — `BREAKING.json` manifest + recipe polish (no migration needed)
+
+**Non-breaking minor.** No consumer code changes required.
+
+- **New:** `packages/core/BREAKING.json` ships in the tarball — a machine-readable record of every breaking change per version. AI agents and migration tooling can `import manifest from '@devalok/shilp-sutra/BREAKING.json'` instead of parsing this file. Schema at `BREAKING.schema.json`.
+- **Docs:** Next.js App Router install recipe gained a Tested-on matrix, explicit replace-the-whole-scaffold-globals.css guidance, Turbopack note, and three new gotchas (`pnpm-workspace.yaml`, auto-generated `AGENTS.md` markers, scaffold body-font cascade). No setup change required for existing consumers.
+- **Internals:** release.yml now regenerates Agent Skill references before the pre-publish audit (kills the skill-drift email spam class). No impact on the published tarball.
+
 ## v0.40.0 — Barrel peer-cliff cleanup + Icon API unification
 
 This release pairs one breaking change (barrel peer-cliff cleanup) with one non-breaking type widening (Icon API unification). Read the breaking section first.

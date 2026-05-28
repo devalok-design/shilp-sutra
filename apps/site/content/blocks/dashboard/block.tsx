@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback } from '@devalok/shilp-sutra/ui/avatar'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
+import { SHILP_SUTRA_MINOR } from '@/lib/version'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
@@ -29,7 +30,7 @@ const activity: Activity[] = [
   { who: 'Goutham', initials: 'GP', what: 'pushed 4 component fixes to Padmavarna v2 audit', when: '12 min ago', tag: 'fix' },
   { who: 'Yogin', initials: 'YS', what: 'opened a PR adding Skeleton variants for charts', when: '38 min ago', tag: 'feat' },
   { who: 'Amal', initials: 'AM', what: 'reviewed Karm onboarding flow, left 6 comments', when: '1 hr ago', tag: 'review' },
-  { who: 'Mudit', initials: 'ML', what: 'cut v0.39 with the Agent Skill bundle and site v1', when: '3 hr ago', tag: 'release' },
+  { who: 'Mudit', initials: 'ML', what: `cut v${SHILP_SUTRA_MINOR} with the BREAKING.json manifest and recipe polish`, when: '3 hr ago', tag: 'release' },
 ]
 
 type NavItem = { icon: typeof IconHome; label: string; active?: boolean }

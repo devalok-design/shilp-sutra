@@ -13,6 +13,7 @@ import {
 } from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@devalok/shilp-sutra/ui/avatar'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
+import { SHILP_SUTRA_MINOR } from '@/lib/version'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
@@ -29,7 +30,7 @@ type Activity = {
 }
 
 const initialActivity: Activity[] = [
-  { who: 'Mudit', initials: 'ML', what: 'shipped v0.39 · Agent Skill + site v1', when: '14 min ago', tag: 'release' },
+  { who: 'Mudit', initials: 'ML', what: `shipped v${SHILP_SUTRA_MINOR} · BREAKING.json manifest + recipe polish`, when: '14 min ago', tag: 'release' },
   { who: 'Goutham', initials: 'GP', what: 'pushed Button accessibility audit fixes', when: '38 min ago', tag: 'fix' },
   { who: 'Yogin', initials: 'YS', what: 'reviewed the Atlas showcase composition', when: '1 hr ago', tag: 'review' },
   { who: 'Amal', initials: 'AM', what: 'opened a PR for Skeleton variants', when: '3 hr ago', tag: 'design' },
@@ -120,7 +121,7 @@ export function LandingSurface() {
             </header>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-ds-03">
-              <Stat label="Components" value="119" hint="3 added in v0.39" />
+              <Stat label="Components" value="119" hint={`current: v${SHILP_SUTRA_MINOR}`} />
               <Stat label="Showcases live" value="6" hint="industries covered" />
               <Stat label="Tests passing" value="2,107" hint="100% on main" />
             </div>

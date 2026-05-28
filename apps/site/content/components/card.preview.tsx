@@ -4,14 +4,15 @@ import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { SHILP_SUTRA_VERSION } from '@/lib/version'
 
 export function CardHero() {
   return (
     <div className="max-w-md">
       <Card>
         <CardHeader>
-          <CardTitle>Daily release</CardTitle>
-          <CardDescription>v0.40.0 ships Sunday. Skill bundle + site v1 already live.</CardDescription>
+          <CardTitle>Latest release</CardTitle>
+          <CardDescription>v{SHILP_SUTRA_VERSION} is live. BREAKING.json manifest, recipe polish, and the usual Devalok improvements.</CardDescription>
         </CardHeader>
         <CardContent>
           <Text variant="body-sm" className="text-surface-fg-muted">

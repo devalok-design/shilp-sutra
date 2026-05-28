@@ -36,7 +36,7 @@ const config: NextConfig = {
         outputFileTracingRoot: repoRoot,
       }
     : {}),
-  transpilePackages: ['@devalok/shilp-sutra', '@devalok/shilp-sutra-brand'],
+  transpilePackages: ['@devalok/shilp-sutra'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },

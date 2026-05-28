@@ -1,12 +1,14 @@
 'use client'
 
 import { Alert } from '@devalok/shilp-sutra/ui/alert'
+import { SHILP_SUTRA_MINOR } from '@/lib/version'
 
 export function AlertHero() {
   return (
     <div className="max-w-xl">
-      <Alert color="info" title="shilp-sutra v0.39 is live">
-        Agent Skill bundle and the marketing site shipped together. The skill installs in one curl.
+      <Alert color="info" title={`shilp-sutra v${SHILP_SUTRA_MINOR} is live`}>
+        Machine-readable BREAKING.json manifest, Next.js recipe polish, and the
+        usual Devalok improvements. Patch path stays one command.
       </Alert>
     </div>
   )

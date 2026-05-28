@@ -2,6 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/ui/tabs'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { SHILP_SUTRA_MINOR } from '@/lib/version'
 
 export function TabsHero() {
   return (
@@ -21,7 +22,7 @@ export function TabsHero() {
         </TabsContent>
         <TabsContent value="changelog" className="pt-ds-04">
           <Text variant="body-sm" className="text-surface-fg-muted">
-            v0.39 · Agent Skill bundle, marketing site v1, /theming editor (this site).
+            v{SHILP_SUTRA_MINOR} · BREAKING.json manifest, Next.js recipe polish, release skill-regen automation.
           </Text>
         </TabsContent>
         <TabsContent value="discussion" className="pt-ds-04">

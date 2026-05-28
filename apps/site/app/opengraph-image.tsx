@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { SHILP_SUTRA_MINOR } from '@/lib/version'
 
 /**
  * Dynamic Open Graph image for the homepage.
@@ -71,7 +72,7 @@ export default async function OpengraphImage() {
               color: 'oklch(0.4 0.12 360)',
             }}
           >
-            From Devalok · Public beta v0.40
+            From Devalok · Public beta v{SHILP_SUTRA_MINOR}
           </div>
         </div>
 

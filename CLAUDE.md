@@ -142,6 +142,16 @@ Before writing "non-breaking" / "type widening only" on any prop-type change, cl
 
 When unsure whether old ⊂ new or new ⊂ old, write a `@ts-expect-error`/`expectTypeOf` probe with a value valid under the old type (a `Record<string, ReactNode>` entry, a `string`) and check it still compiles against the new type. If it doesn't, it's a narrowing → breaking.
 
+## Figma Make Kit
+
+`packages/core/make-kit/` ships in the npm tarball. 26 files: `Guidelines.md` + `setup.md` + 7 `foundations/*.md` + `components/overview.md` + 15 per-component guides. Authored to be pasted into Figma Make when registering shilp-sutra as a Make kit (https://developers.figma.com/docs/code/bring-your-design-system-package/).
+
+Subpath exports: `@devalok/shilp-sutra/make-kit` → `Guidelines.md`, `@devalok/shilp-sutra/make-kit/*` → individual files.
+
+**Authoring rules.** Voice is direct + prescriptive, no marketing copy. Sections per component: import → When to use → Variants/Colors/Sizes tables → Props table → Examples (4–6) → Rules. Props/defaults MUST come from `llms-full.txt` or actual CVA source — when those disagree, the source code wins (caught one stale `llms-full.txt` Form section during initial authoring). When updating components in `src/ui/`, also update the matching `make-kit/components/*.md` if the prop surface changed.
+
+Smoke-tested 2026-06-01 in fresh Vite 8 + React 19 + TW4 + framer-motion 12 app. Build/dev/utility emission all green. Make eligibility confirmed pending only the human registration step in Figma UI.
+
 ## Storybook MCP Server
 
 When the Storybook dev server is running (`pnpm dev`), an MCP server at `localhost:6006/mcp` provides AI agents with:

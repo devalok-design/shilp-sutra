@@ -793,7 +793,9 @@
       "import": "./dist/ai/types.js",
       "default": "./dist/ai/types.js"
     },
-    "./docs/*": "./docs/components/*"
+    "./docs/*": "./docs/components/*",
+    "./make-kit": "./make-kit/Guidelines.md",
+    "./make-kit/*": "./make-kit/*"
   },
   "files": [
     "dist",
@@ -801,6 +803,7 @@
     "docs/recipes",
     "docs/rollback.md",
     "fonts",
+    "make-kit",
     "skill",
     "scripts/welcome.mjs",
     "AGENTS.md",

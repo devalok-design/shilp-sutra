@@ -4,6 +4,14 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.42.0 — Figma Make kit guidelines (no migration needed)
+
+**Non-breaking minor.** No consumer code changes required.
+
+- **New:** `packages/core/make-kit/` ships in the tarball — 26 guideline files Figma Make consumes when registering this package as a Make kit. Includes `Guidelines.md`, `setup.md`, 8 `foundations/*.md`, `components/overview.md`, and 15 per-component deep guides. Reachable at `node_modules/@devalok/shilp-sutra/make-kit/` after install, or via subpath exports `@devalok/shilp-sutra/make-kit` and `/make-kit/*`. Adds ~140 KB to tarball.
+- No source code changes. No runtime impact. Existing consumers see a slightly larger install footprint and nothing else.
+- See https://developers.figma.com/docs/code/bring-your-design-system-package/ for the Figma Make kit registration flow.
+
 ## v0.41.0 — `BREAKING.json` manifest + recipe polish (no migration needed)
 
 **Non-breaking minor.** No consumer code changes required.

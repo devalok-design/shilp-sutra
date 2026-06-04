@@ -164,6 +164,16 @@ Consumers can override any role globally (`:root { --radius-control: 4px; }`) or
 
 For the per-component RSC-safety matrix and import patterns, see **`packages/core/docs/recipes/server-components.md`**.
 
+## Figma Make
+
+If the user mentions Figma Make, generating designs against a kit, or registering a Make kit:
+
+- shilp-sutra ships a Make kit at `node_modules/@devalok/shilp-sutra/make-kit/` (26 markdown files: top-level `Guidelines.md` + `setup.md`, eight `foundations/*.md`, sixteen `components/*.md`).
+- Walkthrough lives at https://shilp-sutra.devalok.in/figma-make — six-step setup, paste-ready guideline blocks, FAQ.
+- Pin the kit to a specific npm version. Figma does not auto-update when a new npm version publishes.
+- Cross-org sharing is not supported by Figma. Each consumer org registers its own kit against the same npm package and pastes the same guideline files.
+- Free and Pro Figma plans can install the npm package directly, but Make-kit registration needs Organization or Enterprise.
+
 ## Reporting feedback
 
 If you find that a recipe is wrong, a constraint above is no longer accurate, or a component behavior contradicts the docs:

@@ -14,6 +14,7 @@ The Devalok Design System -- tokens, components, and patterns for React & Next.j
 [![Storybook](https://img.shields.io/badge/Storybook-ff4785?logo=storybook&logoColor=white)](https://devalok-design.github.io/shilp-sutra/)
 [![AI agents ready](https://img.shields.io/badge/AI%20agents-AGENTS.md-7c3aed)](./AGENTS.md)
 [![Themer](https://img.shields.io/badge/Themer-shilp--sutra.devalok.in%2Fthemer-d946a6)](https://shilp-sutra.devalok.in/themer)
+[![Figma Make kit](https://img.shields.io/badge/Figma_Make-kit_ready-a259ff)](https://shilp-sutra.devalok.in/figma-make)
 
 ## Packages
 
@@ -125,6 +126,14 @@ Do not invent CSS variables. Use exactly what the JSON `css` field contains. Don
 ````
 
 Already been to the Themer? The result page has a **Copy AI agent prompt** button that pre-fills the URL with your archetype + accent so the agent skips persona triage.
+
+## Figma Make
+
+`@devalok/shilp-sutra@0.42.0+` ships a Make kit at `node_modules/@devalok/shilp-sutra/make-kit/` — 26 guideline files that teach Figma Make to generate apps against the production design system. Same components, same tokens, same conventions as production code.
+
+→ **[shilp-sutra.devalok.in/figma-make](https://shilp-sutra.devalok.in/figma-make)** — six-step setup, paste-ready guidelines, update cadence.
+
+Make kits need a Figma Organization or Enterprise plan. Free / Pro users can still install the npm package directly in any React project.
 
 ## Setup recipes (per framework)
 

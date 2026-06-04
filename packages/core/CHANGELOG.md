@@ -1,5 +1,16 @@
 # @devalok/shilp-sutra
 
+## 0.42.1
+
+### Patch Changes
+
+- [#80](https://github.com/devalok-design/shilp-sutra/pull/80) [`fb73847`](https://github.com/devalok-design/shilp-sutra/commit/fb73847bbea2ac496ec36f1552c93f621e4887c6) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Document the Figma Make kit shipped in 0.42.0:
+  - `llms.txt` — new "NEW (v0.42.0)" entry pointing to `make-kit/` + the consumer setup walkthrough.
+  - `AGENTS.md` — new "Figma Make" section so coding agents route users to the kit setup page when they ask about Figma Make.
+  - README — Make-kit badge + section linking to https://shilp-sutra.devalok.in/figma-make.
+
+  No code change. Tarball gains ~1 KB of docs.
+
 ## 0.42.0
 
 ### Minor Changes

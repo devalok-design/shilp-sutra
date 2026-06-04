@@ -41,6 +41,10 @@ Paste the snippet *after* `@import "@devalok/shilp-sutra/css";` in the global st
 
 The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
 
+## NEW (v0.42.0)
+
+- **Figma Make kit.** 26 guideline files at `node_modules/@devalok/shilp-sutra/make-kit/` (top-level `Guidelines.md` + `setup.md`, eight `foundations/*.md`, sixteen `components/*.md`). Subpath exports `@devalok/shilp-sutra/make-kit` → `Guidelines.md`, `/make-kit/*` → individual files. Used by Figma Make to generate apps + prototypes against the DS. Setup walkthrough: https://shilp-sutra.devalok.in/figma-make. Public npm registry; cross-org sharing not supported by Figma — each consumer org self-registers. Pin to a specific npm version; no auto-update flow yet. Make kits need Organization / Enterprise Figma plan; Free + Pro can still install the package directly in React projects.
+
 ## NEW (v0.40.0)
 
 - **OAuthButton.** Brand-aware social/login buttons. Subpath: `@devalok/shilp-sutra/ui/oauth-button`. 13 providers (`google` `apple` `github` `microsoft` `x` `linkedin` `facebook` `discord` `slack` `gitlab` `sso` `email` `passkey`). Props: `provider`, `intent` (`continue|signin|signup`), `appearance` (`brand|outline|dark`), `icon` (override default glyph), `iconOnly`, `compact` (renders just "Google" instead of "Continue with Google"; aria-label keeps long form), `lastUsed` (inline right-edge pill inside button), `helperText`. Inherits Button async/loading/sizes. Siblings: `OAuthGroup` (with `reorderLastUsedFirst` for Stripe-style ordering), `OAuthDivider`, `OAuthConnectionRow` (settings-page linked state). Default glyphs from Tabler peer dep; pass `icon` to drop in a brand's official multicolour SVG. In dark mode every brand appearance lands on the same DS surface — brand identity comes from the glyph, not the bg, so rows stay visually coherent.

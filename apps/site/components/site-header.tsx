@@ -15,6 +15,7 @@ const navLinks = [
   { href: '/blocks', label: 'Blocks' },
   { href: '/theming', label: 'Theming' },
   { href: '/docs', label: 'Docs' },
+  { href: '/figma-make', label: 'Figma Make' },
   { href: '/agents', label: 'For AI editors', accent: true },
 ] as const
 

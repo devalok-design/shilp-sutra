@@ -449,7 +449,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
               animate={{ opacity: 1, scale: 1 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-overlay border border-surface-border bg-surface-overlay shadow-floating',
+                'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-overlay bg-surface-overlay shadow-floating',
               )}
             >
                   {/* Search input */}

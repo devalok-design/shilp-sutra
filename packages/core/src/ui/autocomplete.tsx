@@ -257,7 +257,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
                   variants={listVariants}
                   style={floatingStyles}
                   className={cn(
-                    'z-popover overflow-auto rounded-overlay border border-surface-border-strong bg-surface-overlay shadow-raised-hover',
+                    'z-popover overflow-auto rounded-overlay bg-surface-overlay shadow-raised-hover',
                   )}
                 >
                   {filtered.length === 0 ? (

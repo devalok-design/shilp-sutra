@@ -104,8 +104,8 @@ const AlertDialogContent = React.forwardRef<
               className={cn(
                 'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
                 responsive !== false
-                  ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-overlay-lg md:border md:border-surface-border-strong md:shadow-overlay'
-                  : 'left-[50%] top-[50%] max-w-lg rounded-overlay-lg border border-surface-border-strong shadow-overlay',
+                  ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-overlay-lg md:shadow-overlay'
+                  : 'left-[50%] top-[50%] max-w-lg rounded-overlay-lg shadow-overlay',
                 className,
               )}
             >

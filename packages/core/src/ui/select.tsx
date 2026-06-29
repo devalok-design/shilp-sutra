@@ -159,7 +159,7 @@ const SelectContent = React.forwardRef<
         animate={{ opacity: 1, scale: 1 }}
         transition={{ ...springs.snappy, opacity: tweens.fade }}
         className={cn(
-          'relative z-popover max-h-96 min-w-[8rem] overflow-hidden rounded-overlay border border-surface-border-strong bg-surface-overlay text-surface-fg shadow-floating',
+          'relative z-popover max-h-96 min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay text-surface-fg shadow-floating',
           position === 'popper' &&
             'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
           className,

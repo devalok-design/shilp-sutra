@@ -177,7 +177,7 @@ function BulkActionBar({
           transition={springs.snappy}
           className={cn(
             'fixed bottom-ds-06 left-1/2 z-sticky -translate-x-1/2',
-            'flex items-center gap-ds-04 rounded-surface border border-surface-border bg-surface-overlay px-ds-05 py-ds-03 shadow-floating',
+            'flex items-center gap-ds-04 rounded-surface bg-surface-overlay px-ds-05 py-ds-03 shadow-floating',
             className,
           )}
           role="toolbar"

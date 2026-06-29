@@ -41,7 +41,7 @@ const MentionList = React.forwardRef<MentionListRef, MentionListProps>(
     if (!items.length) return null
 
     return (
-      <div role="listbox" aria-label="Mention suggestions" className="z-popover overflow-hidden rounded-control border border-surface-border-strong bg-surface-overlay shadow-raised-hover">
+      <div role="listbox" aria-label="Mention suggestions" className="z-popover overflow-hidden rounded-control bg-surface-overlay shadow-raised-hover">
         {items.map((item, index) => (
           <button
             key={item.id}

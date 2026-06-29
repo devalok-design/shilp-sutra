@@ -353,7 +353,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
             aria-label="Color picker"
             align={align}
             sideOffset={8}
-            className="w-[272px] rounded-overlay-lg border border-surface-border-strong bg-surface-overlay p-0 shadow-floating"
+            className="w-[272px] rounded-overlay-lg bg-surface-overlay p-0 shadow-floating"
           >
             <div className="flex flex-col">
               {/* Interactive picker */}

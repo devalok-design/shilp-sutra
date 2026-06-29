@@ -289,7 +289,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
         </Tooltip>
 
         <DropdownMenuContent
-          className="w-[200px] rounded-overlay-lg border border-surface-border-strong bg-surface-overlay p-0 shadow-floating"
+          className="w-[200px] rounded-overlay-lg bg-surface-overlay p-0 shadow-floating"
           sideOffset={8}
           align="end"
         >

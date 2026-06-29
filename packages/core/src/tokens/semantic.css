@@ -493,14 +493,18 @@
     0 2px 4px -1.5px oklch(var(--shadow-color) / calc(0.045 * var(--shadow-strength))),
     0 6px 12px -3px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
     0 14px 28px -8px oklch(var(--shadow-color) / calc(0.025 * var(--shadow-strength)));
+  /* Hairline edge ring — the shadow's own 1px border-substitute (make-kit rule #6:
+     shadow already carries the ring, so components never add an explicit border).
+     Light: cool tint. Dark: a light ring, since drop shadows barely read on dark. */
+  --shadow-edge-ring: 0 0 0 1px oklch(var(--shadow-color) / calc(0.09 * var(--shadow-strength)));
   --shadow-md-internal:
-    0 0 0 1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
+    var(--shadow-edge-ring),
     0 1px 2px -1px oklch(var(--shadow-color) / calc(0.05 * var(--shadow-strength))),
     0 4px 8px -2px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
     0 10px 20px -5px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
     0 24px 44px -12px oklch(var(--shadow-color) / calc(0.025 * var(--shadow-strength)));
   --shadow-lg-internal:
-    0 0 0 1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
+    var(--shadow-edge-ring),
     0 1px 2px -1px oklch(var(--shadow-color) / calc(0.05 * var(--shadow-strength))),
     0 3px 6px -2px oklch(var(--shadow-color) / calc(0.045 * var(--shadow-strength))),
     0 8px 16px -4px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
@@ -603,6 +607,8 @@
   /* Shadows (heavier in dark mode) — brand-reactive via color-mix on
      --color-accent-9 so they follow consumer brand swaps. */
   --shadow-strength: 2.5;
+  /* Light ring on dark — a dark-tinted ring would vanish against dark surfaces. */
+  --shadow-edge-ring: 0 0 0 1px oklch(1 0 0 / 0.12);
   --shadow-brand:    0 2px 8px color-mix(in oklch, var(--color-accent-9) 30%, transparent), 0 6px 20px color-mix(in oklch, var(--color-accent-9) 20%, transparent);
   --shadow-glow:     0 0 0 1.5px color-mix(in oklch, var(--color-accent-9) 35%, transparent), 0 0 10px color-mix(in oklch, var(--color-accent-9) 20%, transparent);
   --shadow-ring:     0 0 0 2px color-mix(in oklch, var(--color-accent-9) 45%, transparent);

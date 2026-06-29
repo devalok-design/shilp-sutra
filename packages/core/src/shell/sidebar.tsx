@@ -130,6 +130,12 @@ export interface AppSidebarProps
   renderItem?: (item: NavItem, defaultRender: () => React.ReactNode) => React.ReactNode | null
   /** Additional className for the root sidebar element */
   className?: string
+  /**
+   * Corner radius of nav items (composable). @default 'md' (control radius, ~6px).
+   * `'lg'` restores the previous rounder look; `'sm'` is tighter; `'pill'` is fully rounded.
+   * Sets the `--ds-sidebar-item-radius` CSS var, so you can also override it via `className`/`style`.
+   */
+  navItemRadius?: 'sm' | 'md' | 'lg' | 'pill'
 }
 
 // -----------------------------------------------------------------------
@@ -179,9 +185,19 @@ function CloseIcon({ className }: { className?: string }) {
 // Shared styles
 // -----------------------------------------------------------------------
 
-const navItemBase = 'relative gap-ds-04 rounded-surface px-ds-04 py-ds-03 transition-colors duration-fast-02'
-const navItemActive =
-  "bg-accent-2 text-accent-11 after:absolute after:right-0 after:top-0 after:h-full after:w-ds-01 after:rounded-l-pill after:bg-accent-9 after:content-['']"
+// Radius is composable via the `navItemRadius` prop (sets --ds-sidebar-item-radius).
+// Default is the control radius (~6px) — surface (10px) read as over-rounded blobs.
+const navItemBase =
+  'relative gap-ds-04 rounded-[var(--ds-sidebar-item-radius,var(--radius-control))] px-ds-04 py-ds-03 transition-colors duration-fast-02'
+const NAV_ITEM_RADIUS = {
+  sm: 'var(--radius-control-inner)',
+  md: 'var(--radius-control)',
+  lg: 'var(--radius-surface)',
+  pill: 'var(--radius-pill)',
+} as const
+// Active = tinted surface + accent text + weight. No accent rail — the tint and
+// colour already signal "you are here"; a stripe on top is doubled accent (AI tell).
+const navItemActive = 'bg-accent-2 text-accent-11 font-medium'
 const navItemInactive = 'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg'
 
 // -----------------------------------------------------------------------
@@ -323,6 +339,8 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
       footer,
       renderItem,
       className,
+      navItemRadius,
+      style,
       ...props
     },
     ref,
@@ -340,6 +358,11 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         {...props}
         ref={ref}
         aria-label="Main navigation"
+        style={
+          navItemRadius
+            ? ({ '--ds-sidebar-item-radius': NAV_ITEM_RADIUS[navItemRadius], ...style } as React.CSSProperties)
+            : style
+        }
         className={cn(
           'z-raised hidden h-full flex-col border-r border-surface-border-strong bg-surface-raised md:flex',
           className,
@@ -442,7 +465,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
             {/* Promo banner */}
             {footer.promo && (
-              <div className="relative rounded-surface border border-surface-border bg-surface-raised p-ds-04 shadow-raised">
+              <div className="relative rounded-surface bg-surface-raised p-ds-04 shadow-raised">
                 {footer.promo.onDismiss && (
                   <button
                     onClick={footer.promo.onDismiss}

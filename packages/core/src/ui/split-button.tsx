@@ -344,7 +344,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: durations.moderate01 }}
-                className="rounded-overlay border border-surface-border-strong bg-surface-overlay shadow-floating"
+                className="rounded-overlay bg-surface-overlay shadow-floating"
               >
                 {dropdownContent}
               </motion.div>

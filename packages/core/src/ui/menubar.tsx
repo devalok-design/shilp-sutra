@@ -70,7 +70,7 @@ const Menubar = React.forwardRef<
   <MenubarPrimitive.Root
     ref={ref}
     className={cn(
-      'flex h-ds-sm-plus items-center space-x-ds-02 rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-raised',
+      'flex h-ds-sm-plus items-center space-x-ds-02 rounded-overlay bg-surface-overlay p-ds-02 shadow-raised',
       className,
     )}
     {...props}
@@ -135,7 +135,7 @@ const MenubarSubContent = React.forwardRef<
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ ...springs.snappy, opacity: tweens.fade }}
             className={cn(
-              'z-popover min-w-[8rem] overflow-hidden rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
+              'z-popover min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
               className,
             )}
           >
@@ -177,7 +177,7 @@ const MenubarContent = React.forwardRef<
         alignOffset={alignOffset}
         sideOffset={sideOffset}
         className={cn(
-          'z-popover min-w-[12rem] rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
+          'z-popover min-w-[12rem] rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
           'data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out',
           className,
         )}

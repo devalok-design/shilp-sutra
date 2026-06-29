@@ -147,7 +147,7 @@ function LinkButton({ editor }: { editor: Editor }) {
         <form
           onSubmit={handleSubmit}
           aria-label="Edit link URL"
-          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-control border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-raised-hover"
+          className="absolute left-0 top-full z-popover mt-ds-01 flex items-center gap-ds-02 rounded-control bg-surface-overlay p-ds-02 shadow-raised-hover"
         >
           <input
             ref={inputRef}
@@ -361,7 +361,7 @@ function EmojiPickerLazy({ set = 'native', onSelect }: { set?: string; onSelect:
     loadEmojiData(set).then((d) => setData(d))
   }, [set])
 
-  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-surface border border-surface-border-strong bg-surface-overlay shadow-raised-hover"><span className="text-ds-sm text-surface-fg-subtle">Loading...</span></div>
+  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-raised-hover"><span className="text-ds-sm text-surface-fg-subtle">Loading...</span></div>
 
   if (!data) return fallback
 

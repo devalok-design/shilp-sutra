@@ -92,7 +92,7 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
   if (error) return <ErrorFallback message="Could not load audio" url={url} />
 
   return (
-    <div ref={containerRef} className="rounded-surface border border-surface-border bg-surface-raised shadow-raised overflow-hidden" tabIndex={-1}>
+    <div ref={containerRef} className="rounded-surface bg-surface-raised shadow-raised overflow-hidden" tabIndex={-1}>
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio
         ref={audioRef}

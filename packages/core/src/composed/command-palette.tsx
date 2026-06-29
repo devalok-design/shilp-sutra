@@ -330,7 +330,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
           {...props}
           className={cn(
             'fixed left-1/2 top-[20%] z-modal w-full max-w-[560px] -translate-x-1/2',
-            'overflow-hidden rounded-overlay-lg border border-surface-border-strong bg-surface-overlay shadow-overlay',
+            'overflow-hidden rounded-overlay-lg bg-surface-overlay shadow-overlay',
             'duration-moderate-02 data-[state=open]:animate-in data-[state=closed]:animate-out',
             'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
             'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',

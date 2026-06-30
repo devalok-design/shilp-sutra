@@ -23,7 +23,7 @@
     "test:storybook": "vitest --project storybook",
     "test:storybook:ci": "vitest run --project storybook",
     "changeset": "changeset",
-    "version-packages": "changeset version && node scripts/prepend-breaking-summary.mjs && node scripts/sync-skill-version.mjs && node packages/core/scripts/build-component-docs.mjs && node scripts/build-skill.mjs",
+    "version-packages": "node scripts/changeset-version-retry.mjs && node scripts/prepend-breaking-summary.mjs && node scripts/sync-skill-version.mjs && node packages/core/scripts/build-component-docs.mjs && node scripts/build-skill.mjs",
     "release": "pnpm build && changeset publish"
   },
   "devDependencies": {

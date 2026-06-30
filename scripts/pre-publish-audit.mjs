@@ -14,7 +14,7 @@
 
 import { execSync } from 'child_process'
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
-import { join, resolve } from 'path'
+import { join, resolve, basename } from 'path'
 import { globSync } from 'node:fs'
 import { validate as validateBreakingManifest } from './validate-breaking-manifest.mjs'
 
@@ -537,6 +537,46 @@ gate('exports types-first ordering (every subpath)', () => {
   walk(corePkg.exports, '')
   if (violations.length > 0) {
     return `Exports with wrong conditional ordering:\n${violations.map((v) => `      ${v}`).join('\n')}`
+  }
+  return true
+})
+
+// Gate: every flat src/ui/*.tsx component has a "./ui/<name>" subpath export
+// (or is explicitly allowlisted as barrel-only / internal). 0.44.0 shipped
+// TruncatedText in dist/ but never added "./ui/truncated-text" to the exports
+// map — so `import { TruncatedText } from "@devalok/shilp-sutra/ui/truncated-text"`
+// failed to resolve, and the SSR smoke test (which iterates the exports map)
+// never caught it. This gate closes that loop: a new component without a
+// subpath export now forces an explicit decision — export it or allowlist it.
+const SUBPATH_EXEMPT = new Set([
+  // Internal sub-parts consumed only through their parent's barrel/subpath:
+  'button-processing', // SplitButton/Button loading-state helper
+  'stat-flash', // sub-part of StatCard
+  // DataTable internals — DataTable itself is barrel-isolated (./ui/data-table):
+  'data-table-body',
+  'data-table-bulk-actions',
+  'data-table-card',
+  'data-table-context',
+  'data-table-header',
+  'data-table-pagination',
+])
+gate('Every flat src/ui component has a ./ui/<name> subpath export', () => {
+  const subpaths = new Set(
+    Object.keys(corePkg.exports)
+      .filter((k) => /^\.\/ui\/[^/]+$/.test(k))
+      .map((k) => k.replace('./ui/', ''))
+  )
+  const missing = globSync('packages/core/src/ui/*.tsx', { cwd: ROOT })
+    .map((f) => basename(f, '.tsx'))
+    .filter((name) => !/\.(test|stories)$/.test(name))
+    .filter((name) => !subpaths.has(name) && !SUBPATH_EXEMPT.has(name))
+    .sort()
+  if (missing.length > 0) {
+    return (
+      `flat src/ui components with no "./ui/<name>" export:\n${missing
+        .map((m) => `      ${m} — add "./ui/${m}" to packages/core/package.json#exports`)
+        .join('\n')}\n      (or add it to SUBPATH_EXEMPT in scripts/pre-publish-audit.mjs if it is barrel-only/internal)`
+    )
   }
   return true
 })

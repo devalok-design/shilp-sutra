@@ -3,8 +3,14 @@ name: Visual Review (Chromatic)
 on:
   push:
     branches: [main]
+    # Chromatic snapshots Storybook (the component library). Site-only changes
+    # (apps/site/**) touch no story — skip to save snapshot quota.
+    paths-ignore:
+      - 'apps/site/**'
   pull_request:
     branches: [main]
+    paths-ignore:
+      - 'apps/site/**'
   workflow_dispatch:
     inputs:
       auto_accept:

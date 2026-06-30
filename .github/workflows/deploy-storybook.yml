@@ -3,6 +3,10 @@ name: Deploy Storybook to GitHub Pages
 on:
   push:
     branches: [main]
+    # Storybook documents the component library, not the marketing site.
+    # Site-only changes (apps/site/**) don't change any story — skip the redeploy.
+    paths-ignore:
+      - 'apps/site/**'
 
   # Allow manual trigger from the Actions tab
   workflow_dispatch:

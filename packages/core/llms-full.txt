@@ -5,7 +5,7 @@
 > All variant values and props verified from source CVA definitions.
 >
 > Package: @devalok/shilp-sutra
-> Version: 0.44.0
+> Version: 0.44.1
 >
 > **If you are an AI agent reading this file top-to-bottom:** the Setup
 > section below is authoritative. If any later per-component doc or a

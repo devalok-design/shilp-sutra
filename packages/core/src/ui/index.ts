@@ -71,6 +71,7 @@ export { Switch, type SwitchProps } from './switch'
 export { Textarea, type TextareaProps,textareaVariants } from './textarea'
 export { Toggle, type ToggleProps,toggleVariants } from './toggle'
 export { ToggleGroup, ToggleGroupItem, type ToggleGroupItemProps,type ToggleGroupProps } from './toggle-group'
+export { TruncatedText, type TruncatedTextProps } from './truncated-text'
 
 // Feedback & Overlays
 export {

@@ -16,8 +16,12 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-surface-raised border border-surface-border shadow-raised',
-        elevated: 'bg-surface-raised border border-surface-border shadow-raised-hover',
+        // Elevation-led: the shadow's own ring is the edge (make-kit rule #6 — no
+        // border+shadow double-edge). border-transparent keeps the `color` prop able to
+        // paint a deliberate colored edge without a grey one by default.
+        default: 'bg-surface-raised border border-transparent shadow-raised',
+        elevated: 'bg-surface-raised border border-transparent shadow-raised-hover',
+        // Border-led: a visible edge, no shadow.
         outline: 'bg-transparent border border-surface-border-strong shadow-none',
         flat: 'bg-surface-raised border-none shadow-none',
       },
@@ -44,8 +48,10 @@ const cardVariants = cva(
  * Props for Card — a general-purpose content container with 4 elevation/style variants and
  * an optional interactive hover state.
  *
- * **Variants:** `default` (subtle border + shadow-raised) | `elevated` (stronger shadow-raised-hover) |
- * `outline` (2px solid border, no shadow) | `flat` (filled background, no shadow)
+ * **Variants (elevation-led vs border-led — never both):** `default` (ring-in-shadow, no border) |
+ * `elevated` (stronger shadow-raised-hover, no border) | `outline` (visible border, no shadow) |
+ * `flat` (filled background, no edge). The shadow tokens carry their own 1px ring, so elevated
+ * variants need no explicit border (make-kit rule #6).
  *
  * **Composition:** Use sub-components `<CardHeader>`, `<CardTitle>`, `<CardDescription>`,
  * `<CardContent>`, and `<CardFooter>` for consistent internal spacing.
@@ -139,7 +145,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const classes = cn(
       cardVariants({ variant, color, size }),
       accent && 'relative overflow-hidden',
-      interactive && 'hover:shadow-raised-hover hover:border-surface-border-strong cursor-pointer transition-shadow duration-fast-02 ease-productive-standard',
+      interactive && 'hover:shadow-raised-hover cursor-pointer transition-shadow duration-fast-02 ease-productive-standard',
       className,
     )
 

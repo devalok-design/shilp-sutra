@@ -150,4 +150,34 @@ describe('StatCard', () => {
     expect(screen.getByText('View details')).toBeInTheDocument()
   })
 
+  // ── Accent style + surface + flash (anti-convergence rework) ────────────────
+  it('renders accentStyle="icon" with the provided icon', () => {
+    const { container } = render(
+      <StatCard
+        label="Projects"
+        value={128}
+        icon={<svg data-testid="ic" />}
+        accentStyle="icon"
+      />,
+    )
+    expect(container.querySelector('[data-testid="ic"]')).toBeInTheDocument()
+  })
+
+  it('renders accentStyle="tint" value', () => {
+    render(<StatCard label="Revenue" value="$48,200" accentStyle="tint" />)
+    expect(screen.getByText('$48,200')).toBeInTheDocument()
+  })
+
+  it('renders surface="flat" without crashing', () => {
+    render(<StatCard label="Projects" value={128} surface="flat" />)
+    expect(screen.getByText('Projects')).toBeInTheDocument()
+  })
+
+  it('renders an entrance flash when flash is set', () => {
+    const { container } = render(
+      <StatCard label="Projects" value={128} icon={<svg data-testid="ic" />} flash="up" />,
+    )
+    expect(container.querySelector('[data-testid="ic"]')).toBeInTheDocument()
+  })
+
 })

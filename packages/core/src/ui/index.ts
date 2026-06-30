@@ -168,6 +168,14 @@ export {
   skeletonVariants,
 } from './skeleton'
 export { StatCard, type StatCardProps } from './stat-card'
+export {
+  type FlashPreset,
+  type FlashSpec,
+  type FlashSpeed,
+  type FlashTone,
+  StatFlash,
+  type StatFlashProps,
+} from './stat-flash'
 export { StatusDot, type StatusDotProps, type StatusDotStatus } from './status-dot'
 export { Table, TableBody, TableCaption, TableCell, type TableCellProps,TableFooter, TableHead, TableHeader, type TableProps, TableRow, type TableRowProps } from './table'
 

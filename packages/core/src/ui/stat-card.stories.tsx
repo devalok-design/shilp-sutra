@@ -9,9 +9,17 @@ const meta: Meta<typeof StatCard> = {
     label: { control: 'text' },
     value: { control: 'text' },
     loading: { control: 'boolean' },
-    accent: {
+    accentStyle: {
       control: 'select',
-      options: ['default', 'success', 'warning', 'error', 'info'],
+      options: ['none', 'icon', 'tint'],
+    },
+    surface: {
+      control: 'inline-radio',
+      options: ['raised', 'flat'],
+    },
+    iconFill: {
+      control: 'inline-radio',
+      options: ['soft', 'solid'],
     },
     progress: { control: { type: 'range', min: 0, max: 100 } },
   },
@@ -122,12 +130,46 @@ export const WithProgress: Story = {
   decorators: [(Story) => <div className="w-[320px]"><Story /></div>],
 }
 
-export const WithAccent: Story = {
+export const AccentTint: Story = {
   args: {
-    label: 'Error Rate',
-    value: '2.4%',
-    delta: { value: '+0.8%', direction: 'up' },
-    accent: 'error',
+    label: 'Monthly Revenue',
+    value: '$48,200',
+    delta: { value: '+12%', direction: 'up' },
+    accentStyle: 'tint',
+  },
+  decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
+}
+
+export const AccentIcon: Story = {
+  args: {
+    label: 'Active Projects',
+    value: 128,
+    delta: { value: '+12%', direction: 'up' },
+    icon: <span>P</span>,
+    accentStyle: 'icon',
+    iconFill: 'soft',
+  },
+  decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
+}
+
+export const AccentIconSolid: Story = {
+  args: {
+    label: 'Active Projects',
+    value: 128,
+    delta: { value: '+12%', direction: 'up' },
+    icon: <span>P</span>,
+    accentStyle: 'icon',
+    iconFill: 'solid',
+  },
+  decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
+}
+
+export const SurfaceFlat: Story = {
+  args: {
+    label: 'Active Projects',
+    value: 128,
+    delta: { value: '+12%', direction: 'up' },
+    surface: 'flat',
   },
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }
@@ -160,7 +202,7 @@ export const FullFeatured: Story = {
     comparisonLabel: 'vs last month',
     secondaryLabel: 'of $50,000 target',
     progress: 96,
-    accent: 'success',
+    accentStyle: 'tint',
     sparkline: [22, 28, 25, 31, 27, 35, 33, 40, 38, 42, 45, 48],
     onClick: () => alert('View revenue details'),
   },
@@ -176,7 +218,6 @@ export const DashboardGrid: Story = {
         prefix="$"
         delta={{ value: '+12%', direction: 'up' }}
         comparisonLabel="vs last month"
-        accent="success"
         sparkline={[22, 28, 25, 31, 27, 35, 33, 40, 38, 42, 45, 48]}
         onClick={() => {}}
       />
@@ -185,7 +226,6 @@ export const DashboardGrid: Story = {
         value="1,842"
         delta={{ value: '+8%', direction: 'up' }}
         comparisonLabel="vs last week"
-        accent="info"
         sparkline={[150, 162, 158, 170, 165, 175, 180, 184]}
       />
       <StatCard
@@ -193,7 +233,6 @@ export const DashboardGrid: Story = {
         value="3.2%"
         delta={{ value: '-0.4%', direction: 'down' }}
         comparisonLabel="vs last month"
-        accent="warning"
         secondaryLabel="target: 4.0%"
         progress={72}
       />
@@ -201,7 +240,6 @@ export const DashboardGrid: Story = {
         label="Error Rate"
         value="0.12%"
         delta={{ value: '+0.02%', direction: 'up' }}
-        accent="error"
         sparkline={[0.08, 0.09, 0.1, 0.11, 0.09, 0.1, 0.12]}
       />
     </div>
@@ -223,14 +261,12 @@ export const ProgressEdgeCases: Story = {
         label="Complete"
         value="100%"
         progress={100}
-        accent="success"
         secondaryLabel="target reached"
       />
       <StatCard
         label="Overflow (clamped)"
         value="142%"
         progress={142}
-        accent="warning"
         secondaryLabel="over target — clamped to 100"
       />
     </div>
@@ -291,12 +327,12 @@ export const ClickableWithHref: Story = {
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }
 
-export const LoadingWithAccent: Story = {
+export const LoadingFlat: Story = {
   args: {
     label: 'Revenue',
     value: 0,
     loading: true,
-    accent: 'success',
+    surface: 'flat',
   },
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }

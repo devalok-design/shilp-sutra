@@ -192,7 +192,7 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
       </button>
       {/* min-w-[200px]: component-specific dropdown width — no design token equivalent */}
       {open && (
-        <div className="absolute bottom-full right-0 mb-ds-02 min-w-[200px] rounded-surface border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating z-popover">
+        <div className="absolute bottom-full right-0 mb-ds-02 min-w-[200px] rounded-surface bg-surface-overlay p-ds-02 shadow-floating z-popover">
           <p className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">Send options</p>
           {options.map((opt, i) => (
             <button
@@ -242,13 +242,13 @@ function EmojiPickerPopover({ set = 'native', onSelect, onClose }: { set?: strin
   }, [onClose])
 
   const fallback = (
-    <div className="flex h-[350px] w-[352px] items-center justify-center rounded-surface border border-surface-border-strong bg-surface-overlay shadow-floating">
+    <div className="flex h-[350px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-floating">
       <span className="text-ds-sm text-surface-fg-subtle">Loading...</span>
     </div>
   )
 
   return (
-    <div ref={ref} className="rounded-surface border border-surface-border-strong bg-surface-overlay shadow-floating overflow-hidden">
+    <div ref={ref} className="rounded-surface bg-surface-overlay shadow-floating overflow-hidden">
       {!data ? fallback : (
         <React.Suspense fallback={fallback}>
           <LazyEmojiPicker
@@ -315,7 +315,7 @@ function ChatBubbleMenu({ editor }: { editor: Editor }) {
   return (
     <BubbleMenu
       editor={editor}
-      className="flex gap-ds-01 rounded-surface border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
+      className="flex gap-ds-01 rounded-surface bg-surface-overlay p-ds-02 shadow-floating"
     >
       <BubbleBtn onClick={() => editor.chain().focus().toggleBold().run()} isActive={state.isBold} title="Bold">
         <Icon icon={IconBold} size="xs" />

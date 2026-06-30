@@ -186,7 +186,7 @@ const NavigationMenuViewport = React.forwardRef<
     <div className={cn('absolute left-0 top-full flex justify-center')}>
       <NavigationMenuPrimitive.Viewport
         className={cn(
-          'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-overlay border border-surface-border-strong bg-surface-overlay shadow-floating md:w-[var(--radix-navigation-menu-viewport-width)]',
+          'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-overlay bg-surface-overlay shadow-floating md:w-[var(--radix-navigation-menu-viewport-width)]',
           className,
         )}
         ref={composedRef}

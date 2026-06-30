@@ -100,7 +100,7 @@ const SlashCommandList = React.forwardRef<SlashCommandListRef, SlashCommandListP
       <div
         role="listbox"
         aria-label="Slash commands"
-        className="z-popover max-h-[320px] min-w-[220px] overflow-x-hidden overflow-y-auto rounded-surface border border-surface-border-strong bg-surface-overlay p-ds-02 shadow-floating"
+        className="z-popover max-h-[320px] min-w-[220px] overflow-x-hidden overflow-y-auto rounded-surface bg-surface-overlay p-ds-02 shadow-floating"
       >
         {renderedGroups.map((group, gi) => (
           <div key={group.label} role="group" aria-label={group.label}>

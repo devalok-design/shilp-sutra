@@ -112,7 +112,7 @@ const ContextMenuSubContent = React.forwardRef<
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ ...springs.snappy, opacity: tweens.fade }}
             className={cn(
-              "z-popover min-w-[8rem] overflow-hidden rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
+              "z-popover min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
               className
             )}
           >
@@ -147,7 +147,7 @@ const ContextMenuContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                "z-popover rounded-overlay border border-surface-border-strong bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
+                "z-popover rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
                 className
               )}
             >

@@ -316,7 +316,7 @@ const Sidebar = forwardRef<
           <aside
             aria-label="Sidebar"
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col bg-surface-raised group-data-[variant=floating]:rounded-surface group-data-[variant=floating]:border group-data-[variant=floating]:border-surface-border group-data-[variant=floating]:shadow-raised"
+            className="flex h-full w-full flex-col bg-surface-raised group-data-[variant=floating]:rounded-surface group-data-[variant=floating]:shadow-raised"
           >
             {children}
           </aside>

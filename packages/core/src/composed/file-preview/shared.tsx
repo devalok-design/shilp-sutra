@@ -44,7 +44,7 @@ export function Toolbar({ children, className }: { children: React.ReactNode; cl
       animate={{ opacity: 1, y: 0 }}
       transition={tweens.fade}
       className={cn(
-        'flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-overlay/95 px-ds-02 py-ds-01 shadow-floating backdrop-blur-xs',
+        'flex items-center gap-ds-01 rounded-control bg-surface-overlay/95 px-ds-02 py-ds-01 shadow-floating backdrop-blur-xs',
         className,
       )}
     >

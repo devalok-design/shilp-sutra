@@ -427,7 +427,7 @@ function MessageActions({ children, delay = 100 }: MessageActionsProps) {
     <div
       className={cn(
         'absolute -top-2 right-0 z-10',
-        'flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-raised px-ds-01 py-ds-01 shadow-raised',
+        'flex items-center gap-ds-01 rounded-control bg-surface-raised px-ds-01 py-ds-01 shadow-raised',
         'opacity-0 group-hover/message:opacity-100 group-focus-within/message:opacity-100 transition-opacity duration-150',
       )}
       style={{ transitionDelay: `${delay}ms` }}

@@ -504,7 +504,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
 
       <PopoverContent
         className={cn(
-          'w-[380px] rounded-overlay-lg border border-surface-border-strong bg-surface-overlay p-0 shadow-floating',
+          'w-[380px] rounded-overlay-lg bg-surface-overlay p-0 shadow-floating',
           popoverClassName,
         )}
         sideOffset={8}

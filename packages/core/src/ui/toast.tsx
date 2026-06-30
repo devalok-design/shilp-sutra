@@ -181,7 +181,7 @@ function ToastContent({
       role={isUrgent ? 'alert' : 'status'}
       aria-live={isUrgent ? 'assertive' : 'polite'}
       aria-atomic="true"
-      className="group relative flex w-full overflow-hidden rounded-overlay-sm border border-surface-border-strong bg-surface-overlay shadow-floating"
+      className="group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
@@ -522,7 +522,7 @@ function UploadToastContent({
       role={uploadUrgent ? 'alert' : 'status'}
       aria-live={uploadUrgent ? 'assertive' : 'polite'}
       aria-label="File uploads"
-      className="group relative flex w-full overflow-hidden rounded-overlay-sm border border-surface-border-strong bg-surface-overlay shadow-floating"
+      className="group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}

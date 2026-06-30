@@ -11,10 +11,18 @@ import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
+import { StatFlash, type FlashPreset, type FlashSpec, type FlashSpeed } from './stat-flash'
 
 /**
  * Props for StatCard — a dashboard metric tile displaying a label, a large numeric value,
  * an optional trend delta (with directional arrow icon), and an optional header icon.
+ *
+ * **Surface:** `surface="raised"` (default) is elevation-led — the shadow's own 1px ring is the
+ * edge, no border (make-kit rule #6). `surface="flat"` is border-led, no shadow.
+ *
+ * **Accent:** `accentStyle="none"` (default) is neutral; `"icon"` wraps `icon` in an accent chip
+ * (`iconFill="soft" | "solid"`); `"tint"` applies a subtle accent surface wash + accent value.
+ * (Replaces the removed `accent` left-rail prop — see CHANGELOG migration.)
  *
  * **Delta direction:** `'up'` renders a green trending-up arrow, `'down'` renders a red
  * trending-down arrow, `'neutral'` renders a grey dash. The `delta.value` is a formatted
@@ -74,8 +82,20 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   secondaryLabel?: string
   /** Progress toward a target (0-100). Renders a thin progress bar below the value. */
   progress?: number
-  /** Color accent for the left border decoration */
-  accent?: 'default' | 'success' | 'warning' | 'error' | 'info'
+  /** Surface treatment: `raised` (ring-in-shadow, no border — default) or `flat` (border, no shadow). */
+  surface?: 'raised' | 'flat'
+  /** How the brand accent reads: `none` (neutral — default), `icon` (accent chip around `icon`), or `tint` (subtle accent surface wash + accent value). */
+  accentStyle?: 'none' | 'icon' | 'tint'
+  /** When `accentStyle="icon"`: `soft` (tinted chip) or `solid` (filled accent chip). @default 'soft' */
+  iconFill?: 'soft' | 'solid'
+  /**
+   * Opt-in entrance flash: the icon chip mounts showing a transient state (e.g. a green up-arrow)
+   * then settles to `icon`. A preset (`'up' | 'down' | 'goal' | 'record' | 'alert' | 'live'`) or an
+   * explicit `{ tone, icon }`. Requires `icon`; implies the icon chip. Off by default.
+   */
+  flash?: FlashPreset | FlashSpec
+  /** Speed of the entrance flash: `fast` | `normal` | `slow`. @default 'normal' */
+  flashSpeed?: FlashSpeed
   /** Sparkline data points. Renders a mini SVG line chart in the card. */
   sparkline?: number[]
   /** Make the card clickable with hover state */
@@ -84,14 +104,6 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   href?: string
   /** Footer content rendered below the card body, e.g. "View details →" */
   footer?: React.ReactNode
-}
-
-const accentBorderMap: Record<NonNullable<StatCardProps['accent']>, string> = {
-  default: 'border-l-accent-9',
-  success: 'border-l-success-9',
-  warning: 'border-l-warning-9',
-  error: 'border-l-error-9',
-  info: 'border-l-info-9',
 }
 
 function buildSparklinePath(raw: number[], width: number, height: number): string {
@@ -202,7 +214,11 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       comparisonLabel,
       secondaryLabel,
       progress,
-      accent,
+      surface = 'raised',
+      accentStyle = 'none',
+      iconFill = 'soft',
+      flash,
+      flashSpeed,
       sparkline,
       onClick,
       href,
@@ -222,8 +238,8 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <div
           ref={ref}
           className={cn(
-            'rounded-surface border border-surface-border bg-surface-raised shadow-raised p-ds-05b',
-            accent && `border-l-[3px] ${accentBorderMap[accent]}`,
+            'rounded-surface bg-surface-raised p-ds-05b',
+            surface === 'flat' ? 'border border-surface-border' : 'shadow-raised',
             className,
           )}
           {...props}
@@ -271,22 +287,44 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             {sparkline && sparkline.length >= 2 && (
               <Sparkline data={sparkline} colorClass={sparklineColor} />
             )}
-            {icon && (
-              <motion.span
-                className="text-surface-fg-muted"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={springs.snappy}
-                aria-hidden="true"
-              >
-                <IconProvider size="lg">{normalizeIcon(icon, 'lg')}</IconProvider>
-              </motion.span>
-            )}
+            {icon && flash ? (
+              <StatFlash icon={icon} flash={flash} fill={iconFill} speed={flashSpeed} />
+            ) : icon ? (
+              accentStyle === 'icon' ? (
+                <motion.span
+                  className={cn(
+                    'inline-flex items-center justify-center rounded-control p-ds-02',
+                    iconFill === 'solid'
+                      ? 'bg-accent-9 text-accent-fg'
+                      : 'bg-accent-3 text-accent-11',
+                  )}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={springs.snappy}
+                  aria-hidden="true"
+                >
+                  <IconProvider size="md">{normalizeIcon(icon, 'md')}</IconProvider>
+                </motion.span>
+              ) : (
+                <motion.span
+                  className="text-surface-fg-muted"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={springs.snappy}
+                  aria-hidden="true"
+                >
+                  <IconProvider size="lg">{normalizeIcon(icon, 'lg')}</IconProvider>
+                </motion.span>
+              )
+            ) : null}
           </div>
         </div>
         <div className="overflow-hidden">
           <motion.p
-            className="inline-block text-ds-3xl font-semibold text-surface-fg"
+            className={cn(
+              'inline-block text-ds-3xl font-semibold',
+              accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
+            )}
             initial={{ opacity: 0, y: '100%' }}
             animate={{ opacity: 1, y: 0 }}
             transition={springs.smooth}
@@ -357,10 +395,13 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     )
 
     const cardClasses = cn(
-      'rounded-surface border border-surface-border bg-surface-raised shadow-raised p-ds-05b',
-      accent && `border-l-[3px] ${accentBorderMap[accent]}`,
+      'rounded-surface p-ds-05b',
+      accentStyle === 'tint'
+        ? 'bg-linear-to-t from-accent-2 to-surface-raised'
+        : 'bg-surface-raised',
+      surface === 'flat' ? 'border border-surface-border' : 'shadow-raised',
       isClickable &&
-        'cursor-pointer hover:shadow-raised-hover hover:border-surface-border-strong transition-[box-shadow,border-color] duration-fast-02 ease-productive-standard group',
+        'cursor-pointer hover:shadow-raised-hover transition-[box-shadow] duration-fast-02 ease-productive-standard group',
       className,
     )
 

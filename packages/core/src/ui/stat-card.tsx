@@ -76,6 +76,8 @@ export interface StatCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>
     value: string
     direction: 'up' | 'down' | 'neutral'
   }
+  /** Where the delta sits relative to the value: `block` (below — default) or `inline` (on the value's baseline, to its right). @default 'block' */
+  deltaPlacement?: 'block' | 'inline'
   icon?: IconInput
   loading?: boolean
   /** Comparison period label shown after delta, e.g. "vs last month" */
@@ -211,6 +213,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       prefix,
       suffix,
       delta,
+      deltaPlacement = 'block',
       icon,
       loading,
       comparisonLabel,
@@ -268,6 +271,33 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           ? 'text-error-11'
           : 'text-accent-11'
 
+    const deltaNode = delta ? (
+      <motion.div
+        className={cn(
+          'flex items-center gap-ds-02 text-ds-sm font-medium',
+          deltaColour,
+          // block placement owns the gap to the value; inline rides the value's baseline row.
+          deltaPlacement === 'block' && 'mt-ds-03',
+        )}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...springs.smooth, delay: 0.2 }}
+      >
+        <motion.span
+          className="inline-flex"
+          initial={{ opacity: 0.5, scale: 1.4 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={springs.bouncy}
+        >
+          <Icon icon={DeltaIcon} size="sm" />
+        </motion.span>
+        <span>{delta.value}</span>
+        {comparisonLabel && (
+          <span className="text-surface-fg-subtle font-normal">{comparisonLabel}</span>
+        )}
+      </motion.div>
+    ) : null
+
     const cardContent = (
       <>
         <div className="flex items-center justify-between mb-ds-04">
@@ -315,24 +345,27 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             ) : null}
           </div>
         </div>
-        <div className="overflow-hidden">
-          <motion.p
-            className={cn(
-              'inline-block text-ds-3xl font-semibold',
-              accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
-            )}
-            initial={{ opacity: 0, y: '100%' }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={springs.smooth}
-          >
-            {prefix && (
-              <span className="text-surface-fg-muted text-ds-lg">{prefix}</span>
-            )}
-            <span className="tabular-nums">{value}</span>
-            {suffix && (
-              <span className="text-surface-fg-muted text-ds-lg">{suffix}</span>
-            )}
-          </motion.p>
+        <div className={cn(deltaPlacement === 'inline' && delta && 'flex items-baseline gap-ds-03')}>
+          <div className="overflow-hidden">
+            <motion.p
+              className={cn(
+                'inline-block text-ds-3xl font-semibold',
+                accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
+              )}
+              initial={{ opacity: 0, y: '100%' }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={springs.smooth}
+            >
+              {prefix && (
+                <span className="text-surface-fg-muted text-ds-lg">{prefix}</span>
+              )}
+              <span className="tabular-nums">{value}</span>
+              {suffix && (
+                <span className="text-surface-fg-muted text-ds-lg">{suffix}</span>
+              )}
+            </motion.p>
+          </div>
+          {deltaPlacement === 'inline' && deltaNode}
         </div>
         {secondaryLabel && (
           <motion.p
@@ -353,30 +386,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             <ProgressBar progress={progress} label={resolvedLabel} />
           </motion.div>
         )}
-        {delta && (
-          <motion.div
-            className={cn(
-              'mt-ds-03 flex items-center gap-ds-02 text-ds-sm font-medium',
-              deltaColour,
-            )}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...springs.smooth, delay: 0.2 }}
-          >
-            <motion.span
-              className="inline-flex"
-              initial={{ opacity: 0.5, scale: 1.4 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={springs.bouncy}
-            >
-              <Icon icon={DeltaIcon} size="sm" />
-            </motion.span>
-            <span>{delta.value}</span>
-            {comparisonLabel && (
-              <span className="text-surface-fg-subtle font-normal">{comparisonLabel}</span>
-            )}
-          </motion.div>
-        )}
+        {deltaPlacement === 'block' && deltaNode}
         {footer && (
           <motion.div
             className="mt-ds-04 pt-ds-04 border-t border-surface-border text-ds-sm"

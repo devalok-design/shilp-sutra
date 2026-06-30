@@ -16,7 +16,8 @@ const cardVariants = cva(
   // slots own only horizontal padding (px). No per-slot py, no pt-0, no per-element
   // margins — adding/removing a slot can't unbalance the bottom edge (make-kit rule:
   // shadow ring is the edge, gap is the rhythm).
-  'flex flex-col rounded-surface text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
+  // `relative` establishes the positioning context for <CardAction> corner slots.
+  'relative flex flex-col rounded-surface text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
   {
     variants: {
       variant: {
@@ -234,4 +235,79 @@ const CardFooter = React.forwardRef<
 })
 CardFooter.displayName = 'CardFooter'
 
-export { Card, CardContent,CardDescription, CardFooter, CardHeader, CardTitle, cardVariants }
+type CardActionPlacement = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+
+// Corner inset matches the slot padding for the card's size, so an action's edge
+// lines up with the content edge. Class names are spelled out literally (not built
+// from the size) so Tailwind's JIT can see them.
+const cornerPositions: Record<CardSize, Record<CardActionPlacement, string>> = {
+  sm: {
+    'top-right': 'top-ds-05 right-ds-05',
+    'top-left': 'top-ds-05 left-ds-05',
+    'bottom-right': 'bottom-ds-05 right-ds-05',
+    'bottom-left': 'bottom-ds-05 left-ds-05',
+  },
+  md: {
+    'top-right': 'top-ds-05b right-ds-05b',
+    'top-left': 'top-ds-05b left-ds-05b',
+    'bottom-right': 'bottom-ds-05b right-ds-05b',
+    'bottom-left': 'bottom-ds-05b left-ds-05b',
+  },
+  lg: {
+    'top-right': 'top-ds-06 right-ds-06',
+    'top-left': 'top-ds-06 left-ds-06',
+    'bottom-right': 'bottom-ds-06 right-ds-06',
+    'bottom-left': 'bottom-ds-06 left-ds-06',
+  },
+}
+
+export interface CardActionProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Which corner the action sits in. @default 'top-right' */
+  placement?: CardActionPlacement
+  /**
+   * Pull the action a step toward its corner (`-m-ds-02`) so an icon button's GLYPH —
+   * not its padding box — aligns to the content-edge line. Use for ghost/icon buttons
+   * placed in a corner; leave off for badges/text where the padding box is the edge.
+   */
+  tuck?: boolean
+}
+
+/**
+ * An absolutely-positioned corner slot for a Card — a menu/icon button, a status badge,
+ * an overflow action. The Card is `relative`, so this pins to one of its four corners
+ * with an inset that matches the card's content padding.
+ *
+ * @example
+ * <Card>
+ *   <CardAction><IconButton aria-label="More" icon={<IconDots />} variant="ghost" tuck /></CardAction>
+ *   <CardHeader><CardTitle>Project Alpha</CardTitle></CardHeader>
+ * </Card>
+ *
+ * @example
+ * // Accent status badge in the top-right:
+ * <Card>
+ *   <CardAction><Badge color="accent" size="xs">LIVE</Badge></CardAction>
+ *   ...
+ * </Card>
+ */
+const CardAction = React.forwardRef<HTMLDivElement, CardActionProps>(
+  ({ className, placement = 'top-right', tuck, ...props }, ref) => {
+    const size = React.useContext(CardSizeContext)
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'absolute z-[1] flex items-center gap-ds-02',
+          cornerPositions[size][placement],
+          tuck && '-m-ds-02',
+          className,
+        )}
+        {...props}
+      />
+    )
+  },
+)
+CardAction.displayName = 'CardAction'
+
+export { Card, CardAction, CardContent,CardDescription, CardFooter, CardHeader, CardTitle, cardVariants }
+export type { CardActionPlacement }

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
 import { describeConformance } from '../test-utils/conformance'
-import { Card, CardContent, CardFooter,CardHeader } from './card'
+import { Card, CardAction, CardContent, CardFooter,CardHeader } from './card'
 
 describeConformance('Card', (props) => <Card {...props}>Content</Card>, {
   variants: ['default', 'elevated', 'outline', 'flat'],
@@ -78,6 +78,50 @@ describe('Card', () => {
       expect(screen.getByText('Header').closest('div')!).toHaveClass('px-ds-06')
       expect(screen.getByText('Body').closest('div')!).toHaveClass('px-ds-06')
       expect(screen.getByText('Footer').closest('div')!).toHaveClass('px-ds-06')
+    })
+  })
+
+  describe('CardAction', () => {
+    it('renders its children', () => {
+      render(
+        <Card>
+          <CardAction>
+            <button type="button">More</button>
+          </CardAction>
+        </Card>,
+      )
+      expect(screen.getByRole('button', { name: 'More' })).toBeInTheDocument()
+    })
+
+    it('positions top-right by default with the md inset', () => {
+      render(
+        <Card>
+          <CardAction data-testid="action">x</CardAction>
+        </Card>,
+      )
+      expect(screen.getByTestId('action')).toHaveClass('absolute', 'top-ds-05b', 'right-ds-05b')
+    })
+
+    it('honors placement + inherits the card size inset', () => {
+      render(
+        <Card size="lg">
+          <CardAction data-testid="action" placement="bottom-right">
+            x
+          </CardAction>
+        </Card>,
+      )
+      expect(screen.getByTestId('action')).toHaveClass('bottom-ds-06', 'right-ds-06')
+    })
+
+    it('applies the tuck offset when set', () => {
+      render(
+        <Card>
+          <CardAction data-testid="action" tuck>
+            x
+          </CardAction>
+        </Card>,
+      )
+      expect(screen.getByTestId('action')).toHaveClass('-m-ds-02')
     })
   })
 })

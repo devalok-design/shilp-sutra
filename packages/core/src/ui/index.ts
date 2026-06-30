@@ -144,7 +144,7 @@ export { Avatar, AvatarFallback, type AvatarFallbackProps, AvatarImage, type Ava
 export { Badge, type BadgeProps,badgeVariants } from './badge'
 export { BadgeGroup, type BadgeGroupProps } from './badge-group'
 export { BadgeIndicator, type BadgeIndicatorProps } from './badge-indicator'
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, type CardProps,CardTitle, cardVariants } from './card'
+export { Card, CardAction, type CardActionPlacement, type CardActionProps, CardContent, CardDescription, CardFooter, CardHeader, type CardProps,CardTitle, cardVariants } from './card'
 export { Code, type CodeProps } from './code'
 export { ColorSwatch, type ColorSwatchProps } from './color-swatch'
 export { Progress, progressIndicatorVariants, type ProgressProps,progressTrackVariants } from './progress'

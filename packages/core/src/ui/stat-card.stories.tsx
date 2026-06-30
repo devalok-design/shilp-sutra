@@ -35,6 +35,17 @@ export const Default: Story = {
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }
 
+export const InlineDelta: Story = {
+  name: 'Delta inline (compact)',
+  args: {
+    label: 'Active Tasks',
+    value: 128,
+    delta: { value: '+12%', direction: 'up' },
+    deltaPlacement: 'inline',
+  },
+  decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
+}
+
 export const WithDeltaUp: Story = {
   args: {
     label: 'Active Tasks',

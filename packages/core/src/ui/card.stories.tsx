@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from './card'
+import { Badge } from './badge'
 import { Button } from './button'
 
 const meta: Meta<typeof Card> = {
@@ -127,4 +129,37 @@ export const Sizes: Story = {
       </div>
     )
   },
+}
+
+export const WithCornerAction: Story = {
+  name: 'CardAction (corner slots)',
+  render: () => (
+    <div className="flex gap-ds-05">
+      <Card className="w-[260px]">
+        <CardAction>
+          <Badge color="accent" size="xs">LIVE</Badge>
+        </CardAction>
+        <CardHeader>
+          <CardTitle>Deploy status</CardTitle>
+          <CardDescription>Top-right badge slot</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-ds-sm text-surface-fg-muted">Production is serving v0.44.0.</p>
+        </CardContent>
+      </Card>
+
+      <Card className="w-[260px]">
+        <CardHeader>
+          <CardTitle>Invoice #2048</CardTitle>
+          <CardDescription>Bottom-right ghost button (tucked)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-ds-sm text-surface-fg-muted">Due in 5 days.</p>
+        </CardContent>
+        <CardAction placement="bottom-right" tuck>
+          <Button variant="ghost" size="sm">Download</Button>
+        </CardAction>
+      </Card>
+    </div>
+  ),
 }

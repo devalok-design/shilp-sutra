@@ -94,7 +94,7 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
             className={cn(
               'group/message relative flex',
               placement === 'end' ? 'justify-end' : 'justify-start',
-              highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-control-inner',
+              highlight === 'mention' && 'bg-accent-2 pl-ds-03 rounded-control-inner',
               highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
               className,
             )}

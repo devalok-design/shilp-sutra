@@ -149,8 +149,8 @@ const DropdownMenuSubTrigger = React.forwardRef<
     )}
     {...props}
   >
-    {children}
-    <Icon icon={IconChevronRight} size="sm" className="ml-auto" />
+    <span className="min-w-0 truncate">{children}</span>
+    <Icon icon={IconChevronRight} size="sm" className="ml-auto shrink-0" />
   </DropdownMenuPrimitive.SubTrigger>
 ))
 DropdownMenuSubTrigger.displayName =
@@ -287,7 +287,7 @@ const DropdownMenuRadioItem = React.forwardRef<
         <IconCircle className="h-2 w-2 fill-current" />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
-    {children}
+    <span className="min-w-0 truncate">{children}</span>
   </DropdownMenuPrimitive.RadioItem>
 ))
 DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName

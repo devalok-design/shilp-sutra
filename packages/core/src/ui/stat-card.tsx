@@ -4,6 +4,7 @@ import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { Card, CardContent } from './card'
 import { Icon } from './icon'
 import { IconProvider } from './icon-context'
 import type { IconInput } from './lib/icon-input'
@@ -11,8 +12,7 @@ import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
-import { Card, CardContent } from './card'
-import { StatFlash, type FlashPreset, type FlashSpec, type FlashSpeed } from './stat-flash'
+import { type FlashPreset, type FlashSpec, type FlashSpeed,StatFlash } from './stat-flash'
 
 /**
  * Props for StatCard — a dashboard metric tile displaying a label, a large numeric value,

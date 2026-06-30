@@ -17,7 +17,6 @@ import { Icon } from '../ui/icon'
 import { formatRelativeTime } from '../ui/lib/date-utils'
 import { durations } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
-import { TruncatedText } from '../ui/truncated-text'
 import {
   Popover,
   PopoverContent,
@@ -35,6 +34,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../ui/tooltip'
+import { TruncatedText } from '../ui/truncated-text'
 
 // -----------------------------------------------------------------------
 // Types

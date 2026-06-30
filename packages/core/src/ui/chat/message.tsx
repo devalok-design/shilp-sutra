@@ -10,8 +10,8 @@ import { IconProvider } from '../icon-context'
 import type { IconInput } from '../lib/icon-input'
 import { motionProps,springs } from '../lib/motion'
 import { normalizeIcon } from '../lib/normalize-icon'
-import { Textarea } from '../textarea'
 import { cn } from '../lib/utils'
+import { Textarea } from '../textarea'
 import { Tooltip, TooltipContent,TooltipTrigger } from '../tooltip'
 
 // ── Context ──────────────────────────────────────────────────────────────

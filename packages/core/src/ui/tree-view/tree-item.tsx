@@ -184,7 +184,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           )}
 
           {/* Label */}
-          <span className="truncate text-ds-sm">{label}</span>
+          <span className="min-w-0 truncate text-ds-sm">{label}</span>
 
           {/* Secondary label */}
           {secondaryLabel && (

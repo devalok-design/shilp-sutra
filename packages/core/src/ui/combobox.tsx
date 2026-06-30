@@ -10,8 +10,8 @@ import { useFormField } from './form'
 import { Icon } from './icon'
 import { IconProvider, type IconSize } from './icon-context'
 import type { IconInput } from './lib/icon-input'
-import { normalizeIcon } from './lib/normalize-icon'
 import { springs, tweens } from './lib/motion'
+import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
 
 export const comboboxTriggerVariants = cva(
@@ -391,12 +391,12 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       if (!multiple && selectedValues.length === 1) {
         const label = getSelectedLabel()
         if (label) {
-          return <span className="flex-1 truncate text-left">{label}</span>
+          return <span className="min-w-0 flex-1 truncate text-left">{label}</span>
         }
       }
 
       return (
-        <span className="flex-1 truncate text-left text-surface-fg-subtle">
+        <span className="min-w-0 flex-1 truncate text-left text-surface-fg-subtle">
           {placeholder}
         </span>
       )

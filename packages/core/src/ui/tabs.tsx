@@ -279,7 +279,9 @@ const TabsTrigger = React.forwardRef<
         />
       )}
       {/* Content sits above the indicator */}
-      <span className="relative z-[1] inline-flex items-center gap-ds-02">{children}</span>
+      <span className="relative z-[1] inline-flex min-w-0 items-center gap-ds-02">
+        <span className="truncate">{children}</span>
+      </span>
       {/* Line variant: sliding indicator -- bottom underline (horizontal) or left bar (vertical) */}
       {variant === 'line' && isActive && (
         <motion.span

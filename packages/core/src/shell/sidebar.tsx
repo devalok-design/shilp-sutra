@@ -14,16 +14,15 @@ import * as React from 'react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
-import { IconProvider } from '../ui/icon-context'
-import type { IconInput } from '../ui/lib/icon-input'
-import { normalizeIcon } from '../ui/lib/normalize-icon'
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '../ui/collapsible'
+import { IconProvider } from '../ui/icon-context'
+import type { IconInput } from '../ui/lib/icon-input'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { cn } from '../ui/lib/utils'
-import { TruncatedText } from '../ui/truncated-text'
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
@@ -42,6 +41,7 @@ import {
   SidebarMenuSubItem,
   SidebarSeparator,
 } from '../ui/sidebar'
+import { TruncatedText } from '../ui/truncated-text'
 import { useLink } from './link-context'
 
 // -----------------------------------------------------------------------
@@ -248,11 +248,12 @@ function NavLink({
                 href={item.href}
                 aria-label={item.title}
                 aria-current={isActive ? 'page' : undefined}
+                className="min-w-0"
               >
                 <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true">
                   <IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider>
                 </span>
-                <span className="text-ds-base">{item.title}</span>
+                <span className="text-ds-base truncate">{item.title}</span>
               </Link>
             </SidebarMenuButton>
             {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
@@ -278,13 +279,14 @@ function NavLink({
                       <Link
                         href={child.href}
                         aria-current={childActive ? 'page' : undefined}
+                        className="min-w-0"
                       >
                         {child.icon && (
                           <span className="[&>svg]:h-ico-sm [&>svg]:w-ico-sm shrink-0" aria-hidden="true">
                             <IconProvider size="sm">{normalizeIcon(child.icon)}</IconProvider>
                           </span>
                         )}
-                        <span>{child.title}</span>
+                        <span className="truncate">{child.title}</span>
                       </Link>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
@@ -313,9 +315,10 @@ function NavLink({
           href={item.href}
           aria-label={item.title}
           aria-current={isActive ? 'page' : undefined}
+          className="min-w-0"
         >
           <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true"><IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider></span>
-          <span className="text-ds-base">{item.title}</span>
+          <span className="text-ds-base truncate">{item.title}</span>
         </Link>
       </SidebarMenuButton>
       {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
@@ -484,7 +487,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                     </span>
                   )}
                   <div className="flex min-w-0 flex-col gap-ds-03">
-                    <p className="text-ds-sm text-surface-fg">{footer.promo.text}</p>
+                    <p className="text-ds-sm text-surface-fg line-clamp-2">{footer.promo.text}</p>
                     {footer.promo.action && (
                       footer.promo.action.href ? (
                         <Button asChild variant="solid" size="sm" className="self-start">

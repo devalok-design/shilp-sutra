@@ -422,7 +422,7 @@ export function ScheduleBanner({ date, onClear, onEdit }: { date: Date; onClear:
     >
       <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b text-ds-xs text-accent-11 bg-accent-2 border-b border-accent-4">
         <Icon icon={IconClock} size="xs" className="shrink-0" />
-        <span className="flex-1 truncate">
+        <span className="min-w-0 flex-1 truncate">
           Scheduled for {formatScheduleTime(date)}
         </span>
         {onEdit && (

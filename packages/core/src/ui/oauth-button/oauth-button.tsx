@@ -309,7 +309,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     // intentional: a 9px corner pill, smaller than Badge's smallest size (xs).
     // Not worth a sub-xs Badge size for one call site — kept as a documented exception.
     const defaultBadge = (
-      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-2 py-1 text-[9px] leading-none font-semibold uppercase tracking-wide shadow-overlay">
+      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-2 py-1 text-ds-2xs leading-none font-semibold uppercase tracking-wide shadow-overlay">
         {lastUsedLabel}
       </span>
     )

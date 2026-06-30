@@ -67,6 +67,7 @@
      TW4 namespace: --text-* → text-* utility.
      We use the `ds-` prefix to avoid collision with consumer's own
      text sizes (TW4 default supplies text-xs, text-sm, etc.). */
+  --text-ds-2xs:  0.5625rem;  /* 9px — micro labels (avatar xs, corner pills); below xs */
   --text-ds-xs:   0.625rem;   /* 10px */
   --text-ds-sm:   0.75rem;    /* 12px */
   --text-ds-md:   0.875rem;   /* 14px */

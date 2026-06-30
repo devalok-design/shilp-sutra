@@ -17,6 +17,7 @@ import { Icon } from '../ui/icon'
 import { formatRelativeTime } from '../ui/lib/date-utils'
 import { durations } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
+import { TruncatedText } from '../ui/truncated-text'
 import {
   Popover,
   PopoverContent,
@@ -191,14 +192,15 @@ function NotificationItem({
 
       {/* Content */}
       <div className="min-w-0 flex-1">
-        <p
+        <TruncatedText
+          as="p"
           className={cn(
-            'truncate text-ds-md text-surface-fg',
+            'text-ds-md text-surface-fg',
             !notification.isRead && 'font-semibold',
           )}
         >
           {notification.title}
-        </p>
+        </TruncatedText>
         {notification.body && (
           <p className="mt-ds-01 line-clamp-2 text-ds-sm text-surface-fg-subtle">
             {notification.body}
@@ -213,9 +215,9 @@ function NotificationItem({
               <span className="text-surface-fg-subtle">
                 &middot;
               </span>
-              <span className="truncate text-ds-sm text-surface-fg-subtle">
+              <TruncatedText className="text-ds-sm text-surface-fg-subtle">
                 {notification.project.title}
-              </span>
+              </TruncatedText>
             </>
           )}
         </div>

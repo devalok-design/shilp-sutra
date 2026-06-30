@@ -5,6 +5,7 @@ import * as React from 'react'
 
 import { Button } from '../../ui/button'
 import { Icon } from '../../ui/icon'
+import { TruncatedText } from '../../ui/truncated-text'
 import { ErrorFallback, formatTime,VolumeControl } from './shared'
 
 // ============================================================
@@ -160,7 +161,9 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
         {/* File name + time */}
         <div className="flex-1 min-w-0">
           {fileName && (
-            <p className="text-ds-sm font-semibold text-surface-fg truncate">{fileName}</p>
+            <TruncatedText as="p" mode="middle" className="text-ds-sm font-semibold text-surface-fg">
+              {fileName}
+            </TruncatedText>
           )}
           <p className="text-ds-xs font-mono text-surface-fg-muted tabular-nums">
             {formatTime(currentTime)} / {formatTime(duration)}

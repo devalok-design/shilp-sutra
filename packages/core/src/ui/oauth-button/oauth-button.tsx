@@ -21,6 +21,7 @@ import { Button, type ButtonProps } from '../button'
 import type { IconInput } from '../lib/icon-input'
 import { normalizeIcon } from '../lib/normalize-icon'
 import { cn } from '../lib/utils'
+import { TruncatedText } from '../truncated-text'
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -527,9 +528,17 @@ const OAuthConnectionRow = React.forwardRef<HTMLDivElement, OAuthConnectionRowPr
         <div className="flex items-center gap-ds-03 min-w-0">
           {normalizeIcon(icon) ?? <DefaultGlyph size={24} aria-hidden />}
           <div className="flex flex-col min-w-0">
-            <span className="text-ds-md font-semibold text-surface-fg truncate">{name}</span>
+            <TruncatedText className="text-ds-md font-semibold text-surface-fg">{name}</TruncatedText>
             {accountLabel ? (
-              <span className="text-ds-sm text-surface-fg-muted truncate">{accountLabel}</span>
+              // Account labels are usually an email — middle-truncate to keep the domain.
+              // Only a string can be measured/truncated; fall back to a plain clip otherwise.
+              typeof accountLabel === 'string' ? (
+                <TruncatedText mode="middle" className="text-ds-sm text-surface-fg-muted">
+                  {accountLabel}
+                </TruncatedText>
+              ) : (
+                <span className="text-ds-sm text-surface-fg-muted truncate">{accountLabel}</span>
+              )
             ) : connected ? (
               <span className="text-ds-sm text-success-11">Connected</span>
             ) : (

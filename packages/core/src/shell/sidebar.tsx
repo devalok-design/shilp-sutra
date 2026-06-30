@@ -23,6 +23,7 @@ import {
   CollapsibleTrigger,
 } from '../ui/collapsible'
 import { cn } from '../ui/lib/utils'
+import { TruncatedText } from '../ui/truncated-text'
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
@@ -390,12 +391,12 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               </AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-ds-md text-surface-fg">
-                {user.name}
-              </span>
-              <span className="truncate text-ds-sm text-surface-fg-subtle">
-                {user.designation || user.role}
-              </span>
+              <TruncatedText className="text-ds-md text-surface-fg">
+                {user.name ?? ''}
+              </TruncatedText>
+              <TruncatedText className="text-ds-sm text-surface-fg-subtle">
+                {user.designation || user.role || ''}
+              </TruncatedText>
             </div>
           </div>
         )}

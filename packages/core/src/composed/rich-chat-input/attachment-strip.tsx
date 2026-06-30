@@ -7,6 +7,7 @@ import * as React from 'react'
 import { Icon } from '../../ui/icon'
 import { durations } from '../../ui/lib/motion'
 import { Spinner } from '../../ui/spinner'
+import { TruncatedText } from '../../ui/truncated-text'
 
 export interface Attachment {
   id: string
@@ -107,9 +108,9 @@ export function AttachmentStrip({
                   className="text-surface-fg-muted"
                 />
                 {/* max-w-[120px]: component-specific truncation width for file names */}
-                <span className="text-ds-xs text-surface-fg-muted truncate max-w-[120px]">
+                <TruncatedText mode="middle" className="max-w-[120px] text-ds-xs text-surface-fg-muted">
                   {att.name}
-                </span>
+                </TruncatedText>
                 <span className="text-ds-xs text-surface-fg-subtle">
                   {formatSize(att.size)}
                 </span>

@@ -91,7 +91,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
                 </h1>
               )}
               {subtitle && (
-                <p className="text-ds-md text-surface-fg-subtle">
+                <p className="text-ds-md text-surface-fg-subtle line-clamp-2">
                   {subtitle}
                 </p>
               )}

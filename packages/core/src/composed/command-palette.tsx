@@ -455,12 +455,12 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                           <IconProvider size="sm">{normalizeIcon(item.icon)}</IconProvider>
                         </span>
                       )}
-                      <div className="flex flex-1 flex-col">
-                        <span className="text-ds-md">
+                      <div className="flex min-w-0 flex-1 flex-col">
+                        <span className="truncate text-ds-md">
                           {item.renderLabel ? item.renderLabel(query) : item.label}
                         </span>
                         {item.description && (
-                          <span className="text-ds-sm text-surface-fg-subtle">
+                          <span className="line-clamp-1 text-ds-sm text-surface-fg-subtle">
                             {item.description}
                           </span>
                         )}

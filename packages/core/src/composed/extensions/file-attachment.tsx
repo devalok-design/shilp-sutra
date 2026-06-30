@@ -3,6 +3,7 @@ import { mergeAttributes,Node } from '@tiptap/core'
 import { type NodeViewProps,NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react'
 
 import { Icon } from '../../ui/icon'
+import { TruncatedText } from '../../ui/truncated-text'
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
@@ -22,7 +23,7 @@ function FileAttachmentView({ node }: NodeViewProps) {
         contentEditable={false}
       >
         <Icon icon={IconFile} size="sm" className="shrink-0 text-surface-fg-subtle" />
-        <span className="truncate">{node.attrs.name}</span>
+        <TruncatedText mode="middle" className="min-w-0">{node.attrs.name}</TruncatedText>
         <span className="shrink-0 text-surface-fg-subtle">({formatFileSize(node.attrs.size)})</span>
         <Icon icon={IconDownload} size="sm" className="shrink-0 text-surface-fg-subtle" />
       </a>

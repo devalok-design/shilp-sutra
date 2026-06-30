@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from './card'
+import { Badge } from './badge'
 import { Button } from './button'
 
 const meta: Meta<typeof Card> = {
@@ -81,55 +83,6 @@ export const WithFooter: Story = {
   ),
 }
 
-export const AccentLeft: Story = {
-  render: () => (
-    <Card accent="left" className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Sprint Velocity</CardTitle>
-        <CardDescription>Current sprint is on track.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-ds-sm">32 story points completed out of 40 planned.</p>
-      </CardContent>
-    </Card>
-  ),
-}
-
-export const AccentTop: Story = {
-  render: () => (
-    <Card accent="top" accentColor="warning" className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Approaching Deadline</CardTitle>
-        <CardDescription>This task is due within 24 hours.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-ds-sm">Review and finalize the API documentation before end of day.</p>
-      </CardContent>
-    </Card>
-  ),
-}
-
-export const AccentColors: Story = {
-  render: () => {
-    const colors = ['default', 'secondary', 'error', 'success', 'warning', 'info'] as const
-    return (
-      <div className="grid grid-cols-2 gap-ds-04">
-        {colors.map((color) => (
-          <Card key={color} accent="left" accentColor={color} className="w-[280px]">
-            <CardHeader>
-              <CardTitle className="capitalize">{color}</CardTitle>
-              <CardDescription>Left accent with {color} color.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-ds-sm">Card content demonstrating the {color} accent strip.</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    )
-  },
-}
-
 export const Colors: Story = {
   render: () => {
     const colors = ['default', 'accent', 'error', 'success', 'warning', 'info', 'neutral'] as const
@@ -176,4 +129,37 @@ export const Sizes: Story = {
       </div>
     )
   },
+}
+
+export const WithCornerAction: Story = {
+  name: 'CardAction (corner slots)',
+  render: () => (
+    <div className="flex gap-ds-05">
+      <Card className="w-[260px]">
+        <CardAction>
+          <Badge color="accent" size="xs">LIVE</Badge>
+        </CardAction>
+        <CardHeader>
+          <CardTitle>Deploy status</CardTitle>
+          <CardDescription>Top-right badge slot</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-ds-sm text-surface-fg-muted">Production is serving v0.44.0.</p>
+        </CardContent>
+      </Card>
+
+      <Card className="w-[260px]">
+        <CardHeader>
+          <CardTitle>Invoice #2048</CardTitle>
+          <CardDescription>Bottom-right ghost button (tucked)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-ds-sm text-surface-fg-muted">Due in 5 days.</p>
+        </CardContent>
+        <CardAction placement="bottom-right" tuck>
+          <Button variant="ghost" size="sm">Download</Button>
+        </CardAction>
+      </Card>
+    </div>
+  ),
 }

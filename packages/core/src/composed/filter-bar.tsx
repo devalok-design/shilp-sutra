@@ -186,8 +186,8 @@ function FilterMultiSelect({
           className,
         )}
       >
-        <span className="flex items-center gap-ds-02 truncate">
-          <span>{label}</span>
+        <span className="flex min-w-0 items-center gap-ds-02">
+          <span className="truncate">{label}</span>
           {count > 0 && (
             <motion.span
               key={count}

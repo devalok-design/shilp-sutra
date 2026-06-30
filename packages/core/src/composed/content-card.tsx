@@ -55,6 +55,12 @@ export interface ContentCardProps
   footer?: React.ReactNode
 }
 
+/**
+ * @deprecated Use `Card` with `CardHeader` / `CardContent` / `CardFooter` instead.
+ * `ContentCard` duplicated `Card` on the legacy per-slot-padding model; `Card` now covers
+ * every feature (variants, slots, gap-model padding). `ContentCard` will be removed in the
+ * next major — see MIGRATION.md.
+ */
 const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
   (
     {

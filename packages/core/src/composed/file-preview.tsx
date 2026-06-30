@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import { Skeleton } from '../ui/skeleton'
+import { TruncatedText } from '../ui/truncated-text'
 
 // Sub-components: direct imports for non-peer-dep renderers,
 // React.lazy for renderers that pull in optional peer deps
@@ -104,7 +105,11 @@ function FilePreview({
       {/* File info bar */}
       {(fileName || fileSize) && (
         <div className="flex items-center gap-ds-03">
-          {fileName && <span className="text-ds-sm font-semibold text-surface-fg truncate">{fileName}</span>}
+          {fileName && (
+            <TruncatedText mode="middle" className="min-w-0 text-ds-sm font-semibold text-surface-fg">
+              {fileName}
+            </TruncatedText>
+          )}
           {fileSize && <Badge variant="subtle" size="xs">{fileSize}</Badge>}
         </div>
       )}

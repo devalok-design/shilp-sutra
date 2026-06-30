@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
 import { describeConformance } from '../test-utils/conformance'
-import { Card, CardContent, CardFooter,CardHeader } from './card'
+import { Card, CardAction, CardContent, CardFooter,CardHeader } from './card'
 
 describeConformance('Card', (props) => <Card {...props}>Content</Card>, {
   variants: ['default', 'elevated', 'outline', 'flat'],
@@ -16,49 +16,29 @@ describe('Card', () => {
     expect(screen.getByText('Content')).toBeInTheDocument()
   })
 
-  it('renders accent element when accent prop is set', () => {
-    const { container } = render(<Card accent="left" accentColor="error">Content</Card>)
-    const accentEl = container.querySelector('[aria-hidden="true"]')
-    expect(accentEl).toBeInTheDocument()
-    expect(accentEl).toHaveStyle({ '--card-accent-bg': 'var(--color-error-9)' })
+  it('uses the gap model — flex column container owns vertical rhythm, no per-slot py', () => {
+    const { container } = render(
+      <Card>
+        <CardHeader>Header</CardHeader>
+        <CardContent>Body</CardContent>
+        <CardFooter>Footer</CardFooter>
+      </Card>,
+    )
+    expect(container.firstChild).toHaveClass('flex', 'flex-col', 'py-ds-05b', 'gap-ds-04')
   })
 
-  it('does not render accent when prop is not set', () => {
-    const { container } = render(<Card>Content</Card>)
-    expect(container.querySelector('[aria-hidden="true"]')).not.toBeInTheDocument()
-  })
-
-  it('adds overflow-hidden when accent is set', () => {
-    const { container } = render(<Card accent="top">Content</Card>)
-    expect(container.firstChild).toHaveClass('overflow-hidden')
-  })
-
-  it('defaults accentColor to default', () => {
-    const { container } = render(<Card accent="left">Content</Card>)
-    const accentEl = container.querySelector('[aria-hidden="true"]')
-    expect(accentEl).toHaveStyle({ '--card-accent-bg': 'var(--color-accent-9)' })
-  })
-
-  it('supports all accent positions', () => {
-    const positions = ['left', 'top', 'right', 'bottom'] as const
-    positions.forEach(pos => {
-      const { container, unmount } = render(<Card accent={pos}>Content</Card>)
-      expect(container.querySelector('[aria-hidden="true"]')).toBeInTheDocument()
-      unmount()
-    })
-  })
-
-  it('supports all accent colors', () => {
-    const colors = ['default', 'secondary', 'error', 'success', 'warning', 'info'] as const
-    colors.forEach(color => {
-      const { container, unmount } = render(<Card accent="left" accentColor={color}>Content</Card>)
-      expect(container.querySelector('[aria-hidden="true"]')).toBeInTheDocument()
-      unmount()
-    })
+  it('resets first/last child margins on CardContent (gap-model leak guard)', () => {
+    render(
+      <Card>
+        <CardContent>Body</CardContent>
+      </Card>,
+    )
+    const content = screen.getByText('Body').closest('div')!
+    expect(content).toHaveClass('[&>:first-child]:mt-0', '[&>:last-child]:mb-0')
   })
 
   describe('size', () => {
-    it('defaults to md padding on sub-components', () => {
+    it('defaults to md — px-ds-05b slots, py-ds-05b/gap-ds-04 container', () => {
       const { container } = render(
         <Card>
           <CardHeader>Header</CardHeader>
@@ -66,44 +46,82 @@ describe('Card', () => {
           <CardFooter>Footer</CardFooter>
         </Card>,
       )
-      const header = screen.getByText('Header').closest('div')!
-      const content = screen.getByText('Body').closest('div')!
-      const footer = screen.getByText('Footer').closest('div')!
-      expect(header).toHaveClass('p-ds-06')
-      expect(content).toHaveClass('p-ds-06')
-      expect(footer).toHaveClass('p-ds-06')
+      expect(container.firstChild).toHaveClass('py-ds-05b', 'gap-ds-04')
+      expect(screen.getByText('Header').closest('div')!).toHaveClass('px-ds-05b')
+      expect(screen.getByText('Body').closest('div')!).toHaveClass('px-ds-05b')
+      expect(screen.getByText('Footer').closest('div')!).toHaveClass('px-ds-05b')
     })
 
-    it('applies sm padding to sub-components', () => {
-      render(
+    it('applies sm — px-ds-05 slots, py-ds-05/gap-ds-03 container', () => {
+      const { container } = render(
         <Card size="sm">
           <CardHeader>Header</CardHeader>
           <CardContent>Body</CardContent>
           <CardFooter>Footer</CardFooter>
         </Card>,
       )
-      const header = screen.getByText('Header').closest('div')!
-      const content = screen.getByText('Body').closest('div')!
-      const footer = screen.getByText('Footer').closest('div')!
-      expect(header).toHaveClass('p-ds-05')
-      expect(content).toHaveClass('p-ds-05')
-      expect(footer).toHaveClass('p-ds-05')
+      expect(container.firstChild).toHaveClass('py-ds-05', 'gap-ds-03')
+      expect(screen.getByText('Header').closest('div')!).toHaveClass('px-ds-05')
+      expect(screen.getByText('Body').closest('div')!).toHaveClass('px-ds-05')
+      expect(screen.getByText('Footer').closest('div')!).toHaveClass('px-ds-05')
     })
 
-    it('applies lg padding to sub-components', () => {
-      render(
+    it('applies lg — px-ds-06 slots, py-ds-06/gap-ds-05 container', () => {
+      const { container } = render(
         <Card size="lg">
           <CardHeader>Header</CardHeader>
           <CardContent>Body</CardContent>
           <CardFooter>Footer</CardFooter>
         </Card>,
       )
-      const header = screen.getByText('Header').closest('div')!
-      const content = screen.getByText('Body').closest('div')!
-      const footer = screen.getByText('Footer').closest('div')!
-      expect(header).toHaveClass('p-ds-07')
-      expect(content).toHaveClass('p-ds-07')
-      expect(footer).toHaveClass('p-ds-07')
+      expect(container.firstChild).toHaveClass('py-ds-06', 'gap-ds-05')
+      expect(screen.getByText('Header').closest('div')!).toHaveClass('px-ds-06')
+      expect(screen.getByText('Body').closest('div')!).toHaveClass('px-ds-06')
+      expect(screen.getByText('Footer').closest('div')!).toHaveClass('px-ds-06')
+    })
+  })
+
+  describe('CardAction', () => {
+    it('renders its children', () => {
+      render(
+        <Card>
+          <CardAction>
+            <button type="button">More</button>
+          </CardAction>
+        </Card>,
+      )
+      expect(screen.getByRole('button', { name: 'More' })).toBeInTheDocument()
+    })
+
+    it('positions top-right by default with the md inset', () => {
+      render(
+        <Card>
+          <CardAction data-testid="action">x</CardAction>
+        </Card>,
+      )
+      expect(screen.getByTestId('action')).toHaveClass('absolute', 'top-ds-05b', 'right-ds-05b')
+    })
+
+    it('honors placement + inherits the card size inset', () => {
+      render(
+        <Card size="lg">
+          <CardAction data-testid="action" placement="bottom-right">
+            x
+          </CardAction>
+        </Card>,
+      )
+      expect(screen.getByTestId('action')).toHaveClass('bottom-ds-06', 'right-ds-06')
+    })
+
+    it('applies the tuck offset when set', () => {
+      render(
+        <Card>
+          <CardAction data-testid="action" tuck>
+            x
+          </CardAction>
+        </Card>,
+      )
+      expect(screen.getByTestId('action')).toHaveClass('-m-ds-02')
     })
   })
 })

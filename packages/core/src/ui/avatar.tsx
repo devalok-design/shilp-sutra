@@ -81,7 +81,7 @@ const ringShapeMap: Record<string, string> = {
 
 // ── Fallback font sizes that scale with avatar size ─────────────────────────
 const fallbackTextSizeMap: Record<AvatarSize, string> = {
-  xs: 'text-[9px]',
+  xs: 'text-ds-2xs',
   sm: 'text-ds-xs',
   md: 'text-ds-sm',
   lg: 'text-ds-md',

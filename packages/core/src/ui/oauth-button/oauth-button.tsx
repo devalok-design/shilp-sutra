@@ -21,6 +21,7 @@ import { Button, type ButtonProps } from '../button'
 import type { IconInput } from '../lib/icon-input'
 import { normalizeIcon } from '../lib/normalize-icon'
 import { cn } from '../lib/utils'
+import { TruncatedText } from '../truncated-text'
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -306,8 +307,10 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     // Composable: pass `lastUsedSlot` (ReactNode or render fn) to replace
     // the default pill. `lastUsedLabel` swaps just the text inside it.
     // aria-label augments the accessible name with "(last used)".
+    // intentional: a 9px corner pill, smaller than Badge's smallest size (xs).
+    // Not worth a sub-xs Badge size for one call site — kept as a documented exception.
     const defaultBadge = (
-      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-2 py-1 text-[9px] leading-none font-semibold uppercase tracking-wide shadow-overlay">
+      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-2 py-1 text-ds-2xs leading-none font-semibold uppercase tracking-wide shadow-overlay">
         {lastUsedLabel}
       </span>
     )
@@ -525,9 +528,17 @@ const OAuthConnectionRow = React.forwardRef<HTMLDivElement, OAuthConnectionRowPr
         <div className="flex items-center gap-ds-03 min-w-0">
           {normalizeIcon(icon) ?? <DefaultGlyph size={24} aria-hidden />}
           <div className="flex flex-col min-w-0">
-            <span className="text-ds-md font-semibold text-surface-fg truncate">{name}</span>
+            <TruncatedText className="text-ds-md font-semibold text-surface-fg">{name}</TruncatedText>
             {accountLabel ? (
-              <span className="text-ds-sm text-surface-fg-muted truncate">{accountLabel}</span>
+              // Account labels are usually an email — middle-truncate to keep the domain.
+              // Only a string can be measured/truncated; fall back to a plain clip otherwise.
+              typeof accountLabel === 'string' ? (
+                <TruncatedText mode="middle" className="text-ds-sm text-surface-fg-muted">
+                  {accountLabel}
+                </TruncatedText>
+              ) : (
+                <span className="text-ds-sm text-surface-fg-muted truncate">{accountLabel}</span>
+              )
             ) : connected ? (
               <span className="text-ds-sm text-success-11">Connected</span>
             ) : (

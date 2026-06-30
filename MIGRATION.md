@@ -4,6 +4,52 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.44.0 — Card system: gap-model, corner slots, truncation primitive
+
+Three breaking changes (`Card` `accent`/`accentColor` removed, `StatCard` `surface` → `variant`, `ContentCard` deprecated). Everything else is additive.
+
+### Breaking: `Card` `accent` / `accentColor` removed
+
+The decorative colored edge-bar (`accent="left" | "top" | "right" | "bottom"` + `accentColor`) is gone — same anti-convergence reasoning as the 0.43 StatCard rail (a colored bar stacked on a bordered, shadowed card is an AI tell). Replace it with a corner slot or a tinted border:
+
+```diff
+- <Card accent="left" accentColor="success">
+-   <CardHeader><CardTitle>Deploy succeeded</CardTitle></CardHeader>
+- </Card>
++ <Card color="success">                          {/* tints the 1px border */}
++   <CardAction><Badge color="success" size="xs">DEPLOYED</Badge></CardAction>
++   <CardHeader><CardTitle>Deploy succeeded</CardTitle></CardHeader>
++ </Card>
+```
+
+### Breaking: `StatCard` `surface` → `variant`
+
+`StatCard` now composes `<Card>`, so its surface is the Card's `variant` (4-way) instead of the old `surface` (2-way):
+
+```diff
+- <StatCard label="Revenue" value="$48k" surface="raised" />
++ <StatCard label="Revenue" value="$48k" variant="default" />
+- <StatCard label="Revenue" value="$48k" surface="flat" />
++ <StatCard label="Revenue" value="$48k" variant="outline" />
+```
+
+`variant` accepts `default` (ring-in-shadow) | `elevated` | `outline` (border, no shadow) | `flat` (filled, no edge).
+
+### Breaking: `ContentCard` deprecated
+
+`ContentCard` (composed) is deprecated. Compose `Card` + `CardHeader` / `CardContent` / `CardAction` directly — the gap-model padding makes the manual wrapper unnecessary. It still ships in 0.44 (with a `@deprecated` JSDoc) and is scheduled for removal in a later minor.
+
+### New (additive, opt-in — no migration needed)
+
+- `<CardAction>` — a composable corner slot (`placement`: 4 corners, `tuck` for icon-button optical alignment). Use for badges, menu buttons, overflow actions. `Card` is now `relative` to anchor it.
+- `StatCard` `deltaPlacement="block" | "inline"` — inline rides the value's baseline for compact dashboards.
+- `<TruncatedText>` — a text primitive that truncates (`end` / `clamp` / `middle`) AND recovers (tooltip only on real overflow, full string as the accessible name). Applied internally across ~25 file/email/user-text/nav sites.
+
+### Visual changes (no code change required)
+
+- `Card` uses a **gap-model** layout: the container owns vertical padding + inter-slot gap; slots own only horizontal padding. Adding/removing a slot can no longer unbalance the bottom edge. Re-baseline Chromatic if you snapshot the DS.
+- A long filename / email / user name / nav label now truncates with an overflow-aware tooltip instead of wrapping or clipping silently.
+
 ## v0.43.0 — Anti-convergence surface & elevation pass
 
 One breaking change (`StatCard` `accent` removed). Everything else is a visual refresh that needs no code change — but it shifts Chromatic baselines library-wide, so re-baseline if you snapshot the DS.

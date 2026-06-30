@@ -28,6 +28,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../ui/tooltip'
+import { TruncatedText } from '../ui/truncated-text'
 
 // -----------------------------------------------------------------------
 // Types
@@ -297,7 +298,9 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
           <div className="border-b border-surface-border-strong px-ds-05 py-ds-04">
             <p className="text-ds-md text-surface-fg">{user.name}</p>
             {user.email && (
-              <p className="text-ds-sm text-surface-fg-subtle truncate">{user.email}</p>
+              <TruncatedText as="p" mode="middle" className="text-ds-sm text-surface-fg-subtle">
+                {user.email}
+              </TruncatedText>
             )}
           </div>
 

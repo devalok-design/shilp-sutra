@@ -1,5 +1,4 @@
-export { type ColorMode,useColorMode } from './use-color-mode'
-export { useIsMobile } from './use-mobile'
+export { toast } from '../ui/toast'
 export type {
   ToastActionOptions,
   ToastOptions,
@@ -8,6 +7,7 @@ export type {
   ToastUploadOptions,
   UploadFile,
 } from '../ui/toast-types'
-export { toast } from '../ui/toast'
+export { type ColorMode,useColorMode } from './use-color-mode'
+export { useIsMobile } from './use-mobile'
 export { useTouchDevice } from './use-touch-device'
 export { useViewportHeight } from './use-viewport-height'

@@ -4,6 +4,7 @@ import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { Card, CardContent } from './card'
 import { Icon } from './icon'
 import { IconProvider } from './icon-context'
 import type { IconInput } from './lib/icon-input'
@@ -11,14 +12,15 @@ import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
-import { StatFlash, type FlashPreset, type FlashSpec, type FlashSpeed } from './stat-flash'
+import { type FlashPreset, type FlashSpec, type FlashSpeed,StatFlash } from './stat-flash'
 
 /**
  * Props for StatCard — a dashboard metric tile displaying a label, a large numeric value,
  * an optional trend delta (with directional arrow icon), and an optional header icon.
  *
- * **Surface:** `surface="raised"` (default) is elevation-led — the shadow's own 1px ring is the
- * edge, no border (make-kit rule #6). `surface="flat"` is border-led, no shadow.
+ * **Surface:** delegated to `Card` via `variant` — `default` (ring-in-shadow, no border) |
+ * `elevated` | `outline` (border, no shadow) | `flat`. StatCard composes `<Card>`, so the surface,
+ * padding (gap model), and elevation all live in one place.
  *
  * **Accent:** `accentStyle="none"` (default) is neutral; `"icon"` wraps `icon` in an accent chip
  * (`iconFill="soft" | "solid"`); `"tint"` applies a subtle accent surface wash + accent value.
@@ -60,7 +62,7 @@ import { StatFlash, type FlashPreset, type FlashSpec, type FlashSpeed } from './
  * />
  * // These are just a few ways — feel free to combine props creatively!
  */
-export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StatCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'> {
   /** Heading text for the metric. `title` is an alias for `label`. */
   label?: string
   /** Alias for `label` — use whichever feels natural. */
@@ -74,6 +76,8 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
     value: string
     direction: 'up' | 'down' | 'neutral'
   }
+  /** Where the delta sits relative to the value: `block` (below — default) or `inline` (on the value's baseline, to its right). @default 'block' */
+  deltaPlacement?: 'block' | 'inline'
   icon?: IconInput
   loading?: boolean
   /** Comparison period label shown after delta, e.g. "vs last month" */
@@ -82,8 +86,8 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   secondaryLabel?: string
   /** Progress toward a target (0-100). Renders a thin progress bar below the value. */
   progress?: number
-  /** Surface treatment: `raised` (ring-in-shadow, no border — default) or `flat` (border, no shadow). */
-  surface?: 'raised' | 'flat'
+  /** Surface variant, delegated to Card: `default` (ring-in-shadow) | `elevated` | `outline` (border, no shadow) | `flat`. @default 'default' */
+  variant?: 'default' | 'elevated' | 'outline' | 'flat'
   /** How the brand accent reads: `none` (neutral — default), `icon` (accent chip around `icon`), or `tint` (subtle accent surface wash + accent value). */
   accentStyle?: 'none' | 'icon' | 'tint'
   /** When `accentStyle="icon"`: `soft` (tinted chip) or `solid` (filled accent chip). @default 'soft' */
@@ -209,12 +213,13 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       prefix,
       suffix,
       delta,
+      deltaPlacement = 'block',
       icon,
       loading,
       comparisonLabel,
       secondaryLabel,
       progress,
-      surface = 'raised',
+      variant = 'default',
       accentStyle = 'none',
       iconFill = 'soft',
       flash,
@@ -235,19 +240,13 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
 
     if (loading) {
       return (
-        <div
-          ref={ref}
-          className={cn(
-            'rounded-surface bg-surface-raised p-ds-05b',
-            surface === 'flat' ? 'border border-surface-border' : 'shadow-raised',
-            className,
-          )}
-          {...props}
-        >
-          <div className="h-ds-04 w-24 rounded-control-inner bg-skeleton-base animate-pulse mb-ds-05" />
-          <div className="h-ds-sm w-32 rounded-control bg-skeleton-base animate-pulse mb-ds-03" />
-          <div className="h-3 w-16 rounded-control-inner bg-skeleton-base animate-pulse" />
-        </div>
+        <Card ref={ref} variant={variant} className={className} {...props}>
+          <CardContent>
+            <div className="h-ds-04 w-24 rounded-control-inner bg-skeleton-base animate-pulse mb-ds-05" />
+            <div className="h-ds-sm w-32 rounded-control bg-skeleton-base animate-pulse mb-ds-03" />
+            <div className="h-3 w-16 rounded-control-inner bg-skeleton-base animate-pulse" />
+          </CardContent>
+        </Card>
       )
     }
 
@@ -271,6 +270,33 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         : delta?.direction === 'down'
           ? 'text-error-11'
           : 'text-accent-11'
+
+    const deltaNode = delta ? (
+      <motion.div
+        className={cn(
+          'flex items-center gap-ds-02 text-ds-sm font-medium',
+          deltaColour,
+          // block placement owns the gap to the value; inline rides the value's baseline row.
+          deltaPlacement === 'block' && 'mt-ds-03',
+        )}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...springs.smooth, delay: 0.2 }}
+      >
+        <motion.span
+          className="inline-flex"
+          initial={{ opacity: 0.5, scale: 1.4 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={springs.bouncy}
+        >
+          <Icon icon={DeltaIcon} size="sm" />
+        </motion.span>
+        <span>{delta.value}</span>
+        {comparisonLabel && (
+          <span className="text-surface-fg-subtle font-normal">{comparisonLabel}</span>
+        )}
+      </motion.div>
+    ) : null
 
     const cardContent = (
       <>
@@ -319,24 +345,27 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             ) : null}
           </div>
         </div>
-        <div className="overflow-hidden">
-          <motion.p
-            className={cn(
-              'inline-block text-ds-3xl font-semibold',
-              accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
-            )}
-            initial={{ opacity: 0, y: '100%' }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={springs.smooth}
-          >
-            {prefix && (
-              <span className="text-surface-fg-muted text-ds-lg">{prefix}</span>
-            )}
-            <span className="tabular-nums">{value}</span>
-            {suffix && (
-              <span className="text-surface-fg-muted text-ds-lg">{suffix}</span>
-            )}
-          </motion.p>
+        <div className={cn(deltaPlacement === 'inline' && delta && 'flex items-baseline gap-ds-03')}>
+          <div className="overflow-hidden">
+            <motion.p
+              className={cn(
+                'inline-block text-ds-3xl font-semibold',
+                accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
+              )}
+              initial={{ opacity: 0, y: '100%' }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={springs.smooth}
+            >
+              {prefix && (
+                <span className="text-surface-fg-muted text-ds-lg">{prefix}</span>
+              )}
+              <span className="tabular-nums">{value}</span>
+              {suffix && (
+                <span className="text-surface-fg-muted text-ds-lg">{suffix}</span>
+              )}
+            </motion.p>
+          </div>
+          {deltaPlacement === 'inline' && deltaNode}
         </div>
         {secondaryLabel && (
           <motion.p
@@ -357,30 +386,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             <ProgressBar progress={progress} label={resolvedLabel} />
           </motion.div>
         )}
-        {delta && (
-          <motion.div
-            className={cn(
-              'mt-ds-03 flex items-center gap-ds-02 text-ds-sm font-medium',
-              deltaColour,
-            )}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...springs.smooth, delay: 0.2 }}
-          >
-            <motion.span
-              className="inline-flex"
-              initial={{ opacity: 0.5, scale: 1.4 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={springs.bouncy}
-            >
-              <Icon icon={DeltaIcon} size="sm" />
-            </motion.span>
-            <span>{delta.value}</span>
-            {comparisonLabel && (
-              <span className="text-surface-fg-subtle font-normal">{comparisonLabel}</span>
-            )}
-          </motion.div>
-        )}
+        {deltaPlacement === 'block' && deltaNode}
         {footer && (
           <motion.div
             className="mt-ds-04 pt-ds-04 border-t border-surface-border text-ds-sm"
@@ -394,54 +400,58 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       </>
     )
 
-    const cardClasses = cn(
-      'rounded-surface p-ds-05b',
-      accentStyle === 'tint'
-        ? 'bg-linear-to-t from-accent-2 to-surface-raised'
-        : 'bg-surface-raised',
-      surface === 'flat' ? 'border border-surface-border' : 'shadow-raised',
-      isClickable &&
-        'cursor-pointer hover:shadow-raised-hover transition-[box-shadow] duration-fast-02 ease-productive-standard group',
-      className,
-    )
+    // accentStyle="tint" → a subtle accent gradient wash over Card's surface.
+    const tintClass =
+      accentStyle === 'tint' ? 'bg-linear-to-t from-accent-2 to-surface-raised' : undefined
+    const body = <CardContent>{cardContent}</CardContent>
 
+    // href → wrap Card in the framework Link (Card stays the shell; hover-lift inside).
     if (href) {
       return (
         <Link
           ref={ref as React.Ref<HTMLAnchorElement>}
           href={href}
           onClick={onClick}
-          className={cn(cardClasses, 'block no-underline')}
+          className="block no-underline"
           aria-label={computedAriaLabel}
           {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
-          {cardContent}
+          <Card variant={variant} interactive className={tintClass}>
+            {body}
+          </Card>
         </Link>
       )
     }
 
+    // onClick → interactive Card with button semantics + keyboard activation.
+    if (onClick) {
+      return (
+        <Card
+          ref={ref}
+          variant={variant}
+          interactive
+          className={cn(tintClass, className)}
+          role="button"
+          tabIndex={0}
+          aria-label={computedAriaLabel}
+          onClick={onClick}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              onClick()
+            }
+          }}
+          {...props}
+        >
+          {body}
+        </Card>
+      )
+    }
+
     return (
-      <div
-        ref={ref}
-        className={cardClasses}
-        onClick={onClick}
-        role={onClick ? 'button' : undefined}
-        tabIndex={onClick ? 0 : undefined}
-        aria-label={computedAriaLabel}
-        onKeyDown={
-          onClick
-            ? (e: React.KeyboardEvent) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  onClick()
-                }
-              }
-            : undefined
-        }
-        {...props}
-      >
-        {cardContent}
-      </div>
+      <Card ref={ref} variant={variant} className={cn(tintClass, className)} {...props}>
+        {body}
+      </Card>
     )
   },
 )

@@ -35,8 +35,8 @@ import {
 import { Icon } from '../ui/icon'
 import { IconProvider } from '../ui/icon-context'
 import { getIsMac, getModifierDisplay,matchesKeybinding } from '../ui/lib/keybinding'
-import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { springs,tweens } from '../ui/lib/motion'
+import { normalizeIcon } from '../ui/lib/normalize-icon'
 import { cn } from '../ui/lib/utils'
 import { VisuallyHidden } from '../ui/visually-hidden'
 

@@ -35,6 +35,7 @@ import StarterKit from '@tiptap/starter-kit'
 import * as React from 'react'
 
 import { useColorMode } from '../hooks/use-color-mode'
+import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 import type { EmojiSet } from './emoji-picker'
@@ -158,9 +159,9 @@ function LinkButton({ editor }: { editor: Editor }) {
             placeholder="https://..."
             className="h-ds-sm w-[240px] rounded-control-inner border border-surface-border-strong bg-surface-overlay px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-hidden"
           />
-          <button type="submit" className="h-ds-sm rounded-control-inner bg-accent-9 px-ds-03 text-ds-sm text-accent-fg hover:bg-accent-10">
+          <Button type="submit" variant="solid" size="sm">
             Apply
-          </button>
+          </Button>
         </form>
       )}
     </div>

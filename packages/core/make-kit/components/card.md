@@ -5,6 +5,7 @@ The default container for any panel-style content that sits **on** the page.
 ```tsx
 import {
   Card,
+  CardAction,
   CardHeader,
   CardTitle,
   CardDescription,
@@ -65,8 +66,13 @@ Card (root)
 | Prop | Type | Notes |
 |---|---|---|
 | `interactive` | `boolean` | Adds hover lift + `cursor-pointer`. Make the whole card clickable. Provide `onClick` and `aria-label`. |
-| `accent` | `'left'\|'top'\|'right'\|'bottom'` | Decorative colored bar on the named edge. |
-| `accentColor` | `'default'\|'accent'\|'error'\|'success'\|'warning'\|'info'` | Color of the accent bar. |
+
+### CardAction (corner slot)
+
+| Prop | Type | Notes |
+|---|---|---|
+| `placement` | `'top-right'` (default) `\| 'top-left' \| 'bottom-right' \| 'bottom-left'` | Which corner. Inset matches the card's content padding. |
+| `tuck` | `boolean` | Pull a step toward the corner so an icon button's glyph (not its padding box) aligns to the content edge. |
 
 ## Examples
 
@@ -107,13 +113,17 @@ Card (root)
 </Card>
 ```
 
-**Accent bar — pipeline state:**
+**Corner slot — status badge / overflow action:**
 ```tsx
-<Card accent="left" accentColor="success">
+<Card>
+  <CardAction><Badge color="success" size="xs">DEPLOYED</Badge></CardAction>
   <CardHeader>
     <CardTitle>Deploy succeeded</CardTitle>
     <CardDescription>main · 2 min ago</CardDescription>
   </CardHeader>
+  <CardAction placement="bottom-right" tuck>
+    <Button variant="ghost" size="sm">View logs</Button>
+  </CardAction>
 </Card>
 ```
 

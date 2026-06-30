@@ -1096,11 +1096,14 @@ See `Button` docs for the public API.
     color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" (border accent color)
     size: "sm" | "md" | "lg" (padding — propagated to CardHeader/CardContent/CardFooter via context)
     interactive: boolean (enables hover shadow lift + pointer cursor)
-    accent: "left" | "top" | "right" | "bottom" (render a colored accent bar on the specified edge)
-    accentColor: "default" | "accent" | "error" | "success" | "warning" | "info" (color of the accent bar; default maps to accent-9)
+
+### CardAction
+    placement: "top-right" (default) | "top-left" | "bottom-right" | "bottom-left"
+    tuck: boolean (pull a step toward the corner so an icon button's glyph aligns to the content edge)
 
 ## Compound Components
     Card (root)
+      CardAction      ← absolutely-positioned corner slot (badge, icon button, menu)
       CardHeader      ← inherits size from Card context
         CardTitle
         CardDescription
@@ -1124,15 +1127,21 @@ See `Button` docs for the public API.
 ## Composability
 - **Size cascades through context** — Card's `size` prop sets padding on CardHeader, CardContent, and CardFooter via `CardSizeContext`. Don't set padding classes on sub-components directly; override via `className` if needed.
 - **Not a compound state machine** — Card, CardHeader, CardTitle, etc. are purely structural. No open/close state.
-- **Accent bar is independent:** The `accent` / `accentColor` props render a decorative colored edge bar (absolutely positioned, `aria-hidden`). Works alongside `color` (which tints the border) — the two can stack for layered emphasis.
+- **Corner slots via `CardAction`:** Pin a badge, icon button, or menu to any corner (`placement`), inset to match the card's content padding. `tuck` pulls an icon button so its glyph (not its padding box) aligns to the content edge. Replaces the removed `accent` decorative bar — composition, not a bespoke prop. Card is `relative` to anchor it.
+- **`color` paints the border, never a stacked rail:** `color` tints the 1px edge (semantic accent/error/success/…). The DS never stacks a border + drop shadow or a colored rail on top (make-kit rule #6 — that reads as an AI tell).
 - **Interactive cards:** Set `interactive={true}` + `onClick` for clickable cards (entire surface becomes the button). Add `aria-label` on the Card root when there's no visible heading. For complex multi-action cards, prefer standard Card with explicit buttons inside.
-- **ContentCard (composed)** is a higher-level wrapper with built-in header/footer slots and title/actions — use it for list-row-style cards; use Card directly for custom layouts.
+- **ContentCard (composed) is deprecated** — compose `Card` + `CardHeader`/`CardContent`/`CardAction` directly instead.
 
 ## Gotchas
 - Use `interactive` prop for clickable cards — adds hover lift and pointer cursor
 - Don't override CardHeader/CardContent/CardFooter padding via className if you want the size cascade to work — set size on Card instead
 
 ## Changes
+### v0.44.0
+- **BREAKING** Removed `accent` / `accentColor` (the colored edge-bar / left-rail). Use `<CardAction>` for corner content, or `color` for a tinted border. The DS no longer ships a stacked rail (make-kit rule #6).
+- **Added** `<CardAction>` compound — composable corner slot (4 placements, `tuck`).
+- **Changed** Gap-model padding: the container owns vertical `py` + inter-slot `gap`; slots own only horizontal `px`. Adding/removing a slot can't unbalance the bottom edge. Card is now `relative`.
+
 ### v0.31.0
 - **Added** `color` prop: semantic border color (accent, error, success, warning, info, neutral)
 - **Added** `size` prop: `sm | md | lg` — padding propagated to sub-components via React context
@@ -4041,12 +4050,13 @@ import { SplitButton } from '@devalok/shilp-sutra'
     prefix: string (before value, e.g. "$")
     suffix: string (after value, e.g. "users")
     delta: { value: string, direction: "up" | "down" | "neutral" }
+    deltaPlacement: "block" | "inline" (block = below value [default]; inline = on the value's baseline)
     icon: ReactNode | ComponentType<{ className?: string }>
     loading: boolean (renders skeleton)
     comparisonLabel: string (shown after delta, e.g. "vs last month")
     secondaryLabel: string (below main value, e.g. "of $50,000 target")
     progress: number (0-100, renders thin progress bar below value)
-    surface: "raised" | "flat" (raised = ring-in-shadow, no border [default]; flat = border, no shadow)
+    variant: "default" | "elevated" | "outline" | "flat" (default = ring-in-shadow, no border; elevated = stronger shadow; outline = border, no shadow; flat = filled, no edge) — delegated to Card
     accentStyle: "none" | "icon" | "tint" (none [default]; icon = accent chip around icon; tint = accent surface wash + accent value)
     iconFill: "soft" | "solid" (chip style when accentStyle="icon"; default soft)
     flash: "up" | "down" | "goal" | "record" | "alert" | "live" | { tone, icon } (opt-in entrance flash; requires icon)
@@ -4086,7 +4096,7 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - **High-density metric card** — optimized for dashboards. Everything optional except `value`. Mix and match features (delta, sparkline, progress, secondary label, footer) per metric's needs.
 - **Router integration via href:** Internally uses `LinkContext` to resolve framework-specific Link components (Next.js, react-router). Set `href` in a LinkProvider-wrapped tree to get seamless client-side navigation without custom asChild wiring.
 - **Interactive modes:** `onClick` makes the entire card a button; `href` makes it a link. Mutually exclusive — href wins if both are set.
-- **Accent (composable, opt-in):** `accentStyle="icon"` wraps `icon` in an accent chip (`iconFill="soft" | "solid"`); `accentStyle="tint"` applies a subtle accent surface wash + accent value. `surface` picks edge-vs-elevation. No colored rail — the DS never stacks a border + drop shadow (make-kit rule #6). Trend health reads from `delta.direction` (up=green, down=red).
+- **Accent (composable, opt-in):** `accentStyle="icon"` wraps `icon` in an accent chip (`iconFill="soft" | "solid"`); `accentStyle="tint"` applies a subtle accent surface wash + accent value. `variant` picks edge-vs-elevation. No colored rail — the DS never stacks a border + drop shadow (make-kit rule #6). Trend health reads from `delta.direction` (up=green, down=red).
 - **Flash motion (opt-in):** `flash` mounts a toned state glyph (`up`/`down`/`goal`/`record`/`alert`/`live`, or `{ tone, icon }`) that settles to `icon`; `flashSpeed` tunes timing. Reuses the standalone `StatFlash` primitive. Honors `prefers-reduced-motion`.
 - **Sparkline:** Pure SVG, lightweight — no chart library. For rich charts use Chart components. Minimum 2 data points.
 - **Icon auto-sizing:** Accepts `ComponentType<{ className }>` OR `ReactNode`. The component prop (e.g. `icon={IconBolt}`) is preferred — icon is rendered at a consistent size.
@@ -4099,6 +4109,10 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - `sparkline` needs at least 2 data points to render
 
 ## Changes
+### v0.44.0
+- **BREAKING** Renamed `surface` → `variant`, widened to a 4-way scale (`default` | `elevated` | `outline` | `flat`). StatCard now composes `<Card>`, so surface, gap-model padding, and elevation all live in one place. Migration: `surface="raised"` → `variant="default"`, `surface="flat"` → `variant="outline"`.
+- **Added** `deltaPlacement` (`"block"` [default] | `"inline"`) — inline rides the value's baseline for compact dashboards.
+
 ### v0.43.0
 - **BREAKING** Removed `accent` (colored left-rail). Use `accentStyle` (`"icon"` | `"tint"`) or rely on `delta` for trend colour.
 - **Added** `surface`, `accentStyle`, `iconFill`, `flash`, `flashSpeed`. New standalone `StatFlash` primitive. Base no longer stacks border + shadow.
@@ -4860,6 +4874,55 @@ export default function RootLayout({ children }) {
 
 ### v0.1.0
 - **Added** Initial release
+# TruncatedText
+
+- Import: @devalok/shilp-sutra/ui/truncated-text
+- Server-safe: No
+- Category: ui
+
+## Props
+    children: string (REQUIRED — the full text; always the accessible name, even when shortened)
+    mode: "end" | "clamp" | "middle" (end [default] = single-line ellipsis; clamp = multi-line; middle = keep both ends)
+    lines: number (lines to show in mode="clamp"; default 2)
+    as: "span" | "p" | "div" (element to render; default "span")
+    tooltip: boolean (show the full text in a tooltip when — and only when — actually clipped; default true)
+    title: string (override the full-text accessible name / tooltip; defaults to children)
+    className: string
+
+## Defaults
+    mode="end", lines=2, as="span", tooltip=true
+
+## Example
+```jsx
+<TruncatedText>{user.name}</TruncatedText>
+
+// Filenames / emails — keep the extension / domain:
+<TruncatedText mode="middle">{fileName}</TruncatedText>     // report…v7.pdf
+
+// Multi-line description with a 2-line clamp:
+<TruncatedText as="p" mode="clamp" lines={2}>{description}</TruncatedText>
+
+// In a flex row, the shrinking item still needs min-w-0:
+<div className="flex items-center gap-ds-03">
+  <Avatar … />
+  <TruncatedText className="min-w-0 flex-1">{user.name}</TruncatedText>
+</div>
+```
+
+## Composability
+- **Truncates AND recovers in one place:** `end`/`clamp` are pure CSS (full text stays in the DOM → screen-reader safe). `middle` measures the element and JS-shortens the visible string but keeps the full string as the accessible name. A tooltip appears only when `scrollWidth`/`scrollHeight` actually exceeds the box (measured via ResizeObserver) — no tooltip noise on text that fits.
+- **`mode="middle"` for identifiers:** filenames (extension), emails (domain), paths, hashes — end-ellipsis destroys the meaningful tail; middle keeps both ends. Middle is not native CSS, so it's measured + recomputed on resize.
+- **The flexbox gotcha:** `truncate` (and `middle`) do nothing on a flex/grid child unless that item has `min-w-0` (or an explicit width). TruncatedText can't set that on its parent — add `min-w-0` at the call site.
+- **Don't truncate everything:** page titles/H1, toast bodies, validation messages, and numbers must show fully (a truncated number is a wrong number). Use this for bounded list/nav/metadata text.
+
+## Gotchas
+- `children` must be a string (it's measured + used as the accessible name) — not arbitrary ReactNode.
+- In a flex row, add `min-w-0` to the TruncatedText (or its column) or nothing truncates.
+- `mode="middle"` clips to the largest middle-truncated string that fits; the last glyph may be sub-pixel-clipped by overflow-hidden — the tooltip + aria-label always carry the full string.
+
+## Changes
+### v0.44.0
+- **Added** Initial release — end/clamp/middle truncation with overflow-aware tooltip recovery.
 # VisuallyHidden
 
 - Import: @devalok/shilp-sutra/ui/visually-hidden

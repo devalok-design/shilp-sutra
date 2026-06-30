@@ -11,6 +11,7 @@ import type { IconInput } from '../lib/icon-input'
 import { motionProps,springs } from '../lib/motion'
 import { normalizeIcon } from '../lib/normalize-icon'
 import { cn } from '../lib/utils'
+import { Textarea } from '../textarea'
 import { Tooltip, TooltipContent,TooltipTrigger } from '../tooltip'
 
 // ── Context ──────────────────────────────────────────────────────────────
@@ -94,7 +95,7 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
             className={cn(
               'group/message relative flex',
               placement === 'end' ? 'justify-end' : 'justify-start',
-              highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-control-inner',
+              highlight === 'mention' && 'bg-accent-2 pl-ds-03 rounded-control-inner',
               highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
               className,
             )}
@@ -339,13 +340,14 @@ function MessageEditableBody({
   if (isEditing) {
     return (
       <div className="text-[13px] leading-relaxed">
-        <textarea
+        <Textarea
           ref={textareaRef}
           value={editDraft}
           onChange={(e) => setEditDraft(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
-          className="w-full resize-none rounded-control-inner border border-surface-border-strong bg-surface-raised-hover px-ds-02 py-ds-01 text-[13px] leading-relaxed text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+          // compact inline-edit overrides on top of the Textarea base
+          className="resize-none rounded-control-inner bg-surface-raised-hover px-ds-02 py-ds-01 text-[13px] leading-relaxed"
           rows={2}
         />
         <div className="mt-ds-01 text-ds-xs text-surface-fg-subtle/50">

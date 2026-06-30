@@ -44,7 +44,7 @@ const BreadcrumbLink = React.forwardRef<
     <Comp
       ref={ref}
       className={cn(
-        'transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 rounded-control-inner',
+        'min-w-0 truncate max-w-[20ch] transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 rounded-control-inner',
         className,
       )}
       {...props}
@@ -58,7 +58,7 @@ const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWit
     <span
       ref={ref}
       aria-current="page"
-      className={cn('font-medium text-surface-fg', className)}
+      className={cn('min-w-0 truncate max-w-[20ch] font-medium text-surface-fg', className)}
       {...props}
     />
   ),

@@ -3,6 +3,7 @@
 import { IconPlayerPause,IconPlayerPlay } from '@tabler/icons-react'
 import * as React from 'react'
 
+import { Button } from '../../ui/button'
 import { cn } from '../../ui/lib/utils'
 import { AudioWaveform } from './audio-waveform'
 
@@ -128,19 +129,22 @@ const AudioPlayer = React.forwardRef<HTMLDivElement, AudioPlayerProps>(
         <audio ref={audioRef} src={audioSrc} preload="metadata" />
 
         {/* Play/Pause button */}
-        <button
+        <Button
           type="button"
+          variant="solid"
+          shape="pill"
+          size="icon-sm"
           onClick={togglePlay}
           onKeyDown={handleKeyDown}
           aria-label={playing ? 'Pause voice message' : 'Play voice message'}
-          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-pill bg-accent-9 text-accent-fg hover:bg-accent-10 active:scale-95 transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2"
+          className="shrink-0 active:scale-95"
         >
           {playing ? (
             <IconPlayerPause size={16} stroke={2} aria-hidden="true" />
           ) : (
             <IconPlayerPlay size={16} stroke={2} aria-hidden="true" />
           )}
-        </button>
+        </Button>
 
         {/* Waveform with seek */}
         <AudioWaveform

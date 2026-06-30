@@ -12,6 +12,7 @@ import * as React from 'react'
 import { useCallback,useRef } from 'react'
 
 import { useIsMobile } from '../hooks/use-mobile'
+import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { formatRelativeTime } from '../ui/lib/date-utils'
 import { durations } from '../ui/lib/motion'
@@ -33,6 +34,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '../ui/tooltip'
+import { TruncatedText } from '../ui/truncated-text'
 
 // -----------------------------------------------------------------------
 // Types
@@ -190,14 +192,15 @@ function NotificationItem({
 
       {/* Content */}
       <div className="min-w-0 flex-1">
-        <p
+        <TruncatedText
+          as="p"
           className={cn(
-            'truncate text-ds-md text-surface-fg',
+            'text-ds-md text-surface-fg',
             !notification.isRead && 'font-semibold',
           )}
         >
           {notification.title}
-        </p>
+        </TruncatedText>
         {notification.body && (
           <p className="mt-ds-01 line-clamp-2 text-ds-sm text-surface-fg-subtle">
             {notification.body}
@@ -212,9 +215,9 @@ function NotificationItem({
               <span className="text-surface-fg-subtle">
                 &middot;
               </span>
-              <span className="truncate text-ds-sm text-surface-fg-subtle">
+              <TruncatedText className="text-ds-sm text-surface-fg-subtle">
                 {notification.project.title}
-              </span>
+              </TruncatedText>
             </>
           )}
         </div>
@@ -223,25 +226,19 @@ function NotificationItem({
         {notification.actions && notification.actions.length > 0 && (
           <div className="mt-ds-03 flex items-center gap-ds-02">
             {notification.actions.map((action) => (
-              <button
+              <Button
                 key={action.label}
-                type="button"
+                size="sm"
+                variant={action.variant === 'primary' ? 'solid' : 'ghost'}
+                color={action.variant === 'danger' ? 'error' : 'accent'}
                 onClick={(e) => {
                   e.stopPropagation()
                   action.onClick(notification.id)
                 }}
                 onKeyDown={(e) => e.stopPropagation()}
-                className={cn(
-                  'rounded-control px-ds-03 py-ds-01 text-ds-sm font-medium transition-colors duration-fast-02 ease-productive-standard',
-                  action.variant === 'primary'
-                    ? 'bg-accent-9 text-accent-fg hover:bg-accent-10'
-                    : action.variant === 'danger'
-                      ? 'text-error-11 hover:bg-error-3'
-                      : 'text-surface-fg-muted hover:bg-surface-raised-hover',
-                )}
               >
                 {action.label}
-              </button>
+              </Button>
             ))}
           </div>
         )}

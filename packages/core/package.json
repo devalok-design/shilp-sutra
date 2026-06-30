@@ -432,6 +432,11 @@
       "import": "./dist/ui/tooltip.js",
       "default": "./dist/ui/tooltip.js"
     },
+    "./ui/truncated-text": {
+      "types": "./dist/ui/truncated-text.d.ts",
+      "import": "./dist/ui/truncated-text.js",
+      "default": "./dist/ui/truncated-text.js"
+    },
     "./ui/visually-hidden": {
       "types": "./dist/ui/visually-hidden.d.ts",
       "import": "./dist/ui/visually-hidden.js",

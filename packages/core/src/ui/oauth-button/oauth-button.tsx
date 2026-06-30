@@ -306,6 +306,8 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     // Composable: pass `lastUsedSlot` (ReactNode or render fn) to replace
     // the default pill. `lastUsedLabel` swaps just the text inside it.
     // aria-label augments the accessible name with "(last used)".
+    // intentional: a 9px corner pill, smaller than Badge's smallest size (xs).
+    // Not worth a sub-xs Badge size for one call site — kept as a documented exception.
     const defaultBadge = (
       <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-2 py-1 text-[9px] leading-none font-semibold uppercase tracking-wide shadow-overlay">
         {lastUsedLabel}

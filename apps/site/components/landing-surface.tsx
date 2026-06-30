@@ -151,7 +151,7 @@ export function LandingSurface() {
                         className={[
                           'flex items-start gap-ds-03 px-ds-03 -mx-ds-03 py-ds-03 rounded-control border-b border-surface-border-subtle last:border-b-0',
                           'hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard',
-                          a.isNew && 'border-l-2 border-l-accent-9 pl-ds-03 bg-accent-2',
+                          a.isNew && 'bg-accent-2',
                         ]
                           .filter(Boolean)
                           .join(' ')}

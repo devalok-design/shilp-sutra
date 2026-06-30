@@ -277,7 +277,7 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
   return (
     <article
       style={style}
-      className="relative overflow-hidden rounded-surface border border-accent-7 shadow-raised bg-gradient-to-br from-accent-2 via-accent-3 to-accent-2"
+      className="relative overflow-hidden rounded-surface border border-accent-7 bg-linear-to-br from-accent-2 via-accent-3 to-accent-2"
     >
       {/* Decorative brand glow in the corner — purely atmospheric. Sized
           smaller on mobile so it doesn't dominate the layout. */}
@@ -361,7 +361,7 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
 
           {/* Mock product chrome — proves the brand on a real-feeling
               artifact. Hidden below sm to avoid cramping a phone viewport. */}
-          <div className="hidden sm:flex rounded-control border border-accent-7 bg-surface-base shadow-overlay p-ds-04 flex-col gap-ds-03">
+          <div className="hidden sm:flex rounded-control bg-surface-base shadow-overlay p-ds-04 flex-col gap-ds-03">
             <div className="flex items-center gap-ds-02 min-w-0">
               <span aria-hidden className="w-2 h-2 rounded-pill bg-error-9 shrink-0" />
               <span aria-hidden className="w-2 h-2 rounded-pill bg-warning-9 shrink-0" />
@@ -407,7 +407,7 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
 
   const body = (
     <article style={style} className={cardClass}>
-      <div className="relative h-16 bg-gradient-to-br from-accent-3 to-accent-2 border-b border-surface-border-subtle overflow-hidden shrink-0">
+      <div className="relative h-16 bg-linear-to-br from-accent-3 to-accent-2 border-b border-surface-border-subtle overflow-hidden shrink-0">
         <span
           aria-hidden
           className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-pill opacity-40 blur-2xl"

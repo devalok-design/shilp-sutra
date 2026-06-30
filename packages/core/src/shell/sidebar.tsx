@@ -13,6 +13,7 @@
 import * as React from 'react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Button } from '../ui/button'
 import { IconProvider } from '../ui/icon-context'
 import type { IconInput } from '../ui/lib/icon-input'
 import { normalizeIcon } from '../ui/lib/normalize-icon'
@@ -485,20 +486,23 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                     <p className="text-ds-sm text-surface-fg">{footer.promo.text}</p>
                     {footer.promo.action && (
                       footer.promo.action.href ? (
-                        <Link
-                          href={footer.promo.action.href}
-                          onClick={footer.promo.action.onClick}
-                          className="inline-flex self-start rounded-control bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg transition-colors hover:bg-accent-10"
-                        >
-                          {footer.promo.action.label}
-                        </Link>
+                        <Button asChild variant="solid" size="sm" className="self-start">
+                          <Link
+                            href={footer.promo.action.href}
+                            onClick={footer.promo.action.onClick}
+                          >
+                            {footer.promo.action.label}
+                          </Link>
+                        </Button>
                       ) : (
-                        <button
+                        <Button
+                          variant="solid"
+                          size="sm"
+                          className="self-start"
                           onClick={footer.promo.action.onClick}
-                          className="inline-flex self-start rounded-control bg-accent-9 px-ds-04 py-ds-02 text-ds-sm font-medium text-accent-fg transition-colors hover:bg-accent-10"
                         >
                           {footer.promo.action.label}
-                        </button>
+                        </Button>
                       )
                     )}
                   </div>

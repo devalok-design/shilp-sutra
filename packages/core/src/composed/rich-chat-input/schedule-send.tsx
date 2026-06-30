@@ -14,7 +14,7 @@ import {
 } from '../../ui/dialog'
 import { Icon } from '../../ui/icon'
 import { durations } from '../../ui/lib/motion'
-import { cn } from '../../ui/lib/utils'
+import { ToggleGroup, ToggleGroupItem } from '../../ui/toggle-group'
 import { CalendarGrid } from '../date-picker/calendar-grid'
 import { useCalendar } from '../date-picker/use-calendar'
 
@@ -127,28 +127,18 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
       </select>
 
       {/* AM/PM toggle */}
-      <div className="inline-flex rounded-control border border-surface-border-strong overflow-hidden">
-        <button
-          type="button"
-          onClick={() => togglePeriod(false)}
-          className={cn(
-            'px-ds-02b py-ds-01 text-ds-xs font-medium transition-colors duration-fast-01',
-            !isPM ? 'bg-accent-9 text-white' : 'bg-surface-raised text-surface-fg-subtle hover:bg-surface-raised-hover',
-          )}
-        >
-          AM
-        </button>
-        <button
-          type="button"
-          onClick={() => togglePeriod(true)}
-          className={cn(
-            'px-ds-02b py-ds-01 text-ds-xs font-medium transition-colors duration-fast-01',
-            isPM ? 'bg-accent-9 text-white' : 'bg-surface-raised text-surface-fg-subtle hover:bg-surface-raised-hover',
-          )}
-        >
-          PM
-        </button>
-      </div>
+      <ToggleGroup
+        type="single"
+        value={isPM ? 'PM' : 'AM'}
+        onValueChange={(v) => {
+          if (v === 'AM') togglePeriod(false)
+          else if (v === 'PM') togglePeriod(true)
+        }}
+        size="sm"
+      >
+        <ToggleGroupItem value="AM">AM</ToggleGroupItem>
+        <ToggleGroupItem value="PM">PM</ToggleGroupItem>
+      </ToggleGroup>
     </div>
   )
 }
@@ -282,14 +272,14 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
       <div className="p-ds-04" style={{ minWidth: 270 }}>
         <div className="mb-ds-03 flex items-center justify-between">
           <p className="text-ds-sm font-medium text-surface-fg">Pick date & time</p>
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="icon-xs"
             onClick={() => setShowPicker(false)}
-            className="inline-flex items-center justify-center rounded-control p-ds-01 text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg transition-colors"
             aria-label="Back to presets"
           >
             <Icon icon={IconX} size="sm" />
-          </button>
+          </Button>
         </div>
 
         <CompactDateTimeEntry
@@ -318,34 +308,34 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
         Schedule send
       </p>
       {presets.map((preset, i) => (
-        <button
+        <Button
           key={i}
-          type="button"
+          variant="ghost"
+          fullWidth
           onClick={() => handlePreset(preset.date)}
-          className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
         >
           <Icon icon={IconClock} size="sm" className="shrink-0 text-surface-fg-muted" />
           {preset.label}
-        </button>
+        </Button>
       ))}
       <div className="mx-ds-02 my-ds-02 h-px bg-surface-border" />
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        fullWidth
         onClick={() => setShowPicker(true)}
-        className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
       >
         <Icon icon={IconCalendarEvent} size="sm" className="shrink-0 text-accent-11" />
         Pick date & time...
-      </button>
+      </Button>
       {onOpenDialog && (
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          fullWidth
           onClick={() => { onOpenDialog(); onClose() }}
-          className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
         >
           <Icon icon={IconCalendarEvent} size="sm" className="shrink-0 text-surface-fg-muted" />
           Open full picker...
-        </button>
+        </Button>
       )}
     </div>
   )
@@ -436,23 +426,25 @@ export function ScheduleBanner({ date, onClear, onEdit }: { date: Date; onClear:
           Scheduled for {formatScheduleTime(date)}
         </span>
         {onEdit && (
-          <button
-            type="button"
+          <Button
+            variant="soft"
+            size="icon-xs"
+            className="shrink-0"
             onClick={onEdit}
-            className="inline-flex shrink-0 items-center justify-center rounded-control-inner p-ds-01 hover:bg-accent-3 transition-colors"
             aria-label="Edit schedule"
           >
             <Icon icon={IconPencil} size="xs" />
-          </button>
+          </Button>
         )}
-        <button
-          type="button"
+        <Button
+          variant="soft"
+          size="icon-xs"
+          className="shrink-0"
           onClick={onClear}
-          className="inline-flex shrink-0 items-center justify-center rounded-control-inner p-ds-01 hover:bg-accent-3 transition-colors"
           aria-label="Cancel schedule"
         >
           <Icon icon={IconX} size="xs" />
-        </button>
+        </Button>
       </div>
     </motion.div>
   )

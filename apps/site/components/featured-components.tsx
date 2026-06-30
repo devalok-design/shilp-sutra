@@ -66,7 +66,7 @@ function FeatureCard({
   children: React.ReactNode
 }) {
   return (
-    <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-surface bg-surface-raised border border-transparent shadow-raised transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard hover:border-surface-border-strong hover:shadow-raised-hover hover:-translate-y-px">
+    <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-surface bg-surface-raised shadow-raised transition-[box-shadow,translate] duration-fast-02 ease-productive-standard hover:shadow-raised-hover hover:-translate-y-px">
       <header className="flex flex-col">
         <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{slug}</span>
         <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>

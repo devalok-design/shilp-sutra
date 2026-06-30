@@ -236,7 +236,7 @@ export default function FigmaMakePage() {
               </Text>
             </header>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-04">
-              <Card color="warning" accent="left" accentColor="warning">
+              <Card variant="outline" color="warning">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-ds-03">
                     <IconClockExclamation size={18} className="text-warning-11" />

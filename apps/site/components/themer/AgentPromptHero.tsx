@@ -46,7 +46,7 @@ export function AgentPromptHero({ prompt }: AgentPromptHeroProps) {
             onClick={copy}
             className="inline-flex items-center gap-ds-02 rounded-control bg-accent-9 px-ds-06 py-ds-04 text-ds-md font-semibold text-accent-fg shadow-raised hover:bg-accent-10 transition-colors"
           >
-            {copied ? '✓ Copied' : 'Copy prompt'}
+            {copied ? 'Copied' : 'Copy prompt'}
           </button>
           <button
             type="button"

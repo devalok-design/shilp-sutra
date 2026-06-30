@@ -80,7 +80,7 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
           aria-label="Brand presets"
           className={[
             'absolute mt-ds-02 w-72 max-w-[calc(100vw-2rem)] rounded-control',
-            'border border-surface-border bg-surface-overlay shadow-overlay z-popover overflow-hidden',
+            'bg-surface-overlay shadow-overlay z-popover overflow-hidden',
             align === 'start' ? 'left-0' : 'right-0',
           ].join(' ')}
         >

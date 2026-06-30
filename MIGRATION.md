@@ -4,6 +4,38 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.43.0 — Anti-convergence surface & elevation pass
+
+One breaking change (`StatCard` `accent` removed). Everything else is a visual refresh that needs no code change — but it shifts Chromatic baselines library-wide, so re-baseline if you snapshot the DS.
+
+### Breaking: `StatCard` `accent` prop removed
+
+The colored left-rail (`accent="default" | "success" | "warning" | "error" | "info"`) is gone. An accent rail on a rounded, shadowed card is the single most recognizable "AI-generated" tell, and it stacked a third edge on a card that already carried a border + shadow.
+
+Migrate — pick the treatment that fits, or drop it (the `delta` arrow already carries trend direction + colour):
+
+```diff
+- <StatCard label="Revenue" value="$48k" accent="success" />
++ <StatCard label="Revenue" value="$48k" accentStyle="tint" />
++ <StatCard label="Revenue" value="$48k" icon={<IconCurrencyDollar />} accentStyle="icon" />
++ <StatCard label="Revenue" value="$48k" />
+```
+
+`accent` mapped a semantic colour to the rail. The new model separates concerns: **state** rides the `delta` (semantic up/down/neutral colour), **brand accent** rides `accentStyle` (`none` | `icon` | `tint`). There is no per-semantic-colour card accent — semantic status belongs on the `delta`, not the card edge.
+
+### New (additive, opt-in — no migration needed)
+
+- `StatCard`: `surface="raised" | "flat"`, `accentStyle`, `iconFill`, `flash` + `flashSpeed`.
+- New `StatFlash` component — a state→identity entrance (a toned glyph settles to the metric icon), `prefers-reduced-motion` gated.
+- `AppSidebar`: composable `navItemRadius` (`sm` | `md` | `lg` | `pill`, default `md`).
+
+### Visual changes (no code change required)
+
+- Overlays and cards no longer stack a visible border with a drop shadow — the shadow tokens' own 1px ring is the edge (make-kit Guidelines rule #6). The ring is strengthened, with a light ring in dark mode via the new `--shadow-edge-ring` token.
+- `Card` `default` / `elevated` dropped their border (ring-in-shadow). Use `variant="outline"` for a border-led card.
+- Sidebar active item: the accent rail was removed; active is now marked by tint + accent text + weight.
+- `InputOTP` cells are border-led (dropped a redundant shadow).
+
 ## v0.42.0 — Figma Make kit guidelines (no migration needed)
 
 **Non-breaking minor.** No consumer code changes required.

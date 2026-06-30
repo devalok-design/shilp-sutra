@@ -168,8 +168,8 @@ describe('StatCard', () => {
     expect(screen.getByText('$48,200')).toBeInTheDocument()
   })
 
-  it('renders surface="flat" without crashing', () => {
-    render(<StatCard label="Projects" value={128} surface="flat" />)
+  it('renders variant="flat" without crashing', () => {
+    render(<StatCard label="Projects" value={128} variant="flat" />)
     expect(screen.getByText('Projects')).toBeInTheDocument()
   })
 

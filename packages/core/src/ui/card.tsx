@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
-import { motionProps,springs, tweens } from './lib/motion'
+import { motionProps, springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 type CardSize = 'sm' | 'md' | 'lg'
@@ -12,7 +12,11 @@ type CardSize = 'sm' | 'md' | 'lg'
 const CardSizeContext = React.createContext<CardSize>('md')
 
 const cardVariants = cva(
-  'rounded-surface text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
+  // Gap model: the container owns the vertical edge (py) and inter-slot rhythm (gap);
+  // slots own only horizontal padding (px). No per-slot py, no pt-0, no per-element
+  // margins — adding/removing a slot can't unbalance the bottom edge (make-kit rule:
+  // shadow ring is the edge, gap is the rhythm).
+  'flex flex-col rounded-surface text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
   {
     variants: {
       variant: {
@@ -34,15 +38,25 @@ const cardVariants = cva(
         info: 'border-info-7',
         neutral: '',
       },
+      // size drives the container's vertical padding + inter-slot gap; slots read
+      // the same size from context for their horizontal padding.
       size: {
-        sm: '',
-        md: '',
-        lg: '',
+        sm: 'py-ds-05 gap-ds-03',
+        md: 'py-ds-05b gap-ds-04',
+        lg: 'py-ds-06 gap-ds-05',
       },
     },
     defaultVariants: { variant: 'default', color: 'default', size: 'md' },
   },
 )
+
+/** Horizontal padding per size — applied to every slot so full-bleed children
+ *  (dividers, media) can opt out, while the container owns the vertical edges. */
+const slotPxClasses: Record<CardSize, string> = {
+  sm: 'px-ds-05',
+  md: 'px-ds-05b',
+  lg: 'px-ds-06',
+}
 
 /**
  * Props for Card — a general-purpose content container with 4 elevation/style variants and
@@ -94,75 +108,25 @@ const cardVariants = cva(
  * </Card>
  * // These are just a few ways — feel free to combine props creatively!
  */
-const accentColorMap: Record<string, string> = {
-  default: 'var(--color-accent-9)',
-  secondary: 'var(--color-secondary-9)',
-  error: 'var(--color-error-9)',
-  success: 'var(--color-success-9)',
-  warning: 'var(--color-warning-9)',
-  info: 'var(--color-info-9)',
-}
-
 export interface CardProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
     VariantProps<typeof cardVariants> {
   interactive?: boolean
-  /** Position of the accent border strip */
-  accent?: 'left' | 'top' | 'right' | 'bottom'
-  /** Semantic color key or any CSS color string for the accent strip. Requires `accent` to be set. @default 'default' */
-  accentColor?: 'default' | 'secondary' | 'error' | 'success' | 'warning' | 'info' | (string & {})
-  /** Width of the accent strip in pixels @default 3 */
-  accentWidth?: 2 | 3 | 4 | 6
 }
 
 export type { CardSize }
 
-const accentSizeClasses: Record<string, Record<number, string>> = {
-  left:   { 2: 'w-[2px]', 3: 'w-[3px]', 4: 'w-[4px]', 6: 'w-[6px]' },
-  top:    { 2: 'h-[2px]', 3: 'h-[3px]', 4: 'h-[4px]', 6: 'h-[6px]' },
-  right:  { 2: 'w-[2px]', 3: 'w-[3px]', 4: 'w-[4px]', 6: 'w-[6px]' },
-  bottom: { 2: 'h-[2px]', 3: 'h-[3px]', 4: 'h-[4px]', 6: 'h-[6px]' },
-}
-
-const accentPositionClasses: Record<string, string> = {
-  left: 'left-0 top-0 bottom-0 rounded-l-surface',
-  top: 'top-0 left-0 right-0 rounded-t-surface',
-  right: 'right-0 top-0 bottom-0 rounded-r-surface',
-  bottom: 'bottom-0 left-0 right-0 rounded-b-surface',
-}
-
-function getAccentPositionClasses(position: string, width: number): string {
-  return `${accentPositionClasses[position] ?? ''} ${accentSizeClasses[position]?.[width] ?? ''}`
-}
-
-function resolveAccentColor(color: string): string {
-  return accentColorMap[color] ?? color
-}
-
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, color, size, interactive, accent, accentColor = 'default', accentWidth = 3, children, ...props }, ref) => {
+  ({ className, variant, color, size, interactive, children, ...props }, ref) => {
     const resolvedSize: CardSize = size ?? 'md'
     const classes = cn(
       cardVariants({ variant, color, size }),
-      accent && 'relative overflow-hidden',
       interactive && 'hover:shadow-raised-hover cursor-pointer transition-shadow duration-fast-02 ease-productive-standard',
       className,
     )
 
-    const accentEl = accent ? (
-      <motion.span
-        aria-hidden="true"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={tweens.fade}
-        className={cn('absolute pointer-events-none bg-[var(--card-accent-bg)]', getAccentPositionClasses(accent, accentWidth))}
-        style={{ '--card-accent-bg': resolveAccentColor(accentColor) } as React.CSSProperties}
-      />
-    ) : null
-
     const content = (
       <CardSizeContext.Provider value={resolvedSize}>
-        {accentEl}
         {children}
       </CardSizeContext.Provider>
     )
@@ -191,12 +155,6 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 )
 Card.displayName = 'Card'
 
-const headerSizeClasses: Record<CardSize, string> = {
-  sm: 'p-ds-05',
-  md: 'p-ds-06',
-  lg: 'p-ds-07',
-}
-
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -205,7 +163,11 @@ const CardHeader = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn('flex flex-col space-y-ds-02b', headerSizeClasses[size], className)}
+      className={cn(
+        'flex flex-col gap-ds-02b [&>:first-child]:mt-0 [&>:last-child]:mb-0',
+        slotPxClasses[size],
+        className,
+      )}
       {...props}
     />
   )
@@ -236,28 +198,26 @@ const CardDescription = React.forwardRef<
 ))
 CardDescription.displayName = 'CardDescription'
 
-const contentSizeClasses: Record<CardSize, string> = {
-  sm: 'p-ds-05 pt-0',
-  md: 'p-ds-06 pt-0',
-  lg: 'p-ds-07 pt-0',
-}
-
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
   const size = React.useContext(CardSizeContext)
   return (
-    <div ref={ref} className={cn(contentSizeClasses[size], className)} {...props} />
+    <div
+      ref={ref}
+      className={cn(
+        // Reset first/last child margins so a raw <p>/<h*>'s UA margin can't leak
+        // past the slot onto the container's gap-model padding (the bottom-heavy bug).
+        '[&>:first-child]:mt-0 [&>:last-child]:mb-0',
+        slotPxClasses[size],
+        className,
+      )}
+      {...props}
+    />
   )
 })
 CardContent.displayName = 'CardContent'
-
-const footerSizeClasses: Record<CardSize, string> = {
-  sm: 'p-ds-05 pt-0',
-  md: 'p-ds-06 pt-0',
-  lg: 'p-ds-07 pt-0',
-}
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
@@ -267,7 +227,7 @@ const CardFooter = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn('flex items-center', footerSizeClasses[size], className)}
+      className={cn('flex items-center gap-ds-03', slotPxClasses[size], className)}
       {...props}
     />
   )

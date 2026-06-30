@@ -11,14 +11,16 @@ import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
+import { Card, CardContent } from './card'
 import { StatFlash, type FlashPreset, type FlashSpec, type FlashSpeed } from './stat-flash'
 
 /**
  * Props for StatCard — a dashboard metric tile displaying a label, a large numeric value,
  * an optional trend delta (with directional arrow icon), and an optional header icon.
  *
- * **Surface:** `surface="raised"` (default) is elevation-led — the shadow's own 1px ring is the
- * edge, no border (make-kit rule #6). `surface="flat"` is border-led, no shadow.
+ * **Surface:** delegated to `Card` via `variant` — `default` (ring-in-shadow, no border) |
+ * `elevated` | `outline` (border, no shadow) | `flat`. StatCard composes `<Card>`, so the surface,
+ * padding (gap model), and elevation all live in one place.
  *
  * **Accent:** `accentStyle="none"` (default) is neutral; `"icon"` wraps `icon` in an accent chip
  * (`iconFill="soft" | "solid"`); `"tint"` applies a subtle accent surface wash + accent value.
@@ -60,7 +62,7 @@ import { StatFlash, type FlashPreset, type FlashSpec, type FlashSpeed } from './
  * />
  * // These are just a few ways — feel free to combine props creatively!
  */
-export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StatCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'> {
   /** Heading text for the metric. `title` is an alias for `label`. */
   label?: string
   /** Alias for `label` — use whichever feels natural. */
@@ -82,8 +84,8 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   secondaryLabel?: string
   /** Progress toward a target (0-100). Renders a thin progress bar below the value. */
   progress?: number
-  /** Surface treatment: `raised` (ring-in-shadow, no border — default) or `flat` (border, no shadow). */
-  surface?: 'raised' | 'flat'
+  /** Surface variant, delegated to Card: `default` (ring-in-shadow) | `elevated` | `outline` (border, no shadow) | `flat`. @default 'default' */
+  variant?: 'default' | 'elevated' | 'outline' | 'flat'
   /** How the brand accent reads: `none` (neutral — default), `icon` (accent chip around `icon`), or `tint` (subtle accent surface wash + accent value). */
   accentStyle?: 'none' | 'icon' | 'tint'
   /** When `accentStyle="icon"`: `soft` (tinted chip) or `solid` (filled accent chip). @default 'soft' */
@@ -214,7 +216,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       comparisonLabel,
       secondaryLabel,
       progress,
-      surface = 'raised',
+      variant = 'default',
       accentStyle = 'none',
       iconFill = 'soft',
       flash,
@@ -235,19 +237,13 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
 
     if (loading) {
       return (
-        <div
-          ref={ref}
-          className={cn(
-            'rounded-surface bg-surface-raised p-ds-05b',
-            surface === 'flat' ? 'border border-surface-border' : 'shadow-raised',
-            className,
-          )}
-          {...props}
-        >
-          <div className="h-ds-04 w-24 rounded-control-inner bg-skeleton-base animate-pulse mb-ds-05" />
-          <div className="h-ds-sm w-32 rounded-control bg-skeleton-base animate-pulse mb-ds-03" />
-          <div className="h-3 w-16 rounded-control-inner bg-skeleton-base animate-pulse" />
-        </div>
+        <Card ref={ref} variant={variant} className={className} {...props}>
+          <CardContent>
+            <div className="h-ds-04 w-24 rounded-control-inner bg-skeleton-base animate-pulse mb-ds-05" />
+            <div className="h-ds-sm w-32 rounded-control bg-skeleton-base animate-pulse mb-ds-03" />
+            <div className="h-3 w-16 rounded-control-inner bg-skeleton-base animate-pulse" />
+          </CardContent>
+        </Card>
       )
     }
 
@@ -394,54 +390,58 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       </>
     )
 
-    const cardClasses = cn(
-      'rounded-surface p-ds-05b',
-      accentStyle === 'tint'
-        ? 'bg-linear-to-t from-accent-2 to-surface-raised'
-        : 'bg-surface-raised',
-      surface === 'flat' ? 'border border-surface-border' : 'shadow-raised',
-      isClickable &&
-        'cursor-pointer hover:shadow-raised-hover transition-[box-shadow] duration-fast-02 ease-productive-standard group',
-      className,
-    )
+    // accentStyle="tint" → a subtle accent gradient wash over Card's surface.
+    const tintClass =
+      accentStyle === 'tint' ? 'bg-linear-to-t from-accent-2 to-surface-raised' : undefined
+    const body = <CardContent>{cardContent}</CardContent>
 
+    // href → wrap Card in the framework Link (Card stays the shell; hover-lift inside).
     if (href) {
       return (
         <Link
           ref={ref as React.Ref<HTMLAnchorElement>}
           href={href}
           onClick={onClick}
-          className={cn(cardClasses, 'block no-underline')}
+          className="block no-underline"
           aria-label={computedAriaLabel}
           {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
-          {cardContent}
+          <Card variant={variant} interactive className={tintClass}>
+            {body}
+          </Card>
         </Link>
       )
     }
 
+    // onClick → interactive Card with button semantics + keyboard activation.
+    if (onClick) {
+      return (
+        <Card
+          ref={ref}
+          variant={variant}
+          interactive
+          className={cn(tintClass, className)}
+          role="button"
+          tabIndex={0}
+          aria-label={computedAriaLabel}
+          onClick={onClick}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              onClick()
+            }
+          }}
+          {...props}
+        >
+          {body}
+        </Card>
+      )
+    }
+
     return (
-      <div
-        ref={ref}
-        className={cardClasses}
-        onClick={onClick}
-        role={onClick ? 'button' : undefined}
-        tabIndex={onClick ? 0 : undefined}
-        aria-label={computedAriaLabel}
-        onKeyDown={
-          onClick
-            ? (e: React.KeyboardEvent) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  onClick()
-                }
-              }
-            : undefined
-        }
-        {...props}
-      >
-        {cardContent}
-      </div>
+      <Card ref={ref} variant={variant} className={cn(tintClass, className)} {...props}>
+        {body}
+      </Card>
     )
   },
 )

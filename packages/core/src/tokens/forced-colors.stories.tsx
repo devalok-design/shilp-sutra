@@ -287,10 +287,10 @@ export const ComponentMatrix: Story = {
             </CardHeader>
             <CardContent>Body content here.</CardContent>
           </Card>
-          <Card variant="outline" accent="left" accentColor="success">
+          <Card variant="outline" color="success">
             <CardHeader>
-              <CardTitle>With accent strip</CardTitle>
-              <CardDescription>Strip color remaps to Highlight.</CardDescription>
+              <CardTitle>Colored border</CardTitle>
+              <CardDescription>Border color remaps to Highlight.</CardDescription>
             </CardHeader>
             <CardContent>Body content here.</CardContent>
           </Card>

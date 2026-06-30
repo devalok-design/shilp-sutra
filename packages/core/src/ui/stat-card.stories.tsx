@@ -13,9 +13,9 @@ const meta: Meta<typeof StatCard> = {
       control: 'select',
       options: ['none', 'icon', 'tint'],
     },
-    surface: {
+    variant: {
       control: 'inline-radio',
-      options: ['raised', 'flat'],
+      options: ['default', 'elevated', 'outline', 'flat'],
     },
     iconFill: {
       control: 'inline-radio',
@@ -164,12 +164,12 @@ export const AccentIconSolid: Story = {
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }
 
-export const SurfaceFlat: Story = {
+export const VariantFlat: Story = {
   args: {
     label: 'Active Projects',
     value: 128,
     delta: { value: '+12%', direction: 'up' },
-    surface: 'flat',
+    variant: 'flat',
   },
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }
@@ -332,7 +332,7 @@ export const LoadingFlat: Story = {
     label: 'Revenue',
     value: 0,
     loading: true,
-    surface: 'flat',
+    variant: 'flat',
   },
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }

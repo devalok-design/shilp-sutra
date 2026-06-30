@@ -2,6 +2,18 @@
 
 ## 0.44.0
 
+<!-- breaking-summary:start -->
+
+> ### ⚠️ Breaking in 0.44.0
+>
+> - `Card`: removed `accent` / `accentColor` (the colored edge-bar) — use `<CardAction>` for corner content or `color` for a tinted border.
+> - `StatCard`: `surface` → `variant` (`raised`→`default`, `flat`→`outline`); now composes `<Card>`.
+> - `ContentCard` deprecated — compose `Card` + slots directly (still ships; removal in a later minor).
+>
+> See [`MIGRATION.md`](../../MIGRATION.md) and `docs/recipes/upgrading.md` before bumping.
+
+<!-- breaking-summary:end -->
+
 ### Minor Changes
 
 - [#87](https://github.com/devalok-design/shilp-sutra/pull/87) [`7abf33d`](https://github.com/devalok-design/shilp-sutra/commit/7abf33d26c04871e5cf8dc1c74be6b8892451bca) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Card system overhaul: gap-model padding, composable corner slots, a truncation primitive, and an anti-convergence sweep.

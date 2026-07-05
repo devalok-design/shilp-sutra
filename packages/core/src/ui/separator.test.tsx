@@ -5,7 +5,7 @@ import { describeConformance } from '../test-utils/conformance'
 import { Separator } from './separator'
 
 describeConformance('Separator', (props) => <Separator {...props} />, {
-  variants: ['default', 'gradient', 'gradient-left', 'gradient-right'],
+  variants: ['default'],
 })
 
 describe('Separator', () => {

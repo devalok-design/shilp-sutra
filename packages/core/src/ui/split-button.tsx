@@ -1,13 +1,12 @@
 'use client'
 
-import { autoUpdate, computePosition, flip, offset, type Placement,shift } from '@floating-ui/dom'
+import { type Placement } from '@floating-ui/dom'
 import { type VariantProps } from 'class-variance-authority'
-import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 
 import { buttonVariants } from './button'
-import { durations } from './lib/motion'
 import { cn } from './lib/utils'
+import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -160,70 +159,19 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
     },
     ref,
   ) {
-    const [internalOpen, setInternalOpen] = React.useState(false)
-    const isControlled = openProp !== undefined
-    const isOpen = isControlled ? openProp : internalOpen
-
-    const anchorRef = React.useRef<HTMLDivElement>(null)
-    const floatingRef = React.useRef<HTMLDivElement>(null)
-    const menuId = React.useId()
-
-    const setOpen = React.useCallback(
-      (value: boolean) => {
-        if (onOpenChange) onOpenChange(value)
-        if (!isControlled) setInternalOpen(value)
-      },
-      [onOpenChange, isControlled],
-    )
-
-    // ── Floating UI positioning ──
-    React.useEffect(() => {
-      if (!isOpen || !anchorRef.current || !floatingRef.current) return
-
-      const anchor = anchorRef.current
-      const floating = floatingRef.current
-
-      const update = () => {
-        computePosition(anchor, floating, {
-          placement: placementProp,
-          middleware: [
-            offset(8),
-            flip({ fallbackPlacements: ['bottom-end', 'top-start', 'bottom-start'] }),
-            shift({ padding: 8 }),
-          ],
-        }).then(({ x, y }) => {
-          Object.assign(floating.style, { left: `${x}px`, top: `${y}px` })
-        })
-      }
-
-      const cleanup = autoUpdate(anchor, floating, update)
-      return cleanup
-    }, [isOpen, placementProp])
-
-    // ── Close on outside click ──
-    React.useEffect(() => {
-      if (!isOpen) return
-      const handleClick = (e: MouseEvent) => {
-        const target = e.target as Node
-        if (
-          anchorRef.current?.contains(target) ||
-          floatingRef.current?.contains(target)
-        ) return
-        setOpen(false)
-      }
-      document.addEventListener('mousedown', handleClick)
-      return () => document.removeEventListener('mousedown', handleClick)
-    }, [isOpen, setOpen])
-
-    // ── Close on Escape ──
-    React.useEffect(() => {
-      if (!isOpen) return
-      const handleKey = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setOpen(false)
-      }
-      document.addEventListener('keydown', handleKey)
-      return () => document.removeEventListener('keydown', handleKey)
-    }, [isOpen, setOpen])
+    // Map the floating-ui `placement` (e.g. 'top-end') to Radix side + align.
+    // Positioning, focus-in/return, outside-click, and Escape all come from the
+    // Popover primitive now — no hand-rolled floating-ui / listeners.
+    const [side, align] = React.useMemo(() => {
+      const [s, a] = placementProp.split('-')
+      return [
+        s as 'top' | 'right' | 'bottom' | 'left',
+        (a === 'start' ? 'start' : a === 'end' ? 'end' : 'center') as
+          | 'start'
+          | 'center'
+          | 'end',
+      ]
+    }, [placementProp])
 
     const halfClasses = getHalfClasses(variant, color)
     const divider = dividerColor[variant][color] ?? dividerColor[variant].accent
@@ -232,8 +180,32 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
       ? { width: typeof triggerWidth === 'number' ? `${triggerWidth}px` : triggerWidth }
       : undefined
 
+    // Dropdown trigger (the chevron half). PopoverTrigger wires aria-haspopup /
+    // aria-expanded / focus-return for us.
+    const dropdownTrigger = (
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          disabled={disabled}
+          aria-label={dropdownLabel}
+          className={cn(
+            'inline-flex items-center justify-center select-none',
+            'transition-colors duration-fast-01 ease-productive-standard',
+            'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
+            'disabled:pointer-events-none disabled:opacity-action-disabled',
+            halfClasses,
+            heightClass[size],
+            triggerPadding[size],
+          )}
+          style={triggerStyle}
+        >
+          {dropdownIcon ?? <ChevronDown />}
+        </button>
+      </PopoverTrigger>
+    )
+
     return (
-      <>
+      <Popover open={openProp} onOpenChange={onOpenChange}>
         {/* Button group */}
         <div
           ref={ref}
@@ -242,7 +214,6 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
           className={cn('relative inline-flex', className)}
         >
           <div
-            ref={anchorRef}
             className={cn(
               'inline-flex items-stretch overflow-hidden',
               radiusClass[size],
@@ -252,28 +223,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
           >
             {triggerSide === 'left' && (
               <>
-                {/* Dropdown trigger (left) */}
-                <button
-                  type="button"
-                  onClick={() => setOpen(!isOpen)}
-                  disabled={disabled}
-                  aria-label={dropdownLabel}
-                  aria-haspopup="menu"
-                  aria-expanded={isOpen}
-                  aria-controls={isOpen ? menuId : undefined}
-                  className={cn(
-                    'inline-flex items-center justify-center select-none',
-                    'transition-colors duration-fast-01 ease-productive-standard',
-                    'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
-                    'disabled:pointer-events-none disabled:opacity-action-disabled',
-                    halfClasses,
-                    heightClass[size],
-                    triggerPadding[size],
-                  )}
-                  style={triggerStyle}
-                >
-                  {dropdownIcon ?? <ChevronDown />}
-                </button>
+                {dropdownTrigger}
                 <div className={cn('w-px self-stretch', divider)} />
               </>
             )}
@@ -302,56 +252,24 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
             {triggerSide === 'right' && (
               <>
                 <div className={cn('w-px self-stretch', divider)} />
-                {/* Dropdown trigger (right) */}
-                <button
-                  type="button"
-                  onClick={() => setOpen(!isOpen)}
-                  disabled={disabled}
-                  aria-label={dropdownLabel}
-                  aria-haspopup="menu"
-                  aria-expanded={isOpen}
-                  aria-controls={isOpen ? menuId : undefined}
-                  className={cn(
-                    'inline-flex items-center justify-center select-none',
-                    'transition-colors duration-fast-01 ease-productive-standard',
-                    'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
-                    'disabled:pointer-events-none disabled:opacity-action-disabled',
-                    halfClasses,
-                    heightClass[size],
-                    triggerPadding[size],
-                  )}
-                  style={triggerStyle}
-                >
-                  {dropdownIcon ?? <ChevronDown />}
-                </button>
+                {dropdownTrigger}
               </>
             )}
           </div>
         </div>
 
-        {/* Floating dropdown panel */}
-        <AnimatePresence>
-          {isOpen && dropdownContent && (
-            <div
-              ref={floatingRef}
-              id={menuId}
-              role="menu"
-              className="fixed z-popover"
-              style={{ top: 0, left: 0 }}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: durations.moderate01 }}
-                className="rounded-overlay bg-surface-overlay shadow-floating"
-              >
-                {dropdownContent}
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
-      </>
+        {/* Dropdown panel — Popover handles focus, Escape, outside-click, return */}
+        {dropdownContent && (
+          <PopoverContent
+            side={side}
+            align={align}
+            sideOffset={8}
+            className="w-auto min-w-[10rem] p-ds-01"
+          >
+            {dropdownContent}
+          </PopoverContent>
+        )}
+      </Popover>
     )
   },
 )

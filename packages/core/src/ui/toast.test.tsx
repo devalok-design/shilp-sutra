@@ -50,7 +50,7 @@ describe('Toast — rendering', () => {
     }, { timeout: 3000 })
   })
 
-  it('renders an error toast with accent bar and icon', async () => {
+  it('renders an error toast — no accent rail by default, faint error tint + icon', async () => {
     render(<TestWrapper />)
     act(() => {
       toast.error('Failed to save')
@@ -64,9 +64,27 @@ describe('Toast — rendering', () => {
     )
     expect(alert).toBeDefined()
     expect(alert).toHaveAttribute('aria-live', 'assertive')
-    // Accent bar is the first child div with bg-error-9
-    const accentBar = alert!.querySelector('.bg-error-9')
-    expect(accentBar).toBeInTheDocument()
+    // The accent rail is off by default (the AI-tell we removed). The rail is the
+    // only element with rounded-l-overlay-sm; the timer bar keeps its error color.
+    expect(alert!.querySelector('.rounded-l-overlay-sm')).toBeNull()
+    // Status is carried by the faint error surface tint instead.
+    expect(alert).toHaveClass('bg-error-2')
+  })
+
+  it('renders the accent rail only when showAccent is opted in', async () => {
+    render(<TestWrapper />)
+    act(() => {
+      toast.error('Failed to save', { showAccent: true })
+    })
+    await waitFor(() => {
+      expect(screen.getByText('Failed to save')).toBeVisible()
+    }, { timeout: 3000 })
+    const alert = screen.getAllByRole('alert').find((el) =>
+      el.textContent?.includes('Failed to save'),
+    )
+    const rail = alert!.querySelector('.rounded-l-overlay-sm')
+    expect(rail).toBeInTheDocument()
+    expect(rail).toHaveClass('bg-error-9')
   })
 
   it('renders a warning toast', async () => {

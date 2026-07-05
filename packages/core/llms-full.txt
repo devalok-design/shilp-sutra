@@ -1094,24 +1094,30 @@ See `Button` docs for the public API.
 ## Props
     variant: "default" | "elevated" | "outline" | "flat"
     color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" (border accent color)
-    size: "sm" | "md" | "lg" (padding — propagated to CardHeader/CardContent/CardFooter via context)
+    size: "sm" | "md" | "lg" (sets --card-spacing / --card-gap once; container + slots + CardAction + CardBleed all read the pair)
+    orientation: "vertical" (default) | "horizontal" (row layout — media pane + <CardSection> column)
     interactive: boolean (enables hover shadow lift + pointer cursor)
 
 ### CardAction
     placement: "top-right" (default) | "top-left" | "bottom-right" | "bottom-left"
     tuck: boolean (pull a step toward the corner so an icon button's glyph aligns to the content edge)
 
+### CardBleed
+    side: "x" (default) | "top" | "bottom" | "y" | "all" (which card padding to negate; top/bottom/y for direct children — inherit the card radius; x/all for content inside a slot)
+
 ## Compound Components
-    Card (root)
-      CardAction      ← absolutely-positioned corner slot (badge, icon button, menu)
-      CardHeader      ← inherits size from Card context
+    Card (root)         ← owns py + gap via --card-spacing / --card-gap
+      CardBleed         ← escape hatch from the padding (full-bleed media, edge bands)
+      CardAction        ← absolutely-positioned corner slot (badge, icon button, menu)
+      CardHeader        ← px-(--card-spacing) only
         CardTitle
         CardDescription
-      CardContent     ← inherits size from Card context
-      CardFooter      ← inherits size from Card context
+      CardContent       ← px-(--card-spacing) only
+      CardFooter        ← px-(--card-spacing) only
+      CardSection       ← vertical column that re-establishes py + gap (horizontal cards)
 
 ## Defaults
-    variant="default", color="default", size="md"
+    variant="default", color="default", size="md", orientation="vertical"
 
 ## Example
 ```jsx
@@ -1125,7 +1131,10 @@ See `Button` docs for the public API.
 ```
 
 ## Composability
-- **Size cascades through context** — Card's `size` prop sets padding on CardHeader, CardContent, and CardFooter via `CardSizeContext`. Don't set padding classes on sub-components directly; override via `className` if needed.
+- **Size is one CSS variable** — Card's `size` prop assigns `--card-spacing`/`--card-gap`; slots, CardAction corners, and CardBleed negations all read the same pair (no React context). Retune a card with a single override: `className="[--card-spacing:var(--spacing-ds-07)]"`. Never add `p-*` classes to Card or a slot.
+- **Direct children are full-width** — only slots are inset, so a `<Separator />` or tinted band between slots is edge-to-edge for free. Text must live inside a slot; dev builds warn on bare text/`<p>` children.
+- **Full-bleed via `<CardBleed>`** — negates the same variable the padding reads (Radix `Inset` / Polaris `Bleed` equivalent). `side="top"/"bottom"` for cover media as direct children; `side="x"` to escape a slot's inset. Never `x`/`all` on a direct child (overflows).
+- **Horizontal cards** — `orientation="horizontal"` makes the root a padding-less row; wrap the text column in `<CardSection>` to restore the py/gap rhythm; the media pane owns the left edge (`rounded-l-surface overflow-hidden`).
 - **Not a compound state machine** — Card, CardHeader, CardTitle, etc. are purely structural. No open/close state.
 - **Corner slots via `CardAction`:** Pin a badge, icon button, or menu to any corner (`placement`), inset to match the card's content padding. `tuck` pulls an icon button so its glyph (not its padding box) aligns to the content edge. Replaces the removed `accent` decorative bar — composition, not a bespoke prop. Card is `relative` to anchor it.
 - **`color` paints the border, never a stacked rail:** `color` tints the 1px edge (semantic accent/error/success/…). The DS never stacks a border + drop shadow or a colored rail on top (make-kit rule #6 — that reads as an AI tell).
@@ -1134,9 +1143,16 @@ See `Button` docs for the public API.
 
 ## Gotchas
 - Use `interactive` prop for clickable cards — adds hover lift and pointer cursor
-- Don't override CardHeader/CardContent/CardFooter padding via className if you want the size cascade to work — set size on Card instead
+- Don't add padding classes to Card or its slots — override `--card-spacing` instead
+- Bare text as a direct child of Card gets no horizontal inset (wrap it in CardContent); dev builds warn
 
 ## Changes
+### v0.45.0
+- **Changed** Size axis now assigns `--card-spacing`/`--card-gap` CSS variables instead of per-size literal classes; `CardSizeContext` and the per-size slot/corner lookup maps are gone. Rendered spacing is identical (sm 16/8, md 20/12, lg 24/16). Consumer `className` padding overrides on slots keep working via tw-merge; anything targeting the old literal classes (`px-ds-05b` etc.) in CSS selectors must switch to the variables.
+- **Added** `<CardBleed side>` — full-bleed escape hatch that negates `--card-spacing` (cover images, edge bands, in-slot breakouts).
+- **Added** `orientation="horizontal"` + `<CardSection>` — sanctioned horizontal media card layout.
+- **Added** Dev-only warning when Card receives bare text / textual elements as direct children.
+
 ### v0.44.0
 - **BREAKING** Removed `accent` / `accentColor` (the colored edge-bar / left-rail). Use `<CardAction>` for corner content, or `color` for a tinted border. The DS no longer ships a stacked rail (make-kit rule #6).
 - **Added** `<CardAction>` compound — composable corner slot (4 placements, `tuck`).
@@ -1621,8 +1637,8 @@ Animated bouncing dots with a text description of who is typing.
   value={color}
   onChange={setColor}
   presets={[
-    { hex: '#EF4444', label: 'Danger' },
-    { hex: '#10B981', label: 'Success' },
+    { hex: '#C53637', label: 'Danger' },
+    { hex: '#308639', label: 'Success' },
   ]}
 />
 
@@ -1932,7 +1948,7 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 
 **Virtualization:** `virtualRows={true}` enables row virtualization via `@tanstack/react-virtual`. Turn it on for 1000+ row datasets; the scroll container must have a bounded height.
 
-**Density integration:** `defaultDensity="compact"` is the Karm-style dense mode (h-9 rows). DataTableToolbar's density switcher updates this at runtime; the prop sets the initial state only.
+**Density integration:** density is forwarded to `Table`'s `density` prop, which sets `--table-py` (compact 4 / standard 8 / comfortable 12px → rows ≈ 29 / 37 / 45px; header tracks it). DataTableToolbar's density switcher updates this at runtime; the prop sets the initial state only.
 
 ## Gotchas
 - Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/data-table`, NOT the `ui` barrel
@@ -1945,6 +1961,13 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - `virtualRows={true}` requires a bounded scroll container — unbounded height silently disables virtualization
 
 ## Changes
+### v0.45.0
+- **Fixed** Expander a11y per the expando-row spec: `aria-expanded` on the toggle button, visually-hidden "Expand rows" column header; chevron rotation uses `duration-fast-02 ease-productive-standard`.
+- **Added** Expanded-row content animates open/closed (height + opacity via framer, `springs.smooth`), self-guarded with `useReducedMotion` — instant swap for reduced-motion users. Virtualized tables keep the instant reveal (a height animation would fight the virtualizer's measurements).
+- **Changed** Density now drives Table's `--table-py` variable (rows ≈ 29 / 37 / 45px; was 29 / 53 / 85). Per-cell `cellPadding` threading removed from context.
+- **Fixed** Hover/selected states visible on cards: row/sort-button/expander hover use `surface-raised-hover` (was the invisible `surface-raised`); expanded row is a `surface-base` recess; sticky header bg is `surface-raised`; empty state uses `py-ds-07` (was raw `h-24`).
+- **Changed** Mobile card view composes `<Card size="sm" variant="outline">` (was a hand-rolled 12px bordered box).
+
 ### v0.29.0
 - **Fixed** Controlled selection infinite re-render loop — inline `getRowId` callback caused `onSelectionChange` effect to fire every render, creating a setState cycle with `selectedIds`. Now uses a stable ref for `getRowId`.
 
@@ -3462,10 +3485,10 @@ const { size, stroke } = useIconContext()
 
 ## Composability
 - **Data-driven, not compound** — unlike Tabs/ToggleGroup, SegmentedControl takes an `options` array rather than children. This makes it easier to render from a list but harder to customize per-option styling; use Tabs if you need compound children.
-- **When to use vs Tabs:** SegmentedControl is for mutually-exclusive VIEW-MODE toggles (List/Grid/Kanban) — short labels, no associated content panel. Tabs is for content switching where each tab has a corresponding TabsContent. Both render `role="tablist"`.
+- **When to use vs Tabs:** SegmentedControl is for mutually-exclusive VIEW-MODE toggles (List/Grid/Kanban) — short labels, no associated content panel. Tabs is for content switching where each tab has a corresponding TabsContent. SegmentedControl renders `role="radiogroup"` with `role="radio"` segments (a panel-less single-select); Tabs renders `role="tablist"`.
 - **Option icons** auto-size based on the `size` prop — don't set explicit icon sizes.
 - Fully controlled — there's no `defaultSelectedId`. Manage state in parent.
-- Built from scratch (no Radix primitive) — standard HTML buttons with `aria-selected` and roving tabindex.
+- Built from scratch (no Radix primitive) — standard HTML buttons with `role="radio"` + `aria-checked` and roving tabindex.
 
 ## Gotchas
 - Controlled only — selectedId + onSelect are required
@@ -3575,7 +3598,6 @@ const { size, stroke } = useIconContext()
 ## Composability
 - Radix Separator — no context, no cascade. Drop it anywhere; it inherits its stretch dimension from its parent container (full width for horizontal, full height for vertical — but vertical needs an explicit height from the parent flexbox).
 - `decorative={true}` (default) sets `role="none"` — screen readers skip it. Set `decorative={false}` for semantic separators (e.g. between navigation sections) so screen readers announce the boundary.
-- Gradient variants compose cleanly with any surface color — they use `bg-transparent` + inline linear-gradient, so the underlying `bg-*` of the parent shows through.
 - Common inside Menu/DropdownMenu/Sheet components; their internal *Separator subcomponents already wrap this one.
 
 ## Gotchas
@@ -3583,6 +3605,9 @@ const { size, stroke } = useIconContext()
 - Vertical separator needs an explicit height from the parent flex container (`h-6`, `h-full`, etc.)
 
 ## Changes
+### v0.44.2
+- **Deprecated** the `variant` prop and its `gradient` / `gradient-left` / `gradient-right` values. They were decorative and never rendered in production (the interpolated gradient class couldn't be emitted by the Tailwind 4 scanner). Separator now always renders a solid hairline; the prop is removed in 0.45.0.
+
 ### v0.22.0
 - **Added** `variant` prop: `"gradient"` (fades both edges), `"gradient-left"` (fades left), `"gradient-right"` (fades right). Default behavior unchanged.
 
@@ -3988,6 +4013,9 @@ import { SplitButton } from '@devalok/shilp-sutra'
 
 ## Changes
 
+### v0.44.2
+- **Fixed** The dropdown is now keyboard-accessible. It previously used a hand-rolled floating panel (`role="menu"`) with no focus management, arrow keys, or Escape — keyboard users couldn't reach or dismiss it. It now composes the DS **Popover** primitive: focus moves in on open, Escape and outside-click close, focus returns to the trigger, and on mobile it opens as a bottom sheet. (Full menu semantics with arrow-key item navigation via DropdownMenu are planned for 0.45.0.)
+
 ### v0.33.0
 - **Added** Initial release
 # Stack
@@ -4057,6 +4085,7 @@ import { SplitButton } from '@devalok/shilp-sutra'
     secondaryLabel: string (below main value, e.g. "of $50,000 target")
     progress: number (0-100, renders thin progress bar below value)
     variant: "default" | "elevated" | "outline" | "flat" (default = ring-in-shadow, no border; elevated = stronger shadow; outline = border, no shadow; flat = filled, no edge) — delegated to Card
+    size: "sm" | "md" (default) | "lg" — delegated to Card's size axis; sm tightens padding to 16px and steps the value down to text-ds-2xl (use for dense KPI rows / narrow stat grids)
     accentStyle: "none" | "icon" | "tint" (none [default]; icon = accent chip around icon; tint = accent surface wash + accent value)
     iconFill: "soft" | "solid" (chip style when accentStyle="icon"; default soft)
     flash: "up" | "down" | "goal" | "record" | "alert" | "live" | { tone, icon } (opt-in entrance flash; requires icon)
@@ -4067,7 +4096,7 @@ import { SplitButton } from '@devalok/shilp-sutra'
     footer: ReactNode (below card body, e.g. "View details →")
 
 ## Defaults
-    none (all props are optional except value)
+    size="md"; all other props optional except value
 
 ## Example
 ```jsx
@@ -4109,6 +4138,11 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - `sparkline` needs at least 2 data points to render
 
 ## Changes
+### v0.45.0
+- **Added** `size` prop (`sm | md | lg`, delegated to Card) — `sm` tightens padding and steps the value to `text-ds-2xl` for dense KPI grids.
+- **Changed** Internal rhythm is now flex gap (no margin stacking); `footer` renders behind a full-width rule (divider + CardFooter as direct Card children) instead of an inset `border-t`.
+- **Added** `aria-busy="true"` on the loading skeleton card.
+
 ### v0.44.0
 - **BREAKING** Renamed `surface` → `variant`, widened to a 4-way scale (`default` | `elevated` | `outline` | `flat`). StatCard now composes `<Card>`, so surface, gap-model padding, and elevation all live in one place. Migration: `surface="raised"` → `variant="default"`, `surface="flat"` → `variant="outline"`.
 - **Added** `deltaPlacement` (`"block"` [default] | `"inline"`) — inline rides the value's baseline for compact dashboards.
@@ -4319,6 +4353,21 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - Server-safe: Yes
 - Category: ui
 
+## Props
+    density: "compact" | "standard" (default) | "comfortable" — sets --table-py (4 / 8 / 12px vertical cell padding → rows ≈ 29 / 37 / 45px); header height tracks it
+    striped: boolean (opt-in zebra — even body rows get the faintest surface step; hairline separators remain the default row cue)
+
+### TableCell / TableHead
+    numeric: boolean (right-align + tabular figures; header follows the column. Identifier-numbers — dates, phones, IDs — stay left)
+
+### TableRowActions
+    persist: boolean (always show instead of hover/focus reveal)
+    Reveal is opacity-based: buttons stay in the tab order permanently, appear on row hover AND :focus-within, and are always visible on touch (pointer-coarse). Give the column a visually-hidden header.
+
+### TableRowLink (separate import: ui/table-row-link — client component)
+    href: string (required); stretch: boolean (default true)
+    A real anchor placed in the row's primary cell (`<TableCell className="relative">`), stretched across the row via a pseudo-element — cmd/ctrl+click, middle-click, and context menu work, unlike onClick-on-row. Keyboard focus draws a row-level ring. Other interactive elements in the row need `className="relative z-[1]"`. `stretch={false}` = title-only link (keeps row text selectable).
+
 ## Compound Components
     Table (root <table>)
       TableHeader (<thead>)
@@ -4355,11 +4404,65 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - **Composes with UI primitives inside cells:** Badge for status pills, Avatar for user cells, IconButton for row actions, StatusDot for state indicators. All server-safe if the table is server-rendered.
 - **TableCaption** renders as HTML `<caption>` — useful for a summary description that screen readers announce before the table content.
 
+## Cell recipes
+
+**Density → content mapping.** Rows grow silently when cell content is taller than the text line; pick content size by density:
+
+| Density | Row target | Avatar | Badge | Notes |
+|---|---|---|---|---|
+| compact | ~29px | none — text only | `xs` | identity = text, no chrome |
+| standard | ~37px | `xs` (24px) | `xs` | **single-line** identity only; an `sm` avatar grows rows to ~49px — don't |
+| comfortable | ~45px | `xs` or `sm` | `xs`/`sm` | the only density for **two-line** identity (name + email) — industry rule (Carbon): two-line content belongs in the tallest rows only |
+
+Rule of thumb (matches Carbon/Setproduct): avatar ≈ row height − 16px of breathing room.
+
+**User cell** (avatar + two-line identity, both lines truncate — use `density="comfortable"`):
+```jsx
+<TableCell>
+  <div className="flex items-center gap-ds-03 min-w-0">
+    <Avatar size="xs"><AvatarFallback>GK</AvatarFallback></Avatar>
+    <div className="min-w-0 leading-ds-tight">
+      <TruncatedText as="p" className="font-medium">Goutham Krishnan</TruncatedText>
+      <TruncatedText as="p" mode="middle" className="text-ds-sm text-surface-fg-muted">goutham@devalok.in</TruncatedText>
+    </div>
+  </div>
+</TableCell>
+```
+
+**Tag group with overflow** — cap visible badges, spill to a muted `+N`; never let badges wrap:
+```jsx
+<div className="flex items-center gap-ds-02">
+  {tags.slice(0, 2).map((t) => <Badge key={t} color="neutral" size="xs">{t}</Badge>)}
+  {tags.length > 2 && <span className="text-ds-sm text-surface-fg-subtle">+{tags.length - 2}</span>}
+</div>
+```
+
+**Money cell** — `text-right tabular-nums` (DataTable: column meta `align: 'right'`). Keep a consistent number of decimal places per column — that's what actually aligns decimals. Negatives: never color alone — pair red with a minus sign or accounting parentheses `(1,500)`.
+**Qualitative numbers stay left** — dates, phone numbers, zip codes, IDs are identifiers, not quantities; only true quantities right-align.
+**Empty value** — muted em-dash, with an accessible label: `<span className="text-surface-fg-subtle" aria-label="No value">—</span>`. Don't leave cells blank.
+
+See the `RichCells` story for all of these live.
+
 ## Gotchas
 - Table headers automatically have scope="col" for screen reader navigation
 - For anything beyond trivial display, prefer DataTable — don't rebuild sorting/pagination/selection on top of bare Table
+- Inside a Card, first/last cells inherit `--card-spacing` so edge columns align with the card's slots; standalone tables fall back to 12px edges
+- Numeric columns: add `text-right tabular-nums` (DataTable does this via column meta `align: 'right'`)
 
 ## Changes
+### v0.45.0
+- **Added** `TableRowLink` (ui/table-row-link) — real-anchor whole-row navigation with pseudo-element stretch (Safari-safe: anchored to the cell, clipped by the table's `overflow-x-clip`), row-level focus ring, `stretch={false}` title-only mode.
+- **Added** `TableRowActions` — hover/focus-revealed action cluster (opacity reveal, permanently tabbable, `:focus-within` + touch fallbacks, `persist` mode).
+- **Added** `numeric` prop on TableCell/TableHead — right-align + tabular figures.
+- **Fixed** TableFooter background was `color-mix(surface-raised 50%)` — invisible on cards (same mis-mapped shadcn `muted/50` family as the row hover). Now a `surface-base` band with a top hairline.
+- **Fixed** Selected+hover tie: selected rows get an explicit `hover:bg-accent-4` step (hover and selected previously tied on specificity).
+- **Added** Cell recipes section (user cell, tag overflow, money, empty-dash) + density→avatar mapping; `RichCells` / `SelectedRows` stories.
+- **Added** `density` prop (`compact | standard | comfortable`) via `--table-py`; header height tracks density instead of a fixed 40px
+- **Added** `striped` prop — opt-in zebra
+- **Changed** Rows regain their hairline separator (`border-b border-surface-border-subtle` — lost in the original port) and hover becomes visible on cards (`hover:bg-surface-raised-hover`, was the invisible `surface-raised`)
+- **Changed** Cells: `px-ds-04` interior, first/last cells read `--table-edge` (= `--card-spacing` inside a Card); header drops to `text-ds-sm` muted
+- **Changed** Default vertical rhythm tightens: standard rows ~53px → ~37px
+
 ### v0.18.0
 - **Added** `TableProps`, `TableRowProps`, `TableCellProps` type exports
 
@@ -4367,6 +4470,47 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - **Fixed** TableCell: Added `px-ds-03` horizontal padding — was `px-0`, causing content to hug container edges
 
 ### v0.1.0
+- **Added** Initial release
+# TableRowLink
+
+- Import: @devalok/shilp-sutra/ui/table-row-link
+- Server-safe: No (uses LinkContext)
+- Category: ui
+
+## Props
+    href: string (required) — navigation target; rendered through the LinkContext Link component (framework router aware)
+    stretch: boolean (default true) — stretch the click target across the whole row via a pseudo-element; pass false for a title-only link that keeps row text selectable
+    ...AnchorHTMLAttributes — target, rel, onClick, aria-label, etc.
+
+## Example
+```jsx
+<TableRow>
+  <TableCell className="relative">
+    <TableRowLink href={`/projects/${id}`}>{name}</TableRowLink>
+  </TableCell>
+  <TableCell><Badge color="success">Active</Badge></TableCell>
+  <TableCell>
+    <TableRowActions>
+      <IconButton className="relative z-[1]" size="xs" variant="ghost" aria-label={`Actions for ${name}`} icon={<IconDots />} />
+    </TableRowActions>
+  </TableCell>
+</TableRow>
+```
+
+## Composability
+- **A real anchor, not a click handler** — cmd/ctrl+click, middle-click, right-click "open in new tab", and screen-reader link announcement all work. Never put `onClick` on a `<tr>` and never add `role="grid"` just for clickable rows.
+- **Placement contract:** lives inside the row's *primary* cell, which must be `className="relative"` — the stretch pseudo-element is anchored to the cell (Safari ignores `position: relative` on `<tr>`) and spans `100vw`; the Table root's `overflow-x-clip` contains it.
+- **Focus:** keyboard focus draws a row-level ring via TableRow's `has-[[data-slot=row-link]:focus-visible]` rule; the anchor suppresses its own outline (stretch mode). `stretch={false}` uses a normal anchor focus ring.
+- **Other interactive elements** in the row (menu buttons, checkboxes, TableRowActions children) must sit above the stretch: `className="relative z-[1]"`.
+- Routes through `LinkContext` — Next.js/React Router consumers get client-side navigation automatically.
+
+## Gotchas
+- The stretched overlay blocks text selection inside the row — use `stretch={false}` (GitHub-style title link) when row text must stay selectable
+- Don't combine with DataTable's `onRowClick` on the same row — one navigation owner per row
+- If a secondary link/button in the row seems unclickable, it's missing `relative z-[1]`
+
+## Changes
+### v0.45.0
 - **Added** Initial release
 # Tabs
 
@@ -4530,13 +4674,13 @@ import { SplitButton } from '@devalok/shilp-sutra'
 - Category: ui
 
 ## API
-    toast('Plain message')                    // no icon, no accent bar
+    toast('Plain message')                    // no icon, no tint
     toast.message('Same as plain')            // alias for toast()
-    toast.success('Saved!')                   // green accent, check icon
-    toast.error('Failed', { description })    // red accent, X icon
-    toast.warning('Disk low')                 // yellow accent, triangle icon
-    toast.info('New version')                 // blue accent, info icon
-    toast.loading('Saving...')                // interactive accent, spinner, no timer bar, duration: Infinity
+    toast.success('Saved!')                   // green check icon + green timer bar
+    toast.error('Failed', { description })    // red X icon + faint error surface tint + red timer bar
+    toast.warning('Disk low')                 // amber triangle icon + amber timer bar
+    toast.info('New version')                 // blue info icon + blue timer bar
+    toast.loading('Saving...')                // spinner, no timer bar, duration: Infinity
     toast.promise(asyncFn, { loading, success, error })  // dynamic messages
     toast.undo('Item deleted', { onUndo, duration? })    // 8s default, Undo action button
     toast.upload({ files, id?, onRetry?, onRemove? })    // upload toast with per-file progress
@@ -4549,6 +4693,7 @@ import { SplitButton } from '@devalok/shilp-sutra'
     action?: { label: string, onClick: () => void }
     cancel?: { label: string, onClick: () => void }
     duration?: number (ms, default 5000)
+    showAccent?: boolean (default false) — opt in to the legacy colored left rail; off by default (status = icon + timer bar)
 
 ## Types
     UploadFile: { id, name, size (bytes), progress? (0-100), status: 'pending' | 'uploading' | 'processing' | 'complete' | 'error', error?, previewUrl? }
@@ -4583,6 +4728,9 @@ toast.undo('Task deleted', { onUndo: () => restoreTask(id) })
 - Upload toast replaces the old UploadProgress composed component
 
 ## Changes
+### v0.44.2
+- **Changed** Colored left accent rail is now **off by default** (removed the AI-tell; status is carried by the typed icon + status-colored timer bar). Error toasts gain a faint `bg-error-2` surface tint. Opt back in with `showAccent: true`.
+
 ### v0.18.0
 - **Changed** (BREAKING) Complete rewrite to Sonner-based imperative API
 - **Fixed** Accent bar colors from step 7 to step 9 (decorative fills use solid step)
@@ -5247,6 +5395,8 @@ const [open, setOpen] = useState(false)
 ### v0.1.0
 - **Added** Initial release
 # ContentCard
+
+> **DEPRECATED (v0.44.0)** — will be removed in the next major. Compose `Card` + `CardHeader`/`CardTitle`/`CardAction`/`CardContent`/`CardFooter` instead (they cover every ContentCard feature on the gap model). Migration: `headerTitle` → `<CardTitle>`, `headerActions` → `<CardAction>`, `padding` → Card `size`, `footer` → `<CardFooter>`. See MIGRATION.md → v0.44.0.
 
 - Import: @devalok/shilp-sutra/composed/content-card
 - Server-safe: Yes

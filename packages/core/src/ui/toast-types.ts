@@ -42,6 +42,11 @@ export interface ToastUploadOptions {
   files: UploadFile[]
   onRetry?: (fileId: string) => void
   onRemove?: (fileId: string) => void
+  /**
+   * Render the colored left accent bar. Off by default — status is carried by
+   * the icon and the status-colored timer bar. Opt in for the legacy rail look.
+   */
+  showAccent?: boolean
 }
 
 export interface ToastOptions {
@@ -51,6 +56,11 @@ export interface ToastOptions {
   action?: ToastActionOptions
   cancel?: ToastActionOptions
   duration?: number
+  /**
+   * Render the colored left accent bar. Off by default — status is carried by
+   * the icon and the status-colored timer bar. Opt in for the legacy rail look.
+   */
+  showAccent?: boolean
 }
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'loading' | 'message'

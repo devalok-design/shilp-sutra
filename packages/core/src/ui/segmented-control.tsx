@@ -113,7 +113,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
 
       onSelect(options[nextIndex].id)
       requestAnimationFrame(() => {
-        const buttons = tablistRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+        const buttons = tablistRef.current?.querySelectorAll<HTMLButtonElement>('[role="radio"]')
         buttons?.[nextIndex]?.focus()
       })
     }
@@ -123,8 +123,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
     return (
       <div
         ref={mergedRef}
-        role="tablist"
-        tabIndex={-1}
+        role="radiogroup"
         aria-label={props['aria-label'] ?? 'Segmented control'}
         onKeyDown={handleKeyDown}
         className={cn(
@@ -143,8 +142,8 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
               <button
                 key={option.id}
                 type="button"
-                role="tab"
-                aria-selected={isSelected}
+                role="radio"
+                aria-checked={isSelected}
                 tabIndex={isSelected ? 0 : -1}
                 disabled={disabled}
                 onClick={() => onSelect(option.id)}

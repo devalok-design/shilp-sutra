@@ -1,5 +1,6 @@
 'use client'
 
+import * as SliderPrimitive from '@primitives/react-slider'
 import {
   IconAlertTriangle,
   IconDownload,
@@ -58,8 +59,72 @@ export function ToolbarDivider() {
 }
 
 // ============================================================
+// Shared: MediaSlider — slim seek/scrub/volume control
+// Composes the Radix Slider primitive (the same one ui/Slider uses) so it's
+// keyboard-operable (Arrow/Home/End), focus-ringed, and forced-colors-safe —
+// unlike the old mouse-only <div role="slider">. Styled slim for media chrome;
+// the thumb is hover/focus-reveal (hidden at rest, shown on hover, drag, or
+// keyboard focus). `tone="dark"` = white-on-overlay; `tone="light"` = accent.
+// ============================================================
+
+export function MediaSlider({
+  value,
+  max = 100,
+  step = 1,
+  onValueChange,
+  tone = 'light',
+  ariaLabel,
+  disabled,
+  className,
+}: {
+  value: number
+  max?: number
+  step?: number
+  onValueChange: (v: number) => void
+  tone?: 'light' | 'dark'
+  ariaLabel: string
+  disabled?: boolean
+  className?: string
+}) {
+  const isDark = tone === 'dark'
+  return (
+    <SliderPrimitive.Root
+      className={cn(
+        'group/ms relative flex h-3 w-full cursor-pointer touch-none select-none items-center',
+        className,
+      )}
+      value={[value]}
+      max={max}
+      step={step}
+      disabled={disabled}
+      onValueChange={(vals) => onValueChange(vals[0] ?? 0)}
+      aria-label={ariaLabel}
+    >
+      <SliderPrimitive.Track
+        className={cn(
+          'relative h-1 w-full grow overflow-hidden rounded-pill',
+          isDark ? 'bg-white/30' : 'bg-surface-sunken',
+        )}
+      >
+        <SliderPrimitive.Range
+          className={cn('absolute h-full rounded-pill', isDark ? 'bg-white' : 'bg-accent-9')}
+        />
+      </SliderPrimitive.Track>
+      <SliderPrimitive.Thumb
+        className={cn(
+          'block h-3 w-3 rounded-pill shadow-raised outline-hidden transition-[opacity,transform] duration-fast-02',
+          // hover/focus-reveal: hidden at rest, shown on hover, drag (focus), or keyboard
+          'opacity-0 group-hover/ms:opacity-100 focus:opacity-100 active:scale-110',
+          'focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-offset-1',
+          isDark ? 'bg-white focus-visible:ring-white' : 'bg-accent-9 focus-visible:ring-accent-9',
+        )}
+      />
+    </SliderPrimitive.Root>
+  )
+}
+
+// ============================================================
 // Shared: Volume Slider (Spotify/YouTube style)
-// Custom-built — no native input range. Consistent across browsers.
 // ============================================================
 
 export function VolumeControl({
@@ -75,73 +140,24 @@ export function VolumeControl({
   onMuteToggle: () => void
   variant?: 'light' | 'dark'
 }) {
-  const trackRef = React.useRef<HTMLDivElement>(null)
-  const [dragging, setDragging] = React.useState(false)
   const displayVolume = muted ? 0 : volume
-
-  function getVolumeFromEvent(e: MouseEvent | React.MouseEvent) {
-    if (!trackRef.current) return volume
-    const rect = trackRef.current.getBoundingClientRect()
-    return Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-  }
-
-  function handlePointerDown(e: React.PointerEvent) {
-    e.preventDefault()
-    setDragging(true)
-    const v = getVolumeFromEvent(e)
-    onVolumeChange(v)
-    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
-  }
-
-  function handlePointerMove(e: React.PointerEvent) {
-    if (!dragging) return
-    onVolumeChange(getVolumeFromEvent(e))
-  }
-
-  function handlePointerUp() {
-    setDragging(false)
-  }
-
   const isDark = variant === 'dark'
-  const trackBg = isDark ? 'bg-white/30' : 'bg-surface-sunken'
-  const fillBg = isDark ? 'bg-white' : 'bg-accent-9'
-  const thumbBg = isDark ? 'bg-white' : 'bg-accent-9'
   const iconClass = isDark ? 'text-white hover:text-white/80' : 'text-surface-fg-muted hover:text-surface-fg'
 
   return (
-    <div className="group/vol flex items-center gap-ds-02 shrink-0">
+    <div className="flex items-center gap-ds-02 shrink-0 group/vol">
       <button onClick={onMuteToggle} className={cn('transition-colors', iconClass)} aria-label={muted ? 'Unmute (M)' : 'Mute (M)'} title={muted ? 'Unmute' : 'Mute'}>
         {muted || volume === 0 ? <Icon icon={IconVolumeOff} size="sm" /> : <Icon icon={IconVolume} size="sm" />}
       </button>
-      <div className="w-0 overflow-hidden group-hover/vol:w-20 transition-[width] duration-200 ease-productive-standard flex items-center">
-        <div
-          ref={trackRef}
-          className={cn('relative w-full h-1 rounded-pill cursor-pointer', trackBg)}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          role="slider"
-          aria-label="Volume"
-          aria-valuenow={Math.round(displayVolume * 100)}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          tabIndex={0}
-        >
-          {/* Fill */}
-          <div
-            className={cn('absolute left-0 top-0 h-full rounded-pill transition-[width] duration-75', fillBg)}
-            style={{ width: `${displayVolume * 100}%` }}
-          />
-          {/* Thumb */}
-          <div
-            className={cn(
-              'absolute top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-pill shadow-raised transition-opacity',
-              thumbBg,
-              dragging ? 'opacity-100 scale-110' : 'opacity-0 group-hover/vol:opacity-100',
-            )}
-            style={{ left: `${displayVolume * 100}%`, marginLeft: '-5px' }}
-          />
-        </div>
+      <div className="flex w-0 items-center overflow-hidden transition-[width] duration-200 ease-productive-standard group-hover/vol:w-20 focus-within:w-20">
+        <MediaSlider
+          value={displayVolume}
+          max={1}
+          step={0.01}
+          onValueChange={onVolumeChange}
+          tone={variant}
+          ariaLabel="Volume"
+        />
       </div>
     </div>
   )

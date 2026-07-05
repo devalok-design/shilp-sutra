@@ -55,16 +55,18 @@ describe('ErrorBlock', () => {
     expect(screen.queryByText('Try refreshing the page')).not.toBeInTheDocument()
   })
 
-  it('applies low-confidence border styling', () => {
-    const { container } = render(
+  it('applies low-confidence wash + chip (no rail)', () => {
+    render(
       <ErrorBlock
         data={{ title: 'Error', message: 'Maybe wrong' }}
         confidence="low"
       />,
     )
-    const wrapper = container.firstChild as HTMLElement
-    expect(wrapper.className).toContain('border-l-2')
-    expect(wrapper.className).toContain('border-warning-7')
+    const wrapper = document.querySelector('[data-confidence="low"]') as HTMLElement
+    expect(wrapper).toBeInTheDocument()
+    expect(wrapper.className).toContain('bg-warning-2')
+    expect(wrapper.className).not.toContain('border-l-2')
+    expect(screen.getByText('Low confidence')).toBeInTheDocument()
   })
 
   it('renders error-colored alert', () => {

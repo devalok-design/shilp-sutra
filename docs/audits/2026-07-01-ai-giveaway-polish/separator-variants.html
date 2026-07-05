@@ -1,0 +1,79 @@
+<title>Separator variants — keep or cut the gradient fades</title>
+<meta name="description" content="Deciding whether to fix or remove ColorInput's decorative gradient-fade separator variants.">
+<style>
+  :root{
+    --n1:oklch(0.99 .0003 350);--n2:oklch(.97 .0008 350);--n3:oklch(.93 .0018 350);
+    --n6:oklch(.78 .0053 350);--n9:oklch(.55 .01 350);--n11:oklch(.43 .0074 350);--n12:oklch(.32 .0042 350);
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:"Ranade",var(--sans);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--n2);color:var(--n12);font-family:var(--sans);font-size:15px;line-height:1.55;letter-spacing:-.006em;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:clamp(24px,4vw,52px) clamp(16px,4vw,36px) 80px}
+  h1{font-family:var(--display);font-size:clamp(26px,4vw,38px);letter-spacing:-.02em;margin:0;line-height:1.05}
+  .lede{color:var(--n11);margin-top:12px;max-width:64ch}
+  .eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--n9)}
+  code{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.85em;background:var(--n3);padding:1px 5px;border-radius:4px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .panel{border-radius:12px;padding:22px;box-shadow:0 0 0 1px oklch(.4 .01 350/.06),0 2px 6px -2px oklch(.4 .01 350/.1)}
+  .light{background:var(--n1)}
+  .dark{background:oklch(.17 .0007 350);color:oklch(.88 .002 350)}
+  .dark{--n6:oklch(.38 .0048 350);--n11:oklch(.76 .0062 350)}
+  .cap{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.65;margin-bottom:16px}
+  .block{font-size:13px;color:var(--n11)}
+  .lbl{font-size:11px;font-family:"SF Mono",ui-monospace,monospace;opacity:.6;margin:18px 0 7px}
+  .sep{height:1px;width:100%}
+  .solid{background:var(--n6)}
+  .gradient{background:linear-gradient(90deg,transparent,var(--n6) 15%,var(--n6) 85%,transparent)}
+  .gleft{background:linear-gradient(90deg,transparent,var(--n6) 30%)}
+  .gright{background:linear-gradient(90deg,var(--n6) 70%,transparent)}
+  .tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:9999px;margin-left:8px}
+  .tag.no{background:oklch(.93 .033 25);color:oklch(.43 .13 25)}
+  .tag.yes{background:oklch(.93 .026 145);color:oklch(.43 .10 145)}
+  .rec{margin-top:24px;border-radius:12px;padding:18px 20px;background:var(--n1);box-shadow:0 0 0 1px oklch(.4 .01 350/.06)}
+  .rec b{font-weight:600}
+  ul{margin:10px 0 0;padding-left:18px;color:var(--n11)}li{margin:5px 0}
+</style>
+<div class="wrap">
+  <span class="eyebrow">Separator · W3</span>
+  <h1>The gradient-fade variants — keep or cut?</h1>
+  <p class="lede">Separator ships 4 variants. Two problems with the 3 gradient ones: (1) <b>they're broken in production</b> — the CSS class interpolates a runtime value (<code>linear-gradient(${deg}…)</code>) that Tailwind 4's scanner can't see, so it never ships the style; (2) a faded-edge divider is a decorative flourish (our anti-convergence layer flags decorative dividers). They're used only in demo stories, never in real components. Below is what they'd look like if fixed.</p>
+
+  <div class="grid">
+    <div class="panel light">
+      <div class="cap">on light</div>
+      <div class="block">Account settings</div>
+      <p class="lbl">variant="default" (solid)<span class="tag yes">keep</span></p>
+      <div class="sep solid"></div>
+      <p class="lbl">variant="gradient" (fades both edges)</p>
+      <div class="sep gradient"></div>
+      <p class="lbl">variant="gradient-left"</p>
+      <div class="sep gleft"></div>
+      <p class="lbl">variant="gradient-right"</p>
+      <div class="sep gright"></div>
+      <div class="block" style="margin-top:14px">Billing</div>
+    </div>
+    <div class="panel dark">
+      <div class="cap">on dark</div>
+      <div class="block">Account settings</div>
+      <p class="lbl">variant="default" (solid)<span class="tag yes">keep</span></p>
+      <div class="sep solid"></div>
+      <p class="lbl">variant="gradient" (fades both edges)</p>
+      <div class="sep gradient"></div>
+      <p class="lbl">variant="gradient-left"</p>
+      <div class="sep gleft"></div>
+      <p class="lbl">variant="gradient-right"</p>
+      <div class="sep gright"></div>
+      <div class="block" style="margin-top:14px">Billing</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <b>My recommendation: cut the gradient variants</b> <span class="tag no">gradient ×3</span> — keep <code>default</code> (solid) only.
+    <ul>
+      <li>They're a decorative flourish (a divider should just divide), and currently invisible in prod anyway.</li>
+      <li>Used only in demo stories — zero real usage, so removal is safe. <code>variant</code> prop goes away; <code>&lt;Separator /&gt;</code> stays a clean hairline.</li>
+      <li>Removing the prop is technically breaking → fold into the 0.45.0 batch (or keep the prop but drop the values). Alternatively: <b>keep &amp; fix</b> by making the classes static per orientation (like Card's cornerPositions map) if you want the fades.</li>
+    </ul>
+  </div>
+</div>

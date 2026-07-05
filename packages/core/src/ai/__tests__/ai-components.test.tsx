@@ -123,20 +123,23 @@ describe('TextBlock', () => {
     )
   })
 
-  it('applies low-confidence styling', () => {
+  it('applies low-confidence styling (wash, no rail)', () => {
     const { container } = render(
       <TextBlock data={{ content: 'Uncertain' }} confidence="low" />,
     )
-    const wrapper = container.firstChild as HTMLElement
-    expect(wrapper.className).toContain('border-warning-7')
+    const wrapper = container.querySelector('[data-confidence="low"]') as HTMLElement
+    expect(wrapper).toBeInTheDocument()
+    expect(wrapper.className).toContain('bg-warning-2')
+    expect(wrapper.className).not.toContain('border-warning-7')
   })
 
-  it('does not apply border for high confidence', () => {
+  it('does not apply low-confidence surface for high confidence', () => {
     const { container } = render(
       <TextBlock data={{ content: 'Sure' }} confidence="high" />,
     )
+    expect(container.querySelector('[data-confidence="low"]')).toBeNull()
     const wrapper = container.firstChild as HTMLElement
-    expect(wrapper.className).not.toContain('border-warning-7')
+    expect(wrapper.className).not.toContain('bg-warning-2')
   })
 
   it('has no axe violations', async () => {

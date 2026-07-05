@@ -37,16 +37,23 @@ export function BadgeGroup({
   return (
     <div className={cn('flex flex-wrap items-center', GAP_CLASSES[gap], className)}>
       {visible}
-      {hasOverflow && (
-        <Badge
-          variant="outline"
-          color="neutral"
-          size={size ?? 'sm'}
-          onClick={onOverflowClick}
-        >
-          +{overflowCount}
-        </Badge>
-      )}
+      {hasOverflow &&
+        (onOverflowClick ? (
+          // Interactive overflow must be a real, labelled button (keyboard + SR reachable).
+          <Badge asChild variant="outline" color="neutral" size={size ?? 'sm'}>
+            <button
+              type="button"
+              onClick={onOverflowClick}
+              aria-label={`Show ${overflowCount} more`}
+            >
+              +{overflowCount}
+            </button>
+          </Badge>
+        ) : (
+          <Badge variant="outline" color="neutral" size={size ?? 'sm'}>
+            +{overflowCount}
+          </Badge>
+        ))}
     </div>
   )
 }

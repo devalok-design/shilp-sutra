@@ -52,19 +52,21 @@ function hslToHex(h: number, s: number, l: number): string {
   return rgbToHex(f(0), f(8), f(4))
 }
 
-// ── Named color presets (color-blind accessible) ──
+// ── Named color presets ──
+// Brand spectrum derived from our OKLCH scales (step-9), spanning the wheel —
+// intentional and on-brand, NOT the raw framework palette. Led by red, not indigo.
 
 const NAMED_PRESETS: { hex: string; label: string }[] = [
-  { hex: '#EF4444', label: 'Red' },
-  { hex: '#F59E0B', label: 'Amber' },
-  { hex: '#10B981', label: 'Emerald' },
-  { hex: '#3B82F6', label: 'Blue' },
-  { hex: '#8B5CF6', label: 'Violet' },
-  { hex: '#EC4899', label: 'Pink' },
-  { hex: '#06B6D4', label: 'Cyan' },
-  { hex: '#F97316', label: 'Orange' },
-  { hex: '#84CC16', label: 'Lime' },
-  { hex: '#6366F1', label: 'Indigo' },
+  { hex: '#C53637', label: 'Red' },
+  { hex: '#BE5A0A', label: 'Orange' },
+  { hex: '#DF911A', label: 'Amber' },
+  { hex: '#308639', label: 'Green' },
+  { hex: '#118659', label: 'Emerald' },
+  { hex: '#11846E', label: 'Teal' },
+  { hex: '#028A9B', label: 'Cyan' },
+  { hex: '#1479B0', label: 'Blue' },
+  { hex: '#7D5FAD', label: 'Purple' },
+  { hex: '#C22D6D', label: 'Pink' },
 ]
 
 // ── Contrast helper ──

@@ -20,6 +20,7 @@ import {
   DialogTitle,
 } from '../ui/dialog'
 import { Icon } from '../ui/icon'
+import { IconButton } from '../ui/icon-button'
 import { cn } from '../ui/lib/utils'
 import {
   Select,
@@ -236,13 +237,15 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                     </div>
 
                     {/* Delete */}
-                    <button
-                      type="button"
+                    <IconButton
+                      aria-label={`Delete ${channelInfo.label} notification rule`}
+                      icon={<Icon icon={IconTrash} />}
+                      variant="ghost"
+                      color="error"
+                      size="sm"
                       onClick={() => onDelete?.(pref.id)}
-                      className="shrink-0 rounded p-ds-02b text-surface-fg-subtle transition-colors hover:bg-surface-raised hover:text-error-11"
-                    >
-                      <Icon icon={IconTrash} size="sm" />
-                    </button>
+                      className="shrink-0"
+                    />
                   </div>
                 )
               })}

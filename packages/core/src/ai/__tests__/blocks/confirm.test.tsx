@@ -94,20 +94,19 @@ describe('ConfirmBlock', () => {
     expect(screen.queryByText('Why this action?')).not.toBeInTheDocument()
   })
 
-  it('applies low confidence indicator', () => {
-    const { container } = render(
-      <ConfirmBlock data={baseData} confidence="low" />,
-    )
-    const wrapper = container.firstChild as HTMLElement
-    expect(wrapper.className).toContain('border-l-2')
-    expect(wrapper.className).toContain('border-warning-7')
+  it('applies low confidence indicator (wash + chip, no rail)', () => {
+    render(<ConfirmBlock data={baseData} confidence="low" />)
+    const wrapper = document.querySelector('[data-confidence="low"]') as HTMLElement
+    expect(wrapper).toBeInTheDocument()
+    // Wash surface, not the removed accent rail.
+    expect(wrapper.className).toContain('bg-warning-2')
+    expect(wrapper.className).not.toContain('border-l-2')
+    expect(screen.getByText('Low confidence')).toBeInTheDocument()
   })
 
   it('does not apply low confidence indicator for high confidence', () => {
-    const { container } = render(
-      <ConfirmBlock data={baseData} confidence="high" />,
-    )
-    const wrapper = container.firstChild as HTMLElement
-    expect(wrapper.className).not.toContain('border-l-2')
+    render(<ConfirmBlock data={baseData} confidence="high" />)
+    expect(document.querySelector('[data-confidence="low"]')).toBeNull()
+    expect(screen.queryByText('Low confidence')).not.toBeInTheDocument()
   })
 })

@@ -5,13 +5,13 @@
 - Category: ui
 
 ## API
-    toast('Plain message')                    // no icon, no accent bar
+    toast('Plain message')                    // no icon, no tint
     toast.message('Same as plain')            // alias for toast()
-    toast.success('Saved!')                   // green accent, check icon
-    toast.error('Failed', { description })    // red accent, X icon
-    toast.warning('Disk low')                 // yellow accent, triangle icon
-    toast.info('New version')                 // blue accent, info icon
-    toast.loading('Saving...')                // interactive accent, spinner, no timer bar, duration: Infinity
+    toast.success('Saved!')                   // green check icon + green timer bar
+    toast.error('Failed', { description })    // red X icon + faint error surface tint + red timer bar
+    toast.warning('Disk low')                 // amber triangle icon + amber timer bar
+    toast.info('New version')                 // blue info icon + blue timer bar
+    toast.loading('Saving...')                // spinner, no timer bar, duration: Infinity
     toast.promise(asyncFn, { loading, success, error })  // dynamic messages
     toast.undo('Item deleted', { onUndo, duration? })    // 8s default, Undo action button
     toast.upload({ files, id?, onRetry?, onRemove? })    // upload toast with per-file progress
@@ -24,6 +24,7 @@
     action?: { label: string, onClick: () => void }
     cancel?: { label: string, onClick: () => void }
     duration?: number (ms, default 5000)
+    showAccent?: boolean (default false) — opt in to the legacy colored left rail; off by default (status = icon + timer bar)
 
 ## Types
     UploadFile: { id, name, size (bytes), progress? (0-100), status: 'pending' | 'uploading' | 'processing' | 'complete' | 'error', error?, previewUrl? }
@@ -58,6 +59,9 @@ toast.undo('Task deleted', { onUndo: () => restoreTask(id) })
 - Upload toast replaces the old UploadProgress composed component
 
 ## Changes
+### v0.44.2
+- **Changed** Colored left accent rail is now **off by default** (removed the AI-tell; status is carried by the typed icon + status-colored timer bar). Error toasts gain a faint `bg-error-2` surface tint. Opt back in with `showAccent: true`.
+
 ### v0.18.0
 - **Changed** (BREAKING) Complete rewrite to Sonner-based imperative API
 - **Fixed** Accent bar colors from step 7 to step 9 (decorative fills use solid step)

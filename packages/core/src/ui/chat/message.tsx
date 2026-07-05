@@ -89,13 +89,14 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
         <MessageContext.Provider value={ctx}>
           <motion.div
             ref={ref}
+            data-highlight={highlight}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={springs.snappy}
             className={cn(
               'group/message relative flex',
               placement === 'end' ? 'justify-end' : 'justify-start',
-              highlight === 'mention' && 'bg-accent-2 pl-ds-03 rounded-control-inner',
+              // mention is carried by the in-content @token, not a row tint/rail
               highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
               className,
             )}
@@ -121,13 +122,14 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
       <MessageContext.Provider value={ctx}>
         <motion.div
           ref={ref}
+          data-highlight={highlight}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
           className={cn(
             'group/message relative flex gap-ds-04',
             grouped && '-mt-ds-01',
-            highlight === 'mention' && 'border-l-2 border-l-accent-9 bg-accent-2 pl-ds-03 rounded-control-inner',
+            // mention is carried by the in-content @token, not a row rail/tint
             highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
             className,
           )}

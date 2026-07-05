@@ -698,7 +698,7 @@ export const TransitionUtilities: StoryObj = {
             <TokenBadge>springs.gentle</TokenBadge>
           </div>
           <div className="overflow-hidden rounded-control border border-surface-border-strong">
-            <MotionSlide show={slideOpen} direction="bottom">
+            <MotionSlide show={slideOpen} direction="down">
               <div className="bg-surface-raised p-ds-05">
                 <p className="text-ds-sm text-surface-fg-muted">
                   Slides in from a direction (top/bottom/left/right). Used for bottom sheets,
@@ -768,7 +768,7 @@ export const ScenarioFormSubmission: StoryObj = {
             loading={step === 'submitting'}
             loadingPosition="start"
             startIcon={step === 'success' ? <Icon icon={IconCheck} /> : <Icon icon={IconSend} />}
-            variant={step === 'success' ? 'secondary' : 'primary'}
+            variant={step === 'success' ? 'soft' : 'solid'}
             onClick={handleSubmit}
             disabled={step !== 'idle'}
           >
@@ -778,7 +778,7 @@ export const ScenarioFormSubmission: StoryObj = {
           </Button>
 
           {/* Success feedback */}
-          <MotionFade open={step === 'success'}>
+          <MotionFade show={step === 'success'}>
             <div className="flex items-center gap-ds-03 rounded-control bg-success-3 border border-success-7 p-ds-04">
               <IconCheck className="h-ico-md w-ico-md text-success-11" />
               <div>
@@ -859,12 +859,12 @@ export const ScenarioDashboardLoading: StoryObj = {
                 <Skeleton variant="rectangle" className="w-20 h-8" animation="shimmer" />
               </>
             ) : (
-              <Fade open={!loading}>
+              <MotionFade show={!loading}>
                 <div className="flex items-center justify-between w-full">
                   <h3 className="text-ds-lg font-semibold text-surface-fg">Dashboard</h3>
                   <Button size="sm" variant="outline">Export</Button>
                 </div>
-              </Fade>
+              </MotionFade>
             )}
           </div>
 
@@ -882,7 +882,7 @@ export const ScenarioDashboardLoading: StoryObj = {
                   { label: 'Completed', value: '28', color: 'success' as const },
                   { label: 'Overdue', value: '3', color: 'error' as const },
                 ].map((stat) => (
-                  <Fade key={stat.label} open={!loading}>
+                  <MotionFade key={stat.label} show={!loading}>
                     <div className="rounded-control bg-surface-raised p-ds-04">
                       <p className="text-ds-xs text-surface-fg-muted">{stat.label}</p>
                       <div className="flex items-center gap-ds-02 mt-ds-01">
@@ -890,7 +890,7 @@ export const ScenarioDashboardLoading: StoryObj = {
                         <Badge color={stat.color} size="sm">{stat.label}</Badge>
                       </div>
                     </div>
-                  </Fade>
+                  </MotionFade>
                 ))}
           </div>
 
@@ -911,7 +911,7 @@ export const ScenarioDashboardLoading: StoryObj = {
                   { name: 'Update motion tokens', badge: 'Done' },
                   { name: 'Write component tests', badge: 'Planned' },
                 ].map((task) => (
-                  <Fade key={task.name} open={!loading}>
+                  <MotionFade key={task.name} show={!loading}>
                     <div className="flex items-center gap-ds-04">
                       <div className="h-8 w-8 rounded-pill bg-accent-2 flex items-center justify-center">
                         <IconCheck className="h-ico-sm w-ico-sm text-accent-11" />
@@ -921,7 +921,7 @@ export const ScenarioDashboardLoading: StoryObj = {
                         <p className="text-ds-xs text-surface-fg-muted">{task.badge}</p>
                       </div>
                     </div>
-                  </Fade>
+                  </MotionFade>
                 ))}
           </div>
         </div>

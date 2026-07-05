@@ -17,6 +17,7 @@ import {
   TableRow,
 } from '../../ui/table'
 import type { BlockComponentProps, BlockTableColumn,BlockTableData } from '../types'
+import { BlockShell } from './block-shell'
 
 type SortDir = 'asc' | 'desc' | null
 
@@ -93,12 +94,7 @@ const BlockTable = React.memo(function BlockTable({
   const sortedRows = sortRows(data.rows ?? [], sortKey, sortDir)
 
   return (
-    <div
-      className={cn(
-        'overflow-x-auto',
-        confidence === 'low' && 'border-l-2 border-warning-7 pl-3',
-      )}
-    >
+    <BlockShell confidence={confidence} className="overflow-x-auto">
       <Table>
         {data.caption && <TableCaption>{data.caption}</TableCaption>}
         <TableHeader>
@@ -193,7 +189,7 @@ const BlockTable = React.memo(function BlockTable({
           })}
         </TableBody>
       </Table>
-    </div>
+    </BlockShell>
   )
 })
 

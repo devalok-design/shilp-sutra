@@ -6,8 +6,8 @@ import * as React from 'react'
 import { useMotion } from '../../motion/motion-provider'
 import { Alert } from '../../ui/alert'
 import { Button } from '../../ui/button'
-import { cn } from '../../ui/lib/utils'
 import type { BlockComponentProps, SuccessBlockData } from '../types'
+import { BlockShell } from './block-shell'
 
 const DEFAULT_UNDO_TIMEOUT = 5000
 
@@ -54,11 +54,7 @@ const SuccessBlock = React.memo(function SuccessBlock({
   const ringCircumference = 2 * Math.PI * ringRadius
 
   return (
-    <div
-      className={cn(
-        confidence === 'low' && 'border-l-2 border-warning-7 pl-3',
-      )}
-    >
+    <BlockShell confidence={confidence}>
       <Alert
         color="success"
         variant="subtle"
@@ -120,7 +116,7 @@ const SuccessBlock = React.memo(function SuccessBlock({
         </div>
       )}
 
-    </div>
+    </BlockShell>
   )
 })
 

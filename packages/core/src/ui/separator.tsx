@@ -7,11 +7,12 @@ import { cn } from './lib/utils'
 
 export interface SeparatorProps
   extends React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> {
-  /** Visual variant:
-   * - `default` — solid line
-   * - `gradient` — fades at both edges
-   * - `gradient-left` — fades on the left, solid on the right
-   * - `gradient-right` — fades on the right, solid on the left
+  /**
+   * @deprecated Separator is always a solid hairline. The `gradient` /
+   * `gradient-left` / `gradient-right` variants were decorative (and never
+   * rendered in production — the interpolated class couldn't be emitted by the
+   * Tailwind 4 scanner). They now render solid; the `variant` prop is removed in
+   * 0.45.0.
    */
   variant?: 'default' | 'gradient' | 'gradient-left' | 'gradient-right'
 }
@@ -21,26 +22,17 @@ const Separator = React.forwardRef<
   SeparatorProps
 >(
   (
-    { className, orientation = 'horizontal', decorative = true, variant = 'default', ...props },
+    // `variant` accepted for back-compat but no longer rendered (see @deprecated above).
+    { className, orientation = 'horizontal', decorative = true, variant: _variant, ...props },
     ref,
   ) => {
-    // Gradient direction: 90deg (left→right) for horizontal, 180deg (top→bottom) for vertical
-    const deg = orientation === 'horizontal' ? '90deg' : '180deg'
-
     return (
       <SeparatorPrimitive.Root
         ref={ref}
         decorative={decorative}
         orientation={orientation}
         className={cn(
-          'shrink-0',
-          variant === 'gradient'
-            ? `bg-transparent bg-[image:linear-gradient(${deg},transparent,var(--color-surface-border)_15%,var(--color-surface-border)_85%,transparent)]`
-            : variant === 'gradient-left'
-              ? `bg-transparent bg-[image:linear-gradient(${deg},transparent,var(--color-surface-border)_30%)]`
-              : variant === 'gradient-right'
-                ? `bg-transparent bg-[image:linear-gradient(${deg},var(--color-surface-border)_70%,transparent)]`
-                : 'bg-surface-border',
+          'shrink-0 bg-surface-border',
           orientation === 'horizontal' ? 'h-[1px] w-full' : 'h-full w-[1px]',
           className,
         )}

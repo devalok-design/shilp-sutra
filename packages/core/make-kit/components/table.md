@@ -12,7 +12,9 @@ import {
   TableHead,
   TableCell,
   TableCaption,
+  TableRowActions,
 } from '@devalok/shilp-sutra/ui/table'
+import { TableRowLink } from '@devalok/shilp-sutra/ui/table-row-link' // client-only
 ```
 
 ## When to use
@@ -39,7 +41,19 @@ Table (<table>)
       TableCell
 ```
 
-Each component is a thin semantic wrapper — no props beyond standard HTML attributes plus `className`.
+## Props
+
+| Component | Prop | Values | Notes |
+|---|---|---|---|
+| `Table` | `density` | `compact` \| `standard` (default) \| `comfortable` | Rows ≈ 29 / 37 / 45 px via `--table-py`; header height tracks it |
+| `Table` | `striped` | boolean | Opt-in zebra. Hairline separators are the default row cue — stripe only very wide/dense tables |
+| `TableCell` / `TableHead` | `numeric` | boolean | Right-align + tabular figures. Quantities only — dates/phones/IDs stay left |
+| `TableRowActions` | `persist` | boolean | Actions always visible instead of hover/focus reveal |
+| `TableRowLink` | `href`, `stretch` | string, boolean (default true) | Real-anchor whole-row navigation; `stretch={false}` = title-only link |
+
+Everything else is a thin semantic wrapper over standard HTML attributes plus `className`.
+
+**Density → cell content.** Rows grow silently when content is taller than the text line: `compact` = text only, `standard` = `Avatar size="xs"` max + single-line identity, `comfortable` = the only density for two-line identity (name + email).
 
 ## Examples
 
@@ -104,22 +118,23 @@ Each component is a thin semantic wrapper — no props beyond standard HTML attr
 </Table>
 ```
 
-**Row actions (IconButton in last cell):**
+**Row actions (hover/focus-revealed via TableRowActions):**
 ```tsx
 <Table>
   <TableHeader>
     <TableRow>
       <TableHead>File</TableHead>
-      <TableHead>Size</TableHead>
-      <TableHead className="w-12" />
+      <TableHead numeric>Size</TableHead>
+      <TableHead className="w-12"><span className="sr-only">Actions</span></TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
     {files.map((f) => (
       <TableRow key={f.id}>
         <TableCell>{f.name}</TableCell>
-        <TableCell>{formatFileSize(f.size)}</TableCell>
+        <TableCell numeric>{formatFileSize(f.size)}</TableCell>
         <TableCell>
+          <TableRowActions>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <IconButton icon={<Icon icon={IconDots} />} variant="ghost" size="sm" aria-label="Actions" />
@@ -130,12 +145,32 @@ Each component is a thin semantic wrapper — no props beyond standard HTML attr
               <DropdownMenuItem onSelect={() => remove(f)}>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          </TableRowActions>
         </TableCell>
       </TableRow>
     ))}
   </TableBody>
 </Table>
 ```
+
+`TableRowActions` reveals on row hover AND keyboard focus (buttons stay permanently tabbable — opacity reveal, never `display:none`); always visible on touch. Pass `persist` to keep actions always visible. Give the column a visually-hidden header.
+
+**Whole-row navigation (TableRowLink — client component):**
+```tsx
+<TableRow>
+  <TableCell className="relative">
+    <TableRowLink href={`/projects/${p.id}`}>{p.name}</TableRowLink>
+  </TableCell>
+  <TableCell><Badge color="success">Active</Badge></TableCell>
+  <TableCell>
+    <TableRowActions>
+      <IconButton className="relative z-[1]" size="xs" variant="ghost" aria-label={`Actions for ${p.name}`} icon={<Icon icon={IconDots} />} />
+    </TableRowActions>
+  </TableCell>
+</TableRow>
+```
+
+A real anchor stretched across the row — cmd/ctrl+click, middle-click, and "open in new tab" work. The primary cell must be `className="relative"`; other interactive elements in the row need `className="relative z-[1]"`. **Never** put `onClick` on a `<TableRow>` for navigation. Trade-off: the stretch blocks text selection — `stretch={false}` gives a title-only link.
 
 **Inside a Card:**
 ```tsx
@@ -164,7 +199,7 @@ Each component is a thin semantic wrapper — no props beyond standard HTML attr
 </Card>
 ```
 
-When inside a `<Card>`, the Table's surrounding padding comes from `CardContent`. Don't add extra padding on the Table.
+Better: for edge-to-edge rows (borders and hover running the full card width), place the Table as a **direct child of Card** instead of inside `CardContent` — first/last cells automatically pad with `var(--card-spacing)` so columns align with the card's header/footer slots. Use `CardContent` wrapping only when the table should stay inset.
 
 **Server-rendered table (RSC):**
 ```tsx
@@ -212,4 +247,7 @@ See `foundations/typography.md` for the body / label variants inside cells, `fou
 - For wide tables on mobile, wrap in an `overflow-x-auto` container. Don't try to make a Table responsive via column stacking — switch to a card list on small viewports.
 - Don't style cell text with raw Tailwind palette utilities. Use `text-fg-muted` from `foundations/color.md`.
 - Compose with Badge for status, Avatar for users, IconButton for row actions. Don't invent new primitives per table.
-- Keep TableCell content single-line where possible — multi-line cells make scanning hard. Use `<Stack>` only when each row genuinely needs two lines.
+- Keep TableCell content single-line where possible — multi-line cells make scanning hard. Two-line identity cells (name + email) require `density="comfortable"`.
+- Quantitative columns get `numeric` (right + tabular figures). Identifier-numbers (dates, phones, IDs) stay left. Negatives: never color alone — pair with a minus sign or parentheses.
+- Row navigation = `<TableRowLink>` (real anchor), never `onClick` on the row. Row actions = `<TableRowActions>` with a visually-hidden column header.
+- Empty cells get a muted em-dash with `aria-label`, never blank: `<span className="text-fg-muted" aria-label="No value">—</span>`.

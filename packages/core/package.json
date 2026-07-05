@@ -387,6 +387,11 @@
       "import": "./dist/ui/table.js",
       "default": "./dist/ui/table.js"
     },
+    "./ui/table-row-link": {
+      "types": "./dist/ui/table-row-link.d.ts",
+      "import": "./dist/ui/table-row-link.js",
+      "default": "./dist/ui/table-row-link.js"
+    },
     "./ui/tabs": {
       "types": "./dist/ui/tabs.d.ts",
       "import": "./dist/ui/tabs.js",

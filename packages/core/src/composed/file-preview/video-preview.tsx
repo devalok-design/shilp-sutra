@@ -29,6 +29,10 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
   const [error, setError] = React.useState(false)
   const [showControls, setShowControls] = React.useState(true)
   const [playbackRate, setPlaybackRate] = React.useState(1)
+  // Kept current every render so the mount-time keydown handler (empty deps)
+  // reads the live rate instead of the stale initial 1x. See #91.
+  const playbackRateRef = React.useRef(playbackRate)
+  playbackRateRef.current = playbackRate
   const hideTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   React.useEffect(() => {
@@ -91,11 +95,10 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function cyclePlaybackRate(direction: 1 | -1) {
-    const idx = PLAYBACK_RATES.indexOf(playbackRate as typeof PLAYBACK_RATES[number])
+    const idx = PLAYBACK_RATES.indexOf(playbackRateRef.current as typeof PLAYBACK_RATES[number])
     const nextIdx = Math.max(0, Math.min(PLAYBACK_RATES.length - 1, idx + direction))
     const next = PLAYBACK_RATES[nextIdx]
     setPlaybackRate(next)

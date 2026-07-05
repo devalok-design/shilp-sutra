@@ -39,7 +39,7 @@ Compound component: `Message`, `Message.Avatar`, `Message.Content`, `Message.Aut
 ### Message (root) Props
     variant: "flat" | "bubble" (default: "flat")
     placement: "start" | "end" (default: "start")
-    highlight: "mention" | "internal"
+    highlight: "mention" | "internal" — "mention" styles in-content @tokens (any <span class="mention">) so they tint (accent-2/accent-11); the row itself stays flat. "internal" tints the whole row (warning-2) for system/internal notes. Both also expose a `data-highlight` attribute hook.
     grouped: boolean — hides avatar/author for consecutive messages (default: false)
     deleted: boolean — renders deleted placeholder (default: false)
     deletedText: string (default: "This message was deleted")

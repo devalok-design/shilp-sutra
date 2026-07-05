@@ -37,6 +37,7 @@ import * as React from 'react'
 import { useColorMode } from '../hooks/use-color-mode'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
+import { MENTION_TOKEN_CLASS } from '../ui/lib/mention'
 import { cn } from '../ui/lib/utils'
 import type { EmojiSet } from './emoji-picker'
 import { loadEmojiData, lookupEmoji } from './extensions/emoji-data'
@@ -62,7 +63,7 @@ const PROSE_CLASSES = [
   '[&_hr]:my-ds-04 [&_hr]:border-surface-border-strong',
   '[&_a]:text-accent-11 [&_a]:underline [&_a]:decoration-accent-6 hover:[&_a]:decoration-accent-11',
   '[&_img]:max-w-full [&_img]:rounded-control [&_img]:my-ds-03',
-  '[&_.mention]:rounded-control-inner [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
+  MENTION_TOKEN_CLASS,
 ] as const
 
 interface ToolbarButtonProps {

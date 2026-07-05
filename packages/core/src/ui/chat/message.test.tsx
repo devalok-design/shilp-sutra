@@ -102,6 +102,22 @@ describe('Message', () => {
     expect(root).not.toHaveClass('bg-accent-2')
   })
 
+  it('styles in-content @mention tokens in the rendered message (see #99)', () => {
+    // The `.mention` token styling must be present in the read-only Message —
+    // it previously lived only on the editor, so mentions rendered flat.
+    const { container } = render(
+      <Message>
+        <Message.Body>
+          Hey <span className="mention">@you</span>
+        </Message.Body>
+      </Message>,
+    )
+    const root = container.firstChild as HTMLElement
+    expect(root.className).toContain('[&_.mention]:bg-accent-2')
+    expect(root.className).toContain('[&_.mention]:text-accent-11')
+    expect(container.querySelector('.mention')).not.toBeNull()
+  })
+
   it('highlight="internal" has warning bg class', () => {
     const { container } = render(
       <Message highlight="internal">

@@ -7,7 +7,7 @@ Hosted read-only MCP server serving shilp-sutra docs to AI agents. Private — n
 
 ## How it works
 
-Docs are extracted from **published npm tarballs** (`registry.npmjs.org`) and cached per version — the server is a pure read-through cache with zero release-time coupling. From 0.46.0 the tarball ships `mcp-manifest.json` (structured props/tokens/composition), which backs the manifest tools. Versions below the 0.46 floor get a redirect to `upgrade(from, to)` — the only tool that accepts pre-floor versions.
+Docs are extracted from **published npm tarballs** (`registry.npmjs.org`) and cached per version — the server is a pure read-through cache with zero release-time coupling. From 0.45.0 the tarball ships `mcp-manifest.json` (structured props/tokens/composition), which backs the manifest tools. Versions below the 0.45 floor get a redirect to `upgrade(from, to)` — the only tool that accepts pre-floor versions.
 
 ## Tools
 
@@ -16,7 +16,7 @@ Docs are extracted from **published npm tarballs** (`registry.npmjs.org`) and ca
 ## Run
 
 ```sh
-# local mode — serve the working-tree packages/core (pre-0.46 development)
+# local mode — serve the working-tree packages/core (pre-0.45 development)
 LOCAL_CORE_DIR=../core node src/index.mjs
 
 # registry mode — serve published versions

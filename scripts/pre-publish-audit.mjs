@@ -813,7 +813,7 @@ gate('Icon-prop components import normalize-icon', () => {
 })
 
 // Gate: router llms.txt exists and stays a router — ≤3.5K tokens. Replaced the
-// llms-quick.txt cap when llms-quick/llms-full were removed in 0.46. The
+// llms-quick.txt cap when llms-quick/llms-full were removed in 0.45. The
 // router's whole value is being cheap to load in every agent context; if it
 // grows, deep content is leaking back in — move it behind the MCP manifest.
 gate('llms.txt (router) ≤ 3.5K tokens', () => {
@@ -852,7 +852,7 @@ gate('mcp-manifest.json valid + stamped with current version', () => {
   }
 })
 
-// Advisory: composition tagging coverage. The AI-focused doc switch (0.46)
+// Advisory: composition tagging coverage. The AI-focused doc switch (0.45)
 // converts prose Composability bullets to tagged form (**Part:**, **Composes:**,
 // etc.) so composition serves as structured data. Track progress; flip to a
 // hard gate once conversion completes.

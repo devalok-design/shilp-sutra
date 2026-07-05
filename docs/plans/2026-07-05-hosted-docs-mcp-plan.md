@@ -6,10 +6,10 @@
 
 ## v2 decisions (2026-07-05)
 
-1. **Version floor = 0.46.0** — the release the MCP ships with. No back-fill of older versions. Requests for <0.46 get a pointed redirect to `upgrade(from, to)`, which DOES accept older `from` versions (0.45 and below) so pre-MCP consumers have a tool-served path in.
-2. **`mcp-manifest.json` ships in the tarball from 0.46** — structured JSON emitted by `build-component-docs.mjs`: per-component props/variants/import path/examples/token refs/composition, plus a `manifestVersion` field. The server reads the manifest, never parses markdown. Kills the parser-drift risk; JSON responses are ~80% cheaper than prose (Indeed benchmark); Storybook's RFC independently landed on build-time manifest extraction.
+1. **Version floor = 0.45.0** — the release the MCP ships with. No back-fill of older versions. Requests for <0.45 get a pointed redirect to `upgrade(from, to)`, which DOES accept older `from` versions (0.45 and below) so pre-MCP consumers have a tool-served path in.
+2. **`mcp-manifest.json` ships in the tarball from 0.45** — structured JSON emitted by `build-component-docs.mjs`: per-component props/variants/import path/examples/token refs/composition, plus a `manifestVersion` field. The server reads the manifest, never parses markdown. Kills the parser-drift risk; JSON responses are ~80% cheaper than prose (Indeed benchmark); Storybook's RFC independently landed on build-time manifest extraction.
 3. **llms.txt becomes a ~2-3K router** — component names + one-liners + "call the MCP for details" instructions + connect snippet + fallback order. The always-in-context map; deep content moves behind tools. (Files cost zero context until read — the fix for context hogging is routing, not deletion.)
-4. **llms-full.txt and llms-quick.txt are dropped in 0.46.** Fallback chain for MCP-less agents: router llms.txt → `docs/components/<tier>/<name>.md` (~3K per component). Requires: changeset (breaking for doc-path consumers), Karm DS notice, and updating the pre-publish-audit gates that check llms-full regeneration.
+4. **llms-full.txt and llms-quick.txt are dropped in 0.45.** Fallback chain for MCP-less agents: router llms.txt → `docs/components/<tier>/<name>.md` (~3K per component). Requires: changeset (breaking for doc-path consumers), Karm DS notice, and updating the pre-publish-audit gates that check llms-full regeneration.
 5. **Composition is a first-class doc surface** — served as a `composition` section of `get_component`: compound parts + slot contracts, composes-with, contained-by, anti-patterns (the composition-duplication audit's lesson as data). Authored as a `composition` frontmatter block in each `docs/components/*.md`, enforced by a new pre-publish-audit gate, merged into the manifest at build.
 6. **Six tools, hard ceiling** (down from seven — see revised tool surface).
 
@@ -108,7 +108,7 @@ Hosted docs can diverge from a consumer's installed version. Every design choice
 | "How do I use Y correctly?" | `get_component` | `name`, `sections?` (api/usage/examples/composition/theme/changelog), `version?` | props/variants as JSON; usage prose as Markdown; **composition** = compound parts, slot contracts, composes-with, contained-by, anti-patterns. Import line + peer requirements inline (self-sufficient — no follow-up file read). | manifest + `docs/components/{tier}/{name}.md` |
 | "What tokens exist?" | `get_tokens` | `category?` (color/spacing/typography/radius/shadow/motion), `version?` | token reference as JSON | manifest token section |
 | "Set up a project" | `get_setup` | `framework?` (vite/next-app-router/next-pages/remix/astro/tanstack-start), `version?` | recipe + AGENTS contract quickstart | `docs/recipes/*`, `AGENTS.md` |
-| "Upgrading — what breaks?" | `upgrade` | `from`, `to?` | structured breaking changes + migration steps across the range. **Accepts `from` < 0.46** (0.45 and older) — the transition path for pre-MCP consumers. | `BREAKING.json` + `MIGRATION.md` |
+| "Upgrading — what breaks?" | `upgrade` | `from`, `to?` | structured breaking changes + migration steps across the range. **Accepts `from` < 0.45** (0.45 and older) — the transition path for pre-MCP consumers. | `BREAKING.json` + `MIGRATION.md` |
 | "Find guidance on pattern Z" | `search_docs` | `query`, `version?` | matching sections with component anchors | index built from manifest + per-component md at cache-fill |
 
 Design rules:
@@ -170,10 +170,10 @@ The MCP is useless if agents don't know it exists. Pointers added in the same re
 
 | Phase | Scope | Exit criteria |
 |---|---|---|
-| 0. Manifest (in core, ships 0.46) | `build-component-docs.mjs` emits `mcp-manifest.json` (props/variants/imports/examples/tokens/composition, `manifestVersion`); `composition` frontmatter authored for all components; new audit gates (manifest completeness, composition block per component); llms.txt → router; drop llms-full/llms-quick + update audit gates; changeset + Karm DS notice | 0.46.0 publishes with manifest; every component has composition data; audit green |
-| 1. Spike | `registry.ts` tarball fetch + `get_component` from manifest, run locally against 0.46 | fetch < 2s cold, < 50ms warm; all 86+ components servable from manifest |
+| 0. Manifest (in core, ships 0.45) | `build-component-docs.mjs` emits `mcp-manifest.json` (props/variants/imports/examples/tokens/composition, `manifestVersion`); `composition` frontmatter authored for all components; new audit gates (manifest completeness, composition block per component); llms.txt → router; drop llms-full/llms-quick + update audit gates; changeset + Karm DS notice | 0.45.0 publishes with manifest; every component has composition data; audit green |
+| 1. Spike | `registry.ts` tarball fetch + `get_component` from manifest, run locally against 0.45 | fetch < 2s cold, < 50ms warm; all 86+ components servable from manifest |
 | 2. Full surface | all 6 tools, tests against local core manifest output, rate limit | CI green; manual smoke via Claude Code MCP connect |
-| 3. Deploy | Railway service + domain + health checks | live endpoint answers `get_component("button")` for 0.46.x versions |
+| 3. Deploy | Railway service + domain + health checks | live endpoint answers `get_component("button")` for 0.45.x versions |
 | 4. Announce | router llms.txt pointers live, README, Karm DS notice | Karm agent successfully uses it with `version` param; `upgrade(from: "0.45.x")` verified |
 
 ## Risks
@@ -185,7 +185,7 @@ The MCP is useless if agents don't know it exists. Pointers added in the same re
 
 ## Open questions
 
-1. ~~Minimum supported version~~ — **resolved: floor at 0.46.0** (the MCP-ship release). Older versions get a redirect to `upgrade(from, to)`, which accepts pre-0.46 `from` values.
+1. ~~Minimum supported version~~ — **resolved: floor at 0.45.0** (the MCP-ship release). Older versions get a redirect to `upgrade(from, to)`, which accepts pre-0.45 `from` values.
 2. ~~get_tokens data source~~ — **resolved: manifest JSON** (decision 2).
 3. Expose Storybook links (published GitHub Pages Storybook) in `get_component` responses? Cheap, likely useful.
 4. ~~Chromatic auto-generated MCP~~ — **rejected 2026-07-05.** Latest-only, experimental, no version param (misses the plan's core differentiator), and couples the docs surface to a paid service whose footprint we intend to reduce. Building our own.

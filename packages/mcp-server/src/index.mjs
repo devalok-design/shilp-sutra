@@ -47,7 +47,7 @@ const VERSION_PARAM = z
   .string()
   .optional()
   .describe(
-    'shilp-sutra version to serve docs for (semver, e.g. "0.46.0"). ALWAYS pass the consumer\'s installed version from node_modules/@devalok/shilp-sutra/package.json. Defaults to latest.'
+    'shilp-sutra version to serve docs for (semver, e.g. "0.45.0"). ALWAYS pass the consumer\'s installed version from node_modules/@devalok/shilp-sutra/package.json. Defaults to latest.'
   )
 
 function text(s) {
@@ -115,7 +115,7 @@ function buildServer() {
 
   server.tool(
     'upgrade',
-    'Structured breaking changes + migration pointers between two shilp-sutra versions. Accepts `from` versions older than the docs floor — this is the entry point for consumers on <0.46.',
+    'Structured breaking changes + migration pointers between two shilp-sutra versions. Accepts `from` versions older than the docs floor — this is the entry point for consumers on <0.45.',
     {
       from: z.string().describe('currently installed version'),
       to: z.string().optional().describe('target version (default: latest)'),

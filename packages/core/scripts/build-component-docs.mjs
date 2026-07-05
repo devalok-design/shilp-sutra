@@ -3,7 +3,7 @@
  *
  * Scans src/ui/, src/composed/, src/shell/ for component source files and
  * validates that each has a matching doc in docs/components/{category}/{kebab-name}.md.
- * Validation-only since 0.46 — llms-full.txt is gone; build-mcp-manifest.mjs
+ * Validation-only since 0.45 — llms-full.txt is gone; build-mcp-manifest.mjs
  * emits mcp-manifest.json + the router llms.txt instead.
  *
  * Usage (run from packages/core/):
@@ -116,7 +116,7 @@ if (checkOnly) {
   process.exit(0)
 }
 
-// llms-full.txt is no longer generated (removed in 0.46 — the MCP manifest +
+// llms-full.txt is no longer generated (removed in 0.45 — the MCP manifest +
 // per-component docs + router llms.txt replaced the concatenated dump; see
 // docs/specs/mcp-manifest-standard.md §4). This script is now validation-only;
 // build-mcp-manifest.mjs handles all generation.

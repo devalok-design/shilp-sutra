@@ -1,7 +1,7 @@
 # MCP Manifest & AI-Surface Standard
 
 **Status:** Draft v1 — 2026-07-05
-**Applies from:** @devalok/shilp-sutra 0.46.0
+**Applies from:** @devalok/shilp-sutra 0.45.0
 **Companion schema:** `packages/core/mcp-manifest.schema.json`
 **Plan:** `docs/plans/2026-07-05-hosted-docs-mcp-plan.md`
 
@@ -29,7 +29,7 @@ Emitted by `build-component-docs.mjs` at build time, ships in the tarball root (
   "$schema": "./mcp-manifest.schema.json",
   "manifestVersion": "1.0.0",          // format version — bump per this standard's changelog
   "package": "@devalok/shilp-sutra",
-  "packageVersion": "0.46.0",           // must equal package.json version (audit gate)
+  "packageVersion": "0.45.0",           // must equal package.json version (audit gate)
   "generatedAt": "<build timestamp>",
   "components": { /* keyed by kebab-name, §1.1 */ },
   "tokens": { /* §1.2 */ }
@@ -111,15 +111,15 @@ Parse rules:
 ## 3. MCP tool conventions
 
 - Tool names: `snake_case` verb-first — `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`. Six tools, hard ceiling.
-- Every tool: optional `version` (semver string, default = latest ≥0.46). Sub-floor requests return an `isError: false` guidance result (not a failure): "0.45.2 predates MCP doc coverage (floor 0.46.0). Call upgrade(from: \"0.45.2\", to: \"0.46.0\") for the migration path."
-- Response envelope: first line is the version banner (`Docs for @devalok/shilp-sutra@0.46.0 — pass your installed version if different`); then content. Machine data as JSON in a fenced block; prose as Markdown. ≤5K tokens per response — over-budget results truncate with an explicit `truncated: true` marker + narrowing hint (never silent).
+- Every tool: optional `version` (semver string, default = latest ≥0.45). Sub-floor requests return an `isError: false` guidance result (not a failure): "0.45.2 predates MCP doc coverage (floor 0.45.0). Call upgrade(from: \"0.45.2\", to: \"0.45.0\") for the migration path."
+- Response envelope: first line is the version banner (`Docs for @devalok/shilp-sutra@0.45.0 — pass your installed version if different`); then content. Machine data as JSON in a fenced block; prose as Markdown. ≤5K tokens per response — over-budget results truncate with an explicit `truncated: true` marker + narrowing hint (never silent).
 - Errors: MCP `isError: true` with self-correcting text ("Unknown component 'btn'. Closest: button, split-button. Call find_component(\"btn\") to search."). shadcn CLI 3.0 precedent: error messages are written for LLM self-correction.
 
-## 4. Router `llms.txt` (replaces cheatsheet in 0.46)
+## 4. Router `llms.txt` (replaces cheatsheet in 0.45)
 
 Conforms to llmstxt.org: H1 package name → blockquote (what it is, one paragraph, MCP-first instruction) → H2 sections. Target ≤3K tokens. Contents: MCP connect snippet + tool one-liners; component index as `[name](docs/components/tier/name.md): one-liner` (llms.txt link-line convention, pointing at tarball-relative paths for MCP-less fallback); token categories list; fallback order statement. No prop tables, no examples — those live behind `get_component`.
 
-`llms-full.txt` and `llms-quick.txt` are removed in 0.46 (breaking; changeset + Karm DS notice required).
+`llms-full.txt` and `llms-quick.txt` are removed in 0.45 (breaking; changeset + Karm DS notice required).
 
 ## 5. Standard versioning
 

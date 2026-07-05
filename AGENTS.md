@@ -28,7 +28,7 @@ If you are a human, read [README.md](./README.md) instead.
 6. **`packages/core/docs/recipes/upgrading.md`** + **`MIGRATION.md`** — read BOTH before any version bump. See the hard constraint below.
 7. **`node_modules/@devalok/shilp-sutra/BREAKING.json`** — machine-readable manifest of every breaking change per version (moves, type narrowings, removals, renames). Read this programmatically when planning an upgrade — schema in `BREAKING.schema.json`. Lets you answer "does my code import any of these moved symbols?" without parsing CHANGELOG prose.
 
-(`llms-full.txt` and `llms-quick.txt` were removed in 0.46 — the router + per-component docs + manifest replaced them. Do not look for them.)
+(`llms-full.txt` and `llms-quick.txt` were removed in 0.45 — the router + per-component docs + manifest replaced them. Do not look for them.)
 
 When the package is installed in a consumer project, the same files live at:
 

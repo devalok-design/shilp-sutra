@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://shilp-sutra.devalok.in/mcp-manifest.schema.json",
   "title": "shilp-sutra MCP manifest",
-  "description": "Machine-readable component/token reference emitted at build time and shipped in the npm tarball from 0.46.0. The hosted docs MCP server extracts this file from published tarballs and serves slices of it — it never parses markdown. Prop shape mirrors react-docgen/Storybook ArgTypes so AI agents consume it zero-shot. Authored standard: docs/specs/mcp-manifest-standard.md.",
+  "description": "Machine-readable component/token reference emitted at build time and shipped in the npm tarball from 0.45.0. The hosted docs MCP server extracts this file from published tarballs and serves slices of it — it never parses markdown. Prop shape mirrors react-docgen/Storybook ArgTypes so AI agents consume it zero-shot. Authored standard: docs/specs/mcp-manifest-standard.md.",
   "type": "object",
   "required": ["manifestVersion", "package", "packageVersion", "components", "tokens"],
   "additionalProperties": false,

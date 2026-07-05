@@ -1601,11 +1601,14 @@
         },
         "orientation": {
           "type": {
-            "name": "union",
-            "raw": "\"vertical\" (default) | \"horizontal\""
+            "name": "enum",
+            "value": [
+              "vertical",
+              "horizontal"
+            ]
           },
           "required": false,
-          "description": "row layout — media pane + <CardSection> column",
+          "description": "vertical is default; horizontal = row layout with media pane + <CardSection> column",
           "defaultValue": "vertical"
         },
         "interactive": {

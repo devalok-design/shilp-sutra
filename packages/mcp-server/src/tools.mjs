@@ -6,12 +6,12 @@
  * - machine data as JSON, prose as Markdown
  * - ≤ ~5K tokens (~20K chars) per response, explicit truncation marker
  * - errors are written for LLM self-correction
- * - versions below the 0.46 floor get a guidance redirect, except `upgrade`
+ * - versions below the 0.45 floor get a guidance redirect, except `upgrade`
  */
 
 import { getDocs } from './registry.mjs'
 
-const FLOOR = '0.46.0'
+const FLOOR = '0.45.0'
 const MAX_CHARS = 20_000
 
 function cmpSemver(a, b) {
@@ -159,7 +159,7 @@ export async function getSetup({ framework, version }) {
 }
 
 export async function upgrade({ from, to, version }) {
-  // Exempt from the floor: this is the doorway IN for pre-0.46 consumers.
+  // Exempt from the floor: this is the doorway IN for pre-0.45 consumers.
   // Breaking data is read from the TARGET version's tarball (cumulative manifest).
   const d = await load(to || version, { skipFloor: true })
   const breakingRaw = d.files.get('BREAKING.json')

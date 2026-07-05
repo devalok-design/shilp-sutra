@@ -3,10 +3,13 @@ name: Release
 on:
   push:
     branches: [main]
-    # Site-only changes (apps/site/**) deploy via Railway and never touch the
-    # published npm packages — skip the release pipeline for them.
+    # Site-only and mcp-server-only changes deploy via Railway and never touch
+    # the published npm packages — skip the release pipeline for them.
+    # (paths-ignore only skips when ALL changed paths match, so a mixed push
+    # that also touches packages/core still runs the release correctly.)
     paths-ignore:
       - 'apps/site/**'
+      - 'packages/mcp-server/**'
   # Allow manual re-runs from the Actions UI / gh CLI without needing a new commit.
   # Useful when a prior publish failed on a transient issue (auth, registry outage,
   # token expiry) and we want to retry with the fix in place — as happened after

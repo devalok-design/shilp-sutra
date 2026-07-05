@@ -186,10 +186,11 @@ Components with the two-axis system: **Button, Badge, Alert, Banner, Progress, S
 - **Text**: variant(heading-2xl..xs, body-lg..xs, label-lg..xs, caption, overline, code). Polymorphic `as` prop.
 - **Stack**: direction(vertical|horizontal) gap(SpacingToken) align/justify/wrap.
 - **Container**, **Separator**.
-- **Card**: variant(default|elevated|outline|flat) accent(left|top|right|bottom). Compound: CardHeader > CardTitle, CardDescription; CardContent; CardFooter.
+- **Card**: variant(default|elevated|outline|flat) color size(sm|md|lg — one CSS var pair: --card-spacing/--card-gap) orientation(vertical|horizontal) interactive. Compound: CardBleed(side — full-bleed), CardAction(corner slot), CardHeader > CardTitle, CardDescription; CardContent; CardFooter; CardSection(horizontal). Text must live in a slot; never p-* on Card. (accent/accentColor removed 0.44.)
+- **Table**: density(compact|standard|comfortable) striped + TableHead/TableCell `numeric`; TableRowActions(hover/focus-revealed row actions); TableRowLink(real-anchor row navigation, import ui/table-row-link). Rows have hairline separators; inside Card place Table as direct child (edge cells align with slots).
 - **Badge**: variant(subtle|solid|outline|soft) color(default|accent|error|success|warning|info|neutral + 7 categories + custom) size(xs|sm|md|lg) + onClick, onDismiss, dot, startIcon, endIcon, truncate. Compound: Badge.Indicator, Badge.Group.
 - **Avatar**: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status, ring, badge.
-- **Spinner**, **Progress** (autoColor!), **Skeleton**, **StatCard**, **StatusDot**, **ColorSwatch**.
+- **Spinner**, **Progress** (autoColor!), **Skeleton**, **StatCard** (size sm|md|lg for density; variant delegated to Card), **StatusDot**, **ColorSwatch**.
 - **Alert**: variant(subtle|solid|outline) color(info|success|warning|error|neutral) + title, onDismiss. Single component, not compound.
 - **Banner**: color(...) + actions, onDismiss. Mobile-responsive.
 - **Toast**: imperative `toast.success('msg')` / `.error/.warning/.info/.loading/.message/.promise/.upload/.custom`. Requires `<Toaster />`.

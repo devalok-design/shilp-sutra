@@ -1,5 +1,7 @@
 # ContentCard
 
+> **DEPRECATED (v0.44.0)** — will be removed in the next major. Compose `Card` + `CardHeader`/`CardTitle`/`CardAction`/`CardContent`/`CardFooter` instead (they cover every ContentCard feature on the gap model). Migration: `headerTitle` → `<CardTitle>`, `headerActions` → `<CardAction>`, `padding` → Card `size`, `footer` → `<CardFooter>`. See MIGRATION.md → v0.44.0.
+
 - Import: @devalok/shilp-sutra/composed/content-card
 - Server-safe: Yes
 - Category: composed

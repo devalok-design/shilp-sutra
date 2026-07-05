@@ -41,6 +41,28 @@ Paste the snippet *after* `@import "@devalok/shilp-sutra/css";` in the global st
 
 The repo URL for these files is `https://github.com/devalok-design/shilp-sutra/tree/main/packages/core/docs/recipes`. Consumer projects should also have an `AGENTS.md` at their root with the rules above pre-loaded — read that first if it exists.
 
+## NEW (v0.45.0)
+
+- **Card spacing = one CSS variable.** `size` assigns `--card-spacing`/`--card-gap`; container, slots, CardAction corners, and CardBleed all read the pair. Rendered spacing unchanged (sm 16/8, md 20/12, lg 24/16). Retune any card with one class: `[--card-spacing:var(--spacing-ds-07)]`. `CardSizeContext` is gone — slots work by CSS inheritance.
+- **`<CardBleed side>`** (`x | top | bottom | y | all`) — full-bleed escape hatch (Radix Inset / Polaris Bleed equivalent). `top`/`bottom` inherit the card radius for cover media; `x` escapes a slot's inset. Direct children of Card are already full-width — never `x`/`all` there.
+- **`<Card orientation="horizontal">` + `<CardSection>`** — horizontal media cards: media pane owns the left edge, CardSection restores py/gap rhythm.
+- **StatCard `size`** (`sm|md|lg`) — `sm` = 16px padding + 2xl value for dense KPI grids; internal rhythm now flex-gap; `footer` renders behind a full-width rule.
+- **Table overhaul.** Rows regained hairline separators (`border-b border-surface-border-subtle` — lost in the original port); hover fixed to `surface-raised-hover` (was the invisible `surface-raised` — same for sort button, expander, expanded row, TableFooter); `density` prop (rows ≈29/37/45px, header tracks it); `striped` opt-in zebra; first/last cells read `--table-edge` = `--card-spacing` inside a Card (columns align with card slots); header quieter (`text-ds-sm` muted); explicit selected+hover step (accent-4).
+- **`<TableRowLink href stretch?>`** (`ui/table-row-link`, client) — real-anchor whole-row navigation: cmd+click / middle-click / context menu / SR link semantics work. Primary cell needs `className="relative"`; other row controls need `relative z-[1]`; `stretch={false}` = title-only link. Never `onClick` on a row.
+- **`<TableRowActions persist?>`** — hover/focus-revealed action cluster: opacity reveal (permanently tabbable), `:focus-within` reveal, always visible on touch. Visually-hidden column header required.
+- **`numeric`** on TableCell/TableHead — right + tabular figures. Identifier-numbers (dates, IDs, phones) stay left; negatives never color-only.
+- **Row expansion** — `aria-expanded` on the toggle button, animated open/close (height+opacity, reduced-motion self-guarded).
+- **DataTableCards** (mobile) compose `<Card size="sm" variant="outline">`.
+- **Cell recipes** in `docs/components/ui/table.md` — user cell (two-line identity = `comfortable` density only; avatar ≈ row height − 16px), tag `+N` overflow, money conventions, em-dash empties.
+
+## CHANGES (v0.44.0) — backfilled; this file previously missed the 0.44 entry
+
+- **BREAKING: Card `accent`/`accentColor` removed** — use `color` (tinted 1px border) or `<CardAction>` (corner badge/menu slot, 4 placements + `tuck`). See MIGRATION.md → v0.44.0.
+- **BREAKING: StatCard `surface` → `variant`** — StatCard composes Card; surface is Card's 4-way `variant`.
+- **Card gap model** — container owns vertical padding + inter-slot gap; slots own horizontal inset only. Adding/removing a slot can't unbalance the bottom edge. Never add `p-*`/`pt-*` to Card or slots.
+- **ContentCard deprecated** — compose Card slots; removal next major.
+- **`<TruncatedText>`** (`ui/truncated-text`) — `mode: end|clamp|middle`, tooltip-on-truncation, accessible full name.
+
 ## NEW (v0.42.0)
 
 - **Figma Make kit.** 26 guideline files at `node_modules/@devalok/shilp-sutra/make-kit/` (top-level `Guidelines.md` + `setup.md`, eight `foundations/*.md`, sixteen `components/*.md`). Subpath exports `@devalok/shilp-sutra/make-kit` → `Guidelines.md`, `/make-kit/*` → individual files. Used by Figma Make to generate apps + prototypes against the DS. Setup walkthrough: https://shilp-sutra.devalok.in/figma-make. Public npm registry; cross-org sharing not supported by Figma — each consumer org self-registers. Pin to a specific npm version; no auto-update flow yet. Make kits need Organization / Enterprise Figma plan; Free + Pro can still install the package directly in React projects.
@@ -313,7 +335,7 @@ Same pattern for `border-surface-*`, `text-surface-*`, `ring-surface-*`.
 
 ## CHANGES (v0.16.0)
 - **DataTable server-side features**: `onSort` callback (manual sorting), `pagination` prop (server-side pagination with page/total/onPageChange), `selectedIds` + `selectableFilter` (controlled selection), `loading` shimmer, `emptyState` ReactNode, `singleExpand`, `stickyHeader`, `onRowClick`, `bulkActions` floating bar
-- **DataTable display**: `density?: 'compact' | 'standard' | 'comfortable'` (compact=4px padding, standard=16px, comfortable=32px). `toolbar?: boolean` (column visibility + density + export controls). Column `meta: { align: 'right' }` for numeric columns (auto-applies text-right tabular-nums). Column `meta: { hideBelow: 'md' }` for responsive column hiding (hidden below breakpoint). `selectableFilter?: (row) => boolean` to disable selection on certain rows (e.g. only PENDING rows selectable).
+- **DataTable display**: `density?: 'compact' | 'standard' | 'comfortable'` (vertical cell padding 4/8/12px → rows ≈29/37/45px; forwarded to Table's `--table-py`, header height tracks it). `toolbar?: boolean` (column visibility + density + export controls). Column `meta: { align: 'right' }` for numeric columns (auto-applies text-right tabular-nums). Column `meta: { hideBelow: 'md' }` for responsive column hiding (hidden below breakpoint). `selectableFilter?: (row) => boolean` to disable selection on certain rows (e.g. only PENDING rows selectable).
 - **ActivityFeed**: New composed component — `@devalok/shilp-sutra/composed/activity-feed` — vertical timeline with colored dots, actor avatars, expandable detail, compact mode, load more
 - EmptyState: `iconSize?: 'sm' | 'md' | 'lg'` prop for icon dimension control
 - BottomNavbar: `badge?: number` on BottomNavItem for notification counts (99+ cap)
@@ -624,12 +646,12 @@ NOTIFICATION SELECTION GUIDE:
 - Badge: variant(subtle|solid|outline|soft) color(default|accent|error|success|warning|info|neutral + 7 category colors + custom) size(xs|sm|md|lg) + onClick, onDismiss, selected, disabled, dot, startIcon, endIcon, maxWidth, circle, asChild. Compound: Badge.Indicator(count, max, dot, color, invisible, showZero, placement, children), Badge.Group(max, gap, size, onOverflowClick, children). Custom colors: color="custom" + style={{'--badge-color':'#hex'}}. Grain-ready (has relative/overflow-hidden/isolate).
 - Chip: DEPRECATED — Use `<Badge onClick={...}>` instead. Chip wrapper maps label prop to children for backward compat.
 - Avatar: size(xs|sm|md|lg|xl) shape(circle|square|rounded) status?(AvatarStatus) ring?('lead'|'admin'|'client') badge?(number|'dot'|ReactNode) loading?(boolean) > AvatarImage + AvatarFallback(colorSeed?). Types: AvatarStatus = 'online'|'offline'|'busy'|'away', AvatarRing = 'none'|'lead'|'admin'|'client'. Fallback colors are deterministic from name hash (8 categorical). Online dot pulses. Badge pops in with MotionPop.
-- Card: variant(default|elevated|outline|flat) interactive(boolean) accent?(left|top|right|bottom) accentColor?(default|secondary|error|success|warning|info) > CardHeader > CardTitle, CardDescription; CardContent; CardFooter
-- Table > TableHeader > TableRow > TableHead; TableBody > TableRow > TableCell; TableFooter; TableCaption
+- Card: variant(default|elevated|outline|flat) color(default|accent|error|success|warning|info|neutral) size(sm|md|lg — assigns --card-spacing/--card-gap CSS vars; retune with className="[--card-spacing:var(--spacing-ds-07)]") orientation(vertical|horizontal) interactive(boolean) > CardBleed(side: x|top|bottom|y|all — full-bleed escape hatch; x only INSIDE slots), CardAction(placement, tuck — corner overlay), CardHeader > CardTitle, CardDescription; CardContent; CardFooter; CardSection (rhythm column for horizontal cards). Direct children span full width (dividers/bands free) — text MUST live in a slot (dev warning otherwise). NEVER p-* on Card/slots. Removed in 0.44: accent/accentColor.
+- Table: density(compact|standard|comfortable — rows ≈29/37/45px via --table-py) striped(boolean, opt-in zebra) > TableHeader > TableRow > TableHead(numeric?); TableBody > TableRow > TableCell(numeric? — right + tabular-nums); TableFooter; TableCaption; TableRowActions(persist? — hover/focus-revealed row actions, permanently tabbable); TableRowLink(href, stretch — SEPARATE import ui/table-row-link, client-only) — real-anchor whole-row navigation (never onClick on a row). Inside a Card, place Table as a direct child: edge cells inherit --card-spacing and align with card slots.
 - Text: variant(TextVariant) as(element). Type: TextVariant = 'heading-2xl' | 'heading-xl' | 'heading-lg' | 'heading-md' | 'heading-sm' | 'heading-xs' | 'body-lg' | 'body-md' | 'body-sm' | 'body-xs' | 'label-lg' | 'label-md' | 'label-sm' | 'label-xs' | 'caption' | 'overline'
 - Code: variant(inline|block)
 - Skeleton: variant(rectangle|circle|text) animation(pulse|shimmer|none)
-- StatCard: title/label, value, delta, icon, prefix, suffix, comparisonLabel, secondaryLabel, progress, sparkline, onClick, href, accent(default|success|warning|error|info), footer
+- StatCard: title/label, value, delta{value,direction}, deltaPlacement(block|inline), icon, prefix, suffix, comparisonLabel, secondaryLabel, progress, sparkline, onClick, href, footer (renders behind a full-width rule), variant(default|elevated|outline|flat — delegated to Card), size(sm|md|lg — sm for dense KPI grids, value steps to 2xl), accentStyle(none|icon|tint), iconFill(soft|solid), flash(up|down|goal|record|alert|live|{tone,icon}), flashSpeed, loading. Removed in 0.43/0.44: accent rail, surface prop.
 - ColorSwatch: color(CSS string) size(sm|md|lg) shape(circle|square|rounded) ring(boolean) — for dynamic runtime colors
 - StatusDot: status(healthy|warning|critical|neutral|inactive) size(sm|md|lg) pulse?(boolean, default true for healthy) label?(string)
 - ProgressRing: value(number) max?(100) size(sm|md|lg) color(default|success|warning|error|info) showValue?(boolean) label?(string). Also: MultiProgressRing for concentric Activity Ring style
@@ -681,7 +703,7 @@ Import: `@devalok/shilp-sutra/ui/chat`
 - PageHeader: title, subtitle, breadcrumbs[], actions(ReactNode)
 - AvatarGroup: users(AvatarUser[]), max?(number), size?(xs|sm|md|lg|xl), showTooltip?, borderColor?('surface-base'|'surface-raised'), onOverflowClick?(), renderAvatar?((user,index)=>ReactNode), expandDirection?('left'|'right'), expandAmount?('compact'|'default'|'wide'). Type: AvatarUser = { name, image?, ring?, indicator?('lead'|'admin'|ReactNode) }. GPU-composited hover expand via translateX. Use expandDirection="left" for right-aligned groups. indicator renders a small dot on avatar: 'lead'=warning-9, 'admin'=accent-9, or custom ReactNode.
 - StatusBadge: DISCRIMINATED UNION — pass status OR color, not both. status(active|pending|approved|rejected|completed|blocked|in-progress|review|cancelled|draft) color(success|warning|error|info|neutral) size(sm|md) onClick?(() => void, renders as button with auto chevron-down icon) icon?(ReactNode, custom trailing icon)
-- ContentCard: variant(default|outline|ghost) padding(default|compact|spacious|none)
+- ContentCard: DEPRECATED (0.44) — use Card + CardHeader/CardContent/CardFooter/CardAction slots. Removed next major.
 - EmptyState: icon(ReactNode or ComponentType), title(required), description, action(ReactNode), compact
 - PriorityIndicator: priority(Priority) display(compact|full). Type: Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'low' | 'medium' | 'high' | 'urgent'
 - SimpleTooltip: wraps Tooltip compound into single component

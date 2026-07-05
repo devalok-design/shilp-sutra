@@ -4,6 +4,29 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.45.0 — Card spacing variable + table overhaul (no breaking API changes)
+
+Nothing breaks at the TypeScript level. Two things are worth checking after upgrade:
+
+### Visual: table rows tighten
+
+Standard density rows go from ~53px to ~37px (comfortable ~85px → ~45px) — the density map was re-benchmarked against Carbon/Radix/Polaris. If a screen depended on the old airy rows, pass `density="comfortable"`. Rows also regain their hairline separators (they had been silently lost) and row hover is now actually visible on cards.
+
+### CSS selectors targeting Card/Table internals
+
+Card's per-size literal classes (`px-ds-05b` on slots, `top-ds-05b` on CardAction) are gone — spacing now flows through `--card-spacing`/`--card-gap` CSS variables. Consumer `className` overrides via tw-merge keep working; only hand-written CSS selectors targeting the old class names need to move to the variables:
+
+```diff
+- .my-card .px-ds-05b { … }
++ .my-card { --card-spacing: 24px; }
+```
+
+Table cells similarly moved from `py-ds-03 px-ds-03` literals to `py-(--table-py) px-ds-04` + `--table-edge` on first/last cells.
+
+### New APIs (additive)
+
+`CardBleed`, `CardSection`, `Card orientation="horizontal"`, `StatCard size`, `Table density/striped`, `TableCell/TableHead numeric`, `TableRowActions`, `TableRowLink` (`ui/table-row-link`). StatCard's `footer` now renders behind a full-width rule instead of an inset border — purely visual.
+
 ## v0.44.0 — Card system: gap-model, corner slots, truncation primitive
 
 Three breaking changes (`Card` `accent`/`accentColor` removed, `StatCard` `surface` → `variant`, `ContentCard` deprecated). Everything else is additive.

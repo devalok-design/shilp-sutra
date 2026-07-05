@@ -111,7 +111,7 @@ const MUST_EMIT = [
   /\bz-(base|raised|dropdown|sticky|overlay|modal|popover|toast|tooltip)\b/g,
   /\b(text-heading|text-body|text-label|text-label-plain)-[a-z0-9]+/g,
   /\btext-(caption|overline|code)\b/g,
-  /\bfocus-ring(?:-inset|-sm)?/g,
+  /\bfocus-ring(?:-inset|-sm)?\b/g,
   /\btouch-target\b/g,
   /\btabular-nums\b/g,
   /\b(pt|pb|pl|pr|p)-safe\b/g,

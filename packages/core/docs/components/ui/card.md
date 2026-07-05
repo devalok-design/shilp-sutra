@@ -52,7 +52,8 @@
 - **Corner slots via `CardAction`:** Pin a badge, icon button, or menu to any corner (`placement`), inset to match the card's content padding. `tuck` pulls an icon button so its glyph (not its padding box) aligns to the content edge. Replaces the removed `accent` decorative bar — composition, not a bespoke prop. Card is `relative` to anchor it.
 - **`color` paints the border, never a stacked rail:** `color` tints the 1px edge (semantic accent/error/success/…). The DS never stacks a border + drop shadow or a colored rail on top (make-kit rule #6 — that reads as an AI tell).
 - **Interactive cards:** Set `interactive={true}` + `onClick` for clickable cards (entire surface becomes the button). Add `aria-label` on the Card root when there's no visible heading. For complex multi-action cards, prefer standard Card with explicit buttons inside.
-- **ContentCard (composed) is deprecated** — compose `Card` + `CardHeader`/`CardContent`/`CardAction` directly instead.
+- **Composes:** content-card (alternative-to) — ContentCard (composed) is deprecated; compose `Card` + `CardHeader`/`CardContent`/`CardAction` directly instead.
+- **Composes:** stat-card (specializes) — StatCard builds ON Card's surface model; the same applies to any metric/widget card you write — specialize Card, never re-roll its border/padding/shadow surface.
 
 ## Gotchas
 - Use `interactive` prop for clickable cards — adds hover lift and pointer cursor

@@ -46,6 +46,16 @@ const config: NextConfig = {
   experimental: {
     optimizePackageImports: ['@tabler/icons-react'],
   },
+  // Same-domain MCP: shilp-sutra.devalok.in/mcp proxies to the mcp-server
+  // Railway service over the private network. Services stay independently
+  // deployable; the site only forwards. MCP_INTERNAL_URL is set on Railway
+  // (e.g. http://shilp-sutra-mcp.railway.internal:3111); unset locally, so
+  // dev builds get no rewrite and /mcp 404s harmlessly.
+  async rewrites() {
+    const mcp = process.env.MCP_INTERNAL_URL
+    if (!mcp) return []
+    return [{ source: '/mcp', destination: `${mcp.replace(/\/$/, '')}/mcp` }]
+  },
 }
 
 export default config

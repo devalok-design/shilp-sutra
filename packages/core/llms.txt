@@ -1,13 +1,13 @@
 # @devalok/shilp-sutra
 
-> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps, v0.44.0.
+> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps, v0.44.1.
 > Built on the same primitives as shadcn/ui but with DIFFERENT prop APIs — never guess from shadcn knowledge; verify every prop.
 > This file is a ROUTER: it tells you what exists and where to get details. Do not look for prop tables here — fetch them per component (MCP tool or per-component doc file below).
 
 ## How to get component details (in priority order)
 
 1. **shilp-sutra MCP** (if connected): `get_component(name)` — version-exact props/variants/examples/composition as JSON. Also: `find_component(query)`, `get_tokens(category)`, `get_setup(framework)`, `upgrade(from, to)`, `search_docs(query)`. Pass your installed version (`node_modules/@devalok/shilp-sutra/package.json`) as `version` on every call.
-   Connect: `claude mcp add --transport http shilp-sutra https://mcp.shilp-sutra.devalok.in/mcp`
+   Connect: `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp`
 2. **No MCP?** Read the single per-component file linked in the index below (`node_modules/@devalok/shilp-sutra/docs/components/...`, ~3K tokens each). Read only the components you need — never bulk-read the directory.
 3. **Machine-readable everything**: `mcp-manifest.json` at the package root (all props/tokens/composition as JSON, react-docgen shape). Prefer targeted reads of it over any prose.
 

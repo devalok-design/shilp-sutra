@@ -152,7 +152,7 @@ Repo CI: typecheck + a test suite that runs the parser against the *local* `pack
 ## Ops
 
 - **Hosting:** Railway service in existing Devalok workspace. Deploy on push to `main` when `packages/mcp-server/**` changes.
-- **Domain:** `mcp.shilp-sutra.devalok.in` (or similar — decide at deploy).
+- **Domain:** `https://shilp-sutra.devalok.in/mcp` (decided 2026-07-05) — the site app proxies `/mcp` to the mcp-server Railway service over the private network (Next.js rewrite gated on `MCP_INTERNAL_URL`). One memorable domain, Nuxt UI precedent (`ui.nuxt.com/mcp`), services stay independently deployable.
 - **Rate limit:** basic per-IP token bucket (in-process). No auth.
 - **Monitoring:** Railway metrics + `/health` endpoint. Log tool-call counts per tool + version requested (tells us which versions consumers are actually on).
 - **Cost:** single small service; docs cache is a few MB per version.

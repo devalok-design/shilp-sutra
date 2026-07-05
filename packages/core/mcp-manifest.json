@@ -2,7 +2,7 @@
   "$schema": "./mcp-manifest.schema.json",
   "manifestVersion": "1.0.0",
   "package": "@devalok/shilp-sutra",
-  "packageVersion": "0.44.0",
+  "packageVersion": "0.44.1",
   "components": {
     "accordion": {
       "displayName": "Accordion",

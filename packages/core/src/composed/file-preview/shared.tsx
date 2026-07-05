@@ -61,7 +61,7 @@ export function ToolbarDivider() {
 // ============================================================
 // Shared: MediaSlider — slim seek/scrub/volume control
 // Composes the Radix Slider primitive (the same one ui/Slider uses) so it's
-// keyboard-operable (Arrow/Home/End), focus-ringed, and forced-colors-safe —
+// keyboard-operable (Arrow/Home/End), shows a visible focus ring, and forced-colors-safe —
 // unlike the old mouse-only <div role="slider">. Styled slim for media chrome;
 // the thumb is hover/focus-reveal (hidden at rest, shown on hover, drag, or
 // keyboard focus). `tone="dark"` = white-on-overlay; `tone="light"` = accent.

@@ -8,7 +8,7 @@
     variant: "default" | "elevated" | "outline" | "flat"
     color: "default" | "accent" | "error" | "success" | "warning" | "info" | "neutral" (border accent color)
     size: "sm" | "md" | "lg" (sets --card-spacing / --card-gap once; container + slots + CardAction + CardBleed all read the pair)
-    orientation: "vertical" (default) | "horizontal" (row layout — media pane + <CardSection> column)
+    orientation: "vertical" | "horizontal" (vertical is default; horizontal = row layout with media pane + <CardSection> column)
     interactive: boolean (enables hover shadow lift + pointer cursor)
 
 ### CardAction

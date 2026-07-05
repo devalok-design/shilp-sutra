@@ -552,6 +552,7 @@ const SUBPATH_EXEMPT = new Set([
   // Internal sub-parts consumed only through their parent's barrel/subpath:
   'button-processing', // SplitButton/Button loading-state helper
   'stat-flash', // sub-part of StatCard
+  'table-row-link', // sub-part of Table (routing-aware row) — consumed via the ui barrel
   // DataTable internals — DataTable itself is barrel-isolated (./ui/data-table):
   'data-table-body',
   'data-table-bulk-actions',

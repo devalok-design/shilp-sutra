@@ -72,7 +72,10 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "bg-[color-mix(in_srgb,var(--color-surface-raised)_50%,transparent)] font-medium [&>tr]:last:border-b-0",
+      // surface-base band, not raised@50% — the footer must read against the
+      // card surface the table lives on (same mis-mapped shadcn muted/50 family
+      // as the row-hover bug).
+      "border-t border-surface-border-subtle bg-surface-base font-medium [&>tr]:last:border-b-0",
       className
     )}
     {...props}
@@ -89,7 +92,9 @@ const TableRow = React.forwardRef<
     className={cn(
       // raised-hover, NOT raised — tables live on cards (surface-raised), so a
       // surface-raised hover would be invisible (the 0.44-era port bug).
-      "border-b border-surface-border-subtle transition-colors hover:bg-surface-raised-hover data-[state=selected]:bg-accent-3",
+      // selected+hover gets its own explicit step — without it the hover and
+      // selected classes tie on specificity and stylesheet order decides.
+      "border-b border-surface-border-subtle transition-colors hover:bg-surface-raised-hover data-[state=selected]:bg-accent-3 data-[state=selected]:hover:bg-accent-4",
       className,
     )}
     {...props}

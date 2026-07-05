@@ -6,6 +6,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -87,6 +88,34 @@ describe('Table', () => {
     )
     const row = screen.getAllByRole('row')[0]
     expect(row).toHaveClass('border-b', 'border-surface-border-subtle', 'hover:bg-surface-raised-hover')
+  })
+
+  it('selected rows have an explicit selected+hover step (accent-4)', () => {
+    render(
+      <Table>
+        <TableBody>
+          <TableRow data-state="selected">
+            <TableCell>Cell</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    )
+    const row = screen.getAllByRole('row')[0]
+    expect(row).toHaveClass('data-[state=selected]:bg-accent-3', 'data-[state=selected]:hover:bg-accent-4')
+  })
+
+  it('footer is a surface-base band, not a translucent raised wash', () => {
+    render(
+      <Table>
+        <TableFooter data-testid="tfoot">
+          <TableRow>
+            <TableCell>Total</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>,
+    )
+    const tfoot = screen.getByTestId('tfoot')
+    expect(tfoot).toHaveClass('bg-surface-base', 'border-t', 'border-surface-border-subtle')
   })
 
   it('density defaults to standard and sets --table-py; cells read it', () => {

@@ -1,5 +1,12 @@
 # site
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`f5385b3`](https://github.com/devalok-design/shilp-sutra/commit/f5385b385a149167cf05f7a14d9f1991ed37ef0c), [`9439e83`](https://github.com/devalok-design/shilp-sutra/commit/9439e83f8fb168f68596cce8bddd9480fae37871), [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc), [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc), [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc), [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc), [`13e6f5a`](https://github.com/devalok-design/shilp-sutra/commit/13e6f5a78f96a72f39ae82b00c5c591b0318be74), [`9e92db4`](https://github.com/devalok-design/shilp-sutra/commit/9e92db489bded38dedca06a721c9d175f15e2ee5), [`638fc28`](https://github.com/devalok-design/shilp-sutra/commit/638fc28000aa3c15bb16e1e920f146dda83ca37a), [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc)]:
+  - @devalok/shilp-sutra@0.45.0
+
 ## 0.0.8
 
 ### Patch Changes

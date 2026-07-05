@@ -2,7 +2,7 @@
   "$schema": "./mcp-manifest.schema.json",
   "manifestVersion": "1.0.0",
   "package": "@devalok/shilp-sutra",
-  "packageVersion": "0.44.1",
+  "packageVersion": "0.45.0",
   "components": {
     "accordion": {
       "displayName": "Accordion",
@@ -12175,22 +12175,6 @@
       {
         "name": "--shadow-transition",
         "value": "box-shadow var(--duration-fast-02) var(--ease-productive-standard)"
-      },
-      {
-        "name": "--shadow-xs-internal",
-        "value": ""
-      },
-      {
-        "name": "--shadow-sm-internal",
-        "value": ""
-      },
-      {
-        "name": "--shadow-md-internal",
-        "value": ""
-      },
-      {
-        "name": "--shadow-lg-internal",
-        "value": ""
       }
     ],
     "motion": [

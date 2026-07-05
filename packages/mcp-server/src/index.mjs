@@ -37,10 +37,30 @@ function rateLimited(ip) {
   b.tokens -= 1
   return false
 }
-// Sweep idle buckets so the map can't grow unbounded.
+// Write path (report_issue) gets a much tighter per-IP bucket than reads: it
+// creates public GitHub issues, so runaway loops / spam must be blunted hard.
+const WRITE_LIMIT_PER_HOUR = Number(process.env.WRITE_LIMIT_PER_HOUR) || 5
+const writeBuckets = new Map()
+function writeLimited(ip) {
+  const now = Date.now()
+  let b = writeBuckets.get(ip)
+  if (!b) {
+    b = { tokens: WRITE_LIMIT_PER_HOUR, at: now }
+    writeBuckets.set(ip, b)
+  }
+  b.tokens = Math.min(WRITE_LIMIT_PER_HOUR, b.tokens + ((now - b.at) / 3_600_000) * WRITE_LIMIT_PER_HOUR)
+  b.at = now
+  if (b.tokens < 1) return true
+  b.tokens -= 1
+  return false
+}
+
+// Sweep idle buckets so the maps can't grow unbounded.
 setInterval(() => {
-  const cutoff = Date.now() - 10 * 60_000
-  for (const [ip, b] of buckets) if (b.at < cutoff) buckets.delete(ip)
+  const readCutoff = Date.now() - 10 * 60_000
+  for (const [ip, b] of buckets) if (b.at < readCutoff) buckets.delete(ip)
+  const writeCutoff = Date.now() - 2 * 3_600_000
+  for (const [ip, b] of writeBuckets) if (b.at < writeCutoff) writeBuckets.delete(ip)
 }, 60_000).unref()
 
 const VERSION_PARAM = z
@@ -68,7 +88,7 @@ function wrap(fn) {
   }
 }
 
-function buildServer() {
+function buildServer(ctx = {}) {
   const server = new McpServer(
     { name: 'shilp-sutra', version: '0.1.0' },
     {
@@ -76,7 +96,8 @@ function buildServer() {
         'Authoritative, version-exact documentation for the @devalok/shilp-sutra design system. ' +
         'Before answering any shilp-sutra question, read the consumer\'s installed version from ' +
         'node_modules/@devalok/shilp-sutra/package.json and pass it as `version` on every call. ' +
-        'Prefer these tools over reading llms.txt or component docs into context — responses are smaller and version-correct.',
+        'Prefer these tools over reading llms.txt or component docs into context — responses are smaller and version-correct. ' +
+        'If you hit a bug, a broken recipe, a docs gap, or want to suggest a feature, call report_issue — it files a public GitHub issue for maintainer triage.',
     }
   )
 
@@ -131,6 +152,35 @@ function buildServer() {
     wrap(tools.searchDocs)
   )
 
+  server.tool(
+    'report_issue',
+    'File a bug report, feature request, suggestion, or docs-gap on the shilp-sutra repo when you hit a wall using the design system. ' +
+      'Creates a PUBLIC GitHub issue at devalok-design/shilp-sutra (labeled agent-filed + needs-triage) — do not include secrets or private code. ' +
+      'Deduplicates against open issues. Prefer this over silently working around a problem: it is how the design system improves. ' +
+      'Include the consumer\'s installed version, and a minimal reproduction for bugs.',
+    {
+      category: z.enum(['bug', 'feature', 'suggestion', 'docs']).describe(
+        'bug = broken/incorrect behavior; feature = new capability; suggestion = DX/API/polish idea; docs = missing/wrong/contradictory documentation'
+      ),
+      title: z.string().describe('One-line summary. Specific — "Button loading spinner ignores size prop", not "Button broken".'),
+      body: z.string().describe('What happened / what you want, and why. For bugs: expected vs actual behavior.'),
+      reproduction: z.string().optional().describe('Bugs: minimal repro — code snippet, steps, stack trace, or file:line the docs pointed to vs. what you saw.'),
+      component: z.string().optional().describe('kebab-case component name if the issue is scoped to one, e.g. "table-row-link".'),
+      framework: z.enum(['vite', 'next-app', 'next-pages', 'astro', 'remix', 'tanstack', 'other']).optional()
+        .describe('Consumer app framework, if relevant to the bug.'),
+      severity: z.enum(['urgent', 'normal', 'nice-to-have']).optional()
+        .describe('urgent = install-break / runtime crash / security; normal = API/docs/agent-trap; nice-to-have = polish/preference/feature.'),
+      version: VERSION_PARAM,
+    },
+    async (args) => {
+      try {
+        return text(await tools.reportIssue(args, ctx))
+      } catch (e) {
+        return errorText(e)
+      }
+    }
+  )
+
   return server
 }
 
@@ -159,8 +209,18 @@ const httpServer = createServer(async (req, res) => {
     for await (const c of req) chunks.push(c)
     const body = chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : undefined
 
-    // Stateless: fresh server + transport per request (read-only workload).
-    const server = buildServer()
+    // Stateless: fresh server + transport per request. ctx carries the per-IP
+    // write guard for report_issue (the one non-read-only tool).
+    const server = buildServer({
+      checkWriteLimit: () => {
+        if (writeLimited(ip)) {
+          throw new Error(
+            `Feedback rate limit: ${WRITE_LIMIT_PER_HOUR} submissions/hour per client. ` +
+              'Retry later, or file at https://github.com/devalok-design/shilp-sutra/issues/new/choose.'
+          )
+        }
+      },
+    })
     const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined })
     res.on('close', () => {
       transport.close()

@@ -11,7 +11,29 @@ Docs are extracted from **published npm tarballs** (`registry.npmjs.org`) and ca
 
 ## Tools
 
-`find_component` · `get_component(name, sections?)` · `get_tokens(category?)` · `get_setup(framework?)` · `upgrade(from, to?)` · `search_docs(query)` — every tool takes optional `version`; agents are instructed to pass the consumer's installed version.
+**Read (6):** `find_component` · `get_component(name, sections?)` · `get_tokens(category?)` · `get_setup(framework?)` · `upgrade(from, to?)` · `search_docs(query)` — every tool takes optional `version`; agents are instructed to pass the consumer's installed version.
+
+**Write (1):** `report_issue(category, title, body, …)` — files a **public** GitHub issue on `devalok-design/shilp-sutra` when a consumer agent hits a bug, broken recipe, docs gap, or wants to suggest a feature. Modeled on Karm's suggestion tool (category / severity / structured body). It deduplicates against open issues, caps content length, labels every issue `agent-filed` + `needs-triage` + `mcp-submitted` (+ category/framework/severity), and is guarded by a tight per-IP hourly write bucket. If the GitHub App isn't configured it returns a graceful "not enabled" error — never crashes, never writes.
+
+### Feedback write path — config
+
+The read tools need no secrets. `report_issue` needs a **GitHub App** installed on the target repo with `Issues: read & write`:
+
+| Env | Meaning |
+|-----|---------|
+| `GITHUB_APP_ID` | the App's numeric ID |
+| `GITHUB_APP_PRIVATE_KEY` | the App private key (PEM; `\n` escapes are normalized) |
+| `GITHUB_APP_INSTALLATION_ID` | the installation ID on `devalok-design/shilp-sutra` |
+| `FEEDBACK_REPO` | `owner/name` (default `devalok-design/shilp-sutra`) |
+| `WRITE_LIMIT_PER_HOUR` | per-IP write cap (default `5`) |
+
+**One-time GitHub App setup** (human step — the server can't create the App):
+1. github.com/organizations/devalok-design/settings/apps → **New GitHub App**. Name e.g. `shilp-sutra-feedback-bot`. Homepage any. Uncheck **Webhook → Active**.
+2. Permissions → **Repository permissions → Issues: Read and write**. Nothing else.
+3. Create → note the **App ID** → **Generate a private key** (downloads a `.pem`).
+4. **Install App** → only-select-repositories → `shilp-sutra`. The install URL ends `/installations/<INSTALLATION_ID>` — grab that number.
+5. On Railway (`shilp-sutra-mcp` service) set the four `GITHUB_APP_*`/`FEEDBACK_REPO` vars. For the private key, paste the PEM contents (Railway preserves newlines; the module also accepts `\n`-escaped single-line).
+6. Redeploy. `report_issue` now files real issues.
 
 ## Run
 

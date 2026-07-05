@@ -71,8 +71,8 @@ try {
   const list = await rpc('tools/list', {}, 2)
   const names = (list.result?.tools ?? []).map((t) => t.name).sort()
   check(
-    'tools/list has all 6',
-    JSON.stringify(names) === JSON.stringify(['find_component', 'get_component', 'get_setup', 'get_tokens', 'search_docs', 'upgrade']),
+    'tools/list has all 7',
+    JSON.stringify(names) === JSON.stringify(['find_component', 'get_component', 'get_setup', 'get_tokens', 'report_issue', 'search_docs', 'upgrade']),
     names.join(',')
   )
 
@@ -107,6 +107,12 @@ try {
 
   const search = await call('search_docs', { query: 'focus ring' }, 10)
   check('search_docs(focus ring)', !(search.result?.content?.[0]?.text ?? '').includes('No sections matched'))
+
+  // report_issue: without GITHUB_APP_* configured (as in smoke/local), it must
+  // fail gracefully — a clear "not enabled" error, never a crash or a write.
+  const rep = await call('report_issue', { category: 'bug', title: 'smoke test — should not file', body: 'smoke' }, 11)
+  const repText = rep.result?.content?.[0]?.text ?? ''
+  check('report_issue not-configured is graceful', rep.result?.isError === true && repText.includes('not enabled'), repText.slice(0, 200))
 } finally {
   if (child) child.kill()
 }

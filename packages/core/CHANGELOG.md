@@ -1,5 +1,72 @@
 # @devalok/shilp-sutra
 
+## 0.45.0
+
+### Minor Changes
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`f5385b3`](https://github.com/devalok-design/shilp-sutra/commit/f5385b385a149167cf05f7a14d9f1991ed37ef0c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - AI docs overhaul: hosted MCP live, mcp-manifest.json ships, llms-full.txt/llms-quick.txt removed (BREAKING for doc-path consumers)
+  - **NEW hosted MCP at `https://shilp-sutra.devalok.in/mcp`** — six read-only tools (`find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`). Every tool takes a `version` param; pass your installed version for version-exact props/tokens/migration answers. Connect: `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp`. Docs are served from published npm tarballs, so this release (0.45.0) is the coverage floor; `upgrade(from, to)` accepts older `from` versions as the migration path in.
+  - **NEW `mcp-manifest.json`** at the package root — machine-readable component/token reference (122 components, 709 props, 281 tokens; react-docgen prop shape; schema in `mcp-manifest.schema.json`). The MCP's data source and the preferred structured read for agents without it.
+  - **`llms.txt` is now a ~2.5K-token router** (llmstxt.org format): what exists + where to get detail. Prop tables and examples no longer live in it.
+  - **REMOVED `llms-full.txt` and `llms-quick.txt`.** Fallback chain for MCP-less agents: `llms.txt` router → `docs/components/<tier>/<name>.md` (~3K tokens per component) → `mcp-manifest.json`. Tooling reading the removed paths must switch. See MIGRATION.md.
+  - AGENTS.md, the bundled Agent Skill, and recipes updated to the MCP-first priority order. Composition data (compound parts, composes-with relations, contexts, anti-patterns) now parses from doc Composability sections into the manifest (grammar: `docs/specs/mcp-manifest-standard.md`).
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`9439e83`](https://github.com/devalok-design/shilp-sutra/commit/9439e83f8fb168f68596cce8bddd9480fae37871) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Card spacing becomes one CSS variable; CardBleed + horizontal cards; StatCard size axis; padding-fight cleanups
+
+  **Card (`ui/card`):**
+  - The `size` axis now assigns `--card-spacing` / `--card-gap` CSS variables; the container, all slots, `CardAction` corner insets, and the new `CardBleed` negations read the same pair. Rendered spacing is unchanged (sm 16/8, md 20/12, lg 24/16). `CardSizeContext` and the per-size class lookup maps are gone — slots work by CSS inheritance. Retune any card with a single override: `className="[--card-spacing:var(--spacing-ds-07)]"`.
+  - **Added `<CardBleed side>`** (`x` | `top` | `bottom` | `y` | `all`) — full-bleed escape hatch that negates `--card-spacing`, the shilp-sutra equivalent of Radix Themes' `Inset` / Polaris `Bleed`. `top`/`bottom` inherit the card radius for cover media; `x` escapes a slot's inset for edge-to-edge bands. Direct children of Card are already full-width — don't use `x`/`all` there.
+  - **Added `orientation="horizontal"` + `<CardSection>`** — sanctioned horizontal media card: the root becomes a padding-less row, the media pane owns the left edge, and `CardSection` re-establishes the py/gap rhythm from the same variables.
+  - **Added** dev-only warning when Card receives bare text or textual elements (`<p>`, `<span>`, headings…) as direct children — the [#1](https://github.com/devalok-design/shilp-sutra/issues/1) "card padding looks broken" footgun (direct children get no horizontal inset by design).
+
+  Compat: rendered pixels are identical; consumer `className` overrides on slots keep winning via tw-merge. Only CSS targeting the old literal classes (`px-ds-05b` on slots, `top-ds-05b` on CardAction) needs to move to the variables.
+
+  **StatCard (`ui/stat-card`):**
+  - **Added `size` prop** (`sm | md | lg`, delegated to Card). `sm` tightens padding to 16px and steps the value down to `text-ds-2xl` — for dense KPI rows and narrow stat grids.
+  - Internal rhythm is now flex gap instead of stacked margins; `footer` renders behind a full-width rule instead of an inset `border-t`; loading skeleton gets `aria-busy`.
+
+  **Padding-fight cleanups:** `NotificationPreferences` header no longer double-gaps (stale `pb-ds-04` removed); `DataTableCards` mobile rows compose `<Card size="sm">` instead of a hand-rolled 12px bordered box; Card stories/JSDoc and the make-kit spacing/surfaces guides no longer model `p-*` overrides on Card.
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`13e6f5a`](https://github.com/devalok-design/shilp-sutra/commit/13e6f5a78f96a72f39ae82b00c5c591b0318be74) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Table: restore row separators, fix invisible hover, variable-driven density, card-edge alignment
+
+  The original shadcn port had lost TableRow's `border-b` (rows rendered as an unseparated slab) and mis-mapped `hover:bg-muted/50` to `hover:bg-surface-raised` — the card background, so row hover was invisible on any table inside a Card. Fixed, plus a density pass benchmarked against Radix Themes / Carbon / Polaris / Mantine / MUI:
+  - **Rows** regain a hairline separator (`border-surface-border-subtle`); hover is `surface-raised-hover`; selected stays `accent-3`.
+  - **`density` prop on Table** (`compact | standard | comfortable`) sets `--table-py` → rows ≈ 29 / 37 / 45px (was 29 / 53 / 85 via DataTable's per-cell classes). Header height tracks density instead of a fixed 40px. DataTable forwards its existing `density` state; per-cell `cellPadding` context threading is gone.
+  - **Edge alignment:** cells are `px-ds-04` interior; first/last cells read `--table-edge`, which inherits `--card-spacing` inside a Card — table columns line up with the card's header/footer slots. Standalone tables fall back to 12px.
+  - **Header** drops to `text-ds-sm` medium muted — quieter than the data, per the cross-system consensus.
+  - **`striped` prop** — opt-in zebra (faintest surface step); hairlines remain the default.
+  - **Sweep:** sort-button + expander hover tokens fixed; expanded row is a `surface-base` recess; sticky header bg is `surface-raised`; raw `h-24` empty states replaced with `py-ds-07`.
+  - **DataTableCards** (mobile) now `variant="outline"` — a phone screen of stacked shadow cards accumulates lift (make-kit dense-list rule).
+
+  Visible default change: standard rows tighten from ~53px to ~37px.
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`638fc28`](https://github.com/devalok-design/shilp-sutra/commit/638fc28000aa3c15bb16e1e920f146dda83ca37a) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Table structural features: TableRowLink, TableRowActions, numeric cells, animated + accessible row expansion
+  - **`TableRowLink`** (`ui/table-row-link`) — whole-row navigation as a **real anchor**: cmd/ctrl+click, middle-click, and "open in new tab" work, and screen readers announce a link — none of which `onClick`-on-row gives. Stretch pseudo-element is anchored to the cell (Safari ignores `position:relative` on `<tr>`) and clipped by the table root's new `overflow-x-clip`. Keyboard focus draws a row-level ring (`has-[[data-slot=row-link]:focus-visible]` on TableRow). `stretch={false}` = title-only link that keeps row text selectable.
+  - **`TableRowActions`** — action cluster revealed on row hover with the full a11y contract: opacity reveal (never `display:none`) so buttons stay permanently tabbable, `:focus-within` reveals on keyboard entry, always visible on touch (`pointer-coarse`), and a `persist` prop for always-visible mode. Reveal animates with `duration-fast-01 ease-productive-standard`.
+  - **`numeric`** boolean on `TableCell`/`TableHead` — right-align + tabular figures in one prop.
+  - **Row expansion (DataTable)** — `aria-expanded` now on the toggle button (was missing), visually-hidden header for the expand column, chevron rotation on motion tokens, and the expanded row animates open/closed (height + opacity, `springs.smooth`) with a `useReducedMotion` self-guard; virtualized tables keep the instant reveal.
+
+### Patch Changes
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - ColorInput: replace the default preset palette. The old presets were the raw Tailwind-500 set (`#6366F1` indigo, `#8B5CF6` violet, `#3B82F6` blue, …) — the "AI framework-default palette" tell, mislabeled "color-blind accessible." New presets are derived from the design system's own OKLCH brand scales (led by red, not indigo/violet), so they read as one intentional family. Story/doc examples updated off the raw Tailwind hexes.
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - FilePreview: the video seek, volume, and audio scrub controls are now keyboard-accessible. They were plain `<div role="slider">` with pointer handlers only — no keyboard, no forced-colors support (a WCAG break). They now compose a shared `MediaSlider` built on the Radix Slider primitive (Arrow / Home / End, focus ring, high-contrast), styled slim with a hover/focus-reveal thumb (white on the dark video overlay, accent on light). Users can now also drag to seek, not just click. (The audio bar's mouse-only hover-time tooltip was removed.)
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Separator: deprecate the `variant` prop and its `gradient` / `gradient-left` / `gradient-right` values. They were decorative (our anti-convergence layer flags decorative dividers) and never actually rendered in production — the class interpolated a runtime value (`linear-gradient(${deg}…)`) that the Tailwind 4 scanner can't emit, so it shipped as `bg-transparent`. Separator now always renders a solid hairline. The `variant` prop still type-checks (renders solid) and is removed in 0.45.0.
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - SplitButton: the dropdown is now keyboard-accessible. It previously rendered a hand-rolled floating panel (`role="menu"`, positioned with `@floating-ui/dom`) that had no focus management, no arrow/Escape handling, and no focus return — keyboard and screen-reader users couldn't operate it (a broken ARIA contract). It now composes the DS **Popover** primitive: focus moves into the panel on open, Escape and outside-click dismiss, focus returns to the trigger, and on mobile it opens as a bottom sheet. The `dropdownContent` / `open` / `onOpenChange` / `placement` API is unchanged (the trigger now reports `aria-haspopup="dialog"`). Full menu semantics with arrow-key item navigation (via DropdownMenu) are planned for 0.45.0.
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`9e92db4`](https://github.com/devalok-design/shilp-sutra/commit/9e92db489bded38dedca06a721c9d175f15e2ee5) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Table: footer + selected-hover fixes, rich-cell recipes
+  - **TableFooter** background was `color-mix(surface-raised 50%)` — invisible on cards (same mis-mapped shadcn `muted/50` family as the row-hover bug). Now a `surface-base` band with a top hairline.
+  - **Selected+hover** rows get an explicit step (`data-[state=selected]:hover:bg-accent-4`) — previously the hover and selected classes tied on specificity and stylesheet order decided.
+  - **Cell recipes** documented in `table.md` + new `RichCells` / `SelectedRows` stories: user cell (avatar + truncating two-line identity — comfortable density only, per the industry two-line rule), tag group with `+N` overflow, money cells (consistent decimals; negatives never color-only), qualitative-numbers-stay-left, muted em-dash for empty values. Density→avatar mapping: compact = text only, standard = `xs`, comfortable = `xs`/`sm`.
+
+- [#95](https://github.com/devalok-design/shilp-sutra/pull/95) [`c3287fe`](https://github.com/devalok-design/shilp-sutra/commit/c3287fe8a6de108adefee1690e5294ae6aed58fc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Remove the residual colored accent-rail tell from Toast, AI blocks, Schedule-view, and Chat mentions — extending the v0.44.0 Card decision (a colored side-stripe on a surface is the single most recognizable AI-generated-UI tell). Status/emphasis is now carried by the DS's own subtle surface (`bg-{status}-2`) plus a typed icon, dot, or token.
+  - **Toast/Toaster:** the colored left rail is off by default; status is carried by the typed icon + the status-colored timer bar, and error toasts gain a faint `bg-error-2` surface tint. Opt back into the rail with `toast.error(msg, { showAccent: true })`.
+  - **AI blocks:** low-confidence blocks now render a faint `bg-warning-2` wash + a "Low confidence" chip (via a shared `BlockShell`) instead of a warning left rail.
+  - **Schedule-view:** calendar events drop the `border-l-[3px]` rail in favor of a solid category dot before the title (color-blind-safe, survives forced-colors).
+  - **Chat:** `highlight="mention"` no longer tints/rails the message row — the mention is carried by the in-content `@`-token; a `data-highlight` attribute remains as a styling hook.
+
 ## 0.44.1
 
 ### Patch Changes

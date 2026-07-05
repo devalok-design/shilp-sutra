@@ -82,7 +82,6 @@ function DataTableRow<TData>({
 }) {
   const {
     table,
-    cellPadding,
     columnPinningState,
     editable,
     editingCell,
@@ -124,7 +123,6 @@ function DataTableRow<TData>({
           <TableCell
             key={cell.id}
             className={cn(
-              cellPadding,
               pinned.className,
               virtualRows && 'flex-1',
               getColumnMetaClasses(
@@ -183,7 +181,8 @@ function DataTableExpandedRow<TData>({
       <TableCell
         colSpan={allColumns.length}
         className={cn(
-          'bg-surface-raised p-ds-05',
+          // A recess, not a raised layer — surface-raised would vanish on a card.
+          'bg-surface-base p-ds-05',
           virtualRows && 'flex-1',
         )}
       >
@@ -200,7 +199,7 @@ function DataTableSkeletonRows({
 }: {
   rowCount: number
 }) {
-  const { allColumns, cellPadding } = useDataTableContext()
+  const { allColumns } = useDataTableContext()
   const visibleColumnCount = allColumns.length
   const skeletonWidths = ['w-3/4', 'w-1/2', 'w-2/3', 'w-full']
 
@@ -212,10 +211,7 @@ function DataTableSkeletonRows({
             const colId = allColumns[colIdx]?.id ?? allColumns[colIdx]?.header
             const isSelect = colId === '_select'
             return (
-              <TableCell
-                key={`skeleton-${rowIdx}-${colIdx}`}
-                className={cellPadding}
-              >
+              <TableCell key={`skeleton-${rowIdx}-${colIdx}`}>
                 {isSelect ? (
                   <Skeleton
                     variant="text"
@@ -273,7 +269,7 @@ export function DataTableBody<TData>({
           <TableCell
             colSpan={allColumns.length}
             className={cn(
-              'h-24 text-center',
+              'py-ds-07 text-center',
               !emptyState && 'text-surface-fg-subtle',
             )}
           >

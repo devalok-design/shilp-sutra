@@ -3,8 +3,6 @@
 import { type ColumnPinningState, type Table } from '@tanstack/react-table'
 import React from 'react'
 
-import type { Density } from './data-table-toolbar'
-
 // ── Shared types ────────────────────────────────────────────────
 
 /** Editing state: which cell is currently in edit mode */
@@ -23,12 +21,6 @@ export function getColumnMetaClasses(meta?: Record<string, unknown>): string {
   return classes.join(' ')
 }
 
-export const densityPaddingMap: Record<Density, string> = {
-  compact: 'py-ds-02',
-  standard: 'py-ds-05',
-  comfortable: 'py-ds-07',
-}
-
 /** Interactive element selectors for row click filtering */
 export const INTERACTIVE_SELECTOR =
   'button, a, input, select, textarea, [role="checkbox"]'
@@ -39,8 +31,6 @@ export interface DataTableContextValue<TData = unknown> {
   table: Table<TData>
   /** All assembled columns (including _select, _expand) */
   allColumns: { id?: string; header?: unknown }[]
-  /** Current cell padding class based on density */
-  cellPadding: string
   /** Column pinning state for sticky positioning */
   columnPinningState: ColumnPinningState
   /** Whether sorting is enabled */

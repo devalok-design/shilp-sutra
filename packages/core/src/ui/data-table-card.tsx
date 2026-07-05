@@ -33,7 +33,7 @@ export function DataTableCards<TData>({
     return (
       <div className="flex flex-col gap-ds-03">
         {Array.from({ length: skeletonRowCount }, (_, i) => (
-          <Card key={`card-skeleton-${i}`} size="sm">
+          <Card key={`card-skeleton-${i}`} size="sm" variant="outline">
             <CardContent>
               <Skeleton variant="text" className="mb-ds-03 h-5 w-2/3" animation="pulse" />
               <div className="flex flex-col gap-ds-02">
@@ -74,6 +74,9 @@ export function DataTableCards<TData>({
             key={row.id}
             role="listitem"
             size="sm"
+            // outline, not default — a phone screen of stacked shadow cards
+            // accumulates lift (make-kit dense-list rule).
+            variant="outline"
             className={cn(isSelected && 'ring-2 ring-accent-9')}
           >
             {/* Header row: primary field + optional selection checkbox */}

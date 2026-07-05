@@ -4,6 +4,10 @@
 - Server-safe: Yes
 - Category: ui
 
+## Props
+    density: "compact" | "standard" (default) | "comfortable" — sets --table-py (4 / 8 / 12px vertical cell padding → rows ≈ 29 / 37 / 45px); header height tracks it
+    striped: boolean (opt-in zebra — even body rows get the faintest surface step; hairline separators remain the default row cue)
+
 ## Compound Components
     Table (root <table>)
       TableHeader (<thead>)
@@ -43,8 +47,17 @@
 ## Gotchas
 - Table headers automatically have scope="col" for screen reader navigation
 - For anything beyond trivial display, prefer DataTable — don't rebuild sorting/pagination/selection on top of bare Table
+- Inside a Card, first/last cells inherit `--card-spacing` so edge columns align with the card's slots; standalone tables fall back to 12px edges
+- Numeric columns: add `text-right tabular-nums` (DataTable does this via column meta `align: 'right'`)
 
 ## Changes
+### v0.45.0
+- **Added** `density` prop (`compact | standard | comfortable`) via `--table-py`; header height tracks density instead of a fixed 40px
+- **Added** `striped` prop — opt-in zebra
+- **Changed** Rows regain their hairline separator (`border-b border-surface-border-subtle` — lost in the original port) and hover becomes visible on cards (`hover:bg-surface-raised-hover`, was the invisible `surface-raised`)
+- **Changed** Cells: `px-ds-04` interior, first/last cells read `--table-edge` (= `--card-spacing` inside a Card); header drops to `text-ds-sm` muted
+- **Changed** Default vertical rhythm tightens: standard rows ~53px → ~37px
+
 ### v0.18.0
 - **Added** `TableProps`, `TableRowProps`, `TableCellProps` type exports
 

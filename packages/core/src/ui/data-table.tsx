@@ -30,7 +30,6 @@ import { type BulkAction,DataTableBulkActions } from './data-table-bulk-actions'
 import { DataTableCards } from './data-table-card'
 import {
   DataTableProvider,
-  densityPaddingMap,
   type EditingCell,
 } from './data-table-context'
 import { DataTableHeader } from './data-table-header'
@@ -409,7 +408,7 @@ export function DataTable<TData, TValue>({
         type="button"
         onClick={() => row.toggleExpanded()}
         aria-label={row.getIsExpanded() ? 'Collapse row' : 'Expand row'}
-        className="flex items-center justify-center p-ds-01 rounded-control-inner hover:bg-surface-raised transition-colors"
+        className="flex items-center justify-center p-ds-01 rounded-control-inner hover:bg-surface-raised-hover transition-colors"
       >
         <Icon
           icon={IconChevronRight}
@@ -523,8 +522,6 @@ export function DataTable<TData, TValue>({
     onSelectionChangeRef.current(selected)
   }, [rowSelection, data])
 
-  const cellPadding = densityPaddingMap[density]
-
   const rows = table.getRowModel().rows
 
   // Virtualizer — always called but only active when virtualRows is true
@@ -563,7 +560,6 @@ export function DataTable<TData, TValue>({
         id: (col as { id?: string }).id,
         header: (col as { header?: unknown }).header,
       })),
-      cellPadding,
       columnPinningState,
       sortable,
       filterable,
@@ -582,7 +578,6 @@ export function DataTable<TData, TValue>({
     [
       table,
       allColumns.length,
-      cellPadding,
       columnPinningState,
       sortable,
       filterable,
@@ -604,7 +599,7 @@ export function DataTable<TData, TValue>({
 
   // Determine if we need a scroll wrapper for virtualization
   const tableContent = (
-    <Table aria-busy={loading || undefined}>
+    <Table density={density} aria-busy={loading || undefined}>
       <DataTableHeader stickyHeader={stickyHeader} />
       <DataTableBody
         loading={loading}

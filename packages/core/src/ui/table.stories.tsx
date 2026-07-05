@@ -101,10 +101,51 @@ export const Empty: Story = {
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell colSpan={3} className="h-24 text-center text-surface-fg-muted">
+          <TableCell colSpan={3} className="py-ds-07 text-center text-surface-fg-muted">
             No results found.
           </TableCell>
         </TableRow>
+      </TableBody>
+    </Table>
+  ),
+}
+
+export const Densities: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-05">
+      {(['compact', 'standard', 'comfortable'] as const).map((density) => (
+        <Table key={density} density={density}>
+          <TableHeader>
+            <TableRow>
+              <TableHead>{density}</TableHead>
+              <TableHead>Discipline</TableHead>
+              <TableHead className="text-right">Hours</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow><TableCell>Goutham K</TableCell><TableCell>UI/UX</TableCell><TableCell className="text-right tabular-nums">142</TableCell></TableRow>
+            <TableRow><TableCell>Yogin S</TableCell><TableCell>Product</TableCell><TableCell className="text-right tabular-nums">128</TableCell></TableRow>
+          </TableBody>
+        </Table>
+      ))}
+    </div>
+  ),
+}
+
+export const Striped: Story = {
+  render: () => (
+    <Table striped>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Task</TableHead>
+          <TableHead className="text-right">Estimate</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow><TableCell>Token sweep</TableCell><TableCell className="text-right tabular-nums">3h</TableCell></TableRow>
+        <TableRow><TableCell>Chart palette</TableCell><TableCell className="text-right tabular-nums">5h</TableCell></TableRow>
+        <TableRow><TableCell>Storybook deploy</TableCell><TableCell className="text-right tabular-nums">1h</TableCell></TableRow>
+        <TableRow><TableCell>Release notes</TableCell><TableCell className="text-right tabular-nums">2h</TableCell></TableRow>
       </TableBody>
     </Table>
   ),

@@ -30,7 +30,9 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
   return (
     <TableHeader
       className={cn(
-        stickyHeader && 'sticky top-0 z-10 bg-surface-base',
+        // surface-raised, not base — the table lives on a card; a base-colored
+        // sticky bar would read as a grey stripe over the white surface.
+        stickyHeader && 'sticky top-0 z-10 bg-surface-raised',
       )}
     >
       {table.getHeaderGroups().map((headerGroup) => (
@@ -70,7 +72,7 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
                       'flex items-center gap-ds-01 font-medium',
                       'cursor-pointer select-none',
                       '-ml-ds-01 rounded-control-inner px-ds-01 py-ds-01',
-                      'hover:bg-surface-raised transition-colors',
+                      'hover:bg-surface-raised-hover transition-colors',
                     )}
                     onClick={header.column.getToggleSortingHandler()}
                     aria-label={`Sort by ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}

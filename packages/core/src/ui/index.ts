@@ -178,7 +178,7 @@ export {
   type StatFlashProps,
 } from './stat-flash'
 export { StatusDot, type StatusDotProps, type StatusDotStatus } from './status-dot'
-export { Table, TableBody, TableCaption, TableCell, type TableCellProps,TableFooter, TableHead, TableHeader, type TableProps, TableRow, type TableRowProps } from './table'
+export { Table, TableBody, TableCaption, TableCell, type TableCellProps,type TableDensity, TableFooter, TableHead, TableHeader, type TableProps, TableRow, type TableRowProps } from './table'
 
 // Navigation
 export { Accordion, AccordionContent, type AccordionContentProps,AccordionItem, type AccordionItemProps, AccordionTrigger, type AccordionTriggerProps } from './accordion'

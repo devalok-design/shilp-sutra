@@ -77,7 +77,7 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 
 **Virtualization:** `virtualRows={true}` enables row virtualization via `@tanstack/react-virtual`. Turn it on for 1000+ row datasets; the scroll container must have a bounded height.
 
-**Density integration:** `defaultDensity="compact"` is the Karm-style dense mode (h-9 rows). DataTableToolbar's density switcher updates this at runtime; the prop sets the initial state only.
+**Density integration:** density is forwarded to `Table`'s `density` prop, which sets `--table-py` (compact 4 / standard 8 / comfortable 12px → rows ≈ 29 / 37 / 45px; header tracks it). DataTableToolbar's density switcher updates this at runtime; the prop sets the initial state only.
 
 ## Gotchas
 - Barrel-isolated since v0.5.0 — must use `@devalok/shilp-sutra/ui/data-table`, NOT the `ui` barrel
@@ -90,6 +90,11 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - `virtualRows={true}` requires a bounded scroll container — unbounded height silently disables virtualization
 
 ## Changes
+### v0.45.0
+- **Changed** Density now drives Table's `--table-py` variable (rows ≈ 29 / 37 / 45px; was 29 / 53 / 85). Per-cell `cellPadding` threading removed from context.
+- **Fixed** Hover/selected states visible on cards: row/sort-button/expander hover use `surface-raised-hover` (was the invisible `surface-raised`); expanded row is a `surface-base` recess; sticky header bg is `surface-raised`; empty state uses `py-ds-07` (was raw `h-24`).
+- **Changed** Mobile card view composes `<Card size="sm" variant="outline">` (was a hand-rolled 12px bordered box).
+
 ### v0.29.0
 - **Fixed** Controlled selection infinite re-render loop — inline `getRowId` callback caused `onSelectionChange` effect to fire every render, creating a setState cycle with `selectedIds`. Now uses a stable ref for `getRowId`.
 

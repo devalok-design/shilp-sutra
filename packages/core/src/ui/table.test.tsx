@@ -74,4 +74,73 @@ describe('Table', () => {
     const { container } = renderTable()
     expect(await axe(container)).toHaveNoViolations()
   })
+
+  it('rows carry a hairline border and a visible (raised-hover) hover wash', () => {
+    render(
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Cell</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    )
+    const row = screen.getAllByRole('row')[0]
+    expect(row).toHaveClass('border-b', 'border-surface-border-subtle', 'hover:bg-surface-raised-hover')
+  })
+
+  it('density defaults to standard and sets --table-py; cells read it', () => {
+    render(
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Cell</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    )
+    expect(screen.getByRole('table')).toHaveClass('[--table-py:var(--spacing-ds-03)]')
+    expect(screen.getByRole('cell')).toHaveClass('py-(--table-py)', 'px-ds-04')
+  })
+
+  it('density="compact" and "comfortable" reassign the variable', () => {
+    const { rerender } = render(<Table density="compact"><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
+    expect(screen.getByRole('table')).toHaveClass('[--table-py:var(--spacing-ds-02)]')
+    rerender(<Table density="comfortable"><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
+    expect(screen.getByRole('table')).toHaveClass('[--table-py:var(--spacing-ds-04)]')
+  })
+
+  it('edge cells read --table-edge so tables align with card slots', () => {
+    render(
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Cell</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    )
+    expect(screen.getByRole('table')).toHaveClass('[--table-edge:var(--card-spacing,var(--spacing-ds-04))]')
+    expect(screen.getByRole('cell')).toHaveClass('first:pl-(--table-edge)', 'last:pr-(--table-edge)')
+  })
+
+  it('striped is opt-in — zebra class only when set', () => {
+    const { rerender } = render(<Table><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
+    expect(screen.getByRole('table')).not.toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-base')
+    rerender(<Table striped><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
+    expect(screen.getByRole('table')).toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-base')
+  })
+
+  it('header cells are quieter than data — text-ds-sm muted, density-tracked padding', () => {
+    render(
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+          </TableRow>
+        </TableHeader>
+      </Table>,
+    )
+    expect(screen.getByRole('columnheader')).toHaveClass('text-ds-sm', 'font-medium', 'text-surface-fg-muted', 'py-(--table-py)')
+  })
 })

@@ -4,9 +4,20 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
-## v0.45.0 — Card spacing variable + table overhaul (no breaking API changes)
+## v0.45.0 — Card spacing variable, table overhaul, AI docs switch to MCP
 
-Nothing breaks at the TypeScript level. Two things are worth checking after upgrade:
+Nothing breaks at the TypeScript level. One doc-surface removal + two visual things to check after upgrade:
+
+### REMOVED: `llms-full.txt` and `llms-quick.txt` (AI doc surface)
+
+The concatenated doc dumps no longer ship in the tarball. Replacements, in priority order:
+
+1. **Hosted MCP** (new): `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp` — six tools (`find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`), every one takes a `version` param; pass your installed version for version-exact answers.
+2. `llms.txt` — now a ~2.5K-token router (what exists + where to get detail), not a cheatsheet.
+3. `docs/components/<tier>/<name>.md` — per-component reference (~3K tokens each), unchanged.
+4. `mcp-manifest.json` (new, package root) — all props/tokens/composition as JSON (react-docgen shape, schema in `mcp-manifest.schema.json`).
+
+Anything that read the removed file paths (custom agent rules, scripts, editor doc references) must switch to one of the above.
 
 ### Visual: table rows tighten
 

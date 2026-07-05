@@ -25,7 +25,7 @@ const refsDir = join(skillRoot, 'references')
 const recipeDir = join(repoRoot, 'packages', 'core', 'docs', 'recipes')
 
 const transfers = [
-  // Component reference (router — llms-full.txt removed in 0.46; per-component
+  // Component reference (router — llms-full.txt removed in 0.45; per-component
   // detail lives in docs/components/**/*.md and mcp-manifest.json)
   {
     src: join(repoRoot, 'packages', 'core', 'llms.txt'),

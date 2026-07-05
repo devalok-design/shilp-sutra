@@ -7,6 +7,7 @@ on:
     # (apps/site/**) touch no story — skip to save snapshot quota.
     paths-ignore:
       - 'apps/site/**'
+      - 'packages/mcp-server/**'
   pull_request:
     branches: [main]
     # PR runs are label-gated: add the "visual-review" label to snapshot a PR.
@@ -14,6 +15,7 @@ on:
     types: [opened, synchronize, reopened, labeled]
     paths-ignore:
       - 'apps/site/**'
+      - 'packages/mcp-server/**'
   workflow_dispatch:
     inputs:
       auto_accept:

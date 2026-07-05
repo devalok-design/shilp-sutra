@@ -7,7 +7,7 @@
  *
  * Local mode: set LOCAL_CORE_DIR to a packages/core checkout to serve its
  * working-tree docs under the pseudo-version "local" — used for development
- * and for testing manifest-backed tools before 0.46 is published.
+ * and for testing manifest-backed tools before 0.45 is published.
  */
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs'

@@ -7,6 +7,7 @@ on:
     # Site-only changes (apps/site/**) don't change any story — skip the redeploy.
     paths-ignore:
       - 'apps/site/**'
+      - 'packages/mcp-server/**'
 
   # Allow manual trigger from the Actions tab
   workflow_dispatch:

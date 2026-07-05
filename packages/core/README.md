@@ -43,6 +43,18 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 
 No `tailwind.config.ts` required from us. Your own plugins or content globs go in `globals.css` via TW4 directives (`@plugin`, `@source`, `@theme`).
 
+## AI Agents & MCP
+
+Live docs MCP — version-exact component/token/migration answers for any MCP-capable agent:
+
+```sh
+claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp
+```
+
+Six read-only tools: `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`. Every tool takes a `version` param — pass your installed version (from `node_modules/@devalok/shilp-sutra/package.json`) so answers match your prop surface exactly.
+
+Without MCP: `llms.txt` (router) → `docs/components/<tier>/<name>.md` (per-component) → `mcp-manifest.json` (all props/tokens/composition as JSON). Full contract in `AGENTS.md`.
+
 ## Peer Dependencies
 
 ### Required

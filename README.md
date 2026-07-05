@@ -166,7 +166,7 @@ Roundness is a brand axis. Set `data-shape` on `<html>` (or any subtree) to swap
 
 Pill shapes (Badge, Switch, Radio, Avatar circle) stay pill in every preset. Override individual role tokens (`--radius-control`, `--radius-surface`, `--radius-overlay`, `--radius-pill`, …) for fine-grained control. See [customize-brand.md → Shape presets](./packages/core/docs/recipes/customize-brand.md#shape-presets-data-shape) for the role token table + custom-preset cookbook.
 
-Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract.
+Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract. A hosted MCP serves version-exact docs at `https://shilp-sutra.devalok.in/mcp` — `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp`.
 
 ### Agent Skill (Claude Code, Cursor, Codex, Aider, …)
 

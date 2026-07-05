@@ -6,33 +6,195 @@
       "summary": "Barrel peer-cliff cleanup — 12 symbol families removed from /ui, /composed, /ai barrels (per-component subpath only). Icon API unification narrows the `icon` prop on 14 components from React.ReactNode to IconInput.",
       "migrationDoc": "MIGRATION.md#v0400--barrel-peer-cliff-cleanup--icon-api-unification",
       "moved": [
-        { "symbol": "Toaster", "from": "@devalok/shilp-sutra/ui", "to": "@devalok/shilp-sutra/ui/toaster", "peer": "sonner", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "toast", "from": "@devalok/shilp-sutra/ui", "to": "@devalok/shilp-sutra/ui/toast", "peer": "sonner", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "InputOTP", "from": "@devalok/shilp-sutra/ui", "to": "@devalok/shilp-sutra/ui/input-otp", "peer": "input-otp", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "DatePicker", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "DateRangePicker", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "DateTimePicker", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "TimePicker", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "CalendarGrid", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "MonthPicker", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "YearPicker", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "Presets", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "useCalendar", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/date-picker", "peer": "date-fns", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "EmojiPicker", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/emoji-picker", "peer": "@emoji-mart/data", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "EmojiPickerPopover", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/emoji-picker", "peer": "@emoji-mart/data", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "EmojiNode", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/extensions/emoji-node", "peer": "@tiptap/react", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "createEmojiSuggestion", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/extensions/emoji-suggestion", "peer": "@tiptap/react", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "FilePreview", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/file-preview", "peer": "react-pdf", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "MarkdownViewer", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/markdown-viewer", "peer": "react-markdown", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "RichTextEditor", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/rich-text-editor", "peer": "@tiptap/react", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "RichTextViewer", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/rich-text-editor", "peer": "@tiptap/react", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "RichChatInput", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/rich-chat-input", "peer": "@tiptap/react", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "AudioPlayer", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/rich-chat-input", "peer": "@tiptap/react", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "AudioWaveform", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/rich-chat-input", "peer": "@tiptap/react", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "useVoiceRecorder", "from": "@devalok/shilp-sutra/composed", "to": "@devalok/shilp-sutra/composed/rich-chat-input", "peer": "@tiptap/react", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "BlockRenderer", "from": "@devalok/shilp-sutra/ai", "to": "@devalok/shilp-sutra/ai/block-renderer", "peer": "react-markdown", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "ErrorBlock", "from": "@devalok/shilp-sutra/ai/blocks", "to": "@devalok/shilp-sutra/ai/blocks/error", "peer": "react-markdown", "eslintRule": "prefer-per-component-import" },
-        { "symbol": "TextBlock", "from": "@devalok/shilp-sutra/ai/blocks", "to": "@devalok/shilp-sutra/ai/blocks/text", "peer": "react-markdown", "eslintRule": "prefer-per-component-import" }
+        {
+          "symbol": "Toaster",
+          "from": "@devalok/shilp-sutra/ui",
+          "to": "@devalok/shilp-sutra/ui/toaster",
+          "peer": "sonner",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "toast",
+          "from": "@devalok/shilp-sutra/ui",
+          "to": "@devalok/shilp-sutra/ui/toast",
+          "peer": "sonner",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "InputOTP",
+          "from": "@devalok/shilp-sutra/ui",
+          "to": "@devalok/shilp-sutra/ui/input-otp",
+          "peer": "input-otp",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "DatePicker",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "DateRangePicker",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "DateTimePicker",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "TimePicker",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "CalendarGrid",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "MonthPicker",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "YearPicker",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "Presets",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "useCalendar",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/date-picker",
+          "peer": "date-fns",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "EmojiPicker",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/emoji-picker",
+          "peer": "@emoji-mart/data",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "EmojiPickerPopover",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/emoji-picker",
+          "peer": "@emoji-mart/data",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "EmojiNode",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/extensions/emoji-node",
+          "peer": "@tiptap/react",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "createEmojiSuggestion",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/extensions/emoji-suggestion",
+          "peer": "@tiptap/react",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "FilePreview",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/file-preview",
+          "peer": "react-pdf",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "MarkdownViewer",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/markdown-viewer",
+          "peer": "react-markdown",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "RichTextEditor",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/rich-text-editor",
+          "peer": "@tiptap/react",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "RichTextViewer",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/rich-text-editor",
+          "peer": "@tiptap/react",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "RichChatInput",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/rich-chat-input",
+          "peer": "@tiptap/react",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "AudioPlayer",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/rich-chat-input",
+          "peer": "@tiptap/react",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "AudioWaveform",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/rich-chat-input",
+          "peer": "@tiptap/react",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "useVoiceRecorder",
+          "from": "@devalok/shilp-sutra/composed",
+          "to": "@devalok/shilp-sutra/composed/rich-chat-input",
+          "peer": "@tiptap/react",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "BlockRenderer",
+          "from": "@devalok/shilp-sutra/ai",
+          "to": "@devalok/shilp-sutra/ai/block-renderer",
+          "peer": "react-markdown",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "ErrorBlock",
+          "from": "@devalok/shilp-sutra/ai/blocks",
+          "to": "@devalok/shilp-sutra/ai/blocks/error",
+          "peer": "react-markdown",
+          "eslintRule": "prefer-per-component-import"
+        },
+        {
+          "symbol": "TextBlock",
+          "from": "@devalok/shilp-sutra/ai/blocks",
+          "to": "@devalok/shilp-sutra/ai/blocks/text",
+          "peer": "react-markdown",
+          "eslintRule": "prefer-per-component-import"
+        }
       ],
       "narrowed": [
         {
@@ -60,6 +222,26 @@
           "to": "IconInput",
           "fix": "Retype the icon source from React.ReactNode to React.ReactElement (or import the IconInput type). Build-time only; runtime JSX is unaffected."
         }
+      ]
+    },
+    "0.45.0": {
+      "summary": "AI doc surface: llms-full.txt and llms-quick.txt removed from the tarball. Replaced by the hosted MCP (https://shilp-sutra.devalok.in/mcp), the llms.txt router, per-component docs, and mcp-manifest.json. No TypeScript-level breaks.",
+      "migrationDoc": "MIGRATION.md#v0450--card-spacing-variable-table-overhaul-ai-docs-switch-to-mcp",
+      "removed": [
+        {
+          "symbol": "llms-full.txt",
+          "where": "npm tarball root",
+          "replacement": "mcp-manifest.json + docs/components/<tier>/<name>.md (or the hosted MCP get_component tool)"
+        },
+        {
+          "symbol": "llms-quick.txt",
+          "where": "npm tarball root",
+          "replacement": "llms.txt (now a ~2.5K-token router)"
+        }
+      ],
+      "notes": [
+        "New hosted MCP at https://shilp-sutra.devalok.in/mcp — six read-only tools, version param on every tool; upgrade(from,to) accepts pre-0.45 versions.",
+        "New mcp-manifest.json ships at the package root (schema: mcp-manifest.schema.json)."
       ]
     }
   }

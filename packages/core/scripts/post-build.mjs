@@ -27,6 +27,7 @@ const steps = [
   { name: 'fix-dts-primitives', script: 'fix-dts-primitives.mjs' },
   { name: 'inject-use-client', script: 'inject-use-client.mjs' },
   { name: 'build-docs', script: 'build-component-docs.mjs' },
+  { name: 'build-mcp-manifest', script: 'build-mcp-manifest.mjs' },
 ]
 
 const startTime = Date.now()

@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shilp-sutra.devalok.in/mcp-manifest.schema.json",
+  "title": "shilp-sutra MCP manifest",
+  "description": "Machine-readable component/token reference emitted at build time and shipped in the npm tarball from 0.46.0. The hosted docs MCP server extracts this file from published tarballs and serves slices of it — it never parses markdown. Prop shape mirrors react-docgen/Storybook ArgTypes so AI agents consume it zero-shot. Authored standard: docs/specs/mcp-manifest-standard.md.",
+  "type": "object",
+  "required": ["manifestVersion", "package", "packageVersion", "components", "tokens"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "manifestVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semver of the manifest FORMAT (this standard), not the package. The MCP server declares a supported range; mismatch is an explicit error, never a silent misparse."
+    },
+    "package": {
+      "type": "string",
+      "examples": ["@devalok/shilp-sutra"]
+    },
+    "packageVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Must equal package.json version at build time — enforced by pre-publish audit gate."
+    },
+    "generatedAt": {
+      "type": "string",
+      "description": "ISO 8601 build timestamp."
+    },
+    "components": {
+      "type": "object",
+      "description": "Every published component, keyed by kebab-name. Coverage must equal the component scan in build-component-docs.mjs — a missing entry fails the audit gate.",
+      "patternProperties": {
+        "^[a-z][a-z0-9-]*$": { "$ref": "#/$defs/component" }
+      },
+      "additionalProperties": false
+    },
+    "tokens": {
+      "type": "object",
+      "description": "Design-token reference by category, extracted from src/tokens/*.css.",
+      "properties": {
+        "color": { "$ref": "#/$defs/tokenList" },
+        "spacing": { "$ref": "#/$defs/tokenList" },
+        "typography": { "$ref": "#/$defs/tokenList" },
+        "radius": { "$ref": "#/$defs/tokenList" },
+        "shadow": { "$ref": "#/$defs/tokenList" },
+        "motion": { "$ref": "#/$defs/tokenList" },
+        "z": { "$ref": "#/$defs/tokenList" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": ["displayName", "tier", "import", "serverSafe", "description", "props", "composition", "docPath"],
+      "additionalProperties": false,
+      "properties": {
+        "displayName": { "type": "string", "examples": ["Button"] },
+        "tier": { "enum": ["ui", "composed", "shell", "ai"] },
+        "import": { "type": "string", "examples": ["@devalok/shilp-sutra/ui/button"] },
+        "serverSafe": { "type": "boolean" },
+        "description": { "type": "string", "description": "One-line purpose." },
+        "props": {
+          "type": "object",
+          "description": "react-docgen convention: object keyed by prop name.",
+          "additionalProperties": { "$ref": "#/$defs/prop" }
+        },
+        "defaults": {
+          "type": "object",
+          "description": "Convenience mirror of each prop's defaultValue for props with defaults (from the doc's Defaults section).",
+          "additionalProperties": { "type": ["string", "number", "boolean"] }
+        },
+        "examples": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Verbatim JSX snippets from the doc's Example section."
+        },
+        "composition": { "$ref": "#/$defs/composition" },
+        "gotchas": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Known-misuse bullets, verbatim, DO-NOT phrasing preferred."
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["version", "summary"],
+            "additionalProperties": false,
+            "properties": {
+              "version": { "type": "string" },
+              "summary": { "type": "string" }
+            }
+          },
+          "description": "Per-component change history from the doc's Changes section, newest first."
+        },
+        "storybook": { "type": "string", "description": "Published Storybook docs URL for this component." },
+        "docPath": {
+          "type": "string",
+          "description": "Tarball-relative path to the human/fallback markdown doc.",
+          "examples": ["docs/components/ui/button.md"]
+        }
+      }
+    },
+    "prop": {
+      "type": "object",
+      "required": ["type", "required"],
+      "additionalProperties": false,
+      "description": "react-docgen/ArgTypes shape: { type: { name, value?, raw? }, required, defaultValue?, description? }.",
+      "properties": {
+        "type": {
+          "type": "object",
+          "required": ["name"],
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "enum": ["enum", "boolean", "string", "number", "function", "ReactNode", "ReactElement", "object", "union"]
+            },
+            "value": {
+              "type": "array",
+              "items": { "type": ["string", "number", "boolean"] },
+              "description": "Enum members when type.name is 'enum'."
+            },
+            "raw": {
+              "type": "string",
+              "description": "Literal TypeScript type text for unions/functions/objects that enum members can't express.",
+              "examples": ["boolean | 'ambient' | 'working' | 'urgent'", "(e: MouseEvent) => Promise<void>"]
+            }
+          }
+        },
+        "required": { "type": "boolean" },
+        "defaultValue": { "type": ["string", "number", "boolean"] },
+        "description": { "type": "string" }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Design-intent layer — how this component composes. Not extractable from CVA; authored via tagged bullets in the doc's Composability section (see standard §1.3/§2).",
+      "properties": {
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string", "examples": ["CardHeader"] },
+              "slot": { "type": "string", "description": "Position contract within the parent.", "examples": ["top"] },
+              "required": { "type": "boolean" },
+              "description": { "type": "string" }
+            }
+          },
+          "description": "Compound subcomponents this component exports."
+        },
+        "slots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string", "examples": ["children"] },
+              "accepts": { "type": "array", "items": { "type": "string" } },
+              "description": { "type": "string" }
+            }
+          },
+          "description": "Named children positions and what they accept."
+        },
+        "composesWith": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["component", "relation"],
+            "additionalProperties": false,
+            "properties": {
+              "component": { "type": "string", "description": "kebab-name of the related component." },
+              "relation": {
+                "enum": ["specializes", "contains", "pairs", "provides-context", "consumes-context", "alternative-to"],
+                "description": "Closed vocabulary. 'specializes' = builds ON the target instead of re-rolling it (StatCard specializes Card)."
+              },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "containedBy": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "kebab-names (or 'page') where this component legitimately lives."
+        },
+        "contexts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "effect"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string", "examples": ["ButtonGroup"] },
+              "effect": { "type": "string", "examples": ["inherits variant/color/size; position-aware radius"] }
+            }
+          },
+          "description": "React contexts consumed or provided that change rendered behavior."
+        },
+        "antiPatterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Known composition misuse, DO-NOT phrasing with the correct alternative."
+        },
+        "notes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Untagged Composability prose bullets carried over verbatim — lets existing docs parse before incremental tagging."
+        }
+      }
+    },
+    "tokenList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "description": "CSS custom property.", "examples": ["--spacing-ds-03"] },
+          "utility": { "type": "string", "description": "Tailwind utility it generates, if any.", "examples": ["p-ds-03"] },
+          "value": { "type": "string", "description": "Resolved value (light mode where dual)." },
+          "darkValue": { "type": "string", "description": "Dark-mode value when it differs." },
+          "usage": { "type": "string", "description": "One-line when-to-use." }
+        }
+      }
+    }
+  }
+}

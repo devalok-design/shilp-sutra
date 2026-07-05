@@ -818,7 +818,9 @@
     "README.md",
     "llms.txt",
     "llms-quick.txt",
-    "llms-full.txt"
+    "llms-full.txt",
+    "mcp-manifest.json",
+    "mcp-manifest.schema.json"
   ],
   "agents": {
     "skills": [

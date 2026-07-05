@@ -10,7 +10,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableRowActions,
 } from './table'
+import { TableRowLink } from './table-row-link'
 
 describe('Table', () => {
   const renderTable = () =>
@@ -171,5 +173,110 @@ describe('Table', () => {
       </Table>,
     )
     expect(screen.getByRole('columnheader')).toHaveClass('text-ds-sm', 'font-medium', 'text-surface-fg-muted', 'py-(--table-py)')
+  })
+
+  describe('numeric', () => {
+    it('right-aligns cells with tabular figures; header follows', () => {
+      render(
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead numeric>Amount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell numeric>₹80,000</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>,
+      )
+      expect(screen.getByRole('columnheader')).toHaveClass('text-right')
+      expect(screen.getByRole('cell')).toHaveClass('text-right', 'tabular-nums')
+    })
+  })
+
+  describe('TableRowActions', () => {
+    it('is hidden until row hover/focus but stays permanently in the tab order (opacity reveal)', () => {
+      render(
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <TableRowActions data-testid="actions">
+                  <button type="button">Delete</button>
+                </TableRowActions>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>,
+      )
+      const actions = screen.getByTestId('actions')
+      expect(actions).toHaveClass(
+        'opacity-0',
+        'group-hover/row:opacity-100',
+        'group-focus-within/row:opacity-100',
+        'pointer-coarse:opacity-100',
+      )
+      // reveal is opacity-based — the button must be focusable at all times
+      expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
+    })
+
+    it('persist keeps actions always visible', () => {
+      render(
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <TableRowActions data-testid="actions" persist>
+                  <button type="button">Delete</button>
+                </TableRowActions>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>,
+      )
+      expect(screen.getByTestId('actions')).toHaveClass('opacity-100')
+      expect(screen.getByTestId('actions')).not.toHaveClass('opacity-0')
+    })
+  })
+
+  describe('TableRowLink', () => {
+    it('renders a real anchor with the row-link slot marker and full-row stretch', () => {
+      render(
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell className="relative">
+                <TableRowLink href="/projects/1">Karm v2</TableRowLink>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>,
+      )
+      const link = screen.getByRole('link', { name: 'Karm v2' })
+      expect(link).toHaveAttribute('href', '/projects/1')
+      expect(link).toHaveAttribute('data-slot', 'row-link')
+      expect(link).toHaveClass('after:absolute', 'after:w-[100vw]')
+      // row draws the focus ring; the anchor suppresses its own
+      expect(link).toHaveClass('focus-visible:outline-hidden')
+    })
+
+    it('stretch={false} renders a plain title link with its own focus ring', () => {
+      render(
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <TableRowLink href="/projects/1" stretch={false}>Karm v2</TableRowLink>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>,
+      )
+      const link = screen.getByRole('link', { name: 'Karm v2' })
+      expect(link).not.toHaveClass('after:absolute')
+      expect(link).toHaveClass('focus-visible:outline-2')
+    })
   })
 })

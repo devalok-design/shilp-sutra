@@ -2,6 +2,7 @@
 
 import { flexRender,type Row } from '@tanstack/react-table'
 import { type VirtualItem } from '@tanstack/react-virtual'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import {
@@ -11,6 +12,7 @@ import {
   isColumnEditable,
   useDataTableContext,
 } from './data-table-context'
+import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 import { Skeleton } from './skeleton'
 import { TableBody, TableCell, TableRow } from './table'
@@ -170,25 +172,56 @@ function DataTableExpandedRow<TData>({
 }) {
   const { allColumns, expandable, renderExpanded, virtualRows } =
     useDataTableContext<TData>()
+  // Self-guarded (StatFlash pattern) — reveal collapses to an instant swap
+  // without relying on a consumer MotionProvider.
+  const prefersReduced = useReducedMotion()
 
-  if (!expandable || !row.getIsExpanded() || !renderExpanded) return null
+  if (!expandable || !renderExpanded) return null
+
+  const expanded = row.getIsExpanded()
+
+  // Virtual rows are absolutely positioned with measured heights — a height
+  // animation would fight the virtualizer, so the reveal is instant there.
+  if (virtualRows) {
+    if (!expanded) return null
+    return (
+      <TableRow style={style} className="absolute w-full flex">
+        <TableCell
+          colSpan={allColumns.length}
+          className="bg-surface-base p-ds-05 flex-1"
+        >
+          {renderExpanded(row.original)}
+        </TableCell>
+      </TableRow>
+    )
+  }
 
   return (
-    <TableRow
-      style={style}
-      className={virtualRows ? 'absolute w-full flex' : undefined}
-    >
-      <TableCell
-        colSpan={allColumns.length}
-        className={cn(
-          // A recess, not a raised layer — surface-raised would vanish on a card.
-          'bg-surface-base p-ds-05',
-          virtualRows && 'flex-1',
-        )}
-      >
-        {renderExpanded(row.original)}
-      </TableCell>
-    </TableRow>
+    <AnimatePresence initial={false}>
+      {expanded && (
+        <TableRow style={style}>
+          <TableCell
+            colSpan={allColumns.length}
+            // A recess, not a raised layer — surface-raised would vanish on a
+            // card. Padding moves to the inner div so the collapsed state has
+            // zero height.
+            className="bg-surface-base p-0"
+          >
+            <motion.div
+              className="overflow-hidden"
+              initial={prefersReduced ? false : { height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={prefersReduced ? undefined : { height: 0, opacity: 0 }}
+              transition={
+                prefersReduced ? { duration: 0 } : { ...springs.smooth }
+              }
+            >
+              <div className="p-ds-05">{renderExpanded(row.original)}</div>
+            </motion.div>
+          </TableCell>
+        </TableRow>
+      )}
+    </AnimatePresence>
   )
 }
 

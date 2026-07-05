@@ -10,8 +10,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableRowActions,
 } from './table'
 import { TruncatedText } from './truncated-text'
+import { Button } from './button'
+import { TableRowLink } from './table-row-link'
 
 const meta: Meta<typeof Table> = {
   title: 'Components/Data Display/Table',
@@ -236,6 +239,90 @@ export const SelectedRows: Story = {
         <TableRow data-state="selected"><TableCell>#1041</TableCell><TableCell><Badge color="warning" size="xs">Sent</Badge></TableCell><TableCell className="text-right tabular-nums">₹80,000</TableCell></TableRow>
         <TableRow data-state="selected"><TableCell>#1040</TableCell><TableCell><Badge color="success" size="xs">Paid</Badge></TableCell><TableCell className="text-right tabular-nums">₹2,10,500</TableCell></TableRow>
         <TableRow><TableCell>#1039</TableCell><TableCell><Badge color="error" size="xs">Overdue</Badge></TableCell><TableCell className="text-right tabular-nums">₹36,900</TableCell></TableRow>
+      </TableBody>
+    </Table>
+  ),
+}
+
+export const RowLinks: Story = {
+  name: 'TableRowLink (whole-row navigation)',
+  render: () => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Project</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Owner</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {[
+          { name: 'Karm v2 — client portal', status: 'Active', owner: 'Yogin S' },
+          { name: 'Muhurat launch site', status: 'Review', owner: 'Goutham K' },
+          { name: 'Brand refresh', status: 'Active', owner: 'Amal M' },
+        ].map((p) => (
+          <TableRow key={p.name}>
+            <TableCell className="relative">
+              <TableRowLink href={`#${encodeURIComponent(p.name)}`}>{p.name}</TableRowLink>
+            </TableCell>
+            <TableCell><Badge color={p.status === 'Active' ? 'success' : 'warning'} size="xs">{p.status}</Badge></TableCell>
+            <TableCell className="text-surface-fg-muted">{p.owner}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  ),
+}
+
+export const RowActions: Story = {
+  name: 'TableRowActions (hover / focus reveal)',
+  render: () => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Deliverable</TableHead>
+          <TableHead>Version</TableHead>
+          <TableHead numeric>Size</TableHead>
+          <TableHead><span className="sr-only">Actions</span></TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {[
+          { name: 'Brand deck — final', v: 'v4', size: '48 MB' },
+          { name: 'Logo pack', v: 'v2', size: '12 MB' },
+          { name: 'Site copy — homepage', v: 'v7', size: '204 KB' },
+        ].map((d) => (
+          <TableRow key={d.name}>
+            <TableCell>{d.name}</TableCell>
+            <TableCell className="text-surface-fg-muted">{d.v}</TableCell>
+            <TableCell numeric>{d.size}</TableCell>
+            <TableCell>
+              <TableRowActions>
+                <Button variant="ghost" size="xs" aria-label={`Download ${d.name}`}>Download</Button>
+                <Button variant="ghost" size="xs" aria-label={`Delete ${d.name}`}>Delete</Button>
+              </TableRowActions>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  ),
+}
+
+export const NumericColumns: Story = {
+  name: 'numeric cells',
+  render: () => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Client</TableHead>
+          <TableHead numeric>Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow><TableCell>Meridian</TableCell><TableCell numeric>₹4,95,600.00</TableCell></TableRow>
+        <TableRow><TableCell>Vetra</TableCell><TableCell numeric>₹80,000.00</TableCell></TableRow>
+        <TableRow><TableCell>Kavya &amp; Co</TableCell><TableCell numeric className="text-error-11">(₹36,900.00)</TableCell></TableRow>
       </TableBody>
     </Table>
   ),

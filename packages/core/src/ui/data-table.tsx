@@ -399,14 +399,16 @@ export function DataTable<TData, TValue>({
     enableHiding: false,
   }
 
-  // Expand toggle column
+  // Expand toggle column — aria-expanded lives on the BUTTON (not the row),
+  // in a dedicated column with a visually-hidden header (Roselli expando spec).
   const expandColumn: ColumnDef<TData, unknown> = {
     id: '_expand',
-    header: () => null,
+    header: () => <span className="sr-only">Expand rows</span>,
     cell: ({ row }) => (
       <button
         type="button"
         onClick={() => row.toggleExpanded()}
+        aria-expanded={row.getIsExpanded()}
         aria-label={row.getIsExpanded() ? 'Collapse row' : 'Expand row'}
         className="flex items-center justify-center p-ds-01 rounded-control-inner hover:bg-surface-raised-hover transition-colors"
       >
@@ -414,7 +416,7 @@ export function DataTable<TData, TValue>({
           icon={IconChevronRight}
           size="sm"
           className={cn(
-            'transition-transform duration-moderate-02',
+            'transition-transform duration-fast-02 ease-productive-standard',
             row.getIsExpanded() && 'rotate-90',
           )}
         />

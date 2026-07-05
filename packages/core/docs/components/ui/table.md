@@ -8,6 +8,17 @@
     density: "compact" | "standard" (default) | "comfortable" — sets --table-py (4 / 8 / 12px vertical cell padding → rows ≈ 29 / 37 / 45px); header height tracks it
     striped: boolean (opt-in zebra — even body rows get the faintest surface step; hairline separators remain the default row cue)
 
+### TableCell / TableHead
+    numeric: boolean (right-align + tabular figures; header follows the column. Identifier-numbers — dates, phones, IDs — stay left)
+
+### TableRowActions
+    persist: boolean (always show instead of hover/focus reveal)
+    Reveal is opacity-based: buttons stay in the tab order permanently, appear on row hover AND :focus-within, and are always visible on touch (pointer-coarse). Give the column a visually-hidden header.
+
+### TableRowLink (separate import: ui/table-row-link — client component)
+    href: string (required); stretch: boolean (default true)
+    A real anchor placed in the row's primary cell (`<TableCell className="relative">`), stretched across the row via a pseudo-element — cmd/ctrl+click, middle-click, and context menu work, unlike onClick-on-row. Keyboard focus draws a row-level ring. Other interactive elements in the row need `className="relative z-[1]"`. `stretch={false}` = title-only link (keeps row text selectable).
+
 ## Compound Components
     Table (root <table>)
       TableHeader (<thead>)
@@ -91,6 +102,9 @@ See the `RichCells` story for all of these live.
 
 ## Changes
 ### v0.45.0
+- **Added** `TableRowLink` (ui/table-row-link) — real-anchor whole-row navigation with pseudo-element stretch (Safari-safe: anchored to the cell, clipped by the table's `overflow-x-clip`), row-level focus ring, `stretch={false}` title-only mode.
+- **Added** `TableRowActions` — hover/focus-revealed action cluster (opacity reveal, permanently tabbable, `:focus-within` + touch fallbacks, `persist` mode).
+- **Added** `numeric` prop on TableCell/TableHead — right-align + tabular figures.
 - **Fixed** TableFooter background was `color-mix(surface-raised 50%)` — invisible on cards (same mis-mapped shadcn `muted/50` family as the row hover). Now a `surface-base` band with a top hairline.
 - **Fixed** Selected+hover tie: selected rows get an explicit `hover:bg-accent-4` step (hover and selected previously tied on specificity).
 - **Added** Cell recipes section (user cell, tag overflow, money, empty-dash) + density→avatar mapping; `RichCells` / `SelectedRows` stories.

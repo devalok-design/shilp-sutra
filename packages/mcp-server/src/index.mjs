@@ -8,6 +8,7 @@
  * Env:
  *   PORT            (default 3111)
  *   LOCAL_CORE_DIR  serve a local packages/core working tree as "local" version
+ *   POSTHOG_API_KEY optional — enables product analytics (see analytics.mjs)
  */
 
 import { createServer } from 'node:http'
@@ -15,6 +16,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 import { z } from 'zod'
 import * as tools from './tools.mjs'
+import * as analytics from './analytics.mjs'
 import { cacheStats } from './registry.mjs'
 
 const PORT = Number(process.env.PORT) || 3111
@@ -78,12 +80,33 @@ function errorText(e) {
   return { isError: true, content: [{ type: 'text', text: e.message }] }
 }
 
-function wrap(fn) {
+// Low-PII properties for analytics. NEVER includes report_issue title/body/
+// reproduction — those may carry consumer code or secrets.
+function toolProps(name, args = {}) {
+  const p = { tool: name, version: args.version || 'latest' }
+  if (args.tier) p.tier = args.tier
+  if (args.name || args.component) p.component = args.name || args.component
+  if (args.category) p.category = args.category
+  if (args.framework) p.framework = args.framework
+  if (args.query) p.query = args.query
+  if (args.from) p.from = args.from
+  if (args.to) p.to = args.to
+  if (args.severity) p.severity = args.severity
+  return p
+}
+
+// Wrap a tool handler: run it, emit one `mcp_tool_call` analytics event
+// (distinct_id = salted IP hash), map errors to the MCP error envelope.
+function instrument(ctx, name, fn) {
   return async (args) => {
+    let isError = false
     try {
       return text(await fn(args))
     } catch (e) {
+      isError = true
       return errorText(e)
+    } finally {
+      analytics.capture(analytics.anonId(ctx.ip), 'mcp_tool_call', { ...toolProps(name, args), isError })
     }
   }
 }
@@ -105,7 +128,7 @@ function buildServer(ctx = {}) {
     'find_component',
     'Search shilp-sutra components by keyword (authoritative component index). Empty query lists all. Returns name, tier, one-liner, import path as JSON.',
     { query: z.string().optional(), tier: z.enum(['ui', 'composed', 'shell', 'ai']).optional(), version: VERSION_PARAM },
-    wrap(tools.findComponent)
+    instrument(ctx, 'find_component', tools.findComponent)
   )
 
   server.tool(
@@ -117,21 +140,21 @@ function buildServer(ctx = {}) {
         .describe('Slice the response — omit for all sections'),
       version: VERSION_PARAM,
     },
-    wrap(tools.getComponent)
+    instrument(ctx, 'get_component', tools.getComponent)
   )
 
   server.tool(
     'get_tokens',
     'Design-token reference (color, spacing, typography, radius, shadow, motion, z) as JSON. Omit category for a summary of counts.',
     { category: z.enum(['color', 'spacing', 'typography', 'radius', 'shadow', 'motion', 'z']).optional(), version: VERSION_PARAM },
-    wrap(tools.getTokens)
+    instrument(ctx, 'get_tokens', tools.getTokens)
   )
 
   server.tool(
     'get_setup',
     'Framework install recipe (vite, next-app-router, next-pages, remix, astro, tanstack-start) or guides (customize-brand, server-components, troubleshoot, upgrading). Follow steps exactly — each exists because skipping it broke a real consumer.',
     { framework: z.string().optional(), version: VERSION_PARAM },
-    wrap(tools.getSetup)
+    instrument(ctx, 'get_setup', tools.getSetup)
   )
 
   server.tool(
@@ -142,14 +165,14 @@ function buildServer(ctx = {}) {
       to: z.string().optional().describe('target version (default: latest)'),
       version: VERSION_PARAM,
     },
-    wrap(tools.upgrade)
+    instrument(ctx, 'upgrade', tools.upgrade)
   )
 
   server.tool(
     'search_docs',
     'Full-text search across component docs and recipes for patterns and guidance the other tools don\'t slice (e.g. "focus ring", "dark mode toggle").',
     { query: z.string(), version: VERSION_PARAM },
-    wrap(tools.searchDocs)
+    instrument(ctx, 'search_docs', tools.searchDocs)
   )
 
   server.tool(
@@ -172,13 +195,7 @@ function buildServer(ctx = {}) {
         .describe('urgent = install-break / runtime crash / security; normal = API/docs/agent-trap; nice-to-have = polish/preference/feature.'),
       version: VERSION_PARAM,
     },
-    async (args) => {
-      try {
-        return text(await tools.reportIssue(args, ctx))
-      } catch (e) {
-        return errorText(e)
-      }
-    }
+    instrument(ctx, 'report_issue', (args) => tools.reportIssue(args, ctx))
   )
 
   return server
@@ -187,7 +204,7 @@ function buildServer(ctx = {}) {
 const httpServer = createServer(async (req, res) => {
   if (req.url === '/health') {
     res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify({ ok: true, ...cacheStats() }))
+    res.end(JSON.stringify({ ok: true, analytics: analytics.configured, ...cacheStats() }))
     return
   }
   if (req.url !== '/mcp') {
@@ -199,6 +216,7 @@ const httpServer = createServer(async (req, res) => {
   // Behind the site proxy the client IP arrives in x-forwarded-for.
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress || 'unknown'
   if (rateLimited(ip)) {
+    analytics.capture(analytics.anonId(ip), 'mcp_rate_limited', { type: 'read', limit: RATE_LIMIT_RPM })
     res.writeHead(429, { 'content-type': 'application/json', 'retry-after': '60' })
     res.end(JSON.stringify({ jsonrpc: '2.0', error: { code: -32000, message: `Rate limit: ${RATE_LIMIT_RPM} requests/minute. Retry after 60s.` }, id: null }))
     return
@@ -212,8 +230,10 @@ const httpServer = createServer(async (req, res) => {
     // Stateless: fresh server + transport per request. ctx carries the per-IP
     // write guard for report_issue (the one non-read-only tool).
     const server = buildServer({
+      ip,
       checkWriteLimit: () => {
         if (writeLimited(ip)) {
+          analytics.capture(analytics.anonId(ip), 'mcp_rate_limited', { type: 'write', limit: WRITE_LIMIT_PER_HOUR })
           throw new Error(
             `Feedback rate limit: ${WRITE_LIMIT_PER_HOUR} submissions/hour per client. ` +
               'Retry later, or file at https://github.com/devalok-design/shilp-sutra/issues/new/choose.'
@@ -239,4 +259,13 @@ const httpServer = createServer(async (req, res) => {
 httpServer.listen(PORT, () => {
   console.log(`shilp-sutra MCP listening on :${PORT} (POST /mcp, GET /health)`)
   if (process.env.LOCAL_CORE_DIR) console.log(`local mode: serving ${process.env.LOCAL_CORE_DIR}`)
+  if (analytics.configured) console.log('analytics: PostHog enabled')
 })
+
+// Flush buffered analytics before the process exits (Railway sends SIGTERM on redeploy).
+for (const sig of ['SIGTERM', 'SIGINT']) {
+  process.on(sig, () => {
+    httpServer.close()
+    analytics.shutdown().finally(() => process.exit(0))
+  })
+}

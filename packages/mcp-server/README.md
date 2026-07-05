@@ -27,6 +27,16 @@ The read tools need no secrets. `report_issue` needs a **GitHub App** installed 
 | `FEEDBACK_REPO` | `owner/name` (default `devalok-design/shilp-sutra`) |
 | `WRITE_LIMIT_PER_HOUR` | per-IP write cap (default `5`) |
 
+### Analytics (optional)
+
+Off unless `POSTHOG_API_KEY` is set — then every tool call emits an `mcp_tool_call` event (which tool, `version`, low-PII args, `isError`) plus `mcp_rate_limited` events. `distinct_id` is a salted hash of the client IP (rough unique-client counting, never the raw IP). Feedback `body`/`reproduction` are **never** captured.
+
+| Env | Meaning |
+|-----|---------|
+| `POSTHOG_API_KEY` | PostHog project API key (enables analytics) |
+| `POSTHOG_HOST` | ingestion host (default `https://us.i.posthog.com`) |
+| `POSTHOG_IP_SALT` | salt for the distinct_id hash (default constant) |
+
 **One-time GitHub App setup** (human step — the server can't create the App):
 1. github.com/organizations/devalok-design/settings/apps → **New GitHub App**. Name e.g. `shilp-sutra-feedback-bot`. Homepage any. Uncheck **Webhook → Active**.
 2. Permissions → **Repository permissions → Issues: Read and write**. Nothing else.

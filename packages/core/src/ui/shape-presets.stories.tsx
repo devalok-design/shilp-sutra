@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import * as React from 'react'
 
 import { Button } from './button'
-import { Card } from './card'
+import { Card, CardContent } from './card'
 import { Input } from './input'
 
 const meta: Meta = {
@@ -54,9 +54,11 @@ function PresetSample({ preset, label, description }: { preset: string; label: s
         <Input size="lg" placeholder="Large input" />
       </div>
 
-      <Card variant="default" className="p-ds-04">
-        <div className="text-ds-md font-medium">Card surface</div>
-        <div className="text-ds-sm text-surface-fg-muted">Cards use `--radius-surface`, distinct from controls.</div>
+      <Card variant="default" size="sm">
+        <CardContent>
+          <div className="text-ds-md font-medium">Card surface</div>
+          <div className="text-ds-sm text-surface-fg-muted">Cards use `--radius-surface`, distinct from controls.</div>
+        </CardContent>
       </Card>
     </div>
   )
@@ -128,9 +130,11 @@ export const CustomPresetExample: Story = {
           <Button size="md" variant="outline">Soft control</Button>
         </div>
         <Input size="md" placeholder="Soft control" />
-        <Card variant="default" className="p-ds-04">
-          <div className="text-ds-md font-medium">Tight surface</div>
-          <div className="text-ds-sm text-surface-fg-muted">Inherits the 4px override scoped to this card.</div>
+        <Card variant="default" size="sm">
+          <CardContent>
+            <div className="text-ds-md font-medium">Tight surface</div>
+            <div className="text-ds-sm text-surface-fg-muted">Inherits the 4px override scoped to this card.</div>
+          </CardContent>
         </Card>
       </div>
     </div>

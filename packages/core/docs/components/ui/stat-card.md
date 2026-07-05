@@ -18,6 +18,7 @@
     secondaryLabel: string (below main value, e.g. "of $50,000 target")
     progress: number (0-100, renders thin progress bar below value)
     variant: "default" | "elevated" | "outline" | "flat" (default = ring-in-shadow, no border; elevated = stronger shadow; outline = border, no shadow; flat = filled, no edge) — delegated to Card
+    size: "sm" | "md" (default) | "lg" — delegated to Card's size axis; sm tightens padding to 16px and steps the value down to text-ds-2xl (use for dense KPI rows / narrow stat grids)
     accentStyle: "none" | "icon" | "tint" (none [default]; icon = accent chip around icon; tint = accent surface wash + accent value)
     iconFill: "soft" | "solid" (chip style when accentStyle="icon"; default soft)
     flash: "up" | "down" | "goal" | "record" | "alert" | "live" | { tone, icon } (opt-in entrance flash; requires icon)
@@ -28,7 +29,7 @@
     footer: ReactNode (below card body, e.g. "View details →")
 
 ## Defaults
-    none (all props are optional except value)
+    size="md"; all other props optional except value
 
 ## Example
 ```jsx
@@ -70,6 +71,11 @@
 - `sparkline` needs at least 2 data points to render
 
 ## Changes
+### v0.45.0
+- **Added** `size` prop (`sm | md | lg`, delegated to Card) — `sm` tightens padding and steps the value to `text-ds-2xl` for dense KPI grids.
+- **Changed** Internal rhythm is now flex gap (no margin stacking); `footer` renders behind a full-width rule (divider + CardFooter as direct Card children) instead of an inset `border-t`.
+- **Added** `aria-busy="true"` on the loading skeleton card.
+
 ### v0.44.0
 - **BREAKING** Renamed `surface` → `variant`, widened to a 4-way scale (`default` | `elevated` | `outline` | `flat`). StatCard now composes `<Card>`, so surface, gap-model padding, and elevation all live in one place. Migration: `surface="raised"` → `variant="default"`, `surface="flat"` → `variant="outline"`.
 - **Added** `deltaPlacement` (`"block"` [default] | `"inline"`) — inline rides the value's baseline for compact dashboards.

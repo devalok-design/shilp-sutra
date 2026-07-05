@@ -1,0 +1,92 @@
+<title>ColorInput presets — brand vs Tailwind default</title>
+<meta name="description" content="Replacing ColorInput's raw Tailwind-500 default presets with brand-derived OKLCH swatches.">
+<style>
+  :root{
+    --n1:oklch(0.99 0.0003 350); --n2:oklch(0.97 0.0008 350); --n3:oklch(0.93 0.0018 350);
+    --n11:oklch(0.43 0.0074 350); --n12:oklch(0.32 0.0042 350); --n9:oklch(0.55 0.01 350);
+    --border:oklch(0.85 0.003 350);
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --display:"Ranade",var(--sans);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--n2);color:var(--n12);font-family:var(--sans);font-size:15px;line-height:1.55;letter-spacing:-.006em;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:clamp(24px,4vw,52px) clamp(16px,4vw,36px) 80px}
+  h1{font-family:var(--display);font-size:clamp(26px,4vw,38px);letter-spacing:-.02em;margin:0;line-height:1.05}
+  .lede{color:var(--n11);margin-top:12px;max-width:60ch}
+  .eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--n9)}
+  code{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--n3);padding:1px 5px;border-radius:4px}
+  .panel{border-radius:12px;padding:20px;margin-top:18px;box-shadow:0 0 0 1px oklch(0.4 .01 350/.06),0 2px 6px -2px oklch(.4 .01 350/.1)}
+  .light{background:var(--n1)}
+  .dark{background:oklch(0.17 .0007 350);color:oklch(.88 .002 350)}
+  .cap{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:14px}
+  .row{display:grid;grid-template-columns:repeat(10,1fr);gap:10px}
+  @media(max-width:640px){.row{grid-template-columns:repeat(5,1fr)}}
+  .sw{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .chip{width:100%;aspect-ratio:1;border-radius:9999px;box-shadow:inset 0 0 0 1px oklch(0 0 0/.12)}
+  .nm{font-size:10.5px;font-weight:600}
+  .hx{font-size:9px;font-variant-numeric:tabular-nums;opacity:.6;font-family:"SF Mono",ui-monospace,monospace}
+  .tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:9999px}
+  .tag.no{background:oklch(.93 .033 25);color:oklch(.43 .13 25)}
+  .tag.yes{background:oklch(.93 .026 145);color:oklch(.43 .10 145)}
+  ul{margin:14px 0 0;padding-left:18px;color:var(--n11)}
+  li{margin:5px 0}
+</style>
+<div class="wrap">
+  <span class="eyebrow">ColorInput · W3</span>
+  <h1>Preset palette — brand, not framework-default</h1>
+  <p class="lede">Today's presets are the literal Tailwind-500 set (<code>#6366F1</code> indigo, <code>#8B5CF6</code> violet, <code>#3B82F6</code> blue…) — the exact "AI palette" tell, with a false "color-blind accessible" comment. Proposed: swatches derived from our own OKLCH brand scales (step-9), spanning the wheel, led by red not indigo. Same 10 slots.</p>
+
+  <div class="panel light">
+    <div class="cap"><span class="tag no">current</span> &nbsp;raw Tailwind-500 defaults</div>
+    <div class="row">
+      <div class="sw"><span class="chip" style="background:#EF4444"></span><span class="nm">Red</span><span class="hx">#EF4444</span></div>
+      <div class="sw"><span class="chip" style="background:#F59E0B"></span><span class="nm">Amber</span><span class="hx">#F59E0B</span></div>
+      <div class="sw"><span class="chip" style="background:#10B981"></span><span class="nm">Emerald</span><span class="hx">#10B981</span></div>
+      <div class="sw"><span class="chip" style="background:#3B82F6"></span><span class="nm">Blue</span><span class="hx">#3B82F6</span></div>
+      <div class="sw"><span class="chip" style="background:#8B5CF6"></span><span class="nm">Violet</span><span class="hx">#8B5CF6</span></div>
+      <div class="sw"><span class="chip" style="background:#EC4899"></span><span class="nm">Pink</span><span class="hx">#EC4899</span></div>
+      <div class="sw"><span class="chip" style="background:#06B6D4"></span><span class="nm">Cyan</span><span class="hx">#06B6D4</span></div>
+      <div class="sw"><span class="chip" style="background:#F97316"></span><span class="nm">Orange</span><span class="hx">#F97316</span></div>
+      <div class="sw"><span class="chip" style="background:#84CC16"></span><span class="nm">Lime</span><span class="hx">#84CC16</span></div>
+      <div class="sw"><span class="chip" style="background:#6366F1"></span><span class="nm">Indigo</span><span class="hx">#6366F1</span></div>
+    </div>
+  </div>
+
+  <div class="panel light">
+    <div class="cap"><span class="tag yes">proposed</span> &nbsp;brand-derived (OKLCH step-9) · on light</div>
+    <div class="row">
+      <div class="sw"><span class="chip" style="background:#C53637"></span><span class="nm">Red</span><span class="hx">#C53637</span></div>
+      <div class="sw"><span class="chip" style="background:#BE5A0A"></span><span class="nm">Orange</span><span class="hx">#BE5A0A</span></div>
+      <div class="sw"><span class="chip" style="background:#DF911A"></span><span class="nm">Amber</span><span class="hx">#DF911A</span></div>
+      <div class="sw"><span class="chip" style="background:#308639"></span><span class="nm">Green</span><span class="hx">#308639</span></div>
+      <div class="sw"><span class="chip" style="background:#118659"></span><span class="nm">Emerald</span><span class="hx">#118659</span></div>
+      <div class="sw"><span class="chip" style="background:#11846E"></span><span class="nm">Teal</span><span class="hx">#11846E</span></div>
+      <div class="sw"><span class="chip" style="background:#028A9B"></span><span class="nm">Cyan</span><span class="hx">#028A9B</span></div>
+      <div class="sw"><span class="chip" style="background:#1479B0"></span><span class="nm">Blue</span><span class="hx">#1479B0</span></div>
+      <div class="sw"><span class="chip" style="background:#7D5FAD"></span><span class="nm">Purple</span><span class="hx">#7D5FAD</span></div>
+      <div class="sw"><span class="chip" style="background:#C22D6D"></span><span class="nm">Pink</span><span class="hx">#C22D6D</span></div>
+    </div>
+  </div>
+
+  <div class="panel dark">
+    <div class="cap"><span class="tag yes">proposed</span> &nbsp;same swatches · on dark</div>
+    <div class="row">
+      <div class="sw"><span class="chip" style="background:#C53637"></span><span class="nm">Red</span><span class="hx">#C53637</span></div>
+      <div class="sw"><span class="chip" style="background:#BE5A0A"></span><span class="nm">Orange</span><span class="hx">#BE5A0A</span></div>
+      <div class="sw"><span class="chip" style="background:#DF911A"></span><span class="nm">Amber</span><span class="hx">#DF911A</span></div>
+      <div class="sw"><span class="chip" style="background:#308639"></span><span class="nm">Green</span><span class="hx">#308639</span></div>
+      <div class="sw"><span class="chip" style="background:#118659"></span><span class="nm">Emerald</span><span class="hx">#118659</span></div>
+      <div class="sw"><span class="chip" style="background:#11846E"></span><span class="nm">Teal</span><span class="hx">#11846E</span></div>
+      <div class="sw"><span class="chip" style="background:#028A9B"></span><span class="nm">Cyan</span><span class="hx">#028A9B</span></div>
+      <div class="sw"><span class="chip" style="background:#1479B0"></span><span class="nm">Blue</span><span class="hx">#1479B0</span></div>
+      <div class="sw"><span class="chip" style="background:#7D5FAD"></span><span class="nm">Purple</span><span class="hx">#7D5FAD</span></div>
+      <div class="sw"><span class="chip" style="background:#C22D6D"></span><span class="nm">Pink</span><span class="hx">#C22D6D</span></div>
+    </div>
+  </div>
+
+  <ul>
+    <li><b>Led by Red</b>, ends with Pink (our brand accent) — no indigo/violet reflex up front.</li>
+    <li>Derived from our OKLCH hues, so they read as one intentional family (more muted than Tailwind's neon).</li>
+    <li>Honest comment: "brand spectrum" — I'll drop the unverified "color-blind accessible" claim (or we can run a CB check if you want that guarantee).</li>
+  </ul>
+</div>

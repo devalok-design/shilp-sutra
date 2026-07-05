@@ -52,8 +52,8 @@
   value={color}
   onChange={setColor}
   presets={[
-    { hex: '#EF4444', label: 'Danger' },
-    { hex: '#10B981', label: 'Success' },
+    { hex: '#C53637', label: 'Danger' },
+    { hex: '#308639', label: 'Success' },
   ]}
 />
 

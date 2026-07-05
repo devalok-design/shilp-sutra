@@ -6,18 +6,20 @@ The default container for any panel-style content that sits **on** the page.
 import {
   Card,
   CardAction,
+  CardBleed,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
   CardFooter,
+  CardSection,
 } from '@devalok/shilp-sutra/ui/card'
 ```
 
 ## When to use
 
 - Any rectangular region that reads as a discrete unit on the page: dashboards widgets, list items, marketing feature blocks.
-- Need built-in header / actions / footer slots? Use `<ContentCard>` (composed wrapper).
+- Header / actions / footer are built in as slots (`CardHeader`, `CardAction`, `CardFooter`) — don't reach for a wrapper. (`<ContentCard>` is deprecated; use Card slots.)
 - Need just a tinted region with no card affordance? Use a `<div className="bg-surface-raised">` (rare; usually Card is right).
 
 Card renders on `surface-raised` with `shadow-raised`. **Never** override its background or border.
@@ -38,27 +40,62 @@ Card renders on `surface-raised` with `shadow-raised`. **Never** override its ba
 | `default` (default) | Standard border. |
 | `accent`, `error`, `success`, `warning`, `info`, `neutral` | Border picks up the semantic color at step-7. Use to signal status without filling the whole card. |
 
-## Sizes (padding cascade)
+## Sizes (one CSS variable)
 
-`size` on Card propagates to `CardHeader`, `CardContent`, `CardFooter` via React context:
+`size` sets `--card-spacing` / `--card-gap` once on the root. The container reads them for its
+vertical padding + inter-slot gap; every slot reads `--card-spacing` for its horizontal inset;
+`CardAction` corners and `CardBleed` negations read the same variable.
 
-| Size | Default padding |
-|---|---|
-| `sm` | `ds-04` (12 px) |
-| `md` (default) | `ds-05` (16 px) |
-| `lg` | `ds-07` (32 px) |
+| Size | `--card-spacing` | `--card-gap` |
+|---|---|---|
+| `sm` | `ds-05` (16 px) | `ds-03` (8 px) |
+| `md` (default) | `ds-05b` (20 px) | `ds-04` (12 px) |
+| `lg` | `ds-06` (24 px) | `ds-05` (16 px) |
 
-Override on a sub-component via `className` only if absolutely necessary — it breaks the cascade.
+To retune a single card, override the variable — never add `p-*`/`pt-*` classes:
+
+```tsx
+<Card className="[--card-spacing:var(--spacing-ds-07)]">…</Card>
+```
 
 ## Compound shape
 
 ```
-Card (root)
-  CardHeader      ← inherits size from Card
+Card (root)              ← owns py + gap (vertical rhythm)
+  CardBleed side="top"   ← optional full-bleed media (negates the card padding)
+  CardHeader             ← owns px only
     CardTitle
     CardDescription
-  CardContent     ← inherits size from Card
-  CardFooter      ← inherits size from Card
+  CardContent            ← owns px only
+  CardFooter             ← owns px only
+  CardAction             ← absolute corner overlay
+```
+
+Direct children of Card span its **full width** (only slots are inset). A `<Separator />` or a
+tinted band placed between slots is edge-to-edge for free. The flip side: **text must live inside
+a slot** — a bare `<p>` as a direct child gets no horizontal inset (dev builds warn).
+
+### CardBleed (escape the padding)
+
+| Prop | Type | Notes |
+|---|---|---|
+| `side` | `'x'` (default) `\| 'top' \| 'bottom' \| 'y' \| 'all'` | Which card padding to negate. `top`/`bottom`/`y` are for **direct children** (cover images, edge bands) and inherit the card radius. `x`/`all` are for content **inside a slot**. Never use `x`/`all` on a direct child — it will overflow. |
+
+### Horizontal cards
+
+`orientation="horizontal"` turns the root into a padding-less row; put the media pane first and
+wrap the text column in `<CardSection>`, which re-establishes py + gap from the same variables:
+
+```tsx
+<Card orientation="horizontal">
+  <div className="w-28 shrink-0 overflow-hidden rounded-l-surface">
+    <img className="h-full w-full object-cover" src={thumb} alt="" />
+  </div>
+  <CardSection>
+    <CardHeader><CardTitle>Title</CardTitle></CardHeader>
+    <CardFooter>meta</CardFooter>
+  </CardSection>
+</Card>
 ```
 
 ## Other props
@@ -152,6 +189,7 @@ Card (root)
 - **Never** `bg-surface-base` on a Card — cards sit on `surface-raised`. The pre-publish audit rejects this.
 - **Never** combine `border-*` + `shadow-*` on a Card. Pick one (Card already does — don't override).
 - **Use `interactive` + `onClick` + `aria-label`** for clickable cards. Don't wrap a Card in a `<button>` — broken nesting.
-- **`size` on Card** drives sub-component padding. Don't set padding on `CardContent` directly.
-- **Don't stack `default` cards inside another `default` card.** The nested one should be `flat` or `outline`.
-- For row-style content (avatar + title + meta + actions), prefer `<ContentCard>` from `/composed/content-card` — it bundles the slots.
+- **`size` on Card** drives all spacing via `--card-spacing`. Never set `p-*` on Card or a slot — override the variable if a one-off is truly needed.
+- **Full-bleed** media/dividers use `<CardBleed>` (or plain direct children for full-width strips) — never negative-margin hacks.
+- **Don't stack `default` cards inside another `default` card.** The nested one should be `flat` or `outline`, or better, a `bg-surface-base` recess.
+- For row-style content (avatar + title + meta + actions), compose Card slots — `<ContentCard>` is deprecated and will be removed next major.

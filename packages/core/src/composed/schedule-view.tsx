@@ -58,12 +58,26 @@ const eventColorMap: Record<
   NonNullable<ScheduleEvent['color']>,
   string
 > = {
-  primary: 'bg-accent-2 border-accent-7 text-accent-11',
-  success: 'bg-success-3 border-success-7 text-success-11',
-  warning: 'bg-warning-3 border-warning-7 text-warning-11',
-  error: 'bg-error-3 border-error-7 text-error-11',
-  info: 'bg-info-3 border-info-7 text-info-11',
-  neutral: 'bg-surface-raised border-surface-border-strong text-surface-fg-muted',
+  primary: 'bg-accent-2 text-accent-11',
+  success: 'bg-success-3 text-success-11',
+  warning: 'bg-warning-3 text-warning-11',
+  error: 'bg-error-3 text-error-11',
+  info: 'bg-info-3 text-info-11',
+  neutral: 'bg-surface-raised text-surface-fg-muted',
+}
+
+// Solid category dot — the color-blind-safe, shape-based signal that replaces the
+// former left accent rail (the AI tell). Tint above carries the ambient color.
+const eventDotMap: Record<
+  NonNullable<ScheduleEvent['color']>,
+  string
+> = {
+  primary: 'bg-accent-9',
+  success: 'bg-success-9',
+  warning: 'bg-warning-9',
+  error: 'bg-error-9',
+  info: 'bg-info-9',
+  neutral: 'bg-surface-fg-subtle',
 }
 
 /* ------------------------------------------------------------------ */
@@ -211,14 +225,15 @@ function DayColumn({
         {/* Events */}
         {dayEvents.map((event) => {
           const style = getEventStyle(event, startHour, endHour)
-          const colorClass =
-            eventColorMap[event.color ?? 'primary']
+          const eventColor = event.color ?? 'primary'
+          const colorClass = eventColorMap[eventColor]
+          const dotClass = eventDotMap[eventColor]
           return (
             <button
               key={event.id}
               type="button"
               className={cn(
-                'absolute left-ds-01 right-ds-01 rounded-control-inner border-l-[3px] px-ds-02 py-ds-01',
+                'absolute left-ds-01 right-ds-01 rounded-control-inner px-ds-02 py-ds-01',
                 'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
                 'hover:shadow-raised hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02 ease-productive-standard',
                 colorClass,
@@ -230,7 +245,13 @@ function DayColumn({
               }}
               aria-label={`${event.title}, ${format(event.start, 'h:mm a')} to ${format(event.end, 'h:mm a')}`}
             >
-              <span className="line-clamp-2">{event.title}</span>
+              <span className="flex items-start gap-ds-02">
+                <span
+                  className={cn('mt-[3px] h-ds-03 w-ds-03 shrink-0 rounded-pill', dotClass)}
+                  aria-hidden="true"
+                />
+                <span className="line-clamp-2">{event.title}</span>
+              </span>
             </button>
           )
         })}

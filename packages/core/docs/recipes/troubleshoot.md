@@ -212,7 +212,7 @@ And open an issue at <https://github.com/devalok-design/shilp-sutra/issues> with
 Check 1 — `pnpm dev` is running and `http://localhost:6006/` shows the Storybook UI.
 Check 2 — the MCP endpoint requires Storybook 9+ with the MCP plugin enabled. Older versions of this repo's Storybook setup may need an upgrade.
 
-The MCP server is a development convenience for AI agents — `llms.txt` and `llms-full.txt` are the authoritative docs and do not require a running server.
+The MCP server is a development convenience for AI agents — `llms.txt`, the per-component docs at `docs/components/`, and `mcp-manifest.json` are the authoritative shipped docs and do not require a running server.
 
 ## Still stuck
 

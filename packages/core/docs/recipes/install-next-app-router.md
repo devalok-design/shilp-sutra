@@ -276,5 +276,5 @@ If anything is off, see [troubleshoot.md](./troubleshoot.md).
 ## 10. Optional next steps
 
 - **Brand customization** — swap accent color, radius scale, or fonts: see [customize-brand.md](./customize-brand.md).
-- **App shell** — add a sidebar + topbar layout: read `llms-full.txt` sections for `AppSidebar` and `TopBar`.
+- **App shell** — add a sidebar + topbar layout: read `docs/components/shell/app-sidebar.md` and `docs/components/shell/top-bar.md` (or `get_component` via the shilp-sutra MCP).
 - **Server-safe components** — push as much rendering as possible into Server Components: see [server-components.md](./server-components.md).

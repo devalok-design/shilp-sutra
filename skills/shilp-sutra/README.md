@@ -19,7 +19,6 @@ shilp-sutra/
 ├── LICENSE                               # MIT
 └── references/
     ├── components.md                     # Concise component cheatsheet (~660 lines)
-    ├── components-full.md                # Exhaustive per-component reference (~6900 lines)
     ├── setup-next-app-router.md          # Next.js (App Router) install playbook
     ├── setup-next-pages.md               # Next.js (Pages Router) install playbook
     ├── setup-vite.md                     # Vite + React install playbook

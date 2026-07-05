@@ -8,8 +8,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '../../ui/collapsible'
-import { cn } from '../../ui/lib/utils'
 import type { BlockComponentProps, ConfirmBlockData } from '../types'
+import { BlockShell } from './block-shell'
 
 const ConfirmBlock = React.memo(function ConfirmBlock({
   data,
@@ -25,11 +25,7 @@ const ConfirmBlock = React.memo(function ConfirmBlock({
   }, [data.actionId, onAction])
 
   return (
-    <div
-      className={cn(
-        confidence === 'low' && 'border-l-2 border-warning-7 pl-3',
-      )}
-    >
+    <BlockShell confidence={confidence}>
       {data.description && (
         <p className="text-ds-sm text-surface-fg-muted mb-3">
           {data.description}
@@ -66,7 +62,7 @@ const ConfirmBlock = React.memo(function ConfirmBlock({
           </CollapsibleContent>
         </Collapsible>
       )}
-    </div>
+    </BlockShell>
   )
 })
 

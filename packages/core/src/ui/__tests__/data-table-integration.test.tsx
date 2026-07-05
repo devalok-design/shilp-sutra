@@ -588,7 +588,10 @@ describe('DataTable — singleExpand', () => {
     const expandButtonsAfter = screen.getAllByLabelText('Expand row')
     await user.click(expandButtonsAfter[0])
     expect(screen.getByTestId('detail-Bob Jones')).toBeInTheDocument()
-    expect(screen.queryByTestId('detail-Alice Smith')).not.toBeInTheDocument()
+    // collapse is animated (AnimatePresence exit) — wait for unmount
+    await waitFor(() =>
+      expect(screen.queryByTestId('detail-Alice Smith')).not.toBeInTheDocument(),
+    )
   })
 
   it('collapsing the same row works in singleExpand mode', async () => {
@@ -608,9 +611,11 @@ describe('DataTable — singleExpand', () => {
     await user.click(expandButtons[0])
     expect(screen.getByTestId('detail-Alice Smith')).toBeInTheDocument()
 
-    // Collapse Alice
+    // Collapse Alice — animated exit, wait for unmount
     await user.click(screen.getByLabelText('Collapse row'))
-    expect(screen.queryByTestId('detail-Alice Smith')).not.toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.queryByTestId('detail-Alice Smith')).not.toBeInTheDocument(),
+    )
   })
 
   it('multiple rows can expand without singleExpand', async () => {
@@ -647,7 +652,8 @@ describe('DataTable — stickyHeader', () => {
     expect(thead).toHaveClass('sticky')
     expect(thead).toHaveClass('top-0')
     expect(thead).toHaveClass('z-10')
-    expect(thead).toHaveClass('bg-surface-base')
+    // raised, not base — the sticky bar must match the card surface the table lives on
+    expect(thead).toHaveClass('bg-surface-raised')
   })
 
   it('does not add sticky classes when stickyHeader is false', () => {

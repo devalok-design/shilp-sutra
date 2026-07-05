@@ -150,6 +150,19 @@ describe('StatCard', () => {
     expect(screen.getByText('View details')).toBeInTheDocument()
   })
 
+  // ── Size (delegated to Card) ────────────────────────────────────────────────
+  it('defaults to md and passes size to Card', () => {
+    const { container } = render(<StatCard label="Sales" value={12} />)
+    expect(container.firstChild).toHaveClass('[--card-spacing:var(--spacing-ds-05b)]')
+    expect(screen.getByText('12').closest('p')).toHaveClass('text-ds-3xl')
+  })
+
+  it('size="sm" tightens the card and steps the value down to 2xl', () => {
+    const { container } = render(<StatCard label="Sales" value={12} size="sm" />)
+    expect(container.firstChild).toHaveClass('[--card-spacing:var(--spacing-ds-05)]')
+    expect(screen.getByText('12').closest('p')).toHaveClass('text-ds-2xl')
+  })
+
   // ── Accent style + surface + flash (anti-convergence rework) ────────────────
   it('renders accentStyle="icon" with the provided icon', () => {
     const { container } = render(

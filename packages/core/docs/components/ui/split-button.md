@@ -48,5 +48,8 @@ import { SplitButton } from '@devalok/shilp-sutra'
 
 ## Changes
 
+### v0.44.2
+- **Fixed** The dropdown is now keyboard-accessible. It previously used a hand-rolled floating panel (`role="menu"`) with no focus management, arrow keys, or Escape — keyboard users couldn't reach or dismiss it. It now composes the DS **Popover** primitive: focus moves in on open, Escape and outside-click close, focus returns to the trigger, and on mobile it opens as a bottom sheet. (Full menu semantics with arrow-key item navigation via DropdownMenu are planned for 0.45.0.)
+
 ### v0.33.0
 - **Added** Initial release

@@ -137,6 +137,7 @@ function ActivityEntry({
   compact: boolean
 }) {
   const [expandedDetail, setExpandedDetail] = React.useState(false)
+  const detailId = React.useId()
   const color = item.color ?? 'default'
 
   const handleActionClick = () => {
@@ -177,27 +178,19 @@ function ActivityEntry({
             {item.detail && (
               <Icon icon={IconChevronRight} size="xs" className={cn('shrink-0 text-surface-fg-subtle transition-transform duration-fast-02 ease-productive-standard', expandedDetail && 'rotate-90')} />
             )}
-            <span
-              className={cn(
-                'text-surface-fg-muted',
-                item.detail && 'cursor-pointer hover:underline hover:bg-surface-raised rounded-control',
-              )}
-              onClick={handleActionClick}
-              role={item.detail ? 'button' : undefined}
-              tabIndex={item.detail ? 0 : undefined}
-              onKeyDown={
-                item.detail
-                  ? (e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault()
-                        handleActionClick()
-                      }
-                    }
-                  : undefined
-              }
-            >
-              {item.action}
-            </span>
+            {item.detail ? (
+              <button
+                type="button"
+                className="rounded-control text-surface-fg-muted hover:underline hover:bg-surface-raised focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+                onClick={handleActionClick}
+                aria-expanded={expandedDetail}
+                aria-controls={detailId}
+              >
+                {item.action}
+              </button>
+            ) : (
+              <span className="text-surface-fg-muted">{item.action}</span>
+            )}
           </div>
 
           <time
@@ -218,7 +211,7 @@ function ActivityEntry({
 
         {/* Expandable detail */}
         {expandedDetail && item.detail && (
-          <div className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-ds-sm text-surface-fg-muted">
+          <div id={detailId} className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-ds-sm text-surface-fg-muted">
             {item.detail}
           </div>
         )}

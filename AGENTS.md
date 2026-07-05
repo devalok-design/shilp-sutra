@@ -18,22 +18,24 @@ If you are a human, read [README.md](./README.md) instead.
 
 <!-- BEGIN:shilp-sutra-agent-rules -->
 
-## Read these first, in order
+## How to get details, in priority order
 
-1. **`packages/core/llms-quick.txt`** — ≤15K-token fast-path summary. Setup, peer-cliff matrix, import paths, top 30 components. Start here if you're answering quickly.
-2. **`packages/core/llms.txt`** — concise current-API cheatsheet (~27K tokens). Reach for this when `llms-quick.txt` isn't enough — covers more components + recent CHANGELOG sections.
-3. **`packages/core/docs/recipes/<framework>.md`** — copy-paste install + setup for the user's framework.
-4. **`packages/core/llms-full.txt`** — exhaustive per-component reference (~140K tokens, props/variants/examples). Read only when `llms.txt` is insufficient.
-5. **`packages/core/docs/recipes/upgrading.md`** + **`MIGRATION.md`** — read BOTH before any version bump. See the hard constraint below.
-6. **`node_modules/@devalok/shilp-sutra/BREAKING.json`** — machine-readable manifest of every breaking change per version (moves, type narrowings, removals, renames). Read this programmatically when planning an upgrade — schema in `BREAKING.schema.json`. Lets you answer "does my code import any of these moved symbols?" without parsing CHANGELOG prose.
+1. **shilp-sutra MCP** (if connected) — version-exact answers as JSON, cheapest on context: `find_component(query)`, `get_component(name, sections?)`, `get_tokens(category)`, `get_setup(framework)`, `upgrade(from, to)`, `search_docs(query)`. Always pass the consumer's installed version (from `node_modules/@devalok/shilp-sutra/package.json`) as `version`.
+2. **`packages/core/llms.txt`** — the ~3K-token router: what exists + where to get detail. Load this by default; it is deliberately tiny.
+3. **`packages/core/docs/components/<tier>/<name>.md`** — single-component doc (~3K tokens: props, examples, composability, gotchas). Read ONLY the components you're using — never bulk-read the directory or concatenate these.
+4. **`packages/core/mcp-manifest.json`** — everything machine-readable (props, tokens, composition; react-docgen shape). Prefer targeted reads over prose when you need structured data without the MCP.
+5. **`packages/core/docs/recipes/<framework>.md`** — copy-paste install + setup for the user's framework.
+6. **`packages/core/docs/recipes/upgrading.md`** + **`MIGRATION.md`** — read BOTH before any version bump. See the hard constraint below.
+7. **`node_modules/@devalok/shilp-sutra/BREAKING.json`** — machine-readable manifest of every breaking change per version (moves, type narrowings, removals, renames). Read this programmatically when planning an upgrade — schema in `BREAKING.schema.json`. Lets you answer "does my code import any of these moved symbols?" without parsing CHANGELOG prose.
+
+(`llms-full.txt` and `llms-quick.txt` were removed in 0.46 — the router + per-component docs + manifest replaced them. Do not look for them.)
 
 When the package is installed in a consumer project, the same files live at:
 
-- `node_modules/@devalok/shilp-sutra/llms-quick.txt`
 - `node_modules/@devalok/shilp-sutra/llms.txt`
-- `node_modules/@devalok/shilp-sutra/llms-full.txt`
-- `node_modules/@devalok/shilp-sutra/docs/recipes/`
 - `node_modules/@devalok/shilp-sutra/docs/components/`
+- `node_modules/@devalok/shilp-sutra/mcp-manifest.json`
+- `node_modules/@devalok/shilp-sutra/docs/recipes/`
 
 Read these local files. Your training data is outdated and will hallucinate APIs that do not exist in the installed version.
 
@@ -72,7 +74,7 @@ If the framework is not in the table, fall back to **`install-vite.md`** (closes
 - **Per-component imports keep RSC fast AND avoid peer-dep cliffs.** `@devalok/shilp-sutra/ui/text` is server-safe and pulls only its own peers. The barrel `@devalok/shilp-sutra/ui` re-exports every component — including ones with hard peer-dep requirements (e.g. `input-otp`) — so it forces those peers to be installed even when you never render those components. With all peers installed the barrel also works in RSC (Next 16 honours each per-component `"use client"`), but the client bundle is larger than necessary. Prefer per-component imports for new code; existing barrel usage is not an emergency.
 - **Spacing tokens use the `--spacing-ds-*` namespace** (utilities like `p-ds-04`, `gap-ds-03`). Tailwind 4's default numeric scale (`p-4`, `gap-2`) **coexists by design** — both are valid. Pick `p-ds-*` when the value should track DS theme changes (a card's internal padding, a form row's gap); pick `p-N` for one-off layout values (a hero section's vertical breathing room). Do NOT mass-codemod `p-4` → `p-ds-04` — that is not what the package authors did. Typography composites use `text-ds-body-md`, etc.
 - **Bare `shadow` is dead in Tailwind 4.** Use `shadow-raised`, `shadow-overlay`, `shadow-floating`.
-- **Do not invent variant names.** Variant names live in CVA source. Grep `packages/core/src/ui/<component>.tsx` or check `llms-full.txt` for the authoritative list.
+- **Do not invent variant names.** Variant names live in CVA source. Grep `packages/core/src/ui/<component>.tsx` or check the component's `props` entry in `mcp-manifest.json` for the authoritative list.
 - **Default to `variant="soft"`** over `variant="outline"` for non-primary Button actions.
 
 ## Spacing cadence (when building layouts — forms, settings, login, anything with vertical rhythm)

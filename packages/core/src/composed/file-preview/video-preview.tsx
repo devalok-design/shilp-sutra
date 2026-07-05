@@ -10,7 +10,7 @@ import * as React from 'react'
 
 import { Icon } from '../../ui/icon'
 import { springs, tweens } from '../../ui/lib/motion'
-import { ErrorFallback, formatTime,VolumeControl } from './shared'
+import { ErrorFallback, formatTime,MediaSlider,VolumeControl } from './shared'
 
 // ============================================================
 // Video Preview — Custom player with DS styling
@@ -109,11 +109,9 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
     setPlaying(!playing)
   }
 
-  function handleSeek(e: React.MouseEvent<HTMLDivElement>) {
+  function handleSeek(nextProgress: number) {
     if (!videoRef.current || !duration) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    const pct = (e.clientX - rect.left) / rect.width
-    videoRef.current.currentTime = pct * duration
+    videoRef.current.currentTime = (nextProgress / 100) * duration
   }
 
   function handleMouseMove() {
@@ -179,26 +177,15 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
             className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent px-ds-04 pb-ds-04 pt-ds-08"
           >
             {/* Progress bar */}
-            <div
-              className="relative h-1 w-full cursor-pointer rounded-pill bg-white/30 mb-ds-03 group/progress"
-              onClick={handleSeek}
-              role="slider"
-              aria-label="Video progress"
-              aria-valuenow={Math.round(progress)}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              tabIndex={0}
-            >
-              <div
-                className="absolute left-0 top-0 h-full rounded-pill bg-white transition-[width] duration-75"
-                style={{ width: `${progress}%` }}
-              />
-              {/* Scrub handle */}
-              <div
-                className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-pill bg-white shadow-raised opacity-0 group-hover/progress:opacity-100 transition-opacity"
-                style={{ left: `${progress}%`, marginLeft: '-6px' }}
-              />
-            </div>
+            <MediaSlider
+              className="mb-ds-03"
+              value={progress}
+              max={100}
+              step={0.1}
+              onValueChange={handleSeek}
+              tone="dark"
+              ariaLabel="Video progress"
+            />
 
             {/* Controls row */}
             <div className="flex items-center gap-ds-03">

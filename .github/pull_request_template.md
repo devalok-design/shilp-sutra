@@ -25,7 +25,7 @@ Closes #
 ### If this PR fixes agent-filed feedback (`ai-agent-feedback` label)
 
 - [ ] `llms.txt` updated where the agent's expectation no longer matches reality
-- [ ] `llms-full.txt` updated if per-component prop/variant details changed
+- [ ] `docs/components/<tier>/<name>.md` updated if per-component prop/variant details changed (mcp-manifest.json regenerates from it)
 - [ ] `docs/recipes/` updated if the install/setup path changed
 - [ ] `AGENTS.md` updated if a hard constraint or auth-tier order changed
 - [ ] The original agent-filed issue is closed by this PR (`Closes #N`)
@@ -45,7 +45,7 @@ Closes #
 - [ ] Exported prop types interface
 - [ ] Unit test with at least one `vitest-axe` assertion
 - [ ] Storybook story with `tags: ['autodocs']`
-- [ ] Entry added to `llms.txt` Quick Reference + `llms-full.txt` per-component block
+- [ ] `docs/components/<tier>/<name>.md` authored (llms.txt router + mcp-manifest.json regenerate from it)
 
 ## Notes for the reviewer
 

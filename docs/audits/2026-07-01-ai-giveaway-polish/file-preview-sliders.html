@@ -1,0 +1,124 @@
+<title>File-preview sliders — compose the DS Slider</title>
+<meta name="description" content="Replacing file-preview's mouse-only slider divs with the keyboard-accessible DS Slider, styled for the dark video overlay.">
+<style>
+  :root{
+    --n1:oklch(.99 .0003 350);--n2:oklch(.97 .0008 350);--n3:oklch(.93 .0018 350);
+    --n6:oklch(.78 .0053 350);--n9:oklch(.55 .01 350);--n11:oklch(.43 .0074 350);--n12:oklch(.32 .0042 350);
+    --accent9:oklch(.55 .19 360);--accent11:oklch(.43 .14 360);
+    --sunken:oklch(.945 .008 360);
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:"Ranade",var(--sans);
+    --raised:0 0 0 1px oklch(.4 .01 350/.06),0 1px 3px -1px oklch(.4 .01 350/.09);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--n2);color:var(--n12);font-family:var(--sans);font-size:15px;line-height:1.55;letter-spacing:-.006em;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:clamp(24px,4vw,52px) clamp(16px,4vw,36px) 80px}
+  h1{font-family:var(--display);font-size:clamp(25px,4vw,36px);letter-spacing:-.02em;margin:0;line-height:1.05}
+  .lede{color:var(--n11);margin-top:12px;max-width:64ch}
+  .eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--n9)}
+  code{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.85em;background:var(--n3);padding:1px 5px;border-radius:4px}
+  h2{font-family:var(--display);font-size:19px;margin:34px 0 4px}
+  .sub{color:var(--n11);font-size:13.5px;margin-bottom:14px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .panel{border-radius:12px;padding:18px;box-shadow:var(--raised);background:var(--n1)}
+  .cap{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--n9);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .tag{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:9999px}
+  .tag.no{background:oklch(.93 .033 25);color:oklch(.43 .13 25)}
+  .tag.yes{background:oklch(.93 .026 145);color:oklch(.43 .10 145)}
+
+  /* video overlay mock */
+  .video{position:relative;aspect-ratio:16/7;border-radius:10px;overflow:hidden;background:
+    radial-gradient(120% 120% at 30% 20%, oklch(.35 .04 260), oklch(.18 .02 260))}
+  .overlay{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 12px;background:linear-gradient(to top,oklch(0 0 0/.8),transparent)}
+  .ctrls{display:flex;align-items:center;gap:12px;color:#fff}
+  .ico{width:18px;height:18px;flex:0 0 auto}
+  .time{font-size:11px;color:#fff;opacity:.85;font-variant-numeric:tabular-nums;margin-left:auto}
+
+  /* slider primitives */
+  .track{position:relative;height:6px;border-radius:9999px;flex:1}
+  .fill{position:absolute;left:0;top:0;bottom:0;border-radius:9999px}
+  .thumb{position:absolute;top:50%;transform:translate(-50%,-50%);border-radius:9999px}
+  /* dark (video) styling */
+  .d-track{background:oklch(1 0 0/.28)}
+  .d-fill{background:#fff}
+  .d-thumb{width:14px;height:14px;background:#fff;box-shadow:0 1px 3px oklch(0 0 0/.4),0 0 0 1px oklch(0 0 0/.1)}
+  /* current handle: hover-only (shown faint to represent invisible-until-hover) */
+  .hover-only{opacity:.0}
+  .mouseonly{outline:1px dashed oklch(1 0 0/.35);outline-offset:3px}
+  /* light (audio) styling */
+  .volrow{display:flex;align-items:center;gap:10px;width:120px;margin-left:4px}
+  .l-track{background:var(--sunken)}
+  .l-fill{background:var(--accent9)}
+  .l-thumb{width:14px;height:14px;background:var(--accent9);box-shadow:var(--raised)}
+  .audio{display:flex;align-items:center;gap:12px;padding:14px;border-radius:10px;background:var(--n1);box-shadow:var(--raised)}
+  .playbtn{width:34px;height:34px;border-radius:9999px;background:var(--accent9);color:#fff;display:grid;place-items:center;flex:0 0 auto}
+  ul{margin:8px 0 0;padding-left:18px;color:var(--n11)}li{margin:5px 0}
+  .rec{margin-top:26px;border-radius:12px;padding:18px 20px;background:var(--n1);box-shadow:var(--raised)}
+  .rec b{font-weight:600}
+  .foot{margin-top:20px;color:var(--n9);font-size:12.5px}
+</style>
+<div class="wrap">
+  <span class="eyebrow">File-preview · W2 a11y</span>
+  <h1>Compose the DS Slider on the media sliders</h1>
+  <p class="lede">The video seek, volume, and audio scrub are currently plain <code>&lt;div role="slider"&gt;</code> with pointer handlers only — <b>no keyboard, no forced-colors support</b>. The fix: use the real DS <code>Slider</code> (Radix — arrow keys, Home/End, focus ring, high-contrast for free), restyled white for the dark video overlay. Below: the target look vs today.</p>
+
+  <h2>Video overlay — seek + volume (dark)</h2>
+  <p class="sub">Slider restyled white to sit on the dark gradient overlay.</p>
+  <div class="grid">
+    <div class="panel">
+      <div class="cap"><span class="tag no">today</span> mouse-only div · handle hidden until hover</div>
+      <div class="video"><div class="overlay">
+        <div class="track d-track mouseonly" style="margin-bottom:14px"><div class="fill d-fill" style="width:42%"></div><div class="thumb d-thumb hover-only" style="left:42%"></div></div>
+        <div class="ctrls">
+          <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7"/></svg>
+          <div class="volrow"><div class="track d-track mouseonly"><div class="fill d-fill" style="width:70%"></div></div></div>
+          <span class="time">1:42 / 4:05</span>
+        </div>
+      </div></div>
+    </div>
+    <div class="panel">
+      <div class="cap"><span class="tag yes">proposed</span> DS Slider · thumb always visible, focusable</div>
+      <div class="video"><div class="overlay">
+        <div class="track d-track" style="margin-bottom:14px"><div class="fill d-fill" style="width:42%"></div><div class="thumb d-thumb" style="left:42%"></div></div>
+        <div class="ctrls">
+          <svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7"/></svg>
+          <div class="volrow"><div class="track d-track"><div class="fill d-fill" style="width:70%"></div><div class="thumb d-thumb" style="left:70%"></div></div></div>
+          <span class="time">1:42 / 4:05</span>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <h2>Audio player — scrub (light)</h2>
+  <p class="sub">Standard DS Slider (accent) on a light surface.</p>
+  <div class="grid">
+    <div class="panel">
+      <div class="cap"><span class="tag no">today</span> mouse-only div</div>
+      <div class="audio">
+        <div class="playbtn"><svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="track l-track mouseonly" style="flex:1"><div class="fill l-fill" style="width:33%"></div></div>
+        <span style="font-size:11px;color:var(--n11);font-variant-numeric:tabular-nums">1:12</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="cap"><span class="tag yes">proposed</span> DS Slider (accent)</div>
+      <div class="audio">
+        <div class="playbtn"><svg class="ico" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="track l-track" style="flex:1"><div class="fill l-fill" style="width:33%"></div><div class="thumb l-thumb" style="left:33%"></div></div>
+        <span style="font-size:11px;color:var(--n11);font-variant-numeric:tabular-nums">1:12</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <b>What changes</b>
+    <ul>
+      <li><b>Keyboard + a11y:</b> arrow keys / Home / End / focus ring / forced-colors — the actual P0 fix.</li>
+      <li><b>Thumb becomes always-visible</b> (today's handle only appears on hover). Small visual change — flag if you'd rather keep it hover-reveal (Slider supports a hover-only thumb via CSS if you prefer).</li>
+      <li>Dark overlay = white track/fill/thumb; light audio = accent. Same footprint.</li>
+    </ul>
+  </div>
+  <p class="foot">Approximation with DS tokens — final render verified in Storybook after the swap. Approve the look (esp. the always-visible white thumb on video) and I'll implement.</p>
+</div>

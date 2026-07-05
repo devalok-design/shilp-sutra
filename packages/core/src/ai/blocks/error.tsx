@@ -5,19 +5,15 @@ import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 import { Alert } from '../../ui/alert'
-import { cn } from '../../ui/lib/utils'
 import type { BlockComponentProps, ErrorBlockData } from '../types'
+import { BlockShell } from './block-shell'
 
 const ErrorBlock = React.memo(function ErrorBlock({
   data,
   confidence,
 }: BlockComponentProps<ErrorBlockData>) {
   return (
-    <div
-      className={cn(
-        confidence === 'low' && 'border-l-2 border-warning-7 pl-3',
-      )}
-    >
+    <BlockShell confidence={confidence}>
       <Alert color="error" variant="subtle" title={data.title}>
         <div className="prose prose-sm">
           <Markdown remarkPlugins={[remarkGfm]}>{data.message}</Markdown>
@@ -28,7 +24,7 @@ const ErrorBlock = React.memo(function ErrorBlock({
           {data.suggestion}
         </p>
       )}
-    </div>
+    </BlockShell>
   )
 })
 

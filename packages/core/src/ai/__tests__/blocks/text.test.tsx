@@ -29,21 +29,18 @@ describe('TextBlock', () => {
     expect(code.tagName).toBe('CODE')
   })
 
-  it('applies low-confidence border styling', () => {
-    const { container } = render(
-      <TextBlock data={{ content: 'Uncertain answer' }} confidence="low" />,
-    )
-    const wrapper = container.firstChild as HTMLElement
-    expect(wrapper.className).toContain('border-l-2')
-    expect(wrapper.className).toContain('border-warning-7')
-    expect(wrapper.className).toContain('pl-3')
+  it('applies low-confidence wash + chip (no rail)', () => {
+    render(<TextBlock data={{ content: 'Uncertain answer' }} confidence="low" />)
+    const wrapper = document.querySelector('[data-confidence="low"]') as HTMLElement
+    expect(wrapper).toBeInTheDocument()
+    expect(wrapper.className).toContain('bg-warning-2')
+    expect(wrapper.className).not.toContain('border-l-2')
+    expect(screen.getByText('Low confidence')).toBeInTheDocument()
   })
 
   it('does not apply low-confidence styling for high confidence', () => {
-    const { container } = render(
-      <TextBlock data={{ content: 'Sure answer' }} confidence="high" />,
-    )
-    const wrapper = container.firstChild as HTMLElement
-    expect(wrapper.className).not.toContain('border-l-2')
+    render(<TextBlock data={{ content: 'Sure answer' }} confidence="high" />)
+    expect(document.querySelector('[data-confidence="low"]')).toBeNull()
+    expect(screen.queryByText('Low confidence')).not.toBeInTheDocument()
   })
 })

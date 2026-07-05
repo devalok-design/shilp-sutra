@@ -22,9 +22,9 @@ describeConformance(
 describe('SegmentedControl', () => {
   it('renders all options', () => {
     render(<SegmentedControl options={options} selectedId="a" onSelect={() => {}} />)
-    expect(screen.getByRole('tab', { name: 'Alpha' })).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Beta' })).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Gamma' })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'Alpha' })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'Beta' })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'Gamma' })).toBeInTheDocument()
   })
 
   it('calls onSelect when an option is clicked', async () => {
@@ -32,15 +32,15 @@ describe('SegmentedControl', () => {
     const onSelect = vi.fn()
     render(<SegmentedControl options={options} selectedId="a" onSelect={onSelect} />)
 
-    await user.click(screen.getByRole('tab', { name: 'Beta' }))
+    await user.click(screen.getByRole('radio', { name: 'Beta' }))
     expect(onSelect).toHaveBeenCalledWith('b')
   })
 
-  it('marks the selected option with aria-selected', () => {
+  it('marks the selected option with aria-checked (radio semantics)', () => {
     render(<SegmentedControl options={options} selectedId="b" onSelect={() => {}} />)
-    expect(screen.getByRole('tab', { name: 'Beta' })).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByRole('tab', { name: 'Alpha' })).toHaveAttribute('aria-selected', 'false')
-    expect(screen.getByRole('tab', { name: 'Gamma' })).toHaveAttribute('aria-selected', 'false')
+    expect(screen.getByRole('radio', { name: 'Beta' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('radio', { name: 'Alpha' })).toHaveAttribute('aria-checked', 'false')
+    expect(screen.getByRole('radio', { name: 'Gamma' })).toHaveAttribute('aria-checked', 'false')
   })
 
   it('disabled prevents click interaction', async () => {
@@ -48,7 +48,7 @@ describe('SegmentedControl', () => {
     const onSelect = vi.fn()
     render(<SegmentedControl options={options} selectedId="a" onSelect={onSelect} disabled />)
 
-    const tab = screen.getByRole('tab', { name: 'Beta' })
+    const tab = screen.getByRole('radio', { name: 'Beta' })
     expect(tab).toBeDisabled()
 
     await user.click(tab)
@@ -61,7 +61,7 @@ describe('SegmentedControl', () => {
     render(<SegmentedControl options={options} selectedId="a" onSelect={onSelect} />)
 
     // Focus the selected tab then press ArrowRight
-    screen.getByRole('tab', { name: 'Alpha' }).focus()
+    screen.getByRole('radio', { name: 'Alpha' }).focus()
     await user.keyboard('{ArrowRight}')
     expect(onSelect).toHaveBeenCalledWith('b')
   })
@@ -71,7 +71,7 @@ describe('SegmentedControl', () => {
     const onSelect = vi.fn()
     render(<SegmentedControl options={options} selectedId="a" onSelect={onSelect} />)
 
-    screen.getByRole('tab', { name: 'Alpha' }).focus()
+    screen.getByRole('radio', { name: 'Alpha' }).focus()
     await user.keyboard('{ArrowLeft}')
     expect(onSelect).toHaveBeenCalledWith('c')
   })
@@ -81,7 +81,7 @@ describe('SegmentedControl', () => {
     const onSelect = vi.fn()
     render(<SegmentedControl options={options} selectedId="c" onSelect={onSelect} />)
 
-    screen.getByRole('tab', { name: 'Gamma' }).focus()
+    screen.getByRole('radio', { name: 'Gamma' }).focus()
     await user.keyboard('{ArrowRight}')
     expect(onSelect).toHaveBeenCalledWith('a')
   })
@@ -91,7 +91,7 @@ describe('SegmentedControl', () => {
     const onSelect = vi.fn()
     render(<SegmentedControl options={options} selectedId="c" onSelect={onSelect} />)
 
-    screen.getByRole('tab', { name: 'Gamma' }).focus()
+    screen.getByRole('radio', { name: 'Gamma' }).focus()
     await user.keyboard('{Home}')
     expect(onSelect).toHaveBeenCalledWith('a')
   })
@@ -101,32 +101,32 @@ describe('SegmentedControl', () => {
     const onSelect = vi.fn()
     render(<SegmentedControl options={options} selectedId="a" onSelect={onSelect} />)
 
-    screen.getByRole('tab', { name: 'Alpha' }).focus()
+    screen.getByRole('radio', { name: 'Alpha' }).focus()
     await user.keyboard('{End}')
     expect(onSelect).toHaveBeenCalledWith('c')
   })
 
-  it('has role="tablist" on the container', () => {
+  it('has role="radiogroup" on the container', () => {
     render(<SegmentedControl options={options} selectedId="a" onSelect={() => {}} />)
-    expect(screen.getByRole('tablist')).toBeInTheDocument()
+    expect(screen.getByRole('radiogroup')).toBeInTheDocument()
   })
 
-  it('selected tab has tabIndex=0, others have tabIndex=-1', () => {
+  it('selected radio has tabIndex=0, others have tabIndex=-1', () => {
     render(<SegmentedControl options={options} selectedId="b" onSelect={() => {}} />)
-    expect(screen.getByRole('tab', { name: 'Beta' })).toHaveAttribute('tabindex', '0')
-    expect(screen.getByRole('tab', { name: 'Alpha' })).toHaveAttribute('tabindex', '-1')
-    expect(screen.getByRole('tab', { name: 'Gamma' })).toHaveAttribute('tabindex', '-1')
+    expect(screen.getByRole('radio', { name: 'Beta' })).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('radio', { name: 'Alpha' })).toHaveAttribute('tabindex', '-1')
+    expect(screen.getByRole('radio', { name: 'Gamma' })).toHaveAttribute('tabindex', '-1')
   })
 
   it('variant="solid" applies accent selected text style', () => {
     render(<SegmentedControl options={options} selectedId="a" onSelect={() => {}} variant="solid" />)
-    const tab = screen.getByRole('tab', { name: 'Alpha' })
+    const tab = screen.getByRole('radio', { name: 'Alpha' })
     expect(tab.className).toContain('text-accent-fg')
   })
 
   it('variant="default" applies default selected text style', () => {
     render(<SegmentedControl options={options} selectedId="a" onSelect={() => {}} variant="default" />)
-    const tab = screen.getByRole('tab', { name: 'Alpha' })
+    const tab = screen.getByRole('radio', { name: 'Alpha' })
     expect(tab.className).toContain('text-surface-fg')
   })
 
@@ -146,8 +146,8 @@ describe('SegmentedControl', () => {
     const onSelect = vi.fn()
     render(<SegmentedControl options={options} selectedId="a" onSelect={onSelect} disabled />)
 
-    const tablist = screen.getByRole('tablist')
-    tablist.focus()
+    const group = screen.getByRole('radiogroup')
+    group.focus()
     await user.keyboard('{ArrowRight}')
     expect(onSelect).not.toHaveBeenCalled()
   })

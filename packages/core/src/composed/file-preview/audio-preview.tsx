@@ -6,7 +6,7 @@ import * as React from 'react'
 import { Button } from '../../ui/button'
 import { Icon } from '../../ui/icon'
 import { TruncatedText } from '../../ui/truncated-text'
-import { ErrorFallback, formatTime,VolumeControl } from './shared'
+import { ErrorFallback, formatTime,MediaSlider,VolumeControl } from './shared'
 
 // ============================================================
 // Audio Preview — Branded mini-player (Spotify/SoundCloud style)
@@ -22,7 +22,6 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
   const [volume, setVolume] = React.useState(1)
   const [muted, setMuted] = React.useState(false)
   const [error, setError] = React.useState(false)
-  const [hoverTime, setHoverTime] = React.useState<number | null>(null)
 
   // Keyboard shortcuts
   React.useEffect(() => {
@@ -69,18 +68,9 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
     setPlaying(!playing)
   }
 
-  function handleSeek(e: React.MouseEvent<HTMLDivElement>) {
+  function handleSeek(nextProgress: number) {
     if (!audioRef.current || !duration) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-    audioRef.current.currentTime = pct * duration
-  }
-
-  function handleHover(e: React.MouseEvent<HTMLDivElement>) {
-    if (!duration) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    const pct = (e.clientX - rect.left) / rect.width
-    setHoverTime(pct * duration)
+    audioRef.current.currentTime = (nextProgress / 100) * duration
   }
 
   function toggleMute() {
@@ -109,35 +99,14 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
       />
 
       {/* Progress bar — full width at top (Spotify style) */}
-      <div
-        className="relative h-1 w-full cursor-pointer bg-surface-sunken group/bar"
-        onClick={handleSeek}
-        onMouseMove={handleHover}
-        onMouseLeave={() => setHoverTime(null)}
-        role="slider"
-        aria-label="Audio progress"
-        aria-valuenow={Math.round(progress)}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        tabIndex={0}
-      >
-        <div
-          className="absolute left-0 top-0 h-full bg-accent-9 transition-[width] duration-75"
-          style={{ width: `${progress}%` }}
-        />
-        {/* Hover time tooltip */}
-        {hoverTime !== null && (
-          <div
-            className="absolute -top-7 -translate-x-1/2 rounded-control-inner bg-surface-overlay px-1.5 py-0.5 text-[10px] font-mono text-surface-fg shadow-floating pointer-events-none"
-            style={{ left: `${(hoverTime / (duration || 1)) * 100}%` }}
-          >
-            {formatTime(hoverTime)}
-          </div>
-        )}
-        {/* Scrub handle */}
-        <div
-          className="absolute top-1/2 -translate-y-1/2 h-2.5 w-2.5 rounded-pill bg-accent-9 shadow-raised opacity-0 group-hover/bar:opacity-100 transition-opacity"
-          style={{ left: `${progress}%`, marginLeft: '-5px' }}
+      <div className="px-ds-03 pt-ds-02">
+        <MediaSlider
+          value={progress}
+          max={100}
+          step={0.1}
+          onValueChange={handleSeek}
+          tone="light"
+          ariaLabel="Audio progress"
         />
       </div>
 

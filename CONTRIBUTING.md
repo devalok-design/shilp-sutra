@@ -138,7 +138,7 @@ The "public API" includes:
 - Component DOM structure and slot contracts (e.g. `data-*` attributes consumers might style against)
 - All CSS custom property names declared in `tokens/*.css` (consumers override these)
 - All Tailwind utility-generating namespaces (`--spacing-ds-*`, `--text-ds-*`, etc.)
-- The `llms.txt`, `llms-full.txt`, and `docs/recipes/` content shape (AI agents and consumer docs reference these)
+- The `llms.txt` router, `mcp-manifest.json`, `docs/components/` and `docs/recipes/` content shape (AI agents and consumer docs reference these)
 
 Internal-only:
 

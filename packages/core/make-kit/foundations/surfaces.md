@@ -97,7 +97,7 @@ In dark mode the kit lightens surfaces with elevation (so `surface-overlay` is *
     …
   </aside>
   <main className="bg-surface-base p-ds-07">
-    <Card className="bg-surface-raised shadow-raised p-ds-05">  {/* Card */}
+    <Card>  {/* Card — brings its own surface, shadow, and padding (never add p-*) */}
       …
       <Dialog>
         <DialogContent className="bg-surface-overlay shadow-overlay">

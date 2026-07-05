@@ -38,11 +38,14 @@ export function BadgeGroup({
     <div className={cn('flex flex-wrap items-center', GAP_CLASSES[gap], className)}>
       {visible}
       {hasOverflow && (
+        // With onClick, Badge renders a real, keyboard-reachable <button>; add a
+        // label since "+N" alone isn't descriptive to a screen reader.
         <Badge
           variant="outline"
           color="neutral"
           size={size ?? 'sm'}
           onClick={onOverflowClick}
+          aria-label={onOverflowClick ? `Show ${overflowCount} more` : undefined}
         >
           +{overflowCount}
         </Badge>

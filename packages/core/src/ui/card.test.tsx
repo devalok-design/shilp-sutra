@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect,it } from 'vitest'
 
 import { describeConformance } from '../test-utils/conformance'
-import { Card, CardAction, CardContent, CardFooter,CardHeader } from './card'
+import { Card, CardAction, CardBleed, CardContent, CardFooter,CardHeader, CardSection } from './card'
 
 describeConformance('Card', (props) => <Card {...props}>Content</Card>, {
   variants: ['default', 'elevated', 'outline', 'flat'],
@@ -16,7 +16,7 @@ describe('Card', () => {
     expect(screen.getByText('Content')).toBeInTheDocument()
   })
 
-  it('uses the gap model — flex column container owns vertical rhythm, no per-slot py', () => {
+  it('uses the variable gap model — container owns py/gap via --card-spacing/--card-gap', () => {
     const { container } = render(
       <Card>
         <CardHeader>Header</CardHeader>
@@ -24,7 +24,12 @@ describe('Card', () => {
         <CardFooter>Footer</CardFooter>
       </Card>,
     )
-    expect(container.firstChild).toHaveClass('flex', 'flex-col', 'py-ds-05b', 'gap-ds-04')
+    expect(container.firstChild).toHaveClass(
+      'flex',
+      'flex-col',
+      'py-(--card-spacing)',
+      'gap-(--card-gap)',
+    )
   })
 
   it('resets first/last child margins on CardContent (gap-model leak guard)', () => {
@@ -38,7 +43,7 @@ describe('Card', () => {
   })
 
   describe('size', () => {
-    it('defaults to md — px-ds-05b slots, py-ds-05b/gap-ds-04 container', () => {
+    it('defaults to md — assigns the 20px/12px variable pair; slots read the variable', () => {
       const { container } = render(
         <Card>
           <CardHeader>Header</CardHeader>
@@ -46,38 +51,102 @@ describe('Card', () => {
           <CardFooter>Footer</CardFooter>
         </Card>,
       )
-      expect(container.firstChild).toHaveClass('py-ds-05b', 'gap-ds-04')
-      expect(screen.getByText('Header').closest('div')!).toHaveClass('px-ds-05b')
-      expect(screen.getByText('Body').closest('div')!).toHaveClass('px-ds-05b')
-      expect(screen.getByText('Footer').closest('div')!).toHaveClass('px-ds-05b')
+      expect(container.firstChild).toHaveClass(
+        '[--card-spacing:var(--spacing-ds-05b)]',
+        '[--card-gap:var(--spacing-ds-04)]',
+      )
+      expect(screen.getByText('Header').closest('div')!).toHaveClass('px-(--card-spacing)')
+      expect(screen.getByText('Body').closest('div')!).toHaveClass('px-(--card-spacing)')
+      expect(screen.getByText('Footer').closest('div')!).toHaveClass('px-(--card-spacing)')
     })
 
-    it('applies sm — px-ds-05 slots, py-ds-05/gap-ds-03 container', () => {
-      const { container } = render(
-        <Card size="sm">
-          <CardHeader>Header</CardHeader>
-          <CardContent>Body</CardContent>
-          <CardFooter>Footer</CardFooter>
-        </Card>,
+    it('applies sm — 16px/8px variable pair', () => {
+      const { container } = render(<Card size="sm">Content</Card>)
+      expect(container.firstChild).toHaveClass(
+        '[--card-spacing:var(--spacing-ds-05)]',
+        '[--card-gap:var(--spacing-ds-03)]',
       )
-      expect(container.firstChild).toHaveClass('py-ds-05', 'gap-ds-03')
-      expect(screen.getByText('Header').closest('div')!).toHaveClass('px-ds-05')
-      expect(screen.getByText('Body').closest('div')!).toHaveClass('px-ds-05')
-      expect(screen.getByText('Footer').closest('div')!).toHaveClass('px-ds-05')
     })
 
-    it('applies lg — px-ds-06 slots, py-ds-06/gap-ds-05 container', () => {
+    it('applies lg — 24px/16px variable pair', () => {
+      const { container } = render(<Card size="lg">Content</Card>)
+      expect(container.firstChild).toHaveClass(
+        '[--card-spacing:var(--spacing-ds-06)]',
+        '[--card-gap:var(--spacing-ds-05)]',
+      )
+    })
+  })
+
+  describe('orientation', () => {
+    it('horizontal drops the container py/gap and lays out as a row', () => {
       const { container } = render(
-        <Card size="lg">
-          <CardHeader>Header</CardHeader>
-          <CardContent>Body</CardContent>
-          <CardFooter>Footer</CardFooter>
+        <Card orientation="horizontal">
+          <CardSection>
+            <CardHeader>Header</CardHeader>
+          </CardSection>
         </Card>,
       )
-      expect(container.firstChild).toHaveClass('py-ds-06', 'gap-ds-05')
-      expect(screen.getByText('Header').closest('div')!).toHaveClass('px-ds-06')
-      expect(screen.getByText('Body').closest('div')!).toHaveClass('px-ds-06')
-      expect(screen.getByText('Footer').closest('div')!).toHaveClass('px-ds-06')
+      expect(container.firstChild).toHaveClass('flex-row', 'items-stretch')
+      expect(container.firstChild).not.toHaveClass('py-(--card-spacing)', 'gap-(--card-gap)')
+    })
+
+    it('CardSection re-establishes the vertical rhythm from the same variables', () => {
+      render(
+        <Card orientation="horizontal">
+          <CardSection data-testid="section">
+            <CardHeader>Header</CardHeader>
+          </CardSection>
+        </Card>,
+      )
+      expect(screen.getByTestId('section')).toHaveClass(
+        'flex-col',
+        'py-(--card-spacing)',
+        'gap-(--card-gap)',
+        'min-w-0',
+        'flex-1',
+      )
+    })
+  })
+
+  describe('CardBleed', () => {
+    it('defaults to side="x" — negates the slot inset', () => {
+      render(
+        <Card>
+          <CardContent>
+            <CardBleed data-testid="bleed">band</CardBleed>
+          </CardContent>
+        </Card>,
+      )
+      expect(screen.getByTestId('bleed')).toHaveClass('-mx-(--card-spacing)')
+    })
+
+    it('side="top" negates the container edge and inherits the top radius', () => {
+      render(
+        <Card>
+          <CardBleed data-testid="bleed" side="top">
+            media
+          </CardBleed>
+        </Card>,
+      )
+      expect(screen.getByTestId('bleed')).toHaveClass(
+        '-mt-(--card-spacing)',
+        'rounded-t-surface',
+        'overflow-hidden',
+      )
+    })
+
+    it('side="bottom" negates the bottom edge with the bottom radius', () => {
+      render(
+        <Card>
+          <CardBleed data-testid="bleed" side="bottom">
+            band
+          </CardBleed>
+        </Card>,
+      )
+      expect(screen.getByTestId('bleed')).toHaveClass(
+        '-mb-(--card-spacing)',
+        'rounded-b-surface',
+      )
     })
   })
 
@@ -93,16 +162,20 @@ describe('Card', () => {
       expect(screen.getByRole('button', { name: 'More' })).toBeInTheDocument()
     })
 
-    it('positions top-right by default with the md inset', () => {
+    it('positions top-right by default with the variable inset', () => {
       render(
         <Card>
           <CardAction data-testid="action">x</CardAction>
         </Card>,
       )
-      expect(screen.getByTestId('action')).toHaveClass('absolute', 'top-ds-05b', 'right-ds-05b')
+      expect(screen.getByTestId('action')).toHaveClass(
+        'absolute',
+        'top-(--card-spacing)',
+        'right-(--card-spacing)',
+      )
     })
 
-    it('honors placement + inherits the card size inset', () => {
+    it('honors placement — inset tracks the variable at every size', () => {
       render(
         <Card size="lg">
           <CardAction data-testid="action" placement="bottom-right">
@@ -110,7 +183,10 @@ describe('Card', () => {
           </CardAction>
         </Card>,
       )
-      expect(screen.getByTestId('action')).toHaveClass('bottom-ds-06', 'right-ds-06')
+      expect(screen.getByTestId('action')).toHaveClass(
+        'bottom-(--card-spacing)',
+        'right-(--card-spacing)',
+      )
     })
 
     it('applies the tuck offset when set', () => {

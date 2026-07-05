@@ -56,7 +56,7 @@ describe('ColorInput', () => {
     await user.click(screen.getByRole('button'))
     const redPreset = await screen.findByLabelText(/Red/i)
     await user.click(redPreset)
-    expect(onChange).toHaveBeenCalledWith('#ef4444')
+    expect(onChange).toHaveBeenCalledWith('#c53637')
   })
 
   it('switches to RGB format', async () => {

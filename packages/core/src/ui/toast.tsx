@@ -134,6 +134,7 @@ function ToastContent({
   cancel,
   duration = DEFAULT_DURATION,
   showTimerBar = true,
+  showAccent = false,
   selfDismissId,
 }: {
   type: ToastType
@@ -143,6 +144,8 @@ function ToastContent({
   cancel?: ToastActionOptions
   duration?: number
   showTimerBar?: boolean
+  /** Render the colored left accent bar. Off by default (status = icon + timer bar). */
+  showAccent?: boolean
   /** When set, this component manages its own dismiss timer (hover-aware). */
   selfDismissId?: string | number
 }) {
@@ -181,15 +184,19 @@ function ToastContent({
       role={isUrgent ? 'alert' : 'status'}
       aria-live={isUrgent ? 'assertive' : 'polite'}
       aria-atomic="true"
-      className="group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating"
+      className={cn(
+        'group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating',
+        // Faint surface tint on error only — the one you must not miss.
+        type === 'error' && 'bg-error-2',
+      )}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
       onBlurCapture={() => setFocused(false)}
       transition={springs.smooth}
     >
-      {/* Left accent bar */}
-      {config.accentClass && (
+      {/* Left accent bar — opt-in via showAccent (status is carried by icon + timer bar) */}
+      {showAccent && config.accentClass && (
         <div
           className={cn('w-1 shrink-0 rounded-l-overlay-sm', config.accentClass)}
         />
@@ -470,11 +477,14 @@ function UploadToastContent({
   onRetry,
   onRemove,
   selfDismissId,
+  showAccent = false,
 }: {
   files: UploadFile[]
   onRetry?: (fileId: string) => void
   onRemove?: (fileId: string) => void
   selfDismissId?: string | number
+  /** Render the colored left accent bar. Off by default. */
+  showAccent?: boolean
 }) {
   const [hovered, setHovered] = React.useState(false)
   const [focused, setFocused] = React.useState(false)
@@ -522,15 +532,21 @@ function UploadToastContent({
       role={uploadUrgent ? 'alert' : 'status'}
       aria-live={uploadUrgent ? 'assertive' : 'polite'}
       aria-label="File uploads"
-      className="group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating"
+      className={cn(
+        'group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating',
+        // Faint surface tint when the batch ended with failures.
+        uploadUrgent && 'bg-error-2',
+      )}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
       onBlurCapture={() => setFocused(false)}
       transition={springs.smooth}
     >
-      {/* Left accent bar */}
-      <div className={cn('w-1 shrink-0 rounded-l-overlay-sm', accentClass)} />
+      {/* Left accent bar — opt-in via showAccent */}
+      {showAccent && (
+        <div className={cn('w-1 shrink-0 rounded-l-overlay-sm', accentClass)} />
+      )}
 
       {/* Content */}
       <div className="min-w-0 flex-1 p-ds-04">
@@ -651,6 +667,7 @@ function createTypedToast(
         action={options?.action}
         cancel={options?.cancel}
         duration={duration}
+        showAccent={options?.showAccent}
       />
     ),
     createSonnerOptions(options, duration),
@@ -800,6 +817,7 @@ toast.upload = (options: ToastUploadOptions) => {
         onRetry={options.onRetry}
         onRemove={options.onRemove}
         selfDismissId={toastId}
+        showAccent={options.showAccent}
       />
     ),
     {

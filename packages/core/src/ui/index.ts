@@ -144,7 +144,7 @@ export { Avatar, AvatarFallback, type AvatarFallbackProps, AvatarImage, type Ava
 export { Badge, type BadgeProps,badgeVariants } from './badge'
 export { BadgeGroup, type BadgeGroupProps } from './badge-group'
 export { BadgeIndicator, type BadgeIndicatorProps } from './badge-indicator'
-export { Card, CardAction, type CardActionPlacement, type CardActionProps, CardContent, CardDescription, CardFooter, CardHeader, type CardProps,CardTitle, cardVariants } from './card'
+export { Card, CardAction, type CardActionPlacement, type CardActionProps, CardBleed, type CardBleedProps, type CardBleedSide, CardContent, CardDescription, CardFooter, CardHeader, type CardProps,CardSection, CardTitle, cardVariants } from './card'
 export { Code, type CodeProps } from './code'
 export { ColorSwatch, type ColorSwatchProps } from './color-swatch'
 export { Progress, progressIndicatorVariants, type ProgressProps,progressTrackVariants } from './progress'
@@ -178,7 +178,8 @@ export {
   type StatFlashProps,
 } from './stat-flash'
 export { StatusDot, type StatusDotProps, type StatusDotStatus } from './status-dot'
-export { Table, TableBody, TableCaption, TableCell, type TableCellProps,TableFooter, TableHead, TableHeader, type TableProps, TableRow, type TableRowProps } from './table'
+export { Table, TableBody, TableCaption, TableCell, type TableCellBaseProps,type TableCellProps,type TableDensity, TableFooter, TableHead, TableHeader, type TableProps, TableRow, TableRowActions, type TableRowActionsProps,type TableRowProps } from './table'
+export { TableRowLink, type TableRowLinkProps } from './table-row-link'
 
 // Navigation
 export { Accordion, AccordionContent, type AccordionContentProps,AccordionItem, type AccordionItemProps, AccordionTrigger, type AccordionTriggerProps } from './accordion'

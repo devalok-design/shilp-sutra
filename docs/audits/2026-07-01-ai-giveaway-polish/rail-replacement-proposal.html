@@ -1,0 +1,318 @@
+<title>Killing the accent rail — shilp-sutra</title>
+<meta name="description" content="Rail-free replacement patterns for toast, AI blocks, calendar events, and chat mentions — before/after, curated per context.">
+<style>
+  /* ---- shilp-sutra tokens (light), verbatim OKLCH from packages/core/src/tokens ---- */
+  :root{
+    --n1:oklch(0.99 0.0003 350); --n2:oklch(0.97 0.0008 350); --n3:oklch(0.93 0.0018 350);
+    --n6:oklch(0.78 0.0053 350); --n7:oklch(0.7 0.0074 350); --n9:oklch(0.55 0.01 350);
+    --n11:oklch(0.43 0.0074 350); --n12:oklch(0.32 0.0042 350);
+    --accent2:oklch(0.97 0.015 360); --accent3:oklch(0.93 0.035 360); --accent7:oklch(0.7 0.14 360);
+    --accent9:oklch(0.55 0.19 360); --accent11:oklch(0.43 0.14 360);
+    --error2:oklch(0.97 0.0142 25); --error3:oklch(0.93 0.0332 25); --error7:oklch(0.7 0.1326 25);
+    --error9:oklch(0.55 0.18 25); --error11:oklch(0.43 0.1326 25);
+    --ok2:oklch(0.97 0.0111 145); --ok3:oklch(0.93 0.0258 145); --ok7:oklch(0.7 0.1032 145);
+    --ok9:oklch(0.52 0.14 145); --ok11:oklch(0.43 0.1032 145);
+    --warn2:oklch(0.96 0.04 70); --warn3:oklch(0.92 0.08 70); --warn7:oklch(0.75 0.17 65);
+    --warn9:oklch(0.78 0.16 65); --warn11:oklch(0.42 0.12 55);
+    --info2:oklch(0.97 0.0095 240); --info3:oklch(0.93 0.0221 240); --info7:oklch(0.7 0.0884 240);
+    --info9:oklch(0.55 0.12 240); --info11:oklch(0.43 0.0884 240);
+
+    --surface1:var(--n1); --surface2:var(--n2); --surface3:var(--n3);
+    --fg:var(--n12); --fg-muted:var(--n11); --fg-subtle:var(--n9);
+    --border:var(--n6); --border-subtle:oklch(0.85 0.003 350); --border-strong:var(--n7);
+    --r-control:6px; --r-surface:10px; --r-overlay:10px; --r-overlay-sm:6px; --r-overlay-lg:16px; --r-pill:9999px; --r-bubble:24px;
+    /* elevation-led shadows (no double edge) */
+    --shadow-raised:0 0 0 1px oklch(0.4 0.01 350/.06), 0 1px 3px -1px oklch(0.4 0.01 350/.09), 0 3px 7px -2px oklch(0.4 0.01 350/.06);
+    --shadow-overlay:0 0 0 1px oklch(0.4 0.01 350/.09), 0 4px 8px -2px oklch(0.4 0.01 350/.08), 0 10px 20px -5px oklch(0.4 0.01 350/.07), 0 24px 44px -12px oklch(0.4 0.01 350/.05);
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --display:"Ranade",var(--sans);
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:
+      radial-gradient(120% 80% at 50% -10%, var(--accent2) 0%, transparent 45%),
+      var(--surface2);
+    color:var(--fg);font-family:var(--sans);
+    font-size:15px;line-height:1.55;letter-spacing:-0.006em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(28px,5vw,64px) clamp(18px,4vw,40px) 96px}
+  h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-0.02em;text-wrap:balance;margin:0}
+  h1{font-size:clamp(30px,5vw,46px);line-height:1.04}
+  h2{font-size:clamp(21px,3vw,27px);line-height:1.1}
+  h3{font-size:16px;letter-spacing:-0.01em}
+  p{margin:0}
+  .lede{color:var(--fg-muted);font-size:clamp(15px,1.8vw,18px);max-width:62ch;margin-top:16px;line-height:1.5}
+  .eyebrow{font-family:var(--sans);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-subtle)}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:22px;color:var(--fg-subtle);font-size:12.5px;font-variant-numeric:tabular-nums}
+  .meta b{color:var(--fg-muted);font-weight:600}
+  .rule{height:1px;background:var(--border-subtle);border:0;margin:52px 0}
+
+  /* principle banner */
+  .principle{margin-top:34px;background:var(--surface1);border-radius:var(--r-surface);
+    box-shadow:var(--shadow-raised);padding:24px 26px;display:grid;gap:14px}
+  .principle .tag{display:inline-flex;align-items:center;gap:7px;align-self:start;
+    background:var(--accent3);color:var(--accent11);font-size:12px;font-weight:600;
+    padding:4px 11px;border-radius:var(--r-pill)}
+  .principle .big{font-family:var(--display);font-size:clamp(18px,2.4vw,23px);line-height:1.3;letter-spacing:-0.015em}
+  .principle .big em{font-style:normal;color:var(--accent11);background:linear-gradient(transparent 62%,var(--accent3) 62%);padding:0 2px}
+  .principle .src{color:var(--fg-subtle);font-size:12.5px;line-height:1.5}
+
+  /* section scaffold */
+  section{margin-top:60px;scroll-margin-top:24px}
+  .shd{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .shd .num{font-family:var(--display);font-size:15px;color:var(--accent9);font-variant-numeric:tabular-nums;font-weight:600}
+  .job{color:var(--fg-muted);margin-top:10px;max-width:64ch;font-size:14.5px}
+  .job b{color:var(--fg);font-weight:600}
+
+  .cols{display:grid;gap:18px;margin-top:24px;grid-template-columns:1fr 1fr}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--surface1);border-radius:var(--r-surface);box-shadow:var(--shadow-raised);padding:18px 18px 20px;display:flex;flex-direction:column;gap:14px}
+  .panel.rec{box-shadow:0 0 0 1.5px var(--accent7), var(--shadow-raised)}
+  .plabel{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .plabel .k{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-subtle)}
+  .badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:var(--r-pill)}
+  .badge.no{background:var(--error3);color:var(--error11)}
+  .badge.yes{background:var(--ok3);color:var(--ok11)}
+  .badge.rec{background:var(--accent9);color:white}
+  .badge.opt{background:var(--surface3);color:var(--fg-muted)}
+  .stage{background:var(--surface2);border-radius:var(--r-control);padding:18px 16px;display:flex;flex-direction:column;gap:12px;justify-content:center;min-height:120px}
+  .note{font-size:12.5px;color:var(--fg-subtle);line-height:1.5}
+  .note b{color:var(--fg-muted);font-weight:600}
+
+  /* ---------- real component renders ---------- */
+  .ico{width:18px;height:18px;flex:0 0 auto;display:block}
+  .ico.sm{width:15px;height:15px}
+
+  /* toast */
+  .toast{position:relative;display:flex;gap:11px;align-items:flex-start;background:var(--surface1);
+    border-radius:var(--r-overlay-sm);box-shadow:var(--shadow-overlay);padding:12px 13px;overflow:hidden;font-size:13.5px}
+  .toast .rail{position:absolute;left:0;top:0;bottom:0;width:4px}
+  .toast .body{flex:1;min-width:0}
+  .toast .ttl{font-weight:600;color:var(--fg)}
+  .toast .desc{color:var(--fg-muted);font-size:12.5px;margin-top:1px}
+  .toast .timer{position:absolute;left:0;right:0;bottom:0;height:2px;opacity:.9}
+  .toast .x{color:var(--fg-subtle);cursor:default;line-height:0;padding:2px;border-radius:4px}
+  .toast.pl{padding-left:17px}
+  .c-ok{--c:var(--ok9);--c-fg:var(--ok11);--c-bg:var(--ok2)}
+  .c-err{--c:var(--error9);--c-fg:var(--error11);--c-bg:var(--error2)}
+  .c-warn{--c:var(--warn7);--c-fg:var(--warn11);--c-bg:var(--warn2)}
+  .c-info{--c:var(--info9);--c-fg:var(--info11);--c-bg:var(--info2)}
+  .toast .rail{background:var(--c)}
+  .toast .timer{background:var(--c)}
+  .toast .glyph{color:var(--c)}
+  /* toned-down error tint — error2 pulled ~55% toward surface */
+  .toast.tint{background:color-mix(in oklch, var(--c-bg) 45%, var(--surface1))}
+
+  /* ai block */
+  .block{position:relative;background:var(--surface1);border-radius:var(--r-surface);box-shadow:var(--shadow-raised);padding:14px 15px;font-size:13.5px;display:flex;flex-direction:column;gap:8px}
+  .block .head{display:flex;align-items:center;gap:8px;font-weight:600}
+  .block .body{color:var(--fg-muted);font-size:12.5px;line-height:1.5}
+  .block.lc-rail{border-left:2px solid var(--warn7);padding-left:13px;border-radius:0 var(--r-surface) var(--r-surface) 0}
+  /* lightened warning wash — warn2 pulled ~76% toward surface so it barely whispers */
+  .block.lc-wash{background:color-mix(in oklch, var(--warn2) 24%, var(--surface1))}
+  .block.lc-wash .head{padding-right:112px}
+  .lc-chip{position:absolute;top:12px;right:12px;display:inline-flex;align-items:center;gap:5px;background:var(--warn3);color:var(--warn11);font-size:11px;font-weight:600;padding:2px 8px;border-radius:var(--r-pill)}
+  .lc-foot{display:flex;align-items:center;gap:6px;color:var(--warn11);font-size:11.5px;font-weight:500;margin-top:2px}
+
+  /* calendar */
+  .cal{background:var(--surface1);border-radius:var(--r-surface);box-shadow:var(--shadow-raised);padding:12px;display:grid;grid-template-columns:34px 1fr;gap:0 8px;font-size:12px}
+  .cal .hr{color:var(--fg-subtle);font-variant-numeric:tabular-nums;text-align:right;padding-top:6px;grid-column:1;height:46px}
+  .cal .lane{grid-column:2;border-top:1px solid var(--border-subtle);height:46px;position:relative}
+  .ev{position:absolute;left:2px;right:6px;top:4px;bottom:4px;border-radius:var(--r-control);padding:5px 8px;overflow:hidden;font-size:11.5px;line-height:1.25}
+  .ev .en{font-weight:600}
+  .ev .et{opacity:.75;font-variant-numeric:tabular-nums}
+  .ev.rail{border-left:3px solid var(--c)}
+  .ev.dot .en{display:flex;align-items:center;gap:6px}
+  .ev .d{width:7px;height:7px;border-radius:var(--r-pill);background:var(--c);flex:0 0 auto}
+  .cat-a{--c:var(--accent9);background:var(--accent2);color:var(--accent11)}
+  .cat-b{--c:var(--info9);background:var(--info2);color:var(--info11)}
+  .cat-c{--c:var(--ok9);background:var(--ok2);color:var(--ok11)}
+
+  /* chat */
+  .chat{display:flex;flex-direction:column;gap:10px}
+  .msg{display:flex;gap:9px;align-items:flex-start;padding:7px 9px;border-radius:var(--r-control)}
+  .av{width:28px;height:28px;border-radius:var(--r-pill);flex:0 0 auto;background:var(--accent3);color:var(--accent11);display:grid;place-items:center;font-size:11px;font-weight:700}
+  .msg .who{font-weight:600;font-size:12.5px}
+  .msg .tm{color:var(--fg-subtle);font-size:11px;font-weight:400;margin-left:6px;font-variant-numeric:tabular-nums}
+  .msg .txt{font-size:13px;color:var(--fg-muted);margin-top:1px;line-height:1.45}
+  .mention-token{color:var(--accent11);font-weight:600;background:var(--accent3);padding:0 4px;border-radius:4px}
+  .msg.rail{border-left:2px solid var(--accent9);background:var(--accent2);border-radius:0 var(--r-control) var(--r-control) 0;padding-left:11px}
+  .msg.tint{background:var(--accent2)}
+
+  ul.why{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+  ul.why li{position:relative;padding-left:20px;font-size:13px;color:var(--fg-muted);line-height:1.45}
+  ul.why li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:2px;background:var(--accent9)}
+  ul.why li b{color:var(--fg);font-weight:600}
+  .foot{margin-top:64px;color:var(--fg-subtle);font-size:12.5px;line-height:1.6;border-top:1px solid var(--border-subtle);padding-top:20px}
+  code{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.9em;background:var(--surface3);padding:1px 5px;border-radius:4px;color:var(--fg)}
+  @media (prefers-reduced-motion:no-preference){
+    .toast{animation:ti .5s cubic-bezier(.22,1,.36,1) both}
+    .toast:nth-child(2){animation-delay:.06s}.toast:nth-child(3){animation-delay:.12s}.toast:nth-child(4){animation-delay:.18s}
+    @keyframes ti{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">shilp-sutra · design decision</span>
+  <h1>Killing the accent rail</h1>
+  <p class="lede">The colored side-stripe on a card is, across every source, the single most recognizable AI tell. We removed it from Card in v0.44.0 — but it still ships as the <em style="font-style:normal;font-weight:600;color:var(--fg)">default</em> in four places. Here is the rail-free treatment for each, before we touch code.</p>
+  <div class="meta">
+    <span><b>Still shipping the rail:</b> toast · ai/blocks (×5) · schedule-view · chat mention</span>
+    <span><b>Method:</b> replace, don't just delete — curated per context</span>
+  </div>
+
+  <div class="principle">
+    <span class="tag">◆ The rule (Card's "elevation over edge", generalized)</span>
+    <p class="big">Carry meaning through the <em>soft tinted surface</em> + a <em>typed icon or dot</em> + a <em>text label</em> — never a stripe. Never color alone.</p>
+    <p class="src">This is our own <code>variant="soft"</code> philosophy (step-3 bg, step-11 text) applied to status. It also satisfies the accessibility floor every source names: ≥3 non-color indicators, so it survives color-blindness and forced-colors. Precedent — Radix Callout (soft tint + icon, no rail), Carbon Notification (icon + text + subtle fill), and Discord's retreat <em style="font-style:italic;background:none;color:inherit;padding:0">from</em> heavy mention tinting toward a quieter token.</p>
+  </div>
+
+  <hr class="rule">
+
+  <!-- 1 TOAST -->
+  <section>
+    <div class="shd"><span class="num">01</span><h2>Toast &amp; Toaster</h2></div>
+    <p class="job"><b>The rail's job:</b> signal status — success, error, warning, info — on a transient overlay. <b>Problem:</b> the 4px colored left bar is the tell, and the docs/tests/llms currently advertise it as an intended feature.</p>
+    <div class="cols">
+      <div class="panel">
+        <div class="plabel"><span class="k">Before</span><span class="badge no">the tell</span></div>
+        <div class="stage">
+          <div class="toast c-ok pl"><span class="rail"></span>
+            <svg class="ico glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <div class="body"><div class="ttl">Deliverable approved</div><div class="desc">Homepage hero — v3 is now live.</div></div>
+            <span class="x">✕</span><span class="timer"></span>
+          </div>
+          <div class="toast c-err pl"><span class="rail"></span>
+            <svg class="ico glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+            <div class="body"><div class="ttl">Upload failed</div><div class="desc">brand-book.pdf exceeded 50 MB.</div></div>
+            <span class="x">✕</span><span class="timer"></span>
+          </div>
+        </div>
+        <p class="note">Colored rail + icon + timer = the icon and timer already carry the status. The rail is redundant chrome — pure convergence.</p>
+      </div>
+      <div class="panel rec">
+        <div class="plabel"><span class="k">After — recommended</span><span class="badge rec">default</span></div>
+        <div class="stage">
+          <div class="toast c-ok">
+            <svg class="ico glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <div class="body"><div class="ttl">Deliverable approved</div><div class="desc">Homepage hero — v3 is now live.</div></div>
+            <span class="x">✕</span><span class="timer"></span>
+          </div>
+          <div class="toast c-err tint">
+            <svg class="ico glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+            <div class="body"><div class="ttl">Upload failed</div><div class="desc">brand-book.pdf exceeded 50 MB.</div></div>
+            <span class="x">✕</span><span class="timer"></span>
+          </div>
+        </div>
+        <p class="note"><b>Typed status icon + a status-colored timer bar.</b> Error (the one you must not miss) also gets a <em style="font-style:normal;font-weight:600">faint</em> surface tint — toned down so it barely reads as anything but "off." Three indicators, zero rail.</p>
+      </div>
+    </div>
+    <ul class="why">
+      <li><b>Opt-in escape hatch:</b> a <code>showAccent</code> prop (<b>default <code>false</code></b>) re-enables the rail for consumers who explicitly want it — your call from the decisions round.</li>
+      <li><b>Cleanup rider:</b> the toast doc, <code>toast.test.tsx</code>, and <code>llms-full.txt</code> stop advertising the rail; the timer-bar color becomes the documented status signal.</li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 2 AI BLOCKS -->
+  <section>
+    <div class="shd"><span class="num">02</span><h2>AI blocks — low confidence</h2></div>
+    <p class="job"><b>The rail's job:</b> mark an agent block as low-confidence / uncertain. <b>Problem:</b> the exact string <code>border-l-2 border-warning-7 pl-3</code> is copy-pasted into 5 block files and asserted in 3 tests. One <code>BlockShell</code> helper should own the treatment — and it shouldn't be a rail.</p>
+    <div class="cols">
+      <div class="panel">
+        <div class="plabel"><span class="k">Before</span><span class="badge no">the tell ×5</span></div>
+        <div class="stage">
+          <div class="block lc-rail">
+            <div class="head"><svg class="ico sm" viewBox="0 0 24 24" fill="none" stroke="var(--warn7)" stroke-width="2.2" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>Estimated timeline</div>
+            <div class="body">Roughly 3–4 weeks, based on 2 similar past projects. Confidence is limited — scope isn't final.</div>
+          </div>
+        </div>
+        <p class="note">Warning rail on a rounded block — the tell, five times over.</p>
+      </div>
+      <div class="panel rec">
+        <div class="plabel"><span class="k">After — chosen</span><span class="badge rec">wash + chip</span></div>
+        <div class="stage">
+          <div class="block lc-wash">
+            <div class="head"><svg class="ico sm" viewBox="0 0 24 24" fill="none" stroke="var(--warn7)" stroke-width="2.2" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>Estimated timeline</div>
+            <div class="body">Roughly 3–4 weeks, based on 2 similar past projects. Confidence is limited — scope isn't final.</div>
+            <span class="lc-chip"><svg class="ico" style="width:12px;height:12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/></svg>Low confidence</span>
+          </div>
+        </div>
+        <p class="note"><b>Lightened warning wash + a "Low confidence" chip pinned top-right.</b> The wash whispers (warn-2 pulled ~60% toward surface), the chip names the state in words. Owned by <code>BlockShell</code> — one helper, five files fixed.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 3 CALENDAR -->
+  <section>
+    <div class="shd"><span class="num">03</span><h2>Schedule-view — calendar event</h2></div>
+    <p class="job"><b>The rail's job:</b> encode event category by color. <b>Problem:</b> the event block <em style="font-style:normal">already</em> has a full soft tint (bg + text in the category hue) — so the <code>border-l-[3px]</code> is decoration on top of information that's already there. And it's on <em style="font-style:normal">every</em> event.</p>
+    <div class="cols">
+      <div class="panel">
+        <div class="plabel"><span class="k">Before</span><span class="badge no">tint + rail</span></div>
+        <div class="stage">
+          <div class="cal">
+            <span class="hr">09:00</span><div class="lane"><div class="ev rail cat-a"><span class="en">Design crit — Karm</span><span class="et">9:00–9:45</span></div></div>
+            <span class="hr">10:00</span><div class="lane"><div class="ev rail cat-b"><span class="en">Client call — Setu</span><span class="et">10:00–10:30</span></div></div>
+            <span class="hr">11:00</span><div class="lane"><div class="ev rail cat-c"><span class="en">Focus — token audit</span><span class="et">11:00–12:30</span></div></div>
+          </div>
+        </div>
+        <p class="note">Tinted fill <i>and</i> a colored rail carry the same one fact (category). Redundant, and the rail is the tell.</p>
+      </div>
+      <div class="panel rec">
+        <div class="plabel"><span class="k">After — recommended</span><span class="badge rec">tint + dot</span></div>
+        <div class="stage">
+          <div class="cal">
+            <span class="hr">09:00</span><div class="lane"><div class="ev dot cat-a"><span class="en"><span class="d"></span>Design crit — Karm</span><span class="et">9:00–9:45</span></div></div>
+            <span class="hr">10:00</span><div class="lane"><div class="ev dot cat-b"><span class="en"><span class="d"></span>Client call — Setu</span><span class="et">10:00–10:30</span></div></div>
+            <span class="hr">11:00</span><div class="lane"><div class="ev dot cat-c"><span class="en"><span class="d"></span>Focus — token audit</span><span class="et">11:00–12:30</span></div></div>
+          </div>
+        </div>
+        <p class="note"><b>Soft tint + a solid category dot</b> before the title. The dot is the color-blind-safe, shape-based second signal a bare tint lacks — and it survives forced-colors, where a rail vanishes.</p>
+      </div>
+    </div>
+    <ul class="why">
+      <li>Category legends elsewhere already use the <b>dot</b> shape — the calendar now shares that vocabulary instead of inventing a rail.</li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <!-- 4 CHAT MENTION -->
+  <section>
+    <div class="shd"><span class="num">04</span><h2>Chat — "you were mentioned"</h2></div>
+    <p class="job"><b>The rail's job:</b> emphasize a message where the current user is @-mentioned. <b>Problem:</b> it stacks a <code>border-l-2 border-l-accent-9</code> rail on top of a <code>bg-accent-2</code> tint — and the file's own bubble variant (:98) has no rail, so it's inconsistent within one component.</p>
+    <div class="cols">
+      <div class="panel">
+        <div class="plabel"><span class="k">Before</span><span class="badge no">tint + rail</span></div>
+        <div class="stage">
+          <div class="chat">
+            <div class="msg"><div class="av" style="background:var(--info3);color:var(--info11)">RS</div><div><div class="who">Ravi Shankar<span class="tm">10:42</span></div><div class="txt">Pushed the token audit findings to the branch.</div></div></div>
+            <div class="msg rail"><div class="av">MG</div><div><div class="who">Megha Gupta<span class="tm">10:44</span></div><div class="txt"><span class="mention-token">@you</span> can you review the rail-replacement proposal before the crit?</div></div></div>
+          </div>
+        </div>
+        <p class="note">Tint + rail + the @token — three signals for one thing. Drop the rail.</p>
+      </div>
+      <div class="panel rec">
+        <div class="plabel"><span class="k">After — chosen</span><span class="badge rec">@token only</span></div>
+        <div class="stage">
+          <div class="chat">
+            <div class="msg"><div class="av" style="background:var(--info3);color:var(--info11)">RS</div><div><div class="who">Ravi Shankar<span class="tm">10:42</span></div><div class="txt">Pushed the token audit findings to the branch.</div></div></div>
+            <div class="msg"><div class="av">MG</div><div><div class="who">Megha Gupta<span class="tm">10:44</span></div><div class="txt"><span class="mention-token">@you</span> can you review the rail-replacement proposal before the crit?</div></div></div>
+          </div>
+        </div>
+        <p class="note"><b>Just the accent <code>@you</code> token — no row tint, no rail.</b> The token alone names <i>why</i> the row matters, and it's the color-blind-safe signal (weight + the literal "@you"). This is Discord's newer, quieter direction.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b style="color:var(--fg-muted)">What this is.</b> A proposal, not a build. Colors, radii, and shadows are the real shilp-sutra tokens (light theme) pulled from <code>packages/core/src/tokens</code>; type is a system stack (Ranade/Inter render in-app). Dark + forced-colors get verified in Storybook/Chromatic during the fix. Once you pick the AI-block option and confirm the four treatments, this becomes Wave&nbsp;1 of the polish plan — the pattern proven here, then curated the same way across the rest of the components.
+  </div>
+</div>

@@ -107,6 +107,24 @@ function MasterDetailList({ children, className, ...props }: MasterDetailListPro
     setItemCount(childCount)
   }, [childCount, setItemCount])
 
+  // Keep roving focus in sync with the active/selected item, so keyboard nav
+  // starts on the current selection instead of always the first row.
+  const activeChildIndex = React.useMemo(() => {
+    let idx = -1
+    React.Children.forEach(children, (child, i) => {
+      if (
+        React.isValidElement(child) &&
+        (child.props as { active?: boolean }).active
+      ) {
+        idx = i
+      }
+    })
+    return idx
+  }, [children])
+  React.useEffect(() => {
+    if (activeChildIndex >= 0) setActiveIndex(activeChildIndex)
+  }, [activeChildIndex, setActiveIndex])
+
   // On mobile, hide list when something is selected
   if (isMobile && selected) return null
 

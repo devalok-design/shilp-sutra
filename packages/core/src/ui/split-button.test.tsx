@@ -33,7 +33,8 @@ describe('SplitButton', () => {
 
     await user.click(trigger)
     expect(trigger).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('menu')).toBeInTheDocument()
+    // Panel is a Popover (dialog semantics), not a bare role="menu".
+    expect(await screen.findByText('Menu')).toBeInTheDocument()
   })
 
   it('Escape closes dropdown', async () => {
@@ -77,7 +78,7 @@ describe('SplitButton', () => {
     )
     const buttons = container.querySelectorAll('button')
     // First button should be the trigger (More options), second should be primary (Save)
-    expect(buttons[0]).toHaveAttribute('aria-haspopup', 'menu')
+    expect(buttons[0]).toHaveAttribute('aria-haspopup', 'dialog')
     expect(buttons[1].textContent).toBe('Save')
   })
 
@@ -90,7 +91,7 @@ describe('SplitButton', () => {
     const buttons = container.querySelectorAll('button')
     // First button is primary, second is trigger
     expect(buttons[0].textContent).toBe('Save')
-    expect(buttons[1]).toHaveAttribute('aria-haspopup', 'menu')
+    expect(buttons[1]).toHaveAttribute('aria-haspopup', 'dialog')
   })
 
   it('variant="solid" with color="accent" applies solid accent classes', () => {
@@ -171,7 +172,7 @@ describe('SplitButton', () => {
   it('has no accessibility violations (open)', async () => {
     const user = userEvent.setup()
     const { container } = render(
-      <SplitButton onClick={noop} aria-label="Save actions" dropdownContent={<div role="menuitem">Save as draft</div>}>
+      <SplitButton onClick={noop} aria-label="Save actions" dropdownContent={<button type="button">Save as draft</button>}>
         Save
       </SplitButton>,
     )

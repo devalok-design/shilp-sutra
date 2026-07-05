@@ -4,7 +4,7 @@ import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
-import { Card, CardContent } from './card'
+import { Card, CardContent, CardFooter, type CardSize } from './card'
 import { Icon } from './icon'
 import { IconProvider } from './icon-context'
 import type { IconInput } from './lib/icon-input'
@@ -88,6 +88,12 @@ export interface StatCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   progress?: number
   /** Surface variant, delegated to Card: `default` (ring-in-shadow) | `elevated` | `outline` (border, no shadow) | `flat`. @default 'default' */
   variant?: 'default' | 'elevated' | 'outline' | 'flat'
+  /**
+   * Tile density, delegated to Card's size axis. `sm` tightens padding to 16px and steps
+   * the value down to `text-ds-2xl` — use it for dense KPI rows and narrow stat grids
+   * (e.g. stat-row's 140px tiles). @default 'md'
+   */
+  size?: CardSize
   /** How the brand accent reads: `none` (neutral — default), `icon` (accent chip around `icon`), or `tint` (subtle accent surface wash + accent value). */
   accentStyle?: 'none' | 'icon' | 'tint'
   /** When `accentStyle="icon"`: `soft` (tinted chip) or `solid` (filled accent chip). @default 'soft' */
@@ -194,7 +200,7 @@ function ProgressBar({ progress, label }: { progress: number; label: string }) {
     clamped >= 90 ? 'bg-success-9' : clamped >= 70 ? 'bg-warning-9' : 'bg-accent-9'
 
   return (
-    <div className="h-1 w-full rounded-pill bg-surface-raised mt-ds-04" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
+    <div className="h-1 w-full rounded-pill bg-surface-raised" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
       <div
         className={cn('h-full rounded-pill transition-[width] duration-moderate-02 ease-productive-standard', barColor)}
         style={{ width: `${clamped}%` }}
@@ -220,6 +226,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       secondaryLabel,
       progress,
       variant = 'default',
+      size = 'md',
       accentStyle = 'none',
       iconFill = 'soft',
       flash,
@@ -240,10 +247,10 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
 
     if (loading) {
       return (
-        <Card ref={ref} variant={variant} className={className} {...props}>
-          <CardContent>
-            <div className="h-ds-04 w-24 rounded-control-inner bg-skeleton-base animate-pulse mb-ds-05" />
-            <div className="h-ds-sm w-32 rounded-control bg-skeleton-base animate-pulse mb-ds-03" />
+        <Card ref={ref} variant={variant} size={size} className={className} aria-busy="true" {...props}>
+          <CardContent className="flex flex-col gap-ds-03">
+            <div className="h-ds-04 w-24 rounded-control-inner bg-skeleton-base animate-pulse" />
+            <div className="h-ds-sm w-32 rounded-control bg-skeleton-base animate-pulse" />
             <div className="h-3 w-16 rounded-control-inner bg-skeleton-base animate-pulse" />
           </CardContent>
         </Card>
@@ -274,10 +281,9 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     const deltaNode = delta ? (
       <motion.div
         className={cn(
+          // Rhythm comes from CardContent's flex gap — no placement margins.
           'flex items-center gap-ds-02 text-ds-sm font-medium',
           deltaColour,
-          // block placement owns the gap to the value; inline rides the value's baseline row.
-          deltaPlacement === 'block' && 'mt-ds-03',
         )}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -300,7 +306,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
 
     const cardContent = (
       <>
-        <div className="flex items-center justify-between mb-ds-04">
+        <div className="flex items-center justify-between">
           <motion.p
             className="text-ds-md font-medium text-surface-fg-muted"
             initial={{ opacity: 0 }}
@@ -345,38 +351,41 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             ) : null}
           </div>
         </div>
-        <div className={cn(deltaPlacement === 'inline' && delta && 'flex items-baseline gap-ds-03')}>
-          <div className="overflow-hidden">
-            <motion.p
-              className={cn(
-                'inline-block text-ds-3xl font-semibold',
-                accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
-              )}
-              initial={{ opacity: 0, y: '100%' }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={springs.smooth}
-            >
-              {prefix && (
-                <span className="text-surface-fg-muted text-ds-lg">{prefix}</span>
-              )}
-              <span className="tabular-nums">{value}</span>
-              {suffix && (
-                <span className="text-surface-fg-muted text-ds-lg">{suffix}</span>
-              )}
-            </motion.p>
+        <div className="flex flex-col gap-ds-01">
+          <div className={cn(deltaPlacement === 'inline' && delta && 'flex items-baseline gap-ds-03')}>
+            <div className="overflow-hidden">
+              <motion.p
+                className={cn(
+                  'inline-block font-semibold',
+                  size === 'sm' ? 'text-ds-2xl' : 'text-ds-3xl',
+                  accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
+                )}
+                initial={{ opacity: 0, y: '100%' }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={springs.smooth}
+              >
+                {prefix && (
+                  <span className={cn('text-surface-fg-muted', size === 'sm' ? 'text-ds-md' : 'text-ds-lg')}>{prefix}</span>
+                )}
+                <span className="tabular-nums">{value}</span>
+                {suffix && (
+                  <span className={cn('text-surface-fg-muted', size === 'sm' ? 'text-ds-md' : 'text-ds-lg')}>{suffix}</span>
+                )}
+              </motion.p>
+            </div>
+            {deltaPlacement === 'inline' && deltaNode}
           </div>
-          {deltaPlacement === 'inline' && deltaNode}
+          {secondaryLabel && (
+            <motion.p
+              className="text-ds-sm text-surface-fg-subtle"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ ...tweens.fade, delay: 0.1 }}
+            >
+              {secondaryLabel}
+            </motion.p>
+          )}
         </div>
-        {secondaryLabel && (
-          <motion.p
-            className="text-ds-sm text-surface-fg-subtle mt-ds-01"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ ...tweens.fade, delay: 0.1 }}
-          >
-            {secondaryLabel}
-          </motion.p>
-        )}
         {progress != null && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -387,23 +396,34 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           </motion.div>
         )}
         {deltaPlacement === 'block' && deltaNode}
-        {footer && (
-          <motion.div
-            className="mt-ds-04 pt-ds-04 border-t border-surface-border text-ds-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ ...tweens.fade, delay: 0.25 }}
-          >
-            {footer}
-          </motion.div>
-        )}
       </>
     )
 
     // accentStyle="tint" → a subtle accent gradient wash over Card's surface.
     const tintClass =
       accentStyle === 'tint' ? 'bg-linear-to-t from-accent-2 to-surface-raised' : undefined
-    const body = <CardContent>{cardContent}</CardContent>
+    // Footer sits outside CardContent behind a full-width divider (both are direct
+    // children of Card, so the rule spans edge-to-edge — no inset border-t).
+    const body = (
+      <>
+        <CardContent className="flex flex-col gap-ds-03">{cardContent}</CardContent>
+        {footer && (
+          <>
+            <div aria-hidden="true" className="h-px w-full bg-surface-border-subtle" />
+            <CardFooter className="text-ds-sm">
+              <motion.div
+                className="w-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ ...tweens.fade, delay: 0.25 }}
+              >
+                {footer}
+              </motion.div>
+            </CardFooter>
+          </>
+        )}
+      </>
+    )
 
     // href → wrap Card in the framework Link (Card stays the shell; hover-lift inside).
     if (href) {
@@ -416,7 +436,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           aria-label={computedAriaLabel}
           {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
-          <Card variant={variant} interactive className={tintClass}>
+          <Card variant={variant} size={size} interactive className={tintClass}>
             {body}
           </Card>
         </Link>
@@ -429,6 +449,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <Card
           ref={ref}
           variant={variant}
+          size={size}
           interactive
           className={cn(tintClass, className)}
           role="button"
@@ -449,7 +470,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     }
 
     return (
-      <Card ref={ref} variant={variant} className={cn(tintClass, className)} {...props}>
+      <Card ref={ref} variant={variant} size={size} className={cn(tintClass, className)} {...props}>
         {body}
       </Card>
     )

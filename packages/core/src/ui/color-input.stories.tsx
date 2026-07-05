@@ -28,7 +28,7 @@ type Story = StoryObj<typeof ColorInput>
 /** Default color picker with 10 named presets, interactive gradient picker, and HEX/RGB/HSL format switching. */
 export const Default: Story = {
   args: {
-    value: '#6366F1',
+    value: '#1479B0',
   },
 }
 
@@ -37,11 +37,11 @@ export const CustomPresets: Story = {
   args: {
     value: '#D33163',
     presets: [
-      { hex: '#EF4444', label: 'Danger' },
-      { hex: '#F59E0B', label: 'Warning' },
-      { hex: '#10B981', label: 'Success' },
-      { hex: '#3B82F6', label: 'Info' },
-      { hex: '#8B5CF6', label: 'Accent' },
+      { hex: '#C53637', label: 'Danger' },
+      { hex: '#DF911A', label: 'Warning' },
+      { hex: '#308639', label: 'Success' },
+      { hex: '#1479B0', label: 'Info' },
+      { hex: '#7D5FAD', label: 'Accent' },
     ],
   },
 }
@@ -49,7 +49,7 @@ export const CustomPresets: Story = {
 /** No presets — just the picker and format inputs. */
 export const NoPresets: Story = {
   args: {
-    value: '#3B82F6',
+    value: '#1479B0',
     presets: false,
   },
 }
@@ -57,7 +57,7 @@ export const NoPresets: Story = {
 /** Disabled state — trigger is dimmed and non-interactive. */
 export const Disabled: Story = {
   args: {
-    value: '#6366F1',
+    value: '#1479B0',
     disabled: true,
   },
 }
@@ -65,7 +65,7 @@ export const Disabled: Story = {
 /** Swatches-only mode — hides the interactive gradient picker. */
 export const SwatchesOnly: Story = {
   args: {
-    value: '#10B981',
+    value: '#308639',
     showPicker: false,
   },
 }
@@ -73,7 +73,7 @@ export const SwatchesOnly: Story = {
 /** Start in RGB format mode. */
 export const RGBFormat: Story = {
   args: {
-    value: '#EF4444',
+    value: '#C53637',
     defaultFormat: 'rgb',
   },
 }
@@ -81,7 +81,7 @@ export const RGBFormat: Story = {
 /** Start in HSL format mode. */
 export const HSLFormat: Story = {
   args: {
-    value: '#8B5CF6',
+    value: '#7D5FAD',
     defaultFormat: 'hsl',
   },
 }
@@ -89,7 +89,7 @@ export const HSLFormat: Story = {
 /** Inline variant — entire trigger is the color, hex overlaid. Great for tags and labels. */
 export const Inline: Story = {
   args: {
-    value: '#6366F1',
+    value: '#1479B0',
     variant: 'inline',
   },
 }
@@ -105,7 +105,7 @@ export const InlineLight: Story = {
 /** Inline variant gallery — shows contrast-aware text across multiple colors. */
 export const InlineGallery: Story = {
   render: function InlineGallery() {
-    const colors = ['#EF4444', '#F59E0B', '#10B981', '#3B82F6', '#8B5CF6', '#1E293B', '#FBBF24', '#F9FAFB']
+    const colors = ['#C53637', '#DF911A', '#308639', '#1479B0', '#7D5FAD', '#1E293B', '#FBBF24', '#F9FAFB']
     const [selected, setSelected] = useState(colors[0])
     return (
       <div className="flex flex-wrap gap-ds-03">
@@ -120,7 +120,7 @@ export const InlineGallery: Story = {
 /** Fully controlled with live value display. */
 export const Controlled: Story = {
   render: function Controlled() {
-    const [color, setColor] = useState('#3B82F6')
+    const [color, setColor] = useState('#1479B0')
     return (
       <div className="flex flex-col gap-ds-05">
         <ColorInput value={color} onChange={setColor} />

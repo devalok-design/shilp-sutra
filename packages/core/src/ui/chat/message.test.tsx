@@ -89,15 +89,17 @@ describe('Message', () => {
   })
 
   // ── highlight ────────────────────────────────────────────────────────
-  it('highlight="mention" has accent border class', () => {
+  it('highlight="mention" exposes a data hook but no rail/tint on the row', () => {
     const { container } = render(
       <Message highlight="mention">
         <Message.Body>@you</Message.Body>
       </Message>,
     )
     const root = container.firstChild as HTMLElement
-    expect(root).toHaveClass('border-l-accent-9')
-    expect(root).toHaveClass('bg-accent-2')
+    // Mention is carried by the in-content @token, not a row rail/tint (AI tell removed).
+    expect(root).toHaveAttribute('data-highlight', 'mention')
+    expect(root).not.toHaveClass('border-l-accent-9')
+    expect(root).not.toHaveClass('bg-accent-2')
   })
 
   it('highlight="internal" has warning bg class', () => {

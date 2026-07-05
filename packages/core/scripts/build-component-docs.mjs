@@ -1,16 +1,17 @@
 /**
  * build-component-docs.mjs
  *
- * Scans src/ui/, src/composed/, src/shell/ for component source files,
- * validates that each has a matching doc in docs/components/{category}/{kebab-name}.md,
- * and concatenates all docs into llms-full.txt.
+ * Scans src/ui/, src/composed/, src/shell/ for component source files and
+ * validates that each has a matching doc in docs/components/{category}/{kebab-name}.md.
+ * Validation-only since 0.46 — llms-full.txt is gone; build-mcp-manifest.mjs
+ * emits mcp-manifest.json + the router llms.txt instead.
  *
  * Usage (run from packages/core/):
- *   node scripts/build-component-docs.mjs          # validate + generate
- *   node scripts/build-component-docs.mjs --check   # validate only (no file write)
+ *   node scripts/build-component-docs.mjs           # validate
+ *   node scripts/build-component-docs.mjs --check   # same (kept for pipeline compat)
  */
 
-import { readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
+import { readdirSync, statSync } from 'fs'
 import { join, basename, extname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -75,21 +76,9 @@ function scanComponents(categoryDir) {
   return [...new Set(names)].sort()
 }
 
-// ── Section separators ──────────────────────────────────────────────────────
-
-const SECTION_SEPARATORS = {
-  ui: `\n---\n\n# UI COMPONENTS\n# Alphabetical within this section.\n# Import from: @devalok/shilp-sutra/ui/<kebab-name>\n\n---\n\n`,
-  composed: `\n---\n\n# COMPOSED COMPONENTS\n# Alphabetical within this section.\n# Import from: @devalok/shilp-sutra/composed/<kebab-name>\n\n---\n\n`,
-  shell: `\n---\n\n# SHELL COMPONENTS\n# Alphabetical within this section.\n# Import from: @devalok/shilp-sutra/shell/<kebab-name>\n\n---\n\n`,
-}
-
 // ── Main ────────────────────────────────────────────────────────────────────
 
 const checkOnly = process.argv.includes('--check')
-
-// Read version from package.json
-const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
-const version = pkg.version
 
 // Scan all categories for component names
 const componentsByCategory = {}
@@ -127,31 +116,9 @@ if (checkOnly) {
   process.exit(0)
 }
 
-// Concatenate all docs into llms-full.txt
-const parts = []
-
-// Header with version replacement
-const header = readFileSync(join(ROOT, 'docs', 'components', '_header.md'), 'utf8')
-parts.push(header.replace('{{VERSION}}', version))
-
-for (const cat of CATEGORIES) {
-  parts.push(SECTION_SEPARATORS[cat])
-
-  const docDir = join(ROOT, 'docs', 'components', cat)
-  const names = componentsByCategory[cat]
-
-  for (const name of names) {
-    const content = readFileSync(join(docDir, `${name}.md`), 'utf8')
-    parts.push(content)
-    // Ensure a blank line between docs
-    if (!content.endsWith('\n')) {
-      parts.push('\n')
-    }
-  }
-}
-
-const output = parts.join('')
-writeFileSync(join(ROOT, 'llms-full.txt'), output, 'utf8')
-
+// llms-full.txt is no longer generated (removed in 0.46 — the MCP manifest +
+// per-component docs + router llms.txt replaced the concatenated dump; see
+// docs/specs/mcp-manifest-standard.md §4). This script is now validation-only;
+// build-mcp-manifest.mjs handles all generation.
 const total = CATEGORIES.reduce((n, c) => n + componentsByCategory[c].length, 0)
-console.log(`llms-full.txt generated — ${total} components across ${CATEGORIES.length} categories.`)
+console.log(`All ${total} component doc files present across ${CATEGORIES.length} categories.`)

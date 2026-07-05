@@ -18,6 +18,15 @@ export default defineConfig({
     css: true,
     // Run test files sequentially to prevent vitest-axe "Axe is already running" race condition.
     // axe-core uses a global singleton — concurrent file execution causes collisions.
+    //
+    // NOTE (2026-07-01): tried fileParallelism + pool:'forks' to cut CI time (unit
+    // tests are 62% of CI). Forks DO avoid the axe singleton collision (separate
+    // processes), and it ~halved wall-clock — BUT it exposed load-dependent flakes:
+    // emoji-picker.test.tsx failed ~1/3 full-parallel runs while passing every time
+    // in isolation (async waitFor slips under fork CPU contention). Reverted — a
+    // flaky suite is worse than a slow one. Follow-up: harden the load-sensitive
+    // tests, then re-enable parallelism (likely with a capped maxForks) and validate
+    // over 10+ runs. See docs/audits/2026-07-01-ai-giveaway-polish/ci-hygiene-findings.md.
     fileParallelism: false,
     // Default 5000ms is too tight for axe-core a11y tests under sequential execution load.
     // 30s absorbs the tiptap + axe pathological case under ~2400-test accumulated jsdom

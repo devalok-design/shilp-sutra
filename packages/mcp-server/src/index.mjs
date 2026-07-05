@@ -19,6 +19,30 @@ import { cacheStats } from './registry.mjs'
 
 const PORT = Number(process.env.PORT) || 3111
 
+// Per-IP token bucket: RATE_LIMIT_RPM requests/minute, burst up to the same.
+// In-process is enough — single instance, read-only workload, and the data is
+// public on npm anyway; this only blunts scraping/runaway loops.
+const RATE_LIMIT_RPM = Number(process.env.RATE_LIMIT_RPM) || 60
+const buckets = new Map()
+function rateLimited(ip) {
+  const now = Date.now()
+  let b = buckets.get(ip)
+  if (!b) {
+    b = { tokens: RATE_LIMIT_RPM, at: now }
+    buckets.set(ip, b)
+  }
+  b.tokens = Math.min(RATE_LIMIT_RPM, b.tokens + ((now - b.at) / 60_000) * RATE_LIMIT_RPM)
+  b.at = now
+  if (b.tokens < 1) return true
+  b.tokens -= 1
+  return false
+}
+// Sweep idle buckets so the map can't grow unbounded.
+setInterval(() => {
+  const cutoff = Date.now() - 10 * 60_000
+  for (const [ip, b] of buckets) if (b.at < cutoff) buckets.delete(ip)
+}, 60_000).unref()
+
 const VERSION_PARAM = z
   .string()
   .optional()
@@ -119,6 +143,14 @@ const httpServer = createServer(async (req, res) => {
   if (req.url !== '/mcp') {
     res.writeHead(404, { 'content-type': 'text/plain' })
     res.end('POST /mcp (MCP streamable HTTP) or GET /health')
+    return
+  }
+
+  // Behind the site proxy the client IP arrives in x-forwarded-for.
+  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress || 'unknown'
+  if (rateLimited(ip)) {
+    res.writeHead(429, { 'content-type': 'application/json', 'retry-after': '60' })
+    res.end(JSON.stringify({ jsonrpc: '2.0', error: { code: -32000, message: `Rate limit: ${RATE_LIMIT_RPM} requests/minute. Retry after 60s.` }, id: null }))
     return
   }
 

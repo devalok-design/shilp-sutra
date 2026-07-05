@@ -3,6 +3,7 @@
 import { flexRender } from '@tanstack/react-table'
 import React from 'react'
 
+import { Card, CardContent } from './card'
 import { Checkbox } from './checkbox'
 import { useDataTableContext } from './data-table-context'
 import { cn } from './lib/utils'
@@ -32,17 +33,16 @@ export function DataTableCards<TData>({
     return (
       <div className="flex flex-col gap-ds-03">
         {Array.from({ length: skeletonRowCount }, (_, i) => (
-          <div
-            key={`card-skeleton-${i}`}
-            className="rounded-surface border border-surface-border bg-surface-raised p-ds-04"
-          >
-            <Skeleton variant="text" className="mb-ds-03 h-5 w-2/3" animation="pulse" />
-            <div className="flex flex-col gap-ds-02">
-              <Skeleton variant="text" className="h-4 w-full" animation="pulse" />
-              <Skeleton variant="text" className="h-4 w-3/4" animation="pulse" />
-              <Skeleton variant="text" className="h-4 w-1/2" animation="pulse" />
-            </div>
-          </div>
+          <Card key={`card-skeleton-${i}`} size="sm">
+            <CardContent>
+              <Skeleton variant="text" className="mb-ds-03 h-5 w-2/3" animation="pulse" />
+              <div className="flex flex-col gap-ds-02">
+                <Skeleton variant="text" className="h-4 w-full" animation="pulse" />
+                <Skeleton variant="text" className="h-4 w-3/4" animation="pulse" />
+                <Skeleton variant="text" className="h-4 w-1/2" animation="pulse" />
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     )
@@ -70,16 +70,14 @@ export function DataTableCards<TData>({
         const isSelected = row.getIsSelected()
 
         return (
-          <div
+          <Card
             key={row.id}
             role="listitem"
-            className={cn(
-              'rounded-surface border border-surface-border bg-surface-raised p-ds-04',
-              isSelected && 'ring-2 ring-accent-9',
-            )}
+            size="sm"
+            className={cn(isSelected && 'ring-2 ring-accent-9')}
           >
             {/* Header row: primary field + optional selection checkbox */}
-            <div className="flex items-start justify-between gap-ds-03 mb-ds-02">
+            <CardContent className="flex items-start justify-between gap-ds-03">
               <div className="min-w-0 flex-1 font-medium text-surface-fg">
                 {primaryCell &&
                   flexRender(primaryCell.column.columnDef.cell, primaryCell.getContext())}
@@ -94,11 +92,13 @@ export function DataTableCards<TData>({
                   className="shrink-0"
                 />
               )}
-            </div>
+            </CardContent>
 
-            {/* Label-value pairs for remaining columns */}
+            {/* Label-value pairs for remaining columns, behind a full-width rule */}
             {restCells.length > 0 && (
-              <div className="flex flex-col gap-ds-01 border-t border-surface-border pt-ds-02">
+              <>
+              <div aria-hidden="true" className="h-px w-full bg-surface-border-subtle" />
+              <CardContent className="flex flex-col gap-ds-01">
                 {restCells.map((cell) => {
                   // Respect hideBelow column meta — skip hidden columns
                   const meta = cell.column.columnDef.meta as
@@ -127,9 +127,10 @@ export function DataTableCards<TData>({
                     </div>
                   )
                 })}
-              </div>
+              </CardContent>
+              </>
             )}
-          </div>
+          </Card>
         )
       })}
     </div>

@@ -153,7 +153,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
   return (
     <>
       <Card ref={ref} className={className} {...(props as Omit<typeof props, 'color'>)}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-ds-04">
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-ds-md font-semibold">
             Notification Preferences
           </CardTitle>

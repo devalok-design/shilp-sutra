@@ -37,7 +37,9 @@ If you need a *fourth* tier (e.g. between heading and body inside one group), us
 
 ```tsx
 // Padding
-<Card className="p-ds-05">…</Card>          // inside-card spacing
+// Card manages its own padding via the size prop — NEVER add p-* to a Card
+// (it fights the gap model). Use size="sm" | "md" | "lg" instead.
+<Card size="sm">…</Card>                    // tighter card
 <div className="px-ds-07 py-ds-09">…</div>  // page region
 
 // Gaps

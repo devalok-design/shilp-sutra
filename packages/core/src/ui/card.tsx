@@ -7,17 +7,22 @@ import * as React from 'react'
 import { motionProps, springs } from './lib/motion'
 import { cn } from './lib/utils'
 
+// Bundlers (Vite, Next.js, webpack) define process.env.NODE_ENV; guard for raw ESM.
+declare const process: { env: { NODE_ENV?: string } } | undefined
+
 type CardSize = 'sm' | 'md' | 'lg'
 
-const CardSizeContext = React.createContext<CardSize>('md')
-
 const cardVariants = cva(
-  // Gap model: the container owns the vertical edge (py) and inter-slot rhythm (gap);
-  // slots own only horizontal padding (px). No per-slot py, no pt-0, no per-element
-  // margins — adding/removing a slot can't unbalance the bottom edge (make-kit rule:
-  // shadow ring is the edge, gap is the rhythm).
+  // Gap model, variable-driven: `size` sets --card-spacing / --card-gap once on the
+  // container; the container reads them for its vertical edge (py) and inter-slot
+  // rhythm (gap), slots read the same variables for their horizontal inset (px), and
+  // CardAction/CardBleed read them for corner offsets / negative margins. One variable
+  // pair is the whole size system — override it with a single arbitrary property
+  // (`[--card-spacing:var(--spacing-ds-07)]`) and every part follows.
+  // No per-slot py, no pt-0, no per-element margins — adding/removing a slot can't
+  // unbalance the bottom edge (make-kit rule: shadow ring is the edge, gap is the rhythm).
   // `relative` establishes the positioning context for <CardAction> corner slots.
-  'relative flex flex-col rounded-surface text-surface-fg transition-shadow duration-fast-02 ease-productive-standard',
+  'relative flex text-surface-fg rounded-surface transition-shadow duration-fast-02 ease-productive-standard',
   {
     variants: {
       variant: {
@@ -39,25 +44,24 @@ const cardVariants = cva(
         info: 'border-info-7',
         neutral: '',
       },
-      // size drives the container's vertical padding + inter-slot gap; slots read
-      // the same size from context for their horizontal padding.
+      // size only assigns the two variables; the orientation axis decides where
+      // they're consumed (container in vertical, <CardSection> in horizontal).
       size: {
-        sm: 'py-ds-05 gap-ds-03',
-        md: 'py-ds-05b gap-ds-04',
-        lg: 'py-ds-06 gap-ds-05',
+        sm: '[--card-spacing:var(--spacing-ds-05)] [--card-gap:var(--spacing-ds-03)]',
+        md: '[--card-spacing:var(--spacing-ds-05b)] [--card-gap:var(--spacing-ds-04)]',
+        lg: '[--card-spacing:var(--spacing-ds-06)] [--card-gap:var(--spacing-ds-05)]',
+      },
+      // vertical: the container owns py + gap (the default gap model).
+      // horizontal: the container is a padding-less row; a <CardSection> child
+      // re-establishes py + gap for the text column while a media pane owns an edge.
+      orientation: {
+        vertical: 'flex-col py-(--card-spacing) gap-(--card-gap)',
+        horizontal: 'flex-row items-stretch',
       },
     },
-    defaultVariants: { variant: 'default', color: 'default', size: 'md' },
+    defaultVariants: { variant: 'default', color: 'default', size: 'md', orientation: 'vertical' },
   },
 )
-
-/** Horizontal padding per size — applied to every slot so full-bleed children
- *  (dividers, media) can opt out, while the container owns the vertical edges. */
-const slotPxClasses: Record<CardSize, string> = {
-  sm: 'px-ds-05',
-  md: 'px-ds-05b',
-  lg: 'px-ds-06',
-}
 
 /**
  * Props for Card — a general-purpose content container with 4 elevation/style variants and
@@ -69,7 +73,13 @@ const slotPxClasses: Record<CardSize, string> = {
  * variants need no explicit border (make-kit rule #6).
  *
  * **Composition:** Use sub-components `<CardHeader>`, `<CardTitle>`, `<CardDescription>`,
- * `<CardContent>`, and `<CardFooter>` for consistent internal spacing.
+ * `<CardContent>`, and `<CardFooter>` for consistent internal spacing. Text content must live
+ * inside a slot — raw text as a direct child gets no horizontal inset (direct children span the
+ * full card width by design, which is what makes full-width dividers and bands free).
+ *
+ * **Spacing:** `size` sets `--card-spacing` / `--card-gap` once; container, slots, `CardAction`,
+ * and `CardBleed` all read the same pair. Retune a card with a single override:
+ * `className="[--card-spacing:var(--spacing-ds-07)]"`.
  *
  * **Interactive:** Pass `interactive` to enable hover shadow lift and pointer cursor —
  * useful for clickable cards in grids.
@@ -87,27 +97,33 @@ const slotPxClasses: Record<CardSize, string> = {
  * </Card>
  *
  * @example
- * // Elevated card for a dashboard stat widget:
- * <Card variant="elevated">
- *   <CardContent>
- *     <StatCard label="Revenue" value="$12,400" delta={{ value: "+8%", direction: "up" }} />
- *   </CardContent>
+ * // Full-bleed cover image + edge-to-edge divider:
+ * <Card>
+ *   <CardBleed side="top"><img src={cover} alt="" /></CardBleed>
+ *   <CardHeader><CardTitle>Muhurat launch site</CardTitle></CardHeader>
+ *   <Separator />
+ *   <CardFooter><Badge color="success">On track</Badge></CardFooter>
  * </Card>
  *
  * @example
- * // Clickable card in a project grid (interactive hover effect):
- * <Card interactive onClick={() => router.push(`/projects/${id}`)}>
- *   <CardHeader>
- *     <CardTitle>{project.name}</CardTitle>
- *   </CardHeader>
+ * // Horizontal media card — media pane owns the left edge, CardSection restores rhythm:
+ * <Card orientation="horizontal">
+ *   <div className="w-32 shrink-0 rounded-l-surface overflow-hidden">
+ *     <img src={thumb} alt="" className="h-full w-full object-cover" />
+ *   </div>
+ *   <CardSection>
+ *     <CardHeader><CardTitle>Field notes</CardTitle></CardHeader>
+ *     <CardFooter>edited yesterday</CardFooter>
+ *   </CardSection>
  * </Card>
  *
  * @example
  * // Flat card for a sidebar panel section (no shadow):
- * <Card variant="flat" className="p-ds-05">
- *   <p className="text-surface-fg-muted text-ds-sm">No recent activity</p>
+ * <Card variant="flat">
+ *   <CardContent>
+ *     <p className="text-surface-fg-muted text-ds-sm">No recent activity</p>
+ *   </CardContent>
  * </Card>
- * // These are just a few ways — feel free to combine props creatively!
  */
 export interface CardProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
@@ -118,18 +134,14 @@ export interface CardProps
 export type { CardSize }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, color, size, interactive, children, ...props }, ref) => {
-    const resolvedSize: CardSize = size ?? 'md'
+  ({ className, variant, color, size, orientation, interactive, children, ...props }, ref) => {
+    if (typeof process !== 'undefined' && process?.env.NODE_ENV !== 'production') {
+      warnOnUnwrappedTextChildren(children)
+    }
     const classes = cn(
-      cardVariants({ variant, color, size }),
+      cardVariants({ variant, color, size, orientation }),
       interactive && 'hover:shadow-raised-hover cursor-pointer transition-shadow duration-fast-02 ease-productive-standard',
       className,
-    )
-
-    const content = (
-      <CardSizeContext.Provider value={resolvedSize}>
-        {children}
-      </CardSizeContext.Provider>
     )
 
     if (interactive) {
@@ -142,14 +154,14 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           className={classes}
           {...motionProps(props)}
         >
-          {content}
+          {children}
         </motion.div>
       )
     }
 
     return (
       <div ref={ref} className={classes} {...props}>
-        {content}
+        {children}
       </div>
     )
   },
@@ -159,20 +171,16 @@ Card.displayName = 'Card'
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const size = React.useContext(CardSizeContext)
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        'flex flex-col gap-ds-02b [&>:first-child]:mt-0 [&>:last-child]:mb-0',
-        slotPxClasses[size],
-        className,
-      )}
-      {...props}
-    />
-  )
-})
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      'flex flex-col gap-ds-02b px-(--card-spacing) [&>:first-child]:mt-0 [&>:last-child]:mb-0',
+      className,
+    )}
+    {...props}
+  />
+))
 CardHeader.displayName = 'CardHeader'
 
 const CardTitle = React.forwardRef<
@@ -202,63 +210,109 @@ CardDescription.displayName = 'CardDescription'
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const size = React.useContext(CardSizeContext)
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        // Reset first/last child margins so a raw <p>/<h*>'s UA margin can't leak
-        // past the slot onto the container's gap-model padding (the bottom-heavy bug).
-        '[&>:first-child]:mt-0 [&>:last-child]:mb-0',
-        slotPxClasses[size],
-        className,
-      )}
-      {...props}
-    />
-  )
-})
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      // Reset first/last child margins so a raw <p>/<h*>'s UA margin can't leak
+      // past the slot onto the container's gap-model padding (the bottom-heavy bug).
+      'px-(--card-spacing) [&>:first-child]:mt-0 [&>:last-child]:mb-0',
+      className,
+    )}
+    {...props}
+  />
+))
 CardContent.displayName = 'CardContent'
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const size = React.useContext(CardSizeContext)
-  return (
-    <div
-      ref={ref}
-      className={cn('flex items-center gap-ds-03', slotPxClasses[size], className)}
-      {...props}
-    />
-  )
-})
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn('flex items-center gap-ds-03 px-(--card-spacing)', className)}
+    {...props}
+  />
+))
 CardFooter.displayName = 'CardFooter'
+
+/**
+ * A vertical stack that re-establishes the card's padding + gap rhythm — the text column
+ * of a `<Card orientation="horizontal">`. Reads the same `--card-spacing` / `--card-gap`
+ * variables the container sets, so the horizontal card's content column matches a vertical
+ * card of the same `size` exactly.
+ */
+const CardSection = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn('flex min-w-0 flex-1 flex-col py-(--card-spacing) gap-(--card-gap)', className)}
+    {...props}
+  />
+))
+CardSection.displayName = 'CardSection'
+
+type CardBleedSide = 'x' | 'top' | 'bottom' | 'y' | 'all'
+
+const bleedSideClasses: Record<CardBleedSide, string> = {
+  // Inside a slot: escape the slot's horizontal inset.
+  x: '-mx-(--card-spacing)',
+  // As a direct child: escape the container's vertical edge (direct children are
+  // already full-width — never add `x` bleed to a direct child, it would overflow).
+  top: '-mt-(--card-spacing) rounded-t-surface overflow-hidden',
+  bottom: '-mb-(--card-spacing) rounded-b-surface overflow-hidden',
+  y: '-my-(--card-spacing) rounded-surface overflow-hidden',
+  // Inside a slot, escaping every edge (e.g. an image-only card body).
+  all: '-my-(--card-spacing) -mx-(--card-spacing) rounded-surface overflow-hidden',
+}
+
+export interface CardBleedProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Which card padding to negate. `top`/`bottom`/`y` are for direct children of Card
+   * (full-bleed media, edge bands) and inherit the card's corner radius; `x`/`all` are
+   * for content INSIDE a slot that needs to escape the slot's horizontal inset.
+   * Direct children of Card already span its full width — don't use `x`/`all` there.
+   * @default 'x'
+   */
+  side?: CardBleedSide
+}
+
+/**
+ * Escape hatch from the card's padding — the shilp-sutra equivalent of Radix Themes'
+ * `Inset` / Polaris `Bleed`. Negates the same `--card-spacing` variable the padding
+ * reads, so it stays exact across sizes and overrides.
+ *
+ * @example
+ * // Cover image touching the card's top + side edges:
+ * <Card>
+ *   <CardBleed side="top"><img src={cover} alt="" /></CardBleed>
+ *   <CardHeader><CardTitle>Project</CardTitle></CardHeader>
+ * </Card>
+ *
+ * @example
+ * // A tinted band inside CardContent, running edge-to-edge:
+ * <CardContent>
+ *   <CardBleed><div className="bg-accent-2 px-(--card-spacing) py-ds-03">Heads up…</div></CardBleed>
+ * </CardContent>
+ */
+const CardBleed = React.forwardRef<HTMLDivElement, CardBleedProps>(
+  ({ className, side = 'x', ...props }, ref) => (
+    <div ref={ref} className={cn(bleedSideClasses[side], className)} {...props} />
+  ),
+)
+CardBleed.displayName = 'CardBleed'
 
 type CardActionPlacement = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
 
-// Corner inset matches the slot padding for the card's size, so an action's edge
-// lines up with the content edge. Class names are spelled out literally (not built
-// from the size) so Tailwind's JIT can see them.
-const cornerPositions: Record<CardSize, Record<CardActionPlacement, string>> = {
-  sm: {
-    'top-right': 'top-ds-05 right-ds-05',
-    'top-left': 'top-ds-05 left-ds-05',
-    'bottom-right': 'bottom-ds-05 right-ds-05',
-    'bottom-left': 'bottom-ds-05 left-ds-05',
-  },
-  md: {
-    'top-right': 'top-ds-05b right-ds-05b',
-    'top-left': 'top-ds-05b left-ds-05b',
-    'bottom-right': 'bottom-ds-05b right-ds-05b',
-    'bottom-left': 'bottom-ds-05b left-ds-05b',
-  },
-  lg: {
-    'top-right': 'top-ds-06 right-ds-06',
-    'top-left': 'top-ds-06 left-ds-06',
-    'bottom-right': 'bottom-ds-06 right-ds-06',
-    'bottom-left': 'bottom-ds-06 left-ds-06',
-  },
+// Corner inset reads --card-spacing so an action's edge lines up with the slot
+// content edge at every size.
+const cornerPositions: Record<CardActionPlacement, string> = {
+  'top-right': 'top-(--card-spacing) right-(--card-spacing)',
+  'top-left': 'top-(--card-spacing) left-(--card-spacing)',
+  'bottom-right': 'bottom-(--card-spacing) right-(--card-spacing)',
+  'bottom-left': 'bottom-(--card-spacing) left-(--card-spacing)',
 }
 
 export interface CardActionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -291,23 +345,43 @@ export interface CardActionProps extends React.HTMLAttributes<HTMLDivElement> {
  * </Card>
  */
 const CardAction = React.forwardRef<HTMLDivElement, CardActionProps>(
-  ({ className, placement = 'top-right', tuck, ...props }, ref) => {
-    const size = React.useContext(CardSizeContext)
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          'absolute z-[1] flex items-center gap-ds-02',
-          cornerPositions[size][placement],
-          tuck && '-m-ds-02',
-          className,
-        )}
-        {...props}
-      />
-    )
-  },
+  ({ className, placement = 'top-right', tuck, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'absolute z-[1] flex items-center gap-ds-02',
+        cornerPositions[placement],
+        tuck && '-m-ds-02',
+        className,
+      )}
+      {...props}
+    />
+  ),
 )
 CardAction.displayName = 'CardAction'
 
-export { Card, CardAction, CardContent,CardDescription, CardFooter, CardHeader, CardTitle, cardVariants }
-export type { CardActionPlacement }
+// Text-shaped tags that almost certainly expected a slot's horizontal inset.
+// Structural tags (div, section, img, table, hr…) are legitimate full-width direct
+// children, so they stay silent.
+const TEXTUAL_TAGS = new Set(['p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'label', 'small', 'strong', 'em'])
+let warnedUnwrappedText = false
+
+function warnOnUnwrappedTextChildren(children: React.ReactNode): void {
+  if (warnedUnwrappedText) return
+  React.Children.forEach(children, (child) => {
+    const isBareText = typeof child === 'string' && child.trim() !== ''
+    const isTextualTag =
+      React.isValidElement(child) &&
+      typeof child.type === 'string' &&
+      TEXTUAL_TAGS.has(child.type)
+    if (isBareText || isTextualTag) {
+      warnedUnwrappedText = true
+      console.warn(
+        '[shilp-sutra] <Card> received text content as a direct child. Direct children span the full card width and get no horizontal inset — wrap text in <CardContent> (or <CardHeader>/<CardFooter>). See the Card docs, "Composition".',
+      )
+    }
+  })
+}
+
+export { Card, CardAction, CardBleed, CardContent, CardDescription, CardFooter, CardHeader, CardSection, CardTitle, cardVariants }
+export type { CardActionPlacement, CardBleedSide }

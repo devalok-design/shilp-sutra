@@ -2,10 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
   Card,
   CardAction,
+  CardBleed,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
+  CardSection,
   CardTitle,
 } from './card'
 import { Badge } from './badge'
@@ -61,7 +63,7 @@ export const Interactive: Story = {
 export const Simple: Story = {
   render: () => (
     <Card className="w-[350px]">
-      <CardContent className="pt-ds-06">
+      <CardContent>
         <p className="text-ds-sm">A simple card with only content, no header or footer.</p>
       </CardContent>
     </Card>
@@ -161,5 +163,79 @@ export const WithCornerAction: Story = {
         </CardAction>
       </Card>
     </div>
+  ),
+}
+
+export const FullBleedMedia: Story = {
+  name: 'CardBleed (full-bleed media + bands)',
+  render: () => (
+    <div className="flex flex-wrap gap-ds-05">
+      <Card className="w-[280px]">
+        <CardBleed side="top">
+          <div className="h-24 bg-linear-to-br from-accent-9 to-accent-11" />
+        </CardBleed>
+        <CardHeader>
+          <CardTitle>Cover image</CardTitle>
+          <CardDescription>side=&quot;top&quot; — touches three edges, inherits the radius.</CardDescription>
+        </CardHeader>
+      </Card>
+
+      <Card className="w-[280px]">
+        <CardHeader>
+          <CardTitle>Storage plan</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardBleed>
+            <div className="bg-accent-2 px-(--card-spacing) py-ds-03 text-ds-sm text-accent-11">
+              90% of quota used — inline band via side=&quot;x&quot;.
+            </div>
+          </CardBleed>
+        </CardContent>
+        <CardContent>
+          <p className="text-ds-sm text-surface-fg-muted">
+            Note: direct children of Card already span the full width — a divider or band
+            placed between slots needs no bleed at all. side=&quot;x&quot; is only for escaping
+            a slot&apos;s inset.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  ),
+}
+
+export const Horizontal: Story = {
+  name: 'Horizontal (media pane + CardSection)',
+  render: () => (
+    <Card orientation="horizontal" className="w-[420px]">
+      <div className="w-28 shrink-0 overflow-hidden rounded-l-surface">
+        <div className="h-full min-h-24 bg-linear-to-br from-accent-9 to-info-9" />
+      </div>
+      <CardSection>
+        <CardHeader>
+          <CardTitle>Field notes — panchang engine</CardTitle>
+          <CardDescription>Blog draft · 6 min read</CardDescription>
+        </CardHeader>
+        <CardFooter>
+          <Badge color="neutral" size="xs">Draft</Badge>
+        </CardFooter>
+      </CardSection>
+    </Card>
+  ),
+}
+
+export const SpacingOverride: Story = {
+  name: 'One-variable spacing override',
+  render: () => (
+    <Card className="w-[350px] [--card-spacing:var(--spacing-ds-07)] [--card-gap:var(--spacing-ds-05)]">
+      <CardHeader>
+        <CardTitle>Hero card</CardTitle>
+        <CardDescription>
+          Padding, slot inset, and CardAction corners all retune from one override.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-ds-sm">className=&quot;[--card-spacing:var(--spacing-ds-07)]&quot;</p>
+      </CardContent>
+    </Card>
   ),
 }

@@ -347,3 +347,15 @@ export const LoadingFlat: Story = {
   },
   decorators: [(Story) => <div className="w-[280px]"><Story /></div>],
 }
+
+export const DenseGrid: Story = {
+  name: 'size="sm" — dense KPI grid',
+  render: () => (
+    <div className="grid w-[640px] grid-cols-4 gap-ds-04">
+      <StatCard size="sm" label="Tasks" value={86} delta={{ value: '+12', direction: 'up' }} />
+      <StatCard size="sm" label="Overdue" value={4} delta={{ value: '-2', direction: 'down' }} />
+      <StatCard size="sm" label="In review" value={11} delta={{ value: '+3', direction: 'up' }} />
+      <StatCard size="sm" label="Blocked" value={2} delta={{ value: '0', direction: 'neutral' }} />
+    </div>
+  ),
+}

@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback,AvatarImage } from '../avatar'
 import { Icon } from '../icon'
 import { IconProvider } from '../icon-context'
 import type { IconInput } from '../lib/icon-input'
+import { MENTION_TOKEN_CLASS } from '../lib/mention'
 import { motionProps,springs } from '../lib/motion'
 import { normalizeIcon } from '../lib/normalize-icon'
 import { cn } from '../lib/utils'
@@ -96,7 +97,8 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
             className={cn(
               'group/message relative flex',
               placement === 'end' ? 'justify-end' : 'justify-start',
-              // mention is carried by the in-content @token, not a row tint/rail
+              // mention is carried by the styled in-content @token (see MENTION_TOKEN_CLASS), not a row tint/rail
+              MENTION_TOKEN_CLASS,
               highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
               className,
             )}
@@ -129,7 +131,8 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
           className={cn(
             'group/message relative flex gap-ds-04',
             grouped && '-mt-ds-01',
-            // mention is carried by the in-content @token, not a row rail/tint
+            // mention is carried by the styled in-content @token (see MENTION_TOKEN_CLASS), not a row rail/tint
+            MENTION_TOKEN_CLASS,
             highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
             className,
           )}

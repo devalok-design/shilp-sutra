@@ -10,6 +10,7 @@
  */
 
 import { getDocs } from './registry.mjs'
+import * as github from './github.mjs'
 
 const FLOOR = '0.45.0'
 const MAX_CHARS = 20_000
@@ -203,4 +204,89 @@ export async function searchDocs({ query, version }) {
       (hits.length > 5 ? `\n\n(${hits.length - 5} more matches — narrow the query.)` : '')
     : `No sections matched "${query}". Try find_component for component names, or broader terms.`
   return cap(banner(d.version) + body)
+}
+
+// ── report_issue (the one write path) ─────────────────────────────────────────
+
+const CAP = { title: 150, body: 6000, reproduction: 4000 }
+const CATEGORY_LABEL = { bug: 'bug', feature: 'enhancement', suggestion: 'enhancement', docs: 'documentation' }
+const SEVERITY_LABEL = { urgent: 'urgent', normal: 'normal', 'nice-to-have': 'nice-to-have' }
+const FRAMEWORK_LABEL = {
+  vite: 'framework:vite',
+  'next-app': 'framework:next-app',
+  'next-pages': 'framework:next-pages',
+  astro: 'framework:astro',
+  remix: 'framework:remix',
+  tanstack: 'framework:tanstack',
+  other: 'framework:other',
+}
+
+function clip(s, n) {
+  return s.length > n ? s.slice(0, n) + '\n\n[…truncated by report_issue char cap]' : s
+}
+
+/**
+ * Create a GitHub issue on behalf of an AI agent that hit a wall using shilp-sutra.
+ * The one write path on an otherwise read-only server: guarded by a per-IP hourly
+ * write limit (ctx.checkWriteLimit), title-dedup, content caps, and a `mcp-submitted`
+ * label so maintainers know it arrived unvetted.
+ */
+export async function reportIssue(args, ctx = {}) {
+  const { category, title, body, reproduction, component, framework, severity, version } = args
+
+  if (!github.configured) {
+    throw new Error(
+      'Feedback submission is not enabled on this server (GitHub App not configured). ' +
+        'File manually at https://github.com/' + github.feedbackRepo + '/issues/new/choose.'
+    )
+  }
+  ctx.checkWriteLimit?.()
+
+  const t = (title || '').trim()
+  const b = (body || '').trim()
+  if (!t) throw new Error('`title` is required — a one-line summary of the bug/suggestion.')
+  if (!b) throw new Error('`body` is required — describe what happened / what you want and why.')
+  if (!CATEGORY_LABEL[category]) {
+    throw new Error(`\`category\` must be one of: ${Object.keys(CATEGORY_LABEL).join(', ')}.`)
+  }
+
+  // Dedup against open issues so retries/loops don't spawn duplicates.
+  const dupTitle = clip(t, CAP.title)
+  const dup = await github.findDuplicate(dupTitle)
+  if (dup) {
+    return (
+      `A matching open issue already exists: #${dup.number} — ${dup.html_url}\n\n` +
+      'Not filing a duplicate. Comment on that issue instead, or refine the title if this is genuinely different.'
+    )
+  }
+
+  const meta = [
+    `**Category:** ${category}`,
+    component ? `**Component:** ${component}` : null,
+    version ? `**shilp-sutra version:** ${version}` : null,
+    framework ? `**Framework:** ${framework}` : null,
+    severity ? `**Reported severity:** ${severity}` : null,
+  ]
+    .filter(Boolean)
+    .join('\n')
+
+  const issueBody = [
+    '<!-- filed via the shilp-sutra MCP `report_issue` tool -->',
+    meta,
+    '## Description\n' + clip(b, CAP.body),
+    reproduction ? '## Reproduction\n' + clip(reproduction.trim(), CAP.reproduction) : null,
+    '---\n_Filed by an AI coding agent via the shilp-sutra MCP `report_issue` tool. Unvetted — pending maintainer triage._',
+  ]
+    .filter(Boolean)
+    .join('\n\n')
+
+  const labels = ['agent-filed', 'needs-triage', 'mcp-submitted', CATEGORY_LABEL[category]]
+  if (framework && FRAMEWORK_LABEL[framework]) labels.push(FRAMEWORK_LABEL[framework])
+  if (severity && SEVERITY_LABEL[severity]) labels.push(SEVERITY_LABEL[severity])
+
+  const created = await github.createIssue({ title: `[${category}] ${dupTitle}`, body: issueBody, labels: [...new Set(labels)] })
+  return (
+    `Filed issue #${created.number}: ${created.html_url}\n\n` +
+    'A maintainer will triage it (label `needs-triage`). Thanks — this feedback improves the design system.'
+  )
 }

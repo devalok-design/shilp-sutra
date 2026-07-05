@@ -33,6 +33,7 @@ import { useColorMode } from '../hooks/use-color-mode'
 import { useIsMobile } from '../hooks/use-mobile'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
+import { MENTION_TOKEN_CLASS } from '../ui/lib/mention'
 import { durations } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 import { SplitButton } from '../ui/split-button'
@@ -154,7 +155,7 @@ const CHAT_PROSE = [
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_a]:text-accent-11 [&_a]:underline',
-  '[&_.mention]:rounded-control-inner [&_.mention]:bg-accent-2 [&_.mention]:px-ds-02 [&_.mention]:py-[1px] [&_.mention]:font-medium [&_.mention]:text-accent-11',
+  MENTION_TOKEN_CLASS,
 ].join(' ')
 
 // ── Split Send Dropdown (chevron next to send — schedule send, etc.) ──
@@ -425,6 +426,19 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const submitRef = React.useRef<(() => void) | undefined>(undefined)
     const enterBehaviorRef = React.useRef(enterBehavior)
     enterBehaviorRef.current = enterBehavior
+    // Same live-ref pattern for the mention-select callback: the extensions memo
+    // only rebuilds on presence changes (`!!mentions` etc.), so passing
+    // onMentionSelect directly would freeze the mount-time closure. See #92.
+    const onMentionSelectRef = React.useRef(onMentionSelect)
+    onMentionSelectRef.current = onMentionSelect
+    // Same reasoning for the mention data sources read inside the memoized
+    // `items` resolver — the memo only rebuilds on presence, so a consumer
+    // swapping the list or the search fn would otherwise keep the mount-time
+    // value. See #92.
+    const mentionsRef = React.useRef(mentions)
+    mentionsRef.current = mentions
+    const onMentionSearchRef = React.useRef(onMentionSearch)
+    onMentionSearchRef.current = onMentionSearch
 
     const isMobile = useIsMobile()
     const config = variantConfig[variant]
@@ -523,11 +537,12 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
             HTMLAttributes: { class: 'mention' },
             suggestion: {
               items: async ({ query }: { query: string }) => {
-                if (onMentionSearch) return await onMentionSearch(query)
-                if (mentions) return mentions.filter(m => m.label.toLowerCase().includes(query.toLowerCase())).slice(0, 8)
+                if (onMentionSearchRef.current) return await onMentionSearchRef.current(query)
+                const list = mentionsRef.current
+                if (list) return list.filter(m => m.label.toLowerCase().includes(query.toLowerCase())).slice(0, 8)
                 return []
               },
-              render: createSuggestionRenderer(onMentionSelect),
+              render: createSuggestionRenderer((item: MentionItem) => onMentionSelectRef.current?.(item)),
             },
           }),
         )

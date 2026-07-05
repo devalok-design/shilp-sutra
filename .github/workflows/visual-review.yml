@@ -9,6 +9,9 @@ on:
       - 'apps/site/**'
   pull_request:
     branches: [main]
+    # PR runs are label-gated: add the "visual-review" label to snapshot a PR.
+    # Main pushes always snapshot (keeps per-commit baselines attributable).
+    types: [opened, synchronize, reopened, labeled]
     paths-ignore:
       - 'apps/site/**'
   workflow_dispatch:
@@ -20,6 +23,7 @@ on:
 
 jobs:
   chromatic:
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'visual-review')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

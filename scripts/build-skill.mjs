@@ -4,7 +4,6 @@
  *
  * Mirrors:
  *   packages/core/llms.txt              -> skills/shilp-sutra/references/components.md
- *   packages/core/llms-full.txt         -> skills/shilp-sutra/references/components-full.md
  *   packages/core/docs/recipes/*.md     -> skills/shilp-sutra/references/setup-*.md (and others)
  *
  * Run via: node scripts/build-skill.mjs
@@ -26,16 +25,12 @@ const refsDir = join(skillRoot, 'references')
 const recipeDir = join(repoRoot, 'packages', 'core', 'docs', 'recipes')
 
 const transfers = [
-  // Component reference (cheatsheet + full)
+  // Component reference (router — llms-full.txt removed in 0.46; per-component
+  // detail lives in docs/components/**/*.md and mcp-manifest.json)
   {
     src: join(repoRoot, 'packages', 'core', 'llms.txt'),
     dst: join(refsDir, 'components.md'),
     header: `<!-- Source: packages/core/llms.txt — do not edit directly. Regenerate with \`node scripts/build-skill.mjs\`. -->\n\n`,
-  },
-  {
-    src: join(repoRoot, 'packages', 'core', 'llms-full.txt'),
-    dst: join(refsDir, 'components-full.md'),
-    header: `<!-- Source: packages/core/llms-full.txt — do not edit directly. Regenerate with \`node scripts/build-skill.mjs\`. -->\n\n`,
   },
   // Setup recipes (rename install-* -> setup-*)
   ...readdirSync(recipeDir)

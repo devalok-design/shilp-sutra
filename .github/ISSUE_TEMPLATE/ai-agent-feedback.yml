@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        File this when an agent: (a) followed a recipe and it broke, (b) the docs claim something the code doesn't do, (c) `llms.txt` / `llms-full.txt` / `AGENTS.md` is missing context the agent needed, OR (d) a constraint we documented turned out to be wrong.
+        File this when an agent: (a) followed a recipe and it broke, (b) the docs claim something the code doesn't do, (c) `llms.txt` / `mcp-manifest.json` / `AGENTS.md` / a component doc is missing context the agent needed, OR (d) a constraint we documented turned out to be wrong.
 
         Karm's agent flow uses the `karm-ai-agent-feedback` label specifically — pick that label below if you're filing from Karm. Other consumer agents use the default `ai-agent-feedback`.
 
@@ -53,7 +53,7 @@ body:
     id: doc-gap
     attributes:
       label: What the docs should have said
-      description: Suggest the fix. Even a rough sentence helps. We update llms.txt, llms-full.txt, AGENTS.md, and recipes from these reports.
+      description: Suggest the fix. Even a rough sentence helps. We update llms.txt, mcp-manifest.json sources, AGENTS.md, and recipes from these reports.
     validations:
       required: true
 

@@ -29,7 +29,7 @@ Q1. Is @devalok/shilp-sutra already installed?
     YES → continue
 
 Q2. What does the user want to do?
-    a) Add or use a component        → references/components.md (skim), then components-full.md (deep)
+    a) Add or use a component        → references/components.md (router), then the per-component doc at node_modules/@devalok/shilp-sutra/docs/components/<tier>/<name>.md (deep)
     b) Change colors/fonts/radius    → references/customize-brand.md
     c) Server Components / Next.js   → references/server-components.md
     d) Something is broken           → references/troubleshoot.md
@@ -67,7 +67,7 @@ These are non-negotiable. Violating any of them produces runtime errors that loo
 4. **Prefer per-component imports — they keep RSC bundles small and avoid peer-dep cliffs.** `@devalok/shilp-sutra/ui/text` is server-safe and pulls only its own peers. The barrel `@devalok/shilp-sutra/ui` re-exports every component (including ones with hard peer deps like `input-otp`), so it forces those peers to install even when unused. With all peers installed the barrel also works in RSC (per-component `"use client"` is honoured), but the client bundle is larger. Prefer per-component for new code; existing barrel usage is not an emergency. See `references/server-components.md`.
 5. **Spacing uses the `--spacing-ds-*` namespace** (`p-ds-04`, `gap-ds-03`); typography uses `text-ds-body-md`. These **coexist with** Tailwind 4's numeric scale (`p-4`, `gap-2`) by design — both valid. Pick `p-ds-*` for values that should track DS theme changes, `p-N` for one-off layout. Do NOT mass-codemod `p-4` → `p-ds-04`. **Cadence when building layouts:** pick a 3-tier scale, not every adjacent token — `ds-03` (related: label↔field), `ds-05` (grouped: between field-groups), `ds-07` (section: between blocks), optional `ds-08`+ (hero). 3-4 distinct gaps per surface; 5+ reads muddy. Anti-pattern: `ds-02` + `ds-04` as different signals on one surface — they collapse. The squint test must still reveal grouping.
 6. **Bare `shadow` does not exist in Tailwind 4.** Use `shadow-raised`, `shadow-overlay`, `shadow-floating`. Bare `rounded` is fine (maps to `--radius`); `rounded-ds-lg` etc. for sized variants.
-7. **Do not invent variant names.** CVA source files at `node_modules/@devalok/shilp-sutra/dist/ui/*.d.ts` (or `packages/core/src/ui/*.tsx` in the DS repo) are authoritative. When in doubt, check `references/components-full.md` for the enumerated list. If you guess a variant that doesn't exist, the prop is silently dropped and the default applies.
+7. **Do not invent variant names.** CVA source files at `node_modules/@devalok/shilp-sutra/dist/ui/*.d.ts` (or `packages/core/src/ui/*.tsx` in the DS repo) are authoritative. When in doubt, check `node_modules/@devalok/shilp-sutra/mcp-manifest.json` (props as JSON) or the per-component doc for the enumerated list. If you guess a variant that doesn't exist, the prop is silently dropped and the default applies.
 8. **Default `variant="soft"` over `variant="outline"` for non-primary Button actions.** Soft (tinted bg + tinted text, no border) reads warmer in data-dense UIs. Use outline only when soft would disappear on a colored background or when a primary/secondary hierarchy needs a visible border.
 
 ## Surface layering (when building cards, panels, dialogs)
@@ -89,8 +89,8 @@ Putting `bg-surface-base` on a card is a bug — cards belong on `surface-raised
 
 ## Adding a component
 
-1. Skim `references/components.md` — the concise cheatsheet, ~660 lines. Tells you what exists, what variants ship, what the common gotchas are.
-2. If `components.md` does not have enough detail (you need full prop tables, every variant, every example), open `references/components-full.md`.
+1. Skim `references/components.md` — the router. Tells you what exists and where each component's full doc lives.
+2. If `components.md` does not have enough detail (you need full prop tables, every variant, every example), open the per-component doc at `node_modules/@devalok/shilp-sutra/docs/components/<tier>/<name>.md`, or read the component's entry in `node_modules/@devalok/shilp-sutra/mcp-manifest.json`.
 3. Import from the per-component entry: `import { Button } from "@devalok/shilp-sutra/ui/button"`. The barrel `@devalok/shilp-sutra/ui` works in client-only contexts but is heavier — prefer per-component.
 4. Use **semantic tokens** for color (`text-foreground`, `bg-surface-2`, `border-border-default`). Never raw OKLCH values, never `text-white`.
 5. Compose with primitives the package already ships. Do not rebuild Dialog/Popover/Combobox from scratch.
@@ -140,13 +140,14 @@ Do not guess — most of these failures look identical from the outside but have
 ## Browsing the system
 
 - **Storybook** (live previews, every story, MCP server available when running locally): https://devalok-design.github.io/shilp-sutra/
-- **Component reference (this skill)**: `references/components.md` (cheatsheet) and `references/components-full.md` (full API).
+- **Component reference (this skill)**: `references/components.md` (router); full API per component via `docs/components/` or `mcp-manifest.json` in the installed package.
 - **Source**: https://github.com/devalok-design/shilp-sutra — `packages/core/src/ui/*.tsx` are the CVA sources of truth.
 
 When the package is installed locally, the same content also ships in the npm tarball:
 
-- `node_modules/@devalok/shilp-sutra/llms.txt` — cheatsheet
-- `node_modules/@devalok/shilp-sutra/llms-full.txt` — full reference
+- `node_modules/@devalok/shilp-sutra/llms.txt` — router (what exists + where to get detail)
+- `node_modules/@devalok/shilp-sutra/docs/components/<tier>/<name>.md` — per-component reference
+- `node_modules/@devalok/shilp-sutra/mcp-manifest.json` — machine-readable props/tokens/composition
 - `node_modules/@devalok/shilp-sutra/docs/recipes/` — setup recipes
 - `node_modules/@devalok/shilp-sutra/skill/` — this skill (offline-installable)
 

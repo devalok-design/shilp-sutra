@@ -140,7 +140,7 @@ jobs:
 
       # Regenerate skill references from sources BEFORE the audit's drift
       # gate runs. The skill refs are auto-copied from llms.txt /
-      # llms-full.txt / docs/recipes/*.md by `build-skill.mjs`; without a
+      # llms.txt / docs/recipes/*.md by `build-skill.mjs`; without a
       # regen here, any PR that edits a source file but doesn't also commit
       # the regenerated ref makes the audit fail post-merge (the email-spam
       # we hit on 2026-05-27 and again on 2026-05-28). Generating here lets

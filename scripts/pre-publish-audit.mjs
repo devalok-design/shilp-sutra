@@ -128,7 +128,7 @@ console.log('\x1b[36mGit State\x1b[0m')
 
 // In CI the working tree is inherently fresh (just checked out). If the
 // audit also runs `pnpm build` as part of its chain, build artifacts that
-// are regenerated deterministically (llms-full.txt, copied root docs into
+// are regenerated deterministically (mcp-manifest.json, llms.txt router, copied root docs into
 // packages/core/) will make `git status --porcelain` non-empty even though
 // nothing a developer did is uncommitted. The gate exists to catch
 // developer-laptop state where someone forgot to commit; in CI it's noise.
@@ -811,17 +811,59 @@ gate('Icon-prop components import normalize-icon', () => {
   )
 })
 
-// Gate: llms-quick.txt exists and is under the token budget. The whole point
-// of the quick file is that AI agents can read it in one shot — if it grows
-// past ~15K tokens (≈60KB at the standard 4 chars/token rate), it loses its
-// purpose and we should re-trim it instead of letting it drift.
-gate('llms-quick.txt ≤ 15K tokens (≈60KB)', () => {
-  const quick = join(ROOT, 'packages/core/llms-quick.txt')
-  if (!existsSync(quick)) return 'packages/core/llms-quick.txt missing — see F-18 in MIGRATION.md v0.40 entry'
-  const content = readFileSync(quick, 'utf-8')
+// Gate: router llms.txt exists and stays a router — ≤3.5K tokens. Replaced the
+// llms-quick.txt cap when llms-quick/llms-full were removed in 0.46. The
+// router's whole value is being cheap to load in every agent context; if it
+// grows, deep content is leaking back in — move it behind the MCP manifest.
+gate('llms.txt (router) ≤ 3.5K tokens', () => {
+  const router = join(ROOT, 'packages/core/llms.txt')
+  if (!existsSync(router)) return 'packages/core/llms.txt missing — run node scripts/build-mcp-manifest.mjs'
+  const content = readFileSync(router, 'utf-8')
   const approxTokens = Math.ceil(content.length / 4)
-  if (approxTokens > 15000) {
-    return `llms-quick.txt is ~${approxTokens} tokens (${content.length} chars). Cap is 15K — trim before publishing. The quick file's value is fitting in one Read; let llms.txt absorb the overflow.`
+  if (approxTokens > 3500) {
+    return `llms.txt is ~${approxTokens} tokens. Router cap is 3.5K — deep content belongs in per-component docs / mcp-manifest.json, not the router.`
+  }
+  return true
+})
+
+// Gate: mcp-manifest.json parses, validates structurally, and is stamped with
+// the current package version. Catches the recurring "version bumped but
+// stamped docs not regenerated" failure (bit 0.39 + 0.40 with llms-full.txt).
+// --check re-parses all component docs + token CSS and exits non-zero on any
+// structural violation (missing fields, bad tier, invalid composition relation).
+gate('mcp-manifest.json valid + stamped with current version', () => {
+  const manifestPath = join(ROOT, 'packages/core/mcp-manifest.json')
+  if (!existsSync(manifestPath)) return 'packages/core/mcp-manifest.json missing — run node scripts/build-mcp-manifest.mjs'
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'))
+  const coreVersion = getPackageVersion('core')
+  if (manifest.packageVersion !== coreVersion) {
+    return `mcp-manifest.json stamped ${manifest.packageVersion}, package.json is ${coreVersion} — regenerate: node scripts/build-mcp-manifest.mjs`
+  }
+  try {
+    execSync('node scripts/build-mcp-manifest.mjs --check', {
+      cwd: join(ROOT, 'packages/core'),
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'build-mcp-manifest --check failed'
+  }
+})
+
+// Advisory: composition tagging coverage. The AI-focused doc switch (0.46)
+// converts prose Composability bullets to tagged form (**Part:**, **Composes:**,
+// etc.) so composition serves as structured data. Track progress; flip to a
+// hard gate once conversion completes.
+advisory('Composition tagging coverage', () => {
+  const manifest = JSON.parse(readFileSync(join(ROOT, 'packages/core/mcp-manifest.json'), 'utf-8'))
+  const entries = Object.entries(manifest.components)
+  const untagged = entries.filter(([, c]) => {
+    const keys = Object.keys(c.composition ?? {})
+    return keys.length === 0 || (keys.length === 1 && keys[0] === 'notes')
+  })
+  if (untagged.length > 0) {
+    return `${untagged.length}/${entries.length} components have no structured composition data (notes-only or empty)`
   }
   return true
 })

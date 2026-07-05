@@ -148,7 +148,7 @@ When unsure whether old ⊂ new or new ⊂ old, write a `@ts-expect-error`/`expe
 
 Subpath exports: `@devalok/shilp-sutra/make-kit` → `Guidelines.md`, `@devalok/shilp-sutra/make-kit/*` → individual files.
 
-**Authoring rules.** Voice is direct + prescriptive, no marketing copy. Sections per component: import → When to use → Variants/Colors/Sizes tables → Props table → Examples (4–6) → Rules. Props/defaults MUST come from `llms-full.txt` or actual CVA source — when those disagree, the source code wins (caught one stale `llms-full.txt` Form section during initial authoring). When updating components in `src/ui/`, also update the matching `make-kit/components/*.md` if the prop surface changed.
+**Authoring rules.** Voice is direct + prescriptive, no marketing copy. Sections per component: import → When to use → Variants/Colors/Sizes tables → Props table → Examples (4–6) → Rules. Props/defaults MUST come from `mcp-manifest.json` or actual CVA source — when those disagree, the source code wins (caught one stale llms-full.txt Form section during initial authoring, before llms-full was removed in 0.46). When updating components in `src/ui/`, also update the matching `make-kit/components/*.md` if the prop surface changed.
 
 Smoke-tested 2026-06-01 in fresh Vite 8 + React 19 + TW4 + framer-motion 12 app. Build/dev/utility emission all green. Make eligibility confirmed pending only the human registration step in Figma UI.
 
@@ -159,7 +159,7 @@ When the Storybook dev server is running (`pnpm dev`), an MCP server at `localho
 - Component and accessibility testing
 - Live preview embedding
 
-This complements the static `llms.txt` / `llms-full.txt` files with interactive capabilities.
+This complements the static `llms.txt` router + `mcp-manifest.json` with interactive capabilities.
 
 ## Consumer AI Agent Feedback Protocol
 

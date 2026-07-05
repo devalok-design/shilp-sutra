@@ -3,9 +3,9 @@
 /**
  * Copy MIGRATION.md + AGENTS.md + rollback.md from the repo root into the
  * core package so they ship with the npm tarball. CHANGELOG.md, llms.txt,
- * llms-full.txt, and the deprecated preset stub all reference these files
- * by name — consumers clicking through from those references must find
- * them inside `node_modules/@devalok/shilp-sutra/`. AGENTS.md is also
+ * and the per-component docs all reference these files by name — consumers
+ * clicking through from those references must find them inside
+ * `node_modules/@devalok/shilp-sutra/`. AGENTS.md is also
  * auto-discovered by AGENTS.md-aware tools (Codex, Cursor, Copilot,
  * Aider, etc.) inside consumer projects.
  *

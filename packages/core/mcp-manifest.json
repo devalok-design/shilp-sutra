@@ -3,7 +3,6 @@
   "manifestVersion": "1.0.0",
   "package": "@devalok/shilp-sutra",
   "packageVersion": "0.44.0",
-  "generatedAt": "2026-07-05T14:47:24.617Z",
   "components": {
     "accordion": {
       "displayName": "Accordion",

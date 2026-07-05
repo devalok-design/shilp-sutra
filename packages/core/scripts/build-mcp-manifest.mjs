@@ -491,12 +491,13 @@ for (const cat of CATEGORIES) {
   }
 }
 
+// No generatedAt: output must be deterministic so the audit gate can diff
+// the committed manifest against a fresh run to catch stale regeneration.
 const manifest = {
   $schema: './mcp-manifest.schema.json',
   manifestVersion: MANIFEST_VERSION,
   package: pkg.name,
   packageVersion: pkg.version,
-  generatedAt: new Date().toISOString(),
   components,
   tokens: buildTokens(),
 }
@@ -508,8 +509,40 @@ if (errors.length) {
   process.exit(1)
 }
 
+// ── Router llms.txt: hand-authored preamble template + generated index ──────
+
+function buildLlmsRouter(manifest) {
+  const template = readFileSync(join(ROOT, 'docs', 'llms.template.md'), 'utf8').replace(/\r\n/g, '\n')
+  const lines = []
+  for (const tier of CATEGORIES) {
+    const names = Object.keys(manifest.components)
+      .filter((n) => manifest.components[n].tier === tier)
+      .sort()
+    if (!names.length) continue
+    lines.push(`### ${tier}`)
+    for (const name of names) {
+      const c = manifest.components[name]
+      if (/internal sub-component/i.test(c.description)) continue
+      const desc = c.description ? `: ${c.description.replace(/^>\s*/, '').split('. ')[0].replace(/\.$/, '')}` : ''
+      lines.push(`- [${name}](${c.docPath})${desc}`)
+    }
+    lines.push('')
+  }
+  return template
+    .replace('{{VERSION}}', manifest.packageVersion)
+    .replace('{{COMPONENT_INDEX}}', lines.join('\n').trimEnd())
+}
+
 if (!checkOnly) {
   writeFileSync(join(ROOT, 'mcp-manifest.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf8')
+  const router = buildLlmsRouter(manifest)
+  writeFileSync(join(ROOT, 'llms.txt'), router, 'utf8')
+  const routerTokens = Math.ceil(router.length / 4)
+  console.log(`llms.txt (router) generated — ~${routerTokens} tokens.`)
+  if (routerTokens > 3500) {
+    console.error(`FATAL: router llms.txt is ~${routerTokens} tokens; standard caps it at ~3K. Trim the template or index.`)
+    process.exit(1)
+  }
 }
 
 const tokenCount = Object.values(manifest.tokens).reduce((n, arr) => n + arr.length, 0)

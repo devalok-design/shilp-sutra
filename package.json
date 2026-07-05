@@ -22,8 +22,9 @@
     "test:watch": "pnpm -r test:watch",
     "test:storybook": "vitest --project storybook",
     "test:storybook:ci": "vitest run --project storybook",
+    "verify": "pnpm build && pnpm typecheck && pnpm lint && pnpm lint:props && pnpm test && node packages/core/scripts/ssr-smoke-test.mjs && pnpm test:storybook:ci",
     "changeset": "changeset",
-    "version-packages": "node scripts/changeset-version-retry.mjs && node scripts/prepend-breaking-summary.mjs && node scripts/sync-skill-version.mjs && node packages/core/scripts/build-component-docs.mjs && node scripts/build-skill.mjs",
+    "version-packages": "node scripts/changeset-version-retry.mjs && node scripts/prepend-breaking-summary.mjs && node scripts/sync-skill-version.mjs && node packages/core/scripts/build-component-docs.mjs && node packages/core/scripts/build-mcp-manifest.mjs && node scripts/build-skill.mjs",
     "release": "pnpm build && changeset publish"
   },
   "devDependencies": {

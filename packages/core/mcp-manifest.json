@@ -1331,14 +1331,28 @@
         }
       },
       "composition": {
+        "contexts": [
+          {
+            "name": "ButtonGroup",
+            "effect": "auto-inherits variant/color/size/weight/shape/disabled when nested inside `<ButtonGroup>`; explicit props on the individual Button override; the context also drives position-aware border-radius (first/middle/last within an attached group)."
+          },
+          {
+            "name": "IconProvider",
+            "effect": "icons in `startIcon`/`endIcon` auto-size per the button size (xs→sm, sm→sm, md→md, lg→md, icon-xs→xs, icon-lg→lg); don't pass explicit `size` to `<Icon>` inside Button."
+          }
+        ],
         "notes": [
-          "**ButtonGroup context consumption:** When nested inside `<ButtonGroup>`, Button auto-inherits variant/color/size/weight/shape/disabled. Explicit props on the individual Button override. The context also drives position-aware border-radius (first/middle/last within an attached group).",
-          "**IconProvider cascade:** Icons in `startIcon`/`endIcon` auto-size via IconProvider per the button size (xs→sm, sm→sm, md→md, lg→md, icon-xs→xs, icon-lg→lg). Don't pass explicit `size` to `<Icon>` inside Button.",
           "**asChild for router links:** `<Button asChild><Link href=\"/foo\">...</Link></Button>` transfers Button's styling to the Link while preserving navigation semantics. Required for Next.js `<Link>` / react-router `<Link>`.",
           "**onClickAsync state machine:** Overrides onClick. Auto-cycles `idle → loading (aria-busy, spinner) → success (checkmark) → idle` on resolve; `loading → error (X mark) → idle` on reject. Duration controlled by `asyncFeedbackDuration` (1500ms default). Auto-activates `processing='working'` during loading — marching-ants border keeps users visually aware.",
           "**Processing vs loading:** `loading` is a short async state (shows spinner, blocks clicks). `processing` is a longer-running state (marching ants border, may or may not block clicks based on `processingDisabled`). Use onClickAsync for simple request cases; use processing explicitly for long-running background operations.",
-          "**DevalokGrain children:** Grain elements are auto-extracted and rendered as direct button children for absolute positioning — lets you layer grain texture on solid-variant buttons without breaking layout.",
           "**Prefer `variant=\"soft\"` over `variant=\"outline\"` for secondary actions** (see Gotchas for details). This is a design-system-wide convention."
+        ],
+        "composesWith": [
+          {
+            "component": "devalok-grain",
+            "relation": "contains",
+            "description": "Grain children are auto-extracted and rendered as direct button children for absolute positioning; layers grain texture on solid-variant buttons without breaking layout."
+          }
         ]
       },
       "docPath": "docs/components/ui/button.md",
@@ -1633,8 +1647,19 @@
           "**Not a compound state machine** — Card, CardHeader, CardTitle, etc. are purely structural. No open/close state.",
           "**Corner slots via `CardAction`:** Pin a badge, icon button, or menu to any corner (`placement`), inset to match the card's content padding. `tuck` pulls an icon button so its glyph (not its padding box) aligns to the content edge. Replaces the removed `accent` decorative bar — composition, not a bespoke prop. Card is `relative` to anchor it.",
           "**`color` paints the border, never a stacked rail:** `color` tints the 1px edge (semantic accent/error/success/…). The DS never stacks a border + drop shadow or a colored rail on top (make-kit rule #6 — that reads as an AI tell).",
-          "**Interactive cards:** Set `interactive={true}` + `onClick` for clickable cards (entire surface becomes the button). Add `aria-label` on the Card root when there's no visible heading. For complex multi-action cards, prefer standard Card with explicit buttons inside.",
-          "**ContentCard (composed) is deprecated** — compose `Card` + `CardHeader`/`CardContent`/`CardAction` directly instead."
+          "**Interactive cards:** Set `interactive={true}` + `onClick` for clickable cards (entire surface becomes the button). Add `aria-label` on the Card root when there's no visible heading. For complex multi-action cards, prefer standard Card with explicit buttons inside."
+        ],
+        "composesWith": [
+          {
+            "component": "content-card",
+            "relation": "alternative-to",
+            "description": "ContentCard (composed) is deprecated; compose `Card` + `CardHeader`/`CardContent`/`CardAction` directly instead."
+          },
+          {
+            "component": "stat-card",
+            "relation": "specializes",
+            "description": "StatCard builds ON Card's surface model; the same applies to any metric/widget card you write — specialize Card, never re-roll its border/padding/shadow surface."
+          }
         ],
         "parts": [
           {
@@ -6012,13 +6037,30 @@
       "composition": {
         "notes": [
           "**High-density metric card** — optimized for dashboards. Everything optional except `value`. Mix and match features (delta, sparkline, progress, secondary label, footer) per metric's needs.",
-          "**Router integration via href:** Internally uses `LinkContext` to resolve framework-specific Link components (Next.js, react-router). Set `href` in a LinkProvider-wrapped tree to get seamless client-side navigation without custom asChild wiring.",
           "**Interactive modes:** `onClick` makes the entire card a button; `href` makes it a link. Mutually exclusive — href wins if both are set.",
           "**Accent (composable, opt-in):** `accentStyle=\"icon\"` wraps `icon` in an accent chip (`iconFill=\"soft\" | \"solid\"`); `accentStyle=\"tint\"` applies a subtle accent surface wash + accent value. `variant` picks edge-vs-elevation. No colored rail — the DS never stacks a border + drop shadow (make-kit rule #6). Trend health reads from `delta.direction` (up=green, down=red).",
           "**Flash motion (opt-in):** `flash` mounts a toned state glyph (`up`/`down`/`goal`/`record`/`alert`/`live`, or `{ tone, icon }`) that settles to `icon`; `flashSpeed` tunes timing. Reuses the standalone `StatFlash` primitive. Honors `prefers-reduced-motion`.",
           "**Sparkline:** Pure SVG, lightweight — no chart library. For rich charts use Chart components. Minimum 2 data points.",
           "**Icon auto-sizing:** Accepts `ComponentType<{ className }>` OR `ReactNode`. The component prop (e.g. `icon={IconBolt}`) is preferred — icon is rendered at a consistent size.",
           "**Loading state:** `loading={true}` renders the full card skeleton — use during initial data fetch."
+        ],
+        "composesWith": [
+          {
+            "component": "card",
+            "relation": "specializes",
+            "description": "StatCard builds ON Card's surface (border/padding/shadow model) rather than re-rolling it; the pattern to copy for any new metric/widget card."
+          },
+          {
+            "component": "stat-flash",
+            "relation": "contains",
+            "description": "the `flash` prop mounts the standalone StatFlash primitive inside the card."
+          }
+        ],
+        "contexts": [
+          {
+            "name": "LinkContext",
+            "effect": "resolves framework-specific Link components (Next.js, react-router); set `href` in a LinkProvider-wrapped tree for client-side navigation without custom asChild wiring."
+          }
         ]
       },
       "docPath": "docs/components/ui/stat-card.md",

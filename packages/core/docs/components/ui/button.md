@@ -35,12 +35,12 @@
 ```
 
 ## Composability
-- **ButtonGroup context consumption:** When nested inside `<ButtonGroup>`, Button auto-inherits variant/color/size/weight/shape/disabled. Explicit props on the individual Button override. The context also drives position-aware border-radius (first/middle/last within an attached group).
-- **IconProvider cascade:** Icons in `startIcon`/`endIcon` auto-size via IconProvider per the button size (xs→sm, sm→sm, md→md, lg→md, icon-xs→xs, icon-lg→lg). Don't pass explicit `size` to `<Icon>` inside Button.
+- **Context:** ButtonGroup — auto-inherits variant/color/size/weight/shape/disabled when nested inside `<ButtonGroup>`; explicit props on the individual Button override; the context also drives position-aware border-radius (first/middle/last within an attached group).
+- **Context:** IconProvider — icons in `startIcon`/`endIcon` auto-size per the button size (xs→sm, sm→sm, md→md, lg→md, icon-xs→xs, icon-lg→lg); don't pass explicit `size` to `<Icon>` inside Button.
 - **asChild for router links:** `<Button asChild><Link href="/foo">...</Link></Button>` transfers Button's styling to the Link while preserving navigation semantics. Required for Next.js `<Link>` / react-router `<Link>`.
 - **onClickAsync state machine:** Overrides onClick. Auto-cycles `idle → loading (aria-busy, spinner) → success (checkmark) → idle` on resolve; `loading → error (X mark) → idle` on reject. Duration controlled by `asyncFeedbackDuration` (1500ms default). Auto-activates `processing='working'` during loading — marching-ants border keeps users visually aware.
 - **Processing vs loading:** `loading` is a short async state (shows spinner, blocks clicks). `processing` is a longer-running state (marching ants border, may or may not block clicks based on `processingDisabled`). Use onClickAsync for simple request cases; use processing explicitly for long-running background operations.
-- **DevalokGrain children:** Grain elements are auto-extracted and rendered as direct button children for absolute positioning — lets you layer grain texture on solid-variant buttons without breaking layout.
+- **Composes:** devalok-grain (contains) — Grain children are auto-extracted and rendered as direct button children for absolute positioning; layers grain texture on solid-variant buttons without breaking layout.
 - **Prefer `variant="soft"` over `variant="outline"` for secondary actions** (see Gotchas for details). This is a design-system-wide convention.
 
 ## Gotchas

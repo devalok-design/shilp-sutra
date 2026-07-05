@@ -56,7 +56,9 @@
 
 ## Composability
 - **High-density metric card** — optimized for dashboards. Everything optional except `value`. Mix and match features (delta, sparkline, progress, secondary label, footer) per metric's needs.
-- **Router integration via href:** Internally uses `LinkContext` to resolve framework-specific Link components (Next.js, react-router). Set `href` in a LinkProvider-wrapped tree to get seamless client-side navigation without custom asChild wiring.
+- **Composes:** card (specializes) — StatCard builds ON Card's surface (border/padding/shadow model) rather than re-rolling it; the pattern to copy for any new metric/widget card.
+- **Composes:** stat-flash (contains) — the `flash` prop mounts the standalone StatFlash primitive inside the card.
+- **Context:** LinkContext — resolves framework-specific Link components (Next.js, react-router); set `href` in a LinkProvider-wrapped tree for client-side navigation without custom asChild wiring.
 - **Interactive modes:** `onClick` makes the entire card a button; `href` makes it a link. Mutually exclusive — href wins if both are set.
 - **Accent (composable, opt-in):** `accentStyle="icon"` wraps `icon` in an accent chip (`iconFill="soft" | "solid"`); `accentStyle="tint"` applies a subtle accent surface wash + accent value. `variant` picks edge-vs-elevation. No colored rail — the DS never stacks a border + drop shadow (make-kit rule #6). Trend health reads from `delta.direction` (up=green, down=red).
 - **Flash motion (opt-in):** `flash` mounts a toned state glyph (`up`/`down`/`goal`/`record`/`alert`/`live`, or `{ tone, icon }`) that settles to `icon`; `flashSpeed` tunes timing. Reuses the standalone `StatFlash` primitive. Honors `prefers-reduced-motion`.

@@ -2,7 +2,7 @@
 
 import * as AvatarPrimitive from "@primitives/react-avatar"
 import { cva, type VariantProps } from "class-variance-authority"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import * as React from "react"
 
 import { springs } from "./lib/motion"
@@ -174,6 +174,8 @@ const Avatar = React.forwardRef<
   AvatarProps
 >(({ className, size, shape, status, ring, badge, loading, children, ...props }, ref) => {
   const resolvedShape = shape ?? 'circle'
+  // MotionConfig can't stop this opacity loop (non-transform), so guard it locally.
+  const prefersReduced = useReducedMotion()
 
   // Build ring classes for the outer wrapper
   const ringClasses = ring && ring !== 'none'
@@ -207,7 +209,7 @@ const Avatar = React.forwardRef<
         {children}
       </AvatarPrimitive.Root>
       {status && (
-        status === 'online' ? (
+        status === 'online' && !prefersReduced ? (
           <motion.span
             className={cn('absolute bottom-0 right-0 rounded-pill ring-2 ring-surface-raised', statusColorMap[status], statusDotSizeMap[size ?? 'md'])}
             animate={{ opacity: [1, 0.75, 1] }}
@@ -230,7 +232,7 @@ const Avatar = React.forwardRef<
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={springs.bouncy}
+            transition={springs.smooth}
             className="absolute -right-1 -top-1 flex min-w-[16px] items-center justify-center rounded-pill bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-error-fg ring-2 ring-surface-raised"
             data-slot="avatar-badge"
             role="status"

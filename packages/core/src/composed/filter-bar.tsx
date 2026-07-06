@@ -193,7 +193,7 @@ function FilterMultiSelect({
               key={count}
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={springs.bouncy}
+              transition={springs.snappy}
               className="inline-flex"
             >
               <Badge size="xs" variant="solid" className="ml-ds-01">

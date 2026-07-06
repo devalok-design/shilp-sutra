@@ -73,7 +73,7 @@ const RadioGroupItem = React.forwardRef<
           className="flex items-center justify-center"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          transition={springs.bouncy}
+          transition={springs.snappy}
         >
           <IconCircle className={cn(radioIndicatorClasses[size], 'fill-accent-9 text-accent-11')} />
         </motion.span>

@@ -241,7 +241,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
             <motion.span
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={springs.bouncy}
+              transition={springs.snappy}
               className="inline-flex shrink-0"
             >
               <Icon icon={IconCheck} size="sm" className="text-accent-11" />

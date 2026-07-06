@@ -250,10 +250,10 @@ function MessageAuthor({
 
   return (
     <div className="flex items-baseline gap-ds-02">
-      <span className="font-semibold text-[13px] text-surface-fg">{name}</span>
+      <span className="font-semibold text-ds-md text-surface-fg">{name}</span>
       {badge}
       {timeStr && (
-        <span className="text-[11px] text-surface-fg-subtle/50">{timeStr}</span>
+        <span className="text-ds-sm text-surface-fg-subtle/50">{timeStr}</span>
       )}
     </div>
   )
@@ -270,7 +270,7 @@ function MessageBody({ children, className, ...props }: MessageBodyProps) {
   return (
     <div
       className={cn(
-        'text-[13px] leading-relaxed text-surface-fg whitespace-pre-wrap',
+        'text-ds-md leading-relaxed text-surface-fg whitespace-pre-wrap',
         className,
       )}
       {...props}
@@ -344,7 +344,7 @@ function MessageEditableBody({
 
   if (isEditing) {
     return (
-      <div className="text-[13px] leading-relaxed">
+      <div className="text-ds-md leading-relaxed">
         <Textarea
           ref={textareaRef}
           value={editDraft}
@@ -352,7 +352,7 @@ function MessageEditableBody({
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
           // compact inline-edit overrides on top of the Textarea base
-          className="resize-none rounded-control-inner bg-surface-raised-hover px-ds-02 py-ds-01 text-[13px] leading-relaxed"
+          className="resize-none rounded-control-inner bg-surface-raised-hover px-ds-02 py-ds-01 text-ds-md leading-relaxed"
           rows={2}
         />
         <div className="mt-ds-01 text-ds-xs text-surface-fg-subtle/50">
@@ -365,7 +365,7 @@ function MessageEditableBody({
   return (
     <div
       className={cn(
-        'text-[13px] leading-relaxed text-surface-fg whitespace-pre-wrap',
+        'text-ds-md leading-relaxed text-surface-fg whitespace-pre-wrap',
         canEdit && 'cursor-pointer hover:bg-surface-raised-hover rounded-control-inner transition-colors',
       )}
       onClick={handleStartEdit}

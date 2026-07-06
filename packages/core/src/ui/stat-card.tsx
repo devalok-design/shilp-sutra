@@ -12,6 +12,7 @@ import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
+import { Skeleton } from './skeleton'
 import { type FlashPreset, type FlashSpec, type FlashSpeed,StatFlash } from './stat-flash'
 
 /**
@@ -249,9 +250,9 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       return (
         <Card ref={ref} variant={variant} size={size} className={className} aria-busy="true" {...props}>
           <CardContent className="flex flex-col gap-ds-03">
-            <div className="h-ds-04 w-24 rounded-control-inner bg-skeleton-base animate-pulse" />
-            <div className="h-ds-sm w-32 rounded-control bg-skeleton-base animate-pulse" />
-            <div className="h-3 w-16 rounded-control-inner bg-skeleton-base animate-pulse" />
+            <Skeleton className="h-ds-04 w-24 rounded-control-inner" />
+            <Skeleton className="h-ds-sm w-32" />
+            <Skeleton className="h-3 w-16 rounded-control-inner" />
           </CardContent>
         </Card>
       )
@@ -293,7 +294,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           className="inline-flex"
           initial={{ opacity: 0.5, scale: 1.4 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={springs.bouncy}
+          transition={springs.smooth}
         >
           <Icon icon={DeltaIcon} size="sm" />
         </motion.span>

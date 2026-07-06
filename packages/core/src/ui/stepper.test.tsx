@@ -118,14 +118,24 @@ describe('Stepper', () => {
     expect(screen.getByTestId('custom-icon')).toBeInTheDocument()
   })
 
-  it('renders in vertical orientation without throwing', () => {
-    render(
+  it('renders in vertical orientation with flex-col layout', () => {
+    const { container } = render(
       <Stepper activeStep={0} orientation="vertical">
         <Step label="Connect" />
         <Step label="Invite" />
       </Stepper>,
     )
     expect(screen.getByRole('list')).toBeInTheDocument()
+    expect(container.firstChild).toHaveClass('flex-col')
+  })
+
+  it('renders an optional step description', () => {
+    render(
+      <Stepper activeStep={0}>
+        <Step label="Account" description="Create your account" />
+      </Stepper>,
+    )
+    expect(screen.getByText('Create your account')).toBeInTheDocument()
   })
 })
 

@@ -9,6 +9,7 @@ import {
 import { type Table } from '@tanstack/react-table'
 import * as React from 'react'
 
+import { Button } from './button'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -43,13 +44,6 @@ export interface DataTableToolbarProps<TData> extends Omit<React.HTMLAttributes<
   onDensityChange: (density: Density) => void
   enableExport?: boolean
 }
-
-const toolbarButtonClass = cn(
-  'h-ds-sm px-ds-03 rounded-control',
-  'border border-surface-border-strong',
-  'hover:bg-surface-raised',
-  'text-ds-sm flex items-center gap-ds-02 transition-colors',
-)
 
 const toolbarIconClass = 'text-surface-fg-subtle'
 
@@ -132,14 +126,15 @@ export function DataTableToolbar<TData>({
         {toggleableColumns.length > 0 && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                className={toolbarButtonClass}
+              <Button
+                variant="outline"
+                color="neutral"
+                size="sm"
                 aria-label="Toggle column visibility"
               >
                 <Icon icon={IconColumns3} size="sm" className={toolbarIconClass} />
                 Columns
-              </button>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
               <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
@@ -165,28 +160,30 @@ export function DataTableToolbar<TData>({
         )}
 
         {/* Density toggle */}
-        <button
-          type="button"
-          className={toolbarButtonClass}
+        <Button
+          variant="outline"
+          color="neutral"
+          size="sm"
           onClick={() => onDensityChange(densityCycle[density])}
           aria-label={`Table density: ${densityLabels[density]}. Click to change.`}
           title={`Density: ${densityLabels[density]}`}
         >
           <Icon icon={IconTextResize} size="sm" className={toolbarIconClass} />
           {densityLabels[density]}
-        </button>
+        </Button>
 
         {/* CSV Export */}
         {enableExport && (
-          <button
-            type="button"
-            className={toolbarButtonClass}
+          <Button
+            variant="outline"
+            color="neutral"
+            size="sm"
             onClick={() => exportToCsv(table)}
             aria-label="Export table as CSV"
           >
             <Icon icon={IconDownload} size="sm" className={toolbarIconClass} />
             Export
-          </button>
+          </Button>
         )}
       </div>
     </div>

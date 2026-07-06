@@ -144,8 +144,11 @@ Page wrapper?
 Vertical / horizontal stack?
   → <Stack direction="col|row" gap="ds-*">
 
-A card / panel?
-  → <Card> — surface-raised + shadow-raised
+A plain elevated box (no slots)?
+  → <Surface elevation="raised" padding="md"> — the low-level surface Card is built on
+
+A card / panel (header / content / footer rhythm)?
+  → <Card> — Surface + gap-model padding + slots
   → <Card variant="..."> — tinted by color prop
 
 A grid?
@@ -261,6 +264,7 @@ Code?
 |---|---|
 | Container | `/ui/container` |
 | Stack | `/ui/stack` |
+| Surface | `/ui/surface` |
 | Card | `/ui/card` |
 | AspectRatio | `/ui/aspect-ratio` |
 | Separator | `/ui/separator` |
@@ -305,4 +309,4 @@ Code?
 
 ## Per-component guides
 
-See `components/{button|card|input|dialog|badge|select|tabs|toast|form|table|dropdown-menu|popover|text|stack|icon}.md` for prop tables, examples, and rules.
+See `components/{button|card|surface|input|dialog|badge|select|tabs|toast|form|table|dropdown-menu|popover|text|stack|icon}.md` for prop tables, examples, and rules.

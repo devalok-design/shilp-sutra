@@ -377,6 +377,11 @@
       "import": "./dist/ui/stepper.js",
       "default": "./dist/ui/stepper.js"
     },
+    "./ui/surface": {
+      "types": "./dist/ui/surface.d.ts",
+      "import": "./dist/ui/surface.js",
+      "default": "./dist/ui/surface.js"
+    },
     "./ui/switch": {
       "types": "./dist/ui/switch.d.ts",
       "import": "./dist/ui/switch.js",

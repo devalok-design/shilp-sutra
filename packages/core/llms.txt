@@ -100,6 +100,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [stat-flash](docs/components/ui/stat-flash.md)
 - [status-dot](docs/components/ui/status-dot.md)
 - [stepper](docs/components/ui/stepper.md)
+- [surface](docs/components/ui/surface.md): The low-level elevated container primitive
 - [switch](docs/components/ui/switch.md)
 - [table](docs/components/ui/table.md)
 - [table-row-link](docs/components/ui/table-row-link.md)

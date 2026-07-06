@@ -7,6 +7,7 @@ import * as React from "react"
 
 import { springs } from "./lib/motion"
 import { cn } from "./lib/utils"
+import { Skeleton } from "./skeleton"
 
 // ── Contexts so AvatarFallback can inherit shape & size from Avatar ──
 type AvatarShape = 'circle' | 'square' | 'rounded'
@@ -186,8 +187,8 @@ const Avatar = React.forwardRef<
   if (loading) {
     return (
       <span ref={ref} className={cn('relative inline-flex shrink-0', ringClasses)}>
-        <span
-          className={cn(avatarVariants({ size, shape }), 'animate-pulse bg-surface-raised-hover')}
+        <Skeleton
+          className={cn(avatarVariants({ size, shape }))}
           data-slot="avatar-skeleton"
         />
       </span>

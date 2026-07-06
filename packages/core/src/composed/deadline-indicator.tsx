@@ -1,7 +1,7 @@
 'use client'
 
 import { IconClock } from '@tabler/icons-react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
 
 import { Icon } from '../ui/icon'
@@ -95,7 +95,10 @@ const DeadlineIndicator = React.forwardRef<HTMLSpanElement, DeadlineIndicatorPro
 
   const isOverdue = minutesRemaining <= 0
   const isCritical = minutesRemaining <= criticalThreshold && minutesRemaining > 0
-  const shouldPulse = isOverdue || isCritical
+  // Non-transform opacity loop — MotionConfig won't stop it, so drop the pulse
+  // under reduced motion. Colour still signals urgency.
+  const prefersReduced = useReducedMotion()
+  const shouldPulse = (isOverdue || isCritical) && !prefersReduced
 
   const showTooltip = format === 'relative'
   const tooltipContent = deadlineDate.toLocaleString()

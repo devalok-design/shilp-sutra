@@ -58,7 +58,7 @@ export function BadgeIndicator({
             initial={prefersReduced ? { opacity: 0 } : { scale: 0, opacity: 0 }}
             animate={prefersReduced ? { opacity: 1 } : { scale: 1, opacity: 1 }}
             exit={prefersReduced ? { opacity: 0 } : { scale: 0, opacity: 0 }}
-            transition={springs.bouncy}
+            transition={springs.smooth}
             className={cn(
               'absolute flex items-center justify-center rounded-pill font-sans font-semibold ring-2 ring-surface-raised',
               COLOR_CLASSES[color],

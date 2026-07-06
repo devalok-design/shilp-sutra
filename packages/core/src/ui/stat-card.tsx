@@ -293,7 +293,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           className="inline-flex"
           initial={{ opacity: 0.5, scale: 1.4 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={springs.bouncy}
+          transition={springs.smooth}
         >
           <Icon icon={DeltaIcon} size="sm" />
         </motion.span>

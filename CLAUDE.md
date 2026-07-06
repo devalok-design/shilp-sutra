@@ -164,13 +164,13 @@ This complements the static `llms.txt` router + `mcp-manifest.json` with interac
 ## Consumer AI Agent Feedback Protocol
 
 This repo receives feedback from AI agents working on consumer apps (e.g., Karm).
-Feedback arrives as GitHub Issues on `devalok-design/shilp-sutra` labeled `karm-ai-agent-feedback`.
+Feedback arrives as GitHub Issues on `devalok-design/shilp-sutra` labeled `karm-ai-agent-feedback` (Karm's flow) or `mcp-submitted` (filed via the MCP `report_issue` tool by any consumer agent).
 
 **You do NOT check or act on these automatically.** Only act when triggered:
 
 ### /check-karm-feedback
 
-Read all open issues labeled `karm-ai-agent-feedback` on `devalok-design/shilp-sutra`.
+Read all open issues labeled `karm-ai-agent-feedback` OR `mcp-submitted` on `devalok-design/shilp-sutra`.
 For each issue:
 1. Investigate the reported problem against the actual codebase
 2. Summarize findings (confirmed bug, already works, docs gap, etc.)

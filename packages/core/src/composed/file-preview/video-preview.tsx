@@ -205,13 +205,13 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
                 onMuteToggle={() => { setMuted(!muted); if (videoRef.current) videoRef.current.muted = !muted }}
                 variant="dark"
               />
-              <span className="text-[11px] font-mono text-white/70 tabular-nums">
+              <span className="text-ds-sm font-mono text-white/70 tabular-nums">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
               <div className="flex-1" />
               <button
                 onClick={() => cyclePlaybackRate(1)}
-                className="text-[11px] font-mono text-white/70 hover:text-white px-1 rounded-control-inner hover:bg-white/10 transition-colors"
+                className="text-ds-sm font-mono text-white/70 hover:text-white px-1 rounded-control-inner hover:bg-white/10 transition-colors"
                 aria-label={`Playback speed: ${playbackRate}x`}
               >
                 {playbackRate}x

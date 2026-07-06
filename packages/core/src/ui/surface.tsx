@@ -102,7 +102,7 @@ const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
       (elevation ?? 'raised') !== 'flat'
     ) {
       console.warn(
-        '[shilp-sutra] <Surface> combines `bordered` with a shadowed `elevation` — the double-edge anti-pattern. Pick one: use elevation="flat" with `bordered`, or drop `bordered` and let the shadow be the edge.',
+        '[shilp-sutra] <Surface> combines `bordered` with a raised `elevation` — the double-edge anti-pattern. Pick one: use elevation="flat" with `bordered`, or drop `bordered` and let the elevation carry the edge.',
       )
     }
     const Comp = asChild ? Slot : 'div'

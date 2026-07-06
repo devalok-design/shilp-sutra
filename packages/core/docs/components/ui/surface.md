@@ -11,7 +11,7 @@ The low-level elevated container primitive. Owns background + shadow + radius + 
     elevation: "flat" | "raised" | "floating" | "overlay"
     padding: "none" | "sm" | "md" | "lg"
     radius: "none" | "control" | "surface" | "overlay" | "pill"
-    bordered: boolean
+    bordered: true | false
     asChild: boolean — render as the passed child element (Radix Slot) instead of a div
 
 ## Defaults

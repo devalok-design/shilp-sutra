@@ -8,12 +8,12 @@ import {
   IconArrowUpRight,
   IconBrandGithub,
   IconBuildingArch,
+  IconBulb,
   IconCircleCheck,
   IconCompass,
   IconDeviceLaptop,
   IconFeather,
   IconNotebook,
-  IconSparkles,
 } from '@tabler/icons-react'
 
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
@@ -75,7 +75,7 @@ const practices: { name: string; tag: string; body: string; Icon: typeof IconCom
     name: 'Strategy + research',
     tag: 'Foundational',
     body: 'The interviews, the field notes, the positioning work that the visible work rests on.',
-    Icon: IconSparkles,
+    Icon: IconBulb,
   },
 ]
 
@@ -346,7 +346,7 @@ export function DevalokShowcase() {
       <Card className="bg-accent-2 border-accent-7">
         <CardContent className="flex flex-col gap-ds-04 py-ds-06">
           <div className="flex items-start gap-ds-03">
-            <IconSparkles size={20} className="text-accent-11 mt-1 shrink-0" aria-hidden />
+            <IconFeather size={20} className="text-accent-11 mt-1 shrink-0" aria-hidden />
             <div className="flex flex-col gap-ds-01">
               <Text variant="heading-sm" className="text-surface-fg">
                 Conversation, understanding, creation.

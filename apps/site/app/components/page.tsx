@@ -30,7 +30,7 @@ export default async function ComponentsPage() {
             <FeaturedComponents />
             <div className="flex flex-col gap-ds-04">
               <header className="flex flex-col gap-ds-02 max-w-3xl">
-                <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+                <span className="text-ds-xs text-surface-fg-subtle">
                   Browse all
                 </span>
                 <h2 className="text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">

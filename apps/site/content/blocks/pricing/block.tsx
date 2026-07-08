@@ -73,7 +73,7 @@ const faqs = [
   },
   {
     q: 'Will Bespoke fork the package?',
-    a: 'No fork. We extend, never branch off. Custom work lands in your repo as a thin layer on top of @devalok/shilp-sutra, so upgrades stay clean and your patches survive.',
+    a: 'No fork. Custom work lands in your repo as a thin layer on top of @devalok/shilp-sutra, so upgrades stay clean and your patches survive.',
   },
 ] as const
 
@@ -96,7 +96,7 @@ export function PricingBlock() {
         {tiers.map((tier) => (
           <Card
             key={tier.name}
-            className={tier.featured ? 'border-accent-9 shadow-overlay relative' : ''}
+            className={tier.featured ? 'border-accent-9 relative' : ''}
           >
             {tier.featured && (
               <div className="absolute -top-3 left-ds-05">
@@ -140,7 +140,7 @@ export function PricingBlock() {
 
       <section className="max-w-2xl mx-auto px-page-x flex flex-col gap-ds-05">
         <Text variant="heading-md" className="text-surface-fg text-center">
-          Honest questions, honest answers.
+          Common questions.
         </Text>
         <dl className="flex flex-col gap-ds-04">
           {faqs.map((f) => (

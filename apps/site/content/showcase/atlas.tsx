@@ -14,7 +14,6 @@ import {
   IconPlus,
   IconSearch,
   IconSettings,
-  IconSparkles,
   IconTrendingUp,
   IconUsers,
 } from '@tabler/icons-react'
@@ -310,7 +309,7 @@ export function AtlasShowcase() {
                       </div>
                       <SheetFooter>
                         <Button variant="soft" onClick={() => setSheetOpen(false)}>Cancel</Button>
-                        <Button onClickAsync={createProject} startIcon={<IconSparkles size={14} />}>
+                        <Button onClickAsync={createProject} startIcon={<IconPlus size={14} />}>
                           Create project
                         </Button>
                       </SheetFooter>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { IconHeartFilled } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 const linkGroups = [
@@ -73,7 +74,9 @@ export function SiteFooter() {
         </div>
         <div className="mt-ds-09 pt-ds-06 border-t border-surface-border-subtle flex flex-col gap-ds-04">
           <Text variant="body-sm" className="text-surface-fg-muted text-center sm:text-left">
-            Made in Bharat with <span aria-label="orange heart" role="img">🧡</span> by{' '}
+            Made in Bharat with{' '}
+            <IconHeartFilled size={14} className="inline align-[-2px] text-accent-9" aria-label="love" />{' '}
+            by{' '}
             <Link
               href="https://devalok.in"
               target="_blank"

@@ -1,6 +1,5 @@
 import { IconLayoutGrid, IconPalette, IconShield, IconUsers } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
-import { CARD_RESTING } from '@/lib/card-recipe'
 
 /**
  * Three pillars + one builder card. Per docs/copy/shilp-sutra-copy-context.md §3.
@@ -46,15 +45,15 @@ export function FeatureGrid() {
             Three pillars. One promise.
           </Text>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-06">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-ds-08 gap-y-ds-07">
           {features.map((f) => (
-            <article key={f.title} className={CARD_RESTING + ' flex flex-col gap-ds-03'}>
-              <div className="w-9 h-9 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center">
-                <f.icon size={18} />
+            <div key={f.title} className="flex flex-col gap-ds-02">
+              <div className="flex items-center gap-ds-02">
+                <f.icon size={18} className="text-accent-11 shrink-0" />
+                <h3 className="text-ds-md text-surface-fg font-semibold">{f.title}</h3>
               </div>
-              <h3 className="text-ds-md text-surface-fg font-semibold">{f.title}</h3>
               <p className="text-ds-sm text-surface-fg-subtle">{f.body}</p>
-            </article>
+            </div>
           ))}
         </div>
       </div>

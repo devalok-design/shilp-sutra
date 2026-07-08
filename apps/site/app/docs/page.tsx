@@ -113,7 +113,7 @@ export default function DocsIndexPage() {
 
             <section className="flex flex-col gap-ds-05">
               <header className="flex flex-col gap-ds-02 max-w-3xl">
-                <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+                <span className="text-ds-xs text-surface-fg-subtle">
                   Install
                 </span>
                 <h2 className="text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
@@ -176,7 +176,7 @@ function DocsSection({
   return (
     <section className="flex flex-col gap-ds-04">
       <header className="flex flex-col gap-ds-01">
-        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{eyebrow}</span>
+        <span className="text-ds-xs text-surface-fg-subtle">{eyebrow}</span>
         <h2 className="text-ds-lg text-surface-fg font-semibold">{title}</h2>
       </header>
       <ul className="flex flex-col gap-ds-03">
@@ -196,9 +196,7 @@ function DocLinkCard({ item }: { item: DocCard }) {
         className={CARD_INTERACTIVE + ' flex flex-col gap-ds-03 h-full'}
       >
         <div className="flex items-start justify-between gap-ds-03">
-          <span className="w-9 h-9 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
-            <item.Icon size={18} />
-          </span>
+          <item.Icon size={18} className="text-accent-11 shrink-0 mt-1" />
           <IconArrowRight
             size={16}
             className="text-surface-fg-subtle group-hover:translate-x-1 group-hover:text-surface-fg transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-1"

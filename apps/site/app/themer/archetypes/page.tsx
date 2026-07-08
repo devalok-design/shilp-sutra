@@ -12,7 +12,7 @@ import {
 } from '@/lib/archetype-presets'
 
 export const metadata: Metadata = {
-  title: 'Archetype gallery — Themer',
+  title: 'Archetype gallery · Themer',
   description:
     'Seven archetype presets, side by side. Click one to see its result page with install commands and CSS to paste.',
 }
@@ -48,7 +48,7 @@ export default function ArchetypeGalleryPage() {
               eyebrow="Themer · Archetypes"
               title="Pick one that feels right."
               subtitle="Seven presets. Same components, seven personalities."
-              description="Each archetype bundles a coherent set of role tokens — corner radius, density, borders, shadows, motion. Click any card to land on its result page with install commands + the CSS snippet to paste."
+              description="Each archetype bundles a coherent set of role tokens: corner radius, density, borders, shadows, motion. Click any card to land on its result page with install commands + the CSS snippet to paste."
               meta={
                 <Link
                   href="/themer"
@@ -97,12 +97,12 @@ export default function ArchetypeGalleryPage() {
             </section>
 
             <section className="border-t border-surface-border-subtle pt-ds-08 flex flex-col gap-ds-03 max-w-2xl">
-              <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+              <span className="text-ds-xs text-surface-fg-subtle">
                 Want more control?
               </span>
               <p className="text-ds-md text-surface-fg-muted leading-relaxed">
                 Archetypes are a starting point, not a cage. After you pick one, the result page
-                exposes the underlying role tokens. Override any of them in your own CSS — radius,
+                exposes the underlying role tokens. Override any of them in your own CSS: radius,
                 density, motion, borders. Or start from your{' '}
                 <Link href="/themer/brand" className="text-accent-11 underline underline-offset-2">
                   brand color

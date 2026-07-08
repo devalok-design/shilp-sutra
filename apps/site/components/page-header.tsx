@@ -33,7 +33,7 @@ export function PageHeader({
   return (
     <header className={['flex flex-col gap-ds-03 max-w-3xl mb-ds-09', className].filter(Boolean).join(' ')}>
       {eyebrow && (
-        <div className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{eyebrow}</div>
+        <div className="text-ds-xs text-surface-fg-subtle">{eyebrow}</div>
       )}
       <h1 className="text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg text-balance">
         {title}

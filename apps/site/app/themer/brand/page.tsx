@@ -7,7 +7,7 @@ import { SiteHeader } from '@/components/site-header'
 import { BrandImportPanel } from '@/components/themer/BrandImportPanel'
 
 export const metadata: Metadata = {
-  title: 'Use my brand — Themer',
+  title: 'Use my brand · Themer',
   description:
     'Paste a hex or dial OKLCH. shilp-sutra generates the 12-step ramp and suggests an archetype that pairs with your color.',
 }
@@ -37,13 +37,13 @@ export default function BrandImportPage() {
             <BrandImportPanel />
 
             <section className="border-t border-surface-border-subtle pt-ds-08 flex flex-col gap-ds-03 max-w-2xl">
-              <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+              <span className="text-ds-xs text-surface-fg-subtle">
                 Why OKLCH?
               </span>
               <p className="text-ds-md text-surface-fg-muted leading-relaxed">
                 OKLCH lets us hold lightness steady across the ramp while you change the hue.
-                That's what keeps step 1 and step 12 readable on the same backgrounds at every hue —
-                something the old HSL/HSV ramps couldn't do. If you only have a hex, that's fine:
+                That's what keeps step 1 and step 12 readable on the same backgrounds at every hue.
+                The old HSL/HSV ramps couldn't do that. If you only have a hex, that's fine:
                 we approximate the hue from RGB and let you fine-tune from there.
               </p>
             </section>

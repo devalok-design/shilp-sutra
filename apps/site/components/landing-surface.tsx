@@ -98,7 +98,7 @@ export function LandingSurface() {
           </div>
           <Badge variant="soft" color="success" size="sm">
             <span className="inline-flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-pill bg-success-9 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-pill bg-success-9 motion-safe:animate-pulse" />
               streaming
             </span>
           </Badge>

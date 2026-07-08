@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
-import { IconArrowUpRight, IconLock, IconSparkles } from '@tabler/icons-react'
+import { IconArrowUpRight, IconLock } from '@tabler/icons-react'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
@@ -279,23 +279,14 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
       style={style}
       className="relative overflow-hidden rounded-surface border border-accent-7 bg-linear-to-br from-accent-2 via-accent-3 to-accent-2"
     >
-      {/* Decorative brand glow in the corner — purely atmospheric. Sized
-          smaller on mobile so it doesn't dominate the layout. */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -top-16 -right-16 w-40 h-40 sm:-top-20 sm:-right-20 sm:w-64 sm:h-64 rounded-pill opacity-40 blur-3xl"
-        style={{ background: `var(--color-accent-9)` }}
-      />
-
       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-ds-06 lg:gap-ds-08 p-ds-05 sm:p-ds-06 lg:p-ds-08">
         {/* Left — identity + pitch */}
         <div className="flex flex-col gap-ds-05 min-w-0">
           <div className="flex items-center gap-ds-03 min-w-0">
             <BrandTile iconSrc={consumer.iconSrc} domain={consumer.domain} name={consumer.name} size={40} />
             <div className="flex flex-col min-w-0">
-              <span className="text-ds-xs uppercase tracking-wide text-accent-11 inline-flex items-center gap-ds-02 truncate">
-                <IconSparkles size={12} aria-hidden className="shrink-0" />
-                <span className="truncate">Flagship · {consumer.status}</span>
+              <span className="text-ds-xs uppercase tracking-wide text-accent-11 truncate">
+                Flagship · {consumer.status}
               </span>
               <Text variant="heading-xl" className="text-surface-fg text-balance">
                 {consumer.name}
@@ -399,7 +390,7 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
   // arrow chevron are dropped entirely on internal-only cards so they
   // stop suggesting interaction they can't deliver.
   const cardClass = [
-    'group relative flex flex-col gap-ds-04 overflow-hidden rounded-surface border bg-surface-raised shadow-raised h-full',
+    'group relative flex flex-col gap-ds-04 overflow-hidden rounded-surface border bg-surface-raised h-full',
     isInteractive
       ? 'border-surface-border-subtle hover:shadow-raised-hover hover:border-accent-7 hover:-translate-y-px focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base transition-[border-color,box-shadow,transform] duration-fast-02 ease-productive-standard cursor-pointer'
       : 'border-surface-border-subtle',
@@ -408,11 +399,6 @@ function SecondaryCard({ consumer }: { consumer: Consumer }) {
   const body = (
     <article style={style} className={cardClass}>
       <div className="relative h-16 bg-linear-to-br from-accent-3 to-accent-2 border-b border-surface-border-subtle overflow-hidden shrink-0">
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-pill opacity-40 blur-2xl"
-          style={{ background: `var(--color-accent-9)` }}
-        />
         <div className="relative h-full flex items-center justify-between gap-ds-03 px-ds-04 min-w-0">
           <BrandTile
             iconSrc={consumer.iconSrc}

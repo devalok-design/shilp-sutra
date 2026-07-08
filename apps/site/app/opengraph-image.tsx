@@ -39,20 +39,6 @@ export default async function OpengraphImage() {
           position: 'relative',
         }}
       >
-        {/* Corner brand glow — soft accent-9 puddle */}
-        <div
-          style={{
-            position: 'absolute',
-            top: -180,
-            right: -180,
-            width: 520,
-            height: 520,
-            borderRadius: 9999,
-            background: 'oklch(0.6 0.22 360 / 0.35)',
-            filter: 'blur(80px)',
-          }}
-        />
-
         {/* Header — eyebrow + studio mark */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, zIndex: 1 }}>
           <div
@@ -67,8 +53,7 @@ export default async function OpengraphImage() {
             style={{
               fontSize: 22,
               fontWeight: 500,
-              letterSpacing: 1.5,
-              textTransform: 'uppercase',
+              letterSpacing: 0.3,
               color: 'oklch(0.4 0.12 360)',
             }}
           >
@@ -132,7 +117,7 @@ export default async function OpengraphImage() {
             shilp-sutra.devalok.in
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <div style={{ width: 8, height: 8, borderRadius: 9999, background: '#22c55e' }} />
+            <div style={{ width: 8, height: 8, borderRadius: 9999, background: 'oklch(0.6 0.22 360)' }} />
             <span>Made in Bharat by Devalok</span>
           </div>
         </div>

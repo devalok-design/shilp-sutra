@@ -10,7 +10,6 @@ import {
   IconLink,
   IconMoon,
   IconPalette,
-  IconSparkles,
   IconSun,
 } from '@tabler/icons-react'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
@@ -80,7 +79,7 @@ function DemoCard({
   return (
     <article className="flex flex-col gap-ds-05 p-ds-06 rounded-surface border border-transparent bg-surface-raised shadow-raised">
       <header className="flex flex-col">
-        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{eyebrow}</span>
+        <span className="text-ds-xs text-surface-fg-subtle">{eyebrow}</span>
         <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>
         <p className="text-ds-sm text-surface-fg-subtle mt-ds-02">{caption}</p>
       </header>
@@ -119,8 +118,8 @@ function CommandPaletteDemo() {
     {
       label: 'Brand',
       items: [
-        { id: 'b-mira', label: 'Switch to Mira (saffron)', icon: <IconSparkles size={14} />, onSelect: () => (window.location.href = '/theming?hue=55&chroma=0.18') },
-        { id: 'b-atlas', label: 'Switch to Atlas (indigo)', icon: <IconSparkles size={14} />, onSelect: () => (window.location.href = '/theming?hue=245&chroma=0.19') },
+        { id: 'b-mira', label: 'Switch to Mira (saffron)', icon: <IconPalette size={14} />, onSelect: () => (window.location.href = '/theming?hue=55&chroma=0.18') },
+        { id: 'b-atlas', label: 'Switch to Atlas (indigo)', icon: <IconPalette size={14} />, onSelect: () => (window.location.href = '/theming?hue=245&chroma=0.19') },
       ],
     },
     {

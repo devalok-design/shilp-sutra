@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { IconBrandGithub, IconFileText, IconRobot, IconSparkles, IconTerminal } from '@tabler/icons-react'
+import { IconBrandGithub, IconFileText, IconRobot, IconTerminal } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
@@ -71,14 +71,11 @@ export default function AgentsPage() {
           <div className="max-w-3xl rounded-control border border-accent-7 bg-accent-2 p-ds-06 mb-ds-12">
             <div className="flex items-start gap-ds-04 mb-ds-04">
               <span className="w-10 h-10 rounded-control-inner bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
-                <IconSparkles size={20} />
+                <IconTerminal size={20} />
               </span>
               <div className="flex flex-col">
-                <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
-                  One install
-                </span>
-                <span className="text-ds-md text-surface-fg font-semibold mt-ds-01">
-                  Run this in your terminal.
+                <span className="text-ds-md text-surface-fg font-semibold">
+                  One install. Run this in your terminal.
                 </span>
               </div>
             </div>
@@ -128,10 +125,8 @@ export default function AgentsPage() {
               {resources.map((r) => (
                 <Card key={r.title}>
                   <CardHeader>
-                    <div className="flex items-center gap-ds-03">
-                      <span className="w-9 h-9 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center">
-                        <r.icon size={16} />
-                      </span>
+                    <div className="flex items-center gap-ds-02">
+                      <r.icon size={16} className="text-accent-11 shrink-0" />
                       <CardTitle className="text-[length:var(--typo-heading-sm-size)]">{r.title}</CardTitle>
                     </div>
                     <CardDescription>{r.body}</CardDescription>

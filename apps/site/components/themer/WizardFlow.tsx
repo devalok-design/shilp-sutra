@@ -161,7 +161,7 @@ export function WizardFlow() {
       </div>
 
       <aside className="flex flex-col gap-ds-03 lg:w-[320px]">
-        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+        <span className="text-ds-xs text-surface-fg-subtle">
           Live preview
         </span>
         <PreviewFrame

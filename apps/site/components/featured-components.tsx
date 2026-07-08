@@ -25,7 +25,7 @@ export function FeaturedComponents() {
     <TooltipProvider delayDuration={200}>
       <section className="mb-ds-12">
         <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-08">
-          <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+          <span className="text-ds-xs text-surface-fg-subtle">
             Featured · live demos
           </span>
           <h2 className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg">
@@ -68,7 +68,7 @@ function FeatureCard({
   return (
     <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-surface bg-surface-raised shadow-raised transition-[box-shadow,translate] duration-fast-02 ease-productive-standard hover:shadow-raised-hover hover:-translate-y-px">
       <header className="flex flex-col">
-        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">{slug}</span>
+        <span className="text-ds-xs text-surface-fg-subtle">{slug}</span>
         <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>
         <p className="text-ds-sm text-surface-fg-subtle mt-ds-02">{caption}</p>
       </header>

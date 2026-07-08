@@ -21,7 +21,7 @@ import { buildAgentPrompt } from '@/lib/themer-prompt'
 import { parseThemerParams } from '@/lib/themer-state'
 
 export const metadata: Metadata = {
-  title: 'Result — Themer',
+  title: 'Result · Themer',
   description:
     'Your shilp-sutra theme: one prompt for your AI editor, or install + CSS to paste by hand. Live preview included.',
 }
@@ -77,14 +77,14 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
                 {/* MANUAL FALLBACK — install + CSS paste by hand */}
                 <section className="flex flex-col gap-ds-05 border-t border-surface-border-subtle pt-ds-07">
                   <div className="flex flex-col gap-ds-02 max-w-2xl">
-                    <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+                    <span className="text-ds-xs text-surface-fg-subtle">
                       Prefer to do it by hand?
                     </span>
                     <h2 className="text-ds-xl font-semibold text-surface-fg">
                       Install, paste, verify.
                     </h2>
                     <p className="text-ds-sm text-surface-fg-muted leading-relaxed">
-                      Three steps — about a minute. Skip this section entirely if you used the
+                      Three steps, about a minute. Skip this section entirely if you used the
                       prompt above.
                     </p>
                   </div>
@@ -136,7 +136,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
               </div>
 
               <aside className="flex flex-col gap-ds-04 lg:sticky lg:top-[5.5rem] lg:self-start">
-                <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+                <span className="text-ds-xs text-surface-fg-subtle">
                   Live preview
                 </span>
                 <PreviewFrame
@@ -168,7 +168,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
             </div>
 
             <section className="border-t border-surface-border-subtle pt-ds-08 flex flex-col gap-ds-03 max-w-2xl">
-              <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+              <span className="text-ds-xs text-surface-fg-subtle">
                 Want to tweak more?
               </span>
               <p className="text-ds-md text-surface-fg-muted leading-relaxed">

@@ -129,7 +129,7 @@ export function BrandImportPanel() {
         </div>
 
         <div className="rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-04 flex flex-col gap-ds-02">
-          <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+          <span className="text-ds-xs text-surface-fg-subtle">
             Suggested archetype
           </span>
           <div className="flex items-baseline justify-between">
@@ -148,7 +148,7 @@ export function BrandImportPanel() {
       </div>
 
       <div className="flex flex-col gap-ds-04">
-        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+        <span className="text-ds-xs text-surface-fg-subtle">
           Live preview · {suggestion.name}
         </span>
         <PreviewFrame

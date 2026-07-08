@@ -7,7 +7,7 @@ import { SiteHeader } from '@/components/site-header'
 import { WizardFlow } from '@/components/themer/WizardFlow'
 
 export const metadata: Metadata = {
-  title: 'Wizard — Themer',
+  title: 'Wizard · Themer',
   description:
     'Five questions. We pick the archetype, density, shape, motion, and accent for you, then drop you at a result page.',
 }

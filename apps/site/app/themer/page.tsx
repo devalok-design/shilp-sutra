@@ -6,7 +6,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 
 export const metadata: Metadata = {
-  title: 'Themer — shilp-sutra',
+  title: 'Themer · shilp-sutra',
   description:
     'Make shilp-sutra look like your brand. Pick the path that fits where you are: brand colors in hand, an archetype to clone, a guided wizard, or just browsing.',
 }
@@ -65,7 +65,7 @@ export default function ThemerLandingPage() {
               eyebrow="Themer"
               title="Make it look like you."
               subtitle="Four ways in. Same place to land."
-              description="The Themer is one funnel with four entry doors. Pick the door that fits where you are right now — each path drops you at a result page with install commands, a CSS snippet, and a live preview."
+              description="The Themer is one funnel with four entry doors. Pick the door that fits where you are right now. Each path drops you at a result page with install commands, a CSS snippet, and a live preview."
             />
 
             <section
@@ -78,7 +78,7 @@ export default function ThemerLandingPage() {
                   href={p.href}
                   className="group flex flex-col gap-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-06 transition-colors duration-fast-01 hover:border-accent-7 hover:bg-surface-3"
                 >
-                  <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+                  <span className="text-ds-xs text-surface-fg-subtle">
                     {p.eyebrow}
                   </span>
                   <h2 className="text-ds-xl font-semibold text-surface-fg">{p.title}</h2>
@@ -93,7 +93,7 @@ export default function ThemerLandingPage() {
             </section>
 
             <section className="border-t border-surface-border-subtle pt-ds-08 flex flex-col gap-ds-03 max-w-2xl">
-              <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
+              <span className="text-ds-xs text-surface-fg-subtle">
                 Under the hood
               </span>
               <h3 className="text-ds-lg font-semibold text-surface-fg">CSS variables. No JS theme provider.</h3>

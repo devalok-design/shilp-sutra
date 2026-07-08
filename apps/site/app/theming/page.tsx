@@ -25,17 +25,10 @@ export default function ThemingPage() {
               subtitle="Pick a hue. Set the chroma. The twelve-step ramp generates itself."
               description="Every component on the site recolours live as you move the sliders. Buttons, badges, alerts, focus rings. Drop the exported CSS into your project and your whole app follows."
               meta={
-                <div className="flex flex-wrap gap-ds-02 text-ds-xs">
-                  <span className="inline-flex items-center gap-ds-02 rounded-control-inner border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
-                    No theme provider. CSS-vars only.
-                  </span>
-                  <span className="inline-flex items-center gap-ds-02 rounded-control-inner border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
-                    Light + dark generated together.
-                  </span>
-                  <span className="inline-flex items-center gap-ds-02 rounded-control-inner border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-surface-fg-subtle">
-                    Same algorithm shilp-sutra ships with.
-                  </span>
-                </div>
+                <Text variant="body-sm" className="text-surface-fg-subtle">
+                  No theme provider, CSS-vars only. Light and dark generate together, from the same
+                  algorithm shilp-sutra ships with.
+                </Text>
               }
             />
 
@@ -51,7 +44,7 @@ export default function ThemingPage() {
                     Try the Themer.
                   </Text>
                   <Text variant="body-sm" className="text-surface-fg-muted">
-                    Four entry doors — pick an archetype, paste your brand color, take a wizard, or
+                    Four entry doors: pick an archetype, paste your brand color, take a wizard, or
                     just see a result page. Each drops you at install + CSS to paste, no editing
                     required.
                   </Text>

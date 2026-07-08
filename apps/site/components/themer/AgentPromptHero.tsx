@@ -29,7 +29,7 @@ export function AgentPromptHero({ prompt }: AgentPromptHeroProps) {
   return (
     <section
       aria-label="One-prompt setup for AI agents"
-      className="relative overflow-hidden rounded-surface border border-accent-7 bg-linear-to-br from-accent-2 via-surface-2 to-accent-3 p-ds-06 md:p-ds-08"
+      className="relative overflow-hidden rounded-surface border border-accent-7 bg-accent-2 p-ds-06 md:p-ds-08"
     >
       <div className="flex flex-col gap-ds-05 max-w-3xl">
         <h2 className="text-ds-3xl md:text-ds-4xl font-semibold text-surface-fg leading-tight text-balance">

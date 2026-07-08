@@ -17,6 +17,7 @@
    ─────────────────────────────────────────────────────────────────── */
 
 @utility text-heading-2xl {
+  font-family:    var(--font-display);
   font-size:      var(--typo-heading-2xl-size);
   font-weight:    var(--typo-heading-2xl-weight);
   line-height:    var(--typo-heading-2xl-leading);
@@ -24,6 +25,7 @@
 }
 
 @utility text-heading-xl {
+  font-family:    var(--font-display);
   font-size:      var(--typo-heading-xl-size);
   font-weight:    var(--typo-heading-xl-weight);
   line-height:    var(--typo-heading-xl-leading);
@@ -31,6 +33,7 @@
 }
 
 @utility text-heading-lg {
+  font-family:    var(--font-display);
   font-size:      var(--typo-heading-lg-size);
   font-weight:    var(--typo-heading-lg-weight);
   line-height:    var(--typo-heading-lg-leading);
@@ -38,6 +41,7 @@
 }
 
 @utility text-heading-md {
+  font-family:    var(--font-display);
   font-size:      var(--typo-heading-md-size);
   font-weight:    var(--typo-heading-md-weight);
   line-height:    var(--typo-heading-md-leading);
@@ -45,6 +49,7 @@
 }
 
 @utility text-heading-sm {
+  font-family:    var(--font-display);
   font-size:      var(--typo-heading-sm-size);
   font-weight:    var(--typo-heading-sm-weight);
   line-height:    var(--typo-heading-sm-leading);
@@ -52,6 +57,7 @@
 }
 
 @utility text-heading-xs {
+  font-family:    var(--font-display);
   font-size:      var(--typo-heading-xs-size);
   font-weight:    var(--typo-heading-xs-weight);
   line-height:    var(--typo-heading-xs-leading);

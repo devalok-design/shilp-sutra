@@ -7,12 +7,12 @@ import { cn } from './lib/utils'
 const textVariants = cva('font-sans', {
   variants: {
     variant: {
-      'heading-2xl': 'text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)]',
-      'heading-xl':  'text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)]',
-      'heading-lg':  'text-[length:var(--typo-heading-lg-size)] font-[number:var(--typo-heading-lg-weight)] leading-[var(--typo-heading-lg-leading)] tracking-[var(--typo-heading-lg-tracking)]',
-      'heading-md':  'text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] tracking-[var(--typo-heading-md-tracking)]',
-      'heading-sm':  'text-[length:var(--typo-heading-sm-size)] font-[number:var(--typo-heading-sm-weight)] leading-[var(--typo-heading-sm-leading)] tracking-[var(--typo-heading-sm-tracking)]',
-      'heading-xs':  'text-[length:var(--typo-heading-xs-size)] font-[number:var(--typo-heading-xs-weight)] leading-[var(--typo-heading-xs-leading)] tracking-[var(--typo-heading-xs-tracking)]',
+      'heading-2xl': 'font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)]',
+      'heading-xl':  'font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)]',
+      'heading-lg':  'font-display text-[length:var(--typo-heading-lg-size)] font-[number:var(--typo-heading-lg-weight)] leading-[var(--typo-heading-lg-leading)] tracking-[var(--typo-heading-lg-tracking)]',
+      'heading-md':  'font-display text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] tracking-[var(--typo-heading-md-tracking)]',
+      'heading-sm':  'font-display text-[length:var(--typo-heading-sm-size)] font-[number:var(--typo-heading-sm-weight)] leading-[var(--typo-heading-sm-leading)] tracking-[var(--typo-heading-sm-tracking)]',
+      'heading-xs':  'font-display text-[length:var(--typo-heading-xs-size)] font-[number:var(--typo-heading-xs-weight)] leading-[var(--typo-heading-xs-leading)] tracking-[var(--typo-heading-xs-tracking)]',
       'body-lg':     'text-[length:var(--typo-body-lg-size)] font-[number:var(--typo-body-lg-weight)] leading-[var(--typo-body-lg-leading)] tracking-[var(--typo-body-lg-tracking)]',
       'body-md':     'text-[length:var(--typo-body-md-size)] font-[number:var(--typo-body-md-weight)] leading-[var(--typo-body-md-leading)] tracking-[var(--typo-body-md-tracking)]',
       'body-sm':     'text-[length:var(--typo-body-sm-size)] font-[number:var(--typo-body-sm-weight)] leading-[var(--typo-body-sm-leading)] tracking-[var(--typo-body-sm-tracking)]',

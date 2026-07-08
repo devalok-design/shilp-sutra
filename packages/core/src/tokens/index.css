@@ -5,7 +5,7 @@
  *   primitives             → defines --pink-*, --neutral-*, etc. (private palette)
  *   semantic               → @theme public tokens referencing the primitives +
  *                            :root meta-tokens + .dark overrides + forced-colors block
- *   typography             → @font-face for Inter, Ranade (load early)
+ *   typography             → @font-face for Inter, Manrope, Ranade (load early)
  *   typography-semantic    → --typo-* composites referencing @theme --text-ds-* etc.
  *   base                   → @property --border-angle + iOS font-size fix
  *   animations             → @keyframes referenced by component animations

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { IconBrandGithub, IconFileText, IconRobot, IconTerminal } from '@tabler/icons-react'
+import { IconBrandGithub, IconFileText, IconPlug, IconRobot, IconTerminal } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
@@ -35,16 +35,16 @@ const resources = [
   {
     icon: IconFileText,
     title: 'llms.txt',
-    body: 'Concise cheatsheet, 660 lines. Setup playbook, peer-dep matrix, breaking changes, design rules. Inject this into any chat.',
+    body: 'The router index. Setup playbook, peer-dep matrix, breaking changes, design rules, and pointers into per-component docs. Inject this into any chat.',
     cmd: 'curl https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/packages/core/llms.txt',
     href: 'https://github.com/devalok-design/shilp-sutra/blob/main/packages/core/llms.txt',
   },
   {
-    icon: IconFileText,
-    title: 'llms-full.txt',
-    body: 'Exhaustive per-component reference, 6,900 lines. Every prop, every variant, every example. Reach for this when llms.txt is too brief.',
-    cmd: 'curl https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/packages/core/llms-full.txt',
-    href: 'https://github.com/devalok-design/shilp-sutra/blob/main/packages/core/llms-full.txt',
+    icon: IconPlug,
+    title: 'Hosted MCP',
+    body: 'Live Model Context Protocol server. Your agent queries the current component APIs, tokens, and upgrade guidance on demand, over MCP, with no files to sync.',
+    cmd: 'https://shilp-sutra.devalok.in/mcp',
+    href: 'https://shilp-sutra.devalok.in/mcp',
   },
   {
     icon: IconTerminal,
@@ -64,8 +64,8 @@ export default function AgentsPage() {
           <PageHeader
             eyebrow="For your AI editor"
             title="Your AI editor already knows shilp-sutra."
-            subtitle="One install. Four files. Every release."
-            description="We ship an installable skill, two flavours of llms.txt, and AGENTS.md with every release so your coding agent doesn't guess at the library. Install once, never paste docs into chat again."
+            subtitle="One install. Every release."
+            description="We ship an installable skill, an llms.txt router, a hosted MCP server, and AGENTS.md with every release so your coding agent doesn't guess at the library. Install once, never paste docs into chat again."
           />
 
           <div className="max-w-3xl rounded-control border border-accent-7 bg-accent-2 p-ds-06 mb-ds-12">

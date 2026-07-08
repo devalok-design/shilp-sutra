@@ -2,7 +2,7 @@
 
 # @devalok/shilp-sutra
 
-> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps, v0.45.1.
+> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps, v0.46.0.
 > Built on the same primitives as shadcn/ui but with DIFFERENT prop APIs — never guess from shadcn knowledge; verify every prop.
 > This file is a ROUTER: it tells you what exists and where to get details. Do not look for prop tables here — fetch them per component (MCP tool or per-component doc file below).
 
@@ -102,6 +102,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [stat-flash](docs/components/ui/stat-flash.md)
 - [status-dot](docs/components/ui/status-dot.md)
 - [stepper](docs/components/ui/stepper.md)
+- [surface](docs/components/ui/surface.md): The low-level elevated container primitive
 - [switch](docs/components/ui/switch.md)
 - [table](docs/components/ui/table.md)
 - [table-row-link](docs/components/ui/table-row-link.md)

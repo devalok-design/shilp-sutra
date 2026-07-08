@@ -1,5 +1,72 @@
 # @devalok/shilp-sutra
 
+## 0.46.0
+
+### Minor Changes
+
+- [#116](https://github.com/devalok-design/shilp-sutra/pull/116) [`7346724`](https://github.com/devalok-design/shilp-sutra/commit/7346724ba98d8030f42eaa354db50f066401f719) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Add Manrope as the display/heading face and make the design system own the heading font.
+
+  **What changed**
+  - Ships `Manrope-Variable.woff2` (OFL, latin variable, weights 200–800) with an `@font-face` declaration in `typography.css`.
+  - `--font-display` moves from `"Inter", system-ui, sans-serif` to `"Manrope", "Inter", system-ui, sans-serif`.
+  - The DS now binds the display face to headings, which it previously did not do:
+    - `base.css` sets `font-family: var(--font-display)` on bare `h1`–`h6` (inside `@layer base`).
+    - The `text-heading-{2xl…xs}` utilities now set `font-family: var(--font-display)`.
+    - The `Text` component's `heading-*` variants now carry `font-display`.
+
+  **Why**
+
+  Until now `--font-display` was an orphan token — no shipped component or utility consumed it, so `<h1>` inherited the body face (Inter). Each consumer app wired its own heading font by hand. This makes Manrope the single DS-level default so heading typography is consistent across products without per-app wiring.
+
+  **Behavioral change (read before upgrading)**
+
+  Headings that previously rendered in Inter (the body default) now render in Manrope. This is a visible change, not an API change.
+  - Apps that already set their own heading `font-family` in **unlayered** CSS (e.g. `app/globals.css` styling `h1–h6`, or a `next/font` variable applied to headings) are unaffected — their rule wins over the DS `@layer base` default. They opt into Manrope by removing that local wiring.
+  - Ranade is **unchanged**: it remains `--font-accent` (the brand-moment face) and continues to drive `.prose-devsabha`. Body copy stays Inter.
+
+  Manrope has no italic axis; italic display text falls back per the `@font-face` stack.
+
+- [#111](https://github.com/devalok-design/shilp-sutra/pull/111) [`1f40f8b`](https://github.com/devalok-design/shilp-sutra/commit/1f40f8b6a3a7a59f18f49606c373a07e495bedeb) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Add `Surface` — the low-level elevated container primitive.
+
+  Every mature design system ships one (MUI `Paper`, Carbon `Tile`, Chakra/Polaris `Box`) and builds its semantic Card on top; shilp-sutra had only the opinionated `Card` (gap-model padding, slots), so ~29 components hand-rolled `bg-surface-raised … shadow-raised` because there was nothing lighter to compose. `Surface` fills that gap.
+
+  ```tsx
+  import { Surface } from '@devalok/shilp-sutra/ui/surface'
+
+  <Surface elevation="raised" padding="md">…</Surface>
+  <Surface elevation="flat" bordered padding="sm">…</Surface>   // on-page tile
+  <Surface asChild elevation="raised"><a href="/x">…</a></Surface>
+  ```
+
+  - `elevation`: `flat | raised | floating | overlay` (binds a surface-bg token to a shadow token)
+  - `padding`: `none | sm | md | lg` (simple all-side — not Card's gap model)
+  - `radius`: `none | control | surface | overlay | pill`
+  - `bordered`: border-led edge; dev-warns if combined with a shadowed elevation (the double-edge anti-pattern)
+  - `asChild`: render as the child element via Slot
+
+  Server-safe. Additive only — no existing component changed. (Follow-ups: refactor `Card` to compose `Surface`, and migrate the hand-rolled surfaces.)
+
+### Patch Changes
+
+- [#110](https://github.com/devalok-design/shilp-sutra/pull/110) [`568db07`](https://github.com/devalok-design/shilp-sutra/commit/568db07b55f446d4bb7d00eaca4516bc1c137d9c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Round eight hard-coded font-sizes in Message and VideoPreview up to DS type-scale tokens (v0.44 followups item E). Chat sender name and message/edit bodies move `text-[13px]` → `text-ds-md` (14px); the chat timestamp and the video-preview timecode + playback-rate button move `text-[11px]` → `text-ds-sm` (12px).
+
+  Rationale: peer systems closest to our use (Atlassian, IBM Carbon) hold a 12px legibility floor and carry no 11/13px step — chat body is primary reading text, so it takes the canonical `ds-md` body step rather than shrinking. Token utilities set font-size only in TW4, so line-heights are unchanged.
+
+  Visible effect: chat text reads slightly roomier. The `badge-indicator` count pill intentionally keeps its 11px value — a decorative numeral in a fixed 18px pill, not body text, so the text floor doesn't apply. Non-breaking (no API change).
+
+- [#110](https://github.com/devalok-design/shilp-sutra/pull/110) [`6d28c1c`](https://github.com/devalok-design/shilp-sutra/commit/6d28c1c672760c507e40e1d6d550d5fab902c5e5) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Motion compliance pass (anti-convergence v1.1 motion rules / locked decision B "settle, don't bounce").
+  - **Reduced-motion guards (2):** the avatar online-status dot and the deadline-indicator overdue/critical state animate a continuous opacity pulse (`repeat: Infinity`). These are non-transform loops that framer's global `MotionConfig reducedMotion="user"` cannot stop, so they now self-guard with `useReducedMotion()` — reduced-motion users get the static variant (colour still signals status/urgency). No change for everyone else.
+  - **Spring-overshoot retunes (6):** resting-state indicators that popped with `springs.bouncy` (ζ≈0.53, visible overshoot) now settle — radio dot and filter count → `springs.snappy`; count badge, avatar badge, and stat-card delta → `springs.smooth` (matching the delta's sibling, which was already smooth); multi-select selection check → `springs.snappy`.
+
+  Deliberate-moment pops (toast completion icons, upload-success check, devadoot celebration) and gesture-following springs (segmented-control slider, attachment-strip layout) keep `bouncy` — the rule's allowed exceptions. Non-breaking (no API change).
+
+- [#110](https://github.com/devalok-design/shilp-sutra/pull/110) [`cee32cf`](https://github.com/devalok-design/shilp-sutra/commit/cee32cf3f6e0c4b40775d422ea8c8d7702809ceb) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Compose base primitives instead of hand-rolling them (W6 compose-don't-re-roll).
+  - **StatCard** loading state: three `bg-skeleton-base animate-pulse` divs → `<Skeleton>`.
+  - **Avatar** loading state: hand-rolled placeholder that also used the wrong token (`bg-surface-raised-hover`); now `<Skeleton>` with the correct `bg-skeleton-base`. (Both Skeleton composes are visually identical — Skeleton defaults to the same `pulse` — and now inherit `motion-reduce:animate-none`.)
+  - **DataTableToolbar** column/density/export controls: hand-rolled `<button>`s → `<Button variant="outline" color="neutral" size="sm">`. Standardizes on the real Button (correct hover token, focus ring, active state); horizontal padding steps from `px-ds-03` to Button's `px-ds-04`.
+
+  Non-breaking (no API change).
+
 ## 0.45.1
 
 ### Patch Changes

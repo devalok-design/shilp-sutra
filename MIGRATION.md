@@ -4,6 +4,34 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.46.0 — Manrope display font, design system owns heading typography
+
+Nothing breaks at the TypeScript level. One visual behavior change to check after upgrade.
+
+### Visual: headings now render in Manrope
+
+`--font-display` moved from Inter to `"Manrope", "Inter", system-ui, sans-serif`, and the design system now binds that face to headings, which it previously did not do:
+
+- bare `h1`–`h6` (via `@layer base`)
+- the `text-heading-{2xl…xs}` utilities
+- the `Text` component's `heading-*` variants
+
+Until now `--font-display` was an orphan token — no shipped component or utility consumed it, so `<h1>` inherited the Inter body face and each app wired its own heading font by hand. Headings that rendered in Inter now render in Manrope. Manrope ships in the tarball (`fonts/Manrope-Variable.woff2`, OFL, weights 200–800).
+
+**If you already wire your own heading font** (e.g. an `app/globals.css` rule on `h1`–`h6`, or a `next/font` variable applied to headings) in **unlayered** CSS, nothing changes — your rule wins over the DS `@layer base` default. Drop that local wiring to adopt Manrope.
+
+**To keep headings in Inter,** point the token back in your consumer CSS:
+
+```css
+:root { --font-display: "Inter", system-ui, sans-serif; }
+```
+
+Ranade is **unchanged** — still `--font-accent` (the brand-moment face), still drives `.prose-devsabha`. Body copy stays Inter. Manrope has no italic axis; italic display text falls back per the `@font-face` stack.
+
+### New APIs (additive)
+
+`Surface` (`ui/surface`) — the low-level elevated container primitive that `Card` and the hand-rolled `bg-surface-raised … shadow-raised` blocks compose on top of. No existing component changed.
+
 ## v0.45.0 — Card spacing variable, table overhaul, AI docs switch to MCP
 
 Nothing breaks at the TypeScript level. One doc-surface removal + two visual things to check after upgrade:

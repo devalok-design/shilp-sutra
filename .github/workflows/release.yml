@@ -188,8 +188,15 @@ jobs:
       # Previously this only ran on a developer's laptop via /publish-release.
       # That made every "HARD gate" in our docs social, not mechanical.
       # Wiring it here closes the gap.
+      # SS_AUDIT_SKIP_REDUNDANT=1 tells the audit to skip build/typecheck/test/ssr
+      # — they already ran as the steps above (~4-6 min saved per release). Every
+      # audit-UNIQUE gate (docs coverage, token hygiene, manifest, skill, breaking,
+      # bundle, consumer smoke) still runs. The audit's downstream gates that read
+      # dist/ use the `Build` step's output above.
       - name: Pre-publish audit
         run: node scripts/pre-publish-audit.mjs
+        env:
+          SS_AUDIT_SKIP_REDUNDANT: '1'
 
       # Consumer smoke test installs the packed tarball into a throwaway
       # Next 16 + TW4 + Turbopack app and runs `next build`. Catches the

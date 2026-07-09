@@ -16,7 +16,8 @@ import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY
-const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com'
+// Devalok is on PostHog EU. Override with NEXT_PUBLIC_POSTHOG_HOST if that changes.
+const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com'
 
 function PostHogPageView() {
   const pathname = usePathname()

@@ -100,15 +100,15 @@ type SvgComponent = React.ForwardRefExoticComponent<
 >
 
 const _devalokSvgComponents: Record<string, SvgComponent> = {
-  'wordmark-brand': createSvgComponent('WordmarkBrand', '0 0 2089.68 830.34', wordmarkPaths, BRAND),
-  'wordmark-black': createSvgComponent('WordmarkBlack', '0 0 2089.68 830.34', wordmarkPaths, BLACK),
-  'wordmark-white': createSvgComponent('WordmarkWhite', '0 0 2089.68 830.34', wordmarkPaths, WHITE),
-  'dass-brand': createSvgComponent('DassBrand', '0 0 2087.16 976.24', dassPaths, BRAND),
-  'dass-black': createSvgComponent('DassBlack', '0 0 2087.16 976.24', dassPaths, BLACK),
-  'dass-white': createSvgComponent('DassWhite', '0 0 2087.16 976.24', dassPaths, WHITE),
-  'chakra-brand': createSvgComponent('ChakraBrand', '0 0 32 32', chakraPaths, BRAND),
-  'chakra-black': createSvgComponent('ChakraBlack', '0 0 32 32', chakraPaths, BLACK),
-  'chakra-white': createSvgComponent('ChakraWhite', '0 0 32 32', chakraPaths, WHITE),
+  'wordmark-brand': createSvgComponent('WordmarkBrand', '275.14 275.04 1538.53 285.48', wordmarkPaths, BRAND),
+  'wordmark-black': createSvgComponent('WordmarkBlack', '275.14 275.04 1538.53 285.48', wordmarkPaths, BLACK),
+  'wordmark-white': createSvgComponent('WordmarkWhite', '275.14 275.04 1538.53 285.48', wordmarkPaths, WHITE),
+  'dass-brand': createSvgComponent('DassBrand', '273.94 272.96 1538.41 428.57', dassPaths, BRAND),
+  'dass-black': createSvgComponent('DassBlack', '273.94 272.96 1538.41 428.57', dassPaths, BLACK),
+  'dass-white': createSvgComponent('DassWhite', '273.94 272.96 1538.41 428.57', dassPaths, WHITE),
+  'chakra-brand': createSvgComponent('ChakraBrand', '5.99 4.56 20.03 22.88', chakraPaths, BRAND),
+  'chakra-black': createSvgComponent('ChakraBlack', '5.99 4.56 20.03 22.88', chakraPaths, BLACK),
+  'chakra-white': createSvgComponent('ChakraWhite', '5.99 4.56 20.03 22.88', chakraPaths, WHITE),
 }
 
 export function getDevalokSvgComponents(): Record<string, SvgComponent> {

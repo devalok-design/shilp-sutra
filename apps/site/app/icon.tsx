@@ -8,7 +8,7 @@ import { ImageResponse } from 'next/og'
  * legible on light tab bars while the saturated centre survives dark.
  */
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 export const size = { width: 32, height: 32 }
 export const contentType = 'image/png'
 
@@ -22,7 +22,7 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'oklch(0.6 0.22 360)',
+          background: '#de297b',
           color: 'white',
           fontSize: 22,
           fontWeight: 700,

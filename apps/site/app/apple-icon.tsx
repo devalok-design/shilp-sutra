@@ -6,7 +6,7 @@ import { ImageResponse } from 'next/og'
  * around the mark so iOS home-screen rounding doesn't crop the glyph.
  */
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 export const size = { width: 180, height: 180 }
 export const contentType = 'image/png'
 
@@ -21,7 +21,7 @@ export default function AppleIcon() {
           alignItems: 'center',
           justifyContent: 'center',
           background:
-            'linear-gradient(135deg, oklch(0.65 0.22 360) 0%, oklch(0.55 0.24 360) 100%)',
+            'linear-gradient(135deg, #f13f8a 0%, #d3006c 100%)',
           color: 'white',
           fontSize: 120,
           fontWeight: 700,

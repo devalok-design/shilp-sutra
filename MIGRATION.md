@@ -4,6 +4,16 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.47.0 — MCP setup-journey tools + manifest `peers` (additive)
+
+**Nothing breaks. No migration required.** Everything in 0.47.0 is additive.
+
+- **`mcp-manifest.json` gains a `peers` field** — components that import optional peer dependencies (data-table, charts, date-picker, rich-text-editor, input-otp, file-preview, markdown-viewer) now list them in a structured `peers: [...]` array. Purely additive to the manifest; existing readers ignore unknown fields. Manifest format version bumped 1.0.0 → 1.1.0.
+- **Hosted MCP gains four setup tools** — `preflight`, `validate_snippet`, `detect_framework`, `verify_setup`. Nothing to install; they run on the hosted server. If your AI agent connects the MCP, it can now resolve peer installs, lint snippets for TW4 dead classes before writing, detect the right recipe, and verify wiring.
+- **AGENTS.md** adds a "Setting up in a new project" sequence and the hosted MCP URL.
+- **TanStack Start install recipe rewritten** for the current `@tanstack/react-start` Vite-plugin setup (the old recipe targeted the retired Vinxi `@tanstack/start`). If you set up TanStack Start against the old recipe, re-check against `docs/recipes/install-tanstack-start.md`.
+- **npm `homepage`** now points at the marketing site instead of Storybook.
+
 ## v0.46.0 — Manrope display font, design system owns heading typography
 
 Nothing breaks at the TypeScript level. One visual behavior change to check after upgrade.

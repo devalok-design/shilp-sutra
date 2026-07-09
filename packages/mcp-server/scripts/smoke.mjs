@@ -71,8 +71,8 @@ try {
   const list = await rpc('tools/list', {}, 2)
   const names = (list.result?.tools ?? []).map((t) => t.name).sort()
   check(
-    'tools/list has all 7',
-    JSON.stringify(names) === JSON.stringify(['find_component', 'get_component', 'get_setup', 'get_tokens', 'report_issue', 'search_docs', 'upgrade']),
+    'tools/list has all 11',
+    JSON.stringify(names) === JSON.stringify(['detect_framework', 'find_component', 'get_component', 'get_setup', 'get_tokens', 'preflight', 'report_issue', 'search_docs', 'upgrade', 'validate_snippet', 'verify_setup']),
     names.join(',')
   )
 
@@ -108,9 +108,24 @@ try {
   const search = await call('search_docs', { query: 'focus ring' }, 10)
   check('search_docs(focus ring)', !(search.result?.content?.[0]?.text ?? '').includes('No sections matched'))
 
+  // ── setup-journey tools ──
+  const pre = await call('preflight', { framework: 'vite', imports: ['@devalok/shilp-sutra/ui/data-table', 'ui/button'] }, 12)
+  const preText = pre.result?.content?.[0]?.text ?? ''
+  check('preflight surfaces data-table peers', preText.includes('@tanstack/react-table') && preText.includes('@tanstack/react-virtual'), preText.slice(0, 200))
+
+  const val = await call('validate_snippet', { code: '<Button variant="default" className="shadow bg-surface-2">x</Button>' }, 13)
+  const valText = val.result?.content?.[0]?.text ?? ''
+  check('validate_snippet flags dead classes + bad variant', valText.includes('Bare `shadow`') && valText.includes('surface-N') && valText.includes('removed in 0.32.0'), valText.slice(0, 300))
+
+  const det = await call('detect_framework', { packageJson: JSON.stringify({ dependencies: { '@tanstack/react-start': '^1', '@tanstack/react-router': '^1' } }) }, 14)
+  check('detect_framework(react-start)→tanstack-start', (det.result?.content?.[0]?.text ?? '').includes('"tanstack-start"'))
+
+  const ver = await call('verify_setup', { globalsCss: '@import "@devalok/shilp-sutra/css";\n@import "tailwindcss";' }, 15)
+  check('verify_setup catches CSS import order', (ver.result?.content?.[0]?.text ?? '').includes('CSS import order'))
+
   // report_issue: without GITHUB_APP_* configured (as in smoke/local), it must
   // fail gracefully — a clear "not enabled" error, never a crash or a write.
-  const rep = await call('report_issue', { category: 'bug', title: 'smoke test — should not file', body: 'smoke' }, 11)
+  const rep = await call('report_issue', { category: 'bug', title: 'smoke test — should not file', body: 'smoke' }, 16)
   const repText = rep.result?.content?.[0]?.text ?? ''
   check('report_issue not-configured is graceful', rep.result?.isError === true && repText.includes('not enabled'), repText.slice(0, 200))
 } finally {

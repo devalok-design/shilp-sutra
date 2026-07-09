@@ -81,6 +81,12 @@
           "items": { "type": "string" },
           "description": "Known-misuse bullets, verbatim, DO-NOT phrasing preferred."
         },
+        "peers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional peer dependencies this component imports. Absent for core components (no extra install). Importing the component without these installed fails the build with 'Failed to resolve import'. Mirrors the recipe optional-peer table; read by the MCP preflight/verify_setup tools.",
+          "examples": [["@tanstack/react-table", "@tanstack/react-virtual"]]
+        },
         "changes": {
           "type": "array",
           "items": {

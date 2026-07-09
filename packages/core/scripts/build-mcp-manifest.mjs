@@ -23,9 +23,35 @@ import { fileURLToPath } from 'url'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const ROOT = join(__dirname, '..')
 
-const MANIFEST_VERSION = '1.0.0'
+const MANIFEST_VERSION = '1.1.0'
 const CATEGORIES = ['ui', 'composed', 'shell']
 const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal'])
+
+// ── Optional peer dependencies (canonical — mirrors the recipe peer table) ──
+// Some components import third-party libraries shipped as OPTIONAL peers, so
+// consumers who never render them don't pay the install/bundle cost. Importing
+// one without its peer fails the build with "Failed to resolve import" — the
+// #1 silent agent trap. This map is the machine-readable source the MCP
+// preflight/validate/verify tools read; it mirrors the table repeated in every
+// docs/recipes/install-*.md §2a. Keep the two in sync (build advisory below
+// flags a component whose gotchas mention peers but has no entry here).
+const PEER_SPECS = [
+  { match: (name, imp) => imp.includes('/charts') || /(^|-)chart$/.test(name),
+    peers: ['d3-array', 'd3-axis', 'd3-format', 'd3-interpolate', 'd3-scale', 'd3-selection', 'd3-shape', 'd3-time-format', 'd3-transition'] },
+  { match: (name) => name === 'data-table' || name === 'data-table-toolbar', peers: ['@tanstack/react-table', '@tanstack/react-virtual'] },
+  { match: (name) => ['date-picker', 'date-range-picker', 'date-time-picker', 'calendar'].includes(name), peers: ['date-fns'] },
+  { match: (name) => ['rich-text-editor', 'rich-chat-input', 'rich-text-viewer'].includes(name), peers: ['@tiptap/react', '@tiptap/starter-kit', '@tiptap/extension-placeholder'] },
+  { match: (name) => name === 'input-otp', peers: ['input-otp'] },
+  { match: (name) => name === 'file-preview', peers: ['react-pdf', 'react-zoom-pan-pinch'] },
+  { match: (name) => name === 'markdown-viewer', peers: ['react-markdown', 'react-syntax-highlighter'] },
+]
+
+function peersFor(name, importPath) {
+  for (const spec of PEER_SPECS) {
+    if (spec.match(name, importPath)) return spec.peers
+  }
+  return []
+}
 
 // ── Component scanning (mirrors build-component-docs.mjs) ───────────────────
 
@@ -426,7 +452,7 @@ const checkOnly = process.argv.includes('--check')
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
 
 const components = {}
-const stats = { total: 0, props: 0, taggedComposition: 0, notesOnly: 0, missingSections: [] }
+const stats = { total: 0, props: 0, taggedComposition: 0, notesOnly: 0, missingSections: [], peerDrift: [], peered: 0 }
 
 for (const cat of CATEGORIES) {
   for (const name of scanComponents(join(ROOT, 'src', cat))) {
@@ -478,6 +504,13 @@ for (const cat of CATEGORIES) {
     if (gotchas.length) entry.gotchas = gotchas
     const changes = parseChanges(sections['Changes'])
     if (changes.length) entry.changes = changes
+
+    const peers = peersFor(name, entry.import)
+    if (peers.length) { entry.peers = peers; stats.peered++ }
+    // Advisory: a component whose gotchas mention peers but has no PEER_SPECS
+    // entry means the map drifted from the docs — surface it, don't fail.
+    const mentionsPeer = gotchas.some((g) => /peer dependenc/i.test(g))
+    if (mentionsPeer && !peers.length) stats.peerDrift.push(name)
 
     components[name] = entry
     stats.total++
@@ -549,8 +582,15 @@ const tokenCount = Object.values(manifest.tokens).reduce((n, arr) => n + arr.len
 console.log(
   `mcp-manifest${checkOnly ? ' (check)' : '.json generated'} — ${stats.total} components, ` +
     `${stats.props} props, ${tokenCount} tokens. ` +
-    `Composition: ${stats.taggedComposition} tagged, ${stats.notesOnly} notes-only.`
+    `Composition: ${stats.taggedComposition} tagged, ${stats.notesOnly} notes-only. ` +
+    `Peers: ${stats.peered} components with optional peers.`
 )
+if (stats.peerDrift.length) {
+  console.log(
+    `Advisory — ${stats.peerDrift.length} component(s) mention peer deps in gotchas but have no PEER_SPECS entry ` +
+      `(map may have drifted from the recipe table): ${stats.peerDrift.join(', ')}`
+  )
+}
 if (stats.missingSections.length) {
   console.log(`Advisory — ${stats.missingSections.length} docs missing sections:`)
   for (const m of stats.missingSections.slice(0, 10)) console.log(`  - ${m}`)

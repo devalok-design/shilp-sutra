@@ -120,6 +120,7 @@ function buildServer(ctx = {}) {
         'Before answering any shilp-sutra question, read the consumer\'s installed version from ' +
         'node_modules/@devalok/shilp-sutra/package.json and pass it as `version` on every call. ' +
         'Prefer these tools over reading llms.txt or component docs into context — responses are smaller and version-correct. ' +
+        'SETTING UP in a project? Run this sequence instead of guessing: detect_framework(package.json) → get_setup(recipe) → preflight(framework, imports) to install peer deps → validate_snippet(code) BEFORE you write each file → verify_setup(...) after. This closes the four setup traps: peer-dep cliffs, TW4 dead classes (which fail silently), wrong-recipe, and mis-wired CSS/config. ' +
         'If you hit a bug, a broken recipe, a docs gap, or want to suggest a feature, call report_issue — it files a public GitHub issue for maintainer triage.',
     }
   )
@@ -173,6 +174,51 @@ function buildServer(ctx = {}) {
     'Full-text search across component docs and recipes for patterns and guidance the other tools don\'t slice (e.g. "focus ring", "dark mode toggle").',
     { query: z.string(), version: VERSION_PARAM },
     instrument(ctx, 'search_docs', tools.searchDocs)
+  )
+
+  server.tool(
+    'preflight',
+    'Before writing setup code: given a framework and the component subpaths you intend to import, returns the exact install command for the optional PEER dependencies those components need (data-table, charts, date-picker, rich-text-editor, input-otp, file-preview, markdown-viewer). Importing one without its peer fails the build with "Failed to resolve import" — call this first to avoid that. Also flags barrel-import hazards.',
+    {
+      framework: z.string().optional().describe('vite | next-app-router | next-pages | remix | astro | tanstack-start'),
+      imports: z.array(z.string()).optional().describe('Import specifiers or component names you plan to use, e.g. ["@devalok/shilp-sutra/ui/data-table", "date-picker"].'),
+      packageManager: z.enum(['pnpm', 'npm', 'yarn', 'bun']).optional().describe('Defaults to pnpm.'),
+      version: VERSION_PARAM,
+    },
+    instrument(ctx, 'preflight', tools.preflight)
+  )
+
+  server.tool(
+    'validate_snippet',
+    'Pre-write linter. Paste the JSX/TSX/CSS you are about to write; returns TW4 dead-class usage (bare `shadow`, `shadow-0N`, `-surface-N`, `bg-gradient-to-*`, `-[--x]`, removed `/tailwind` preset), removed Button variant/color values, invalid enum prop values (checked against the version-exact manifest), and barrel imports of peer-cliff components. Catches the SILENT failures (a dead class throws no error, it just renders nothing).',
+    { code: z.string().describe('The code you intend to write (JSX/TSX/CSS).'), version: VERSION_PARAM },
+    instrument(ctx, 'validate_snippet', tools.validateSnippet)
+  )
+
+  server.tool(
+    'detect_framework',
+    'Given the consumer app\'s package.json, returns the correct setup recipe id + package manager, so you never guess (or follow a recipe for the wrong framework). Encodes the tricky cases: @tanstack/react-start vs the retired @tanstack/start, Remix vs React-Router-as-Remix, next-app vs next-pages, Vite/React-Router. Feed the result to get_setup.',
+    {
+      packageJson: z.string().describe('Contents of the consumer app package.json (JSON).'),
+      hasAppDir: z.boolean().optional().describe('True if an app/ directory with route files exists (Next routing disambiguation).'),
+      hasPagesDir: z.boolean().optional().describe('True if a pages/ directory with route files exists.'),
+      version: VERSION_PARAM,
+    },
+    instrument(ctx, 'detect_framework', tools.detectFramework)
+  )
+
+  server.tool(
+    'verify_setup',
+    'Post-install gate. Pass whatever you have (globalsCss, nextConfig, the imports you used, installedDeps) and it returns a pass/FAIL checklist for the invisible-but-fatal wiring: both CSS imports present AND in the right order, next.config transpilePackages, and that every imported component\'s peers are installed. Turns "the build passed, is it actually wired?" into a checkable answer.',
+    {
+      framework: z.string().optional(),
+      globalsCss: z.string().optional().describe('Contents of the global CSS entry.'),
+      nextConfig: z.string().optional().describe('Contents of next.config.* (Next only).'),
+      imports: z.array(z.string()).optional().describe('Component import specifiers used in the app.'),
+      installedDeps: z.string().optional().describe('Installed deps: the package.json contents, or a space/comma-separated list of package names.'),
+      version: VERSION_PARAM,
+    },
+    instrument(ctx, 'verify_setup', tools.verifySetup)
   )
 
   server.tool(

@@ -20,12 +20,24 @@ If you are a human, read [README.md](./README.md) instead.
 
 ## How to get details, in priority order
 
-1. **shilp-sutra MCP** (if connected) — version-exact answers as JSON, cheapest on context: `find_component(query)`, `get_component(name, sections?)`, `get_tokens(category)`, `get_setup(framework)`, `upgrade(from, to)`, `search_docs(query)`. Always pass the consumer's installed version (from `node_modules/@devalok/shilp-sutra/package.json`) as `version`.
+1. **shilp-sutra MCP** — version-exact answers as JSON, cheapest on context. Hosted at `https://shilp-sutra.devalok.in/mcp` (connect it if it isn't already; it beats reading the frozen docs in `node_modules`). Reference tools: `find_component(query)`, `get_component(name, sections?)`, `get_tokens(category)`, `get_setup(framework)`, `upgrade(from, to)`, `search_docs(query)`. Setup tools: `detect_framework(packageJson)`, `preflight(framework, imports)`, `validate_snippet(code)`, `verify_setup(...)`, `report_issue(...)`. Always pass the consumer's installed version (from `node_modules/@devalok/shilp-sutra/package.json`) as `version`.
 2. **`packages/core/llms.txt`** — the ~3K-token router: what exists + where to get detail. Load this by default; it is deliberately tiny.
 3. **`packages/core/docs/components/<tier>/<name>.md`** — single-component doc (~3K tokens: props, examples, composability, gotchas). Read ONLY the components you're using — never bulk-read the directory or concatenate these.
 4. **`packages/core/mcp-manifest.json`** — everything machine-readable (props, tokens, composition; react-docgen shape). Prefer targeted reads over prose when you need structured data without the MCP.
 5. **`packages/core/docs/recipes/<framework>.md`** — copy-paste install + setup for the user's framework.
 6. **`packages/core/docs/recipes/upgrading.md`** + **`MIGRATION.md`** — read BOTH before any version bump. See the hard constraint below.
+
+### Setting up in a new project (do this in order)
+
+If the MCP is connected, run the setup sequence instead of guessing — it closes the four traps that break agent-driven installs (peer-dep cliffs, silent TW4 dead classes, wrong recipe, mis-wired CSS/config):
+
+1. `detect_framework(packageJson)` → the right recipe id + package manager (don't assume App Router, or that `create-remix` still makes Remix).
+2. `get_setup(recipe)` → the full, version-live recipe. Follow every step.
+3. `preflight(framework, imports)` → the exact install for the OPTIONAL peer deps your imports need. Run BEFORE first import or the build fails with `Failed to resolve import`.
+4. `validate_snippet(code)` → run on each file BEFORE writing it. Catches bare `shadow`, `-surface-N`, `bg-gradient-to-*`, removed Button variants, invalid enum props — the dead classes fail silently (no error, no style).
+5. `verify_setup(globalsCss, nextConfig, imports, installedDeps)` → confirm CSS imports + order, `transpilePackages`, and peer coverage after wiring.
+
+Without the MCP, the same information is in `docs/recipes/` (per-framework §2a lists optional peers) and the `@devalok/eslint-plugin-shilp-sutra` plugin catches the dead classes at lint time.
 7. **`node_modules/@devalok/shilp-sutra/BREAKING.json`** — machine-readable manifest of every breaking change per version (moves, type narrowings, removals, renames). Read this programmatically when planning an upgrade — schema in `BREAKING.schema.json`. Lets you answer "does my code import any of these moved symbols?" without parsing CHANGELOG prose.
 
 (`llms-full.txt` and `llms-quick.txt` were removed in 0.45 — the router + per-component docs + manifest replaced them. Do not look for them.)

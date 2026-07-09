@@ -206,6 +206,338 @@ export async function searchDocs({ query, version }) {
   return cap(banner(d.version) + body)
 }
 
+// ── Setup-journey tools: preflight · validate_snippet · detect_framework · verify_setup ──
+//
+// These close the four agent-driven-setup failure modes the reference tools
+// don't: peer-dep cliffs, TW4 dead classes, framework mis-detection, and the
+// "build passed but is it wired right" blind spot.
+
+const RECIPE_FRAMEWORKS = ['vite', 'next-app-router', 'next-pages', 'remix', 'astro', 'tanstack-start']
+
+const PM = {
+  pnpm: { add: 'pnpm add', addDev: 'pnpm add -D' },
+  npm: { add: 'npm install', addDev: 'npm install -D' },
+  yarn: { add: 'yarn add', addDev: 'yarn add -D' },
+  bun: { add: 'bun add', addDev: 'bun add -d' },
+}
+
+// Core install per framework — mirrors each recipe's §2. next-* also pulls
+// next-themes and uses the PostCSS Tailwind plugin; the Vite-family uses the
+// Vite plugin.
+const FRAMEWORK_INSTALL = {
+  'next-app-router': { core: ['@devalok/shilp-sutra', 'framer-motion', 'next-themes'], dev: ['tailwindcss@^4', '@tailwindcss/postcss'] },
+  'next-pages': { core: ['@devalok/shilp-sutra', 'framer-motion', 'next-themes'], dev: ['tailwindcss@^4', '@tailwindcss/postcss'] },
+  vite: { core: ['@devalok/shilp-sutra', 'framer-motion'], dev: ['tailwindcss@^4', '@tailwindcss/vite'] },
+  remix: { core: ['@devalok/shilp-sutra', 'framer-motion'], dev: ['tailwindcss@^4', '@tailwindcss/vite'] },
+  astro: { core: ['@devalok/shilp-sutra', 'framer-motion'], dev: ['tailwindcss@^4', '@tailwindcss/vite'] },
+  'tanstack-start': { core: ['@devalok/shilp-sutra', 'framer-motion'], dev: ['tailwindcss@^4', '@tailwindcss/vite'] },
+}
+
+function pmFor(name) {
+  return PM[name] || PM.pnpm
+}
+
+/** PascalCase/camel → kebab. */
+function kebab(s) {
+  return String(s)
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+    .toLowerCase()
+}
+
+/**
+ * Resolve an import specifier OR a component name to a kebab component name.
+ * Returns { name } or { barrel: true } (imported from the layer barrel — itself
+ * a peer-cliff hazard) or { name: null } for shapes we can't map.
+ */
+function resolveComponent(spec) {
+  let s = String(spec).trim().replace(/['"]/g, '').replace(/^@devalok\/shilp-sutra\/?/, '')
+  if (!s) return { name: null }
+  const parts = s.split('/').filter(Boolean)
+  const last = parts[parts.length - 1]
+  if (['ui', 'composed', 'shell', 'ai'].includes(last)) return { barrel: true }
+  return { name: kebab(last) }
+}
+
+function peersOf(component) {
+  return Array.isArray(component?.peers) ? component.peers : []
+}
+
+// ── preflight ────────────────────────────────────────────────────────────────
+
+export async function preflight({ framework, imports = [], packageManager, version }) {
+  const d = await load(version)
+  if (d.redirect) return d.redirect
+  const pm = pmFor(packageManager)
+
+  const list = Array.isArray(imports) ? imports : [imports].filter(Boolean)
+  const requiredPeers = new Set()
+  const unknown = []
+  const barrelHazards = []
+  const perImport = []
+
+  for (const spec of list) {
+    const r = resolveComponent(spec)
+    if (r.barrel) { barrelHazards.push(spec); continue }
+    if (!r.name) { unknown.push(spec); continue }
+    const c = d.manifest.components[r.name]
+    if (!c) { unknown.push(spec); continue }
+    const peers = peersOf(c)
+    peers.forEach((p) => requiredPeers.add(p))
+    perImport.push({ import: c.import, peers })
+  }
+
+  const out = [banner(d.version) + '# preflight']
+
+  if (framework && FRAMEWORK_INSTALL[framework]) {
+    const fi = FRAMEWORK_INSTALL[framework]
+    out.push(
+      `## Base install (${framework})\n\`\`\`bash\n${pm.add} ${fi.core.join(' ')}\n${pm.addDev} ${fi.dev.join(' ')}\n\`\`\`\n` +
+        'Full wiring (config, CSS, providers): call get_setup(framework).'
+    )
+  } else if (framework) {
+    out.push(`Unknown framework "${framework}". Valid: ${RECIPE_FRAMEWORKS.join(', ')}. Skipping base-install block.`)
+  }
+
+  if (requiredPeers.size) {
+    out.push(
+      '## Required optional peers for these imports\n' +
+        'These components import third-party libraries shipped as OPTIONAL peers. Install BEFORE first import or the build fails with `Failed to resolve import`.\n' +
+        '```bash\n' + `${pm.add} ${[...requiredPeers].join(' ')}\n` + '```\n' +
+        '```json\n' + JSON.stringify(perImport.filter((p) => p.peers.length), null, 1) + '\n```'
+    )
+  } else if (list.length) {
+    out.push('## Peers\nNone of the resolved imports need optional peers — the base install covers them.')
+  }
+
+  if (barrelHazards.length) {
+    out.push(
+      '## ⚠ Barrel imports\n' +
+        `Imported from a layer barrel: ${barrelHazards.join(', ')}. Peer-cliff components (data-table, charts, date-picker, rich-text-editor, input-otp, file-preview, markdown-viewer) are barrel-isolated — import the exact subpath (e.g. \`@devalok/shilp-sutra/ui/data-table\`) so peers resolve and the client bundle stays lean.`
+    )
+  }
+  if (unknown.length) {
+    out.push(`## Unresolved\nCould not map: ${unknown.join(', ')}. Call find_component to get exact names/import paths.`)
+  }
+  out.push('Tabler icons (`Icon`/`IconButton` with `@tabler/icons-react`): install `@tabler/icons-react` only if you pass Tabler icons — it is not bundled.')
+
+  return cap(out.join('\n\n'))
+}
+
+// ── validate_snippet ───────────────────────────────────────────────────────────
+
+// TW4 dead-class / removed-API rules. Mirrors @devalok/eslint-plugin-shilp-sutra
+// (no-bare-shadow, no-deprecated-shadow-token, no-deprecated-surface-token,
+// no-bg-gradient-to, no-css-var-bracket, no-tailwind-config-preset). Authoritative
+// maps live in the plugin; keep in sync.
+const DEAD_CLASS_RULES = [
+  { re: /\bshadow-0[1-5]\b/g, msg: 'Numeric `shadow-0N` aliases were renamed in 0.23.0.', fix: '01→shadow-raised, 02→shadow-raised-hover, 03→shadow-floating, 04→shadow-overlay, 05 removed.' },
+  { re: /(?<![\w-])(?:bg|border|text|ring|outline|divide|fill|stroke)-surface-[1-4](?![\w-])/g, msg: 'Numeric `-surface-N` aliases were removed in 0.23.0.', fix: 'surface-1→surface-base, 2→surface-raised, 3→surface-raised-hover, 4→surface-raised-active.' },
+  { re: /(?<![\w-])(?:(?:hover|focus|active|disabled|group-hover|dark):)*shadow(?![\w-])/g, msg: 'Bare `shadow` renders no shadow in TW4 (no --shadow-DEFAULT).', fix: 'shadow-raised (cards/panels), shadow-floating (dropdowns/popovers), shadow-overlay (dialogs/sheets).' },
+  { re: /\bbg-gradient-to-[a-z]{1,2}\b/g, msg: '`bg-gradient-to-*` is dead in TW4.', fix: 'Use `bg-linear-to-*` (e.g. bg-linear-to-r).' },
+  { re: /(?<![\w-])(?:w|h|min-w|min-h|max-w|max-h|size|p|px|py|pt|pb|pl|pr|m|mx|my|gap|top|left|right|bottom|inset|translate-x|translate-y)-\[--[\w-]+\]/g, msg: 'TW3 arbitrary CSS-var syntax `-[--x]` is dead in TW4.', fix: 'Use the shorthand `-(--x)` (e.g. `w-(--sidebar-width)`).' },
+  { re: /@devalok\/shilp-sutra\/tailwind\b/g, msg: 'The `/tailwind` JS preset export was removed in 0.38.', fix: 'Delete the import. TW4 is CSS-first: `@import "@devalok/shilp-sutra/css";`.' },
+  { re: /theme\(\s*spacing\./g, msg: '`theme(spacing.N)` inside arbitrary values is dead in TW4.', fix: 'Use the literal value.' },
+  { re: /presets:\s*\[\s*[A-Za-z]/g, msg: 'JS preset (`presets: [...]`) was removed in 0.38.', fix: 'Remove the tailwind.config preset; use CSS-first `@import "@devalok/shilp-sutra/css";`.' },
+]
+
+// Deprecated Button-family prop values (mirrors no-deprecated-button-variant).
+const DEPRECATED_BUTTON = [
+  { re: /<(?:Button|SplitButton|IconButton|ButtonGroup)\b[^>]*\bvariant=["']default["']/g, msg: '`variant="default"` was removed in 0.32.0.', fix: 'variant="solid".' },
+  { re: /<(?:Button|SplitButton|IconButton|ButtonGroup)\b[^>]*\bvariant=["']destructive["']/g, msg: '`variant="destructive"` was removed in 0.32.0.', fix: 'variant="solid" color="error".' },
+  { re: /<(?:Button|SplitButton|IconButton|ButtonGroup)\b[^>]*\bcolor=["']default["']/g, msg: '`color="default"` was removed in 0.32.0.', fix: 'color="accent".' },
+]
+
+export async function validateSnippet({ code, version }) {
+  const d = await load(version)
+  if (d.redirect) return d.redirect
+  if (!code || !String(code).trim()) {
+    return banner(d.version) + 'Pass `code` — the JSX/TSX/CSS you are about to write. Returns TW4 / prop / peer problems before you commit it.'
+  }
+  const src = String(code)
+  const findings = []
+
+  for (const rule of [...DEAD_CLASS_RULES, ...DEPRECATED_BUTTON]) {
+    const seen = new Set()
+    for (const m of src.matchAll(rule.re)) {
+      const hit = m[0].trim()
+      if (seen.has(hit)) continue
+      seen.add(hit)
+      findings.push({ severity: 'error', found: hit, issue: rule.msg, fix: rule.fix })
+    }
+  }
+
+  // Barrel imports of peer-cliff components.
+  for (const m of src.matchAll(/import\s*\{([^}]*)\}\s*from\s*["']@devalok\/shilp-sutra\/(ui|composed|shell|ai)["']/g)) {
+    const named = m[1].split(',').map((s) => s.trim().split(/\s+as\s+/)[0].trim()).filter(Boolean)
+    for (const n of named) {
+      const c = d.manifest.components[kebab(n)]
+      if (c && peersOf(c).length) {
+        findings.push({
+          severity: 'error',
+          found: `import { ${n} } from ".../${m[2]}"`,
+          issue: `${n} is barrel-isolated (needs peers ${peersOf(c).join(', ')}); the ${m[2]} barrel import will fail to resolve or bloat the bundle.`,
+          fix: `Import the subpath: \`${c.import}\`, and install its peers (preflight).`,
+        })
+      }
+    }
+  }
+
+  // Enum prop values against the manifest (+ collect imported peer components).
+  const importedPeers = new Set()
+  for (const m of src.matchAll(/import\s*\{[^}]*\}\s*from\s*["'](@devalok\/shilp-sutra\/[^"']+)["']/g)) {
+    const c = d.manifest.components[resolveComponent(m[1]).name]
+    peersOf(c).forEach((p) => importedPeers.add(p))
+  }
+  for (const tag of src.matchAll(/<([A-Z][A-Za-z0-9]*)\b([^>]*?)\/?>/g)) {
+    const c = d.manifest.components[kebab(tag[1])]
+    if (!c) continue
+    for (const a of tag[2].matchAll(/([a-z][A-Za-z0-9]*)=["']([^"']*)["']/g)) {
+      const prop = c.props?.[a[1]]
+      if (prop?.type?.name === 'enum' && Array.isArray(prop.type.value) && !prop.type.value.map(String).includes(a[2])) {
+        findings.push({
+          severity: 'error',
+          found: `<${tag[1]} ${a[1]}="${a[2]}">`,
+          issue: `"${a[2]}" is not a valid ${tag[1]}.${a[1]} value.`,
+          fix: `Allowed: ${prop.type.value.join(', ')}.`,
+        })
+      }
+    }
+  }
+
+  const out = [banner(d.version) + '# validate_snippet']
+  if (findings.length) {
+    out.push(`${findings.length} issue(s) — fix before writing:\n\`\`\`json\n${JSON.stringify(findings, null, 1)}\n\`\`\``)
+  } else {
+    out.push('No TW4 dead-class, deprecated-prop, or barrel-peer issues found.')
+  }
+  if (importedPeers.size) {
+    out.push(`Peer reminder: imported components need these installed — ${[...importedPeers].join(', ')}. Confirm with verify_setup or preflight.`)
+  }
+  return cap(out.join('\n\n'))
+}
+
+// ── detect_framework ───────────────────────────────────────────────────────────
+
+export async function detectFramework({ packageJson, hasAppDir, hasPagesDir, version }) {
+  const d = await load(version)
+  if (d.redirect) return d.redirect
+
+  let pkg = packageJson
+  if (typeof pkg === 'string') {
+    try { pkg = JSON.parse(pkg) } catch { return banner(d.version) + 'Could not parse `packageJson`. Pass the file contents (JSON) or the parsed object.' }
+  }
+  if (!pkg || typeof pkg !== 'object') {
+    return banner(d.version) + 'Pass `packageJson` (the consumer app package.json, as JSON string or object). Optionally `hasAppDir`/`hasPagesDir` for Next routing.'
+  }
+  const deps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) }
+  const has = (n) => n in deps
+
+  // Package manager: packageManager field wins, else unknown.
+  let pm = 'pnpm'
+  if (typeof pkg.packageManager === 'string') pm = pkg.packageManager.split('@')[0]
+  if (!PM[pm]) pm = 'pnpm'
+
+  let recipe = null
+  let note = ''
+  if (has('@tanstack/react-start')) {
+    recipe = 'tanstack-start'
+  } else if (has('@tanstack/start')) {
+    recipe = 'tanstack-start'
+    note = 'Detected the RETIRED Vinxi package @tanstack/start. Migrate to @tanstack/react-start (Vite plugin) — the current recipe assumes it.'
+  } else if (has('@remix-run/react')) {
+    recipe = 'remix'
+    note = 'Remix v2. Note: new Remix projects now scaffold as React Router — if this is React Router v7+, use the vite recipe instead.'
+  } else if (has('next')) {
+    if (hasPagesDir && !hasAppDir) { recipe = 'next-pages' }
+    else if (hasAppDir) { recipe = 'next-app-router' }
+    else { recipe = 'next-app-router'; note = 'Defaulted to App Router (create-next-app 13+ default). If the app uses a pages/ directory with route files, use next-pages instead — pass hasPagesDir.' }
+  } else if (has('astro')) {
+    recipe = 'astro'
+  } else if (has('@remix-run/dev')) {
+    recipe = 'remix'
+  } else if (has('vite') && (has('react') || has('react-dom'))) {
+    recipe = 'vite'
+    if (has('react-router') || has('react-router-dom')) note = 'Vite + React Router — the vite recipe is router-agnostic and covers it.'
+  } else if (has('react-router') && has('react-dom')) {
+    recipe = 'vite'
+    note = 'React Router (v7+) app — use the vite recipe (RR runs on Vite; the DS is router-agnostic).'
+  }
+
+  if (!recipe) {
+    return cap(
+      banner(d.version) +
+        '# detect_framework\nCould not detect a supported framework from dependencies. ' +
+        `Supported: ${RECIPE_FRAMEWORKS.join(', ')}. Deps seen: ${Object.keys(deps).slice(0, 30).join(', ') || 'none'}.`
+    )
+  }
+  return cap(
+    banner(d.version) +
+      '# detect_framework\n' +
+      '```json\n' + JSON.stringify({ recipe, packageManager: pm, note: note || undefined }, null, 1) + '\n```\n' +
+      `Next: call get_setup("${recipe}") for the full recipe, and preflight({ framework: "${recipe}", imports: [...] }) for peer installs.`
+  )
+}
+
+// ── verify_setup ───────────────────────────────────────────────────────────────
+
+export async function verifySetup({ framework, globalsCss, nextConfig, imports = [], installedDeps, version }) {
+  const d = await load(version)
+  if (d.redirect) return d.redirect
+  const checks = []
+  const pass = (name) => checks.push({ check: name, status: 'pass' })
+  const fail = (name, fix) => checks.push({ check: name, status: 'FAIL', fix })
+
+  if (globalsCss != null) {
+    const css = String(globalsCss)
+    const twIdx = css.indexOf('@import "tailwindcss"') >= 0 ? css.indexOf('@import "tailwindcss"') : css.indexOf("@import 'tailwindcss'")
+    const ssIdx = Math.max(css.indexOf('@devalok/shilp-sutra/css'), -1)
+    if (twIdx < 0) fail('CSS imports tailwindcss', 'Add `@import "tailwindcss";` as the FIRST import in your global CSS.')
+    else pass('CSS imports tailwindcss')
+    if (ssIdx < 0) fail('CSS imports @devalok/shilp-sutra/css', 'Add `@import "@devalok/shilp-sutra/css";` after the tailwindcss import.')
+    else pass('CSS imports @devalok/shilp-sutra/css')
+    if (twIdx >= 0 && ssIdx >= 0) {
+      if (twIdx < ssIdx) pass('CSS import order (tailwindcss before shilp-sutra)')
+      else fail('CSS import order', '`@import "tailwindcss"` MUST come before `@import "@devalok/shilp-sutra/css"`, or no DS utilities generate.')
+    }
+  } else {
+    checks.push({ check: 'CSS', status: 'skipped', note: 'Pass `globalsCss` to verify the two imports + order.' })
+  }
+
+  if (framework === 'next-app-router' || framework === 'next-pages') {
+    if (nextConfig != null) {
+      const cfg = String(nextConfig)
+      if (/transpilePackages/.test(cfg) && /@devalok\/shilp-sutra/.test(cfg)) pass('next.config transpilePackages includes @devalok/shilp-sutra')
+      else fail('next.config transpilePackages', 'Add `transpilePackages: ["@devalok/shilp-sutra"]` to next.config — without it Next refuses the prebuilt ESM.')
+    } else {
+      checks.push({ check: 'transpilePackages', status: 'skipped', note: 'Pass `nextConfig` to verify.' })
+    }
+  }
+
+  // Peer coverage for imported components.
+  const list = Array.isArray(imports) ? imports : [imports].filter(Boolean)
+  if (list.length) {
+    let installed = new Set()
+    if (Array.isArray(installedDeps)) installed = new Set(installedDeps)
+    else if (installedDeps && typeof installedDeps === 'object') installed = new Set(Object.keys(installedDeps))
+    else if (typeof installedDeps === 'string') { try { const p = JSON.parse(installedDeps); installed = new Set([...Object.keys(p.dependencies || {}), ...Object.keys(p.devDependencies || {})]) } catch { installed = new Set(installedDeps.split(/[\s,]+/).filter(Boolean)) } }
+    const knowInstalled = installed.size > 0
+    for (const spec of list) {
+      const c = d.manifest.components[resolveComponent(spec).name]
+      const peers = peersOf(c)
+      if (!peers.length) continue
+      if (!knowInstalled) { checks.push({ check: `peers for ${spec}`, status: 'unknown', note: `Needs ${peers.join(', ')}. Pass installedDeps to confirm.` }); continue }
+      const missing = peers.filter((p) => !installed.has(p))
+      if (missing.length) fail(`peers for ${spec}`, `Install missing peer(s): ${missing.join(', ')}.`)
+      else pass(`peers for ${spec}`)
+    }
+  }
+
+  const fails = checks.filter((c) => c.status === 'FAIL')
+  const header = fails.length ? `${fails.length} FAIL — fix before shipping:` : 'All provided checks pass.'
+  return cap(banner(d.version) + '# verify_setup\n' + header + '\n```json\n' + JSON.stringify(checks, null, 1) + '\n```')
+}
+
 // ── report_issue (the one write path) ─────────────────────────────────────────
 
 const CAP = { title: 150, body: 6000, reproduction: 4000 }

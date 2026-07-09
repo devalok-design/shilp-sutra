@@ -173,7 +173,7 @@ function buildFullBanner(version, prevVersion) {
     lines.push(row(`     ${colour('+ docs/recipes/upgrading.md (safe-upgrade procedure)', DIM)}`))
   } else {
     lines.push(row(`   ${colour('✦', PINK)}  ${colour('@devalok/shilp-sutra', BOLD)}  ${version}`))
-    lines.push(row(`      ${colour('Tailwind 4 design system · 110+ components · RSC-safe', DIM)}`))
+    lines.push(row(`      ${colour('Tailwind 4 design system · 120+ components · RSC-safe', DIM)}`))
   }
   lines.push(colour(EMPTY, PINK_DIM))
   lines.push(row(`   ${colour('▸', PINK)} Setup recipe (pick your framework):`))
@@ -183,7 +183,9 @@ function buildFullBanner(version, prevVersion) {
   lines.push(row(`     ${colour('https://shilp-sutra.devalok.in/themer', DIM)}`))
   lines.push(colour(EMPTY, PINK_DIM))
   lines.push(row(`   ${colour('▸', PINK)} Wire your AI agent (Claude Code / Cursor / Codex):`))
-  lines.push(row(`     ${colour('cp -r node_modules/@devalok/shilp-sutra/skill \\', DIM)}`))
+  lines.push(row(`     ${colour('connect the live docs MCP → https://shilp-sutra.devalok.in/mcp', DIM)}`))
+  lines.push(row(`     ${colour('(version-exact setup + peer preflight; beats guessing)', DIM)}`))
+  lines.push(row(`     ${colour('or copy the skill: cp -r node_modules/@devalok/shilp-sutra/skill \\', DIM)}`))
   lines.push(row(`        ${colour('~/.claude/skills/shilp-sutra', DIM)}`))
   lines.push(colour(EMPTY, PINK_DIM))
   lines.push(row(`   ${colour('Disable this banner: SHILP_SUTRA_NO_WELCOME=1', DIM)}`))

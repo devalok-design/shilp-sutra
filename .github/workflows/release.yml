@@ -109,6 +109,13 @@ jobs:
           # which downloads a clean tarball and sets up bin shims without
           # relying on the removed npm CLI.
           curl -qL https://www.npmjs.com/install.sh | sh
+          # install.sh pulls the LATEST npm. As of 2026-07 that is npm 12.x,
+          # whose libnpmpublish@12 breaks `npm publish --provenance` with
+          # "Cannot find module 'sigstore'" and fails the whole release.
+          # Pin to the 11.x line (libnpmpublish@11), which bundles sigstore and
+          # is the version OIDC trusted publishing has always used here.
+          # See the 2026-07-09 release failure.
+          npm i -g npm@11
           npm --version
 
       - name: Install dependencies

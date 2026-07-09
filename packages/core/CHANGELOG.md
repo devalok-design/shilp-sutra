@@ -1,5 +1,22 @@
 # @devalok/shilp-sutra
 
+## 0.47.0
+
+### Minor Changes
+
+- [`4f20827`](https://github.com/devalok-design/shilp-sutra/commit/4f20827dcf9b9185c2b2078da1a26b83b5419d6f) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Add machine-readable optional-peer data and route AI agents through the MCP setup journey.
+  - **`peers` field in `mcp-manifest.json`** — each component that imports an optional peer dependency (data-table, charts, date-picker, rich-text-editor, input-otp, file-preview, markdown-viewer) now carries a structured `peers: [...]` array, mirroring the recipe optional-peer table. Previously this lived only as prose in `gotchas`. The manifest emitter cross-checks the map against the gotchas so it can't silently drift, and the schema documents the field.
+  - **AGENTS.md** — new "Setting up in a new project" section that routes agents through `detect_framework → get_setup → preflight → validate_snippet → verify_setup`, plus the hosted MCP URL so agents connect the live docs server instead of reading the frozen `node_modules` copy.
+  - **Postinstall banner** — points at the live MCP (`https://shilp-sutra.devalok.in/mcp`) as the primary AI-agent assist; component count made evergreen.
+
+  The hosted MCP server gains four setup-journey tools (`preflight`, `validate_snippet`, `detect_framework`, `verify_setup`) that read this data — they close the peer-dep cliff, silent TW4 dead-class, wrong-recipe, and mis-wired-config traps that break agent-driven installs. No consumer API change; the manifest addition is additive.
+
+### Patch Changes
+
+- [`a63a216`](https://github.com/devalok-design/shilp-sutra/commit/a63a216d12fd2c3ef067d2ed632c1e29a9c09527) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Rewrite the TanStack Start install recipe for the current Vite-plugin setup. The old recipe targeted the retired Vinxi era (`@tanstack/start`, `app.config.ts`, `@tanstack/start/config`) — that package is frozen at 1.120.x while the framework moved to `@tanstack/react-start` (1.168+) with a `vite.config.ts` `tanstackStart()` plugin, `src/routes/__root.tsx` using `createRootRoute` + `HeadContent`/`Scripts`, and CSS wired via a `?url` stylesheet in the root `head`. A consumer following the old recipe on current TanStack Start would hit a wall.
+
+- [`c4e9b2f`](https://github.com/devalok-design/shilp-sutra/commit/c4e9b2fb857a301aa9047380fdd54d0f0ec98054) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Point the npm `homepage` field at the marketing site (`https://shilp-sutra.devalok.in`) instead of the Storybook build. The marketing site is the better first landing for npmjs.com visitors — it carries install commands, the Themer, and links out to Storybook and the docs.
+
 ## 0.46.0
 
 ### Minor Changes

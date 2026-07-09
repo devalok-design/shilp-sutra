@@ -2,21 +2,30 @@
 
 # Install: TanStack Start
 
-> Setup recipe for adding `@devalok/shilp-sutra` to a TanStack Start project (the React full-stack framework built on Vinxi/Vite).
+> Setup recipe for adding `@devalok/shilp-sutra` to a TanStack Start project (the React full-stack framework built on Vite).
+
+> **Updated 2026-07-10 for the Vite-plugin era.** TanStack Start moved off Vinxi: the package is now `@tanstack/react-start` (not `@tanstack/start`), config lives in `vite.config.ts` (not `app.config.ts`), and the app root is `src/` (not `app/`). If you are on an old Vinxi-based project (`app.config.ts`, `@tanstack/start`), migrate to the Vite plugin first — see the TanStack Start docs.
 
 ## 1. Detect
 
 You are in this recipe if:
 
-- `package.json` lists `"@tanstack/start"` and `"@tanstack/react-router"`
-- `app.config.{ts,js}` (Vinxi) exists at the project root
-- `app/router.tsx` and `app/routes/__root.tsx` exist
+- `package.json` lists `"@tanstack/react-start"` and `"@tanstack/react-router"`
+- `vite.config.{ts,js}` exists and uses the `tanstackStart` plugin from `@tanstack/react-start/plugin/vite`
+- `src/router.tsx` and `src/routes/__root.tsx` exist (a `src/routeTree.gen.ts` is generated on first run)
+
+If instead you see `app.config.ts` + `@tanstack/start`, that is the legacy Vinxi setup — this recipe does not apply until you migrate.
 
 ## 2. Install
 
 ```bash
+# pnpm
 pnpm add @devalok/shilp-sutra framer-motion
 pnpm add -D tailwindcss@^4 @tailwindcss/vite
+
+# npm
+npm install @devalok/shilp-sutra framer-motion
+npm install -D tailwindcss@^4 @tailwindcss/vite
 ```
 
 Optional:
@@ -40,39 +49,79 @@ Some components ship hard peers as optional. **Install BEFORE first import** or 
 | `@devalok/shilp-sutra/composed/markdown-viewer`            | `pnpm add react-markdown react-syntax-highlighter`                                                      |
 | Any `Icon` / `IconButton` with Tabler icons                | `pnpm add @tabler/icons-react`                                                                          |
 
-## 3. Wire Tailwind 4 in `app.config.ts`
+## 3. Wire Tailwind 4 in `vite.config.ts`
+
+Add `@tailwindcss/vite` to the existing plugins array. `tanstackStart()` must come before `viteReact()`; `tailwindcss()` can go first so tokens are processed early.
 
 ```ts
-import { defineConfig } from "@tanstack/start/config";
+import { defineConfig } from "vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()],
-  },
+  plugins: [
+    tailwindcss(),
+    tanstackStart(),
+    viteReact(),
+  ],
 });
 ```
 
+Do **not** add a `tailwind.config.{ts,js}` — Tailwind 4 is CSS-first.
+
 ## 4. Wire tokens
 
-Create `app/styles/globals.css`:
+Create `src/styles/globals.css`:
 
 ```css
 @import "tailwindcss";
 @import "@devalok/shilp-sutra/css";
 ```
 
-Import it from `app/routes/__root.tsx`:
+Wire it as an asset-URL stylesheet from the root route's `head` (the TanStack Start idiom — the `?url` suffix emits the file as an asset instead of inlining it):
 
 ```tsx
-import "../styles/globals.css";
-```
+// src/routes/__root.tsx
+import {
+  createRootRoute,
+  HeadContent,
+  Outlet,
+  Scripts,
+} from "@tanstack/react-router";
+import globalsCss from "../styles/globals.css?url";
 
-If you prefer asset-URL imports the way Remix does it, use `import css from "../styles/globals.css?url"` and add `<link rel="stylesheet" href={css} />` to the `<head>` returned by `__root.tsx`.
+export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+    ],
+    links: [{ rel: "stylesheet", href: globalsCss }],
+  }),
+  component: RootComponent,
+});
+
+function RootComponent() {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <Outlet />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+```
 
 ## 5. Theme toggle
 
-Create `public/theme-bootstrap.js` (a static asset served verbatim):
+Add a pre-hydration bootstrap so there is no flash of the wrong theme. The cleanest place is a `scripts` entry on the root route (runs before hydration); a static `public/theme-bootstrap.js` referenced from `<head>` also works and is CSP-friendly.
+
+Static-asset approach — create `public/theme-bootstrap.js`:
 
 ```js
 (function () {
@@ -86,44 +135,36 @@ Create `public/theme-bootstrap.js` (a static asset served verbatim):
 })();
 ```
 
-Reference it from `app/routes/__root.tsx`:
+Reference it from the root route's `head` scripts:
 
 ```tsx
-import { createRootRoute, Outlet } from "@tanstack/react-router";
-
 export const Route = createRootRoute({
-  component: () => (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script src="/theme-bootstrap.js" />
-      </head>
-      <body>
-        <Outlet />
-      </body>
-    </html>
-  ),
+  head: () => ({
+    // ...meta, links as above...
+    scripts: [{ src: "/theme-bootstrap.js" }],
+  }),
+  component: RootComponent,
 });
 ```
 
-For runtime toggling, use the `useColorMode` hook — see [install-vite.md § 5](./install-vite.md#5-theme-toggle-no-next-themes-here).
+For runtime toggling inside components, use the `useColorMode` hook — see [install-vite.md § 5](./install-vite.md#5-theme-toggle-no-next-themes-here).
 
 ## 6. Toaster (optional)
 
-Mount in `__root.tsx` next to `<Outlet />`:
+Mount once in `__root.tsx`'s `RootComponent`, next to `<Outlet />`:
 
 ```tsx
 import { Toaster } from "@devalok/shilp-sutra/ui/toaster";
 
 // inside <body>
-<>
-  <Outlet />
-  <Toaster />
-</>
+<Outlet />
+<Toaster />
+<Scripts />
 ```
 
 ## 7. Verify
 
-Create or replace `app/routes/index.tsx`:
+Create or replace `src/routes/index.tsx`:
 
 ```tsx
 import { createFileRoute } from "@tanstack/react-router";
@@ -132,7 +173,11 @@ import { Stack } from "@devalok/shilp-sutra/ui/stack";
 import { Text } from "@devalok/shilp-sutra/ui/text";
 
 export const Route = createFileRoute("/")({
-  component: () => (
+  component: Home,
+});
+
+function Home() {
+  return (
     <Stack className="p-ds-08" gap="ds-04">
       <Text variant="heading-2xl">Hello, Shilp Sutra</Text>
       <Stack direction="row" gap="ds-03">
@@ -140,21 +185,23 @@ export const Route = createFileRoute("/")({
         <Button variant="soft">Soft</Button>
       </Stack>
     </Stack>
-  ),
-});
+  );
+}
 ```
 
-Run `pnpm dev` and open the URL.
+Run `pnpm dev` and open the printed URL. Expected output matches [Next App Router § 7](./install-next-app-router.md#7-verify-the-install).
 
 ## 8. TanStack Start specifics
 
+- **No `transpilePackages` equivalent — and you do not need one.** TanStack Start's Vite resolves `@devalok/shilp-sutra` from `node_modules` as native ESM.
 - **Server functions** (`createServerFn`) — do not import shilp-sutra components inside server functions; they run server-only.
-- **Streaming SSR** is the default. All shilp-sutra components SSR cleanly because they have no client-only side effects at module top-level.
+- **Streaming SSR** is the default. Shilp Sutra components SSR cleanly (no client-only side effects at module top-level).
 - **`framer-motion` SSR** — animations gracefully degrade on the initial render.
-- **CSP.** The static `theme-bootstrap.js` asset complies with strict CSP (no inline scripts required).
+- **`routeTree.gen.ts` is generated** — do not edit it by hand; it regenerates on dev/build.
 
 ## 9. What NOT to do
 
-- ❌ Add `tailwind.config.{ts,js}` — Tailwind 4 is CSS-first.
-- ❌ Mount `<Toaster />` inside route components — it should live once at the `__root`.
-- ❌ Mix `@tailwindcss/postcss` and `@tailwindcss/vite` — pick one (Vite plugin recommended for TanStack Start).
+- ❌ Add a `tailwind.config.{ts,js}` — Tailwind 4 is CSS-first.
+- ❌ Use `@tanstack/start` / `app.config.ts` / `@tanstack/start/config` — that is the retired Vinxi setup. Current TanStack Start is `@tanstack/react-start` + `vite.config.ts`.
+- ❌ Mount `<Toaster />` inside route components — it lives once at the `__root`.
+- ❌ Mix `@tailwindcss/postcss` and `@tailwindcss/vite` — pick the Vite plugin.

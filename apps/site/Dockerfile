@@ -28,6 +28,16 @@ COPY . .
 # Build DS (site needs dist/) then site
 RUN pnpm -F @devalok/shilp-sutra-brand build || true
 RUN pnpm -F @devalok/shilp-sutra build
+
+# NEXT_PUBLIC_* must be present during `next build` to bake into the client
+# bundle — they bake at build time, not runtime. Railway passes service
+# variables as Docker build args, so declaring the ARG here lets the site
+# build read them. Safe: the PostHog project key is a public client key.
+ARG NEXT_PUBLIC_POSTHOG_KEY=""
+ARG NEXT_PUBLIC_POSTHOG_HOST=""
+ENV NEXT_PUBLIC_POSTHOG_KEY=$NEXT_PUBLIC_POSTHOG_KEY
+ENV NEXT_PUBLIC_POSTHOG_HOST=$NEXT_PUBLIC_POSTHOG_HOST
+
 RUN pnpm -F site build
 
 # ─── Stage 2: minimal runtime ───────────────────────────────────────

@@ -121,6 +121,29 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # ── Affected detection ──────────────────────────────────────────────
+      # The heavy gates below (core test suite, Next consumer smokes, CSS
+      # coverage audits, Chromatic) exercise @devalok/shilp-sutra (core).
+      # A brand/eslint-only release (e.g. a logo asset change) does not touch
+      # any of them, so running them just makes the publish wait ~10min for
+      # nothing. Detect whether packages/core changed in this push; if not,
+      # skip the core-only gates. Fail safe: anything ambiguous -> full gates.
+      - name: Detect affected packages
+        id: affected
+        run: |
+          set -euo pipefail
+          BEFORE="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" != "push" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "core=true" >> "$GITHUB_OUTPUT"
+            echo "Affected: non-push or no base ref -> full gates."
+          elif git diff --name-only "$BEFORE" "${{ github.sha }}" | grep -qE '^packages/core/'; then
+            echo "core=true" >> "$GITHUB_OUTPUT"
+            echo "Affected: packages/core changed -> full gates."
+          else
+            echo "core=false" >> "$GITHUB_OUTPUT"
+            echo "Affected: packages/core untouched -> skipping core-only gates (brand/eslint-only release)."
+          fi
+
       # ── Quality gates (must all pass before publish) ────────────────────
       # These mirror `scripts/pre-publish-audit.mjs` so that CI and the
       # manual audit enforce the same invariants. Ordering mirrors the
@@ -143,9 +166,11 @@ jobs:
         run: pnpm lint
 
       - name: Test
+        if: steps.affected.outputs.core == 'true'
         run: pnpm test
 
       - name: SSR smoke test (no browser APIs in Node.js)
+        if: steps.affected.outputs.core == 'true'
         run: node packages/core/scripts/ssr-smoke-test.mjs
 
       # Regenerate skill references from sources BEFORE the audit's drift
@@ -174,6 +199,7 @@ jobs:
       # generation. This is the gate that would have caught Karm's
       # 0.34/0.36 blockers before we shipped them.
       - name: Consumer smoke (Next 16 + Turbopack + TW4)
+        if: steps.affected.outputs.core == 'true'
         run: node scripts/consumer-smoke-test.mjs
 
       # Compiled-CSS coverage audit — verifies every DS utility class
@@ -185,6 +211,7 @@ jobs:
       # unknown utilities. The expanded smoke page renders every
       # primitive, so this audit exercises the full class surface.
       - name: Compiled-CSS coverage (Turbopack)
+        if: steps.affected.outputs.core == 'true'
         run: node scripts/audit-compiled-css.mjs
 
       # Second smoke variant — Next 15 + Webpack. A sizeable portion of
@@ -192,11 +219,11 @@ jobs:
       # pipeline semantics than Turbopack. Runs only when the variant
       # directory exists so the step is a no-op until #58 lands.
       - name: Consumer smoke (Next 15 + Webpack)
-        if: ${{ hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
+        if: ${{ steps.affected.outputs.core == 'true' && hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
         run: node scripts/consumer-smoke-test.mjs --variant next15-webpack
 
       - name: Compiled-CSS coverage (Webpack)
-        if: ${{ hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
+        if: ${{ steps.affected.outputs.core == 'true' && hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
         run: node scripts/audit-compiled-css.mjs --variant next15-webpack
 
       # Chromatic visual regression gate. Uploads a snapshot of every
@@ -219,7 +246,7 @@ jobs:
       # The token is promoted to a job-level env (see `env:` block above)
       # because GitHub Actions does NOT allow secrets.* in step-level if:.
       - name: Chromatic visual review
-        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
+        if: ${{ steps.affected.outputs.core == 'true' && env.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v11
         with:
           projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}

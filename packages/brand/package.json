@@ -42,6 +42,10 @@
       "import": "./dist/karm/index.js",
       "types": "./dist/karm/index.d.ts"
     },
+    "./aurora": {
+      "import": "./dist/aurora/index.js",
+      "types": "./dist/aurora/index.d.ts"
+    },
     "./assets/*": "./dist/assets/*"
   },
   "files": [
@@ -58,9 +62,16 @@
   },
   "peerDependencies": {
     "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
+    "react-dom": "^18 || ^19",
+    "@paper-design/shaders-react": "^0.0.76"
+  },
+  "peerDependenciesMeta": {
+    "@paper-design/shaders-react": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "@paper-design/shaders-react": "^0.0.76",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.0.1"
   }

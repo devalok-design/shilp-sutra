@@ -272,6 +272,9 @@ importers:
         specifier: ^18 || ^19
         version: 19.2.5(react@19.2.5)
     devDependencies:
+      '@paper-design/shaders-react':
+        specifier: ^0.0.76
+        version: 0.0.76(@types/react@19.2.14)(react@19.2.5)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1

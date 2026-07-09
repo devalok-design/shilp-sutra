@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { BrandInit } from '@/components/brand-init'
 import { ThemeInit } from '@/components/theme-init'
+import { PostHogProvider } from '@/components/posthog-provider'
 import { SHILP_SUTRA_MINOR } from '@/lib/version'
 import './globals.css'
 
@@ -102,7 +103,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <BrandInit />
         <ThemeInit />
       </head>
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        <PostHogProvider>{children}</PostHogProvider>
+      </body>
     </html>
   )
 }

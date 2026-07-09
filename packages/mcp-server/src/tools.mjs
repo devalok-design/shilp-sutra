@@ -389,11 +389,15 @@ export async function validateSnippet({ code, version }) {
     const c = d.manifest.components[resolveComponent(m[1]).name]
     peersOf(c).forEach((p) => importedPeers.add(p))
   }
+  const BUTTON_FAMILY = new Set(['Button', 'SplitButton', 'IconButton', 'ButtonGroup'])
   for (const tag of src.matchAll(/<([A-Z][A-Za-z0-9]*)\b([^>]*?)\/?>/g)) {
     const c = d.manifest.components[kebab(tag[1])]
     if (!c) continue
     for (const a of tag[2].matchAll(/([a-z][A-Za-z0-9]*)=["']([^"']*)["']/g)) {
       const prop = c.props?.[a[1]]
+      // The DEPRECATED_BUTTON rules above own these removed values with a
+      // migration fix — don't also report them as generic invalid-enum.
+      if (BUTTON_FAMILY.has(tag[1]) && ['variant', 'color'].includes(a[1]) && ['default', 'destructive'].includes(a[2])) continue
       if (prop?.type?.name === 'enum' && Array.isArray(prop.type.value) && !prop.type.value.map(String).includes(a[2])) {
         findings.push({
           severity: 'error',

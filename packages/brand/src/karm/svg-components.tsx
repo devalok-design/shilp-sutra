@@ -14,7 +14,7 @@ function createKarmIcon(displayName: string, fill: string) {
     <svg
       ref={ref}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 16 16"
+      viewBox="0.05 2.08 15.95 11.85"
       {...props}
     >
       <title>Karm</title>
@@ -46,7 +46,7 @@ function createKarmWordmark(displayName: string, fill: string) {
     <svg
       ref={ref}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="130 0 260 100"
+      viewBox="141.38 14.19 236.28 74.43"
       {...props}
     >
       <title>Karm</title>
@@ -82,7 +82,7 @@ function createKarmWordmarkIcon(displayName: string, fill: string) {
     <svg
       ref={ref}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 422 100"
+      viewBox="0.18 0 421.65 100"
       {...props}
     >
       <title>Karm</title>

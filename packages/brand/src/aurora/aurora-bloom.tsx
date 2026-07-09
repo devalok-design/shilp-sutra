@@ -1,14 +1,15 @@
 'use client'
 
 import { MeshGradient } from '@paper-design/shaders-react'
-import { useReducedMotion } from 'framer-motion'
 import * as React from 'react'
 
 import {
+  type AuroraPalette,
+  DEFAULT_PALETTE,
+  paletteKey,
   readAuroraPalette,
   useAuroraPalette,
-  type AuroraPalette,
-} from '@/lib/aurora-palette'
+} from './aurora-palette'
 
 export type { AuroraPalette }
 export { readAuroraPalette, useAuroraPalette }
@@ -16,13 +17,11 @@ export { readAuroraPalette, useAuroraPalette }
 /**
  * AuroraBloom — theme-reactive, brand-aware WebGL aurora curtain.
  *
- * ⚠ INTERNAL — Devalok use only.
- *
- * Lives in `apps/site` and is intentionally NOT exported from
- * `@devalok/shilp-sutra`. Consumers outside the Devalok monorepo cannot
- * import this component from npm. If a future Devalok app needs the
- * effect, copy these files into that app (or move both files into a
- * private workspace package) — do not re-export them from the public DS.
+ * Devalok signature identity. Ships from `@devalok/shilp-sutra-brand/aurora`
+ * (brand DNA, not a generic primitive) so every Devalok surface draws the
+ * same aurora from one source. `@paper-design/shaders-react` is an OPTIONAL
+ * peer of this subpath — logo-only consumers of the brand package never pull
+ * the WebGL bundle.
  *
  * A composable hero background: drop one inside a `relative isolate` parent
  * and the aurora paints behind whatever sits above it. Pulls its palette
@@ -121,10 +120,13 @@ export interface AuroraBloomProps {
    */
   palette?: 'brand' | AuroraPalette | string[]
   /**
-   * Parallax interaction. Default: `'mouse'`.
-   *  - `'mouse'`  — back layer drifts opposite cursor (±20px).
+   * Parallax interaction. Default: `'off'`.
+   *  - `'off'`    — static. **Recommended.** The bloom is a blended, blurred
+   *    WebGL stack; sliding it on mouse/scroll forces the compositor to re-mix
+   *    the whole glow every frame of movement — costly for a subtle ±20px
+   *    drift. Opt into motion only where the GPU budget clearly allows.
+   *  - `'mouse'`  — back layer drifts opposite the cursor (±20px).
    *  - `'scroll'` — aurora pans up as the page scrolls.
-   *  - `'off'`    — static.
    */
   parallax?: AuroraParallax
   /**
@@ -139,6 +141,17 @@ export interface AuroraBloomProps {
    * Default: `true`. Suppressed by `prefers-reduced-motion`.
    */
   breathing?: boolean
+  /**
+   * Paint a static CSS-gradient approximation on first paint, then upgrade to
+   * the live WebGL shader after mount. Default: `false`.
+   *
+   * Use for above-the-fold heroes where the empty WebGL canvas would hurt LCP
+   * — the SSR/first-paint HTML carries a coloured bloom immediately and the
+   * shader hydrates in the background. Under `prefers-reduced-motion` the
+   * static gradient is used permanently and WebGL never mounts, regardless of
+   * this flag.
+   */
+  poster?: boolean
   className?: string
 }
 
@@ -163,7 +176,7 @@ export interface AuroraPreset {
   mood: string
   useCase: string
   props: Required<
-    Omit<AuroraBloomProps, 'palette' | 'className' | 'breathing'>
+    Omit<AuroraBloomProps, 'palette' | 'className' | 'breathing' | 'poster'>
   > & {
     palette: AuroraBloomProps['palette']
     breathing: boolean
@@ -190,7 +203,7 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
       position: 'top',
       layers: 2,
       speed: 0.35,
-      parallax: 'mouse',
+      parallax: 'off',
       grain: 'paper',
       breathing: true,
       // The Devalok preset is the only one that *follows the user's brand*
@@ -291,13 +304,11 @@ export const AURORA_PRESETS: Record<AuroraPresetId, AuroraPreset> = {
   },
 }
 
-// Kept exported for parity with brand-bloom's palette contract — referenced by
-// stories and snapshot tests that may import it for fallback rendering.
-export const FALLBACK_PALETTE: AuroraPalette = {
-  colors: ['#fafafa', '#fce8ef', '#e58fb0', '#a23f6a', '#c66b8e'],
-  ground: '#fafafa',
-  isDark: false,
-}
+/**
+ * @deprecated Alias of {@link DEFAULT_PALETTE} (re-exported from the palette
+ * module). Kept for API parity — prefer importing `DEFAULT_PALETTE`.
+ */
+export const FALLBACK_PALETTE: AuroraPalette = DEFAULT_PALETTE
 
 const TWEEN_MS = 1200
 
@@ -342,13 +353,28 @@ export function AuroraBloom({
   layers = 2,
   speed = 0.35,
   palette = 'brand',
-  parallax = 'mouse',
+  parallax = 'off',
   grain = 'paper',
   breathing = true,
+  poster = false,
   className,
 }: AuroraBloomProps) {
-  const prefersReducedMotion = useReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const livePalette = useAuroraPalette()
+
+  // Breathing keyframes — injected once into <head>, shared across instances.
+  useAuroraKeyframes()
+
+  // Poster mode: render the static gradient until mounted, then upgrade to the
+  // live shader. `!poster` → ready immediately (matches SSR: no upgrade).
+  const [mounted, setMounted] = React.useState(!poster)
+  React.useEffect(() => {
+    if (poster) setMounted(true)
+  }, [poster])
+
+  // Reduced-motion → static forever (WebGL never mounts). Poster → static
+  // until the mount effect fires. Otherwise → live shader.
+  const renderStatic = prefersReducedMotion || !mounted
 
   // Resolve incoming palette prop to an `AuroraPalette`. Three forms:
   // 'brand' (live hook), `AuroraPalette` object, or `string[]` (5 hex stops).
@@ -371,8 +397,13 @@ export function AuroraBloom({
   const rootRef = React.useRef<HTMLDivElement>(null)
   const isVisible = useInViewport(rootRef)
 
-  // Parallax offset (px). Driven by mouse OR scroll depending on `parallax`.
-  const parallaxOffset = useParallaxOffset(parallax, prefersReducedMotion)
+  // Parallax — driven straight onto the `--aurora-tx` CSS variable via the
+  // ref, NOT React state. A per-frame setState here would re-render the whole
+  // bloom on every mouse move, and MeshGradient's memo compares `style` by
+  // reference — a fresh style object each render defeats it and re-renders all
+  // 2–3 shaders every frame (the "hangs while moving" stutter). Writing the
+  // CSS var keeps React idle; the breathing keyframe composes `var(--aurora-tx)`.
+  useParallax(rootRef, parallax, prefersReducedMotion)
 
   // Intensity-driven shader params.
   const ip = INTENSITY_PARAMS[intensity]
@@ -400,7 +431,8 @@ export function AuroraBloom({
   const containerStyle: React.CSSProperties = {
     maskImage,
     WebkitMaskImage: maskImage,
-    transform: parallaxOffset ? `translate3d(${parallaxOffset.x}px, ${parallaxOffset.y}px, 0)` : undefined,
+    // `--aurora-tx` is written by useParallax via the ref (default: none).
+    transform: 'var(--aurora-tx, none)',
     transition: 'transform 200ms cubic-bezier(0.2, 0, 0.38, 0.9)',
     animation:
       breathing && !prefersReducedMotion
@@ -410,93 +442,70 @@ export function AuroraBloom({
   }
 
   return (
-    <>
-      {/* Keyframes for breathing — scoped via attribute selector. */}
-      <style>{`
-        @keyframes shilp-sutra-aurora-breathing {
-          0%, 100% { transform: var(--aurora-tx, none) scale(1); }
-          50%      { transform: var(--aurora-tx, none) scale(1.02); }
-        }
-      `}</style>
+    <div
+      ref={rootRef}
+      aria-hidden="true"
+      data-aurora-bloom=""
+      data-aurora-mode={renderStatic ? 'static' : 'live'}
+      className={
+        'pointer-events-none absolute inset-0 z-0 overflow-hidden ' +
+        (className ?? '')
+      }
+      style={containerStyle}
+    >
+      {/* Inner solid bg — gives mix-blend-mode something to mix against. */}
+      <div className="absolute inset-0" style={{ background: shown.ground }} />
 
-      <div
-        ref={rootRef}
-        aria-hidden="true"
-        data-aurora-bloom=""
-        className={
-          'pointer-events-none absolute inset-0 z-0 overflow-hidden ' +
-          (className ?? '')
-        }
-        style={containerStyle}
-      >
-        {/* Inner solid bg — gives mix-blend-mode something to mix against. */}
+      {renderStatic ? (
+        /* STATIC — CSS-gradient approximation. No WebGL context allocated;
+           used under prefers-reduced-motion and for poster first-paint. */
         <div
           className="absolute inset-0"
-          style={{ background: shown.ground }}
-        />
-
-        {/* BACK LAYER — soft halo, lower opacity, slower drift, blurred. */}
-        {layers >= 2 && (
-          <MeshGradient
-            colors={backColors}
-            distortion={Math.min(1, ip.distortion - 0.3)}
-            swirl={Math.min(1, ip.swirl + 0.2)}
-            grainMixer={grain === 'paper' ? 0.15 : 0}
-            grainOverlay={grain === 'paper' ? 0.1 : 0}
-            speed={effectiveSpeed * 0.4}
-            scale={ip.scale + 0.85}
-            rotation={35}
-            offsetX={0.12}
-            offsetY={position === 'bottom' ? 0.25 : -0.25}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              mixBlendMode: blendMode,
-              opacity: ip.backOpacity,
-              filter: 'blur(40px)',
-            }}
-          />
-        )}
-
-        {/* FRONT LAYER — primary curtain. */}
-        <MeshGradient
-          colors={shown.colors}
-          distortion={ip.distortion}
-          swirl={ip.swirl}
-          grainMixer={grain === 'paper' ? 0.3 : 0}
-          grainOverlay={grain === 'paper' ? 0.22 : 0}
-          speed={effectiveSpeed}
-          scale={ip.scale}
-          rotation={0}
-          offsetY={
-            position === 'bottom' ? 0.08 : position === 'center' || position === 'full' ? 0 : -0.08
-          }
           style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
+            background: staticBloomGradient(shown, position),
             mixBlendMode: blendMode,
             opacity: frontOpacity,
           }}
         />
+      ) : (
+        <>
+          {/* BACK LAYER — soft halo, lower opacity, slower drift, blurred. */}
+          {layers >= 2 && (
+            <MeshGradient
+              colors={backColors}
+              distortion={Math.min(1, ip.distortion - 0.3)}
+              swirl={Math.min(1, ip.swirl + 0.2)}
+              grainMixer={grain === 'paper' ? 0.15 : 0}
+              grainOverlay={grain === 'paper' ? 0.1 : 0}
+              speed={effectiveSpeed * 0.4}
+              scale={ip.scale + 0.85}
+              rotation={35}
+              offsetX={0.12}
+              offsetY={position === 'bottom' ? 0.25 : -0.25}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                mixBlendMode: blendMode,
+                opacity: ip.backOpacity,
+                filter: 'blur(40px)',
+              }}
+            />
+          )}
 
-        {/* MICRO LAYER — fine detail, tighter scale. */}
-        {layers >= 3 && (
+          {/* FRONT LAYER — primary curtain. */}
           <MeshGradient
             colors={shown.colors}
-            distortion={Math.min(1, ip.distortion + 0.05)}
-            swirl={Math.min(1, ip.swirl - 0.15)}
-            grainMixer={grain === 'paper' ? 0.45 : 0}
-            grainOverlay={grain === 'paper' ? 0.35 : 0}
-            speed={effectiveSpeed * 1.4}
-            scale={Math.max(0.6, ip.scale - 0.6)}
-            rotation={-15}
-            offsetX={-0.1}
+            distortion={ip.distortion}
+            swirl={ip.swirl}
+            grainMixer={grain === 'paper' ? 0.3 : 0}
+            grainOverlay={grain === 'paper' ? 0.22 : 0}
+            speed={effectiveSpeed}
+            scale={ip.scale}
+            rotation={0}
             offsetY={
-              position === 'bottom' ? 0.18 : position === 'center' || position === 'full' ? 0.05 : -0.18
+              position === 'bottom' ? 0.08 : position === 'center' || position === 'full' ? 0 : -0.08
             }
             style={{
               position: 'absolute',
@@ -504,24 +513,92 @@ export function AuroraBloom({
               width: '100%',
               height: '100%',
               mixBlendMode: blendMode,
-              opacity: ip.microOpacity,
+              opacity: frontOpacity,
             }}
           />
-        )}
 
-        {/* Devalok SVG grain overlay — only when grain === 'match'. */}
-        {grain === 'match' && <DevalokGrainOverlay isDark={shown.isDark} />}
+          {/* MICRO LAYER — fine detail, tighter scale. */}
+          {layers >= 3 && (
+            <MeshGradient
+              colors={shown.colors}
+              distortion={Math.min(1, ip.distortion + 0.05)}
+              swirl={Math.min(1, ip.swirl - 0.15)}
+              grainMixer={grain === 'paper' ? 0.45 : 0}
+              grainOverlay={grain === 'paper' ? 0.35 : 0}
+              speed={effectiveSpeed * 1.4}
+              scale={Math.max(0.6, ip.scale - 0.6)}
+              rotation={-15}
+              offsetX={-0.1}
+              offsetY={
+                position === 'bottom' ? 0.18 : position === 'center' || position === 'full' ? 0.05 : -0.18
+              }
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                mixBlendMode: blendMode,
+                opacity: ip.microOpacity,
+              }}
+            />
+          )}
+        </>
+      )}
 
-        {/* Edge-wash to surface-base — opposite the bloom anchor. */}
-        {edgeWash && (
-          <div
-            className={edgeWash.className}
-            style={{ background: edgeWash.gradient }}
-          />
-        )}
-      </div>
-    </>
+      {/* Devalok SVG grain overlay — only when grain === 'match'. */}
+      {grain === 'match' && <DevalokGrainOverlay isDark={shown.isDark} />}
+
+      {/* Edge-wash to surface-base — opposite the bloom anchor. */}
+      {edgeWash && (
+        <div className={edgeWash.className} style={{ background: edgeWash.gradient }} />
+      )}
+    </div>
   )
+}
+
+/* ─── static bloom gradient (reduced-motion / poster) ──────────────────── */
+
+/**
+ * A CSS radial-gradient approximation of the live shader, anchored at the same
+ * `position`. Uses the tweened palette so brand/theme switches still recolour
+ * (instantly under reduced-motion). Deliberately soft — it stands in for the
+ * bloom, it does not reproduce the mesh distortion.
+ */
+function staticBloomGradient(p: AuroraPalette, position: AuroraPosition): string {
+  const anchor = positionAnchor(position)
+  const c = p.colors
+  const mid = c[2] ?? c[0]
+  const deep = c[3] ?? mid
+  const soft = c[1] ?? c[0]
+  return (
+    `radial-gradient(130% 95% at ${anchor}, ` +
+    `${mid} 0%, ${deep} 28%, ${soft} 60%, ${p.ground} 100%)`
+  )
+}
+
+/* ─── breathing keyframes (injected once) ──────────────────────────────── */
+
+const BREATHING_KEYFRAMES =
+  '@keyframes shilp-sutra-aurora-breathing{' +
+  '0%,100%{transform:var(--aurora-tx,none) scale(1);}' +
+  '50%{transform:var(--aurora-tx,none) scale(1.02);}}'
+
+let _keyframesInjected = false
+
+/** Inject the breathing keyframes into <head> exactly once per document. */
+function useAuroraKeyframes(): void {
+  React.useEffect(() => {
+    if (_keyframesInjected || typeof document === 'undefined') return
+    if (document.querySelector('style[data-shilp-sutra-aurora]')) {
+      _keyframesInjected = true
+      return
+    }
+    const el = document.createElement('style')
+    el.setAttribute('data-shilp-sutra-aurora', '')
+    el.textContent = BREATHING_KEYFRAMES
+    document.head.appendChild(el)
+    _keyframesInjected = true
+  }, [])
 }
 
 /* ─── mask shape × position table ──────────────────────────────────────── */
@@ -614,6 +691,26 @@ function DevalokGrainOverlay({ isDark }: { isDark: boolean }) {
   )
 }
 
+/* ─── reduced-motion hook ──────────────────────────────────────────────── */
+
+/**
+ * SSR-safe `prefers-reduced-motion` listener. Inlined (rather than pulling
+ * framer-motion's `useReducedMotion`) so `@devalok/shilp-sutra-brand` carries
+ * no framer-motion dependency — it stays a lightweight identity package.
+ */
+function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = React.useState(false)
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReduced(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+  return reduced
+}
+
 /* ─── tween hook ───────────────────────────────────────────────────────── */
 
 function useTweenedPalette(target: AuroraPalette, durationMs: number): AuroraPalette {
@@ -635,9 +732,18 @@ function useTweenedPalette(target: AuroraPalette, durationMs: number): AuroraPal
     if (targetKey === lastTargetKey.current) return
     lastTargetKey.current = targetKey
 
-    if (durationMs <= 0) {
+    // Snap instantly when the theme crosses (light↔dark) or motion is reduced.
+    // The tween exists for *brand* cross-fades within one theme; lerping RGB
+    // across the light and dark accent ramps passes through muddy midpoints,
+    // and `mixBlendMode` (screen↔multiply) can't tween — flipping it mid-lerp
+    // washes the bloom to grey/white. A theme toggle flips the whole page at
+    // once, so snapping the aurora with it is the correct, consistent read.
+    const crossedTheme = shownRef.current.isDark !== target.isDark
+    if (durationMs <= 0 || crossedTheme) {
+      cancelAnimationFrame(rafRef.current)
       setShown(target)
       fromRef.current = target
+      shownRef.current = target
       return
     }
 
@@ -661,10 +767,6 @@ function useTweenedPalette(target: AuroraPalette, durationMs: number): AuroraPal
   }, [target, durationMs])
 
   return shown
-}
-
-function paletteKey(p: AuroraPalette): string {
-  return `${p.isDark ? 'd' : 'l'}|${p.colors.join(',')}|${p.ground}`
 }
 
 function easeInOutCubic(t: number): number {
@@ -726,24 +828,35 @@ interface ParallaxOffset {
   y: number
 }
 
-function useParallaxOffset(
+/**
+ * Drive parallax onto the `--aurora-tx` CSS variable via the ref — no React
+ * state, so mouse/scroll movement never re-renders the component (and never
+ * churns the memoised MeshGradient layers). The container's `transform` and
+ * the breathing keyframe both read `var(--aurora-tx)`.
+ */
+function useParallax(
+  ref: React.RefObject<HTMLElement | null>,
   mode: AuroraParallax,
   prefersReducedMotion: boolean | null,
-): ParallaxOffset | null {
-  const [offset, setOffset] = React.useState<ParallaxOffset | null>(null)
+): void {
   const pendingRef = React.useRef<ParallaxOffset | null>(null)
   const rafRef = React.useRef(0)
 
   React.useEffect(() => {
+    const el = ref.current
+    if (!el) return
     if (mode === 'off' || prefersReducedMotion) {
-      setOffset(null)
+      el.style.removeProperty('--aurora-tx')
       return
     }
     if (typeof window === 'undefined') return
 
     const flush = () => {
       rafRef.current = 0
-      if (pendingRef.current) setOffset(pendingRef.current)
+      const o = pendingRef.current
+      if (o && ref.current) {
+        ref.current.style.setProperty('--aurora-tx', `translate3d(${o.x}px, ${o.y}px, 0)`)
+      }
     }
     const schedule = (next: ParallaxOffset) => {
       pendingRef.current = next
@@ -768,8 +881,7 @@ function useParallaxOffset(
 
     if (mode === 'scroll') {
       const onScroll = () => {
-        const y = window.scrollY * 0.15
-        schedule({ x: 0, y: -y })
+        schedule({ x: 0, y: -(window.scrollY * 0.15) })
       }
       onScroll()
       window.addEventListener('scroll', onScroll, { passive: true })
@@ -778,7 +890,5 @@ function useParallaxOffset(
         cancelAnimationFrame(rafRef.current)
       }
     }
-  }, [mode, prefersReducedMotion])
-
-  return offset
+  }, [ref, mode, prefersReducedMotion])
 }

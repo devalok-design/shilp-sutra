@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-import { useAuroraPalette } from '@/lib/aurora-palette'
+import { useAuroraPalette } from '@devalok/shilp-sutra-brand/aurora'
 
 /**
  * LotusBloom — one SVG lotus flower with petals, a brand-coloured halo,

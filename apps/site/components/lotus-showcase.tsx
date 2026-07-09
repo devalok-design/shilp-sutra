@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-import { AuroraBloom } from '@/components/aurora-bloom'
+import { AuroraBloom } from '@devalok/shilp-sutra-brand/aurora'
 import { LotusBloom } from '@/components/lotus-bloom'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 

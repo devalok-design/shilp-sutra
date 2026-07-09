@@ -12,7 +12,7 @@ import {
   type AuroraPosition,
   type AuroraPresetId,
   type AuroraShape,
-} from '@/components/aurora-bloom'
+} from '@devalok/shilp-sutra-brand/aurora'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { SegmentedControl } from '@devalok/shilp-sutra/ui/segmented-control'
 import { Slider } from '@devalok/shilp-sutra/ui/slider'
@@ -340,7 +340,7 @@ function ControlRow({ label, children }: { label: string; children: React.ReactN
 function formatCode(s: AuroraState, activePreset: AuroraPresetId | null): string {
   if (activePreset) {
     return [
-      `import { AuroraBloom, AURORA_PRESETS } from '@/components/aurora-bloom'`,
+      `import { AuroraBloom, AURORA_PRESETS } from '@devalok/shilp-sutra-brand/aurora'`,
       ``,
       `<section className="relative isolate overflow-hidden">`,
       `  <AuroraBloom {...AURORA_PRESETS.${activePreset}.props} />`,

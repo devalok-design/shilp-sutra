@@ -7,7 +7,7 @@ import './globals.css'
 const SITE_URL = 'https://shilp-sutra.devalok.in'
 const SITE_TITLE = 'shilp-sutra · Devalok Design System'
 const SITE_DESCRIPTION =
-  `Your brand. Every component. Out of the box. A React design system from Devalok. Tailwind 4, OKLCH tokens, 119 components. Public beta v${SHILP_SUTRA_MINOR}.`
+  `Your brand. Every component. Out of the box. A React design system from Devalok. Tailwind 4, OKLCH tokens, 120+ components. Public beta v${SHILP_SUTRA_MINOR}.`
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

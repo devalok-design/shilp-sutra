@@ -56,7 +56,7 @@ export function Hero() {
           </li>
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>
-            119 components · 1,750+ tests
+            120+ components · 1,750+ tests
           </li>
         </ul>
       </div>

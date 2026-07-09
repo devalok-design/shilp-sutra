@@ -2,7 +2,7 @@
 
 The Devalok Design System -- tokens, components, and patterns for React & Next.js applications.
 
-> 🚧 **Public Beta — `@devalok/shilp-sutra@0.40.x`.** Install path stable. APIs pre-1.0; breaks touching >2 components ship an ESLint `migration` autofix.
+> 🚧 **Public Beta.** Install path stable; live version in the npm badge above. APIs pre-1.0; breaks touching >2 components ship an ESLint `migration` autofix.
 > **Feedback:** [AI-agent template](./.github/ISSUE_TEMPLATE/ai-agent-feedback.yml) · [Bug report](./.github/ISSUE_TEMPLATE/bug-report.yml) · [Discussions](https://github.com/devalok-design/shilp-sutra/discussions)
 > **SLA:** bot-ack immediate, urgent human-ack ≤48h, normal triage weekly Mon. [Full SLA →](./CONTRIBUTING.md#beta-sla)
 
@@ -20,7 +20,7 @@ The Devalok Design System -- tokens, components, and patterns for React & Next.j
 
 | Package | Description |
 | --- | --- |
-| `@devalok/shilp-sutra` | Tailwind 4 CSS-first tokens, 78 UI primitives, 29 composed components, 8 shell components, 5 AI components |
+| `@devalok/shilp-sutra` | Tailwind 4 CSS-first tokens + 120+ components across UI primitive, composed, shell & AI layers |
 | `@devalok/eslint-plugin-shilp-sutra` | ESLint rules — deprecated-API catches, peer-cliff barrel-import detection, TW3→TW4 autofixes |
 
 ```bash

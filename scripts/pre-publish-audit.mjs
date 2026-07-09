@@ -707,7 +707,10 @@ gate('Agent Skill references in sync with source', () => {
 gate('SKILL.md follows agentskills.io spec', () => {
   const skillPath = join(ROOT, 'skills/shilp-sutra/SKILL.md')
   if (!existsSync(skillPath)) return 'skills/shilp-sutra/SKILL.md missing'
-  const content = readFileSync(skillPath, 'utf-8')
+  // Normalize CRLF → LF so the frontmatter regex (^---\n) matches on a
+  // Windows checkout too. Without this the gate false-fails locally on Windows
+  // (the file is byte-identical, only line endings differ); CI on Linux passed.
+  const content = readFileSync(skillPath, 'utf-8').replace(/\r\n/g, '\n')
   const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
   if (!fmMatch) return 'SKILL.md has no YAML frontmatter'
   const [, frontmatter, body] = fmMatch

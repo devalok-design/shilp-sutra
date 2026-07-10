@@ -843,6 +843,8 @@
     "build:tokens": "node scripts/copy-tokens.mjs",
     "build:docs": "node scripts/build-component-docs.mjs",
     "build:docs:check": "node scripts/build-component-docs.mjs --check",
+    "peers:check": "node scripts/derive-peer-map.mjs --check",
+    "smoke:cold": "node scripts/cold-install-smoke.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run",

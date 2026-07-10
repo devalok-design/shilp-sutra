@@ -67,6 +67,8 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 ```
 
+> ⚠ **This renders `<Toaster />`, which imports `sonner`.** Install it or `next build` fails with `Module not found: Can't resolve 'sonner'`: `pnpm add sonner`. If you don't want toasts, drop the `Toaster` import + usage and skip `sonner`.
+
 For `next-themes` to avoid hydration warnings, add a `_document.tsx` with `suppressHydrationWarning` on the `<html>`:
 
 ```tsx

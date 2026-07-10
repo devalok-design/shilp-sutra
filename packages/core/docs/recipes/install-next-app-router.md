@@ -167,9 +167,14 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
-`next-themes` is already in the install list from § 2 — no extra install step needed here. If `<Toaster />` is not used:
+> ⚠ **This default `Providers` renders `<Toaster />`, which imports `sonner`.** Install it now or `next build` fails with `Module not found: Can't resolve 'sonner'`:
+> ```bash
+> pnpm add sonner
+> ```
 
-- Drop the `Toaster` import and its JSX usage
+`next-themes` is already in the install list from § 2 — no extra install step needed here. If you do **not** want toasts:
+
+- Drop the `Toaster` import and its JSX usage from `Providers`
 - Skip installing `sonner`
 
 Mount `<Providers>` from `app/layout.tsx` (or `src/app/layout.tsx`). **Replace the scaffold's layout** with the version below — the scaffold imports `next/font/google` (Geist) and applies font-variable classes to `<html>`, which you don't need when shilp-sutra ships its own fonts:

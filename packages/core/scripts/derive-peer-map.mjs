@@ -28,7 +28,7 @@
  * Consumed by build-mcp-manifest.mjs via `import { derivePeerMap }`.
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs'
+import { readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { join, basename, extname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -283,8 +283,65 @@ function diffAgainstRecipe(derived, recipe) {
   return { missing, phantom }
 }
 
+// ── Recipe §2a table generation ────────────────────────────────────────────
+// The recipe optional-peer tables are duplicated across docs/recipes/install-*.md
+// and drifted from reality. Generate their data rows from the built manifest
+// (import path + peers) so they can't drift again. Requires a prior build
+// (mcp-manifest.json is a build artifact).
+
+const TABLER_ROW = '| Any `Icon` / `IconButton` with Tabler icons (near-universal — most components use icons internally, so it is a base-install peer) | `pnpm add @tabler/icons-react` |'
+
+function writeRecipeTables({ check } = {}) {
+  let manifest
+  try {
+    manifest = JSON.parse(readFileSync(join(ROOT, 'mcp-manifest.json'), 'utf8'))
+  } catch {
+    console.error('write-recipes: mcp-manifest.json not found — run `pnpm build` (or build-mcp-manifest.mjs) first.')
+    process.exitCode = 1
+    return
+  }
+  const rows = Object.values(manifest.components)
+    .filter((c) => Array.isArray(c.peers) && c.peers.length)
+    .sort((a, b) => a.import.localeCompare(b.import))
+    .map((c) => `| \`${c.import}\` | \`pnpm add ${c.peers.join(' ')}\` |`)
+
+  const recipeDir = join(ROOT, 'docs', 'recipes')
+  const files = readdirSync(recipeDir).filter((f) => /^install-.*\.md$/.test(f))
+  const changed = []
+  for (const f of files) {
+    const p = join(recipeDir, f)
+    const src = readFileSync(p, 'utf8').replace(/\r\n/g, '\n')
+    const lines = src.split('\n')
+    const hi = lines.findIndex((l) => /^\|\s*When you import/.test(l))
+    if (hi < 0) continue
+    let end = hi + 2 // header + separator
+    while (end < lines.length && lines[end].trim().startsWith('|')) end++
+    const block = ['| When you import… | Install |', '|---|---|', ...rows, TABLER_ROW]
+    const rebuilt = [...lines.slice(0, hi), ...block, ...lines.slice(end)].join('\n')
+    if (rebuilt !== src) {
+      changed.push(f)
+      if (!check) writeFileSync(p, rebuilt, 'utf8')
+    }
+  }
+  if (check) {
+    if (changed.length) {
+      console.log(`✗ ${changed.length} recipe §2a table(s) out of sync with the derived map: ${changed.join(', ')}`)
+      console.log('Run `node scripts/derive-peer-map.mjs --write-recipes` to regenerate.')
+      process.exitCode = 1
+    } else {
+      console.log('✓ Recipe §2a tables match the manifest peer map.')
+    }
+  } else {
+    console.log(changed.length ? `Regenerated §2a table in: ${changed.join(', ')}` : 'Recipe §2a tables already current.')
+  }
+}
+
 async function main() {
   const checkOnly = process.argv.includes('--check')
+  if (process.argv.includes('--write-recipes')) {
+    writeRecipeTables({ check: false })
+    return
+  }
   const { map } = derivePeerMap()
 
   if (!checkOnly) {

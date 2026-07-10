@@ -64,6 +64,13 @@ jobs:
     # https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
     env:
       CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      # Turbo SAFETY: the release path never uses the remote cache. No
+      # TURBO_API/TURBO_TOKEN here (turbo falls back to ephemeral local cache),
+      # and TURBO_FORCE bypasses even that — every build/test/typecheck in a
+      # release runs fresh, so a published artifact is always freshly built,
+      # never served from a cache entry. `pnpm release` also uses `build:fresh`
+      # (turbo run build --force) as belt-and-suspenders.
+      TURBO_FORCE: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4

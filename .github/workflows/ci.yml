@@ -8,6 +8,16 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
+    # Turborepo remote cache (self-hosted on Railway). PR CI reads+writes the
+    # shared cache so unchanged packages restore instead of rebuild. Degrades
+    # gracefully to no-cache if TURBO_TOKEN is unset. The RELEASE workflow does
+    # NOT set these + forces fresh builds, so a published artifact is never
+    # served from cache.
+    env:
+      TURBO_API: https://turbo-cache-production-108f.up.railway.app
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: team_devalok
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4

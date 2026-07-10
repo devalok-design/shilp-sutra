@@ -9,13 +9,12 @@
       "dependsOn": ["^build"],
       "outputs": [
         "dist/**",
-        "docs/components/**",
         "skill/**",
-        "llms.txt",
         "mcp-manifest.json",
         "AGENTS.md",
         "MIGRATION.md",
-        "README.md"
+        ".next/**",
+        "!.next/cache/**"
       ]
     },
     "typecheck": {

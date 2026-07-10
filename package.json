@@ -75,6 +75,7 @@
     "storybook": "^10.3.5",
     "storybook-dark-mode": "^5.0.0",
     "tailwindcss": "^4.2.2",
+    "turbo": "^2.10.4",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.8",

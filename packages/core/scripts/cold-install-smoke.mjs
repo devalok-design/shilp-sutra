@@ -22,11 +22,15 @@
  * so this also validates that map end-to-end: if the map misses a peer a tested
  * component imports, the build leaves a bare specifier and this smoke fails.
  *
+ * On Next.js (webpack/Turbopack) a missing peer instead FAILS the build with
+ * `Module not found`, so there the assertion is simply "next build exits 0"
+ * (with the source-derived peers installed) — no stub scan needed.
+ *
  * Usage (from packages/core/):
- *   node scripts/cold-install-smoke.mjs                 # test published @latest
- *   node scripts/cold-install-smoke.mjs --tarball ./pkg.tgz   # test a local `npm pack`
- *   node scripts/cold-install-smoke.mjs --framework vite      # (only vite for now)
- *   node scripts/cold-install-smoke.mjs --keep         # leave the temp app for inspection
+ *   node scripts/cold-install-smoke.mjs                              # vite, published @latest
+ *   node scripts/cold-install-smoke.mjs --tarball ./pkg.tgz          # test a local `npm pack`
+ *   node scripts/cold-install-smoke.mjs --framework next-app-router  # Next.js App Router
+ *   node scripts/cold-install-smoke.mjs --keep                       # leave the temp app
  *
  * Security: no consumer input; component list + peers derived from this repo.
  */
@@ -55,10 +59,12 @@ const keep = argv.includes('--keep')
 // `@emotion/is-prop-valid` with a try/catch to decide prop filtering.
 const BENIGN_UNRESOLVED = new Set(['@emotion/is-prop-valid'])
 
-if (framework !== 'vite') {
-  console.error(`cold-install-smoke: only "vite" is implemented (got "${framework}"). Next/Remix/TanStack are follow-ups.`)
+const SUPPORTED = ['vite', 'next-app-router']
+if (!SUPPORTED.includes(framework)) {
+  console.error(`cold-install-smoke: unsupported --framework "${framework}". Supported: ${SUPPORTED.join(', ')}. (Remix/TanStack/Astro are follow-ups.)`)
   process.exit(2)
 }
+const isNext = framework === 'next-app-router'
 
 // The install specifier: a local pack (absolute path) or the published package.
 const ssSpec = tarball ? resolve(tarball) : '@devalok/shilp-sutra@latest'
@@ -101,11 +107,14 @@ function sh(cmd, label) {
 }
 
 try {
-  scaffold()
+  if (isNext) scaffoldNext()
+  else scaffoldVite()
   install()
   auditPeerRanges()
   const built = build()
-  if (built) auditBundle()
+  // Vite silently ships broken bundles → scan for stubs. Next hard-fails the
+  // build on a missing peer → a green build already proves peer coverage.
+  if (built && !isNext) auditBundle()
 } finally {
   if (keep) console.log(`\nTemp app kept at: ${dir}`)
   else rmSync(dir, { recursive: true, force: true })
@@ -116,11 +125,11 @@ if (failures) {
   console.log(`${FAIL} cold-install-smoke: ${failures} failure(s).`)
   process.exit(1)
 }
-console.log(`${PASS} cold-install-smoke: clean install, build, and bundle.`)
+console.log(`${PASS} cold-install-smoke (${framework}): clean install + build${isNext ? '' : ' + bundle'}.`)
 
 // ── steps ─────────────────────────────────────────────────────────────────────
 
-function scaffold() {
+function scaffoldVite() {
   mkdirSync(join(dir, 'src'))
   const imports = COMPONENTS.map((c) => `import { ${c.import} } from "@devalok/shilp-sutra/${c.subpath}";`).join('\n')
   const jsx = COMPONENTS.filter((c) => c.jsx).map((c) => '      ' + c.jsx).join('\n')
@@ -159,13 +168,86 @@ function scaffold() {
   pass('scaffolded minimal Vite app')
 }
 
+function scaffoldNext() {
+  mkdirSync(join(dir, 'app'))
+
+  writeFileSync(join(dir, 'package.json'), JSON.stringify({
+    name: 'ss-cold-smoke', private: true, version: '0.0.0',
+    scripts: { build: 'next build' },
+  }, null, 2))
+
+  writeFileSync(join(dir, 'next.config.ts'),
+    `import type { NextConfig } from "next";\nconst nextConfig: NextConfig = { transpilePackages: ["@devalok/shilp-sutra"] };\nexport default nextConfig;\n`)
+
+  writeFileSync(join(dir, 'postcss.config.mjs'),
+    `const config = { plugins: { "@tailwindcss/postcss": {} } };\nexport default config;\n`)
+
+  writeFileSync(join(dir, 'tsconfig.json'), JSON.stringify({
+    compilerOptions: {
+      target: 'ES2022', lib: ['dom', 'dom.iterable', 'esnext'], allowJs: true, skipLibCheck: true,
+      strict: true, noEmit: true, esModuleInterop: true, module: 'esnext', moduleResolution: 'bundler',
+      resolveJsonModule: true, isolatedModules: true, jsx: 'react-jsx', incremental: true,
+      plugins: [{ name: 'next' }],
+    },
+    include: ['next-env.d.ts', '**/*.ts', '**/*.tsx', '.next/types/**/*.ts'],
+    exclude: ['node_modules'],
+  }, null, 2))
+
+  writeFileSync(join(dir, 'next-env.d.ts'),
+    `/// <reference types="next" />\n/// <reference types="next/image-types/global" />\n`)
+
+  writeFileSync(join(dir, 'app', 'globals.css'), `@import "tailwindcss";\n@import "@devalok/shilp-sutra/css";\n`)
+
+  writeFileSync(join(dir, 'app', 'providers.tsx'),
+    `"use client";\nimport type { ReactNode } from "react";\nimport { ThemeProvider } from "next-themes";\nimport { Toaster } from "@devalok/shilp-sutra/ui/toaster";\nexport function Providers({ children }: { children: ReactNode }) {\n  return (\n    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>\n      {children}\n      <Toaster />\n    </ThemeProvider>\n  );\n}\n`)
+
+  writeFileSync(join(dir, 'app', 'layout.tsx'),
+    `import type { Metadata } from "next";\nimport "./globals.css";\nimport { Providers } from "./providers";\nexport const metadata: Metadata = { title: "ss-cold-smoke" };\nexport default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {\n  return (\n    <html lang="en" suppressHydrationWarning>\n      <body><Providers>{children}</Providers></body>\n    </html>\n  );\n}\n`)
+
+  // Client page. Base trio + MarkdownViewer (peer-cliff) + EmojiPickerPopover
+  // (closed — the realistic usage; the picker panel mounts on open, not at SSG,
+  // so we don't force an open frimousse panel through static prerender).
+  // EmojiPickerPopover imports EmojiPicker internally → its chunk still resolves.
+  const page = `"use client";
+import { Button } from "@devalok/shilp-sutra/ui/button";
+import { Stack } from "@devalok/shilp-sutra/ui/stack";
+import { Text } from "@devalok/shilp-sutra/ui/text";
+import { MarkdownViewer } from "@devalok/shilp-sutra/composed/markdown-viewer";
+import { EmojiPickerPopover } from "@devalok/shilp-sutra/composed/emoji-picker";
+
+export default function Home() {
+  return (
+    <Stack className="p-ds-08" gap="ds-04">
+      <Text variant="heading-2xl">Hi</Text>
+      <Button>Primary</Button>
+      <MarkdownViewer content={"# Hi"} />
+      <EmojiPickerPopover onSelect={() => {}}><Button variant="soft">emoji</Button></EmojiPickerPopover>
+    </Stack>
+  );
+}
+`
+  writeFileSync(join(dir, 'app', 'page.tsx'), page)
+
+  pass('scaffolded minimal Next.js App Router app')
+}
+
 function install() {
   // @tabler/icons-react is a REQUIRED (non-optional) peer imported internally by
   // many components (e.g. MarkdownViewer's copy button) regardless of whether the
   // consumer passes Tabler icons — so it belongs in the base install alongside
   // framer-motion. (The recipe base install currently omits it — a finding.)
-  const base = ['react', 'react-dom', 'framer-motion', '@tabler/icons-react']
-  const dev = ['vite', '@vitejs/plugin-react', 'typescript', '@types/react', '@types/react-dom', 'tailwindcss@^4', '@tailwindcss/vite', 'semver']
+  // @tabler/icons-react is a REQUIRED peer many components import internally, so
+  // it belongs in base. next-themes is base for the Next Providers. sonner is
+  // already covered — it is the derived peer of the Toaster component under test.
+  const base = isNext
+    ? ['react', 'react-dom', 'framer-motion', 'next-themes', '@tabler/icons-react']
+    : ['react', 'react-dom', 'framer-motion', '@tabler/icons-react']
+    // typescript pinned to ^5: Next 16's TS-setup check doesn't recognise TS 7
+    // (the Go compiler) and crashes the build worker. @types/node avoids a
+    // separate mid-build auto-install. Both mirror what create-next-app ships.
+  const dev = isNext
+    ? ['next', 'typescript@^5', '@types/node', '@types/react', '@types/react-dom', 'tailwindcss@^4', '@tailwindcss/postcss', 'semver']
+    : ['vite', '@vitejs/plugin-react', 'typescript', '@types/react', '@types/react-dom', 'tailwindcss@^4', '@tailwindcss/vite', 'semver']
   const runtime = `npm install ${ssSpec} ${base.join(' ')} ${[...peers].join(' ')} --no-audit --no-fund`
 
   let r = sh(runtime, 'install')
@@ -221,8 +303,8 @@ function auditPeerRanges() {
 
 function build() {
   const r = sh('npm run build', 'build')
-  if (!r.ok) { fail(`build failed (tsc or vite):\n${clip(r.out)}`); return false }
-  pass('tsc + vite build succeeded (recipe App typechecks)')
+  if (!r.ok) { fail(`${isNext ? 'next build' : 'tsc + vite build'} failed:\n${clip(r.out)}`); return false }
+  pass(isNext ? 'next build succeeded (transpilePackages + RSC + peer resolution)' : 'tsc + vite build succeeded (recipe App typechecks)')
   return true
 }
 

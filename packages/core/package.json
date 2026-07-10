@@ -847,6 +847,7 @@
     "build:docs:check": "node scripts/build-component-docs.mjs --check",
     "peers:check": "node scripts/derive-peer-map.mjs --check",
     "smoke:cold": "node scripts/cold-install-smoke.mjs",
+    "smoke:cold:next": "node scripts/cold-install-smoke.mjs --framework next-app-router",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "test": "vitest run",

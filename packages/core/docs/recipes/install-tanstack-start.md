@@ -14,6 +14,8 @@ You are in this recipe if:
 
 If instead you see `app.config.ts` + `@tanstack/start`, that is the legacy Vinxi setup — this recipe does not apply until you migrate.
 
+> **Scaffolded with `create-start` and got a Router SPA?** As of `@tanstack/create-start` 0.59, the default template is a TanStack **Router** SPA — Vite + `@tanstack/react-router` + an `index.html` + `src/main.tsx` (client `createRoot`), with **no** `@tanstack/react-start` and no SSR server entry. That is NOT the Start SSR setup this recipe covers — use [install-vite.md](./install-vite.md) instead (it is router-agnostic and covers TanStack Router SPAs cleanly). This recipe applies only when `@tanstack/react-start` is a dependency.
+
 ## 2. Install
 
 ```bash

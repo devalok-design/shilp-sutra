@@ -10,7 +10,7 @@ You are in this recipe if:
 - `vite.config.{ts,js}` exists with the `vitePlugin` from `@remix-run/dev`
 - `app/root.tsx` exists with `<Outlet />` inside `<Document>` shell
 
-For React Router v7 (the spiritual successor to Remix), use the [install-vite.md](./install-vite.md) recipe — it works the same way.
+> **New projects scaffold as React Router v7, not Remix.** `create-remix` is deprecated and redirects to `create-react-router`; Remix v2 was upstreamed into React Router (maintenance mode). If you ran `create-react-router`, you have an RR7 **framework-mode** app (`@react-router/dev` + `react-router build` + `app/root.tsx` + `ssr: true`) — verified cold with shilp-sutra (SSR render, HTTP 200). Its wiring is the same shape as this recipe: `@tailwindcss/vite` plugin, `@import "@devalok/shilp-sutra/css"` in `app/app.css`, and **no `transpilePackages`** (Vite resolves our ESM). Ignore the SPA-only steps in [install-vite.md](./install-vite.md) (`index.html` bootstrap, `main.tsx` `createRoot`) — RR7 framework mode has its own `root.tsx` shell, like this recipe.
 
 ## 2. Install
 

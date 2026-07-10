@@ -1,33 +1,37 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-// Mock the heavy emoji-mart dependencies so we don't load them in tests
-vi.mock('@emoji-mart/react', () => ({
-  default: function MockPicker({ onEmojiSelect }: { onEmojiSelect: (e: unknown) => void }) {
-    return (
-      <div data-testid="emoji-picker-mock">
-        <button onClick={() => onEmojiSelect({ id: 'smile', native: '\u{1F604}' })}>
-          Pick emoji
-        </button>
-      </div>
-    )
-  },
-}))
+// frimousse fetches emoji data from a CDN at runtime — mock it so tests stay
+// offline and deterministic. Root exposes onEmojiSelect via a test button.
+vi.mock('frimousse', () => {
+  type AnyProps = { children?: React.ReactNode; onEmojiSelect?: (e: { emoji: string; label: string }) => void }
+  const Root = ({ children, onEmojiSelect }: AnyProps) => (
+    <div data-testid="emoji-picker-mock">
+      <button onClick={() => onEmojiSelect?.({ emoji: '\u{1F604}', label: 'grinning face' })}>
+        Pick emoji
+      </button>
+      {children}
+    </div>
+  )
+  const Passthrough = ({ children }: AnyProps) => <div>{children}</div>
+  return {
+    EmojiPicker: { Root, Search: Passthrough, Viewport: Passthrough, List: Passthrough, Loading: Passthrough, Empty: Passthrough },
+  }
+})
 
-vi.mock('@emoji-mart/data', () => ({
-  default: { categories: [] },
-}))
-
-// Import after mocking
 import { EmojiPicker, EmojiPickerPopover } from './emoji-picker'
 
 describe('EmojiPicker', () => {
-  it('renders without crashing', async () => {
+  it('renders without crashing', () => {
     render(<EmojiPicker onSelect={vi.fn()} />)
-    // Initially shows skeleton/loading, then the picker loads
-    // Since we mocked the modules, the picker should eventually render
-    const picker = await screen.findByTestId('emoji-picker-mock')
-    expect(picker).toBeInTheDocument()
+    expect(screen.getByTestId('emoji-picker-mock')).toBeInTheDocument()
+  })
+
+  it('maps a frimousse selection to EmojiData (native char + kebab id)', () => {
+    const onSelect = vi.fn()
+    render(<EmojiPicker onSelect={onSelect} />)
+    fireEvent.click(screen.getByText('Pick emoji'))
+    expect(onSelect).toHaveBeenCalledWith({ id: 'grinning-face', native: '\u{1F604}' })
   })
 })
 

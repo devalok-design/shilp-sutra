@@ -34,13 +34,11 @@ import { type Editor,EditorContent, useEditor, useEditorState } from '@tiptap/re
 import StarterKit from '@tiptap/starter-kit'
 import * as React from 'react'
 
-import { useColorMode } from '../hooks/use-color-mode'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { MENTION_TOKEN_CLASS } from '../ui/lib/mention'
 import { cn } from '../ui/lib/utils'
-import type { EmojiSet } from './emoji-picker'
-import { loadEmojiData, lookupEmoji } from './extensions/emoji-data'
+import type { EmojiData, EmojiSet } from './emoji-picker'
 import { EmojiNode } from './extensions/emoji-node'
 import { createEmojiSuggestion } from './extensions/emoji-suggestion'
 import { FileAttachment } from './extensions/file-attachment'
@@ -353,30 +351,16 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
   )
 }
 
-const LazyPicker = React.lazy(() => import('@emoji-mart/react'))
+const LazyPicker = React.lazy(() =>
+  import('./emoji-picker').then((m) => ({ default: m.EmojiPicker })),
+)
 
-function EmojiPickerLazy({ set = 'native', onSelect }: { set?: string; onSelect: (emoji: { id: string; native: string }) => void }) {
-  const [data, setData] = React.useState<unknown>(null)
-  const { colorMode } = useColorMode()
-
-  React.useEffect(() => {
-    loadEmojiData(set).then((d) => setData(d))
-  }, [set])
-
-  const fallback = <div className="flex h-[350px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-raised-hover"><span className="text-ds-sm text-surface-fg-subtle">Loading...</span></div>
-
-  if (!data) return fallback
+function EmojiPickerLazy({ onSelect }: { onSelect: (emoji: EmojiData) => void }) {
+  const fallback = <div className="flex h-[435px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-raised-hover"><span className="text-ds-sm text-surface-fg-subtle">Loading…</span></div>
 
   return (
     <React.Suspense fallback={fallback}>
-      <LazyPicker
-        data={data}
-        set={set}
-        onEmojiSelect={(emoji: { native: string; id: string }) => onSelect({ id: emoji.id, native: emoji.native })}
-        theme={colorMode === 'dark' ? 'dark' : 'light'}
-        previewPosition="none"
-        skinTonePosition="none"
-      />
+      <LazyPicker onSelect={onSelect} />
     </React.Suspense>
   )
 }
@@ -438,7 +422,9 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   mentions,
   onMentionSearch,
   onMentionSelect,
-  emojiSet = 'native',
+  // @deprecated no-op since the frimousse migration (native-only emoji). Kept
+  // out of `...props` so it never leaks onto the DOM.
+  emojiSet: _emojiSet = 'native',
   ...props
 }, ref) {
   const editorRef = React.useRef<ReturnType<typeof useEditor>>(null)
@@ -527,7 +513,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
         }),
       ] : []),
       EmojiNode,
-      createEmojiSuggestion(emojiSet),
+      createEmojiSuggestion(),
     ],
     content,
     editable,
@@ -616,18 +602,11 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
           }}
         >
           <EmojiPickerLazy
-            set={emojiSet}
-            onSelect={async ({ id, native }) => {
-              const data = await loadEmojiData(emojiSet)
-              const resolved = lookupEmoji(data, id)
-              if (resolved) {
-                editor.chain().focus().insertContent({
-                  type: 'emojiNode',
-                  attrs: { id, native: resolved.native, set: emojiSet, x: resolved.x, y: resolved.y },
-                }).run()
-              } else {
-                editor.chain().focus().insertContent(native).run()
-              }
+            onSelect={({ id, native }) => {
+              editor.chain().focus().insertContent({
+                type: 'emojiNode',
+                attrs: { id, native },
+              }).run()
               setShowEmojiPicker(false)
             }}
           />

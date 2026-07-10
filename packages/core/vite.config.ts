@@ -117,7 +117,6 @@ export default defineConfig({
         /^react-dom($|\/)/,
         /^next($|\/)/,
         /^@tanstack\//,
-        /^@emoji-mart\//,
         /^d3-/,
         /^@tabler\/icons-react($|\/)/,
         /^date-fns($|\/)/,
@@ -153,6 +152,11 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             if (id.includes('@tiptap/') || id.includes('prosemirror'))
               return 'tiptap'
+            // Emoji picker (frimousse) + dataset (@emoji-mart/data, ~450KB) —
+            // bundled but lazy-loaded, so isolate into their own chunk that only
+            // downloads when the emoji picker / `:` search is opened.
+            if (id.includes('frimousse') || id.includes('@emoji-mart/'))
+              return 'emoji'
             // framer-motion — imported by 80+ components system-wide for enter/exit/layout animations
             if (id.includes('framer-motion'))
               return 'framer'

@@ -29,16 +29,11 @@ describe('derivePeerMap', () => {
     )
   })
 
-  it('captures lazy React.lazy(() => import()) peers (@emoji-mart)', () => {
-    expect(map['emoji-picker']).toEqual(
-      expect.arrayContaining(['@emoji-mart/data', '@emoji-mart/react']),
-    )
-    expect(map['rich-text-editor']).toContain('@emoji-mart/react')
-  })
-
-  it('does NOT list bundled deps as peers (@tiptap is in dist, not external)', () => {
+  it('does NOT list bundled deps as peers (@tiptap, frimousse, @emoji-mart/data are in dist, not external)', () => {
+    // emoji-picker bundles frimousse + @emoji-mart/data (lazy chunk) → no gated peer.
+    expect(map['emoji-picker']).toBeUndefined()
     const rte = map['rich-text-editor'] ?? []
-    expect(rte.some((p) => p.startsWith('@tiptap/'))).toBe(false)
+    expect(rte.some((p) => p.startsWith('@tiptap/') || p.startsWith('@emoji-mart/') || p === 'frimousse')).toBe(false)
   })
 
   it('scans _internal/ subdirs (charts/_internal/axes.tsx → d3-axis)', () => {

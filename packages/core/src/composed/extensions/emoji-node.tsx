@@ -1,42 +1,18 @@
 import { Node } from '@tiptap/core'
 import { type NodeViewProps,NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react'
 
-import { SHEET_COLS, SHEET_ROWS,SPRITESHEET_URL } from './emoji-data'
-
+// Native-only since the frimousse migration — renders the native emoji
+// character. (The emoji-mart spritesheet/art-style rendering was removed.)
 export interface EmojiNodeAttrs {
   id: string
   native: string
-  set: string
-  x: number
-  y: number
 }
 
 function EmojiNodeView({ node }: NodeViewProps) {
-  const { native, set, x, y } = node.attrs as EmojiNodeAttrs
-
-  if (set === 'native') {
-    return (
-      <NodeViewWrapper as="span" className="inline">
-        <span>{native}</span>
-      </NodeViewWrapper>
-    )
-  }
-
-  const bgSize = `${100 * SHEET_COLS}% ${100 * SHEET_ROWS}%`
-  const bgPos = `${(100 / (SHEET_COLS - 1)) * x}% ${(100 / (SHEET_ROWS - 1)) * y}%`
-
+  const { native } = node.attrs as EmojiNodeAttrs
   return (
     <NodeViewWrapper as="span" className="inline">
-      <span
-        role="img"
-        aria-label={native}
-        className="inline-block h-[1.2em] w-[1.2em] align-text-bottom"
-        style={{
-          backgroundImage: `url(${SPRITESHEET_URL(set)})`,
-          backgroundSize: bgSize,
-          backgroundPosition: bgPos,
-        }}
-      />
+      <span>{native}</span>
     </NodeViewWrapper>
   )
 }
@@ -52,9 +28,6 @@ export const EmojiNode = Node.create({
     return {
       id: { default: null },
       native: { default: null },
-      set: { default: 'native' },
-      x: { default: 0 },
-      y: { default: 0 },
     }
   },
 
@@ -69,9 +42,6 @@ export const EmojiNode = Node.create({
         const dom = el as HTMLElement
         return {
           id: dom.getAttribute('data-emoji-id'),
-          set: dom.getAttribute('data-emoji-set') ?? 'native',
-          x: parseInt(dom.getAttribute('data-emoji-x') ?? '0', 10),
-          y: parseInt(dom.getAttribute('data-emoji-y') ?? '0', 10),
           native: dom.textContent ?? '',
         }
       },
@@ -81,9 +51,6 @@ export const EmojiNode = Node.create({
   renderHTML({ node }) {
     return ['span', {
       'data-emoji-id': node.attrs.id,
-      'data-emoji-set': node.attrs.set,
-      'data-emoji-x': node.attrs.x,
-      'data-emoji-y': node.attrs.y,
       'role': 'img',
       'aria-label': node.attrs.native,
     }, node.attrs.native ?? '']

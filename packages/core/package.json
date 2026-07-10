@@ -52,8 +52,10 @@
     "provenance": true
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.2.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "frimousse": "^0.3.0",
     "tw-animate-css": "^1.4.0",
     "use-sync-external-store": "^1.5.0"
   },
@@ -853,8 +855,6 @@
     "postinstall": "node scripts/welcome.mjs || true"
   },
   "peerDependencies": {
-    "@emoji-mart/data": "^1.0.0",
-    "@emoji-mart/react": "^1.0.0",
     "@tabler/icons-react": "^3.0.0",
     "@tanstack/react-table": "^8.0.0",
     "@tanstack/react-virtual": "^3.0.0",
@@ -885,12 +885,6 @@
       "optional": true
     },
     "@tanstack/react-virtual": {
-      "optional": true
-    },
-    "@emoji-mart/data": {
-      "optional": true
-    },
-    "@emoji-mart/react": {
       "optional": true
     },
     "d3-array": {

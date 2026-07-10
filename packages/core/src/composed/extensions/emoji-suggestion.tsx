@@ -5,29 +5,14 @@ import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 
 import { cn } from '../../ui/lib/utils'
-import { loadEmojiData, type ResolvedEmoji, searchEmoji, SHEET_COLS, SHEET_ROWS,SPRITESHEET_URL } from './emoji-data'
+import { loadEmojiData, type ResolvedEmoji, searchEmoji } from './emoji-data'
 
 // Re-export for external consumers
 export type { ResolvedEmoji as EmojiSuggestionItem }
 
-function EmojiImage({ emoji, set, size = '1.2em' }: { emoji: ResolvedEmoji; set: string; size?: string }) {
-  if (set === 'native') {
-    return <span style={{ fontSize: size }}>{emoji.native}</span>
-  }
-  return (
-    <span
-      role="img"
-      aria-label={emoji.native}
-      className="inline-block"
-      style={{
-        width: size,
-        height: size,
-        backgroundImage: `url(${SPRITESHEET_URL(set)})`,
-        backgroundSize: `${100 * SHEET_COLS}% ${100 * SHEET_ROWS}%`,
-        backgroundPosition: `${(100 / (SHEET_COLS - 1)) * emoji.x}% ${(100 / (SHEET_ROWS - 1)) * emoji.y}%`,
-      }}
-    />
-  )
+// Native-only since the frimousse migration.
+function EmojiImage({ emoji, size = '1.2em' }: { emoji: ResolvedEmoji; size?: string }) {
+  return <span style={{ fontSize: size }}>{emoji.native}</span>
 }
 
 interface EmojiListRef {
@@ -36,12 +21,11 @@ interface EmojiListRef {
 
 interface EmojiListProps {
   items: ResolvedEmoji[]
-  set: string
   command: (item: ResolvedEmoji) => void
 }
 
 const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
-  ({ items, set, command }, ref) => {
+  ({ items, command }, ref) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0)
 
     React.useEffect(() => setSelectedIndex(0), [items])
@@ -80,7 +64,7 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
               index === selectedIndex ? 'bg-surface-raised text-surface-fg' : 'text-surface-fg-muted hover:bg-surface-raised',
             )}
           >
-            <EmojiImage emoji={item} set={set} size="1.25em" />
+            <EmojiImage emoji={item} size="1.25em" />
             <span className="truncate">:{item.id}:</span>
           </button>
         ))}
@@ -90,7 +74,7 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
 )
 EmojiList.displayName = 'EmojiList'
 
-function createEmojiSuggestionRenderer(set: string) {
+function createEmojiSuggestionRenderer() {
   return () => {
     let root: Root | null = null
     let container: HTMLDivElement | null = null
@@ -112,7 +96,6 @@ function createEmojiSuggestionRenderer(set: string) {
           <EmojiList
             ref={(r) => { componentRef = r }}
             items={props.items as ResolvedEmoji[]}
-            set={set}
             command={(item) => props.command(item)}
           />,
         )
@@ -129,7 +112,6 @@ function createEmojiSuggestionRenderer(set: string) {
           <EmojiList
             ref={(r) => { componentRef = r }}
             items={props.items as ResolvedEmoji[]}
-            set={set}
             command={(item) => props.command(item)}
           />,
         )
@@ -160,8 +142,8 @@ function createEmojiSuggestionRenderer(set: string) {
   }
 }
 
-/** Factory: call with the emoji set to get a configured extension. */
-export function createEmojiSuggestion(set = 'native') {
+/** Factory: returns the configured `:shortcode:` emoji suggestion extension. */
+export function createEmojiSuggestion() {
   return Extension.create({
     name: 'emojiSuggestion',
 
@@ -172,7 +154,7 @@ export function createEmojiSuggestion(set = 'native') {
           editor: this.editor,
           char: ':',
           items: async ({ query }) => {
-            const data = await loadEmojiData(set)
+            const data = await loadEmojiData()
             return searchEmoji(data, query, 8)
           },
           command: ({ editor, range, props: item }) => {
@@ -183,11 +165,11 @@ export function createEmojiSuggestion(set = 'native') {
               .deleteRange(range)
               .insertContent({
                 type: 'emojiNode',
-                attrs: { id: emoji.id, native: emoji.native, set, x: emoji.x, y: emoji.y },
+                attrs: { id: emoji.id, native: emoji.native },
               })
               .run()
           },
-          render: createEmojiSuggestionRenderer(set),
+          render: createEmojiSuggestionRenderer(),
         }),
       ]
     },

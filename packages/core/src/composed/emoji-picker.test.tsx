@@ -14,8 +14,10 @@ vi.mock('frimousse', () => {
     </div>
   )
   const Passthrough = ({ children }: AnyProps) => <div>{children}</div>
+  const ActiveEmoji = ({ children }: { children: (p: { emoji?: { emoji: string; label: string } }) => React.ReactNode }) => <div>{children({ emoji: undefined })}</div>
+  const SkinToneSelector = (props: Record<string, unknown>) => <button type="button" {...props} />
   return {
-    EmojiPicker: { Root, Search: Passthrough, Viewport: Passthrough, List: Passthrough, Loading: Passthrough, Empty: Passthrough },
+    EmojiPicker: { Root, Search: Passthrough, Viewport: Passthrough, List: Passthrough, Loading: Passthrough, Empty: Passthrough, ActiveEmoji, SkinToneSelector },
   }
 })
 

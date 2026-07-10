@@ -8,6 +8,7 @@ Emoji picker migrated to **frimousse** (native-only) and an install-"just works"
 - `set` / `theme` / `previewPosition` / `skinTonePosition` (EmojiPicker) and `emojiSet` (RichChatInput/RichTextEditor) are now **deprecated no-ops**; `EmojiSet` is retained for source compatibility.
 - Removed: the `emojiDataLoaders` export. Narrowed: `EmojiNodeAttrs` → `{ id, native }`; `EmojiSuggestionItem` (no `x`/`y`); `createEmojiSuggestion()` now takes no argument.
 - **Zero new peers:** frimousse and `@emoji-mart/data` (dataset for `:shortcode:` search — pure JSON, no React peer) are now **bundled** into a lazy `emoji` chunk. The emoji feature needs no consumer install and no `--legacy-peer-deps`. `@tiptap/*` was already bundled (it never needed to be a peer).
+- **Added:** the picker now has a built-in footer (hovered-emoji preview + skin-tone selector) and a new `emojibaseUrl` prop to self-host the emoji dataset (removes the runtime jsdelivr CDN dependency for strict-CSP / offline consumers).
 
 **Fixed — optional-peer / recipe accuracy.** The recipe `§2a` tables drifted from what components actually import. Now generated from source truth (each component's imports × the build's externalized set):
 - Added the missing peers: `sonner` (Toaster/Toast), `remark-gfm` (MarkdownViewer), `date-fns` (ScheduleView), `@tanstack/react-table` (DataTableToolbar).

@@ -18,7 +18,7 @@
   <TableCell><Badge color="success">Active</Badge></TableCell>
   <TableCell>
     <TableRowActions>
-      <IconButton className="relative z-[1]" size="xs" variant="ghost" aria-label={`Actions for ${name}`} icon={<IconDots />} />
+      <IconButton className="relative z-[1]" size="sm" variant="ghost" aria-label={`Actions for ${name}`} icon={<IconDots />} />
     </TableRowActions>
   </TableCell>
 </TableRow>

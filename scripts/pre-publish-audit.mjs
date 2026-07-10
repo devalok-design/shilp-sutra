@@ -224,15 +224,16 @@ gate('Core docs CVA accuracy (no HIGH drift vs source)', () => {
   }
 })
 
-// Gate A: hand-written MCP tool lists (README/AGENTS) match the registered
-// server.tool() set. Guards the exact rot that let "6 tools" survive 4 new
-// tools shipping in 0.47.
-gate('MCP tool lists match registered tools', () => {
+// Gate A: the MCP tool lists (README/AGENTS) are GENERATED from the registered
+// server.tool() set between <!-- BEGIN:mcp-tools --> markers — so omitting or
+// inventing a tool is structurally impossible. This gate only enforces that the
+// committed block is current (regen + drift), the same model as the skill refs.
+gate('MCP tool list generated + current (no drift)', () => {
   try {
-    execSync('node scripts/check-tool-list.mjs --check', { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
+    execSync('node scripts/generate-tool-list.mjs --check', { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
     return true
   } catch (e) {
-    return e.stdout?.trim() || e.stderr?.trim() || 'check-tool-list failed'
+    return e.stdout?.trim() || e.stderr?.trim() || 'generate-tool-list --check failed'
   }
 })
 

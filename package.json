@@ -17,7 +17,8 @@
     "lint": "turbo run lint",
     "lint:fix": "pnpm -r lint:fix",
     "lint:props": "node scripts/check-props-exports.mjs",
-    "check:tools": "node scripts/check-tool-list.mjs --check",
+    "gen:tools": "node scripts/generate-tool-list.mjs",
+    "check:tools": "node scripts/generate-tool-list.mjs --check",
     "check:examples": "node packages/core/scripts/lint-doc-examples.mjs --check",
     "check:doc-props": "node scripts/audit-doc-props.mjs",
     "check:recipes": "node scripts/check-recipe-currency.mjs",
@@ -29,7 +30,7 @@
     "test:storybook:ci": "vitest run --project storybook",
     "verify": "pnpm build && pnpm typecheck && pnpm lint && pnpm lint:props && pnpm test && node packages/core/scripts/ssr-smoke-test.mjs && pnpm test:storybook:ci",
     "changeset": "changeset",
-    "version-packages": "node scripts/changeset-version-retry.mjs && node scripts/prepend-breaking-summary.mjs && node scripts/stub-migration-section.mjs && node scripts/sync-skill-version.mjs && node packages/core/scripts/build-component-docs.mjs && node packages/core/scripts/build-mcp-manifest.mjs && node scripts/build-skill.mjs",
+    "version-packages": "node scripts/changeset-version-retry.mjs && node scripts/prepend-breaking-summary.mjs && node scripts/stub-migration-section.mjs && node scripts/generate-tool-list.mjs && node scripts/sync-skill-version.mjs && node packages/core/scripts/build-component-docs.mjs && node packages/core/scripts/build-mcp-manifest.mjs && node scripts/build-skill.mjs",
     "release": "pnpm build:fresh && changeset publish"
   },
   "devDependencies": {

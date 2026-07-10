@@ -16,6 +16,7 @@ import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { SHILP_SUTRA_VERSION } from '@/lib/version'
 import { CodeBlock } from '@/components/code-block'
 import { MakeKitPaster } from '@/components/make-kit-paster'
 import { PageHeader } from '@/components/page-header'
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     'Generate apps in Figma Make against the production shilp-sutra design system. Register the npm package as a Make kit, paste twenty-six guideline files, and ship prototypes that match the same conventions as production code.',
 }
 
-const KIT_VERSION = process.env.NEXT_PUBLIC_SHILP_SUTRA_VERSION ?? '0.42.0'
+const KIT_VERSION = SHILP_SUTRA_VERSION
 
 const STEPS = [
   {

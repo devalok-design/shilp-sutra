@@ -110,7 +110,7 @@ Parse rules:
 
 ## 3. MCP tool conventions
 
-- Tool names: `snake_case` verb-first — `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`. Six tools, hard ceiling.
+- Tool names: `snake_case` verb-first. Reference tools: `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`. Setup-journey tools (added 0.47): `detect_framework`, `preflight`, `validate_snippet`, `verify_setup`. Write path: `report_issue`. (The original "six tools, hard ceiling" was relaxed in 0.47 for the setup journey — resist growth beyond genuinely distinct agent jobs; new capabilities should still prefer becoming params/sections of an existing tool.)
 - Every tool: optional `version` (semver string, default = latest ≥0.45). Sub-floor requests return an `isError: false` guidance result (not a failure): "0.45.2 predates MCP doc coverage (floor 0.45.0). Call upgrade(from: \"0.45.2\", to: \"0.45.0\") for the migration path."
 - Response envelope: first line is the version banner (`Docs for @devalok/shilp-sutra@0.45.0 — pass your installed version if different`); then content. Machine data as JSON in a fenced block; prose as Markdown. ≤5K tokens per response — over-budget results truncate with an explicit `truncated: true` marker + narrowing hint (never silent).
 - Errors: MCP `isError: true` with self-correcting text ("Unknown component 'btn'. Closest: button, split-button. Call find_component(\"btn\") to search."). shadcn CLI 3.0 precedent: error messages are written for LLM self-correction.

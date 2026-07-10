@@ -172,7 +172,7 @@ Each step unlocks a wider hero claim. Update §1, the hero one-liner, and the ch
 ### Recommended hero chips (three, not four)
 1. **`Powers Karm, Devalok Hiring + studio tools`** — social, real.
 2. **`WCAG-AA · forced-colors verified`** — craft floor, hard to fake.
-3. **`119 components · 1,750+ tests`** — surface area and rigour.
+3. **`120+ components · 1,750+ tests`** — surface area and rigour. (Evergreen "120+" on the site since 0.47 — stop hard-pinning a count that drifts every minor.)
 
 ### Demoted (still present, not in the hero)
 - MIT → footer badge.
@@ -185,7 +185,7 @@ Each step unlocks a wider hero claim. Update §1, the hero one-liner, and the ch
 - `/components` — "Every component runs through axe in CI."
 
 ### Numbers discipline
-**Verified 2026-05-25:** 119 components (78 ui + 28 composed + 8 shell + 5 ai). 1,751 test cases across 161 files. Recount before each minor — `2100+` was stale by ~350 cases at this verification.
+**Verified 2026-07-10 (v0.47.0):** 122 documented components in the manifest (85 ui + 29 composed + 8 shell) + 5 AI = 127 total. 1,870 test cases across 167 files. **Marketing surfaces now use evergreen `120+`** (site hero/footer/OG, README) rather than a hard count — it drifted every minor (was 119 at 2026-05-25). Keep this exact figure current for internal reference, but don't re-pin it on user-facing copy.
 
 ---
 

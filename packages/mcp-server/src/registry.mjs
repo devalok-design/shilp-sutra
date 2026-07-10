@@ -19,7 +19,7 @@ const PACKAGE = '@devalok/shilp-sutra'
 const REGISTRY = 'https://registry.npmjs.org'
 const LATEST_TTL_MS = 5 * 60 * 1000
 
-/** Tarball paths worth keeping (everything the six tools read). */
+/** Tarball paths worth keeping (everything the doc-reading tools read). */
 const KEEP = [
   'mcp-manifest.json',
   'llms.txt',

@@ -161,6 +161,21 @@ When the Storybook dev server is running (`pnpm dev`), an MCP server at `localho
 
 This complements the static `llms.txt` router + `mcp-manifest.json` with interactive capabilities.
 
+## Hosted Docs MCP (`packages/mcp-server`, live at `https://shilp-sutra.devalok.in/mcp`)
+
+Serves version-exact docs from published npm tarballs. **11 tools** (spec: `docs/specs/mcp-manifest-standard.md`):
+- Reference: `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`
+- Setup journey (0.47+): `detect_framework`, `preflight`, `validate_snippet`, `verify_setup` — close the peer-dep-cliff, TW4-dead-class, wrong-recipe, mis-wired-config traps. `preflight`/`verify_setup` read the manifest's per-component `peers` field.
+- Write: `report_issue` (files a public agent-feedback issue).
+
+Manifest emitter (`build-mcp-manifest.mjs`) attaches structured `peers[]` per component (mirrors the recipe optional-peer table; a build advisory flags drift). Smoke: `packages/mcp-server/scripts/smoke.mjs` covers all 11 (runs in CI on any MCP-relevant change).
+
+## CI: Turborepo remote cache (0.47+)
+
+`build`/`typecheck`/`lint`/`test` route through `turbo run`. PR CI reads+writes a self-hosted `turborepo-remote-cache` on Railway (`turbo-ss.devalok.dev`, `TURBO_TOKEN` repo secret). **Safety: the release path never uses the cache** — `release.yml` sets `TURBO_FORCE=true` with no cache creds, and `pnpm release` uses `build:fresh` (`turbo run build --force`), so a published artifact is always freshly built. `turbo.json` `outputs` list ONLY gitignored generated artifacts (dist, skill, mcp-manifest.json, AGENTS.md, MIGRATION.md, .next) — NEVER committed files the build also touches (`llms.txt`, `docs/components`, `README.md`), or a cache restore would misrepresent source.
+
+The pre-publish-audit skips its build/typecheck/test/ssr gates when `SS_AUDIT_SKIP_REDUNDANT=1` (release.yml sets it — those ran as prior steps). `version-packages` auto-stubs a MIGRATION.md section for the target version (`scripts/stub-migration-section.mjs`) so the MIGRATION-section gate can't block a release.
+
 ## Consumer AI Agent Feedback Protocol
 
 This repo receives feedback from AI agents working on consumer apps (e.g., Karm).

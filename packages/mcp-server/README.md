@@ -11,7 +11,12 @@ Docs are extracted from **published npm tarballs** (`registry.npmjs.org`) and ca
 
 ## Tools
 
-**Read (6):** `find_component` · `get_component(name, sections?)` · `get_tokens(category?)` · `get_setup(framework?)` · `upgrade(from, to?)` · `search_docs(query)` — every tool takes optional `version`; agents are instructed to pass the consumer's installed version.
+**Read (10):**
+
+- _Reference:_ `find_component` · `get_component(name, sections?)` · `get_tokens(category?)` · `get_setup(framework?)` · `upgrade(from, to?)` · `search_docs(query)`
+- _Setup journey (0.47+):_ `detect_framework(packageJson)` · `preflight(framework, imports)` · `validate_snippet(code)` · `verify_setup(...)` — close the peer-dep-cliff, TW4-dead-class, wrong-recipe, and mis-wired-config traps in agent-driven setup.
+
+Every tool takes optional `version`; agents are instructed to pass the consumer's installed version.
 
 **Write (1):** `report_issue(category, title, body, …)` — files a **public** GitHub issue on `devalok-design/shilp-sutra` when a consumer agent hits a bug, broken recipe, docs gap, or wants to suggest a feature. Modeled on Karm's suggestion tool (category / severity / structured body). It deduplicates against open issues, caps content length, labels every issue `agent-filed` + `needs-triage` + `mcp-submitted` (+ category/framework/severity), and is guarded by a tight per-IP hourly write bucket. If the GitHub App isn't configured it returns a graceful "not enabled" error — never crashes, never writes.
 

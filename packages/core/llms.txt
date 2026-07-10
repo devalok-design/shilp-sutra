@@ -6,7 +6,7 @@
 
 ## How to get component details (in priority order)
 
-1. **shilp-sutra MCP** (if connected): `get_component(name)` — version-exact props/variants/examples/composition as JSON. Also: `find_component(query)`, `get_tokens(category)`, `get_setup(framework)`, `upgrade(from, to)`, `search_docs(query)`. Pass your installed version (`node_modules/@devalok/shilp-sutra/package.json`) as `version` on every call.
+1. **shilp-sutra MCP** (if connected): `get_component(name)` — version-exact props/variants/examples/composition as JSON. Also: `find_component(query)`, `get_tokens(category)`, `get_setup(framework)`, `upgrade(from, to)`, `search_docs(query)`. **Setting up in a project?** `detect_framework(packageJson)` → `get_setup(framework)` → `preflight(framework, imports)` (peer installs) → `validate_snippet(code)` before writing → `verify_setup(...)`. Pass your installed version (`node_modules/@devalok/shilp-sutra/package.json`) as `version` on every call.
    Connect: `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp`
 2. **No MCP?** Read the single per-component file linked in the index below (`node_modules/@devalok/shilp-sutra/docs/components/...`, ~3K tokens each). Read only the components you need — never bulk-read the directory.
 3. **Machine-readable everything**: `mcp-manifest.json` at the package root (all props/tokens/composition as JSON, react-docgen shape). Prefer targeted reads of it over any prose.

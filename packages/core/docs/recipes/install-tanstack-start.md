@@ -120,6 +120,8 @@ function RootComponent() {
 }
 ```
 
+> **Newer scaffolds use `shellComponent`.** As of `@tanstack/create-start` 0.59 the generated `__root.tsx` uses `shellComponent: RootDocument` (which receives `{ children }`) instead of `component: RootComponent` with `<Outlet />`. Both wire up the same way for shilp-sutra — put the `{ rel: "stylesheet", href: appCss }` link in `head()` and keep `<HeadContent />` + `<Scripts />`. If your `__root.tsx` already has a `shellComponent`, add the stylesheet link to its existing `head()` rather than replacing the component. (Verified cold: shilp-sutra components — Button, Text, MarkdownViewer, EmojiPickerPopover — SSR-render cleanly under TanStack Start, HTTP 200.)
+
 ## 5. Theme toggle
 
 Add a pre-hydration bootstrap so there is no flash of the wrong theme. The cleanest place is a `scripts` entry on the root route (runs before hydration); a static `public/theme-bootstrap.js` referenced from `<head>` also works and is CSP-friendly.

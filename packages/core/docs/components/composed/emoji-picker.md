@@ -11,9 +11,6 @@ EmojiPicker, EmojiPickerPopover
 
 ### EmojiPicker
     onSelect: (emoji: EmojiData) => void
-    theme: "auto" | "light" | "dark"
-    previewPosition: "top" | "bottom" | "none"
-    skinTonePosition: "search" | "preview" | "none"
     className: string
 
 ### EmojiPickerPopover (extends EmojiPicker props)
@@ -26,7 +23,7 @@ EmojiPicker, EmojiPickerPopover
     shortcodes: string
 
 ## Defaults
-    theme="auto", previewPosition="none", skinTonePosition="search", align="start"
+    align="start"
 
 ## Example
 ```jsx
@@ -34,27 +31,28 @@ EmojiPicker, EmojiPickerPopover
   <Button variant="ghost" size="icon-sm">😀</Button>
 </EmojiPickerPopover>
 
-<EmojiPicker onSelect={handleEmoji} theme="dark" />
+<EmojiPicker onSelect={handleEmoji} />
 ```
 
 ## Composability
 - **Two exports:** `EmojiPicker` (inline grid, no trigger) and `EmojiPickerPopover` (trigger + popover wrapper). Use EmojiPickerPopover 95% of the time — trigger-on-click is the standard UX.
-- **Wraps @emoji-mart/react**, lazy-loaded with a Skeleton placeholder while the ~200KB bundle fetches. Don't pre-import unless you need it eagerly.
+- **Built on frimousse**, bundled and lazy-loaded (own `emoji` chunk, incl. the dataset). Needs no consumer peer install and no React-19 peer workaround. Don't pre-import unless you need it eagerly.
+- **Native emoji only.** Each platform renders its own glyphs. Theme follows the surrounding `.dark` class via DS tokens automatically — no theme prop.
 - **Trigger composition:** EmojiPickerPopover's `children` is the trigger — wrap any Button/IconButton. Typical pairing is an icon-only IconButton with a 😀 label.
-- **TipTap integration:** Use `createEmojiSuggestion(set?)` factory to create a TipTap suggestion plugin that opens the picker on typing `:emoji`. Works with RichChatInput and RichTextEditor.
-- **Theme matching:** `theme="auto"` reads the `.dark` class on `<html>` — matches the DS dark mode toggle automatically. Override with explicit light/dark.
-- **Emoji sets:** Pass `set="apple" | "google" | ...` for consistent cross-platform emoji art (defaults to native OS glyphs).
+- **TipTap integration:** Use `createEmojiSuggestion()` (from `./extensions/emoji-suggestion`) to open a `:shortcode:` suggestion list. Works with RichChatInput and RichTextEditor.
 
 ## Gotchas
-- Wraps `@emoji-mart/react` which is lazy-loaded — shows a Skeleton placeholder while loading
-- `theme="auto"` reads the `.dark` class on `<html>` to pick light/dark
-- EmojiPickerPopover auto-closes after selection
+- Client-only (fetches its emoji dataset on first open) — not server-safe.
+- EmojiPickerPopover auto-closes after selection.
+- The `set` / `theme` / `previewPosition` / `skinTonePosition` props are deprecated no-ops kept for source compatibility; the picker is native-only.
 
 ## Changes
 
+### v-next
+- **Breaking** picker migrated from `@emoji-mart/react` to `frimousse` — native emoji only. Art-style sets (apple/google/twitter/facebook) removed; `set`/`theme`/`previewPosition`/`skinTonePosition` are now no-ops.
+- **Breaking** `emojiDataLoaders` export removed; `EmojiNodeAttrs` narrowed to `{ id, native }`; `createEmojiSuggestion()` takes no argument; `EmojiSuggestionItem` no longer has `x`/`y`.
+- **Changed** frimousse + `@emoji-mart/data` are now bundled (lazy `emoji` chunk) — the emoji feature needs zero consumer peer installs.
+
 ### v0.33.0
-- **Added** `set` prop on EmojiPicker and EmojiPickerPopover — `EmojiSet` type: 'native' | 'apple' | 'google' | 'twitter' | 'facebook'
-- **Added** `EmojiNode` TipTap extension — inline atom node with spritesheet rendering for consistent emoji art styles
-- **Added** `createEmojiSuggestion(set?)` factory — replaces `EmojiSuggestion` named export
-- **Added** `EmojiSet` type exported from barrel
-- **Breaking** `EmojiSuggestion` named export removed — use `createEmojiSuggestion()` factory
+- **Added** `EmojiNode` TipTap extension and `createEmojiSuggestion()` factory.
+- **Breaking** `EmojiSuggestion` named export removed — use `createEmojiSuggestion()` factory.

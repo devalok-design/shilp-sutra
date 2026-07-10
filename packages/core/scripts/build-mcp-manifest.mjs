@@ -19,6 +19,7 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { join, basename, extname } from 'path'
 import { fileURLToPath } from 'url'
+import { derivePeerMap } from './derive-peer-map.mjs'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const ROOT = join(__dirname, '..')
@@ -27,30 +28,18 @@ const MANIFEST_VERSION = '1.1.0'
 const CATEGORIES = ['ui', 'composed', 'shell']
 const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal'])
 
-// ── Optional peer dependencies (canonical — mirrors the recipe peer table) ──
-// Some components import third-party libraries shipped as OPTIONAL peers, so
-// consumers who never render them don't pay the install/bundle cost. Importing
-// one without its peer fails the build with "Failed to resolve import" — the
-// #1 silent agent trap. This map is the machine-readable source the MCP
-// preflight/validate/verify tools read; it mirrors the table repeated in every
-// docs/recipes/install-*.md §2a. Keep the two in sync (build advisory below
-// flags a component whose gotchas mention peers but has no entry here).
-const PEER_SPECS = [
-  { match: (name, imp) => imp.includes('/charts') || /(^|-)chart$/.test(name),
-    peers: ['d3-array', 'd3-axis', 'd3-format', 'd3-interpolate', 'd3-scale', 'd3-selection', 'd3-shape', 'd3-time-format', 'd3-transition'] },
-  { match: (name) => name === 'data-table' || name === 'data-table-toolbar', peers: ['@tanstack/react-table', '@tanstack/react-virtual'] },
-  { match: (name) => ['date-picker', 'date-range-picker', 'date-time-picker', 'calendar'].includes(name), peers: ['date-fns'] },
-  { match: (name) => ['rich-text-editor', 'rich-chat-input', 'rich-text-viewer'].includes(name), peers: ['@tiptap/react', '@tiptap/starter-kit', '@tiptap/extension-placeholder'] },
-  { match: (name) => name === 'input-otp', peers: ['input-otp'] },
-  { match: (name) => name === 'file-preview', peers: ['react-pdf', 'react-zoom-pan-pinch'] },
-  { match: (name) => name === 'markdown-viewer', peers: ['react-markdown', 'react-syntax-highlighter'] },
-]
+// ── Optional peer dependencies ──────────────────────────────────────────────
+// component → optional peers, DERIVED from source (each component's real
+// imports × the vite.config `external` list) rather than hand-maintained. This
+// is the machine-readable source the MCP preflight/validate/verify tools read.
+// The old hand-copied PEER_SPECS drifted from reality (dogfood 2026-07-10:
+// missing sonner/remark-gfm/@emoji-mart, phantom @tiptap which is bundled);
+// deriving eliminates the copy. `derive-peer-map.mjs --check` gates the recipe
+// §2a tables against this same map.
+const PEER_MAP = derivePeerMap().map
 
-function peersFor(name, importPath) {
-  for (const spec of PEER_SPECS) {
-    if (spec.match(name, importPath)) return spec.peers
-  }
-  return []
+function peersFor(name) {
+  return PEER_MAP[name] || []
 }
 
 // ── Component scanning (mirrors build-component-docs.mjs) ───────────────────
@@ -505,10 +494,11 @@ for (const cat of CATEGORIES) {
     const changes = parseChanges(sections['Changes'])
     if (changes.length) entry.changes = changes
 
-    const peers = peersFor(name, entry.import)
+    const peers = peersFor(name)
     if (peers.length) { entry.peers = peers; stats.peered++ }
-    // Advisory: a component whose gotchas mention peers but has no PEER_SPECS
-    // entry means the map drifted from the docs — surface it, don't fail.
+    // Advisory: a component whose gotchas mention peers but whose derived map
+    // has none means the source imports and the docs disagree — surface it.
+    // (`derive-peer-map.mjs --check` is the hard gate; this is a soft nudge.)
     const mentionsPeer = gotchas.some((g) => /peer dependenc/i.test(g))
     if (mentionsPeer && !peers.length) stats.peerDrift.push(name)
 

@@ -18,7 +18,7 @@ If both `app/` and `pages/` exist, prefer [install-next-app-router.md](./install
 
 Same dependencies as the App Router recipe — see [install-next-app-router.md § 2](./install-next-app-router.md#2-install-dependencies). Replace `next-themes`'s `attribute="class"` setup with the same on Pages Router (it works identically).
 
-**Optional peer dependencies** — if you'll render `<DataTable>`, any chart, `<DatePicker>`, `<RichTextEditor>`, `<InputOTP>`, `<FilePreview>`, `<MarkdownViewer>`, or use Tabler icons, install the matching peers BEFORE first import. Full table at [install-next-app-router.md § 2a](./install-next-app-router.md#2a-optional-peer-dependencies-install-only-when-importing-the-matching-subpath) — identical for Pages Router.
+**Optional peer dependencies** — if you'll render `<DataTable>`, any chart, `<DatePicker>`, `<ScheduleView>`, `<InputOTP>`, `<FilePreview>`, `<MarkdownViewer>`, or `<Toaster>`, install the matching peers BEFORE first import. (The emoji picker and rich-text editors bundle their deps — no install needed; `@tabler/icons-react` auto-installs as a required peer.) Full table at [install-next-app-router.md § 2a](./install-next-app-router.md#2a-optional-peer-dependencies-install-only-when-importing-the-matching-subpath) — identical for Pages Router.
 
 ## 3. PostCSS
 
@@ -68,6 +68,8 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 }
 ```
+
+> ⚠ **This renders `<Toaster />`, which imports `sonner`.** Install it or `next build` fails with `Module not found: Can't resolve 'sonner'`: `pnpm add sonner`. If you don't want toasts, drop the `Toaster` import + usage and skip `sonner`.
 
 For `next-themes` to avoid hydration warnings, add a `_document.tsx` with `suppressHydrationWarning` on the `<html>`:
 

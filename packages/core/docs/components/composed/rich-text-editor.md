@@ -58,7 +58,7 @@ MentionItem: { id: string; label: string; avatar?: string }
 
 ## Gotchas
 - Tiptap is bundled — no need to install `@tiptap/*` packages separately
-- Emoji picker requires `@emoji-mart/react` + `@emoji-mart/data` peers
+- Emoji picker (frimousse) + its dataset are bundled too — no emoji peers to install (native-only since the frimousse migration)
 - Images without `onImageUpload` are stored as base64 in HTML — large images bloat content
 - Mention rendering in viewer always works (no mention props needed, just the HTML)
 - Features: bold, italic, underline, strikethrough, highlight, headings, blockquote, lists, task lists, code, links, images, file attachments, mentions, emoji, text alignment, horizontal rule

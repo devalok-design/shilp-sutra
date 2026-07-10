@@ -243,6 +243,52 @@
         "New hosted MCP at https://shilp-sutra.devalok.in/mcp — six read-only tools, version param on every tool; upgrade(from,to) accepts pre-0.45 versions.",
         "New mcp-manifest.json ships at the package root (schema: mcp-manifest.schema.json)."
       ]
+    },
+    "0.48.0": {
+      "summary": "Emoji picker migrated from @emoji-mart/react to frimousse — native-only. Non-native art-style sets removed; a few emoji-extension exports removed/narrowed. Also: optional-peer accuracy fixes (recipes/manifest) and recipe corrections. Non-emoji component APIs unchanged.",
+      "migrationDoc": "MIGRATION.md#v0480--emoji-picker-migrated-to-frimousse-native-only",
+      "removed": [
+        {
+          "symbol": "emojiDataLoaders",
+          "where": "@devalok/shilp-sutra/composed/emoji-picker",
+          "replacement": "None — the emoji dataset is bundled and frimousse fetches its own. Delete usages."
+        }
+      ],
+      "narrowed": [
+        {
+          "prop": "EmojiNodeAttrs",
+          "components": [
+            "@devalok/shilp-sutra/composed/extensions/emoji-node"
+          ],
+          "from": "{ id, native, set, x, y }",
+          "to": "{ id, native }",
+          "fix": "Drop set/x/y — the node renders the native character."
+        },
+        {
+          "prop": "EmojiSuggestionItem",
+          "components": [
+            "@devalok/shilp-sutra/composed/extensions/emoji-suggestion"
+          ],
+          "from": "{ id, name, native, x, y }",
+          "to": "{ id, name, native }",
+          "fix": "Drop x/y — native-only, no spritesheet coordinates."
+        },
+        {
+          "prop": "createEmojiSuggestion(set) argument",
+          "components": [
+            "@devalok/shilp-sutra/composed/extensions/emoji-suggestion"
+          ],
+          "from": "createEmojiSuggestion(set?: string)",
+          "to": "createEmojiSuggestion()",
+          "fix": "Call with no argument."
+        }
+      ],
+      "notes": [
+        "Art-style emoji sets (apple/google/twitter/facebook) removed. set / theme / previewPosition / skinTonePosition (EmojiPicker) and emojiSet (RichChatInput/RichTextEditor) are now accepted-but-ignored no-ops; EmojiSet type retained for source compat. Everyone sees native platform emoji.",
+        "frimousse + @emoji-mart/data are now BUNDLED (lazy emoji chunk) — the emoji feature needs ZERO consumer peer installs and no --legacy-peer-deps on React 19 (the old @emoji-mart/react peer had no React-19 support).",
+        "New emojibaseUrl prop on EmojiPicker/EmojiPickerPopover to self-host the emoji dataset (removes the runtime jsdelivr CDN dependency for strict-CSP / offline apps).",
+        "Optional-peer accuracy: recipe §2a tables are now generated from source; added sonner / remark-gfm / date-fns / @tanstack/react-table (data-table-toolbar) rows and removed phantom @tiptap install instructions."
+      ]
     }
   }
 }

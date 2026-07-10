@@ -23,3 +23,6 @@ build-storybook.log
 # Figma sync-script build artifacts (generated from tokens/CVA sources)
 packages/*/scripts/.figma/
 playgrounds-review-*/
+
+# Turborepo
+.turbo/

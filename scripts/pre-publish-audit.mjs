@@ -22,9 +22,20 @@ const ROOT = resolve(import.meta.dirname, '..')
 const PASS = '\x1b[32m✓\x1b[0m'
 const FAIL = '\x1b[31m✗\x1b[0m'
 const WARN = '\x1b[33m⚠\x1b[0m'
+const SKIP = '\x1b[90m∅\x1b[0m'
+
+// When the caller (release.yml / CI) has ALREADY run build+typecheck+test+ssr
+// as separate steps, re-running them inside the audit is pure duplicate work
+// (~4-6 min per release). Set SS_AUDIT_SKIP_REDUNDANT=1 to skip exactly those
+// four gates; every audit-UNIQUE gate (docs coverage, token hygiene, manifest,
+// skill, breaking, bundle, consumer smoke) still runs. Downstream gates that
+// need dist/ rely on the caller's build step having produced it. Unset locally
+// → the audit is fully self-contained as before.
+const SKIP_REDUNDANT = process.env.SS_AUDIT_SKIP_REDUNDANT === '1'
 
 let failures = 0
 let warnings = 0
+let skipped = 0
 
 function run(cmd, opts = {}) {
   try {
@@ -51,6 +62,17 @@ function gate(name, check) {
     failures++
     return false
   }
+}
+
+// A gate that duplicates a step the CI caller already ran. Skipped (not failed)
+// when SS_AUDIT_SKIP_REDUNDANT=1; otherwise behaves exactly like gate().
+function heavyGate(name, check) {
+  if (SKIP_REDUNDANT) {
+    console.log(`  ${SKIP} ${name} — skipped (already run as a CI step)`)
+    skipped++
+    return true
+  }
+  return gate(name, check)
 }
 
 function advisory(name, check) {
@@ -205,7 +227,7 @@ gate('Core docs CVA accuracy (no HIGH drift vs source)', () => {
 // --- Code Quality ---
 console.log('\n\x1b[36mCode Quality\x1b[0m')
 
-gate('Typecheck passes', () => {
+heavyGate('Typecheck passes', () => {
   try {
     execSync('pnpm typecheck', { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe', timeout: 120000 })
     return true
@@ -223,7 +245,7 @@ gate('Lint has 0 errors', () => {
   return true
 })
 
-gate('Core tests pass', () => {
+heavyGate('Core tests pass', () => {
   // Retry once — axe-core singleton can cause transient failures under resource pressure
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
@@ -242,7 +264,7 @@ gate('Core tests pass', () => {
   }
 })
 
-gate('Build succeeds', () => {
+heavyGate('Build succeeds', () => {
   try {
     execSync('pnpm build', { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe', timeout: 300000 })
     return true
@@ -251,7 +273,7 @@ gate('Build succeeds', () => {
   }
 })
 
-gate('SSR smoke test passes (no browser API crashes in Node.js)', () => {
+heavyGate('SSR smoke test passes (no browser API crashes in Node.js)', () => {
   try {
     // Hardcoded command — no user input, safe to use execSync
     execSync('node scripts/ssr-smoke-test.mjs', {
@@ -707,7 +729,10 @@ gate('Agent Skill references in sync with source', () => {
 gate('SKILL.md follows agentskills.io spec', () => {
   const skillPath = join(ROOT, 'skills/shilp-sutra/SKILL.md')
   if (!existsSync(skillPath)) return 'skills/shilp-sutra/SKILL.md missing'
-  const content = readFileSync(skillPath, 'utf-8')
+  // Normalize CRLF → LF so the frontmatter regex (^---\n) matches on a
+  // Windows checkout too. Without this the gate false-fails locally on Windows
+  // (the file is byte-identical, only line endings differ); CI on Linux passed.
+  const content = readFileSync(skillPath, 'utf-8').replace(/\r\n/g, '\n')
   const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
   if (!fmMatch) return 'SKILL.md has no YAML frontmatter'
   const [, frontmatter, body] = fmMatch
@@ -959,6 +984,9 @@ advisory('llms.txt updated', () => {
 
 // --- Summary ---
 console.log('\n' + '─'.repeat(50))
+if (skipped > 0) {
+  console.log(`\n\x1b[90m∅ ${skipped} redundant gate(s) skipped\x1b[0m (SS_AUDIT_SKIP_REDUNDANT=1 — already run as CI steps).`)
+}
 if (failures > 0) {
   console.log(`\n\x1b[31m✗ ${failures} gate(s) FAILED\x1b[0m — fix all failures before publishing.`)
   if (warnings > 0) console.log(`\x1b[33m⚠ ${warnings} warning(s)\x1b[0m`)

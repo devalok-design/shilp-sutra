@@ -64,6 +64,13 @@ jobs:
     # https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
     env:
       CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      # Turbo SAFETY: the release path never uses the remote cache. No
+      # TURBO_API/TURBO_TOKEN here (turbo falls back to ephemeral local cache),
+      # and TURBO_FORCE bypasses even that — every build/test/typecheck in a
+      # release runs fresh, so a published artifact is always freshly built,
+      # never served from a cache entry. `pnpm release` also uses `build:fresh`
+      # (turbo run build --force) as belt-and-suspenders.
+      TURBO_FORCE: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -188,8 +195,15 @@ jobs:
       # Previously this only ran on a developer's laptop via /publish-release.
       # That made every "HARD gate" in our docs social, not mechanical.
       # Wiring it here closes the gap.
+      # SS_AUDIT_SKIP_REDUNDANT=1 tells the audit to skip build/typecheck/test/ssr
+      # — they already ran as the steps above (~4-6 min saved per release). Every
+      # audit-UNIQUE gate (docs coverage, token hygiene, manifest, skill, breaking,
+      # bundle, consumer smoke) still runs. The audit's downstream gates that read
+      # dist/ use the `Build` step's output above.
       - name: Pre-publish audit
         run: node scripts/pre-publish-audit.mjs
+        env:
+          SS_AUDIT_SKIP_REDUNDANT: '1'
 
       # Consumer smoke test installs the packed tarball into a throwaway
       # Next 16 + TW4 + Turbopack app and runs `next build`. Catches the

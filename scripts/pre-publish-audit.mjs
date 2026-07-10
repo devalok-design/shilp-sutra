@@ -224,6 +224,40 @@ gate('Core docs CVA accuracy (no HIGH drift vs source)', () => {
   }
 })
 
+// Gate A: hand-written MCP tool lists (README/AGENTS) match the registered
+// server.tool() set. Guards the exact rot that let "6 tools" survive 4 new
+// tools shipping in 0.47.
+gate('MCP tool lists match registered tools', () => {
+  try {
+    execSync('node scripts/check-tool-list.mjs --check', { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'check-tool-list failed'
+  }
+})
+
+// Gate B: every shipped component-doc EXAMPLE (served by the MCP get_component)
+// lints clean — no TW4 dead classes, no invalid enum prop values. Catches an
+// example that references a removed variant/prop before the MCP serves it.
+gate('Component doc examples lint clean (dead classes / invalid enums)', () => {
+  try {
+    execSync('node scripts/lint-doc-examples.mjs --check', { cwd: join(ROOT, 'packages/core'), encoding: 'utf-8', stdio: 'pipe' })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'lint-doc-examples failed'
+  }
+})
+
+// Advisory C: doc-documented props that no longer appear in source (likely
+// removed). Heuristic — Radix-passthrough props show as false positives — so
+// it warns, never blocks.
+advisory('Doc props still exist in source (drift check)', () => {
+  const out = run('node scripts/audit-doc-props.mjs', { cwd: ROOT })
+  const flagged = out.match(/(\d+) with doc-only prop/)
+  if (flagged && Number(flagged[1]) > 0) return out.split('\n').filter((l) => l.includes('⚠')).slice(0, 8).join('\n      ')
+  return true
+})
+
 // --- Code Quality ---
 console.log('\n\x1b[36mCode Quality\x1b[0m')
 

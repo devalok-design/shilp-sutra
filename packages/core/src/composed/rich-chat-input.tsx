@@ -29,7 +29,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import { useColorMode } from '../hooks/use-color-mode'
 import { useIsMobile } from '../hooks/use-mobile'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
@@ -37,9 +36,7 @@ import { MENTION_TOKEN_CLASS } from '../ui/lib/mention'
 import { durations } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 import { SplitButton } from '../ui/split-button'
-import type { EmojiSet } from './emoji-picker'
-import { emojiDataLoaders } from './emoji-picker'
-import { loadEmojiData, lookupEmoji } from './extensions/emoji-data'
+import type { EmojiData, EmojiSet } from './emoji-picker'
 import { EmojiNode } from './extensions/emoji-node'
 import { createEmojiSuggestion } from './extensions/emoji-suggestion'
 import { FileAttachment } from './extensions/file-attachment'
@@ -214,17 +211,12 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
 
 // ── Emoji Picker Popover (lazy-loaded) ──────────────────────────
 
-const LazyEmojiPicker = React.lazy(() => import('@emoji-mart/react'))
+const LazyEmojiPicker = React.lazy(() =>
+  import('./emoji-picker').then((m) => ({ default: m.EmojiPicker })),
+)
 
-function EmojiPickerPopover({ set = 'native', onSelect, onClose }: { set?: string; onSelect: (emoji: { id: string; native: string }) => void; onClose: () => void }) {
-  const [data, setData] = React.useState<unknown>(null)
-  const { colorMode } = useColorMode()
+function EmojiPickerPopover({ onSelect, onClose }: { onSelect: (emoji: EmojiData) => void; onClose: () => void }) {
   const ref = React.useRef<HTMLDivElement>(null)
-
-  React.useEffect(() => {
-    const loader = emojiDataLoaders[set] ?? emojiDataLoaders.native
-    loader().then((mod) => setData(mod.default))
-  }, [set])
 
   // Close on click outside
   React.useEffect(() => {
@@ -243,25 +235,16 @@ function EmojiPickerPopover({ set = 'native', onSelect, onClose }: { set?: strin
   }, [onClose])
 
   const fallback = (
-    <div className="flex h-[350px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-floating">
-      <span className="text-ds-sm text-surface-fg-subtle">Loading...</span>
+    <div className="flex h-[435px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-floating">
+      <span className="text-ds-sm text-surface-fg-subtle">Loading…</span>
     </div>
   )
 
   return (
-    <div ref={ref} className="rounded-surface bg-surface-overlay shadow-floating overflow-hidden">
-      {!data ? fallback : (
-        <React.Suspense fallback={fallback}>
-          <LazyEmojiPicker
-            data={data}
-            set={set}
-            onEmojiSelect={(emoji: { native: string; id: string }) => onSelect({ id: emoji.id, native: emoji.native })}
-            theme={colorMode === 'dark' ? 'dark' : 'light'}
-            previewPosition="none"
-            skinTonePosition="none"
-          />
-        </React.Suspense>
-      )}
+    <div ref={ref}>
+      <React.Suspense fallback={fallback}>
+        <LazyEmojiPicker onSelect={onSelect} />
+      </React.Suspense>
     </div>
   )
 }
@@ -501,7 +484,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
         CharacterCount.configure({ limit: maxLength || undefined }),
         FileAttachment,
         EmojiNode,
-        createEmojiSuggestion(emojiSet),
+        createEmojiSuggestion(),
         // Enter-to-send
         Extension.create({
           name: 'enterToSend',
@@ -920,18 +903,11 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                     {showEmojiPicker && ReactDOM.createPortal(
                       <div ref={emojiFloatingRef} className="absolute z-popover" style={{ top: 0, left: 0 }}>
                         <EmojiPickerPopover
-                          set={emojiSet}
-                          onSelect={async ({ id, native }) => {
-                            const data = await loadEmojiData(emojiSet)
-                            const resolved = lookupEmoji(data, id)
-                            if (resolved) {
-                              editor.chain().focus().insertContent({
-                                type: 'emojiNode',
-                                attrs: { id, native: resolved.native, set: emojiSet, x: resolved.x, y: resolved.y },
-                              }).run()
-                            } else {
-                              editor.chain().focus().insertContent(native).run()
-                            }
+                          onSelect={({ id, native }) => {
+                            editor.chain().focus().insertContent({
+                              type: 'emojiNode',
+                              attrs: { id, native },
+                            }).run()
                             setShowEmojiPicker(false)
                           }}
                           onClose={() => setShowEmojiPicker(false)}

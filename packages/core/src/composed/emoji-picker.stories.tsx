@@ -48,25 +48,6 @@ export const InPopover: Story = {
   render: () => <InPopoverDemo />,
 }
 
-// ── Emoji Art Styles ────────────────────────────────────────────
-// Each story runs in its own Storybook iframe → fresh emoji-mart
-// singleton, so the set-specific data (with spritesheet coords)
-// loads correctly on first init.
-
-const setHandler = { onSelect: (emoji: EmojiData) => console.log(emoji.native) }
-
-export const SetApple: Story = {
-  args: { ...setHandler, set: 'apple' },
-}
-
-export const SetGoogle: Story = {
-  args: { ...setHandler, set: 'google' },
-}
-
-export const SetTwitter: Story = {
-  args: { ...setHandler, set: 'twitter' },
-}
-
-export const SetFacebook: Story = {
-  args: { ...setHandler, set: 'facebook' },
-}
+// Native-only since the frimousse migration — the picker renders each
+// platform's own emoji glyphs. The former apple/google/twitter/facebook
+// art-style stories were removed with `@emoji-mart/react`.

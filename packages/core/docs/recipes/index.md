@@ -21,7 +21,7 @@ Pick the recipe that matches your framework. Detection criteria are listed at th
 | Vite + React | [install-vite.md](./install-vite.md) | `vite.config.*` exists; SPA or MPA |
 | Astro | [install-astro.md](./install-astro.md) | `astro.config.*` exists |
 | Remix | [install-remix.md](./install-remix.md) | `remix.config.*` or Remix v2 with Vite |
-| TanStack Start | [install-tanstack-start.md](./install-tanstack-start.md) | `app.config.*` with `@tanstack/start` |
+| TanStack Start | [install-tanstack-start.md](./install-tanstack-start.md) | `@tanstack/react-start` + `vite.config.*` (the current Vite-plugin setup; the retired Vinxi `app.config.*` + `@tanstack/start` must migrate first) |
 
 If the framework is not listed, start with [install-vite.md](./install-vite.md) and adapt — most React+Tailwind setups follow the same shape.
 

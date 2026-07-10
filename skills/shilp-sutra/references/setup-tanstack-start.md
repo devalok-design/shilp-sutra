@@ -16,6 +16,8 @@ You are in this recipe if:
 
 If instead you see `app.config.ts` + `@tanstack/start`, that is the legacy Vinxi setup — this recipe does not apply until you migrate.
 
+> **Scaffolded with `create-start` and got a Router SPA?** As of `@tanstack/create-start` 0.59, the default template is a TanStack **Router** SPA — Vite + `@tanstack/react-router` + an `index.html` + `src/main.tsx` (client `createRoot`), with **no** `@tanstack/react-start` and no SSR server entry. That is NOT the Start SSR setup this recipe covers — use [install-vite.md](./install-vite.md) instead (it is router-agnostic and covers TanStack Router SPAs cleanly). This recipe applies only when `@tanstack/react-start` is a dependency.
+
 ## 2. Install
 
 ```bash
@@ -36,18 +38,21 @@ pnpm add sonner   # only if rendering <Toaster />
 
 ### 2a. Optional peer dependencies (install ONLY when importing the matching subpath)
 
-Some components ship hard peers as optional. **Install BEFORE first import** or the TanStack Start dev/build will fail with `Failed to resolve import`. Skip if you only use core components.
+Some components ship hard peers as optional. **Install BEFORE first import.** ⚠ On Vite 8 / Rolldown a missing peer does **not** fail the build — Rolldown silently replaces the import with a stub that throws `Could not resolve "…"` in the browser at runtime, while the build still exits 0. A green build is therefore **not** proof the app works. Confirm coverage with the MCP `verify_setup` / `preflight` tools or the table below. Skip only if you use core components.
 
-| When you import…                                          | Install                                                                                                |
-|-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| `@devalok/shilp-sutra/ui/charts/*`                         | `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
-| `@devalok/shilp-sutra/ui/data-table`                       | `pnpm add @tanstack/react-table @tanstack/react-virtual`                                                |
-| `@devalok/shilp-sutra/composed/date-picker` (+ DateRange, DateTime, Calendar) | `pnpm add date-fns`                                                                       |
-| `@devalok/shilp-sutra/composed/rich-text-editor` (+ RichChatInput, RichTextViewer) | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`            |
-| `@devalok/shilp-sutra/ui/input-otp`                        | `pnpm add input-otp`                                                                                    |
-| `@devalok/shilp-sutra/composed/file-preview`               | `pnpm add react-pdf react-zoom-pan-pinch`                                                               |
-| `@devalok/shilp-sutra/composed/markdown-viewer`            | `pnpm add react-markdown react-syntax-highlighter`                                                      |
-| Any `Icon` / `IconButton` with Tabler icons                | `pnpm add @tabler/icons-react`                                                                          |
+| When you import… | Install |
+|---|---|
+| `@devalok/shilp-sutra/composed/date-picker` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/composed/file-preview` | `pnpm add react-pdf react-zoom-pan-pinch` |
+| `@devalok/shilp-sutra/composed/markdown-viewer` | `pnpm add react-markdown react-syntax-highlighter remark-gfm` |
+| `@devalok/shilp-sutra/composed/schedule-view` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/ui/charts` | `pnpm add d3-axis d3-scale d3-selection d3-shape` |
+| `@devalok/shilp-sutra/ui/data-table` | `pnpm add @tanstack/react-table @tanstack/react-virtual` |
+| `@devalok/shilp-sutra/ui/data-table-toolbar` | `pnpm add @tanstack/react-table` |
+| `@devalok/shilp-sutra/ui/input-otp` | `pnpm add input-otp` |
+| `@devalok/shilp-sutra/ui/toast` | `pnpm add sonner` |
+| `@devalok/shilp-sutra/ui/toaster` | `pnpm add sonner` |
+| Any `Icon` / `IconButton` with Tabler icons (near-universal — most components use icons internally, so it is a base-install peer) | `pnpm add @tabler/icons-react` |
 
 ## 3. Wire Tailwind 4 in `vite.config.ts`
 
@@ -116,6 +121,8 @@ function RootComponent() {
   );
 }
 ```
+
+> **Newer scaffolds use `shellComponent`.** As of `@tanstack/create-start` 0.59 the generated `__root.tsx` uses `shellComponent: RootDocument` (which receives `{ children }`) instead of `component: RootComponent` with `<Outlet />`. Both wire up the same way for shilp-sutra — put the `{ rel: "stylesheet", href: appCss }` link in `head()` and keep `<HeadContent />` + `<Scripts />`. If your `__root.tsx` already has a `shellComponent`, add the stylesheet link to its existing `head()` rather than replacing the component. (Verified cold: shilp-sutra components — Button, Text, MarkdownViewer, EmojiPickerPopover — SSR-render cleanly under TanStack Start, HTTP 200.)
 
 ## 5. Theme toggle
 

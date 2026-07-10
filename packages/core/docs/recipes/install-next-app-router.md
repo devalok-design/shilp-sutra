@@ -46,16 +46,19 @@ pnpm add sonner
 
 Some components depend on third-party libraries that ship as optional peers. **Install BEFORE first import** of the matching component, or `next build` will exit with `Module not found`. Skip entirely if you only use core components (`Button`, `Text`, `Stack`, `Dialog`, `Toast`, `Form*`, `Input`, `Card`, etc.).
 
-| When you import…                                          | Install                                                                                                |
-|-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| `@devalok/shilp-sutra/ui/charts/*` (BarChart, LineChart, …)| `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
-| `@devalok/shilp-sutra/ui/data-table`                       | `pnpm add @tanstack/react-table @tanstack/react-virtual`                                                |
-| `@devalok/shilp-sutra/composed/date-picker` (+ DateRange, DateTime, Calendar) | `pnpm add date-fns`                                                                       |
-| `@devalok/shilp-sutra/composed/rich-text-editor` (+ RichChatInput, RichTextViewer) | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`            |
-| `@devalok/shilp-sutra/ui/input-otp`                        | `pnpm add input-otp`                                                                                    |
-| `@devalok/shilp-sutra/composed/file-preview`               | `pnpm add react-pdf react-zoom-pan-pinch`                                                               |
-| `@devalok/shilp-sutra/composed/markdown-viewer`            | `pnpm add react-markdown react-syntax-highlighter`                                                      |
-| Any `Icon` / `IconButton` use with Tabler icons            | `pnpm add @tabler/icons-react`                                                                          |
+| When you import… | Install |
+|---|---|
+| `@devalok/shilp-sutra/composed/date-picker` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/composed/file-preview` | `pnpm add react-pdf react-zoom-pan-pinch` |
+| `@devalok/shilp-sutra/composed/markdown-viewer` | `pnpm add react-markdown react-syntax-highlighter remark-gfm` |
+| `@devalok/shilp-sutra/composed/schedule-view` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/ui/charts` | `pnpm add d3-axis d3-scale d3-selection d3-shape` |
+| `@devalok/shilp-sutra/ui/data-table` | `pnpm add @tanstack/react-table @tanstack/react-virtual` |
+| `@devalok/shilp-sutra/ui/data-table-toolbar` | `pnpm add @tanstack/react-table` |
+| `@devalok/shilp-sutra/ui/input-otp` | `pnpm add input-otp` |
+| `@devalok/shilp-sutra/ui/toast` | `pnpm add sonner` |
+| `@devalok/shilp-sutra/ui/toaster` | `pnpm add sonner` |
+| Any `Icon` / `IconButton` with Tabler icons (near-universal — most components use icons internally, so it is a base-install peer) | `pnpm add @tabler/icons-react` |
 
 > These aren't in core deps so consumers who never render a chart, OTP input, or rich-text editor don't pay the install / bundle cost. One-time decision at install.
 
@@ -164,9 +167,14 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
-`next-themes` is already in the install list from § 2 — no extra install step needed here. If `<Toaster />` is not used:
+> ⚠ **This default `Providers` renders `<Toaster />`, which imports `sonner`.** Install it now or `next build` fails with `Module not found: Can't resolve 'sonner'`:
+> ```bash
+> pnpm add sonner
+> ```
 
-- Drop the `Toaster` import and its JSX usage
+`next-themes` is already in the install list from § 2 — no extra install step needed here. If you do **not** want toasts:
+
+- Drop the `Toaster` import and its JSX usage from `Providers`
 - Skip installing `sonner`
 
 Mount `<Providers>` from `app/layout.tsx` (or `src/app/layout.tsx`). **Replace the scaffold's layout** with the version below — the scaffold imports `next/font/google` (Geist) and applies font-variable classes to `<html>`, which you don't need when shilp-sutra ships its own fonts:

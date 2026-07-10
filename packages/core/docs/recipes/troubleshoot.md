@@ -95,25 +95,24 @@ Add:
 transpilePackages: ["@devalok/shilp-sutra"],
 ```
 
-## Symptom: Build error `Cannot find module 'sonner' / 'input-otp' / 'date-fns' / '@tiptap/react' / 'react-pdf' / 'react-markdown' / '@emoji-mart/react'`
+## Symptom: Build error `Cannot find module 'sonner' / 'input-otp' / 'date-fns' / 'react-pdf' / 'react-markdown'` — OR (on Vite 8) a runtime `Could not resolve "…"` from a green build
 
-**Diagnosis:** an optional peer dependency is missing. Each component below has a peer it pulls only when imported. Install the matching peer (always BEFORE the first import):
+**Diagnosis:** an optional peer dependency is missing. Each component below has a peer it pulls only when imported. Install the matching peer (always BEFORE the first import). On Vite 8 / Rolldown this does **not** fail the build — it throws at runtime — so run the MCP `verify_setup` tool to catch it early.
 
 | You imported (per-component subpath) | Install                                                                                       |
 |--------------------------------------|-----------------------------------------------------------------------------------------------|
 | `…/ui/toaster` or `…/ui/toast`       | `pnpm add sonner`                                                                             |
 | `…/ui/input-otp`                     | `pnpm add input-otp`                                                                          |
-| `…/composed/date-picker`             | `pnpm add date-fns`                                                                           |
-| `…/composed/emoji-picker`            | `pnpm add @emoji-mart/data @emoji-mart/react`                                                 |
-| `…/composed/extensions/emoji-node` or `…/extensions/emoji-suggestion` | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`                    |
-| `…/composed/rich-text-editor`        | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`                    |
-| `…/composed/rich-chat-input`         | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`                    |
+| `…/composed/date-picker` or `…/composed/schedule-view` | `pnpm add date-fns`                                                         |
+| `…/ui/data-table` or `…/ui/data-table-toolbar` | `pnpm add @tanstack/react-table @tanstack/react-virtual`                            |
 | `…/composed/file-preview`            | `pnpm add react-pdf react-zoom-pan-pinch`                                                     |
 | `…/composed/markdown-viewer`         | `pnpm add react-markdown react-syntax-highlighter remark-gfm`                                 |
 | `…/ai/block-renderer`, `…/ai/blocks/text`, `…/ai/blocks/error` | `pnpm add react-markdown remark-gfm`                                                          |
-| Any `…/ui/charts/*`                  | `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
+| Any `…/ui/charts/*`                  | `pnpm add d3-axis d3-scale d3-selection d3-shape`                                             |
 
 These ship as **optional** peers so consumers who never render the matching component don't pay the install cost. Once you import the component, the peer becomes required. Each affected component's JSDoc carries the same install hint — hover the import in your editor to see it inline.
+
+**No longer peers (bundled since the frimousse migration):** the emoji picker (`…/composed/emoji-picker`) and the rich-text editors (`…/composed/rich-text-editor`, `…/composed/rich-chat-input`) bundle their dependencies (frimousse, `@emoji-mart/data`, TipTap) into a lazy chunk — you do **not** install anything for them. `@tabler/icons-react` is a required peer that most package managers auto-install.
 
 **Catch this at edit time, not build time:** install `@devalok/eslint-plugin-shilp-sutra` (`pnpm add -D @devalok/eslint-plugin-shilp-sutra`, then `shilpSutra.configs['flat/recommended']`). Its `prefer-per-component-import` rule flags peer-cliff symbols imported from a barrel and autofixes the path — surfacing the cliff in your editor before the bundler ever fails.
 

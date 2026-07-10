@@ -44,18 +44,21 @@ pnpm add sonner
 
 ### 2a. Optional peer dependencies (install ONLY when importing the matching subpath)
 
-Some components ship hard peers as optional. **Install BEFORE first import** or `vite dev` / `vite build` will fail with `Failed to resolve import`. Skip if you only use core components.
+Some components ship hard peers as optional. **Install BEFORE first import.** ⚠ On Vite 8 / Rolldown a missing peer does **not** fail the build — Rolldown silently replaces the import with a stub that throws `Could not resolve "…"` in the browser at runtime, while `vite build` still exits 0. A green build is therefore **not** proof the app works. Confirm coverage with the MCP `verify_setup` / `preflight` tools or the table below. Skip only if you use core components.
 
-| When you import…                                          | Install                                                                                                |
-|-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| `@devalok/shilp-sutra/ui/charts/*`                         | `pnpm add d3-array d3-axis d3-format d3-interpolate d3-scale d3-selection d3-shape d3-time-format d3-transition` |
-| `@devalok/shilp-sutra/ui/data-table`                       | `pnpm add @tanstack/react-table @tanstack/react-virtual`                                                |
-| `@devalok/shilp-sutra/composed/date-picker` (+ DateRange, DateTime, Calendar) | `pnpm add date-fns`                                                                       |
-| `@devalok/shilp-sutra/composed/rich-text-editor` (+ RichChatInput, RichTextViewer) | `pnpm add @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder`            |
-| `@devalok/shilp-sutra/ui/input-otp`                        | `pnpm add input-otp`                                                                                    |
-| `@devalok/shilp-sutra/composed/file-preview`               | `pnpm add react-pdf react-zoom-pan-pinch`                                                               |
-| `@devalok/shilp-sutra/composed/markdown-viewer`            | `pnpm add react-markdown react-syntax-highlighter`                                                      |
-| Any `Icon` / `IconButton` with Tabler icons                | `pnpm add @tabler/icons-react`                                                                          |
+| When you import… | Install |
+|---|---|
+| `@devalok/shilp-sutra/composed/date-picker` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/composed/file-preview` | `pnpm add react-pdf react-zoom-pan-pinch` |
+| `@devalok/shilp-sutra/composed/markdown-viewer` | `pnpm add react-markdown react-syntax-highlighter remark-gfm` |
+| `@devalok/shilp-sutra/composed/schedule-view` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/ui/charts` | `pnpm add d3-axis d3-scale d3-selection d3-shape` |
+| `@devalok/shilp-sutra/ui/data-table` | `pnpm add @tanstack/react-table @tanstack/react-virtual` |
+| `@devalok/shilp-sutra/ui/data-table-toolbar` | `pnpm add @tanstack/react-table` |
+| `@devalok/shilp-sutra/ui/input-otp` | `pnpm add input-otp` |
+| `@devalok/shilp-sutra/ui/toast` | `pnpm add sonner` |
+| `@devalok/shilp-sutra/ui/toaster` | `pnpm add sonner` |
+| Any `Icon` / `IconButton` with Tabler icons (near-universal — most components use icons internally, so it is a base-install peer) | `pnpm add @tabler/icons-react` |
 
 ## 3. Wire Tailwind 4 in `vite.config.ts`
 
@@ -138,7 +141,7 @@ If you installed `sonner`, mount the Toaster once near the app root:
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Toaster } from "@devalok/shilp-sutra/ui/toaster";
-import { App } from "./App";
+import App from "./App";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -151,14 +154,14 @@ createRoot(document.getElementById("root")!).render(
 
 ## 7. Verify
 
-Replace `src/App.tsx`:
+Replace `src/App.tsx` (keep the **default export** — the `create-vite` template's `main.tsx` imports it as `import App from "./App"`, so a named export would break the build with `TS2613: Module has no default export`):
 
 ```tsx
 import { Button } from "@devalok/shilp-sutra/ui/button";
 import { Stack } from "@devalok/shilp-sutra/ui/stack";
 import { Text } from "@devalok/shilp-sutra/ui/text";
 
-export function App() {
+export default function App() {
   return (
     <Stack className="p-ds-08" gap="ds-04">
       <Text variant="heading-2xl">Hello, Shilp Sutra</Text>

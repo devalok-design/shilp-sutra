@@ -1,16 +1,14 @@
 'use client'
 
-import { AnimatePresence,motion } from 'framer-motion'
+import { EmojiPicker as Frimousse } from 'frimousse'
 import * as React from 'react'
 
-import { springs } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '../ui/popover'
-import { Skeleton } from '../ui/skeleton'
 
 // ============================================================
 // Types
@@ -22,18 +20,31 @@ export interface EmojiData {
   shortcodes?: string
 }
 
+/**
+ * @deprecated Emoji art styles (apple/google/twitter/facebook) were removed in
+ * the frimousse migration — the picker is native-only. Retained for source
+ * compatibility; the `set` prop is now a no-op.
+ */
 export type EmojiSet = 'native' | 'apple' | 'google' | 'twitter' | 'facebook'
 
 export interface EmojiPickerProps {
   onSelect: (emoji: EmojiData) => void
-  /** Emoji art style. Set once — dynamic switching is not supported (emoji-mart limitation). @default 'native' */
+  /** @deprecated no-op — the picker renders native emoji only. */
   set?: EmojiSet
-  /** @default 'auto' */
+  /** @deprecated no-op — theme follows the surrounding `.dark` class via tokens. */
   theme?: 'auto' | 'light' | 'dark'
-  /** @default 'none' */
+  /** @deprecated no-op — removed with the emoji-mart → frimousse migration. */
   previewPosition?: 'top' | 'bottom' | 'none'
-  /** @default 'search' */
+  /** @deprecated no-op — removed with the emoji-mart → frimousse migration. */
   skinTonePosition?: 'search' | 'preview' | 'none'
+  /**
+   * Base URL the emoji dataset is fetched from (`${emojibaseUrl}/${locale}/data.json`).
+   * Defaults to frimousse's jsdelivr CDN. Point it at a self-hosted copy of the
+   * `emojibase-data` package to remove the runtime CDN dependency (CSP / offline /
+   * air-gapped) — e.g. copy `node_modules/emojibase-data` into `public/emojibase`
+   * and pass `emojibaseUrl="/emojibase"`.
+   */
+  emojibaseUrl?: string
   className?: string
 }
 
@@ -43,97 +54,93 @@ export interface EmojiPickerPopoverProps extends EmojiPickerProps {
   align?: 'start' | 'center' | 'end'
 }
 
-// ============================================================
-// Lazy-loaded picker
-// ============================================================
-
-const LazyPicker = React.lazy(() =>
-  import('@emoji-mart/react').then((mod) => ({
-    default: mod.default,
-  })),
-)
-
-// emoji-mart caches data in a module-level singleton that is set once and never
-// replaced.  Each set (apple, google, etc.) needs its own data file with
-// spritesheet x/y coordinates.  The `set` prop should be treated as immutable
-// configuration — dynamic switching within a single page is NOT supported.
-export const emojiDataLoaders: Record<string, () => Promise<{ default: unknown }>> = {
-  native: () => import('@emoji-mart/data'),
-  apple: () => import('@emoji-mart/data/sets/15/apple.json'),
-  google: () => import('@emoji-mart/data/sets/15/google.json'),
-  twitter: () => import('@emoji-mart/data/sets/15/twitter.json'),
-  facebook: () => import('@emoji-mart/data/sets/15/facebook.json'),
-}
-
-function resolveTheme(theme: 'auto' | 'light' | 'dark'): 'light' | 'dark' {
-  if (theme !== 'auto') return theme
-  if (typeof document === 'undefined') return 'light'
-  return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+// frimousse emits `{ emoji: nativeChar, label }`. Map to the DS EmojiData shape;
+// `id` is a kebab of the label (emojibase has no emoji-mart-style short id).
+function toEmojiData(e: { emoji: string; label: string }): EmojiData {
+  const id = e.label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+  return { id, native: e.emoji }
 }
 
 // ============================================================
-// EmojiPicker
+// EmojiPicker (frimousse, native-only)
 // ============================================================
 
-function EmojiPicker({
-  onSelect,
-  set = 'native',
-  theme = 'auto',
-  previewPosition = 'none',
-  skinTonePosition = 'search',
-  className,
-}: EmojiPickerProps) {
-  const [mounted, setMounted] = React.useState(false)
-  const [data, setData] = React.useState<unknown>(null)
-
-  React.useEffect(() => {
-    setMounted(true)
-    const loader = emojiDataLoaders[set] ?? emojiDataLoaders.native
-    loader().then((mod) => setData(mod.default))
-  }, [set])
-
-  const isReady = mounted && !!data
-
+function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
   return (
-    <AnimatePresence mode="wait">
-      {!isReady ? (
-        <motion.div
-          key="skeleton"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={springs.snappy}
-          className={cn('rounded-surface', className)}
-        >
-          <Skeleton className="h-[435px] w-[352px] rounded-surface" />
-        </motion.div>
-      ) : (
-        <motion.div
-          key="picker"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={springs.snappy}
-          className={className}
-        >
-          <React.Suspense
-            fallback={
-              <div className={cn('rounded-surface', className)}>
-                <Skeleton className="h-[435px] w-[352px] rounded-surface" />
-              </div>
-            }
-          >
-            <LazyPicker
-              data={data}
-              set={set}
-              onEmojiSelect={onSelect}
-              theme={resolveTheme(theme)}
-              previewPosition={previewPosition}
-              skinTonePosition={skinTonePosition}
-            />
-          </React.Suspense>
-        </motion.div>
+    <Frimousse.Root
+      onEmojiSelect={(e) => onSelect(toEmojiData(e))}
+      emojibaseUrl={emojibaseUrl}
+      className={cn(
+        'isolate flex h-[435px] w-[352px] flex-col rounded-surface bg-surface-overlay text-surface-fg shadow-raised-hover',
+        className,
       )}
-    </AnimatePresence>
+    >
+      <div className="p-ds-03">
+        <Frimousse.Search
+          placeholder="Search emoji…"
+          className="w-full rounded-control bg-surface-raised px-ds-03 py-ds-02b text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle focus-ring"
+        />
+      </div>
+      <Frimousse.Viewport className="relative flex-1 overflow-y-auto">
+        <Frimousse.Loading className="absolute inset-0 flex items-center justify-center text-ds-sm text-surface-fg-muted">
+          Loading…
+        </Frimousse.Loading>
+        <Frimousse.Empty className="absolute inset-0 flex items-center justify-center text-ds-sm text-surface-fg-muted">
+          No emoji found.
+        </Frimousse.Empty>
+        <Frimousse.List
+          className="select-none pb-ds-02"
+          components={{
+            CategoryHeader: ({ category, ...props }) => (
+              <div
+                className="bg-surface-overlay px-ds-03 pb-ds-01 pt-ds-03 text-ds-xs font-medium text-surface-fg-muted"
+                {...props}
+              >
+                {category.label}
+              </div>
+            ),
+            Row: ({ children, ...props }) => (
+              <div className="flex" {...props}>
+                {children}
+              </div>
+            ),
+            // Width is the frimousse column width (viewport ÷ --frimousse-list-columns)
+            // so a full row spans edge-to-edge — no fixed size, no right-hand gutter.
+            Emoji: ({ emoji, ...props }) => (
+              <button
+                type="button"
+                className={cn(
+                  'flex aspect-square w-[calc(100%/var(--frimousse-list-columns))] items-center justify-center rounded-control text-[1.375rem] leading-none',
+                  'hover:bg-surface-raised',
+                  emoji.isActive && 'bg-surface-raised',
+                )}
+                {...props}
+              >
+                {emoji.emoji}
+              </button>
+            ),
+          }}
+        />
+      </Frimousse.Viewport>
+      <div className="flex items-center justify-between gap-ds-02 border-t border-surface-border-subtle p-ds-02">
+        <Frimousse.ActiveEmoji>
+          {({ emoji }) =>
+            emoji ? (
+              <span className="flex min-w-0 items-center gap-ds-02 text-ds-sm text-surface-fg-muted">
+                <span className="text-[1.375rem] leading-none">{emoji.emoji}</span>
+                <span className="truncate">{emoji.label}</span>
+              </span>
+            ) : (
+              <span className="text-ds-sm text-surface-fg-subtle">Pick an emoji…</span>
+            )
+          }
+        </Frimousse.ActiveEmoji>
+        <Frimousse.SkinToneSelector
+          aria-label="Change skin tone"
+          className="flex size-8 shrink-0 items-center justify-center rounded-control text-[1.25rem] leading-none hover:bg-surface-raised focus-ring"
+        />
+      </div>
+    </Frimousse.Root>
   )
 }
 
@@ -145,10 +152,7 @@ function EmojiPickerPopover({
   children,
   align = 'start',
   onSelect,
-  set,
-  theme,
-  previewPosition,
-  skinTonePosition,
+  emojibaseUrl,
   className,
 }: EmojiPickerPopoverProps) {
   const [open, setOpen] = React.useState(false)
@@ -166,14 +170,7 @@ function EmojiPickerPopover({
         className="w-auto border-none bg-transparent p-0 shadow-none"
         sideOffset={8}
       >
-        <EmojiPicker
-          onSelect={handleSelect}
-          set={set}
-          theme={theme}
-          previewPosition={previewPosition}
-          skinTonePosition={skinTonePosition}
-          className={className}
-        />
+        <EmojiPicker onSelect={handleSelect} emojibaseUrl={emojibaseUrl} className={className} />
       </PopoverContent>
     </Popover>
   )

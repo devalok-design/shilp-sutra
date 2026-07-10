@@ -290,12 +290,18 @@ importers:
 
   packages/core:
     dependencies:
+      '@emoji-mart/data':
+        specifier: ^1.2.1
+        version: 1.2.1
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      frimousse:
+        specifier: ^0.3.0
+        version: 0.3.0(react@19.2.5)(typescript@6.0.3)
       react:
         specifier: ^18 || ^19
         version: 19.2.5
@@ -312,9 +318,6 @@ importers:
         specifier: ^1.5.0
         version: 1.6.0(react@19.2.5)
     devDependencies:
-      '@emoji-mart/data':
-        specifier: ^1.2.1
-        version: 1.2.1
       '@emoji-mart/react':
         specifier: ^1.1.1
         version: 1.1.1(emoji-mart@5.6.0)(react@19.2.5)
@@ -3397,6 +3400,15 @@ packages:
   fresh@2.0.0:
     resolution: {integrity: sha512-Rx/WycZ60HOaqLKAi6cHRKKI7zxWbJ31MhntmtwMoaTeF7XFH9hhBp8vITaMidfljRQ6eYWCKkaTK+ykVJHP2A==}
     engines: {node: '>= 0.8'}
+
+  frimousse@0.3.0:
+    resolution: {integrity: sha512-kO6LMoKY/cLAYEhXXtqLRaLIE6L/DagpFPrUZaLv3LsUa1/8Iza3HhwZcgN8eZ+weXnhv69eoclNUPohcCa/IQ==}
+    peerDependencies:
+      react: ^18 || ^19
+      typescript: '>=5.1.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   fs-extra@11.3.4:
     resolution: {integrity: sha512-CTXd6rk/M3/ULNQj8FBqBWHYBVYybQ3VPBw0xGKFe3tuH7ytT6ACnvzpIQ3UZtB8yvUKC2cXn1a+x+5EVQLovA==}
@@ -8567,6 +8579,12 @@ snapshots:
       react-dom: 19.2.5(react@19.2.5)
 
   fresh@2.0.0: {}
+
+  frimousse@0.3.0(react@19.2.5)(typescript@6.0.3):
+    dependencies:
+      react: 19.2.5
+    optionalDependencies:
+      typescript: 6.0.3
 
   fs-extra@11.3.4:
     dependencies:

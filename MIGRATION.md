@@ -4,6 +4,41 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.48.0 — Emoji picker migrated to frimousse (native-only)
+
+The emoji picker moved from `@emoji-mart/react` to **frimousse**. `@emoji-mart/react` never declared React 19 support (`peer react "^16.8 || ^17 || ^18"`), so React-19 consumers using `EmojiPicker`, `RichChatInput`, or `RichTextEditor` hit a hard `ERESOLVE` on install. frimousse is React 18/19 native. **Non-emoji component APIs are unchanged.**
+
+### What changed for consumers
+
+- **Native emoji only.** The art-style sets (`apple`/`google`/`twitter`/`facebook`) are gone — everyone sees their own platform's native emoji glyphs.
+- **Zero emoji peers.** frimousse and the `:shortcode:` dataset (`@emoji-mart/data`, pure JSON) are now **bundled** into a lazy chunk. You no longer install anything for emoji, and no more `--legacy-peer-deps` on React 19.
+- **New built-in footer** (hovered-emoji preview + skin-tone selector) and a new `emojibaseUrl` prop to self-host the dataset (strict-CSP / offline).
+
+### Migrate
+
+Your build won't break on the prop changes (the old props are accepted-but-ignored), but clean them up:
+
+```diff
+- <EmojiPicker set="apple" theme="dark" previewPosition="none" skinTonePosition="search" onSelect={…} />
++ <EmojiPicker onSelect={…} />                 // native only; theme follows the .dark class
+
+- <RichTextEditor emojiSet="google" … />
++ <RichTextEditor … />                          // emojiSet is a no-op now
+```
+
+Hard breaks (only if you used the emoji extension internals directly):
+
+- **`emojiDataLoaders` export removed** (`composed/emoji-picker`) — delete usages; the dataset is bundled.
+- **`EmojiNodeAttrs` narrowed** `{ id, native, set, x, y }` → `{ id, native }`.
+- **`EmojiSuggestionItem` narrowed** — dropped `x` / `y`.
+- **`createEmojiSuggestion(set?)` → `createEmojiSuggestion()`** — call with no argument.
+
+If you were on React 19 forcing `--legacy-peer-deps` for emoji, you can drop that workaround.
+
+### Also in this release (non-breaking)
+
+- Optional-peer install docs are now generated from source: added the missing `sonner` / `remark-gfm` / `date-fns` / `@tanstack/react-table` rows, removed phantom `@tiptap` / `@emoji-mart` install instructions. If your setup notes told you to `pnpm add @tiptap/*` for the rich-text editor, you can remove that — it's bundled.
+
 ## v0.47.0 — MCP setup-journey tools + manifest `peers` (additive)
 
 **Nothing breaks. No migration required.** Everything in 0.47.0 is additive.

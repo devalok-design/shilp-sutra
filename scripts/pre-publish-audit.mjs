@@ -249,6 +249,20 @@ gate('Component doc examples lint clean (dead classes / invalid enums)', () => {
   }
 })
 
+// Gate: the recipe §2a optional-peer tables must match the map derived from
+// source (each component's real imports × vite.config `external`). Catches the
+// drift the 2026-07-10 dogfood found — missing sonner / remark-gfm peers and
+// PHANTOM install instructions for bundled deps (@tiptap, @emoji-mart). The
+// recipe tables are generated from the manifest (`derive-peer-map --write-recipes`).
+gate('Recipe peer tables match source (derive-peer-map --check)', () => {
+  try {
+    execSync('node scripts/derive-peer-map.mjs --check', { cwd: join(ROOT, 'packages/core'), encoding: 'utf-8', stdio: 'pipe' })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'derive-peer-map --check reported drift'
+  }
+})
+
 // Advisory C: doc-documented props that no longer appear in source (likely
 // removed). Heuristic — Radix-passthrough props show as false positives — so
 // it warns, never blocks.

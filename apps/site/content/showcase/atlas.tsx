@@ -29,7 +29,7 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 import { EmptyState } from '@devalok/shilp-sutra/composed/empty-state'
 import { Progress } from '@devalok/shilp-sutra/ui/progress'
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@devalok/shilp-sutra/ui/sheet'
-import { StatusDot } from '@devalok/shilp-sutra/ui/status-dot'
+import { Dot, type DotColor, type DotProps } from '@devalok/shilp-sutra/ui/dot'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/ui/tabs'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
@@ -133,6 +133,15 @@ const workspaces = [
 ]
 
 type Presence = 'healthy' | 'warning' | 'critical' | 'inactive'
+
+// Presence → Dot props (StatusDot merged into Dot in 0.49.0): healthy pulses,
+// inactive is the faint `off` variant.
+const presenceToDot: Record<Presence, { color: DotColor } & Pick<DotProps, 'pulse' | 'variant'>> = {
+  healthy: { color: 'success', pulse: true },
+  warning: { color: 'warning' },
+  critical: { color: 'error' },
+  inactive: { color: 'neutral', variant: 'off' },
+}
 
 const team: { name: string; initials: string; role: string; tz: string; presence: Presence; lastActive: string }[] = [
   { name: 'Mudit Lal', initials: 'ML', role: 'Founder', tz: 'IST', presence: 'healthy', lastActive: 'now' },
@@ -460,8 +469,8 @@ export function AtlasShowcase() {
                             <Avatar size="sm">
                               <AvatarFallback>{m.initials}</AvatarFallback>
                             </Avatar>
-                            <StatusDot
-                              status={m.presence}
+                            <Dot
+                              {...presenceToDot[m.presence]}
                               className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-2"
                             />
                           </div>
@@ -518,8 +527,8 @@ export function AtlasShowcase() {
                         <Avatar size="sm">
                           <AvatarFallback>{m.initials}</AvatarFallback>
                         </Avatar>
-                        <StatusDot
-                          status={m.presence}
+                        <Dot
+                          {...presenceToDot[m.presence]}
                           className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-2"
                         />
                       </div>

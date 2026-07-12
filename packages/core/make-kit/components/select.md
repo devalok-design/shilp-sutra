@@ -98,7 +98,7 @@ Styling lives on the **Trigger**, not on `Select` root. Setting `<Select size="l
 <FormField state={errors.role ? 'error' : 'helper'}>
   <Label htmlFor="role">Role</Label>
   <Select value={role} onValueChange={setRole}>
-    <SelectTrigger id="role" color={errors.role ? 'error' : 'default'}>
+    <SelectTrigger id="role" state={errors.role ? 'error' : 'default'}>
       <SelectValue placeholder="Choose a role" />
     </SelectTrigger>
     <SelectContent>

@@ -27,7 +27,7 @@ import { Progress } from '@devalok/shilp-sutra/ui/progress'
 import { RadioGroup, RadioGroupItem } from '@devalok/shilp-sutra/ui/radio'
 import { Skeleton } from '@devalok/shilp-sutra/ui/skeleton'
 import { Spinner } from '@devalok/shilp-sutra/ui/spinner'
-import { StatusDot } from '@devalok/shilp-sutra/ui/status-dot'
+import { Dot } from '@devalok/shilp-sutra/ui/dot'
 import { Stepper, Step } from '@devalok/shilp-sutra/ui/stepper'
 import { Switch } from '@devalok/shilp-sutra/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/ui/tabs'
@@ -121,13 +121,13 @@ export default function Page() {
               <Avatar size="xl" badge={5} shape="rounded"><AvatarFallback>B</AvatarFallback></Avatar>
             </div>
 
-            {/* StatusDot — exercises processing-ants-* animations */}
+            {/* Dot — status indicator (StatusDot merged into Dot in 0.49.0) */}
             <div className="flex gap-ds-03">
-              <StatusDot status="healthy" pulse />
-              <StatusDot status="warning" />
-              <StatusDot status="critical" />
-              <StatusDot status="neutral" />
-              <StatusDot status="inactive" variant="ring" />
+              <Dot color="success" pulse />
+              <Dot color="warning" />
+              <Dot color="error" />
+              <Dot color="neutral" />
+              <Dot color="neutral" variant="off" />
             </div>
 
             {/* Alert — exercises shadow-error/success/warning + bg-{status}-* */}

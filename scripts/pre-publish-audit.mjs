@@ -859,6 +859,7 @@ gate('Icon-prop components import normalize-icon', () => {
     'src/composed/priority-indicator.tsx',  // internal Tabler refs in PRIORITY_CONFIG dict
     'src/composed/rich-chat-input.tsx',  // ChatToolbarItem.icon — tiptap toolbar shape, ComponentType<{className}> by design
     'src/composed/bulk-action-bar.tsx',  // forwards action.icon to Button.startIcon which does normalize
+    'src/composed/status-badge.tsx',     // forwards icon to Badge.endIcon which does normalize (0.49: composes Badge + Dot)
     'src/composed/activity-feed.tsx',    // vestigial type, no render
     'src/shell/command-registry.tsx',    // type-only export, no render path here
     'src/shell/app-command-palette.tsx', // forwards SearchResult.icon to CommandPalette which normalizes

@@ -67,6 +67,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [data-table-toolbar](docs/components/ui/data-table-toolbar.md)
 - [devalok-grain](docs/components/ui/devalok-grain.md)
 - [dialog](docs/components/ui/dialog.md)
+- [dot](docs/components/ui/dot.md): A small semantic status/indicator dot — the low-level primitive behind status pills, presence indicators, legend swatches, and `StatusDot`
 - [dropdown-menu](docs/components/ui/dropdown-menu.md)
 - [file-upload](docs/components/ui/file-upload.md)
 - [form](docs/components/ui/form.md)
@@ -85,7 +86,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [oauth-button](docs/components/ui/oauth-button.md)
 - [pagination](docs/components/ui/pagination.md)
 - [popover](docs/components/ui/popover.md)
-- [progress](docs/components/ui/progress.md)
+- [progress](docs/components/ui/progress.md): A linear progress bar
 - [progress-ring](docs/components/ui/progress-ring.md)
 - [radio](docs/components/ui/radio.md)
 - [search-input](docs/components/ui/search-input.md)
@@ -100,7 +101,6 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [stack](docs/components/ui/stack.md)
 - [stat-card](docs/components/ui/stat-card.md)
 - [stat-flash](docs/components/ui/stat-flash.md)
-- [status-dot](docs/components/ui/status-dot.md)
 - [stepper](docs/components/ui/stepper.md)
 - [surface](docs/components/ui/surface.md): The low-level elevated container primitive
 - [switch](docs/components/ui/switch.md)
@@ -159,6 +159,13 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [notification-preferences](docs/components/shell/notification-preferences.md)
 - [sidebar](docs/components/shell/sidebar.md)
 - [top-bar](docs/components/shell/top-bar.md)
+
+### ai
+- [ai-command-provider](docs/components/ai/ai-command-provider.md): Context provider for the AI command system
+- [block-renderer](docs/components/ai/block-renderer.md): Renders an ordered list of typed AI "blocks" — the structured chunks an assistant/ server emits instead of plain text
+- [command-bar](docs/components/ai/command-bar.md): A unified AI command input with three layout variants
+- [conversation](docs/components/ai/conversation.md): A scrollable AI conversation thread: user + assistant turns, streaming processing steps, an agent header, and structured content blocks (rendered via BlockRenderer) with confirm/cancel/undo action support
+- [devadoot-icon](docs/components/ai/devadoot-icon.md): The animated Devalok chakra glyph — the visual identity for the AI command system
 
 ## Tokens
 

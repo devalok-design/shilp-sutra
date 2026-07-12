@@ -148,6 +148,16 @@ export default defineConfig({
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: '_chunks/[name].js',
+        // Keep readable internal cross-chunk export names. When minified, the
+        // bundler mangles internal export aliases to short base-N names whose
+        // pool includes JS reserved words — 0.49.0 shipped `export { Mo as in }`
+        // in _chunks/primitives.js. That's legal ESM, but Next.js/Turbopack
+        // turns every export of a "use client" module into a `const` binding
+        // for its RSC client-reference proxy, emitting the illegal
+        // `export const in = …` and failing consumers' `next build`
+        // ("Expected ident"). Disabling this keeps aliases as valid identifiers.
+        // See devalok-design/shilp-sutra#139.
+        minifyInternalExports: false,
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.includes('@tiptap/') || id.includes('prosemirror'))

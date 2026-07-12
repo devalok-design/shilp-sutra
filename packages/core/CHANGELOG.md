@@ -1,5 +1,101 @@
 # @devalok/shilp-sutra
 
+## 0.49.0
+
+### Minor Changes
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **`Breadcrumb` is now server-safe**, and `PageHeader` composes it.
+
+  `Breadcrumb`'s only client dependency was the `Icon` component (its chevron/dots glyphs). Those are now inline SVGs, so `Breadcrumb` renders in a React Server Component with no `"use client"` boundary — import it directly in server components. API and markup are unchanged.
+
+  `PageHeader` (itself server-safe) previously hand-rolled its breadcrumb trail (inline chevron SVG + raw `<a>`/`<span>`). It now composes the real `Breadcrumb` / `BreadcrumbList` / `BreadcrumbItem` / `BreadcrumbLink` / `BreadcrumbPage` / `BreadcrumbSeparator` — one breadcrumb implementation instead of two — while staying server-safe. `PageHeader`'s API is unchanged; the trail's colours now match the `Breadcrumb` component (links `surface-fg-muted` → `surface-fg` on hover; current page `surface-fg`).
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **Added `Dot` — a composable status/indicator dot primitive** (`@devalok/shilp-sutra/ui/dot`), and consolidated the existing dots onto it.
+
+  `Dot` is the shared low-level indicator: intent-coloured (`accent`/`success`/`warning`/`error`/`info`/`neutral`, plus `current` to inherit text colour), `size` (`xs`–`lg`), `variant` (`filled`/`ring`/`off` — `off` = faint fill + light border for inactive), a `withBorder` contrast ring (for busy/coloured backgrounds), `pulse` with `pulseSpeed` (slow/normal/fast), and an optional `label` with `labelPosition` (start/end) that makes it an announced `role="status"` (bare dots are decorative/`aria-hidden`). API informed by Chakra `Status.Indicator`, Ant `Badge status`, Mantine `Indicator`.
+
+  Now used everywhere a dot appears, so there's one dot to style/animate:
+  - **StatusBadge** now composes `<Badge variant="soft">` + `<Dot>` instead of re-styling its own pill (the leading dot is a static `<Dot>`, not a pulsing one — correct for settled statuses).
+  - **StatusDot** is now a thin health-vocabulary wrapper over `<Dot>`.
+  - **Badge**'s `dot` prop renders `<Dot color="current" pulse>` inside its entrance animation.
+  - **Avatar**'s presence status dot renders `<Dot withBorder>` (colour from status; the wrapper keeps the online breathe + positioning + a11y). Internal only — Avatar's `status` API is unchanged; `offline` is now `neutral`-toned.
+
+  **BREAKING (breaking-minor):**
+  - `statusBadgeVariants` CVA export removed from `composed/status-badge` (StatusBadge composes Badge + Dot; no standalone CVA). Style via `<Badge>`/`<Dot>` props or `className`.
+  - **`StatusDot` removed — merged into `Dot`.** Its states are now Dot prop-combos (the new `off` variant covers `inactive`): `healthy`→`<Dot color="success" pulse>`, `warning`→`<Dot color="warning">`, `critical`→`<Dot color="error">`, `neutral`→`<Dot color="neutral">`, `inactive`→`<Dot color="neutral" variant="off">`.
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **BREAKING (breaking-minor) — Progress redesigned as a compound component.**
+
+  `Progress` is now a compound built for composition (structure after Ark UI / Chakra; multi-segment bars after Mantine), while the smart `<Progress value={70} />` form still covers the common cases.
+  - New parts: `Progress.Root`, `Progress.Track`, `Progress.Indicator`, `Progress.Segment`, `Progress.Label`, `Progress.Value` (also exported as `ProgressRoot` … `ProgressValue`).
+  - New props on the smart form: `label`, `max`, `segments` (multi-segment/multi-colour bars), `trackClassName`.
+  - `Progress.Track` is the accessible progressbar; name it with `aria-label` or a `Progress.Label` + `aria-labelledby`.
+
+  **Migrate:**
+  - `showLabel` → `showValue`: `<Progress value={42} showLabel />` → `<Progress value={42} showValue />`
+  - `color="default"` → `color="accent"` (or drop it — `accent` is the default). The type is now `"accent" | "success" | "warning" | "error"`.
+
+  `StatCard`'s internal progress bar now composes `Progress` (keeping StatCard's own 90/70 thresholds); the toast upload bar uses `color="accent"`.
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Three consumer-reported fixes (all filed via the MCP `report_issue` tool).
+
+  **Added — `ResponsiveModal` (composed).** One overlay that is a centered Dialog on desktop (md+) and a partial, content-height bottom sheet on mobile (<768px), built on the same accessible dialog primitive as `Dialog`/`Sheet`. Compound API: `ResponsiveModal` / `Trigger` / `Content` / `Background` / `Header` / `Title` / `Description` / `Body` / `Footer` / `Close`. Owns the parts consumers kept hand-rolling: a pinned header/footer, an internal scroll body (capped 85dvh desktop / 90dvh mobile), an optional full-bleed background slot painted at `-z-10` (with the close button correctly stacked above it), drag-to-dismiss on mobile, and optional iOS-style `snapPoints`. Prefer it over `DialogContent responsive`, whose mobile form is a full-screen takeover that leaves dead space under short content ([#115](https://github.com/devalok-design/shilp-sutra/issues/115)).
+
+  **Fixed — `PageHeader` action overflow on mobile.** The `actions` slot was `shrink-0` inside a non-wrapping row, so a header with 2+ buttons overflowed a phone viewport and forced the page to pan sideways. The header row now wraps and the actions cluster drops onto its own line on narrow screens (pure CSS, still server-safe). Desktop layout is unchanged ([#133](https://github.com/devalok-design/shilp-sutra/issues/133)).
+
+  **Fixed — mcp-manifest mis-attributed compound subcomponent props to the root.** The manifest emitter flattened the whole `## Props` section onto the root component, ignoring `### Subpart` headings — so a `numeric` prop belonging to `TableCell`/`TableHead`, an `href` belonging to `TableRowLink`, etc. all read as props of `<Table>`. An agent trusting the manifest wrote `<Table numeric>` / `<TableRow href>` and hit TS2322. Props under a `### Subpart` heading are now emitted under `subComponents[Name].props`, keyed by the owning subcomponent, across all 27 multi-part component docs. Manifest format bumped to 1.2.0 (additive); the hosted docs MCP `get_component` surfaces the new `subComponents` block ([#132](https://github.com/devalok-design/shilp-sutra/issues/132)).
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **ScheduleView cleanup.**
+  - **BREAKING (breaking-minor):** the `ScheduleEvent.color` value `"primary"` was renamed `"accent"` to match the DS colour vocabulary used everywhere else. Migrate `{ color: 'primary' }` → `{ color: 'accent' }` (it was also the default, so untyped events are unaffected).
+  - **a11y:** the time-slot cells and event blocks now show a focus-visible ring (they had hover states but no keyboard-focus indicator).
+  - The hand-rolled current-time indicator dot now uses the shared `<Dot color="error" pulse>` (drops a bespoke scale-bounce animation).
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **BREAKING (breaking-minor) — unified validation state across all form controls.**
+
+  Every form control now takes one prop, `state`, of one type — `FieldState = "default" | "error" | "warning" | "success"` (exported from `@devalok/shilp-sutra/ui`). Previously the same concept was spelled three different ways: `state` (Input/Textarea/NumberInput), `color` (Select), and an `error: boolean` (Checkbox/Switch). Radio and Combobox had no explicit prop at all. Precedence is consistent everywhere: an explicit `state` prop wins over `FormField` context.
+
+  **Migrate:**
+  - `<Checkbox error />` → `<Checkbox state="error" />`
+  - `<Switch error />` → `<Switch state="error" />` (Switch's `color` prop is unchanged — it's the ON-track tint, not validation)
+  - `<SelectTrigger color="error" />` → `<SelectTrigger state="error" />` (also `color="success" | "warning"` → `state=`)
+  - `selectTriggerVariants({ color })` → `selectTriggerVariants({ state })` (the CVA axis was renamed)
+
+  **Also in this change (additive, non-breaking):**
+  - Checkbox/Switch/Radio gain `warning` + `success` tints (previously error-only).
+  - Radio (`RadioGroup`) and Combobox gain an explicit `state` prop; both now also inherit validation state from `FormField` context (Select does too now — previously manual-only). Combobox renders a validation border for the first time.
+  - New shared type `FieldState` + internal `resolveFieldState()` helper (`ui/lib/field-state`) — single precedence rule, replaces the per-component copies.
+  - `InputState` and `NumberInputState` remain as `@deprecated` aliases of `FieldState`; no type-import breakage.
+
+### Patch Changes
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Internal: extracted the controlled/uncontrolled open-state machine that was hand-copied across six overlays (`Dialog`, `Popover`, `Sheet`, `Tooltip`, `DropdownMenu`, `DropdownMenuSub`) into a single shared hook, `useControllableOpen` (`ui/lib/use-controllable-open`). No API or behavior change — one fix site instead of six.
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Token hygiene: replaced hand-typed pixel sizing with the equivalent `--spacing-ds-*`
+  tokens across `src/ui` + `src/composed` (76 occurrences — e.g. `h-[16px]` → `h-ds-05`,
+  `w-[64px]` → `w-ds-10`, `h-[1px]` → `h-px`). Rendered sizes are unchanged. Pixel
+  values with no token on the scale (component-specific dimensions, off-scale layout
+  sizes) are left as-is.
+
+  Added a gate — `check-arbitrary-sizing` (a new pre-publish-audit gate + `pnpm
+check:sizing`, wired into `verify`) — that flags any future `[Npx]` height/width
+  whose value has a spacing token, so this doesn't drift back. Internal only; no
+  consumer-facing API change.
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Our own composed components now follow the house soft-over-outline rule:
+  `ConfirmDialog`'s Cancel button and `ErrorBoundary`'s "Try Again" button use
+  `variant="soft"` instead of `variant="outline"`. `ConfirmDialog`'s confirm
+  button now uses `Button`'s built-in `loading` prop (spinner + `aria-busy`)
+  instead of swapping its label to "Processing…". No API changes.
+
+- [#134](https://github.com/devalok-design/shilp-sutra/pull/134) [`df40f8f`](https://github.com/devalok-design/shilp-sutra/commit/df40f8f7a184c5486bfb1644b13feeb7396d504c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Added a dedicated `surface-chrome` surface tier for app chrome. `TopBar`,
+  `Sidebar` (+ its variants), and `BottomNavbar` now paint `bg-surface-chrome`
+  instead of `bg-surface-raised`, so chrome's surface is an explicit, independently
+  tunable decision (the Carbon/Atlassian/Ant model) rather than coupled to the card
+  surface. It's valued equal to `raised` (light `neutral-1` / dark `neutral-2`) —
+  **zero visual change** — but can now diverge without affecting cards. Resolves the
+  CLAUDE.md-vs-code surface-tier mismatch (audit finding [#7](https://github.com/devalok-design/shilp-sutra/issues/7)); the surface rule is
+  updated accordingly.
+
 ## 0.48.0
 
 ### Minor Changes

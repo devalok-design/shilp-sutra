@@ -17,7 +17,7 @@ const sampleEvents: ScheduleEvent[] = [
     title: 'Team Standup',
     start: new Date('2026-03-17T09:00:00Z'),
     end: new Date('2026-03-17T09:30:00Z'),
-    color: 'primary',
+    color: 'accent',
   },
   {
     id: '2',

@@ -10,7 +10,7 @@ const meta: Meta<typeof Checkbox> = {
   argTypes: {
     checked: { control: 'boolean' },
     disabled: { control: 'boolean' },
-    error: { control: 'boolean' },
+    state: { control: 'select', options: ['default', 'error', 'warning', 'success'] },
     indeterminate: { control: 'boolean' },
     size: { control: 'radio', options: ['sm', 'md', 'lg'] },
   },

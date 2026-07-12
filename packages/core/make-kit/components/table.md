@@ -233,7 +233,7 @@ Table + Badge (server-safe via Badge.Group context — verify per use) + Avatar 
 
 - **Server-safe:** Table and its sub-components are pure HTML semantic wrappers. No state, no context. Use in RSC trees without `'use client'`.
 - **TableHead scope:** Headers automatically get `scope="col"` for screen-reader navigation. Don't override it.
-- **Composes with primitives:** Drop `<Badge>`, `<Avatar>`, `<IconButton>`, `<StatusDot>` inside cells. Check each component's server-safety if you need RSC compatibility.
+- **Composes with primitives:** Drop `<Badge>`, `<Avatar>`, `<IconButton>`, `<Dot>` inside cells. Check each component's server-safety if you need RSC compatibility.
 - **TableCaption:** Renders as HTML `<caption>` — screen readers announce it before content. Use it for any non-trivial table.
 
 See `foundations/typography.md` for the body / label variants inside cells, `foundations/surfaces.md` for table-in-card surface guidance.

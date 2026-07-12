@@ -69,7 +69,7 @@ Use inside a custom control to consume FormField context.
 
 | Control | Manual wiring needed |
 |---|---|
-| `<Select>` / `<SelectTrigger>` | Set `color="error"` on `SelectTrigger` from your validation state. |
+| `<Select>` / `<SelectTrigger>` | Set `state="error"` on `SelectTrigger` from your validation state. |
 | `<Checkbox>`, `<Radio>`, `<Switch>` | Pair `<Label htmlFor>` manually. State is visual on the control. |
 
 ## Examples
@@ -134,7 +134,7 @@ The Input receives `aria-describedby` (linked to FormHelperText), `aria-invalid=
     <FormField state={errors.role ? 'error' : 'helper'}>
       <Label htmlFor="role">Role</Label>
       <Select>
-        <SelectTrigger id="role" color={errors.role ? 'error' : 'default'}>
+        <SelectTrigger id="role" state={errors.role ? 'error' : 'default'}>
           <SelectValue placeholder="Choose a role" />
         </SelectTrigger>
         <SelectContent>

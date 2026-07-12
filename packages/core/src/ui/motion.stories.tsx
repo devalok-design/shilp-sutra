@@ -558,7 +558,7 @@ export const SlowAndContinuous: StoryObj = {
           <div className="space-y-ds-04 max-w-sm">
             <div className="space-y-ds-02">
               <span className="text-ds-sm text-surface-fg-muted">Determinate</span>
-              <Progress value={progress} showLabel />
+              <Progress value={progress} showValue />
               <Button variant="outline" size="sm" onClick={startProgress}>
                 {progress >= 100 ? 'Restart' : 'Start'}
               </Button>
@@ -1148,7 +1148,7 @@ export const ReducedMotionDemo: StoryObj = {
           <div className="grid grid-cols-2 gap-ds-04">
             <div className="space-y-ds-02">
               <span className="text-ds-xs text-surface-fg-muted">Progress bar</span>
-              <Progress value={65} showLabel />
+              <Progress value={65} showValue />
             </div>
             <div className="space-y-ds-02">
               <span className="text-ds-xs text-surface-fg-muted">Skeleton</span>

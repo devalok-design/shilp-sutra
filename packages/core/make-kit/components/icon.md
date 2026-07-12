@@ -14,7 +14,7 @@ For the broader icon system (which icons exist, how to register custom ones, the
 - Any inline SVG icon — inside Button slots, IconButton, Badge slots, table cells, list rows.
 - Need an interactive icon button? Use `<IconButton>`, not Icon wrapped in `<button>`.
 - Need a static cluster of related icons? Use `<IconGroup>`.
-- Need a status indicator? Use `<StatusDot>` or `<Badge dot>` — they're optimized for that.
+- Need a status indicator? Use `<Dot>` or `<Badge dot>` — they're optimized for that.
 
 Tabler-only. Don't mix icon libraries — see `foundations/icons.md` for the rationale.
 
@@ -129,7 +129,7 @@ Input's IconProvider sets size by input size: `xs` / `sm` input → `sm` icon, `
 </Stack>
 ```
 
-For most status displays prefer `<StatusDot>` — purpose-built. Use this pattern only when you need a specific icon shape.
+For most status displays prefer `<Dot>` — purpose-built. Use this pattern only when you need a specific icon shape.
 
 ## Composability
 

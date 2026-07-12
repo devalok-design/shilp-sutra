@@ -77,7 +77,7 @@ Permanent inline message?
 Status of an item?
   → <Badge>          — pill label (status / tag)
   → <StatusBadge>    — colored dot + label (discriminated union: status="online"/"away"/...)
-  → <StatusDot>      — just the colored dot
+  → <Dot>            — just the colored status/indicator dot
 
 Temporary notification?
   → toast.success / error / warning / info (imperative) — must have <Toaster /> mounted
@@ -256,7 +256,7 @@ Code?
 | Skeleton | `/ui/skeleton` |
 | Badge | `/ui/badge` |
 | StatusBadge | `/composed/status-badge` |
-| StatusDot | `/ui/status-dot` |
+| Dot | `/ui/dot` |
 | EmptyState | `/composed/empty-state` |
 
 ### Layout

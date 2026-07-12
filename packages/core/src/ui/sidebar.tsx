@@ -247,7 +247,7 @@ const Sidebar = forwardRef<
         <aside
           aria-label="Sidebar"
           className={cn(
-            'flex h-full w-(--sidebar-width) flex-col bg-surface-raised text-surface-fg',
+            'flex h-full w-(--sidebar-width) flex-col bg-surface-chrome text-surface-fg',
             className,
           )}
           ref={ref}
@@ -264,7 +264,7 @@ const Sidebar = forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-(--sidebar-width) bg-surface-raised p-0 text-surface-fg [&>button]:hidden"
+            className="w-(--sidebar-width) bg-surface-chrome p-0 text-surface-fg [&>button]:hidden"
             style={
               {
                 '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -316,7 +316,7 @@ const Sidebar = forwardRef<
           <aside
             aria-label="Sidebar"
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col bg-surface-raised group-data-[variant=floating]:rounded-surface group-data-[variant=floating]:shadow-raised"
+            className="flex h-full w-full flex-col bg-surface-chrome group-data-[variant=floating]:rounded-surface group-data-[variant=floating]:shadow-raised"
           >
             {children}
           </aside>

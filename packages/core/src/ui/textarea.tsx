@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import * as React from 'react'
 
 import { useFormField } from './form'
-import type { InputState } from './input'
+import { type FieldState, resolveFieldState } from './lib/field-state'
 import { motionProps } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -36,7 +36,7 @@ const textareaVariants = cva(
 
 /**
  * Props for Textarea — a resizable multi-line text input with size variants and validation state coloring,
- * sharing the same `InputState` type as `<Input>`.
+ * sharing the same `FieldState` type as every form control.
  *
  * **Sizes:** `sm` (min 60px) | `md` (min 80px, default) | `lg` (min 120px) — all are vertically resizable.
  *
@@ -65,14 +65,14 @@ const textareaVariants = cva(
 export interface TextareaProps
   extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'>,
     VariantProps<typeof textareaVariants> {
-  state?: InputState
+  state?: FieldState
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, state: stateProp, size, ...props }, ref) => {
     const fieldCtx = useFormField()
-    // Merge FormField context — explicit props always win
-    const state = stateProp ?? (fieldCtx.state === 'helper' ? undefined : fieldCtx.state as InputState | undefined)
+    // Merge FormField context — explicit props always win (shared precedence)
+    const state = resolveFieldState(stateProp, fieldCtx.state)
     const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
     const ariaRequired = props['aria-required'] ?? fieldCtx.required
 

@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { motion, useReducedMotion } from "framer-motion"
 import * as React from "react"
 
+import { Dot, type DotColor, type DotSize } from "./dot"
 import { springs } from "./lib/motion"
 import { cn } from "./lib/utils"
 import { Skeleton } from "./skeleton"
@@ -40,11 +41,12 @@ export type AvatarStatus = 'online' | 'offline' | 'busy' | 'away'
 
 export type AvatarRing = 'none' | 'lead' | 'admin' | 'client'
 
-const statusColorMap: Record<AvatarStatus, string> = {
-  online: 'bg-success-9',
-  offline: 'bg-surface-raised-hover',
-  busy: 'bg-error-9',
-  away: 'bg-warning-9',
+// Presence status → shared Dot intent colour.
+const statusDotColor: Record<AvatarStatus, DotColor> = {
+  online: 'success',
+  offline: 'neutral',
+  busy: 'error',
+  away: 'warning',
 }
 
 const statusLabelMap: Record<AvatarStatus, string> = {
@@ -54,16 +56,13 @@ const statusLabelMap: Record<AvatarStatus, string> = {
   away: 'Away',
 }
 
-/**
- * Dot size classes that scale with the avatar size.
- * xs/sm get a smaller dot, md gets medium, lg/xl get a larger dot.
- */
-const statusDotSizeMap: Record<string, string> = {
-  xs: 'h-ds-02b w-ds-02b',
-  sm: 'h-[8px] w-[8px]',
-  md: 'h-ds-03 w-ds-03',
-  lg: 'h-[12px] w-[12px]',
-  xl: 'h-ds-04 w-ds-04',
+/** Avatar size → Dot size (the status dot scales with the avatar). */
+const statusDotSize: Record<AvatarSize, DotSize> = {
+  xs: 'xs',
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+  xl: 'lg',
 }
 
 // ── Role ring ───────────────────────────────────────────────────────────────
@@ -210,17 +209,17 @@ const Avatar = React.forwardRef<
         {children}
       </AvatarPrimitive.Root>
       {status && (
-        status === 'online' && !prefersReduced ? (
-          <motion.span
-            className={cn('absolute bottom-0 right-0 rounded-pill ring-2 ring-surface-raised', statusColorMap[status], statusDotSizeMap[size ?? 'md'])}
-            animate={{ opacity: [1, 0.75, 1] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-            role="img"
-            aria-label={statusLabelMap[status]}
-          />
-        ) : (
-          <span className={cn('absolute bottom-0 right-0 rounded-pill ring-2 ring-surface-raised', statusColorMap[status], statusDotSizeMap[size ?? 'md'])} role="img" aria-label={statusLabelMap[status]} />
-        )
+        <motion.span
+          className="absolute bottom-0 right-0"
+          role="img"
+          aria-label={statusLabelMap[status]}
+          {...(status === 'online' && !prefersReduced
+            ? { animate: { opacity: [1, 0.75, 1] }, transition: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' } }
+            : {})}
+        >
+          {/* Shared Dot primitive: colour + contrast ring; wrapper owns position + presence breathe + a11y. */}
+          <Dot color={statusDotColor[status]} size={statusDotSize[size ?? 'md']} withBorder aria-hidden />
+        </motion.span>
       )}
       {showBadge && (
         badge === 'dot' ? (

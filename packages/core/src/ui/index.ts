@@ -30,6 +30,7 @@ export { IconContext, type IconContextValue, IconProvider, type IconSize, type I
 export { IconGroup, type IconGroupProps } from './icon-group'
 export { Input, type InputProps, type InputState, inputWrapperVariants } from './input'
 export { Label, type LabelProps } from './label'
+export { type FieldState } from './lib/field-state'
 export { Separator, type SeparatorProps } from './separator'
 export { SplitButton, type SplitButtonProps } from './split-button'
 export { VisuallyHidden, type VisuallyHiddenProps } from './visually-hidden'
@@ -147,7 +148,27 @@ export { BadgeIndicator, type BadgeIndicatorProps } from './badge-indicator'
 export { Card, CardAction, type CardActionPlacement, type CardActionProps, CardBleed, type CardBleedProps, type CardBleedSide, CardContent, CardDescription, CardFooter, CardHeader, type CardProps,CardSection, CardTitle, cardVariants } from './card'
 export { Code, type CodeProps } from './code'
 export { ColorSwatch, type ColorSwatchProps } from './color-swatch'
-export { Progress, progressIndicatorVariants, type ProgressProps,progressTrackVariants } from './progress'
+export { Dot, type DotColor, type DotProps, type DotSize, type DotVariant, dotVariants } from './dot'
+export {
+  Progress,
+  type ProgressColor,
+  ProgressIndicator,
+  type ProgressIndicatorProps,
+  progressIndicatorVariants,
+  ProgressLabel,
+  type ProgressLabelProps,
+  type ProgressProps,
+  ProgressRoot,
+  type ProgressRootProps,
+  ProgressSegment,
+  type ProgressSegmentProps,
+  type ProgressSize,
+  ProgressTrack,
+  type ProgressTrackProps,
+  progressTrackVariants,
+  ProgressValue,
+  type ProgressValueProps,
+} from './progress'
 export { MultiProgressRing, type MultiProgressRingProps,ProgressRing, type ProgressRingProps } from './progress-ring'
 export {
   Skeleton,
@@ -177,7 +198,6 @@ export {
   StatFlash,
   type StatFlashProps,
 } from './stat-flash'
-export { StatusDot, type StatusDotProps, type StatusDotStatus } from './status-dot'
 export { Surface, type SurfaceProps, surfaceVariants } from './surface'
 export { Table, TableBody, TableCaption, TableCell, type TableCellBaseProps,type TableCellProps,type TableDensity, TableFooter, TableHead, TableHeader, type TableProps, TableRow, TableRowActions, type TableRowActionsProps,type TableRowProps } from './table'
 export { TableRowLink, type TableRowLinkProps } from './table-row-link'

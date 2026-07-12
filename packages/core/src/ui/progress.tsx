@@ -9,165 +9,325 @@ import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 /* ---------------------------------------------------------------------------
- * CVA Variants
+ * Progress — a linear progress bar.
+ *
+ * Two ways to use it:
+ *   1. Smart all-in-one `<Progress value={70} />` — covers the common cases
+ *      (value, size, color, label, %-value, auto-color, indeterminate, segments).
+ *   2. Compound parts `<Progress.Root>/<Progress.Track>/<Progress.Indicator>` etc.
+ *      — full layout control, borrowed from Ark UI / Chakra's structure, with
+ *      Mantine-style `<Progress.Segment>` for multi-colour bars.
+ *
+ * The compound parts share a context so `value`/`max`/`size` are set once on
+ * `Root` and read by Track/Indicator/Segment/Value.
  * ------------------------------------------------------------------------ */
 
-const progressTrackVariants = cva(
+export type ProgressSize = 'sm' | 'md' | 'lg'
+export type ProgressColor = 'accent' | 'success' | 'warning' | 'error'
+
+export const progressTrackVariants = cva(
   'relative w-full overflow-hidden rounded-pill bg-surface-raised',
   {
-    variants: {
-      size: {
-        sm: 'h-1',
-        md: 'h-2',
-        lg: 'h-3',
-      },
-    },
+    variants: { size: { sm: 'h-1', md: 'h-2', lg: 'h-3' } },
     defaultVariants: { size: 'md' },
   },
 )
 
-const progressIndicatorVariants = cva(
-  'h-full w-full flex-1 transition-[width] duration-moderate-02 ease-expressive-standard',
+const COLOR_FILL: Record<ProgressColor, string> = {
+  accent: 'bg-accent-9',
+  success: 'bg-success-9',
+  warning: 'bg-warning-9',
+  error: 'bg-error-9',
+}
+
+export const progressIndicatorVariants = cva(
+  'h-full transition-[width] duration-moderate-02 ease-expressive-standard',
   {
-    variants: {
-      color: {
-        default: 'bg-accent-9',
-        success: 'bg-success-9',
-        warning: 'bg-warning-9',
-        error: 'bg-error-9',
-      },
-    },
-    defaultVariants: { color: 'default' },
+    variants: { color: COLOR_FILL },
+    defaultVariants: { color: 'accent' },
   },
 )
 
+/** Auto-color by value: 0–59 accent, 60–84 warning, 85–100 success, >100 error. */
+function autoColorFor(value: number | null | undefined): ProgressColor {
+  if (value == null) return 'accent'
+  if (value > 100) return 'error'
+  if (value >= 85) return 'success'
+  if (value >= 60) return 'warning'
+  return 'accent'
+}
+
+const clampPct = (value: number, max: number) =>
+  Math.max(0, Math.min(100, (value / max) * 100))
+
 /* ---------------------------------------------------------------------------
- * Types
+ * Context — set once on Root, read by Track / Indicator / Segment / Value.
  * ------------------------------------------------------------------------ */
 
-/**
- * Props for Progress — a horizontal progress bar with size and color variants, an optional
- * percentage label, and an indeterminate animation when `value` is undefined/null.
- *
- * **Track size:** `sm` (4px) | `md` (8px, default) | `lg` (12px)
- *
- * **Indicator color:** `default` (brand interactive) | `success` | `warning` | `error`
- *
- * **Indeterminate:** Omit `value` (or pass `undefined`) to show an animated indeterminate bar.
- * When `value` is provided, it should be a number between 0–100.
- *
- * **`showLabel`:** Renders the percentage value next to the bar (only when `value` is set).
- *
- * @example
- * // Determinate upload progress:
- * <Progress value={uploadPercent} color="default" showLabel />
- *
- * @example
- * // Indeterminate loading bar (while waiting for an async operation):
- * <Progress size="sm" />
- *
- * @example
- * // Success-colored completion bar (e.g. after all tasks done):
- * <Progress value={100} color="success" size="md" />
- *
- * @example
- * // Warning threshold indicator (disk usage at 80%):
- * <Progress value={80} color="warning" showLabel size="lg" />
- * // These are just a few ways — feel free to combine props creatively!
- */
-interface ProgressProps
-  extends Omit<
-      React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>,
-      'color'
-    >,
-    VariantProps<typeof progressTrackVariants>,
-    VariantProps<typeof progressIndicatorVariants> {
-  /** Additional class names for the indicator element */
-  indicatorClassName?: string
-  /** Display the percentage label next to the progress bar */
-  showLabel?: boolean
-  /** When true, color auto-shifts by value: 0-59 = default (accent), 60-84 = warning, 85-100 = success, >100 = error. @default false */
-  autoColor?: boolean
+interface ProgressContextValue {
+  value: number | null
+  max: number
+  size: ProgressSize
+  indeterminate: boolean
+}
+
+const ProgressContext = React.createContext<ProgressContextValue | null>(null)
+
+function useProgressContext(part: string): ProgressContextValue {
+  const ctx = React.useContext(ProgressContext)
+  if (!ctx) {
+    throw new Error(`<Progress.${part}> must be rendered inside <Progress.Root>.`)
+  }
+  return ctx
 }
 
 /* ---------------------------------------------------------------------------
- * Component
+ * Progress.Root — layout container + context. NOT the progressbar itself
+ * (that's Track) so labels/value can sit outside the bar (Ark UI model).
  * ------------------------------------------------------------------------ */
 
-const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  ProgressProps
->(
-  (
-    {
-      className,
-      value,
-      size,
-      color,
-      indicatorClassName,
-      showLabel,
-      autoColor,
-      ...props
-    },
-    ref,
-  ) => {
-    const isIndeterminate = value === undefined || value === null
+export interface ProgressRootProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** 0–max. Omit (or null) for an indeterminate bar. */
+  value?: number | null
+  /** Scale maximum. @default 100 */
+  max?: number
+  /** Track thickness. @default 'md' */
+  size?: ProgressSize
+}
 
-    const effectiveColor =
-      autoColor && value != null
-        ? value > 100
-          ? 'error'
-          : value >= 85
-            ? 'success'
-            : value >= 60
-              ? 'warning'
-              : 'default'
-        : color
-
+const ProgressRoot = React.forwardRef<HTMLDivElement, ProgressRootProps>(
+  ({ value = null, max = 100, size = 'md', className, children, ...props }, ref) => {
+    const ctx = React.useMemo<ProgressContextValue>(
+      () => ({ value, max, size, indeterminate: value == null }),
+      [value, max, size],
+    )
     return (
-      <div className={cn('flex items-center gap-ds-03', showLabel && 'w-full')}>
-        <ProgressPrimitive.Root
-          ref={ref}
-          value={isIndeterminate ? null : value}
-          className={cn(progressTrackVariants({ size }), className)}
-          {...props}
-        >
-          {isIndeterminate ? (
-            <ProgressPrimitive.Indicator
-              className={cn(
-                progressIndicatorVariants({ color: effectiveColor }),
-                'w-2/5 animate-progress-indeterminate motion-reduce:animate-none',
-                indicatorClassName,
-              )}
-            />
-          ) : (
-            <ProgressPrimitive.Indicator
-              className={cn('h-full', indicatorClassName)}
-              asChild
-            >
-              <motion.div
-                className={cn(
-                  progressIndicatorVariants({ color: effectiveColor }),
-                  'transition-colors duration-moderate-01 ease-productive-standard',
-                )}
-                initial={false}
-                animate={{ width: `${value || 0}%` }}
-                transition={springs.smooth}
-              />
-            </ProgressPrimitive.Indicator>
-          )}
-        </ProgressPrimitive.Root>
-
-        {showLabel && !isIndeterminate && (
-          <span className="shrink-0 text-ds-xs text-surface-fg-muted tabular-nums">
-            {value}%
-          </span>
-        )}
-      </div>
+      <ProgressContext.Provider value={ctx}>
+        <div ref={ref} className={cn('flex w-full items-center gap-ds-03', className)} {...props}>
+          {children}
+        </div>
+      </ProgressContext.Provider>
     )
   },
 )
-Progress.displayName = ProgressPrimitive.Root.displayName
+ProgressRoot.displayName = 'Progress.Root'
 
-export { Progress, progressIndicatorVariants,progressTrackVariants }
-export type { ProgressProps }
+/* ---------------------------------------------------------------------------
+ * Progress.Track — the aria progressbar + track visual. Holds Indicator/Segment.
+ * ------------------------------------------------------------------------ */
+
+export type ProgressTrackProps = React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
+
+const ProgressTrack = React.forwardRef<
+  React.ElementRef<typeof ProgressPrimitive.Root>,
+  ProgressTrackProps
+>(({ className, children, ...props }, ref) => {
+  const { value, max, size, indeterminate } = useProgressContext('Track')
+  // Accessible name comes from the consumer's aria-label / aria-labelledby (spread
+  // via ...props) — no auto-wiring, so a Track never carries a dangling reference.
+  return (
+    <ProgressPrimitive.Root
+      ref={ref}
+      value={indeterminate ? null : value}
+      max={max}
+      className={cn(progressTrackVariants({ size }), 'flex-1', className)}
+      {...props}
+    >
+      {children}
+    </ProgressPrimitive.Root>
+  )
+})
+ProgressTrack.displayName = 'Progress.Track'
+
+/* ---------------------------------------------------------------------------
+ * Progress.Indicator — single fill. Determinate width from context, or the
+ * indeterminate sweep animation when Root has no value.
+ * ------------------------------------------------------------------------ */
+
+export interface ProgressIndicatorProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Fill colour. Omit to auto-colour by value. */
+  color?: ProgressColor
+  /** Force auto-colour even when `color` is unset. @default true when color unset */
+  autoColor?: boolean
+}
+
+const ProgressIndicator = React.forwardRef<HTMLDivElement, ProgressIndicatorProps>(
+  ({ color, autoColor, className, ...props }, ref) => {
+    const { value, max, indeterminate } = useProgressContext('Indicator')
+    const resolved = color ?? (autoColor !== false ? autoColorFor(value) : 'accent')
+
+    if (indeterminate) {
+      return (
+        <div
+          ref={ref}
+          className={cn(
+            progressIndicatorVariants({ color: resolved }),
+            'w-2/5 animate-progress-indeterminate motion-reduce:animate-none',
+            className,
+          )}
+          {...props}
+        />
+      )
+    }
+    return (
+      <motion.div
+        ref={ref}
+        className={cn(progressIndicatorVariants({ color: resolved }), 'transition-colors', className)}
+        initial={false}
+        animate={{ width: `${clampPct(value ?? 0, max)}%` }}
+        transition={springs.smooth}
+        {...(props as React.ComponentProps<typeof motion.div>)}
+      />
+    )
+  },
+)
+ProgressIndicator.displayName = 'Progress.Indicator'
+
+/* ---------------------------------------------------------------------------
+ * Progress.Segment — one slice of a multi-segment bar (Mantine-style). Place
+ * several inside a Track. Widths are each segment's value as a % of max.
+ * ------------------------------------------------------------------------ */
+
+export interface ProgressSegmentProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** This segment's portion of `max`. */
+  value: number
+  color?: ProgressColor
+}
+
+const ProgressSegment = React.forwardRef<HTMLDivElement, ProgressSegmentProps>(
+  ({ value, color = 'accent', className, style, ...props }, ref) => {
+    const { max } = useProgressContext('Segment')
+    return (
+      <div
+        ref={ref}
+        aria-hidden="true"
+        className={cn('h-full first:rounded-l-pill last:rounded-r-pill', COLOR_FILL[color], className)}
+        style={{ width: `${clampPct(value, max)}%`, ...style }}
+        {...props}
+      />
+    )
+  },
+)
+ProgressSegment.displayName = 'Progress.Segment'
+
+/* ---------------------------------------------------------------------------
+ * Progress.Label — descriptive text, associated with the bar via aria.
+ * ------------------------------------------------------------------------ */
+
+export type ProgressLabelProps = React.HTMLAttributes<HTMLSpanElement>
+
+const ProgressLabel = React.forwardRef<HTMLSpanElement, ProgressLabelProps>(
+  ({ className, ...props }, ref) => {
+    useProgressContext('Label')
+    return (
+      <span
+        ref={ref}
+        className={cn('shrink-0 text-ds-sm font-medium text-surface-fg', className)}
+        {...props}
+      />
+    )
+  },
+)
+ProgressLabel.displayName = 'Progress.Label'
+
+/* ---------------------------------------------------------------------------
+ * Progress.Value — the "{n}%" readout. Custom content via children or `format`.
+ * ------------------------------------------------------------------------ */
+
+export interface ProgressValueProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
+  /** Format the percentage. Default: `${round(pct)}%`. */
+  format?: (pct: number, value: number | null, max: number) => React.ReactNode
+  children?: React.ReactNode
+}
+
+const ProgressValue = React.forwardRef<HTMLSpanElement, ProgressValueProps>(
+  ({ className, format, children, ...props }, ref) => {
+    const { value, max, indeterminate } = useProgressContext('Value')
+    const pct = indeterminate ? 0 : clampPct(value ?? 0, max)
+    return (
+      <span
+        ref={ref}
+        className={cn('shrink-0 text-ds-xs text-surface-fg-muted tabular-nums', className)}
+        {...props}
+      >
+        {children ?? (indeterminate ? '' : format ? format(pct, value, max) : `${Math.round(pct)}%`)}
+      </span>
+    )
+  },
+)
+ProgressValue.displayName = 'Progress.Value'
+
+/* ---------------------------------------------------------------------------
+ * Progress — smart all-in-one. Composes the parts for the common cases.
+ * ------------------------------------------------------------------------ */
+
+export interface ProgressProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
+    VariantProps<typeof progressTrackVariants> {
+  /** 0–max. Omit (or null) for an indeterminate bar. */
+  value?: number | null
+  max?: number
+  /** Fill colour. Omit + set `autoColor` to colour by value. */
+  color?: ProgressColor
+  /** Auto-colour the fill by value (0–59 accent · 60–84 warning · 85–100 success · >100 error). @default false */
+  autoColor?: boolean
+  /** Descriptive label rendered before the bar. */
+  label?: React.ReactNode
+  /** Show the `{n}%` readout after the bar. */
+  showValue?: boolean
+  /** Multi-segment bar: each slice is `value` (portion of max) + `color`. Overrides the single indicator. */
+  segments?: Array<{ value: number; color?: ProgressColor }>
+  /** Class for the Track element. */
+  trackClassName?: string
+  /** Class for the single Indicator (ignored when `segments` is set). */
+  indicatorClassName?: string
+}
+
+const ProgressBase = React.forwardRef<HTMLDivElement, ProgressProps>(
+  (
+    {
+      value = null, max = 100, size, color, autoColor, label, showValue, segments,
+      trackClassName, indicatorClassName, className,
+      'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby, ...props
+    },
+    ref,
+  ) => {
+    const labelId = React.useId()
+    const hasLabel = label != null
+    return (
+      <ProgressRoot ref={ref} value={value} max={max} size={size ?? 'md'} className={className} {...props}>
+        {hasLabel && <ProgressLabel id={labelId}>{label}</ProgressLabel>}
+        <ProgressTrack
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledby ?? (hasLabel ? labelId : undefined)}
+          className={cn(segments && 'flex', trackClassName)}
+        >
+          {segments
+            ? segments.map((s, i) => <ProgressSegment key={i} value={s.value} color={s.color} />)
+            : <ProgressIndicator color={color} autoColor={autoColor} className={indicatorClassName} />}
+        </ProgressTrack>
+        {showValue && value != null && <ProgressValue />}
+      </ProgressRoot>
+    )
+  },
+)
+ProgressBase.displayName = 'Progress'
+
+const Progress = Object.assign(ProgressBase, {
+  Root: ProgressRoot,
+  Track: ProgressTrack,
+  Indicator: ProgressIndicator,
+  Segment: ProgressSegment,
+  Label: ProgressLabel,
+  Value: ProgressValue,
+})
+
+export {
+  Progress,
+  ProgressIndicator,
+  ProgressLabel,
+  ProgressRoot,
+  ProgressSegment,
+  ProgressTrack,
+  ProgressValue,
+}

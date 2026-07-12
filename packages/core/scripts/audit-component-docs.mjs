@@ -28,8 +28,9 @@ const ROOT = join(HERE, '..')
 const SRC = join(ROOT, 'src')
 const DOCS = join(ROOT, 'docs', 'components')
 
-const CATEGORIES = ['ui', 'composed', 'shell']
-const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal'])
+const CATEGORIES = ['ui', 'composed', 'shell', 'ai']
+// `blocks` = ai/blocks/*, documented inside block-renderer.md (see build-component-docs.mjs).
+const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal', 'blocks'])
 
 // ── Source scan ─────────────────────────────────────────────────────────────
 

@@ -143,6 +143,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [page-header](docs/components/composed/page-header.md)
 - [page-skeletons](docs/components/composed/page-skeletons.md): Exports: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton
 - [priority-indicator](docs/components/composed/priority-indicator.md)
+- [responsive-modal](docs/components/composed/responsive-modal.md)
 - [rich-chat-input](docs/components/composed/rich-chat-input.md): Compact rich text chat input for unified human+AI workspaces
 - [rich-text-editor](docs/components/composed/rich-text-editor.md): Exports: RichTextEditor, RichTextViewer
 - [schedule-view](docs/components/composed/schedule-view.md)

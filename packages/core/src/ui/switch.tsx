@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import * as React from "react"
 
 import { useFormField } from './form'
+import { type FieldState, resolveFieldState } from './lib/field-state'
 import { springs } from './lib/motion'
 import { cn } from "./lib/utils"
 
@@ -14,6 +15,13 @@ const sizeConfig = {
   lg: { track: 'h-7 w-[52px]', thumb: 'h-6 w-6', travel: 24 },
 } as const
 
+/** Validation border + checked-track tint per state (overrides `color` when set). */
+const stateTintClasses: Record<Exclude<FieldState, 'default'>, string> = {
+  error: 'border-error-7 data-[state=checked]:bg-error-9',
+  warning: 'border-warning-7 data-[state=checked]:bg-warning-9',
+  success: 'border-success-7 data-[state=checked]:bg-success-9',
+}
+
 const colorMap = {
   accent: 'data-[state=checked]:bg-accent-9',
   success: 'data-[state=checked]:bg-success-9',
@@ -21,7 +29,8 @@ const colorMap = {
 } as const
 
 export interface SwitchProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> {
-  error?: boolean
+  /** Validation/feedback state. `'error'` also sets `aria-invalid`. Inherited from `FormField` when omitted. Distinct from `color` (the ON-track tint). */
+  state?: FieldState
   size?: 'sm' | 'md' | 'lg'
   color?: 'accent' | 'success' | 'warning'
   thumbIcon?: React.ReactNode
@@ -30,9 +39,9 @@ export interface SwitchProps extends React.ComponentPropsWithoutRef<typeof Switc
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   SwitchProps
->(({ className, error, size = 'md', color = 'accent', thumbIcon, checked, defaultChecked, onCheckedChange, ...props }, ref) => {
+>(({ className, state: stateProp, size = 'md', color = 'accent', thumbIcon, checked, defaultChecked, onCheckedChange, ...props }, ref) => {
   const fieldCtx = useFormField()
-  const isError = error ?? fieldCtx.state === 'error'
+  const state = resolveFieldState(stateProp, fieldCtx.state)
   const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
   const ariaRequired = props['aria-required'] ?? fieldCtx.required
 
@@ -57,13 +66,13 @@ const Switch = React.forwardRef<
         "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-pill border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
         track,
         colorMap[color],
-        isError && "border-error-7 data-[state=checked]:bg-error-9",
+        state && stateTintClasses[state],
         className
       )}
       checked={checked}
       defaultChecked={defaultChecked}
       onCheckedChange={handleCheckedChange}
-      aria-invalid={isError || undefined}
+      aria-invalid={state === 'error' || undefined}
       aria-describedby={ariaDescribedBy}
       aria-required={ariaRequired || undefined}
       {...props}

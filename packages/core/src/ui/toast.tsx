@@ -299,14 +299,14 @@ function isImageFile(file: UploadFile): boolean {
 
 function getProgressColor(
   status: UploadFile['status'],
-): 'default' | 'success' | 'error' {
+): 'accent' | 'success' | 'error' {
   switch (status) {
     case 'complete':
       return 'success'
     case 'error':
       return 'error'
     default:
-      return 'default'
+      return 'accent'
   }
 }
 

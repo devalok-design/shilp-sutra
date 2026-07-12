@@ -32,7 +32,7 @@
 - **Server-safe page-top header** with title + subtitle + breadcrumbs + actions slot. Renders Breadcrumb internally from the `breadcrumbs` array.
 - **Auto-derived title:** If `title` is omitted, the last breadcrumb's `label` becomes the h1. Saves duplication when the page title matches the breadcrumb leaf.
 - **Breadcrumb contract:** Last item should NOT have an `href` (it's the current page — renders as BreadcrumbPage, not a link). Items with `href` render as BreadcrumbLink.
-- **actions slot:** Typically one to three buttons (Save, Cancel, More). For larger action groups, use ButtonGroup or a toolbar.
+- **actions slot:** Typically one to three buttons (Save, Cancel, More). The slot wraps onto its own line under the title on narrow viewports instead of forcing horizontal overflow, so multiple/wide buttons are mobile-safe. For larger action groups, use ButtonGroup or a toolbar.
 - **Not for tabs / sub-navigation** — pair with Tabs rendered below PageHeader for that.
 
 ## Gotchas

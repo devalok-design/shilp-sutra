@@ -367,7 +367,7 @@
      --radius-overlay-sm    rounded-overlay-sm    Tooltip, Toast
      --radius-overlay       rounded-overlay       Popover, HoverCard, DropdownMenu / ContextMenu / Menubar content, listboxes, NavigationMenu viewport
      --radius-overlay-lg    rounded-overlay-lg    Dialog, AlertDialog, Sheet, BottomSheet, ColorInput picker
-     --radius-pill          rounded-pill          Badge, StatusDot, Radio, Switch, Slider, Progress, Avatar circle, SegmentedControl item
+     --radius-pill          rounded-pill          Badge, Dot, Radio, Switch, Slider, Progress, Avatar circle, SegmentedControl item
      --radius-bubble        rounded-bubble        ChatMessage bubble
      ─────────────────────────────────────────────────────────── */
   --radius-control:        6px;

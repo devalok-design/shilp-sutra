@@ -135,7 +135,7 @@ export const AllStages: Story = {
 export const AllVariants: Story = {
   render: () => {
     const sizes = ['sm', 'md', 'lg'] as const
-    const colors = ['default', 'success', 'warning', 'error'] as const
+    const colors = ['accent', 'success', 'warning', 'error'] as const
 
     return (
       <div className="flex flex-col gap-ds-06 max-w-md">
@@ -169,7 +169,7 @@ export const AllVariants: Story = {
           <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg-muted">With Label</p>
           <div className="flex flex-col gap-ds-03">
             {colors.map((color) => (
-              <Progress key={`label-${color}`} color={color} value={72} showLabel />
+              <Progress key={`label-${color}`} color={color} value={72} showValue />
             ))}
           </div>
         </div>
@@ -189,11 +189,11 @@ export const AutoColor: Story = {
           ? 'success'
           : value >= 60
             ? 'warning'
-            : 'default'
+            : 'accent'
 
     return (
       <div className="flex flex-col gap-ds-04 max-w-md">
-        <Progress value={value} autoColor showLabel />
+        <Progress value={value} autoColor showValue />
         <input
           type="range"
           min={0}
@@ -206,7 +206,7 @@ export const AutoColor: Story = {
         />
         <p className="text-ds-xs text-surface-fg-muted">
           Value: <strong>{value}</strong> — auto color: <strong>{colorLabel}</strong>
-          {' '}(0-59 default, 60-84 warning, 85-100 success, {'>'}100 error)
+          {' '}(0-59 accent, 60-84 warning, 85-100 success, {'>'}100 error)
         </p>
       </div>
     )
@@ -217,5 +217,70 @@ export const AutoColor: Story = {
         story: 'When `autoColor` is true, the indicator color auto-shifts based on value thresholds.',
       },
     },
+  },
+}
+
+// ── New in 0.49.0: label + value, multi-segment, and the compound API ──
+
+export const WithLabelAndValue: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04 max-w-md">
+      <Progress value={72} label="Uploading" showValue />
+      <Progress value={100} color="success" label="Backup" showValue />
+      <Progress value={45} autoColor label="Disk usage" showValue />
+    </div>
+  ),
+  parameters: {
+    docs: { description: { story: 'The smart form: `label` names the bar and renders before it; `showValue` adds the `{n}%` readout after it.' } },
+  },
+}
+
+export const Segments: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-05 max-w-md">
+      <div className="flex flex-col gap-ds-02b">
+        <span className="text-ds-xs text-surface-fg-muted">Budget: 40% spent, 30% committed</span>
+        <Progress segments={[{ value: 40, color: 'success' }, { value: 30, color: 'warning' }]} />
+      </div>
+      <div className="flex flex-col gap-ds-02b">
+        <span className="text-ds-xs text-surface-fg-muted">Storage breakdown</span>
+        <Progress
+          size="lg"
+          segments={[
+            { value: 30, color: 'accent' },
+            { value: 25, color: 'success' },
+            { value: 20, color: 'warning' },
+            { value: 10, color: 'error' },
+          ]}
+        />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: { description: { story: 'Mantine-style multi-segment bars via the `segments` prop — each slice is a portion of `max`.' } },
+  },
+}
+
+export const Compound: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-05 max-w-md">
+      <Progress.Root value={62} size="lg">
+        <Progress.Label id="storage-lbl">Storage</Progress.Label>
+        <Progress.Track aria-labelledby="storage-lbl">
+          <Progress.Indicator color="warning" />
+        </Progress.Track>
+        <Progress.Value format={(pct) => `${pct}% of 50 GB`} />
+      </Progress.Root>
+
+      <Progress.Root value={90}>
+        <Progress.Track aria-label="Sync progress">
+          <Progress.Indicator autoColor />
+        </Progress.Track>
+        <Progress.Value />
+      </Progress.Root>
+    </div>
+  ),
+  parameters: {
+    docs: { description: { story: 'The compound API (Ark UI / Chakra structure) — arrange Label, Track, Indicator and Value however you need. `Progress.Value` accepts a custom `format`.' } },
   },
 }

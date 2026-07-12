@@ -62,6 +62,10 @@ Keyed by kebab-name (`"button"`, `"stat-card"`). Fields:
     // type.name ∈ enum | boolean | string | number | function | ReactNode | ReactElement | object | union
     // non-enum unions carry "raw" with the literal type text
   },
+  "subComponents": {                     // props owned by compound children (§2), NOT the root
+    "TableCell": { "props": { "numeric": { "type": { "name": "boolean" }, "required": false } } },
+    "TableRowLink": { "note": "separate import: ui/table-row-link", "props": { "href": { "type": { "name": "string" }, "required": true } } }
+  },
   "examples": [                          // fenced jsx blocks from the doc, verbatim
     "<Button variant=\"solid\" color=\"error\" ...>Delete project</Button>"
   ],
@@ -102,7 +106,8 @@ Required H2 sections, in order: `Props`, `Defaults`, `Example`, `Composability`,
 
 Parse rules:
 - **Header block**: `- Import:` / `- Server-safe:` / `- Category:` bullets (existing format, unchanged).
-- **Props**: one prop per indented line, `name: type-expression (parenthetical → description)`. Enum values as `"a" | "b"` literals. `(default: X)` parenthetical sets defaultValue when not in Defaults section.
+- **Props**: one prop per indented line, `name: type-expression (parenthetical → description)`. Enum values as `"a" | "b"` literals. `(default: X)` parenthetical sets defaultValue when not in Defaults section. Never cram two props on one line (`href: string; stretch: boolean` is invalid — the parser reads one prop per line and the second is lost/mangled).
+  - **Subcomponent props**: an `### Subpart` H3 heading inside the Props section scopes every prop line beneath it to that subcomponent, emitted under `subComponents[Name].props` — NOT on the root entry. This is load-bearing: `numeric` under `### TableCell / TableHead` must not read as a `<Table>` prop, or an agent writes `<Table numeric>` and hits TS2322 (#132). A heading may name several subparts sharing a block (`### TableCell / TableHead`, split on `/`) and may carry a parenthetical note (`### TableRowLink (separate import: ui/table-row-link)` → `subComponents.TableRowLink.note`). Props above the first `### ` belong to the root.
 - **Defaults**: `name="value"` comma-separated (existing format).
 - **Example**: fenced ```jsx blocks, copied verbatim into `examples[]`.
 - **Composability**: bold-lead bullets. Machine-parsed via a leading tag vocabulary: `**Part:**`, `**Slot:**`, `**Composes:**`, `**Contained-by:**`, `**Context:**`. Untagged bold-lead bullets (like today's prose) remain human prose and land in the manifest as `composition.notes[]` — so existing docs parse without rewrites, and tagging is incremental.

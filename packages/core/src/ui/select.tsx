@@ -8,6 +8,7 @@ import * as React from 'react'
 
 import { useFormField } from './form'
 import { Icon } from './icon'
+import { type FieldState, resolveFieldState } from './lib/field-state'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -50,7 +51,7 @@ export const selectTriggerVariants = cva(
         ghost:
           'border border-transparent bg-transparent hover:bg-surface-raised-hover focus-visible:border-accent-7',
       },
-      color: {
+      state: {
         default: '',
         error: 'border-error-7 text-error-11 focus-visible:ring-error-9',
         success: 'border-success-7',
@@ -63,7 +64,7 @@ export const selectTriggerVariants = cva(
         lg: 'h-ds-lg text-ds-md px-ds-05',
       },
     },
-    defaultVariants: { variant: 'default', color: 'default', size: 'md' },
+    defaultVariants: { variant: 'default', state: 'default', size: 'md' },
   },
 )
 
@@ -82,19 +83,18 @@ export interface SelectTriggerProps
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
->(({ className, children, variant, color, size, ...props }, ref) => {
+>(({ className, children, variant, state: stateProp, size, ...props }, ref) => {
   const fieldCtx = useFormField()
-  const isError =
-    color === 'error' ||
-    (fieldCtx.state === 'error' && color == null)
+  // Explicit `state` prop wins over FormField context (shared precedence).
+  const state = resolveFieldState((stateProp ?? undefined) as FieldState | undefined, fieldCtx.state)
   const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
   const ariaRequired = props['aria-required'] ?? fieldCtx.required
 
   return (
   <SelectPrimitive.Trigger
     ref={ref}
-    className={cn(selectTriggerVariants({ variant, color: isError && !color ? 'error' : color, size }), className)}
-    aria-invalid={isError || undefined}
+    className={cn(selectTriggerVariants({ variant, state: state ?? 'default', size }), className)}
+    aria-invalid={state === 'error' || undefined}
     aria-describedby={ariaDescribedBy}
     aria-required={ariaRequired || undefined}
     {...props}

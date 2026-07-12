@@ -130,6 +130,44 @@ export const LongTitle: Story = {
   },
 }
 
+/**
+ * On a narrow viewport a header with several actions wraps the action cluster
+ * onto its own line instead of forcing the page to scroll sideways (#133).
+ * Resize the canvas below ~420px to see the buttons drop under the title.
+ */
+export const ManyActionsNarrow: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ width: 360 }}>
+        <Story />
+      </div>
+    ),
+  ],
+  args: {
+    title: 'Pay period 15–29 Jan',
+    actions: (
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        {['Axis file', 'NEFT file', 'Record box paid'].map((label) => (
+          <button
+            key={label}
+            style={{
+              padding: '6px 14px',
+              borderRadius: 8,
+              border: '1px solid var(--color-surface-border-strong)',
+              background: 'var(--color-surface-base)',
+              color: 'var(--color-surface-fg)',
+              fontSize: 13,
+              cursor: 'pointer',
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    ),
+  },
+}
+
 export const CustomTitleClass: Story = {
   args: {
     title: 'Analytics',

@@ -9,10 +9,18 @@ import * as React from 'react'
 import { useFormField } from './form'
 import { Icon } from './icon'
 import { IconProvider, type IconSize } from './icon-context'
+import { type FieldState, resolveFieldState } from './lib/field-state'
 import type { IconInput } from './lib/icon-input'
 import { springs, tweens } from './lib/motion'
 import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
+
+/** Border tint per validation state, applied to the trigger. */
+const stateBorderClasses: Record<Exclude<FieldState, 'default'>, string> = {
+  error: 'border-error-7',
+  warning: 'border-warning-7',
+  success: 'border-success-7',
+}
 
 export const comboboxTriggerVariants = cva(
   [
@@ -139,6 +147,8 @@ interface ComboboxBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   accessibleLabel?: string
   /** Size of the trigger. Controls height, text size, padding, and pill sizing. */
   size?: ComboboxSize
+  /** Validation/feedback state. `'error'` also sets `aria-invalid`. Inherited from `FormField` when omitted. */
+  state?: FieldState
 }
 
 interface ComboboxSingleProps extends ComboboxBaseProps {
@@ -178,6 +188,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       renderOption,
       accessibleLabel,
       size: sizeProp = 'md',
+      state: stateProp,
       ...rest
     },
     ref,
@@ -403,7 +414,8 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
     }
 
     const fieldCtx = useFormField()
-    const isError = fieldCtx.state === 'error'
+    const state = resolveFieldState(stateProp, fieldCtx.state)
+    const isError = state === 'error'
     const ariaDescribedBy = fieldCtx.helperTextId
     const ariaRequired = fieldCtx.required
 
@@ -426,6 +438,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             className={cn(
               comboboxTriggerVariants({ size }),
               open && 'border-accent-7',
+              state && stateBorderClasses[state],
               triggerClassName,
             )}
           >

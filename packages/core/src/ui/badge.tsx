@@ -3,9 +3,10 @@
 import { Slot } from '@primitives/react-slot'
 import { IconCheck, IconX } from '@tabler/icons-react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 
+import { Dot } from './dot'
 import { Icon } from './icon'
 import type { IconInput } from './lib/icon-input'
 import { durations,springs } from './lib/motion'
@@ -161,7 +162,6 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
     },
     ref,
   ) => {
-    const prefersReducedMotion = useReducedMotion()
     const resolvedVariant = variant ?? 'subtle'
     const resolvedColor = color ?? 'default'
     const resolvedSize = size ?? 'md'
@@ -240,7 +240,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
         {...(Comp === 'div' && onClick ? { role: 'button' as const, tabIndex: 0 } : {})}
         {...props}
       >
-        {/* Dot indicator — animated entrance + continuous pulse */}
+        {/* Dot indicator — animated entrance, uses the shared <Dot> (current colour + pulse) */}
         <AnimatePresence>
           {dot && (
             <motion.span
@@ -249,15 +249,9 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
               transition={springs.snappy}
-              className="relative inline-flex h-1.5 w-1.5 shrink-0"
-              aria-hidden="true"
+              className="inline-flex shrink-0"
             >
-              <motion.span
-                className="absolute inset-0 rounded-pill bg-current"
-                animate={prefersReducedMotion ? undefined : { scale: [1, 2.5], opacity: [0.35, 0] }}
-                transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, repeatDelay: 0.3, duration: 1.2, ease: [0, 0, 0.58, 1] }}
-              />
-              <span className="relative h-1.5 w-1.5 rounded-pill bg-current" />
+              <Dot color="current" size="sm" pulse />
             </motion.span>
           )}
         </AnimatePresence>

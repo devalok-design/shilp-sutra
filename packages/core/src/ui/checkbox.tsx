@@ -5,8 +5,16 @@ import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 
 import { useFormField } from './form'
+import { type FieldState, resolveFieldState } from './lib/field-state'
 import { durations } from './lib/motion'
 import { cn } from './lib/utils'
+
+/** Border + background tint per validation state (checked state uses accent regardless). */
+const stateTintClasses: Record<Exclude<FieldState, 'default'>, string> = {
+  error: 'border-error-7 bg-error-3',
+  warning: 'border-warning-7 bg-warning-3',
+  success: 'border-success-7 bg-success-3',
+}
 
 /**
  * Props for Checkbox — a Radix-powered accessible checkbox with error state styling and
@@ -24,7 +32,7 @@ import { cn } from './lib/utils'
  *
  * @example
  * // Error state when required checkbox is not checked:
- * <Checkbox error={!termsAccepted} checked={termsAccepted} onCheckedChange={(v) => setTerms(v === true)} />
+ * <Checkbox state={!termsAccepted ? 'error' : 'default'} checked={termsAccepted} onCheckedChange={(v) => setTerms(v === true)} />
  *
  * @example
  * // "Select all" checkbox with indeterminate state:
@@ -36,7 +44,8 @@ import { cn } from './lib/utils'
  * // These are just a few ways — feel free to combine props creatively!
  */
 export interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
-  error?: boolean
+  /** Validation/feedback state. `'error'` also sets `aria-invalid`. Inherited from `FormField` when omitted. */
+  state?: FieldState
   indeterminate?: boolean
   /** Control size — `sm` (20px), `md` (24px, default, WCAG compliant), `lg` (28px). */
   size?: 'sm' | 'md' | 'lg'
@@ -57,7 +66,7 @@ const checkboxIconClasses = {
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps
->(({ className, error, indeterminate, size = 'md', checked, onCheckedChange, defaultChecked, ...props }, ref) => {
+>(({ className, state: stateProp, indeterminate, size = 'md', checked, onCheckedChange, defaultChecked, ...props }, ref) => {
   // Track internal state so AnimatePresence works for both controlled & uncontrolled usage
   const isControlled = checked !== undefined
   const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(
@@ -65,7 +74,7 @@ const Checkbox = React.forwardRef<
   )
 
   const fieldCtx = useFormField()
-  const isError = error ?? fieldCtx.state === 'error'
+  const state = resolveFieldState(stateProp, fieldCtx.state)
   const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
   const ariaRequired = props['aria-required'] ?? fieldCtx.required
 
@@ -97,10 +106,10 @@ const Checkbox = React.forwardRef<
         'data-[state=unchecked]:hover:border-accent-7 data-[state=unchecked]:hover:bg-surface-raised-active',
         'data-[state=checked]:bg-accent-9 data-[state=checked]:border-accent-7 data-[state=checked]:text-accent-fg',
         'data-[state=indeterminate]:bg-accent-9 data-[state=indeterminate]:border-accent-7 data-[state=indeterminate]:text-accent-fg',
-        isError && 'border-error-7 bg-error-3',
+        state && stateTintClasses[state],
         className,
       )}
-      aria-invalid={isError || undefined}
+      aria-invalid={state === 'error' || undefined}
       aria-describedby={ariaDescribedBy}
       aria-required={ariaRequired || undefined}
       {...props}

@@ -9,6 +9,7 @@ import * as React from 'react'
 import { useIsMobile } from '../hooks/use-mobile'
 import { Icon } from './icon'
 import { motionProps,springs, tweens } from './lib/motion'
+import { useControllableOpen } from './lib/use-controllable-open'
 import { cn } from './lib/utils'
 
 // ── Internal open-state context ──────────────────────────────────────
@@ -68,26 +69,16 @@ const Sheet: React.FC<React.ComponentPropsWithoutRef<typeof SheetPrimitive.Root>
   children,
   ...props
 }) => {
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
-  const isControlled = controlledOpen !== undefined
-  const open = isControlled ? controlledOpen : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (value: boolean) => {
-      if (!isControlled) setUncontrolledOpen(value)
-      onOpenChange?.(value)
-    },
-    [isControlled, onOpenChange],
-  )
+  const { open, setOpen, close } = useControllableOpen({ open: controlledOpen, defaultOpen, onOpenChange })
 
   const contextValue = React.useMemo(
-    () => ({ open, onClose: () => handleOpenChange(false) }),
-    [open, handleOpenChange],
+    () => ({ open, onClose: close }),
+    [open, close],
   )
 
   return (
     <SheetOpenContext.Provider value={contextValue}>
-      <SheetPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props}>
+      <SheetPrimitive.Root open={open} onOpenChange={setOpen} {...props}>
         {children}
       </SheetPrimitive.Root>
     </SheetOpenContext.Provider>

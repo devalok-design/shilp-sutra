@@ -1,185 +1,106 @@
 'use client'
 
 import { IconChevronDown } from '@tabler/icons-react'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { AnimatePresence,motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 
-import { Icon } from '../ui/icon'
-import { IconProvider } from '../ui/icon-context'
+import { Badge } from '../ui/badge'
+import { Dot, type DotColor } from '../ui/dot'
 import type { IconInput } from '../ui/lib/icon-input'
 import { motionProps } from '../ui/lib/motion'
-import { normalizeIcon } from '../ui/lib/normalize-icon'
-import { cn } from '../ui/lib/utils'
 
-const statusBadgeVariants = cva(
-  'inline-flex items-center gap-ds-02b rounded-pill font-body',
-  {
-    variants: {
-      status: {
-        active: 'bg-success-3 text-success-11',
-        pending: 'bg-warning-3 text-warning-11',
-        approved: 'bg-success-3 text-success-11',
-        rejected: 'bg-error-3 text-error-11',
-        completed: 'bg-success-3 text-success-11',
-        blocked: 'bg-error-3 text-error-11',
-        'in-progress': 'bg-accent-3 text-accent-11',
-        review: 'bg-info-3 text-info-11',
-        cancelled: 'bg-surface-raised text-surface-fg-subtle',
-        draft: 'bg-surface-raised text-surface-fg-subtle',
-      },
-      color: {
-        success: 'bg-success-3 text-success-11',
-        warning: 'bg-warning-3 text-warning-11',
-        error: 'bg-error-3 text-error-11',
-        info: 'bg-info-3 text-info-11',
-        neutral: 'bg-surface-raised text-surface-fg-subtle',
-      },
-      size: {
-        sm: 'px-ds-03 py-ds-01 text-ds-xs font-semibold',
-        md: 'px-ds-04 py-ds-02 text-ds-sm font-medium',
-      },
-    },
-    defaultVariants: {
-      size: 'md',
-    },
-  },
-)
+/**
+ * Domain work-statuses → the shared intent colour used by both the Badge pill
+ * and the leading Dot. StatusBadge is a thin semantic wrapper: it owns the
+ * status vocabulary and composes `<Badge>` + `<Dot>` rather than re-styling a pill.
+ */
+type StatusKey =
+  | 'active' | 'pending' | 'approved' | 'rejected' | 'completed'
+  | 'blocked' | 'in-progress' | 'review' | 'cancelled' | 'draft'
 
-const dotColorMap: Record<string, string> = {
-  active: 'bg-success-9',
-  pending: 'bg-warning-9',
-  approved: 'bg-success-9',
-  rejected: 'bg-error-9',
-  completed: 'bg-success-9',
-  blocked: 'bg-error-9',
-  'in-progress': 'bg-accent-9',
-  review: 'bg-info-9',
-  cancelled: 'bg-disabled',
-  draft: 'bg-surface-fg-subtle',
+// Intent colours shared by Badge + Dot (never 'current' — that's a Badge-internal mode).
+type IntentColor = Exclude<DotColor, 'current'>
+
+const STATUS_TO_COLOR: Record<StatusKey, IntentColor> = {
+  active: 'success',
+  approved: 'success',
+  completed: 'success',
+  pending: 'warning',
+  rejected: 'error',
+  blocked: 'error',
+  'in-progress': 'accent',
+  review: 'info',
+  cancelled: 'neutral',
+  draft: 'neutral',
 }
 
-const colorDotMap: Record<string, string> = {
-  success: 'bg-success-9',
-  warning: 'bg-warning-9',
-  error: 'bg-error-9',
-  info: 'bg-info-9',
-  neutral: 'bg-surface-fg-subtle',
-}
+type StatusColor = 'success' | 'warning' | 'error' | 'info' | 'neutral'
 
 interface StatusBadgeBaseProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children' | 'color'> {
   label?: string
   hideDot?: boolean
-  size?: VariantProps<typeof statusBadgeVariants>['size']
+  size?: 'sm' | 'md'
   onClick?: () => void
+  /** Trailing icon. When omitted on a clickable badge, a chevron is shown. */
   icon?: IconInput
 }
 
 interface StatusBadgeWithStatus extends StatusBadgeBaseProps {
-  status?: VariantProps<typeof statusBadgeVariants>['status']
+  status?: StatusKey
   color?: never
 }
 
 interface StatusBadgeWithColor extends StatusBadgeBaseProps {
   status?: never
-  color: 'success' | 'warning' | 'error' | 'info' | 'neutral'
+  color: StatusColor
 }
 
 export type StatusBadgeProps = StatusBadgeWithStatus | StatusBadgeWithColor
 
-/* Between durations.moderate02 (0.24) and durations.slow01 (0.4) — intentional for smooth morph */
+/* Between durations.moderate02 (0.24) and slow01 (0.4) — smooth status morph. */
 const statusMorphTransition = { duration: 0.3, ease: 'easeOut' as const }
 
-const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
-  ({ status, color, size, label, hideDot = false, onClick, icon, className, ...props }, ref) => {
+const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+
+const StatusBadge = React.forwardRef<HTMLElement, StatusBadgeProps>(
+  ({ status, color, size = 'md', label, hideDot = false, onClick, icon, className, ...props }, ref) => {
+    // A `color` wins if given; otherwise derive from `status` (default 'pending').
+    const key = color ?? status ?? 'pending'
+    const dotColor: IntentColor = color ?? STATUS_TO_COLOR[(status ?? 'pending') as StatusKey]
+    const displayLabel = label ?? titleCase(color ?? status ?? 'pending').replace('-', ' ')
     const isClickable = onClick != null
-    const Tag = isClickable ? motion.button : motion.span
-    const clickableClasses = isClickable ? 'cursor-pointer hover:opacity-80 transition-opacity' : undefined
 
-    const trailingIcon = icon != null
-      ? <IconProvider size="xs">{normalizeIcon(icon)}</IconProvider>
-      : isClickable
-        ? <Icon icon={IconChevronDown} size="xs" className="text-current/50 -mr-0.5 shrink-0" />
-        : null
-
-    if (color != null) {
-      // Color branch — color is the styling key
-      const displayLabel = label ?? (color.charAt(0).toUpperCase() + color.slice(1))
-      const dotColor = colorDotMap[color]
-
-      return (
-        <AnimatePresence mode="wait">
-          <Tag
-            key={color}
-            ref={ref as any}
-            {...(isClickable ? { type: 'button' as const, onClick } : {})}
-            initial={{ opacity: 0.6, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0.6, scale: 0.95 }}
-            transition={statusMorphTransition}
-            className={cn(
-              statusBadgeVariants({ color, size }),
-              clickableClasses,
-              className,
-            )}
-            {...motionProps(props)}
-          >
-            {!hideDot && (
-              <span
-                className={cn(
-                  'shrink-0 rounded-pill',
-                  size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-[8px] w-[8px]',
-                  dotColor,
-                )}
-                aria-hidden="true"
-              />
-            )}
-            {displayLabel}
-            {trailingIcon}
-          </Tag>
-        </AnimatePresence>
-      )
-    }
-
-    // Status branch — derive styling from status (default: 'pending')
-    const statusKey = status ?? 'pending'
-    const displayLabel = label ?? (statusKey.charAt(0).toUpperCase() + statusKey.slice(1))
-    const dotColor = dotColorMap[statusKey]
+    // Trailing: an explicit icon, else a chevron for clickable badges.
+    const endIcon: IconInput | undefined = icon ?? (isClickable ? IconChevronDown : undefined)
 
     return (
       <AnimatePresence mode="wait">
-        <Tag
-          key={statusKey}
-          ref={ref as any}
-          {...(isClickable ? { type: 'button' as const, onClick } : {})}
-          initial={{ opacity: 0.6 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0.6 }}
+        <motion.span
+          key={key}
+          initial={{ opacity: 0.6, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0.6, scale: 0.95 }}
           transition={statusMorphTransition}
-          className={cn(
-            statusBadgeVariants({ status: statusKey, size }),
-            clickableClasses,
-            className,
-          )}
+          className="inline-flex"
           {...motionProps(props)}
         >
-          {!hideDot && (
-            <span
-              className={cn(
-                'shrink-0 rounded-pill',
-                size === 'sm' ? 'h-ds-02b w-ds-02b' : 'h-[8px] w-[8px]',
-                dotColor,
-              )}
-              aria-hidden="true"
-            />
-          )}
-          {displayLabel}
-          {trailingIcon}
-        </Tag>
+          <Badge
+            ref={ref}
+            variant="soft"
+            color={dotColor}
+            size={size}
+            onClick={onClick}
+            startIcon={!hideDot ? <Dot color={dotColor} size="sm" /> : undefined}
+            endIcon={endIcon}
+            className={className}
+          >
+            {displayLabel}
+          </Badge>
+        </motion.span>
       </AnimatePresence>
     )
   },
 )
 StatusBadge.displayName = 'StatusBadge'
 
-export { StatusBadge, statusBadgeVariants }
+export { StatusBadge }

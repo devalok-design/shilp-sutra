@@ -16,7 +16,8 @@
     Reveal is opacity-based: buttons stay in the tab order permanently, appear on row hover AND :focus-within, and are always visible on touch (pointer-coarse). Give the column a visually-hidden header.
 
 ### TableRowLink (separate import: ui/table-row-link — client component)
-    href: string (required); stretch: boolean (default true)
+    href: string (required)
+    stretch: boolean (default: true)
     A real anchor placed in the row's primary cell (`<TableCell className="relative">`), stretched across the row via a pseudo-element — cmd/ctrl+click, middle-click, and context menu work, unlike onClick-on-row. Keyboard focus draws a row-level ring. Other interactive elements in the row need `className="relative z-[1]"`. `stretch={false}` = title-only link (keeps row text selectable).
 
 ## Compound Components

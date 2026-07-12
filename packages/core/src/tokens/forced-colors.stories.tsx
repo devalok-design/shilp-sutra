@@ -358,7 +358,7 @@ export const ComponentMatrix: Story = {
         </div>
       </Section>
 
-      <Section title="Avatar-like circles / StatusDot substitute">
+      <Section title="Avatar-like circles / Dot substitute">
         <p className="text-ds-md text-surface-fg-muted">
           These rely on color alone to communicate state — in forced-colors
           they collapse to the same shade. Pair with text/iconography for

@@ -1,7 +1,7 @@
 # Breadcrumb
 
 - Import: @devalok/shilp-sutra/ui/breadcrumb
-- Server-safe: No
+- Server-safe: Yes
 - Category: ui
 
 ## Compound Components

@@ -134,8 +134,9 @@ describe('StatusBadge', () => {
   })
 
   it('color wins over status when both are provided', () => {
+    // StatusBadge composes <Badge variant="soft"> inside a motion wrapper; the
+    // soft-error pill carries bg-error-3 (the Dot carries bg-error-9).
     const { container } = render(<StatusBadge status="active" color="error" />)
-    const badge = container.firstElementChild!
-    expect(badge.className).toContain('bg-error-3')
+    expect(container.querySelector('[class*="bg-error-3"]')).toBeInTheDocument()
   })
 })

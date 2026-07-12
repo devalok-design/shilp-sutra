@@ -30,7 +30,7 @@ describe('PageHeader', () => {
         ]}
       />,
     )
-    expect(screen.getByRole('navigation', { name: 'Breadcrumb' })).toBeInTheDocument()
+    expect(screen.getByRole('navigation', { name: 'breadcrumb' })).toBeInTheDocument()
     expect(screen.getByText('Home')).toBeInTheDocument()
     expect(screen.getByText('Projects')).toBeInTheDocument()
     // "Current" appears as both a breadcrumb span and as the resolved h1 title
@@ -68,6 +68,27 @@ describe('PageHeader', () => {
       <PageHeader title="Page" actions={<button>Create</button>} />,
     )
     expect(screen.getByRole('button', { name: 'Create' })).toBeInTheDocument()
+  })
+
+  it('lets the actions cluster wrap instead of overflowing on narrow viewports', () => {
+    render(
+      <PageHeader
+        title="Pay period"
+        actions={
+          <>
+            <button>Axis file</button>
+            <button>NEFT file</button>
+            <button>Record box paid</button>
+          </>
+        }
+      />,
+    )
+    // The actions slot must wrap (not shrink-0) so multiple buttons drop to
+    // their own line instead of forcing horizontal overflow (#133).
+    const actionsSlot = screen.getByRole('button', { name: 'Axis file' })
+      .parentElement as HTMLElement
+    expect(actionsSlot).toHaveClass('flex-wrap')
+    expect(actionsSlot).not.toHaveClass('shrink-0')
   })
 
   it('merges custom className', () => {

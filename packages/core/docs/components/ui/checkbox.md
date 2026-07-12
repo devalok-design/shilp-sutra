@@ -8,7 +8,7 @@
     checked: boolean | "indeterminate"
     onCheckedChange: (checked: boolean | "indeterminate") => void
     size: "sm" | "md" | "lg"
-    error: boolean (shows red border)
+    state: "default" | "error" | "warning" | "success" (validation border/bg tint; error sets aria-invalid. Inherited from FormField when omitted)
     indeterminate: boolean (overrides checked, shows dash icon)
     disabled: boolean
 
@@ -37,6 +37,9 @@
 - WCAG 2.5.8 minimum target size met at md (24px); sm (20px) may fail if not paired with enough label hit area
 
 ## Changes
+### v0.49.0
+- **BREAKING** Removed the `error: boolean` prop; use `state` (`FieldState = "default" | "error" | "warning" | "success"`). Migrate `<Checkbox error />` → `<Checkbox state="error" />`. Gains `warning`/`success` tints and now inherits state from `FormField`.
+
 ### v0.22.0
 - **Changed** Check indicator animation from scale-bounce to path-draw (stroke draws progressively). Indeterminate dash also draws in.
 - **Fixed** Uncontrolled checkbox never showed checkmark — `checked` from props was `undefined`, so `isActive` was always `false`. Now tracks internal state.

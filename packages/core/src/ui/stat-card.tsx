@@ -12,6 +12,7 @@ import { useLink } from './lib/link-context'
 import { springs, tweens } from './lib/motion'
 import { normalizeIcon } from './lib/normalize-icon'
 import { cn } from './lib/utils'
+import { Progress, type ProgressColor } from './progress'
 import { Skeleton } from './skeleton'
 import { type FlashPreset, type FlashSpec, type FlashSpeed,StatFlash } from './stat-flash'
 
@@ -197,16 +198,17 @@ function Sparkline({
 
 function ProgressBar({ progress, label }: { progress: number; label: string }) {
   const clamped = Math.max(0, Math.min(100, progress))
-  const barColor =
-    clamped >= 90 ? 'bg-success-9' : clamped >= 70 ? 'bg-warning-9' : 'bg-accent-9'
+  // StatCard's own thresholds (90 = success, 70 = warning) — deliberately distinct
+  // from Progress's autoColor (85/60), so we pass an explicit color.
+  const barColor: ProgressColor =
+    clamped >= 90 ? 'success' : clamped >= 70 ? 'warning' : 'accent'
 
   return (
-    <div className="h-1 w-full rounded-pill bg-surface-raised" role="progressbar" aria-label={`${label} progress`} aria-valuenow={clamped} aria-valuemin={0} aria-valuemax={100}>
-      <div
-        className={cn('h-full rounded-pill transition-[width] duration-moderate-02 ease-productive-standard', barColor)}
-        style={{ width: `${clamped}%` }}
-      />
-    </div>
+    <Progress.Root value={clamped} size="sm">
+      <Progress.Track aria-label={`${label} progress`}>
+        <Progress.Indicator color={barColor} />
+      </Progress.Track>
+    </Progress.Root>
   )
 }
 

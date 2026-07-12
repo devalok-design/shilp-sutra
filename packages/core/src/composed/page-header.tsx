@@ -1,6 +1,14 @@
 // @server-safe
 import * as React from 'react'
 
+import {
+  Breadcrumb as BreadcrumbNav,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '../ui/breadcrumb'
 import { cn } from '../ui/lib/utils'
 
 export interface Breadcrumb {
@@ -34,52 +42,30 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
         {...props}
       >
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav aria-label="Breadcrumb" className="flex items-center gap-ds-02b">
-            {breadcrumbs.map((crumb, index) => (
-              <React.Fragment key={index}>
-                {index > 0 && (
-                  <svg
-                    width={16}
-                    height={16}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                    className="text-surface-fg-subtle"
-                  >
-                    <path d="M9 6l6 6l-6 6" />
-                  </svg>
-                )}
-                {crumb.href ? (
-                  <a
-                    href={crumb.href}
-                    className="text-ds-sm text-surface-fg-subtle transition-colors hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 rounded-control-inner"
-                  >
-                    {crumb.label}
-                  </a>
-                ) : (
-                  <span
-                    className={cn(
-                      'text-ds-sm',
-                      index === breadcrumbs.length - 1
-                        ? 'text-surface-fg'
-                        : 'text-surface-fg-subtle',
-                    )}
-                  >
-                    {crumb.label}
-                  </span>
-                )}
-              </React.Fragment>
-            ))}
-          </nav>
+          <BreadcrumbNav className="text-ds-sm">
+            <BreadcrumbList>
+              {breadcrumbs.map((crumb, index) => {
+                const isLast = index === breadcrumbs.length - 1
+                return (
+                  <React.Fragment key={index}>
+                    {index > 0 && <BreadcrumbSeparator />}
+                    <BreadcrumbItem>
+                      {crumb.href && !isLast ? (
+                        <BreadcrumbLink href={crumb.href}>{crumb.label}</BreadcrumbLink>
+                      ) : (
+                        <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                      )}
+                    </BreadcrumbItem>
+                  </React.Fragment>
+                )
+              })}
+            </BreadcrumbList>
+          </BreadcrumbNav>
         )}
 
         {(resolvedTitle || subtitle || actions) && (
-          <div className="flex items-start justify-between gap-ds-05">
-            <div className="flex flex-col gap-ds-02b">
+          <div className="flex flex-wrap items-start justify-between gap-ds-05">
+            <div className="flex min-w-0 flex-col gap-ds-02b">
               {resolvedTitle && (
                 <h1
                   className={cn(
@@ -98,7 +84,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
             </div>
 
             {actions && (
-              <div className="flex shrink-0 items-center gap-ds-03">{actions}</div>
+              <div className="flex flex-wrap items-center gap-ds-03">{actions}</div>
             )}
           </div>
         )}

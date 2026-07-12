@@ -181,7 +181,7 @@ export const ValidationColors: Story = {
       <div className="flex flex-col gap-ds-02">
         <Label>Default</Label>
         <Select>
-          <SelectTrigger color="default" className="w-[240px]">
+          <SelectTrigger state="default" className="w-[240px]">
             <SelectValue placeholder="No validation" />
           </SelectTrigger>
           <SelectContent>
@@ -192,7 +192,7 @@ export const ValidationColors: Story = {
       <div className="flex flex-col gap-ds-02">
         <Label>Error</Label>
         <Select>
-          <SelectTrigger color="error" className="w-[240px]">
+          <SelectTrigger state="error" className="w-[240px]">
             <SelectValue placeholder="Error state" />
           </SelectTrigger>
           <SelectContent>
@@ -203,7 +203,7 @@ export const ValidationColors: Story = {
       <div className="flex flex-col gap-ds-02">
         <Label>Success</Label>
         <Select>
-          <SelectTrigger color="success" className="w-[240px]">
+          <SelectTrigger state="success" className="w-[240px]">
             <SelectValue placeholder="Success state" />
           </SelectTrigger>
           <SelectContent>
@@ -214,7 +214,7 @@ export const ValidationColors: Story = {
       <div className="flex flex-col gap-ds-02">
         <Label>Warning</Label>
         <Select>
-          <SelectTrigger color="warning" className="w-[240px]">
+          <SelectTrigger state="warning" className="w-[240px]">
             <SelectValue placeholder="Warning state" />
           </SelectTrigger>
           <SelectContent>

@@ -4,6 +4,16 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.49.0 — breaking changes (review before release)
+
+> ⚠️ Auto-stubbed by `version-packages`. This version has breaking entries in BREAKING.json. **Expand each into before→after migration steps on the Version Packages PR before publishing.**
+
+Unified form-control validation state: one `state` prop (type FieldState) replaces the `error` boolean (Checkbox/Switch) and the `color` prop (Select). Radio/Combobox gain an explicit `state`. Also: Progress redesigned as a compound component (`showLabel`→`showValue`, color `default`→`accent`).
+
+Removed:
+- `statusBadgeVariants` → use `StatusBadge now composes <Badge variant="soft"> + <Dot> and has no standalone CVA. Style via Badge/Dot props or className.`
+- `StatusDot` → use `Merged into <Dot>. Map: healthy → <Dot color="success" pulse>, warning → <Dot color="warning">, critical → <Dot color="error">, neutral → <Dot color="neutral">, inactive → <Dot color="neutral" variant="off">.`
+
 ## v0.48.0 — Emoji picker migrated to frimousse (native-only)
 
 The emoji picker moved from `@emoji-mart/react` to **frimousse**. `@emoji-mart/react` never declared React 19 support (`peer react "^16.8 || ^17 || ^18"`), so React-19 consumers using `EmojiPicker`, `RichChatInput`, or `RichTextEditor` hit a hard `ERESOLVE` on install. frimousse is React 18/19 native. **Non-emoji component APIs are unchanged.**

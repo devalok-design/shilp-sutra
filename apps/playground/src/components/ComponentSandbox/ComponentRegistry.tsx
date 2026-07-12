@@ -286,7 +286,7 @@ export const COMPONENT_REGISTRY: ComponentEntry[] = [
       <div className="flex items-center gap-2">
         <Checkbox
           disabled={props.disabled}
-          error={props.error}
+          state={props.error ? 'error' : undefined}
           defaultChecked={props.checked}
         />
         <label className="text-ds-md text-surface-fg">{props.label}</label>
@@ -326,7 +326,7 @@ export const COMPONENT_REGISTRY: ComponentEntry[] = [
       <div className="flex items-center gap-2">
         <Switch
           disabled={props.disabled}
-          error={props.error}
+          state={props.error ? 'error' : undefined}
           defaultChecked={props.checked}
         />
         <label className="text-ds-md text-surface-fg">{props.label}</label>

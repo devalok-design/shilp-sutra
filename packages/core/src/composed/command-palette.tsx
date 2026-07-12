@@ -471,7 +471,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                             <kbd
                               key={i}
                               className={cn(
-                                'inline-flex min-w-[20px] items-center justify-center rounded border px-ds-02b py-ds-01 text-ds-xs font-medium shadow-kbd transition-colors duration-fast-02 ease-productive-standard',
+                                'inline-flex min-w-ds-05b items-center justify-center rounded border px-ds-02b py-ds-01 text-ds-xs font-medium shadow-kbd transition-colors duration-fast-02 ease-productive-standard',
                                 isActive
                                   ? 'bg-accent-2 text-accent-11 border-accent-6'
                                   : 'bg-surface-raised text-surface-fg-subtle border-surface-border-strong',
@@ -522,11 +522,11 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                       </kbd>
                     </div>
                   ) : hint.keys === '↵' ? (
-                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
+                    <kbd className="inline-flex h-ds-05b items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
                       <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                   ) : (
-                    <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
+                    <kbd className="inline-flex h-ds-05b items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
                       {hint.keys}
                     </kbd>
                   )}

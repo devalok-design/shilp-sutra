@@ -48,7 +48,7 @@ const iconSizeMap: Record<NonNullable<NumberInputSize>, IconSize> = {
 
 /** Maps size to input text and width classes */
 const inputSizeMap: Record<NonNullable<NumberInputSize>, string> = {
-  xs: 'text-ds-sm w-[28px]',
+  xs: 'text-ds-sm w-ds-06b',
   sm: 'text-ds-sm w-ds-sm-plus',
   md: 'text-ds-md w-ds-sm-plus',
   lg: 'text-ds-md w-ds-md',

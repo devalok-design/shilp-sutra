@@ -305,7 +305,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
             className={cn(
               'shrink-0 rounded-pill text-current/60 hover:text-current hover:bg-current/10 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-accent-9',
               resolvedSize === 'xs'
-                ? 'p-0 -mr-0.5 min-w-[16px] min-h-[16px]'
+                ? 'p-0 -mr-0.5 min-w-ds-05 min-h-ds-05'
                 : 'p-px',
             )}
             aria-label={

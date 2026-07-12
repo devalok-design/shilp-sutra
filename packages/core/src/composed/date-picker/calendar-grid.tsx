@@ -290,7 +290,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
                     <span
                       key={idx}
                       data-event-dot
-                      className="h-[4px] w-[4px] rounded-pill"
+                      className="h-ds-02 w-ds-02 rounded-pill"
                       style={{ backgroundColor: evt.color ?? 'var(--color-accent-9)' }}
                     />
                   ))}

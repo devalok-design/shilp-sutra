@@ -224,7 +224,7 @@ const Avatar = React.forwardRef<
       {showBadge && (
         badge === 'dot' ? (
           <span
-            className="absolute -right-0.5 -top-0.5 h-[8px] w-[8px] rounded-pill bg-error-9 ring-2 ring-surface-raised"
+            className="absolute -right-0.5 -top-0.5 h-ds-03 w-ds-03 rounded-pill bg-error-9 ring-2 ring-surface-raised"
             data-slot="avatar-badge-dot"
             aria-hidden="true"
           />
@@ -233,7 +233,7 @@ const Avatar = React.forwardRef<
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={springs.smooth}
-            className="absolute -right-1 -top-1 flex min-w-[16px] items-center justify-center rounded-pill bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-error-fg ring-2 ring-surface-raised"
+            className="absolute -right-1 -top-1 flex min-w-ds-05 items-center justify-center rounded-pill bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-error-fg ring-2 ring-surface-raised"
             data-slot="avatar-badge"
             role="status"
             aria-label={`${badge > 99 ? '99+' : badge} notifications`}

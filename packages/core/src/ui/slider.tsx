@@ -12,7 +12,7 @@ const sliderTrackVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-[4px]',
+        sm: 'h-ds-02',
         md: 'h-ds-02b',
         lg: 'h-[10px]',
       },

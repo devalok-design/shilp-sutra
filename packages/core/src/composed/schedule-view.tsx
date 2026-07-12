@@ -193,7 +193,7 @@ function DayColumn({
   }
 
   return (
-    <div className="flex flex-1 flex-col min-w-[80px]">
+    <div className="flex flex-1 flex-col min-w-ds-11">
       {showHeader && (
         <div
           className={cn(
@@ -261,7 +261,7 @@ function DayColumn({
         {/* Current time indicator */}
         {nowIndicatorTop != null && (
           <div
-            className="absolute left-0 right-0 h-[2px] bg-error-9 z-10 pointer-events-none"
+            className="absolute left-0 right-0 h-ds-01 bg-error-9 z-10 pointer-events-none"
             style={{ top: `${nowIndicatorTop}%` }}
             aria-hidden="true"
           >

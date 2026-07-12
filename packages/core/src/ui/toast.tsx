@@ -106,7 +106,7 @@ function TimerBar({
 }) {
   const config = TOAST_TYPE_CONFIG[type]
   return (
-    <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden">
+    <div className="absolute bottom-0 left-0 right-0 h-ds-01 overflow-hidden">
       <div
         className={cn(
           'h-full w-full origin-left opacity-30',

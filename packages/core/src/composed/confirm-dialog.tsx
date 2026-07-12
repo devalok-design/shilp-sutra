@@ -60,7 +60,7 @@ const ConfirmDialog = React.forwardRef<HTMLDivElement, ConfirmDialogProps>(
           </AlertDialogHeader>
           <AlertDialogFooter>
             <Button
-              variant="outline"
+              variant="soft"
               disabled={loading}
               onClick={() => onOpenChange(false)}
             >
@@ -69,10 +69,10 @@ const ConfirmDialog = React.forwardRef<HTMLDivElement, ConfirmDialogProps>(
             <Button
               variant="solid"
               color={color}
-              disabled={loading}
+              loading={loading}
               onClick={() => onConfirm()}
             >
-              {loading ? 'Processing...' : confirmText}
+              {confirmText}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

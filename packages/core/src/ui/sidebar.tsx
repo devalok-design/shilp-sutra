@@ -247,7 +247,7 @@ const Sidebar = forwardRef<
         <aside
           aria-label="Sidebar"
           className={cn(
-            'flex h-full w-(--sidebar-width) flex-col bg-surface-raised text-surface-fg',
+            'flex h-full w-(--sidebar-width) flex-col bg-surface-chrome text-surface-fg',
             className,
           )}
           ref={ref}
@@ -264,7 +264,7 @@ const Sidebar = forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-(--sidebar-width) bg-surface-raised p-0 text-surface-fg [&>button]:hidden"
+            className="w-(--sidebar-width) bg-surface-chrome p-0 text-surface-fg [&>button]:hidden"
             style={
               {
                 '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -316,7 +316,7 @@ const Sidebar = forwardRef<
           <aside
             aria-label="Sidebar"
             data-sidebar="sidebar"
-            className="flex h-full w-full flex-col bg-surface-raised group-data-[variant=floating]:rounded-surface group-data-[variant=floating]:shadow-raised"
+            className="flex h-full w-full flex-col bg-surface-chrome group-data-[variant=floating]:rounded-surface group-data-[variant=floating]:shadow-raised"
           >
             {children}
           </aside>
@@ -366,7 +366,7 @@ const SidebarRail = forwardRef<HTMLButtonElement, ComponentProps<'button'>>(
         onClick={toggleSidebar}
         title="Toggle Sidebar"
         className={cn(
-          'hover:after:bg-surface-border-strong absolute inset-y-0 z-raised hidden w-4 -translate-x-1/2 transition-colors ease-productive-standard after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
+          'hover:after:bg-surface-border-strong absolute inset-y-0 z-raised hidden w-4 -translate-x-1/2 transition-colors ease-productive-standard after:absolute after:inset-y-0 after:left-1/2 after:w-ds-01 group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           '[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize',
           '[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
           'group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full group-data-[collapsible=offcanvas]:hover:bg-surface-raised-hover',

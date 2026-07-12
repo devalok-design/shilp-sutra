@@ -212,7 +212,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
             <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
               Hr
             </span>
-            <div className={cn(columnClass, 'min-w-[48px]')}>
+            <div className={cn(columnClass, 'min-w-ds-09')}>
               {hoursRange.map((h) => (
                 <button
                   key={h}
@@ -236,7 +236,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
             <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
               Min
             </span>
-            <div className={cn(columnClass, 'min-w-[48px]')}>
+            <div className={cn(columnClass, 'min-w-ds-09')}>
               {minutesRange.map((m) => (
                 <button
                   key={m}
@@ -261,7 +261,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
               <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                 Sec
               </span>
-              <div className={cn(columnClass, 'min-w-[48px]')}>
+              <div className={cn(columnClass, 'min-w-ds-09')}>
                 {secondsRange.map((s) => (
                   <button
                     key={s}

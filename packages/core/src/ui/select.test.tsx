@@ -192,7 +192,7 @@ describe('Select', () => {
     it('applies error color classes and sets aria-invalid', () => {
       render(
         <Select>
-          <SelectTrigger color="error">
+          <SelectTrigger state="error">
             <SelectValue placeholder="Pick" />
           </SelectTrigger>
           <SelectContent>
@@ -209,7 +209,7 @@ describe('Select', () => {
     it('applies success color classes', () => {
       render(
         <Select>
-          <SelectTrigger color="success">
+          <SelectTrigger state="success">
             <SelectValue placeholder="Pick" />
           </SelectTrigger>
           <SelectContent>
@@ -224,7 +224,7 @@ describe('Select', () => {
     it('applies warning color classes', () => {
       render(
         <Select>
-          <SelectTrigger color="warning">
+          <SelectTrigger state="warning">
             <SelectValue placeholder="Pick" />
           </SelectTrigger>
           <SelectContent>
@@ -239,7 +239,7 @@ describe('Select', () => {
     it('does not set aria-invalid for non-error colors', () => {
       render(
         <Select>
-          <SelectTrigger color="success">
+          <SelectTrigger state="success">
             <SelectValue placeholder="Pick" />
           </SelectTrigger>
           <SelectContent>

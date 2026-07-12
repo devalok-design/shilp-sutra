@@ -76,8 +76,8 @@ describe('Switch', () => {
     expect(screen.getByTestId('thumb-icon')).toBeInTheDocument()
   })
 
-  it('error prop overrides color prop', () => {
-    render(<Switch aria-label="Error switch" color="warning" error checked />)
+  it('state="error" overrides color prop', () => {
+    render(<Switch aria-label="Error switch" color="warning" state="error" checked />)
     const toggle = screen.getByRole('switch')
     expect(toggle).toHaveClass('data-[state=checked]:bg-error-9')
   })

@@ -7,6 +7,7 @@
 ## Props
     options: ComboboxOption[] (REQUIRED) — { value: string, label: string, description?: string, icon?: ReactNode, disabled?: boolean }
     size: "xs" | "sm" | "md" | "lg" (trigger height)
+    state: "default" | "error" | "warning" | "success" (validation border tint; error sets aria-invalid. Inherited from FormField when omitted)
     DISCRIMINATED UNION — type depends on `multiple` flag:
     Single (default): multiple?: false, value?: string, onValueChange: (value: string) => void
     Multiple: multiple: true, value?: string[], onValueChange: (value: string[]) => void
@@ -50,6 +51,9 @@
 - Dropdown content is portalled to document.body — parent styles like `overflow: hidden` don't clip it, and container-scoped test queries won't find it
 
 ## Changes
+### v0.49.0
+- **Added** `state` prop (`FieldState = "default" | "error" | "warning" | "success"`) — unified field-state API. Renders a validation border tint + sets `aria-invalid`; inherits from `FormField` when omitted. (Additive — Combobox had no prior validation prop.)
+
 ### v0.18.0
 - **Added** `accessibleLabel` prop — custom aria-label for trigger, falls back to placeholder
 

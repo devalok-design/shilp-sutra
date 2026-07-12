@@ -263,6 +263,17 @@ gate('Recipe peer tables match source (derive-peer-map --check)', () => {
   }
 })
 
+// Token hygiene: no hand-typed pixel sizing where a --spacing-ds-* token exists
+// (h-[16px] → h-ds-05, etc). Values off the scale are allowed.
+gate('No token-backed arbitrary pixel sizing (check-arbitrary-sizing --check)', () => {
+  try {
+    execSync('node scripts/check-arbitrary-sizing.mjs --check', { cwd: join(ROOT, 'packages/core'), encoding: 'utf-8', stdio: 'pipe' })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'check-arbitrary-sizing --check reported violations'
+  }
+})
+
 // Advisory C: doc-documented props that no longer appear in source (likely
 // removed). Heuristic — Radix-passthrough props show as false positives — so
 // it warns, never blocks.

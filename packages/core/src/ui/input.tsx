@@ -5,9 +5,11 @@ import * as React from 'react'
 
 import { useFormField } from './form'
 import { IconProvider, type IconSize } from './icon-context'
+import { type FieldState, resolveFieldState } from './lib/field-state'
 import { cn } from './lib/utils'
 
-export type InputState = 'default' | 'error' | 'warning' | 'success'
+/** @deprecated Use `FieldState` — the shared control-state type. Kept as an alias. */
+export type InputState = FieldState
 
 const inputWrapperVariants = cva(
   [
@@ -83,7 +85,7 @@ const iconSizeMap: Record<string, IconSize> = {
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputWrapperVariants> {
-  state?: InputState
+  state?: FieldState
   startSection?: React.ReactNode
   endSection?: React.ReactNode
   startSectionClickable?: boolean
@@ -118,12 +120,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const size = sizeProp ?? 'md'
     const fieldCtx = useFormField()
-    // Merge FormField context — explicit props always win
-    const state =
-      stateProp ??
-      (fieldCtx.state === 'helper'
-        ? undefined
-        : (fieldCtx.state as InputState | undefined))
+    // Merge FormField context — explicit props always win (shared precedence)
+    const state = resolveFieldState(stateProp, fieldCtx.state)
     const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
     const ariaRequired = props['aria-required'] ?? fieldCtx.required
     // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.

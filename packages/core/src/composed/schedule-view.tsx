@@ -10,9 +10,9 @@ import {
   isToday,
   startOfWeek,
 } from 'date-fns'
-import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { Dot } from '../ui/dot'
 import { cn } from '../ui/lib/utils'
 
 /* ------------------------------------------------------------------ */
@@ -24,7 +24,7 @@ export interface ScheduleEvent {
   title: string
   start: Date
   end: Date
-  color?: 'primary' | 'success' | 'warning' | 'error' | 'info' | 'neutral'
+  color?: 'accent' | 'success' | 'warning' | 'error' | 'info' | 'neutral'
 }
 
 /**
@@ -58,7 +58,7 @@ const eventColorMap: Record<
   NonNullable<ScheduleEvent['color']>,
   string
 > = {
-  primary: 'bg-accent-2 text-accent-11',
+  accent: 'bg-accent-2 text-accent-11',
   success: 'bg-success-3 text-success-11',
   warning: 'bg-warning-3 text-warning-11',
   error: 'bg-error-3 text-error-11',
@@ -72,7 +72,7 @@ const eventDotMap: Record<
   NonNullable<ScheduleEvent['color']>,
   string
 > = {
-  primary: 'bg-accent-9',
+  accent: 'bg-accent-9',
   success: 'bg-success-9',
   warning: 'bg-warning-9',
   error: 'bg-error-9',
@@ -193,7 +193,7 @@ function DayColumn({
   }
 
   return (
-    <div className="flex flex-1 flex-col min-w-[80px]">
+    <div className="flex flex-1 flex-col min-w-ds-11">
       {showHeader && (
         <div
           className={cn(
@@ -214,6 +214,7 @@ function DayColumn({
             type="button"
             className={cn(
               'block w-full border-b border-surface-border hover:bg-surface-raised-hover transition-colors ease-productive-standard',
+              'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent-9',
               i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-border-subtle',
             )}
             style={{ height: `${100 / slotCount}%` }}
@@ -225,7 +226,7 @@ function DayColumn({
         {/* Events */}
         {dayEvents.map((event) => {
           const style = getEventStyle(event, startHour, endHour)
-          const eventColor = event.color ?? 'primary'
+          const eventColor = event.color ?? 'accent'
           const colorClass = eventColorMap[eventColor]
           const dotClass = eventDotMap[eventColor]
           return (
@@ -236,6 +237,7 @@ function DayColumn({
                 'absolute left-ds-01 right-ds-01 rounded-control-inner px-ds-02 py-ds-01',
                 'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
                 'hover:shadow-raised hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02 ease-productive-standard',
+                'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 colorClass,
               )}
               style={style}
@@ -259,15 +261,11 @@ function DayColumn({
         {/* Current time indicator */}
         {nowIndicatorTop != null && (
           <div
-            className="absolute left-0 right-0 h-[2px] bg-error-9 z-10 pointer-events-none"
+            className="absolute left-0 right-0 h-ds-01 bg-error-9 z-10 pointer-events-none"
             style={{ top: `${nowIndicatorTop}%` }}
             aria-hidden="true"
           >
-            <motion.span
-              className="absolute -left-[5px] -top-[4px] h-[10px] w-[10px] rounded-pill bg-error-9"
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-            />
+            <Dot color="error" size="lg" pulse className="absolute -left-[5px] -top-[4px]" />
           </div>
         )}
       </div>

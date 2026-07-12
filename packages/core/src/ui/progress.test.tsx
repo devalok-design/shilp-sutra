@@ -30,18 +30,18 @@ describe('Progress', () => {
     expect(bar).not.toHaveAttribute('aria-valuenow')
   })
 
-  it('shows percentage label when showLabel is true', () => {
-    render(<Progress value={42} showLabel />)
+  it('shows percentage value when showValue is true', () => {
+    render(<Progress value={42} showValue />)
     expect(screen.getByText('42%')).toBeInTheDocument()
   })
 
-  it('does not show label by default', () => {
+  it('does not show value by default', () => {
     render(<Progress value={42} />)
     expect(screen.queryByText('42%')).not.toBeInTheDocument()
   })
 
-  it('does not show label for indeterminate state', () => {
-    render(<Progress showLabel />)
+  it('does not show value for indeterminate state', () => {
+    render(<Progress showValue />)
     expect(screen.queryByText('%')).not.toBeInTheDocument()
   })
 

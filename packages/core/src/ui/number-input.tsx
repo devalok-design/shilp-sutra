@@ -7,9 +7,11 @@ import * as React from 'react'
 import { useFormField } from './form'
 import { Icon } from './icon'
 import type { IconSize } from './icon-context'
+import { type FieldState, resolveFieldState } from './lib/field-state'
 import { cn } from './lib/utils'
 
-export type NumberInputState = 'default' | 'error' | 'warning' | 'success'
+/** @deprecated Use `FieldState` — the shared control-state type. Kept as an alias. */
+export type NumberInputState = FieldState
 
 const numberInputWrapperVariants = cva(
   'flex items-center justify-between rounded-control border border-surface-border-strong',
@@ -46,7 +48,7 @@ const iconSizeMap: Record<NonNullable<NumberInputSize>, IconSize> = {
 
 /** Maps size to input text and width classes */
 const inputSizeMap: Record<NonNullable<NumberInputSize>, string> = {
-  xs: 'text-ds-sm w-[28px]',
+  xs: 'text-ds-sm w-ds-06b',
   sm: 'text-ds-sm w-ds-sm-plus',
   md: 'text-ds-md w-ds-sm-plus',
   lg: 'text-ds-md w-ds-md',
@@ -101,7 +103,7 @@ export interface NumberInputProps extends Omit<React.InputHTMLAttributes<HTMLInp
   /** Size of the number input. Controls height, button sizes, text size. */
   size?: NumberInputSize
   /** Validation state controlling border color. */
-  state?: NumberInputState
+  state?: FieldState
 }
 
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
@@ -127,13 +129,8 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     // provide a sensible default
     const ariaLabel = ariaLabelProp ?? (rest.id || fieldCtx.helperTextId ? undefined : 'Numeric value')
 
-    // Merge FormField context — explicit props always win
-    const state =
-      stateProp ??
-      (fieldCtx.state === 'helper'
-        ? 'default'
-        : (fieldCtx.state as NumberInputState | undefined)) ??
-      'default'
+    // Merge FormField context — explicit props always win (shared precedence)
+    const state = resolveFieldState(stateProp, fieldCtx.state) ?? 'default'
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = e.target.value.trim()

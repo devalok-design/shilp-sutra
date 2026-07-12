@@ -37,10 +37,10 @@ describe('TypingIndicator', () => {
 
   it('0 users: no visible text, container still renders', () => {
     const { container } = render(<TypingIndicator users={[]} />)
-    // Container should exist with min-h-[24px]
+    // Container should exist with min-h-ds-06 (24px)
     const root = container.firstChild as HTMLElement
     expect(root).toBeInTheDocument()
-    expect(root).toHaveClass('min-h-[24px]')
+    expect(root).toHaveClass('min-h-ds-06')
     // No typing text visible
     expect(screen.queryByText(/typing/)).not.toBeInTheDocument()
   })

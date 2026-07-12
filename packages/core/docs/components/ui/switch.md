@@ -7,7 +7,7 @@
 ## Props
     checked: boolean
     onCheckedChange: (checked: boolean) => void
-    error: boolean (shows red border/bg)
+    state: "default" | "error" | "warning" | "success" (validation border/checked-track tint; error sets aria-invalid. Inherited from FormField when omitted. Distinct from `color`, the ON-track tint)
     disabled: boolean
     size: "sm" | "md" | "lg"
     color: "accent" | "success" | "warning"
@@ -35,6 +35,9 @@
 - Switch does NOT auto-consume FormField — pass `error` explicitly inside a FormField
 
 ## Changes
+### v0.49.0
+- **BREAKING** Removed the `error: boolean` prop; use `state` (`FieldState = "default" | "error" | "warning" | "success"`). Migrate `<Switch error />` → `<Switch state="error" />`. Gains `warning`/`success` and inherits from `FormField`. (`color` is unchanged — it's the ON-track tint, not validation.)
+
 ### v0.29.0
 - **Added** `size` prop: `"sm"` (18px track) | `"md"` (24px, default) | `"lg"` (28px track)
 - **Added** `color` prop: `"accent"` (default) | `"success"` | `"warning"` for checked-state color

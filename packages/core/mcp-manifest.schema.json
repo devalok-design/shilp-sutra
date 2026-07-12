@@ -70,6 +70,24 @@
           "description": "Convenience mirror of each prop's defaultValue for props with defaults (from the doc's Defaults section).",
           "additionalProperties": { "type": ["string", "number", "boolean"] }
         },
+        "subComponents": {
+          "type": "object",
+          "description": "Props owned by compound subcomponents, parsed from `### Subpart` headings inside the doc's Props section. Keeps a child's props OFF the root entry: a `numeric` prop belonging to TableCell must not read as a prop of <Table>, or an agent writes `<Table numeric>` and hits TS2322 (#132). Keyed by subcomponent display name.",
+          "patternProperties": {
+            "^[A-Za-z][A-Za-z0-9.]*$": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "note": { "type": "string", "description": "Parenthetical from the subpart heading — e.g. a separate import path for a subcomponent shipped under its own subpath export." },
+                "props": {
+                  "type": "object",
+                  "additionalProperties": { "$ref": "#/$defs/prop" }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
         "examples": {
           "type": "array",
           "items": { "type": "string" },

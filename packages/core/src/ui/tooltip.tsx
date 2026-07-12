@@ -5,6 +5,7 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
 import { springs, tweens } from './lib/motion'
+import { useControllableOpen } from './lib/use-controllable-open'
 import { cn } from './lib/utils'
 
 // ── Auto-provider: wraps with TooltipPrimitive.Provider if none exists ──
@@ -45,24 +46,14 @@ const Tooltip: React.FC<React.ComponentPropsWithoutRef<typeof TooltipPrimitive.R
   onOpenChange,
   ...props
 }) => {
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false)
-  const isControlled = openProp !== undefined
-  const open = isControlled ? openProp : internalOpen
-
-  const handleOpenChange = React.useCallback(
-    (nextOpen: boolean) => {
-      if (!isControlled) setInternalOpen(nextOpen)
-      onOpenChange?.(nextOpen)
-    },
-    [isControlled, onOpenChange],
-  )
+  const { open, setOpen } = useControllableOpen({ open: openProp, defaultOpen, onOpenChange })
 
   const contextValue = React.useMemo(() => ({ open }), [open])
 
   return (
     <AutoProvider>
       <TooltipContext.Provider value={contextValue}>
-        <TooltipPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
+        <TooltipPrimitive.Root open={open} onOpenChange={setOpen} {...props} />
       </TooltipContext.Provider>
     </AutoProvider>
   )

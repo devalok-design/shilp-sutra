@@ -169,6 +169,11 @@
   --color-surface-overlay:       var(--neutral-1);
   --color-surface-raised-hover:  var(--neutral-3);
   --color-surface-raised-active: var(--neutral-4);
+  /* App chrome (TopBar, Sidebar, BottomNavbar). Its own tier so chrome's
+     surface is an explicit, independently-tunable decision (per the Carbon/
+     Atlassian/Ant model), not coupled to the card surface. Starts equal to
+     `raised` — zero visual change — but can now diverge without touching cards. */
+  --color-surface-chrome:        var(--neutral-1);
   --color-surface-inverted:      var(--neutral-12);
   --color-surface-inverted-fg:   var(--neutral-1);
   --color-surface-disabled:      var(--neutral-2);
@@ -367,7 +372,7 @@
      --radius-overlay-sm    rounded-overlay-sm    Tooltip, Toast
      --radius-overlay       rounded-overlay       Popover, HoverCard, DropdownMenu / ContextMenu / Menubar content, listboxes, NavigationMenu viewport
      --radius-overlay-lg    rounded-overlay-lg    Dialog, AlertDialog, Sheet, BottomSheet, ColorInput picker
-     --radius-pill          rounded-pill          Badge, StatusDot, Radio, Switch, Slider, Progress, Avatar circle, SegmentedControl item
+     --radius-pill          rounded-pill          Badge, Dot, Radio, Switch, Slider, Progress, Avatar circle, SegmentedControl item
      --radius-bubble        rounded-bubble        ChatMessage bubble
      ─────────────────────────────────────────────────────────── */
   --radius-control:        6px;
@@ -585,6 +590,7 @@
   /* Surface — dark page, lighter cards */
   --color-surface-base:          var(--neutral-1);  /* 0.11L */
   --color-surface-raised:        var(--neutral-2);  /* 0.17L */
+  --color-surface-chrome:        var(--neutral-2);  /* chrome tier — matches raised for now */
   --color-surface-border:        var(--neutral-4);
   --color-surface-border-strong: var(--neutral-5);
   --color-surface-overlay:       oklch(0.13 0.0002 350);
@@ -706,6 +712,7 @@
     --color-surface-raised:       Canvas;
     --color-surface-raised-hover: Canvas;
     --color-surface-raised-active: Canvas;
+    --color-surface-chrome:       Canvas;
     --color-surface-overlay:      Canvas;
     --color-surface-disabled:     Canvas;
     --color-surface-inverted:     CanvasText;

@@ -105,8 +105,13 @@ Every component MUST use the correct surface level. This is a hard rule, enforce
 
 ```
 surface-1 → Page background, overlays (Dialog, Sheet, Popover, DropdownMenu,
-            Select, Combobox, Toast, HoverCard, etc.), shell chrome (Sidebar,
-            TopBar), sticky headers, input controls, floating toolbars
+            Select, Combobox, Toast, HoverCard, etc.), sticky headers,
+            input controls, floating toolbars
+surface-chrome → shell chrome: TopBar, Sidebar, BottomNavbar. Its OWN tier
+            (bg-surface-chrome) so chrome's surface is an explicit, independently
+            tunable decision (Carbon/Atlassian/Ant model), not coupled to the card
+            surface. Currently equals `raised` — chrome reads slightly elevated in
+            dark — but can diverge without touching cards.
 surface-2 → Cards, widgets, panels, editor containers — anything that sits ON the page
 surface-3 → Hover states on surface-2 elements, skeleton shimmers, track fills
 surface-4 → Active/pressed states, hover on surface-3 elements

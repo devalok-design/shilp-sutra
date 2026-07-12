@@ -8,6 +8,7 @@ import * as React from 'react'
 import { useIsMobile } from '../hooks/use-mobile'
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
+import { useControllableOpen } from './lib/use-controllable-open'
 import { cn } from './lib/utils'
 
 // ── Internal context to thread `open` state to animated children ──
@@ -69,24 +70,13 @@ const Dialog: React.FC<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Roo
   onOpenChange,
   ...props
 }) => {
-  // Track internal open state for uncontrolled usage
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false)
-  const isControlled = openProp !== undefined
-  const open = isControlled ? openProp : internalOpen
-
-  const handleOpenChange = React.useCallback(
-    (nextOpen: boolean) => {
-      if (!isControlled) setInternalOpen(nextOpen)
-      onOpenChange?.(nextOpen)
-    },
-    [isControlled, onOpenChange],
-  )
+  const { open, setOpen } = useControllableOpen({ open: openProp, defaultOpen, onOpenChange })
 
   const contextValue = React.useMemo(() => ({ open }), [open])
 
   return (
     <DialogContext.Provider value={contextValue}>
-      <DialogPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
+      <DialogPrimitive.Root open={open} onOpenChange={setOpen} {...props} />
     </DialogContext.Provider>
   )
 }

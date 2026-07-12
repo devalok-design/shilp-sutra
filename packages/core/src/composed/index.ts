@@ -79,6 +79,24 @@ export {
 } from './page-skeletons'
 export type { Priority,PriorityIndicatorProps } from './priority-indicator'
 export { PriorityIndicator } from './priority-indicator'
+export type {
+  ResponsiveModalContentProps,
+  ResponsiveModalProps,
+} from './responsive-modal'
+export {
+  ResponsiveModal,
+  ResponsiveModalBackground,
+  ResponsiveModalBody,
+  ResponsiveModalClose,
+  ResponsiveModalContent,
+  ResponsiveModalDescription,
+  ResponsiveModalFooter,
+  ResponsiveModalHeader,
+  ResponsiveModalOverlay,
+  ResponsiveModalPortal,
+  ResponsiveModalTitle,
+  ResponsiveModalTrigger,
+} from './responsive-modal'
 // RichChatInput + RichTextEditor families removed from barrel in 0.40.0 — hard
 // peer `@tiptap/*` was pulled even by consumers using no rich-text components.
 // Import per-component:
@@ -89,4 +107,4 @@ export { ScheduleView } from './schedule-view'
 export type { SimpleTooltipProps } from './simple-tooltip'
 export { SimpleTooltip } from './simple-tooltip'
 export type { StatusBadgeProps } from './status-badge'
-export { StatusBadge, statusBadgeVariants } from './status-badge'
+export { StatusBadge } from './status-badge'

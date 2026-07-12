@@ -16,7 +16,7 @@ const sampleEvents: ScheduleEvent[] = [
     title: 'Design Review',
     start: new Date(2026, 2, 10, 11, 0),
     end: new Date(2026, 2, 10, 11, 45),
-    color: 'primary',
+    color: 'accent',
   },
   {
     id: '3',
@@ -58,7 +58,7 @@ const sampleEvents: ScheduleEvent[] = [
     title: 'Workshop',
     start: new Date(2026, 2, 13, 13, 0),
     end: new Date(2026, 2, 13, 15, 0),
-    color: 'primary',
+    color: 'accent',
   },
 ]
 

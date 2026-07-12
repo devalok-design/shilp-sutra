@@ -168,7 +168,7 @@ function LinkButton({ editor }: { editor: Editor }) {
 }
 
 function ToolbarDivider() {
-  return <div className="mx-ds-02 h-[16px] w-px bg-surface-border" />
+  return <div className="mx-ds-02 h-ds-05 w-px bg-surface-border" />
 }
 
 function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {

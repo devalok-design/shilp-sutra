@@ -107,7 +107,7 @@ export const AllStates: Story = {
         <Label htmlFor="indeterminate">Indeterminate</Label>
       </div>
       <div className="flex items-center gap-ds-02">
-        <Checkbox id="error" error />
+        <Checkbox id="error" state="error" />
         <Label htmlFor="error">Error</Label>
       </div>
       <div className="flex items-center gap-ds-02">

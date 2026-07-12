@@ -2,31 +2,49 @@
 
 import * as RadioGroupPrimitive from '@primitives/react-radio-group'
 import { IconCircle } from '@tabler/icons-react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import * as React from 'react'
 
 import { useFormField } from './form'
+import { type FieldState, resolveFieldState } from './lib/field-state'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
+// Thread the group's resolved state to items so they show the matching border tint.
+const RadioStateContext = React.createContext<Exclude<FieldState, 'default'> | undefined>(undefined)
+
+/** Border tint per validation state, applied to each item. */
+const stateBorderClasses: Record<Exclude<FieldState, 'default'>, string> = {
+  error: 'border-error-7',
+  warning: 'border-warning-7',
+  success: 'border-success-7',
+}
+
+export interface RadioGroupProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
+  /** Validation/feedback state for the whole group. `'error'` also sets `aria-invalid`. Inherited from `FormField` when omitted. */
+  state?: FieldState
+}
+
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
->(({ className, ...props }, ref) => {
+  RadioGroupProps
+>(({ className, state: stateProp, ...props }, ref) => {
   const fieldCtx = useFormField()
-  const isError = fieldCtx.state === 'error'
+  const state = resolveFieldState(stateProp, fieldCtx.state)
   const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
   const ariaRequired = props['aria-required'] ?? fieldCtx.required
 
   return (
-    <RadioGroupPrimitive.Root
-      className={cn('grid gap-ds-03', className)}
-      aria-invalid={isError || undefined}
-      aria-describedby={ariaDescribedBy}
-      aria-required={ariaRequired || undefined}
-      {...props}
-      ref={ref}
-    />
+    <RadioStateContext.Provider value={state}>
+      <RadioGroupPrimitive.Root
+        className={cn('grid gap-ds-03', className)}
+        aria-invalid={state === 'error' || undefined}
+        aria-describedby={ariaDescribedBy}
+        aria-required={ariaRequired || undefined}
+        {...props}
+        ref={ref}
+      />
+    </RadioStateContext.Provider>
   )
 })
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
@@ -52,6 +70,7 @@ const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   RadioGroupItemProps
 >(({ className, size = 'md', ...props }, ref) => {
+  const state = React.useContext(RadioStateContext)
   return (
     <RadioGroupPrimitive.Item
       ref={ref}
@@ -64,6 +83,7 @@ const RadioGroupItem = React.forwardRef<
         'disabled:cursor-not-allowed disabled:opacity-action-disabled',
         'hover:border-accent-7 hover:bg-surface-raised-active',
         'data-[state=checked]:border-accent-7',
+        state && stateBorderClasses[state],
         className,
       )}
       {...props}
@@ -82,7 +102,5 @@ const RadioGroupItem = React.forwardRef<
   )
 })
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
-
-export type RadioGroupProps = React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 
 export { RadioGroup, RadioGroupItem }

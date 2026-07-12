@@ -204,6 +204,11 @@
       "import": "./dist/ui/devalok-grain.js",
       "default": "./dist/ui/devalok-grain.js"
     },
+    "./ui/dot": {
+      "types": "./dist/ui/dot.d.ts",
+      "import": "./dist/ui/dot.js",
+      "default": "./dist/ui/dot.js"
+    },
     "./ui/dropdown-menu": {
       "types": "./dist/ui/dropdown-menu.d.ts",
       "import": "./dist/ui/dropdown-menu.js",
@@ -368,11 +373,6 @@
       "types": "./dist/ui/stat-card.d.ts",
       "import": "./dist/ui/stat-card.js",
       "default": "./dist/ui/stat-card.js"
-    },
-    "./ui/status-dot": {
-      "types": "./dist/ui/status-dot.d.ts",
-      "import": "./dist/ui/status-dot.js",
-      "default": "./dist/ui/status-dot.js"
     },
     "./ui/stepper": {
       "types": "./dist/ui/stepper.d.ts",
@@ -638,6 +638,11 @@
       "types": "./dist/composed/priority-indicator.d.ts",
       "import": "./dist/composed/priority-indicator.js",
       "default": "./dist/composed/priority-indicator.js"
+    },
+    "./composed/responsive-modal": {
+      "types": "./dist/composed/responsive-modal.d.ts",
+      "import": "./dist/composed/responsive-modal.js",
+      "default": "./dist/composed/responsive-modal.js"
     },
     "./composed/rich-text-editor": {
       "types": "./dist/composed/rich-text-editor.d.ts",

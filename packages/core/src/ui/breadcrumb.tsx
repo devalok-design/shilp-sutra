@@ -1,11 +1,24 @@
-'use client'
-
+// @server-safe
 import { Slot } from '@primitives/react-slot'
-import { IconChevronRight, IconDots } from '@tabler/icons-react'
 import * as React from 'react'
 
-import { Icon } from './icon'
 import { cn } from './lib/utils'
+
+// Inline glyphs (no client `Icon` dependency) keep Breadcrumb server-renderable —
+// so server-safe consumers like PageHeader can compose it.
+const ChevronGlyph = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+    <path d="M9 6l6 6l-6 6" />
+  </svg>
+)
+
+const DotsGlyph = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <circle cx="5" cy="12" r="1.2" />
+    <circle cx="12" cy="12" r="1.2" />
+    <circle cx="19" cy="12" r="1.2" />
+  </svg>
+)
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
@@ -72,7 +85,7 @@ const BreadcrumbSeparator = ({ children, className, ...props }: React.ComponentP
     className={cn('[&>svg]:h-ico-sm [&>svg]:w-ico-sm', className)}
     {...props}
   >
-    {children ?? <Icon icon={IconChevronRight} size="sm" />}
+    {children ?? <ChevronGlyph />}
   </li>
 )
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator'
@@ -84,7 +97,7 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'
     className={cn('flex h-ds-sm-plus w-ds-sm-plus items-center justify-center', className)}
     {...props}
   >
-    <Icon icon={IconDots} size="sm" />
+    <DotsGlyph className="h-ico-sm w-ico-sm" />
     <span className="sr-only">More</span>
   </span>
 )

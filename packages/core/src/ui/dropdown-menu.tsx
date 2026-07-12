@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
+import { useControllableOpen } from './lib/use-controllable-open'
 import { cn } from './lib/utils'
 
 // ── Internal contexts to thread open state ──
@@ -80,21 +81,11 @@ const DropdownMenu: React.FC<React.ComponentPropsWithoutRef<typeof DropdownMenuP
   onOpenChange,
   ...props
 }) => {
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
-  const isControlled = controlledOpen !== undefined
-  const open = isControlled ? controlledOpen : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (value: boolean) => {
-      if (!isControlled) setUncontrolledOpen(value)
-      onOpenChange?.(value)
-    },
-    [isControlled, onOpenChange],
-  )
+  const { open, setOpen } = useControllableOpen({ open: controlledOpen, defaultOpen, onOpenChange })
 
   return (
     <DropdownMenuOpenContext.Provider value={open}>
-      <DropdownMenuPrimitive.Root open={open} onOpenChange={handleOpenChange} {...props} />
+      <DropdownMenuPrimitive.Root open={open} onOpenChange={setOpen} {...props} />
     </DropdownMenuOpenContext.Provider>
   )
 }
@@ -112,21 +103,11 @@ const DropdownMenuSub: React.FC<React.ComponentPropsWithoutRef<typeof DropdownMe
   onOpenChange,
   ...props
 }) => {
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
-  const isControlled = controlledOpen !== undefined
-  const open = isControlled ? controlledOpen : uncontrolledOpen
-
-  const handleOpenChange = React.useCallback(
-    (value: boolean) => {
-      if (!isControlled) setUncontrolledOpen(value)
-      onOpenChange?.(value)
-    },
-    [isControlled, onOpenChange],
-  )
+  const { open, setOpen } = useControllableOpen({ open: controlledOpen, defaultOpen, onOpenChange })
 
   return (
     <DropdownMenuSubOpenContext.Provider value={open}>
-      <DropdownMenuPrimitive.Sub open={open} onOpenChange={handleOpenChange} {...props} />
+      <DropdownMenuPrimitive.Sub open={open} onOpenChange={setOpen} {...props} />
     </DropdownMenuSubOpenContext.Provider>
   )
 }

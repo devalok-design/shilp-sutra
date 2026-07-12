@@ -24,9 +24,10 @@ import { derivePeerMap } from './derive-peer-map.mjs'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const ROOT = join(__dirname, '..')
 
-const MANIFEST_VERSION = '1.1.0'
-const CATEGORIES = ['ui', 'composed', 'shell']
-const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal'])
+const MANIFEST_VERSION = '1.2.0'
+const CATEGORIES = ['ui', 'composed', 'shell', 'ai']
+// `blocks` = ai/blocks/*, documented inside block-renderer.md (see build-component-docs.mjs).
+const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal', 'blocks'])
 
 // ── Optional peer dependencies ──────────────────────────────────────────────
 // component → optional peers, DERIVED from source (each component's real
@@ -193,14 +194,70 @@ function classifyType(text) {
   return { name: 'object', raw: t }
 }
 
-function parseProps(body) {
-  const props = {}
-  if (!body) return props
-  for (const line of body.split('\n')) {
-    const parsed = parsePropLine(line)
-    if (parsed) props[parsed.name] = parsed.prop
+/**
+ * `### TableCell / TableHead` → { names: ['TableCell', 'TableHead'] }
+ * `### TableRowLink (separate import: ui/table-row-link — client component)`
+ *    → { names: ['TableRowLink'], note: 'separate import: ui/table-row-link — client component' }
+ */
+function parseSubpartHeading(text) {
+  let note
+  let namePart = text.trim()
+  const paren = namePart.match(/^(.*?)\s*\(([^)]*)\)\s*$/)
+  if (paren) {
+    namePart = paren[1].trim()
+    note = paren[2].trim()
   }
-  return props
+  const names = namePart
+    .split('/')
+    .map((s) => s.trim())
+    .filter(Boolean)
+  return { names: names.length ? names : [namePart], note }
+}
+
+/**
+ * Parse a `## Props` body into `{ props, subComponents }`.
+ *
+ * Props before any `### Subpart` heading belong to the root component. Props under
+ * a `### Name` (or `### A / B`) heading are attributed to that subcomponent instead
+ * of the root — this is the #132 fix: without it the flat parser advertised a
+ * child's prop on the root (`numeric` on `<Table>`, `href` on `<TableRow>`), so an
+ * agent trusting the manifest wrote `<Table numeric>` and hit TS2322.
+ */
+function parseProps(body, rootName) {
+  const props = {}
+  const subComponents = {}
+  if (!body) return { props, subComponents }
+
+  // A subpart whose name equals the root component (e.g. `### Tabs (root)` under
+  // the Tabs doc) routes to the root `props`, not a self-named subComponent —
+  // otherwise the root's own props would nest oddly under subComponents[Tabs].
+  const isRoot = (name) => rootName && name === rootName
+  let currentNames = null // null = root; else the subcomponent names sharing this block
+
+  for (const line of body.split('\n')) {
+    const heading = line.match(/^###\s+(.+)$/)
+    if (heading) {
+      const { names, note } = parseSubpartHeading(heading[1])
+      currentNames = names
+      for (const name of names) {
+        if (isRoot(name)) continue
+        if (!subComponents[name]) subComponents[name] = { props: {} }
+        if (note && !subComponents[name].note) subComponents[name].note = note
+      }
+      continue
+    }
+    const parsed = parsePropLine(line)
+    if (!parsed) continue
+    if (currentNames) {
+      for (const name of currentNames) {
+        if (isRoot(name)) props[parsed.name] = parsed.prop
+        else subComponents[name].props[parsed.name] = parsed.prop
+      }
+    } else {
+      props[parsed.name] = parsed.prop
+    }
+  }
+  return { props, subComponents }
 }
 
 // ── Defaults parsing: `variant="solid", size="md"` lines ────────────────────
@@ -455,7 +512,11 @@ for (const cat of CATEGORIES) {
     }
 
     const { title, headerBullets, description, sections } = splitDoc(md)
-    const props = parseProps(sections['Props'])
+    // Some docs title two peer components (`# Stepper / Step`); the manifest has
+    // one entry, so the FIRST name is the root and the rest fall through to
+    // subComponents (merging both into root would re-introduce the flatten bug).
+    const rootName = (title || name).split('/')[0].trim()
+    const { props, subComponents } = parseProps(sections['Props'], rootName)
     const defaults = parseDefaults(sections['Defaults'])
     // Backfill defaultValue from Defaults section
     for (const [p, v] of Object.entries(defaults)) {
@@ -487,6 +548,7 @@ for (const cat of CATEGORIES) {
       docPath,
     }
     if (Object.keys(defaults).length) entry.defaults = defaults
+    if (Object.keys(subComponents).length) entry.subComponents = subComponents
     const examples = parseExamples(sections['Example'])
     if (examples.length) entry.examples = examples
     const gotchas = parseGotchas(sections['Gotchas'])
@@ -505,6 +567,7 @@ for (const cat of CATEGORIES) {
     components[name] = entry
     stats.total++
     stats.props += Object.keys(props).length
+    for (const sc of Object.values(subComponents)) stats.props += Object.keys(sc.props).length
     const structuredKeys = Object.keys(composition).filter((k) => k !== 'notes')
     if (structuredKeys.length > 0) stats.taggedComposition++
     else if (composition.notes?.length) stats.notesOnly++

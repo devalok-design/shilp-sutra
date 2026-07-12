@@ -20,10 +20,13 @@ const ROOT = join(__dirname, '..')
 
 // ── Configuration ───────────────────────────────────────────────────────────
 
-const CATEGORIES = ['ui', 'composed', 'shell']
+const CATEGORIES = ['ui', 'composed', 'shell', 'ai']
 
 /** Directories to skip when scanning for components. */
-const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal'])
+// `blocks` = ai/blocks/*, an implementation detail behind BlockRenderer's
+// registry; the block system is documented inside block-renderer.md, not as a
+// standalone component (two public block subpaths — text, error — are covered there).
+const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal', 'blocks'])
 
 /** File patterns to exclude. */
 function isExcluded(filename) {

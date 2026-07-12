@@ -80,7 +80,7 @@ const TopBarRoot = React.forwardRef<HTMLElement, TopBarRootProps>(
         {...props}
         ref={ref}
         className={cn(
-          'z-sticky w-full border-b border-surface-border-strong bg-surface-raised px-ds-05 py-ds-04 md:px-ds-06',
+          'z-sticky w-full border-b border-surface-border-strong bg-surface-chrome px-ds-05 py-ds-04 md:px-ds-06',
           hasCenter
             ? 'grid grid-cols-[1fr_auto_1fr] items-center'
             : 'flex items-center',

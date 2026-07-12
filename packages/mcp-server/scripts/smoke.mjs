@@ -88,6 +88,14 @@ try {
   const compText = comp.result?.content?.[0]?.text ?? ''
   check('accordion composition has parts', compText.includes('AccordionItem'), compText.slice(0, 200))
 
+  // #132: a subcomponent's prop must be attributed to that subcomponent, never
+  // the root — else an agent writes `<Table numeric>` / `<TableRow href>` (TS2322).
+  const tbl = await call('get_component', { name: 'table', sections: ['api'] }, 41)
+  const tblApi = JSON.parse((tbl.result?.content?.[0]?.text ?? '').match(/```json\n([\s\S]*?)\n```/)?.[1] ?? '{}')
+  check('table root props exclude numeric/href', !('numeric' in (tblApi.props ?? {})) && !('href' in (tblApi.props ?? {})), JSON.stringify(Object.keys(tblApi.props ?? {})))
+  check('table.subComponents.TableCell owns numeric', tblApi.subComponents?.TableCell?.props?.numeric?.type?.name === 'boolean', JSON.stringify(tblApi.subComponents?.TableCell))
+  check('table.subComponents.TableRowLink owns href (required string)', tblApi.subComponents?.TableRowLink?.props?.href?.required === true && tblApi.subComponents?.TableRowLink?.props?.href?.type?.name === 'string', JSON.stringify(tblApi.subComponents?.TableRowLink))
+
   const typo = await call('get_component', { name: 'buton' }, 5)
   const typoText = typo.result?.content?.[0]?.text ?? ''
   check('typo self-correction suggests', typoText.includes('find_component'), typoText.slice(0, 200))

@@ -13,13 +13,13 @@ describe('Separator', () => {
     render(<Separator data-testid="sep" />)
     const el = screen.getByTestId('sep')
     expect(el).toBeInTheDocument()
-    expect(el).toHaveClass('h-[1px]', 'w-full')
+    expect(el).toHaveClass('h-px', 'w-full')
   })
 
   it('renders a vertical separator', () => {
     render(<Separator data-testid="sep" orientation="vertical" />)
     const el = screen.getByTestId('sep')
-    expect(el).toHaveClass('h-full', 'w-[1px]')
+    expect(el).toHaveClass('h-full', 'w-px')
   })
 
   it('is decorative by default (role="none")', () => {

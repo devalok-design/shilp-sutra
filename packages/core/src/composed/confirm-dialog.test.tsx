@@ -58,13 +58,14 @@ describe('ConfirmDialog', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false)
   })
 
-  it('shows "Processing..." and disables buttons when loading', () => {
+  it('shows a loading spinner and disables buttons when loading', () => {
     renderDialog({ loading: true })
-    expect(screen.getByText('Processing...')).toBeInTheDocument()
     const buttons = screen.getAllByRole('button')
     buttons.forEach((btn) => {
       expect(btn).toBeDisabled()
     })
+    // Confirm button is in the Button loading state (aria-busy) instead of a text swap.
+    expect(buttons.some((b) => b.getAttribute('aria-busy') === 'true')).toBe(true)
   })
 
   it('does not render when open is false', () => {

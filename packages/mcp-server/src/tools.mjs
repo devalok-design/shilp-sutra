@@ -103,7 +103,13 @@ export async function getComponent({ name, sections, version }) {
   if (c.description) out.push(c.description)
 
   if (want.includes('api')) {
-    out.push('## API (JSON)\n```json\n' + JSON.stringify({ props: c.props, defaults: c.defaults }, null, 1) + '\n```')
+    const api = { props: c.props, defaults: c.defaults }
+    // subComponents carries props that belong to a compound child (e.g. `numeric`
+    // is a TableCell/TableHead prop, not a <Table> prop). Emitting them here —
+    // keyed by the owning subcomponent — stops agents writing `<Table numeric>`
+    // or `<TableRow href>` and hitting TS2322 (#132).
+    if (c.subComponents) api.subComponents = c.subComponents
+    out.push('## API (JSON)\n```json\n' + JSON.stringify(api, null, 1) + '\n```')
   }
   if (want.includes('usage') && c.gotchas?.length) {
     out.push('## Usage rules & gotchas\n' + c.gotchas.map((g) => `- ${g}`).join('\n'))

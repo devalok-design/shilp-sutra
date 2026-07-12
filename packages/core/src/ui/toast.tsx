@@ -106,7 +106,7 @@ function TimerBar({
 }) {
   const config = TOAST_TYPE_CONFIG[type]
   return (
-    <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden">
+    <div className="absolute bottom-0 left-0 right-0 h-ds-01 overflow-hidden">
       <div
         className={cn(
           'h-full w-full origin-left opacity-30',
@@ -299,14 +299,14 @@ function isImageFile(file: UploadFile): boolean {
 
 function getProgressColor(
   status: UploadFile['status'],
-): 'default' | 'success' | 'error' {
+): 'accent' | 'success' | 'error' {
   switch (status) {
     case 'complete':
       return 'success'
     case 'error':
       return 'error'
     default:
-      return 'default'
+      return 'accent'
   }
 }
 

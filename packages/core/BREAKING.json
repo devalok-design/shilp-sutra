@@ -289,6 +289,38 @@
         "New emojibaseUrl prop on EmojiPicker/EmojiPickerPopover to self-host the emoji dataset (removes the runtime jsdelivr CDN dependency for strict-CSP / offline apps).",
         "Optional-peer accuracy: recipe §2a tables are now generated from source; added sonner / remark-gfm / date-fns / @tanstack/react-table (data-table-toolbar) rows and removed phantom @tiptap install instructions."
       ]
+    },
+    "0.49.0": {
+      "summary": "Unified form-control validation state: one `state` prop (type FieldState) replaces the `error` boolean (Checkbox/Switch) and the `color` prop (Select). Radio/Combobox gain an explicit `state`. Also: Progress redesigned as a compound component (`showLabel`→`showValue`, color `default`→`accent`).",
+      "migrationDoc": "MIGRATION.md#v0490--unified-field-state",
+      "renamed": [
+        { "from": "error", "to": "state", "where": "Checkbox", "kind": "prop" },
+        { "from": "error", "to": "state", "where": "Switch", "kind": "prop" },
+        { "from": "color", "to": "state", "where": "SelectTrigger", "kind": "prop" },
+        { "from": "color", "to": "state", "where": "selectTriggerVariants", "kind": "variant" },
+        { "from": "showLabel", "to": "showValue", "where": "Progress", "kind": "prop" }
+      ],
+      "removed": [
+        {
+          "symbol": "statusBadgeVariants",
+          "where": "@devalok/shilp-sutra/composed/status-badge",
+          "replacement": "StatusBadge now composes <Badge variant=\"soft\"> + <Dot> and has no standalone CVA. Style via Badge/Dot props or className."
+        },
+        {
+          "symbol": "StatusDot",
+          "where": "@devalok/shilp-sutra/ui/status-dot",
+          "replacement": "Merged into <Dot>. Map: healthy → <Dot color=\"success\" pulse>, warning → <Dot color=\"warning\">, critical → <Dot color=\"error\">, neutral → <Dot color=\"neutral\">, inactive → <Dot color=\"neutral\" variant=\"off\">."
+        }
+      ],
+      "notes": [
+        "Checkbox/Switch `error` was a boolean; `state` is FieldState (\"default\" | \"error\" | \"warning\" | \"success\"). Replace `error` with `state=\"error\"` (there is no boolean form).",
+        "Select's `color` prop was validation-only and is gone; use `state`. The exported `selectTriggerVariants` CVA axis was likewise renamed `color` → `state`.",
+        "Additive (non-breaking) in the same release: Checkbox/Switch/Radio gain warning+success tints; Radio (RadioGroup) and Combobox gain an explicit `state` prop and now inherit FormField state; Select now inherits FormField state too (was manual-only); Combobox renders a validation border for the first time.",
+        "InputState and NumberInputState remain as @deprecated type aliases of FieldState — no type-import breakage. New canonical type FieldState is exported from @devalok/shilp-sutra/ui.",
+        "Progress redesigned as a compound component (Progress.Root/Track/Indicator/Segment/Label/Value). Smart `<Progress value/>` form still works. `showLabel` → `showValue`; the `color` neutral `\"default\"` → `\"accent\"` (type now \"accent\"|\"success\"|\"warning\"|\"error\"). Added label/max/segments/trackClassName. New parts exported from @devalok/shilp-sutra/ui.",
+        "ScheduleView: the ScheduleEvent `color` value \"primary\" was renamed \"accent\" (matches the DS colour vocabulary). Migrate { color: 'primary' } → { color: 'accent' }. It was the default, so untyped events are unaffected. Also added focus-visible rings on slot/event buttons.",
+        "New `Dot` primitive (@devalok/shilp-sutra/ui/dot) — the shared indicator dot. StatusBadge composes Badge + Dot; StatusDot and Badge's `dot` prop now render Dot internally. No API change to StatusBadge/StatusDot/Badge props (Badge's dot pulse animation shifted from a bespoke ripple to Dot's ping). StatusDot's `inactive` shade is now neutral-8 (was neutral-6)."
+      ]
     }
   }
 }

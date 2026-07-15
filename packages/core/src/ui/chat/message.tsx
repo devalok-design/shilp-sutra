@@ -70,7 +70,7 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
       return (
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
           className={cn(
@@ -91,7 +91,7 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
           <motion.div
             ref={ref}
             data-highlight={highlight}
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={springs.snappy}
             className={cn(
@@ -125,7 +125,7 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
         <motion.div
           ref={ref}
           data-highlight={highlight}
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
           className={cn(

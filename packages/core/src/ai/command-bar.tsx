@@ -94,23 +94,6 @@ function GradientBorderWrap({
         },
       }}
     >
-      {/* Subtle outer glow */}
-      <motion.div
-        className={cn('absolute inset-0 -z-10', rounded)}
-        style={{
-          background: 'linear-gradient(var(--gradient-angle, 0deg), #D33163, #9B5DE5, #C850C0, #D33163)',
-          backgroundSize: '300% 300%',
-          filter: 'blur(8px)',
-        }}
-        animate={{
-          opacity: [0.3, 0.5, 0.3],
-          backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
-        }}
-        transition={{
-          opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
-          backgroundPosition: { duration: 4, repeat: Infinity, ease: 'linear' },
-        }}
-      />
       {children}
     </motion.div>
   )

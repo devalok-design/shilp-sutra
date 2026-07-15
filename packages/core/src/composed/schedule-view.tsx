@@ -236,7 +236,7 @@ function DayColumn({
               className={cn(
                 'absolute left-ds-01 right-ds-01 rounded-control-inner px-ds-02 py-ds-01',
                 'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
-                'hover:shadow-raised hover:scale-[1.02] transition-[box-shadow,transform] duration-fast-02 ease-productive-standard',
+                'hover:shadow-raised transition-[box-shadow] duration-fast-02 ease-productive-standard',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 colorClass,
               )}

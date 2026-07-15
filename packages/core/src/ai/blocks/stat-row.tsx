@@ -42,7 +42,7 @@ const StatRowBlock = React.memo(function StatRowBlock({
           <motion.div
             key={stat.label}
             className="flex-1 min-w-[140px]"
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...springs.responsive, delay: index * 0.08 }}
           >

@@ -125,6 +125,8 @@ interface BadgeProps
   startIcon?: IconInput
   endIcon?: IconInput
   dot?: boolean
+  /** Pulse the status dot (opt-in; static by default). @default false */
+  dotPulse?: boolean
   onDismiss?: () => void
   selected?: boolean
   disabled?: boolean
@@ -149,6 +151,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
       startIcon,
       endIcon,
       dot,
+      dotPulse,
       onDismiss,
       onClick,
       selected,
@@ -251,7 +254,7 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
               transition={springs.snappy}
               className="inline-flex shrink-0"
             >
-              <Dot color="current" size="sm" pulse />
+              <Dot color="current" size="sm" pulse={dotPulse} />
             </motion.span>
           )}
         </AnimatePresence>

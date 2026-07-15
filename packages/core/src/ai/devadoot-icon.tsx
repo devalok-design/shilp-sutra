@@ -65,7 +65,6 @@ const DevadootIcon = React.memo(function DevadootIcon({
   const { reducedMotion } = useMotion()
   const gradientRotation = useGradientRotation(state)
   const gradientId = React.useId()
-  const filterId = React.useId()
 
   // Static fallback for reduced motion
   if (reducedMotion) {
@@ -94,9 +93,6 @@ const DevadootIcon = React.memo(function DevadootIcon({
         : state === 'responded'
           ? { s1: BRAND_BRIGHT, s2: BRAND_PINK, s3: BRAND_BRIGHT }
           : { s1: BRAND_PINK, s2: BRAND_ROSE, s3: BRAND_PINK }
-
-  // Glow blur intensity
-  const glowBlur = state === 'processing' ? 3 : state === 'error' ? 2.5 : 0
 
   return (
     <span
@@ -152,35 +148,9 @@ const DevadootIcon = React.memo(function DevadootIcon({
               transition={{ duration: state === 'processing' ? 3 : 5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 1 }}
             />
           </motion.linearGradient>
-
-          {/* Glow filter — blur applied to shadow layer */}
-          <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
-            <motion.feGaussianBlur
-              in="SourceGraphic"
-              animate={{ stdDeviation: glowBlur }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-            />
-          </filter>
         </defs>
 
-        {/* Layer 1: Glow shadow (blurred, semi-transparent copy behind) */}
-        <AnimatePresence>
-          {(state === 'processing' || state === 'error') && (
-            <motion.path
-              d={CHAKRA_PATH}
-              fill={`url(#${gradientId})`}
-              filter={`url(#${filterId})`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.2, 0.45, 0.2] }}
-              exit={{ opacity: 0 }}
-              transition={{
-                opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
-              }}
-            />
-          )}
-        </AnimatePresence>
-
-        {/* Layer 2: Shimmer highlight (bright overlay that pulses) */}
+        {/* Layer 1: Shimmer highlight (bright overlay that pulses) */}
         <AnimatePresence>
           {state === 'processing' && (
             <motion.path

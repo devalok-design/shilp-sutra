@@ -120,7 +120,7 @@ function UserMessage({
   return (
     <motion.div
       className="bg-surface-raised rounded-surface px-ds-05 py-ds-04"
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={springs.snappy}
     >
@@ -242,7 +242,7 @@ function ScrollToBottomPill({ onClick }: { onClick: () => void }) {
       role="button"
       aria-label="Scroll to latest response"
       className="absolute bottom-ds-04 left-1/2 -translate-x-1/2 z-10 flex items-center gap-ds-02 bg-accent-9 text-accent-fg text-ds-xs font-medium rounded-pill px-ds-04 py-ds-02 shadow-floating"
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
       transition={springs.snappy}

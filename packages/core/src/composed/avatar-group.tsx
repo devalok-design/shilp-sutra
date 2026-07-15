@@ -144,7 +144,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     }
 
     const spotlightClasses =
-      'transition-[transform,opacity] duration-300 ease-out hover:z-50 hover:scale-105 group-hover:[&:not(:hover)]:opacity-85'
+      'transition-opacity duration-300 ease-out hover:z-50 group-hover:[&:not(:hover)]:opacity-85'
 
     return (
       <TooltipProvider>
@@ -258,7 +258,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                       borderClass,
                       overlapClass,
                       `flex cursor-pointer items-center justify-center bg-accent-2 font-semibold text-accent-11 ${textSizeClass}`,
-                      'hover:scale-105 hover:bg-accent-3 transition-[transform,background-color] duration-300 ease-out',
+                      'hover:bg-accent-3 transition-colors duration-300 ease-out',
                     )}
                     style={{ zIndex: 0, transform: getExpandTransform(displayed.length) }}
                   >

@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import * as React from 'react'
 
 import { IconProvider, type IconSize } from '../ui/icon-context'
@@ -52,7 +52,6 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
     },
     ref,
   ) => {
-    const reducedMotion = useReducedMotion()
     const resolvedIconSize = iconSize ?? (compact ? 'sm' : 'md')
     const iconSizeClass = {
       sm: 'h-ico-sm w-ico-sm',
@@ -75,20 +74,18 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         )}
         {...props}
       >
-        <motion.div
+        <div
           className={cn(
-            'flex items-center justify-center rounded-overlay-lg bg-surface-raised text-surface-fg-subtle',
+            'flex items-center justify-center text-surface-fg-subtle',
             compact ? 'h-ds-md w-ds-md' : 'h-ds-lg w-ds-lg',
           )}
-          animate={reducedMotion ? {} : { y: [0, -4, 0] }}
-          transition={reducedMotion ? {} : { repeat: Infinity, duration: 3, ease: 'easeInOut' }}
         >
           <IconProvider size={iconToken}>{resolvedIcon}</IconProvider>
-        </motion.div>
+        </div>
 
         <motion.div
           className="flex max-w-[280px] flex-col gap-ds-02"
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, ...tweens.fade }}
         >

@@ -56,11 +56,11 @@ export const buttonVariants = cva(
       },
     },
     compoundVariants: [
-      // ============ SOLID ============ (colored hover shadows — shadow tints with the button's own hue)
-      { variant: 'solid', color: 'accent',  className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 shadow-raised hover:shadow-brand' },
-      { variant: 'solid', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised hover:shadow-error' },
-      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg hover:bg-success-10 shadow-raised hover:shadow-success' },
-      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg hover:bg-warning-10 shadow-raised hover:shadow-warning' },
+      // ============ SOLID ============ (tonal raised shadow; fill deepens on hover — no coloured bloom)
+      { variant: 'solid', color: 'accent',  className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 shadow-raised' },
+      { variant: 'solid', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised' },
+      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg hover:bg-success-10 shadow-raised' },
+      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg hover:bg-warning-10 shadow-raised' },
       { variant: 'solid', color: 'neutral', className: 'bg-neutral-5 text-surface-fg hover:bg-neutral-7 shadow-raised' },
 
       // ============ SOFT ============

@@ -2,7 +2,7 @@
 
 import * as AvatarPrimitive from "@primitives/react-avatar"
 import { cva, type VariantProps } from "class-variance-authority"
-import { motion, useReducedMotion } from "framer-motion"
+import { motion } from "framer-motion"
 import * as React from "react"
 
 import { Dot, type DotColor, type DotSize } from "./dot"
@@ -174,8 +174,6 @@ const Avatar = React.forwardRef<
   AvatarProps
 >(({ className, size, shape, status, ring, badge, loading, children, ...props }, ref) => {
   const resolvedShape = shape ?? 'circle'
-  // MotionConfig can't stop this opacity loop (non-transform), so guard it locally.
-  const prefersReduced = useReducedMotion()
 
   // Build ring classes for the outer wrapper
   const ringClasses = ring && ring !== 'none'
@@ -209,17 +207,14 @@ const Avatar = React.forwardRef<
         {children}
       </AvatarPrimitive.Root>
       {status && (
-        <motion.span
+        <span
           className="absolute bottom-0 right-0"
           role="img"
           aria-label={statusLabelMap[status]}
-          {...(status === 'online' && !prefersReduced
-            ? { animate: { opacity: [1, 0.75, 1] }, transition: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' } }
-            : {})}
         >
-          {/* Shared Dot primitive: colour + contrast ring; wrapper owns position + presence breathe + a11y. */}
+          {/* Shared Dot primitive: colour + contrast ring; wrapper owns position + a11y. */}
           <Dot color={statusDotColor[status]} size={statusDotSize[size ?? 'md']} withBorder aria-hidden />
-        </motion.span>
+        </span>
       )}
       {showBadge && (
         badge === 'dot' ? (
@@ -258,7 +253,7 @@ const AvatarImage = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
 >(({ className, ...props }, ref) => (
   <motion.span
-    initial={{ opacity: 0, scale: 0.96 }}
+    initial={{ scale: 0.96 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={springs.smooth}
     className="absolute inset-0 h-full w-full"

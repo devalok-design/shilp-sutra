@@ -90,7 +90,7 @@ function BottomNavLink({
   const Link = useLink()
   const prefersReducedMotion = useReducedMotion()
   return (
-    <motion.div whileTap={prefersReducedMotion ? undefined : { y: -2 }} transition={prefersReducedMotion ? { duration: 0 } : springs.snappy} className="flex max-w-[70px] flex-1">
+    <motion.div whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }} transition={prefersReducedMotion ? { duration: 0 } : springs.snappy} className="flex max-w-[70px] flex-1">
       <Link
         href={item.href}
         onClick={onClick}

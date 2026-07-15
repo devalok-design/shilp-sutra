@@ -99,7 +99,7 @@ const BlockRenderer = React.forwardRef<HTMLDivElement, BlockRendererProps>(({
         return (
           <motion.div
             key={key}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...springs.responsive, delay: index * (staggerDelay / 1000) }}
           >

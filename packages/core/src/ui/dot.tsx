@@ -55,17 +55,6 @@ const OFF: Record<DotColor, string> = {
   current: 'border-current/40 bg-current/10',
 }
 
-// Pulse ripple — the fill colour at low opacity.
-const PULSE: Record<DotColor, string> = {
-  accent: 'bg-accent-9/40',
-  success: 'bg-success-9/40',
-  warning: 'bg-warning-9/40',
-  error: 'bg-error-9/40',
-  info: 'bg-info-9/40',
-  neutral: 'bg-neutral-8/40',
-  current: 'bg-current/40',
-}
-
 const TEXT: Record<DotColor, string> = {
   accent: 'text-accent-11',
   success: 'text-success-11',
@@ -179,14 +168,12 @@ const Dot = React.forwardRef<HTMLSpanElement, DotProps>(
       >
         {labelPosition === 'start' && labelEl}
         <span className="relative inline-flex shrink-0">
-          {showPulse && (
-            <span
-              data-pulse=""
-              style={{ animationDuration: PULSE_SPEED[pulseSpeed] }}
-              className={cn('absolute inset-0 inline-flex rounded-pill animate-ping motion-reduce:animate-none', PULSE[color])}
-            />
-          )}
-          <span className={disc} />
+          {/* Contained opacity breathe on the disc itself — never an expanding halo/ring. */}
+          <span
+            data-pulse={showPulse ? '' : undefined}
+            style={showPulse ? { animationDuration: PULSE_SPEED[pulseSpeed] } : undefined}
+            className={cn(disc, showPulse && 'animate-pulse motion-reduce:animate-none')}
+          />
         </span>
         {labelPosition === 'end' && labelEl}
       </span>

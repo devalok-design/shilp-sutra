@@ -258,7 +258,7 @@ function GroupHeader({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={false}
       animate={{ opacity: 1 }}
       transition={tweens.fade}
       className={cn(
@@ -345,7 +345,7 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
                 <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
                   <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
                   {group.items.map((item, index) => (
-                    <motion.div key={item.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
+                    <motion.div key={item.id} initial={false} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
                       {resolveEntry(item, index)}
                     </motion.div>
                   ))}
@@ -358,7 +358,7 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
             {/* Timeline line */}
             <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
             {visibleItems.map((item, index) => (
-              <motion.div key={item.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
+              <motion.div key={item.id} initial={false} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
                 {resolveEntry(item, index)}
               </motion.div>
             ))}

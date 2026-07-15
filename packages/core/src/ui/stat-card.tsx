@@ -98,6 +98,8 @@ export interface StatCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   size?: CardSize
   /** How the brand accent reads: `none` (neutral — default), `icon` (accent chip around `icon`), or `tint` (subtle accent surface wash + accent value). */
   accentStyle?: 'none' | 'icon' | 'tint'
+  /** Animate value/label in on mount (subtle settle; content stays visible either way, never opacity-gated). @default false */
+  reveal?: boolean
   /** When `accentStyle="icon"`: `soft` (tinted chip) or `solid` (filled accent chip). @default 'soft' */
   iconFill?: 'soft' | 'solid'
   /**
@@ -231,6 +233,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       variant = 'default',
       size = 'md',
       accentStyle = 'none',
+      reveal = false,
       iconFill = 'soft',
       flash,
       flashSpeed,
@@ -307,14 +310,17 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       </motion.div>
     ) : null
 
+    // reveal=false → static (content-safe default). reveal=true → subtle settle; opacity NEVER gated.
+    const revealProps = reveal
+      ? { initial: { y: 8 }, animate: { y: 0 }, transition: springs.smooth }
+      : { initial: false as const }
+
     const cardContent = (
       <>
         <div className="flex items-center justify-between">
           <motion.p
             className="text-ds-md font-medium text-surface-fg-muted"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={tweens.fade}
+            {...revealProps}
           >
             {resolvedLabel}
           </motion.p>
@@ -333,9 +339,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                       ? 'bg-accent-9 text-accent-fg'
                       : 'bg-accent-3 text-accent-11',
                   )}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={springs.snappy}
+                  {...revealProps}
                   aria-hidden="true"
                 >
                   <IconProvider size="md">{normalizeIcon(icon, 'md')}</IconProvider>
@@ -343,9 +347,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
               ) : (
                 <motion.span
                   className="text-surface-fg-muted"
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={springs.snappy}
+                  {...revealProps}
                   aria-hidden="true"
                 >
                   <IconProvider size="lg">{normalizeIcon(icon, 'lg')}</IconProvider>
@@ -363,9 +365,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   size === 'sm' ? 'text-ds-2xl' : 'text-ds-3xl',
                   accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
                 )}
-                initial={{ opacity: 0, y: '100%' }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={springs.smooth}
+                {...revealProps}
               >
                 {prefix && (
                   <span className={cn('text-surface-fg-muted', size === 'sm' ? 'text-ds-md' : 'text-ds-lg')}>{prefix}</span>
@@ -381,9 +381,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           {secondaryLabel && (
             <motion.p
               className="text-ds-sm text-surface-fg-subtle"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ ...tweens.fade, delay: 0.1 }}
+              {...revealProps}
             >
               {secondaryLabel}
             </motion.p>
@@ -391,9 +389,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         </div>
         {progress != null && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ ...tweens.fade, delay: 0.15 }}
+            {...revealProps}
           >
             <ProgressBar progress={progress} label={resolvedLabel} />
           </motion.div>
@@ -416,7 +412,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
             <CardFooter className="text-ds-sm">
               <motion.div
                 className="w-full"
-                initial={{ opacity: 0 }}
+                initial={false}
                 animate={{ opacity: 1 }}
                 transition={{ ...tweens.fade, delay: 0.25 }}
               >

@@ -2,7 +2,7 @@
 
 # @devalok/shilp-sutra
 
-> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps, v0.49.1.
+> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps, v0.49.2.
 > Built on the same primitives as shadcn/ui but with DIFFERENT prop APIs — never guess from shadcn knowledge; verify every prop.
 > This file is a ROUTER: it tells you what exists and where to get details. Do not look for prop tables here — fetch them per component (MCP tool or per-component doc file below).
 

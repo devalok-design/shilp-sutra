@@ -47,7 +47,11 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>((props, 
 
   React.useEffect(() => {
     if (trapped) {
-      function handleFocusIn(event: FocusEvent) {
+      // const arrows (not block-scoped function declarations): a fn declaration inside
+      // this block gets hoisted to a function-scoped `var` when a consumer minifier
+      // downlevels this shipped chunk, which can collide with a mangled identifier and
+      // throw a "reading '…'" runtime error. See issue #146 (same class in dismissable-layer).
+      const handleFocusIn = (event: FocusEvent) => {
         if (focusScope.paused || !container) return;
         const target = event.target as HTMLElement | null;
         if (container.contains(target)) {
@@ -55,24 +59,24 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>((props, 
         } else {
           focus(lastFocusedElementRef.current, { select: true });
         }
-      }
+      };
 
-      function handleFocusOut(event: FocusEvent) {
+      const handleFocusOut = (event: FocusEvent) => {
         if (focusScope.paused || !container) return;
         const relatedTarget = event.relatedTarget as HTMLElement | null;
         if (relatedTarget === null) return;
         if (!container.contains(relatedTarget)) {
           focus(lastFocusedElementRef.current, { select: true });
         }
-      }
+      };
 
-      function handleMutations(mutations: MutationRecord[]) {
+      const handleMutations = (mutations: MutationRecord[]) => {
         const focusedElement = document.activeElement as HTMLElement | null;
         if (focusedElement !== document.body) return;
         for (const mutation of mutations) {
           if (mutation.removedNodes.length > 0) focus(container);
         }
-      }
+      };
 
       document.addEventListener('focusin', handleFocusIn);
       document.addEventListener('focusout', handleFocusOut);

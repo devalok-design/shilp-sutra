@@ -189,14 +189,18 @@ function usePointerDownOutside(
       if (event.target && !isPointerInsideReactTreeRef.current) {
         const eventDetail = { originalEvent: event };
 
-        function handleAndDispatchPointerDownOutsideEvent() {
+        // const arrow (not a block-scoped function declaration): a fn declaration
+        // here gets hoisted to a function-scoped `var` when a consumer minifier
+        // downlevels this shipped chunk, letting it collide with the mangled name
+        // of `isPointerInsideReactTreeRef` and throw "reading 'current'" (issue #146).
+        const handleAndDispatchPointerDownOutsideEvent = () => {
           handleAndDispatchCustomEvent(
             POINTER_DOWN_OUTSIDE,
             handlePointerDownOutside,
             eventDetail,
             { discrete: true },
           );
-        }
+        };
 
         if (event.pointerType === 'touch') {
           ownerDocument.removeEventListener('click', handleClickRef.current);

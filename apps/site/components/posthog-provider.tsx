@@ -16,8 +16,11 @@ import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
 
 const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY
-// Devalok is on PostHog EU. Override with NEXT_PUBLIC_POSTHOG_HOST if that changes.
-const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com'
+// Ingestion proxied first-party via f.devalok.in (shared Devalok EU proxy) to survive
+// adblockers. Override with NEXT_PUBLIC_POSTHOG_HOST. ui_host below points at the real
+// EU app (the proxy fronts ingestion, not the toolbar/replay app).
+const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://f.devalok.in'
+const UI_HOST = 'https://eu.posthog.com'
 
 function PostHogPageView() {
   const pathname = usePathname()
@@ -39,6 +42,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     if (!KEY || posthog.__loaded) return
     posthog.init(KEY, {
       api_host: HOST,
+      ui_host: UI_HOST,
       capture_pageview: false, // captured manually on route change
       capture_pageleave: true,
     })

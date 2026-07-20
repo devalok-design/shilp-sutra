@@ -47,3 +47,37 @@ function copyTree(src, dst) {
 
 copyTree(SRC, DST)
 console.log(`[copy-skill] copied ${count} files: ${SRC} → ${DST}`)
+
+// Chat variant — ships separately as packages/core/chat-skill/ so consumers
+// can pull just the lightweight pointer skill without the coding-agent bundle.
+const CHAT_SRC = join(REPO_ROOT, 'skills', 'shilp-sutra', 'chat')
+const CHAT_DST = join(CORE, 'chat-skill')
+
+// Source-only files that shouldn't ship in the npm tarball (the template is
+// committed source, .gitignore is repo hygiene — neither is consumer-facing).
+const CHAT_EXCLUDE = new Set(['SKILL.md.template', '.gitignore'])
+
+function copyTreeFiltered(src, dst, exclude) {
+  mkdirSync(dst, { recursive: true })
+  let n = 0
+  for (const entry of readdirSync(src)) {
+    if (exclude.has(entry)) continue
+    const s = join(src, entry)
+    const d = join(dst, entry)
+    if (statSync(s).isDirectory()) {
+      n += copyTreeFiltered(s, d, exclude)
+    } else {
+      copyFileSync(s, d)
+      n++
+    }
+  }
+  return n
+}
+
+if (existsSync(CHAT_SRC)) {
+  if (existsSync(CHAT_DST)) rmSync(CHAT_DST, { recursive: true, force: true })
+  const chatCount = copyTreeFiltered(CHAT_SRC, CHAT_DST, CHAT_EXCLUDE)
+  console.log(`[copy-skill] copied ${chatCount} chat variant files: ${CHAT_SRC} → ${CHAT_DST}`)
+} else {
+  console.warn(`[copy-skill] no chat variant found at ${CHAT_SRC} — skipping`)
+}

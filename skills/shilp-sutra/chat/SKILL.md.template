@@ -1,0 +1,97 @@
+---
+name: shilp-sutra-chat
+description: >
+  Use this skill whenever the user is working with @devalok/shilp-sutra or the
+  Devalok Design System — installing it, importing components, building dashboards,
+  applying a brand archetype (stripe, linear, vercel, apple, material, notion,
+  devalok), using the Themer, or troubleshooting token/dark-mode issues. Also
+  trigger when the user pastes any @devalok import or mentions AppSidebar,
+  StatCard, DataTable, DatePicker, TopBar, PageHeader, or any other shilp-sutra
+  component name — even if they don't say "shilp-sutra" explicitly.
+  IMPORTANT: this is NOT shadcn/ui, MUI, or Chakra — do not suggest their APIs.
+license: MIT
+metadata:
+  version: "__VERSION__"
+  author: Devalok Design & Strategy Studios
+  homepage: https://shilp-sutra.devalok.in
+  variant: chat
+---
+
+# Shilp Sutra — AI chat quick reference
+
+`@devalok/shilp-sutra` is the Devalok Design System for React & Next.js.
+It is **not** shadcn/ui, Radix UI, MUI, or Chakra. Do not suggest their APIs.
+
+## Install
+
+```bash
+pnpm add @devalok/shilp-sutra framer-motion
+```
+
+## Wire CSS (globals.css)
+
+```css
+@import "tailwindcss";
+@import "@devalok/shilp-sutra/css";
+```
+
+## next.config.ts
+
+```ts
+transpilePackages: ['@devalok/shilp-sutra']
+```
+
+## Import layers
+
+| Layer    | Import path                        | What                     |
+|----------|-------------------------------------|--------------------------|
+| ui       | `@devalok/shilp-sutra/ui`          | 78 atomic primitives     |
+| composed | `@devalok/shilp-sutra/composed`    | 29 multi-part patterns   |
+| shell    | `@devalok/shilp-sutra/shell`       | 8 app-frame components   |
+| ai       | `@devalok/shilp-sutra/ai`          | 5 AI chat primitives     |
+
+Prefer per-component imports for RSC safety:
+
+```ts
+import { Button } from '@devalok/shilp-sutra/ui/button'
+import { DatePicker } from '@devalok/shilp-sutra/composed/date-picker'
+import { AppSidebar, TopBar } from '@devalok/shilp-sutra/shell'
+```
+
+## Theming — Themer
+
+Fetch a ready-made CSS block and paste after `@import "@devalok/shilp-sutra/css"`:
+
+```bash
+# archetypes: stripe | linear | vercel | apple | material | notion | devalok
+curl "https://shilp-sutra.devalok.in/themer/result.json?archetype=stripe" \
+  | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8'); console.log(JSON.parse(d).css)"
+```
+
+## Full docs → MCP server
+
+For complete component props, variants, troubleshooting, and setup recipes,
+connect the shilp-sutra MCP server — it has 11 tools and is version-exact.
+
+**Claude Desktop** — add to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "shilp-sutra": {
+      "type": "http",
+      "url": "https://shilp-sutra.devalok.in/mcp"
+    }
+  }
+}
+```
+
+**Claude Code / terminal:**
+
+```bash
+claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp
+```
+
+**MCP tools available:** `find_component`, `get_component`, `get_setup`,
+`get_tokens`, `search_docs`, `upgrade`, `detect_framework`, `preflight`,
+`validate_snippet`, `verify_setup`, `search_docs`.

@@ -98,6 +98,61 @@ if (checkMode) {
   console.log(`[build-skill] wrote skills/shilp-sutra/LICENSE`)
 }
 
+// ── Chat skill (pointer variant) ────────────────────────────────────────────
+// Hand-authored — not generated from llms.txt. Just injects the current
+// package version and (in --check mode) checks for drift the same way the
+// coding-agent skill's references are checked above.
+let extraFilesChecked = 0
+const chatSkillRoot = join(skillRoot, 'chat')
+const chatTemplate = join(chatSkillRoot, 'SKILL.md.template')
+const chatOut = join(chatSkillRoot, 'SKILL.md')
+
+if (existsSync(chatTemplate)) {
+  mkdirSync(chatSkillRoot, { recursive: true })
+
+  const corePkg = JSON.parse(read(join(repoRoot, 'packages', 'core', 'package.json')))
+  const version = corePkg.version
+  const chatContent = read(chatTemplate).replaceAll('__VERSION__', version)
+
+  extraFilesChecked++
+  if (checkMode) {
+    if (!existsSync(chatOut) || digest(read(chatOut)) !== digest(chatContent)) {
+      driftCount++
+      driftFiles.push('skills/shilp-sutra/chat/SKILL.md')
+    }
+  } else {
+    writeFileSync(chatOut, chatContent)
+    console.log('[build-skill] wrote skills/shilp-sutra/chat/SKILL.md')
+  }
+
+  // Flat prose variants for platforms without native skill/frontmatter support
+  // (ChatGPT Custom Instructions, Gemini Gem instructions) — same content,
+  // YAML frontmatter stripped.
+  const chatProse = chatContent.replace(/^---[\s\S]*?---\n/, '')
+  const chatgptOut = join(chatSkillRoot, 'chatgpt-instructions.md')
+  const gemOut = join(chatSkillRoot, 'gem-instructions.md')
+
+  for (const [dst, label] of [
+    [chatgptOut, 'skills/shilp-sutra/chat/chatgpt-instructions.md'],
+    [gemOut, 'skills/shilp-sutra/chat/gem-instructions.md'],
+  ]) {
+    extraFilesChecked++
+    if (checkMode) {
+      if (!existsSync(dst) || digest(read(dst)) !== digest(chatProse)) {
+        driftCount++
+        driftFiles.push(label)
+      }
+    } else {
+      writeFileSync(dst, chatProse)
+      console.log(`[build-skill] wrote ${label}`)
+    }
+  }
+} else {
+  console.warn(`[build-skill] skipping chat skill — no template at ${chatTemplate}`)
+}
+
+const totalChecked = transfers.length + 1 + extraFilesChecked
+
 if (checkMode) {
   if (driftCount > 0) {
     console.error(`\n[build-skill] DRIFT detected in ${driftCount} file(s):`)
@@ -105,7 +160,7 @@ if (checkMode) {
     console.error(`\nRun: node scripts/build-skill.mjs`)
     process.exit(1)
   }
-  console.log(`[build-skill] OK — skill references in sync (${transfers.length + 1} files checked)`)
+  console.log(`[build-skill] OK — skill references in sync (${totalChecked} files checked)`)
 } else {
-  console.log(`\n[build-skill] done. ${transfers.length + 1} files written.`)
+  console.log(`\n[build-skill] done. ${totalChecked} files written.`)
 }

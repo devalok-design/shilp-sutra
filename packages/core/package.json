@@ -827,6 +827,7 @@
     "fonts",
     "make-kit",
     "skill",
+    "chat-skill",
     "scripts/welcome.mjs",
     "AGENTS.md",
     "BREAKING.json",
@@ -842,6 +843,12 @@
       {
         "name": "shilp-sutra",
         "path": "./skill"
+      },
+      {
+        "name": "shilp-sutra-chat",
+        "path": "./chat-skill",
+        "variant": "chat",
+        "targets": ["claude.ai", "chatgpt", "gemini", "copilot-chat"]
       }
     ]
   },

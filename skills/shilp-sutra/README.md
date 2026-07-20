@@ -28,6 +28,11 @@ shilp-sutra/
     ├── customize-brand.md                # Token override cookbook
     ├── server-components.md              # RSC-safety matrix and import patterns
     └── troubleshoot.md                   # Decision tree for the 8 most common breakages
+chat/                                      # Lightweight pointer variant (see below)
+├── SKILL.md.template                     # Source (committed) — version placeholder
+├── SKILL.md                              # Generated — installed as `shilp-sutra-chat`
+├── chatgpt-instructions.md               # Generated — for ChatGPT Custom Instructions
+└── gem-instructions.md                   # Generated — for a Gemini Gem's instructions
 ```
 
 ## Install
@@ -64,6 +69,22 @@ Every contributor (and their agent) on the project gets the skill automatically.
 ### Cursor, Codex, Aider, and other tools
 
 The skill follows the [Agent Skills open standard](https://agentskills.io/specification) — any compatible agent loads it from the same directory. See your tool's docs for the install path.
+
+### Claude Desktop, ChatGPT, Gemini, Copilot Chat (chat variant)
+
+The full skill above is built for coding agents with filesystem access. For claude.ai, ChatGPT, Gemini, and other chat surfaces — where the agent can't read `references/` off disk — install the lightweight **chat variant** instead. It's a single-file pointer (under 1KB) that tells the model what shilp-sutra is and isn't, then hands off to the [shilp-sutra MCP server](https://shilp-sutra.devalok.in/mcp) for full component docs.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/devalok-design/shilp-sutra/main/skills/shilp-sutra/install.sh | VARIANT=chat bash
+```
+
+This installs `skills/shilp-sutra-chat/SKILL.md` and prints the MCP config snippet to add to `claude_desktop_config.json`. For ChatGPT or Gemini, paste the contents of `chatgpt-instructions.md` / `gem-instructions.md` (shipped alongside `SKILL.md`) into Custom Instructions or a Gem's instruction field.
+
+Connect the MCP server directly instead:
+
+```bash
+claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp
+```
 
 ## What it teaches the agent
 

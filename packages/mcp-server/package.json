@@ -13,9 +13,9 @@
     "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.0",
-    "posthog-node": "^5.39.4",
-    "tar": "^7.4.3",
-    "zod": "^3.24.1"
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "posthog-node": "^5.46.0",
+    "tar": "^7.5.20",
+    "zod": "^3.25.76"
   }
 }

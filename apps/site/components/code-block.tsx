@@ -3,14 +3,28 @@
 import { useState } from 'react'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
+import { track } from '@/lib/analytics'
 
-export function CodeBlock({ code, language = 'bash' }: { code: string; language?: string }) {
+export function CodeBlock({
+  code,
+  language = 'bash',
+  copyContext = 'snippet',
+  copyMeta,
+}: {
+  code: string
+  language?: string
+  /** What this block represents, sent as the `code_copied` event context (e.g. 'install'). */
+  copyContext?: string
+  /** Extra low-cardinality props merged into the `code_copied` event (e.g. { manager }). */
+  copyMeta?: Record<string, string>
+}) {
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(code)
       setCopied(true)
+      track('code_copied', { context: copyContext, language, ...copyMeta })
       setTimeout(() => setCopied(false), 1800)
     } catch {
       // ignore — older browsers without clipboard permission

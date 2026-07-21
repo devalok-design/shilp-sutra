@@ -100,13 +100,21 @@ function toolProps(name, args = {}) {
 function instrument(ctx, name, fn) {
   return async (args) => {
     let isError = false
+    const startedAt = Date.now()
     try {
       return text(await fn(args))
     } catch (e) {
       isError = true
       return errorText(e)
     } finally {
-      analytics.capture(analytics.anonId(ctx.ip), 'mcp_tool_call', { ...toolProps(name, args), isError })
+      // duration_ms doubles as a cache-behaviour signal: a cold version (cache
+      // miss → tarball fetch/extract) shows up as a high duration vs a warm hit.
+      const durationMs = Date.now() - startedAt
+      analytics.capture(analytics.anonId(ctx.ip), 'mcp_tool_call', {
+        ...toolProps(name, args),
+        isError,
+        duration_ms: durationMs,
+      })
     }
   }
 }

@@ -13,20 +13,28 @@
  *
  * Env:
  *   POSTHOG_API_KEY   PostHog project API key (enables analytics)
- *   POSTHOG_HOST      ingestion host (default https://us.i.posthog.com)
+ *   POSTHOG_HOST      ingestion host (default https://eu.i.posthog.com)
  *   POSTHOG_IP_SALT   salt for the distinct_id hash (default: a constant)
  */
 
 import { createHash } from 'node:crypto'
 
 const API_KEY = process.env.POSTHOG_API_KEY
-const HOST = process.env.POSTHOG_HOST || 'https://us.i.posthog.com'
+const HOST = process.env.POSTHOG_HOST || 'https://eu.i.posthog.com'
 const SALT = process.env.POSTHOG_IP_SALT || 'shilp-sutra-mcp'
 
 export const configured = Boolean(API_KEY)
 
 let client = null
 if (configured) {
+  if (!process.env.POSTHOG_IP_SALT) {
+    // The default salt is public (it ships in this source file), so distinct_ids
+    // built from it are reversible to raw IPs by anyone with event access. Warn
+    // loudly so a real salt gets set in any environment that actually ingests.
+    console.warn(
+      '[analytics] POSTHOG_IP_SALT is unset — using the public default salt; IP-derived distinct_ids are reversible. Set POSTHOG_IP_SALT to a secret.'
+    )
+  }
   const { PostHog } = await import('posthog-node')
   // flushAt low + short interval: this is a long-running server with sparse,
   // bursty traffic — we'd rather ship events promptly than hold a big batch.

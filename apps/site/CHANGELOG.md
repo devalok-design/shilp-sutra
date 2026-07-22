@@ -1,5 +1,12 @@
 # site
 
+## 0.0.21
+
+### Patch Changes
+
+- Updated dependencies [[`595d0f8`](https://github.com/devalok-design/shilp-sutra/commit/595d0f88806b3ac8ec65e56b3aed63085ba918c0)]:
+  - @devalok/shilp-sutra@0.49.5
+
 ## 0.0.20
 
 ### Patch Changes

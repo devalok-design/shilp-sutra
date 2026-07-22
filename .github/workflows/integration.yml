@@ -1,0 +1,141 @@
+name: Integration
+
+# Post-merge integration gates. Runs the RELEASE-UNIQUE gauntlet — the checks
+# that PR CI (ci.yml) does NOT run — on every main push, so a break is caught at
+# merge time (while the author is still around), NOT weeks later when someone
+# presses the publish button.
+#
+# This workflow NEVER publishes. It has no id-token permission and no publish
+# step. Publishing lives in release.yml (workflow_dispatch only).
+#
+# Division of labor:
+#   ci.yml (PRs)       → build, typecheck, lint, lint:props, test, ssr-smoke,
+#                        bundle-size, storybook browser tests (turbo remote cache)
+#   integration.yml    → the gates PR CI can't/doesn't run: pre-publish-audit,
+#     (this, on main)    consumer-smoke (Next+TW4), compiled-CSS coverage,
+#                        skill-ref drift, Chromatic. These caught the 0.49.0
+#                        breaks PR CI missed (4 hotfix PRs). Do not delete them.
+#   release.yml        → the FULL gauntlet + publish, dispatch-only, self-verifying.
+#
+# NOTE: the gate steps below are a subset of release.yml's. When you add or
+# change a release gate, keep this file in sync (or the net has a hole).
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'apps/site/**'
+      - 'packages/mcp-server/**'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      # Never serve release-integration builds from the remote cache — build fresh.
+      TURBO_FORCE: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Chromatic needs full history to compute visual baselines across
+          # commits (default depth 1 => "Found only one commit").
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Prerelease state controls whether Chromatic blocks on diffs. In pre-mode
+      # (@next line) we upload + auto-accept; on the stable line we block on any
+      # unreviewed diff. Mirrors release.yml's guard.
+      - name: Inspect prerelease state
+        id: guard
+        run: |
+          if [ -f .changeset/pre.json ]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Core-only gates (consumer-smoke, css-coverage, chromatic) don't apply to
+      # a brand/eslint-only push. Skip them there. Fail safe: anything ambiguous
+      # -> run full gates.
+      - name: Detect affected packages
+        id: affected
+        run: |
+          set -euo pipefail
+          BEFORE="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" != "push" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "core=true" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$BEFORE" "${{ github.sha }}" | grep -qE '^packages/core/'; then
+            echo "core=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "core=false" >> "$GITHUB_OUTPUT"
+            echo "packages/core untouched -> skipping core-only integration gates."
+          fi
+
+      # Build is required for the dist-reading gates below (audit, consumer-smoke,
+      # css-coverage).
+      - name: Build
+        run: pnpm build
+
+      # Regenerate skill references before the audit's drift gate (build-skill.mjs
+      # copies from llms.txt / docs/recipes). Without this the audit fails on any
+      # push that edited a source but didn't commit the regenerated ref.
+      - name: Regenerate Agent Skill references
+        run: node scripts/build-skill.mjs
+
+      # Full HARD-gate audit. SS_AUDIT_SKIP_REDUNDANT=1 skips build/typecheck/
+      # test/ssr — those already ran in ci.yml on the PR; here we want the
+      # audit-UNIQUE gates (docs coverage, token hygiene, manifest, skill,
+      # breaking, bundle, exports order). Downstream dist-reading gates use the
+      # Build step above.
+      - name: Pre-publish audit
+        run: node scripts/pre-publish-audit.mjs
+        env:
+          SS_AUDIT_SKIP_REDUNDANT: '1'
+
+      # Dist-side net: packs the tarball into a throwaway Next 16 + TW4 +
+      # Turbopack app and runs `next build`. Catches RSC/CSS regressions no
+      # other gate exercises. THE gate that would have caught Karm's 0.34/0.36
+      # blockers.
+      - name: Consumer smoke (Next 16 + Turbopack + TW4)
+        if: steps.affected.outputs.core == 'true'
+        run: node scripts/consumer-smoke-test.mjs
+
+      - name: Compiled-CSS coverage (Turbopack)
+        if: steps.affected.outputs.core == 'true'
+        run: node scripts/audit-compiled-css.mjs
+
+      - name: Consumer smoke (Next 15 + Webpack)
+        if: ${{ steps.affected.outputs.core == 'true' && hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
+        run: node scripts/consumer-smoke-test.mjs --variant next15-webpack
+
+      - name: Compiled-CSS coverage (Webpack)
+        if: ${{ steps.affected.outputs.core == 'true' && hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
+        run: node scripts/audit-compiled-css.mjs --variant next15-webpack
+
+      # Chromatic visual regression on the stable line blocks on any unreviewed
+      # diff (binds the new baseline). Skipped when the token isn't configured
+      # so the workflow stays green until then.
+      - name: Chromatic visual review
+        if: ${{ steps.affected.outputs.core == 'true' && env.CHROMATIC_PROJECT_TOKEN != '' }}
+        uses: chromaui/action@v11
+        with:
+          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
+          buildScriptName: build-storybook
+          exitZeroOnChanges: ${{ steps.guard.outputs.prerelease == 'true' }}
+          autoAcceptChanges: ${{ steps.guard.outputs.prerelease == 'true' }}
+          onlyChanged: true

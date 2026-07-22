@@ -1,19 +1,16 @@
 name: Release
 
+# PUBLISH is a deliberate, manual act — this workflow runs ONLY on
+# workflow_dispatch (Actions UI "Run workflow", or `gh workflow run release.yml`).
+#
+# It no longer fires on push to main (split out 2026-07-22). Merging a feature
+# PR opens/updates the Version PR (version.yml) and runs integration gates
+# (integration.yml); NEITHER publishes. To ship:
+#   1. Merge the "Version Packages" PR (bumps versions, deletes changesets).
+#   2. Dispatch THIS workflow. The guard below refuses if unreleased changesets
+#      are still pending (i.e. you forgot step 1).
+# See CLAUDE.md "Publishing".
 on:
-  push:
-    branches: [main]
-    # Site-only and mcp-server-only changes deploy via Railway and never touch
-    # the published npm packages — skip the release pipeline for them.
-    # (paths-ignore only skips when ALL changed paths match, so a mixed push
-    # that also touches packages/core still runs the release correctly.)
-    paths-ignore:
-      - 'apps/site/**'
-      - 'packages/mcp-server/**'
-  # Allow manual re-runs from the Actions UI / gh CLI without needing a new commit.
-  # Useful when a prior publish failed on a transient issue (auth, registry outage,
-  # token expiry) and we want to retry with the fix in place — as happened after
-  # 0.36.0's initial NPM_TOKEN setup. See 2026-04-19 retro.
   workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
@@ -43,6 +40,23 @@ jobs:
             echo "prerelease=false" >> $GITHUB_OUTPUT
             echo "Release guard: no pre.json → stable release (@latest)"
           fi
+      # Refuse a stable dispatch while unreleased changesets are still pending —
+      # that means the Version PR wasn't merged, so main's versions are NOT bumped
+      # and changesets/action would silently open a PR instead of publishing.
+      # (In prerelease mode, pending changesets are expected — @next publishes
+      # them — so this check applies to the stable line only.)
+      - name: Guard — Version PR must be merged first (stable only)
+        if: steps.check.outputs.prerelease != 'true'
+        run: |
+          set -euo pipefail
+          # Any .changeset/*.md other than README.md is an unconsumed changeset.
+          PENDING=$(find .changeset -maxdepth 1 -name '*.md' ! -name 'README.md' | wc -l)
+          if [ "$PENDING" -gt 0 ]; then
+            echo "::error::$PENDING unreleased changeset(s) still present. Merge the 'Version Packages' PR before dispatching a release."
+            find .changeset -maxdepth 1 -name '*.md' ! -name 'README.md' -printf '  - %p\n'
+            exit 1
+          fi
+          echo "Guard: no pending changesets → versions are bumped, safe to publish."
 
   # ── Release job — gated on guard ───────────────────────────────────────────
   release:

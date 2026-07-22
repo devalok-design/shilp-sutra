@@ -1,5 +1,11 @@
 # @devalok/shilp-sutra
 
+## 0.49.4
+
+### Patch Changes
+
+- [#156](https://github.com/devalok-design/shilp-sutra/pull/156) [`66341af`](https://github.com/devalok-design/shilp-sutra/commit/66341af8204cc7734a4a298bcea8c7ddf1121901) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Dependency maintenance: raise the `use-sync-external-store` floor to `^1.6.0` and refresh dev/peer toolchain (framer-motion 12.42, @tiptap 3.28, tailwind 4.3, vite 8.1, vitest 4.1.10, @typescript-eslint 8.65, storybook 10.5, date-fns 4.4). No API or behavior changes; peer-dependency ranges are unchanged.
+
 ## 0.49.3
 
 ### Patch Changes

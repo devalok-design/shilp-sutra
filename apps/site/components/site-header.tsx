@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { IconBrandGithub, IconMenu2, IconX } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { SHILP_SUTRA_MINOR } from '@/lib/version'
+import { track } from '@/lib/analytics'
 import { BrandSwitcher } from './brand-switcher'
 import { ThemeToggle } from './theme-toggle'
 
@@ -15,7 +16,6 @@ const navLinks = [
   { href: '/blocks', label: 'Blocks' },
   { href: '/theming', label: 'Theming' },
   { href: '/docs', label: 'Docs' },
-  { href: '/figma-make', label: 'Figma Make' },
   { href: '/agents', label: 'For AI editors', accent: true },
 ] as const
 
@@ -184,6 +184,7 @@ export function SiteHeader() {
               target="_blank"
               rel="noreferrer"
               aria-label="View on GitHub"
+              onClick={() => track('cta_click', { cta: 'github', location: 'header' })}
             >
               <Button variant="ghost" size="icon-md" aria-label="GitHub">
                 <IconBrandGithub size={18} />

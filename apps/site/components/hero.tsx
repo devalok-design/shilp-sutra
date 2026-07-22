@@ -4,6 +4,7 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 import { AuroraBloom } from '@devalok/shilp-sutra-brand/aurora'
+import { TrackedLink } from './tracked-link'
 
 export function Hero() {
   return (
@@ -34,14 +35,24 @@ export function Hero() {
           everywhere.
         </Text>
         <div className="w-full max-w-sm sm:max-w-none sm:w-auto flex flex-col sm:flex-row gap-ds-03 mt-ds-03">
-          <Link href="/theming" className="w-full sm:w-auto">
+          <TrackedLink
+            href="/theming"
+            className="w-full sm:w-auto"
+            event="cta_click"
+            eventProps={{ cta: 'try-it-on', location: 'hero' }}
+          >
             <Button size="lg" className="w-full sm:w-auto">Try it on</Button>
-          </Link>
-          <Link href="/components" className="w-full sm:w-auto">
+          </TrackedLink>
+          <TrackedLink
+            href="/components"
+            className="w-full sm:w-auto"
+            event="cta_click"
+            eventProps={{ cta: 'see-components', location: 'hero' }}
+          >
             <Button variant="soft" size="lg" className="w-full sm:w-auto" endIcon={<IconArrowRight size={18} />}>
               See what&apos;s inside
             </Button>
-          </Link>
+          </TrackedLink>
         </div>
         {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
             Three capability-led chips per docs/copy/shilp-sutra-copy-context.md §10. */}

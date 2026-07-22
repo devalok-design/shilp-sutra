@@ -49,7 +49,7 @@ export function InstallTabs() {
           )
         })}
       </div>
-      <CodeBlock code={installCommands[active]} language="bash" />
+      <CodeBlock code={installCommands[active]} language="bash" copyContext="install" copyMeta={{ manager: active }} />
     </div>
   )
 }

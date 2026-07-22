@@ -22,7 +22,7 @@ import { Toaster } from '@devalok/shilp-sutra/ui/toaster'
 import { CommandPalette } from '@devalok/shilp-sutra/composed/command-palette'
 
 /**
- * "Same care, every component" — five hand-picked components on the
+ * "Same care, every component" — four hand-picked components on the
  * landing, each in a real-use-case demo. Picked first-principles, not
  * by alphabet: every demo answers a specific "what does this component
  * unlock for a real product" question.
@@ -31,7 +31,6 @@ import { CommandPalette } from '@devalok/shilp-sutra/composed/command-palette'
  * - Combobox: search-as-the-interface
  * - Toast: how the system answers back
  * - Chart: numbers that move
- * - Avatar stack: identity in dense lists
  */
 export function ComponentShowcase() {
   return (
@@ -46,7 +45,7 @@ export function ComponentShowcase() {
           Same care, every component.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          Five favourites from the 118 others. Each one picked because it changes the shape of
+          Four favourites from the 118 others. Each one picked because it changes the shape of
           what a real product can do, not because it ticks a box.
         </Text>
       </header>

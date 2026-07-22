@@ -61,9 +61,9 @@
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
+    "@paper-design/shaders-react": "^0.0.76",
     "react": "^18 || ^19",
-    "react-dom": "^18 || ^19",
-    "@paper-design/shaders-react": "^0.0.76"
+    "react-dom": "^18 || ^19"
   },
   "peerDependenciesMeta": {
     "@paper-design/shaders-react": {
@@ -73,6 +73,6 @@
   "devDependencies": {
     "@paper-design/shaders-react": "^0.0.76",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.0.1"
+    "tailwind-merge": "^3.6.0"
   }
 }

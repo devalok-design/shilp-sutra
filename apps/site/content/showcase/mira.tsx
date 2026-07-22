@@ -25,7 +25,7 @@ import {
   BreadcrumbSeparator,
 } from '@devalok/shilp-sutra/ui/breadcrumb'
 import { Button } from '@devalok/shilp-sutra/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
+import { Card, CardBleed, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Combobox } from '@devalok/shilp-sutra/ui/combobox'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@devalok/shilp-sutra/ui/sheet'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/ui/tabs'
@@ -337,7 +337,7 @@ export function MiraShowcase() {
               <Text variant="label-sm" className="text-surface-fg-muted">
                 Colour · <span className="text-surface-fg">{activeColour.name}</span>
               </Text>
-              <div className="flex items-center gap-ds-03 overflow-x-auto pb-ds-01 -mx-ds-01 px-ds-01 [scrollbar-width:thin]">
+              <div className="flex items-center gap-ds-03 overflow-x-auto overflow-y-hidden py-ds-03 -mx-ds-03 px-ds-03 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {COLOURS.map((c) => {
                   const active = c.id === colour
                   return (
@@ -705,7 +705,10 @@ export function MiraShowcase() {
                 }}
                 aria-label={`Add ${r.name} to bag, ${r.inr}`}
               >
-                <div className="relative aspect-[4/3] rounded-t-ds-md overflow-hidden -m-ds-04 mb-ds-03 border-b border-surface-border-subtle">
+                <CardBleed
+                  side="top"
+                  className="relative aspect-[4/3] border-b border-surface-border-subtle"
+                >
                   <img
                     src={r.img}
                     alt={r.name}
@@ -720,7 +723,7 @@ export function MiraShowcase() {
                       </Badge>
                     </div>
                   )}
-                </div>
+                </CardBleed>
                 <CardHeader className="p-0 min-w-0">
                   <CardTitle className="text-[length:var(--typo-heading-sm-size)] truncate">{r.name}</CardTitle>
                   <CardDescription className="line-clamp-2">{r.sub}</CardDescription>

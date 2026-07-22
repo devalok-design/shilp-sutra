@@ -187,6 +187,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       maxVisible = 6,
       renderOption,
       accessibleLabel,
+      id: externalId,
       size: sizeProp = 'md',
       state: stateProp,
       ...rest
@@ -427,10 +428,14 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             ref={ref}
             type="button"
             role="combobox"
+            // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
+            id={externalId ?? fieldCtx.inputId}
             aria-expanded={open}
             aria-controls={listboxId}
             aria-haspopup="listbox"
-            aria-label={accessibleLabel ?? placeholder}
+            // Explicit accessibleLabel wins. Inside a FormField, let the visible <Label>
+            // provide the name (via htmlFor); only fall back to placeholder when standalone.
+            aria-label={accessibleLabel ?? (fieldCtx.inputId ? undefined : placeholder)}
             aria-invalid={isError || undefined}
             aria-describedby={ariaDescribedBy}
             aria-required={ariaRequired || undefined}

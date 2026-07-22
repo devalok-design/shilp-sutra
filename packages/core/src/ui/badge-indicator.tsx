@@ -21,7 +21,7 @@ const COLOR_CLASSES = {
   info: 'bg-info-9 text-info-fg',
 } as const
 
-export interface BadgeIndicatorProps {
+export interface BadgeIndicatorProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'> {
   count?: number
   max?: number
   dot?: boolean
@@ -29,28 +29,32 @@ export interface BadgeIndicatorProps {
   invisible?: boolean
   showZero?: boolean
   placement?: keyof typeof PLACEMENT_CLASSES
-  className?: string
   children: React.ReactNode
 }
 
-export function BadgeIndicator({
-  count,
-  max = 99,
-  dot = false,
-  color = 'error',
-  invisible = false,
-  showZero = false,
-  placement = 'top-right',
-  className,
-  children,
-}: BadgeIndicatorProps) {
-  const prefersReduced = useReducedMotion()
-  const show = !invisible && (dot || (count !== undefined && (count > 0 || showZero)))
-  const displayCount = count !== undefined && count > max ? `${max}+` : count
+export const BadgeIndicator = React.forwardRef<HTMLSpanElement, BadgeIndicatorProps>(
+  function BadgeIndicator(
+    {
+      count,
+      max = 99,
+      dot = false,
+      color = 'error',
+      invisible = false,
+      showZero = false,
+      placement = 'top-right',
+      className,
+      children,
+      ...rest
+    },
+    ref,
+  ) {
+    const prefersReduced = useReducedMotion()
+    const show = !invisible && (dot || (count !== undefined && (count > 0 || showZero)))
+    const displayCount = count !== undefined && count > max ? `${max}+` : count
 
-  return (
-    <span className={cn('relative inline-flex', className)}>
-      {children}
+    return (
+      <span ref={ref} className={cn('relative inline-flex', className)} {...rest}>
+        {children}
       <AnimatePresence>
         {show && (
           <motion.span
@@ -74,6 +78,6 @@ export function BadgeIndicator({
       </AnimatePresence>
     </span>
   )
-}
+})
 
 BadgeIndicator.displayName = 'BadgeIndicator'

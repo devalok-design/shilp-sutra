@@ -203,6 +203,8 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             resolvedInputSize,
           )}
           {...rest}
+          // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
+          id={rest.id ?? fieldCtx.inputId}
         />
 
         <button

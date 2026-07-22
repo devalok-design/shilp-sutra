@@ -180,6 +180,14 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
             e.preventDefault()
             setHighlightedIndex((i) => Math.max(i - 1, 0))
             break
+          case 'Home':
+            e.preventDefault()
+            setHighlightedIndex(0)
+            break
+          case 'End':
+            e.preventDefault()
+            setHighlightedIndex(filtered.length - 1)
+            break
           case 'Enter':
             e.preventDefault()
             if (highlightedIndex >= 0 && filtered[highlightedIndex]) {
@@ -209,6 +217,8 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           ref={composedRef}
           type="text"
           role="combobox"
+          // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
+          id={externalId ?? fieldCtx.inputId}
           aria-expanded={isOpen}
           aria-autocomplete="list"
           aria-controls={isOpen ? listboxId : undefined}
@@ -216,6 +226,9 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           aria-invalid={isError || undefined}
           aria-describedby={ariaDescribedBy}
           aria-required={ariaRequired || undefined}
+          // Named by the associated <Label> (FormField) or an external label via id.
+          // Only when there's no association mechanism, fall back to placeholder.
+          aria-label={externalId || fieldCtx.inputId ? undefined : placeholder}
           value={query}
           placeholder={placeholder}
           disabled={disabled}

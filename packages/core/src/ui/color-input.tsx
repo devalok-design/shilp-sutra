@@ -4,6 +4,7 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 import { HexColorPicker } from 'react-colorful'
 
+import { useFormField } from './form'
 import { durations,springs } from './lib/motion'
 import { cn } from './lib/utils'
 import {
@@ -175,11 +176,16 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
     align = 'start',
     variant = 'default',
     className,
+    id: externalId,
     ...props
   }, ref) => {
     const [format, setFormat] = React.useState<ColorFormat>(defaultFormat)
     const [open, setOpen] = React.useState(false)
     const instanceId = React.useId()
+    const fieldCtx = useFormField()
+    // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves
+    // onto the (labelable) trigger button. The root is a <div>, which can't be a label target.
+    const triggerId = externalId ?? fieldCtx.inputId
 
     // Internal color state — syncs with prop, allows uncontrolled use
     const [internalColor, setInternalColor] = React.useState(value)
@@ -311,7 +317,11 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 whileHover={{ y: -1, boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}
                 whileTap={{ scale: 0.97 }}
                 transition={springs.smooth}
-                aria-label={`Color picker: ${internalColor}`}
+                id={triggerId}
+                aria-describedby={fieldCtx.helperTextId}
+                aria-invalid={fieldCtx.state === 'error' || undefined}
+                // Inside a FormField, let the visible <Label> name the trigger; else describe it.
+                aria-label={fieldCtx.inputId ? undefined : `Color picker: ${internalColor}`}
               >
                 {internalColor.toUpperCase()}
               </motion.button>
@@ -327,7 +337,11 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={springs.snappy}
-                aria-label={`Color picker: ${internalColor}`}
+                id={triggerId}
+                aria-describedby={fieldCtx.helperTextId}
+                aria-invalid={fieldCtx.state === 'error' || undefined}
+                // Inside a FormField, let the visible <Label> name the trigger; else describe it.
+                aria-label={fieldCtx.inputId ? undefined : `Color picker: ${internalColor}`}
               >
                 {/* Gradient background: color → surface */}
                 <motion.span

@@ -98,6 +98,8 @@ const SelectTrigger = React.forwardRef<
     aria-describedby={ariaDescribedBy}
     aria-required={ariaRequired || undefined}
     {...props}
+    // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
+    id={props.id ?? fieldCtx.inputId}
   >
     {children}
     <SelectPrimitive.Icon asChild>

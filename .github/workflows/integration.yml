@@ -13,8 +13,9 @@ name: Integration
 #                        bundle-size, storybook browser tests (turbo remote cache)
 #   integration.yml    → the gates PR CI can't/doesn't run: pre-publish-audit,
 #     (this, on main)    consumer-smoke (Next+TW4), compiled-CSS coverage,
-#                        skill-ref drift, Chromatic. These caught the 0.49.0
-#                        breaks PR CI missed (4 hotfix PRs). Do not delete them.
+#                        skill-ref drift. These caught the 0.49.0 breaks PR CI
+#                        missed (4 hotfix PRs). Do not delete them. (Chromatic is
+#                        NOT here — visual-review.yml owns main-push snapshots.)
 #   release.yml        → the FULL gauntlet + publish, dispatch-only, self-verifying.
 #
 # NOTE: the gate steps below are a subset of release.yml's. When you add or
@@ -34,16 +35,11 @@ jobs:
     permissions:
       contents: read
     env:
-      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
       # Never serve release-integration builds from the remote cache — build fresh.
       TURBO_FORCE: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          # Chromatic needs full history to compute visual baselines across
-          # commits (default depth 1 => "Found only one commit").
-          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -57,20 +53,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Prerelease state controls whether Chromatic blocks on diffs. In pre-mode
-      # (@next line) we upload + auto-accept; on the stable line we block on any
-      # unreviewed diff. Mirrors release.yml's guard.
-      - name: Inspect prerelease state
-        id: guard
-        run: |
-          if [ -f .changeset/pre.json ]; then
-            echo "prerelease=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "prerelease=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Core-only gates (consumer-smoke, css-coverage, chromatic) don't apply to
-      # a brand/eslint-only push. Skip them there. Fail safe: anything ambiguous
+      # Core-only gates (consumer-smoke, css-coverage) don't apply to a
+      # brand/eslint-only push. Skip them there. Fail safe: anything ambiguous
       # -> run full gates.
       - name: Detect affected packages
         id: affected
@@ -127,15 +111,9 @@ jobs:
         if: ${{ steps.affected.outputs.core == 'true' && hashFiles('tests/smoke-consumer-next15/package.json') != '' }}
         run: node scripts/audit-compiled-css.mjs --variant next15-webpack
 
-      # Chromatic visual regression on the stable line blocks on any unreviewed
-      # diff (binds the new baseline). Skipped when the token isn't configured
-      # so the workflow stays green until then.
-      - name: Chromatic visual review
-        if: ${{ steps.affected.outputs.core == 'true' && env.CHROMATIC_PROJECT_TOKEN != '' }}
-        uses: chromaui/action@v11
-        with:
-          projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
-          buildScriptName: build-storybook
-          exitZeroOnChanges: ${{ steps.guard.outputs.prerelease == 'true' }}
-          autoAcceptChanges: ${{ steps.guard.outputs.prerelease == 'true' }}
-          onlyChanged: true
+      # NOTE: Chromatic is intentionally NOT run here. visual-review.yml already
+      # snapshots every main push (non-blocking, per-commit baselines). A second,
+      # blocking Chromatic run post-merge would double snapshot quota AND could
+      # only paint a red X on an already-merged commit (gating nothing). The
+      # BLOCKING visual gate lives on the publish path (release.yml), where it
+      # can actually stop a bad baseline from shipping.

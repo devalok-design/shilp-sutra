@@ -209,6 +209,8 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           ref={composedRef}
           type="text"
           role="combobox"
+          // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
+          id={externalId ?? fieldCtx.inputId}
           aria-expanded={isOpen}
           aria-autocomplete="list"
           aria-controls={isOpen ? listboxId : undefined}
@@ -216,6 +218,9 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           aria-invalid={isError || undefined}
           aria-describedby={ariaDescribedBy}
           aria-required={ariaRequired || undefined}
+          // Named by the associated <Label> (FormField) or an external label via id.
+          // Only when there's no association mechanism, fall back to placeholder.
+          aria-label={externalId || fieldCtx.inputId ? undefined : placeholder}
           value={query}
           placeholder={placeholder}
           disabled={disabled}

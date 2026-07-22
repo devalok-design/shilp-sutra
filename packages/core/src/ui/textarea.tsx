@@ -77,6 +77,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const state = resolveFieldState(stateProp, fieldCtx.state)
     const ariaDescribedBy = props['aria-describedby'] ?? fieldCtx.helperTextId
     const ariaRequired = props['aria-required'] ?? fieldCtx.required
+    // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
+    const textareaId = props.id ?? fieldCtx.inputId
 
     return (
       <motion.textarea
@@ -92,6 +94,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
         ref={ref}
         {...motionProps(props)}
+        id={textareaId}
       />
     )
   },

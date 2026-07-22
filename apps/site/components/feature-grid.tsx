@@ -1,16 +1,22 @@
 import { IconLayoutGrid, IconPalette, IconShield, IconUsers } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { CARD_RESTING } from '@/lib/card-recipe'
 
 /**
- * Three pillars + one builder card. Per docs/copy/shilp-sutra-copy-context.md §3.
- *  1. Be yourself — customisability is the headline
- *  2. Thought through — craft shown, not claimed
- *  3. Real-scale — full pages, not toys
- *  4. For builders, by builders — audience promise
+ * Three pillars + one builder promise. Per docs/copy/shilp-sutra-copy-context.md §3 + §14.
+ *
+ * Pillars (§3) — the three the doc names, and only these three:
+ *   1. Be yourself      — customisability is the headline
+ *   2. Thought through  — craft shown, not claimed
+ *   3. Real-scale       — full pages, not toys
+ *
+ * Promise (§4) — "For builders, by builders" is the audience line, NOT a
+ * pillar. It renders as a distinct card below the pillar row so the
+ * "Three pillars. One promise." heading counts true.
  *
  * Agent angle lives in <AgentCallout /> below this section, not here.
  */
-const features = [
+const pillars = [
   {
     icon: IconPalette,
     title: 'Your brand. Live.',
@@ -26,12 +32,13 @@ const features = [
     title: 'Real pages, not toys.',
     body: 'Dashboards. Settings. Pricing. Sign-up. Data tables. Five full blocks ship today, more this beta. Real spacing, real copy, real states. The stuff your users actually use.',
   },
-  {
-    icon: IconUsers,
-    title: 'For builders, by builders.',
-    body: 'Indie devs, studio teams, designers reaching for code, coding agents. One library, one install. Devalok ships on it; so do Karm, Devalok Hiring, BharatTools, and Gurukul.',
-  },
 ] as const
+
+const promise = {
+  icon: IconUsers,
+  title: 'For builders, by builders.',
+  body: 'Indie devs, studio teams, designers reaching for code, coding agents. One library, one install. Devalok ships on it; so do Karm, Devalok Hiring, BharatTools, and Gurukul.',
+} as const
 
 export function FeatureGrid() {
   return (
@@ -45,8 +52,10 @@ export function FeatureGrid() {
             Three pillars. One promise.
           </Text>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-ds-08 gap-y-ds-07">
-          {features.map((f) => (
+
+        {/* The three pillars — one clean row on desktop. */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-ds-08 gap-y-ds-07">
+          {pillars.map((f) => (
             <div key={f.title} className="flex flex-col gap-ds-02">
               <div className="flex items-center gap-ds-02">
                 <f.icon size={18} className="text-accent-11 shrink-0" />
@@ -55,6 +64,15 @@ export function FeatureGrid() {
               <p className="text-ds-sm text-surface-fg-subtle">{f.body}</p>
             </div>
           ))}
+        </div>
+
+        {/* The one promise — set apart from the pillars as its own card. */}
+        <div className={`${CARD_RESTING} flex flex-col gap-ds-03 sm:flex-row sm:items-center sm:gap-ds-06`}>
+          <div className="flex items-center gap-ds-02 sm:w-64 sm:shrink-0">
+            <promise.icon size={18} className="text-accent-11 shrink-0" />
+            <h3 className="text-ds-md text-surface-fg font-semibold">{promise.title}</h3>
+          </div>
+          <p className="text-ds-sm text-surface-fg-subtle sm:flex-1">{promise.body}</p>
         </div>
       </div>
     </section>

@@ -123,9 +123,16 @@ To add a legitimate exception, add the filename to `SURFACE1_ALLOWLIST` in `scri
 
 ## Publishing
 
-**Day-to-day:** Add a `.changeset/*.md` file → push/merge to `main` → `changesets/action` opens a Version Packages PR → review + merge → `.github/workflows/release.yml` publishes via OIDC Trusted Publisher (sigstore provenance). **Do not run `npm publish` manually.**
+**Day-to-day (release split 2026-07-22):** Publishing is decoupled from merging so releases can be *paced*, not churned. Three workflows:
+- **`version.yml`** (push→main): `changesets/action` opens/updates the Version Packages PR. Never publishes.
+- **`integration.yml`** (push→main): runs the release-UNIQUE gates PR CI can't (pre-publish-audit, consumer-smoke, compiled-CSS coverage, skill-drift, Chromatic) as a post-merge net. Never publishes.
+- **`release.yml`** (`workflow_dispatch` ONLY): full gauntlet **+ publish** via OIDC Trusted Publisher (sigstore provenance).
 
-**Authority on gates:** `scripts/pre-publish-audit.mjs` is the single source of truth — 45 hard gates (git clean, version ↔ CHANGELOG match, per-component docs coverage, CVA/doc prop accuracy, typecheck, lint, tests, build, SSR smoke, surface/shadow token hygiene, TW4 migration hygiene, published-exports ordering, bundle size). It runs in release.yml's Audit step before publish AND can be invoked locally (`node scripts/pre-publish-audit.mjs`) for pre-flight checks.
+**Flow:** land changesets → they accumulate in the Version PR → merge the Version PR when ready to ship (bumps versions, deletes changesets; **no longer auto-publishes**) → a maintainer dispatches `release.yml` (Actions UI "Run workflow" or `gh workflow run release.yml`). A stable dispatch is **refused if unreleased changesets are still pending** (you forgot to merge the Version PR). **Do not run `npm publish` manually.**
+
+> Gate steps in `integration.yml` are a subset of `release.yml`'s — when you add/change a release gate, keep both in sync or the post-merge net has a hole.
+
+**Authority on gates:** `scripts/pre-publish-audit.mjs` is the single source of truth — 45 hard gates (git clean, version ↔ CHANGELOG match, per-component docs coverage, CVA/doc prop accuracy, typecheck, lint, tests, build, SSR smoke, surface/shadow token hygiene, TW4 migration hygiene, published-exports ordering, bundle size). It runs in `integration.yml` (every main push) AND `release.yml`'s Audit step before publish, AND can be invoked locally (`node scripts/pre-publish-audit.mjs`) for pre-flight checks.
 
 **Human judgment lives on the Version Packages PR.** See `/publish-release` for the reviewer checklist (changeset body quality, bump magnitude, Chromatic review, Storybook spot-check). CI can't evaluate these — they gate on merge.
 

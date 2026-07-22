@@ -1,0 +1,59 @@
+name: Version
+
+# Opens / updates the "Version Packages" PR whenever changesets land on main.
+# This workflow NEVER publishes — it only prepares the release PR. Publishing is
+# a deliberate, separate act: see release.yml (workflow_dispatch only).
+#
+# Why split (2026-07-22): with more contributors, coupling "merge to main" to
+# "publish to npm" churned releases out reactively. Now changesets accumulate
+# into one Version PR that a maintainer merges when ready, and publish is a
+# separate manual dispatch. See CLAUDE.md "Publishing".
+on:
+  push:
+    branches: [main]
+    # Site-only and mcp-server-only changes deploy via Railway and never touch
+    # published npm packages. paths-ignore only skips when ALL changed paths
+    # match, so a mixed push that also touches packages/core still runs.
+    paths-ignore:
+      - 'apps/site/**'
+      - 'packages/mcp-server/**'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    permissions:
+      # contents: write + pull-requests: write let changesets/action open and
+      # update the Version Packages PR. NO id-token here — this job cannot and
+      # must not publish.
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # changesets/action with `version:` but NO `publish:` — when changesets
+      # exist it opens/updates the Version PR; when none exist it is a no-op.
+      # It can never publish because no publish command is configured and the
+      # job lacks id-token:write.
+      - name: Open or update Version Packages PR
+        uses: changesets/action@v1
+        with:
+          version: pnpm version-packages
+          title: "chore(release): version packages"
+          commit: "chore(release): version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

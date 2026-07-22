@@ -1,6 +1,6 @@
 ---
 name: publish-release
-description: Reviewer checklist and emergency manual-publish runbook. Day-to-day publishing happens automatically via `.github/workflows/release.yml` when a Version Packages PR merges — this skill is for reviewing that PR or for manual publishing when CI is broken.
+description: Reviewer checklist and emergency manual-publish runbook. Publishing is a deliberate manual dispatch of `.github/workflows/release.yml` AFTER the Version Packages PR merges (split 2026-07-22) — this skill is for reviewing that PR, dispatching the release, or manual publishing when CI is broken.
 ---
 
 # Publish Release
@@ -11,18 +11,21 @@ description: Reviewer checklist and emergency manual-publish runbook. Day-to-day
 
 Violating the letter of this rule IS violating the spirit. "Just this once" does not exist.
 
-## How publishing actually works (2026-04-21+)
+## How publishing actually works (release split 2026-07-22)
+
+Publishing is decoupled from merging so releases are *paced*, not churned out on every merge. Three workflows:
 
 1. Developer adds a `.changeset/*.md` file describing the change + bump type.
 2. Push / merge to `main`.
-3. `changesets/action` opens (or updates) a **Version Packages** PR that bumps `package.json` versions and regenerates `CHANGELOG.md`.
-4. **A human reviews that PR against the Reviewer Checklist below.**
-5. Merging the PR triggers `.github/workflows/release.yml`, which runs `pre-publish-audit.mjs` (45 hard gates + CVA-accuracy audit), builds, and publishes to npm via OIDC Trusted Publisher + sigstore provenance.
+3. **`version.yml`** runs `changesets/action`, opening (or updating) a **Version Packages** PR that bumps `package.json` versions and regenerates `CHANGELOG.md`. **`integration.yml`** runs the release-unique gates (pre-publish-audit, consumer-smoke, compiled-CSS coverage, skill-drift, Chromatic) as a post-merge net. **Neither publishes.**
+4. **A human reviews the Version PR against the Reviewer Checklist below**, then merges it (bumps versions, deletes changesets). Merging **no longer publishes**.
+5. **A maintainer dispatches `release.yml`** — Actions UI "Run workflow" or `gh workflow run release.yml`. It runs the full gauntlet (`pre-publish-audit.mjs` 45 hard gates + build + consumer-smoke + Chromatic) and publishes to npm via OIDC Trusted Publisher + sigstore provenance. A stable dispatch is **refused if unreleased changesets are still pending** (you forgot to merge the Version PR).
 6. Chromatic visual baseline snapshot + Storybook deploy run after publish.
 
-The skill has no role in the normal path. It exists for two moments:
+The skill has three moments:
 
 - **Reviewing the Version Packages PR** (use the checklist below).
+- **Dispatching the release** after the Version PR merges (step 5 — `gh workflow run release.yml`).
 - **Publishing manually when release.yml is broken** (use the runbook at the bottom).
 
 ## Reviewer Checklist for the Version Packages PR
@@ -49,7 +52,13 @@ You can trust these to be gated in CI — the checklist above is the stuff CI ca
 - git clean, version ↔ CHANGELOG match, docs coverage per component, CVA/doc prop accuracy, typecheck, lint, tests, build, SSR smoke, surface/shadow token hygiene, TW4 migration hygiene, per-component stories, bundle-size regression, published-exports ordering. See `scripts/pre-publish-audit.mjs`.
 
 ### Once every box is checked
-Approve + merge. `release.yml` publishes. Verify after:
+Approve + merge the Version PR (versions bump, changesets clear — **this does not publish**). Then dispatch the release:
+
+```bash
+gh workflow run release.yml   # or Actions UI → Release → Run workflow
+```
+
+Verify after:
 
 ```bash
 npm view @devalok/shilp-sutra version

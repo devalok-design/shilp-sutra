@@ -11,23 +11,18 @@ const GAP_CLASSES = {
   loose: 'gap-2',
 } as const
 
-export interface BadgeGroupProps {
+export interface BadgeGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   max?: number
   gap?: keyof typeof GAP_CLASSES
   size?: BadgeProps['size']
   onOverflowClick?: () => void
-  className?: string
   children: React.ReactNode
 }
 
-export function BadgeGroup({
-  max,
-  gap = 'default',
-  size,
-  onOverflowClick,
-  className,
-  children,
-}: BadgeGroupProps) {
+export const BadgeGroup = React.forwardRef<HTMLDivElement, BadgeGroupProps>(function BadgeGroup(
+  { max, gap = 'default', size, onOverflowClick, className, children, ...rest },
+  ref,
+) {
   const childArray = React.Children.toArray(children)
   const total = childArray.length
   const hasOverflow = max !== undefined && total > max
@@ -35,7 +30,11 @@ export function BadgeGroup({
   const overflowCount = hasOverflow ? total - max! : 0
 
   return (
-    <div className={cn('flex flex-wrap items-center', GAP_CLASSES[gap], className)}>
+    <div
+      ref={ref}
+      className={cn('flex flex-wrap items-center', GAP_CLASSES[gap], className)}
+      {...rest}
+    >
       {visible}
       {hasOverflow && (
         // With onClick, Badge renders a real, keyboard-reachable <button>; add a
@@ -52,6 +51,6 @@ export function BadgeGroup({
       )}
     </div>
   )
-}
+})
 
 BadgeGroup.displayName = 'BadgeGroup'

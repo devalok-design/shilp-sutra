@@ -32,7 +32,7 @@
     editable: boolean — enable double-click cell editing
     virtualRows: boolean — virtualize rows for large datasets
     columnPinning: { left?: string[], right?: string[] }
-    defaultDensity: 'compact' | 'standard' | 'comfortable'
+    density: 'compact' | 'standard' | 'comfortable'
 
 ## Defaults
     pageSize=10, noResultsText="No results."
@@ -86,7 +86,7 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - When pagination prop is provided, pagination is manual — pass total count
 - selectedIds syncs via useEffect — provide getRowId for custom row IDs
 - onRowClick does NOT fire when clicking checkboxes, buttons, links, or inputs
-- Use defaultDensity="compact" for Karm-style h-9 rows
+- Use density="compact" for Karm-style h-9 rows
 - `virtualRows={true}` requires a bounded scroll container — unbounded height silently disables virtualization
 
 ## Changes

@@ -180,6 +180,14 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
             e.preventDefault()
             setHighlightedIndex((i) => Math.max(i - 1, 0))
             break
+          case 'Home':
+            e.preventDefault()
+            setHighlightedIndex(0)
+            break
+          case 'End':
+            e.preventDefault()
+            setHighlightedIndex(filtered.length - 1)
+            break
           case 'Enter':
             e.preventDefault()
             if (highlightedIndex >= 0 && filtered[highlightedIndex]) {

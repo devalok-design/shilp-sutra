@@ -166,12 +166,9 @@
     }
   ],
   "deferred": [
-    "everything-a-card / nested cards (needs JSX AST)",
-    "filled-primary + outline-secondary button duo (needs sibling AST)",
-    "hero-metric template — big number + small label + gradient dot (needs structure)",
-    "01/02/03 numbered section markers (needs content-sequence context)",
-    "identical icon-title-blurb card grids (needs repetition analysis)",
-    "safe-face identity (Inter/Roboto carrying the display) — needs font-role context",
-    "skipped heading levels h1->h3 (needs document order)"
+    "hero-metric template — big number + small label + gradient dot (fuzzy layout shape; agent-judge via self_critique)",
+    "01/02/03 decorative numbered section markers (needs content-sequence context — numbers are only slop when not a real sequence)",
+    "safe-face identity — Inter/Roboto carrying the display headings (needs font-role context)",
+    "icon-title-blurb repetition beyond cards (AST covers 3+ identical Card siblings; generic repeated blocks not yet)"
   ]
 }

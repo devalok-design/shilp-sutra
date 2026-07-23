@@ -13,6 +13,8 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { parse } from '@babel/parser'
+
 import { getDocs } from './registry.mjs'
 import * as github from './github.mjs'
 
@@ -696,6 +698,13 @@ export async function checkSlop({ code }) {
       })
     }
   }
+  // Structural (AST) findings — nested cards, button duo, identical grids, skipped
+  // headings. Parse failures degrade gracefully (regex findings still returned).
+  try {
+    findings.push(...astFindings(src))
+  } catch {
+    /* non-JSX or parse error — skip structural pass */
+  }
   const order = { P0: 0, P1: 1, P2: 2 }
   findings.sort((a, b) => (order[a.severity] - order[b.severity]) || ((a.line ?? 0) - (b.line ?? 0)))
 
@@ -715,6 +724,7 @@ export async function checkSlop({ code }) {
     strengths,
     guidance: SLOP_GUIDANCE.principles,
     principles_from_setu: SLOP_GUIDANCE.setuPrinciples,
+    self_critique: SLOP_GUIDANCE.selfCritique,
     note: SLOP_GUIDANCE.ad,
     deferred_checks: SLOP_CORPUS.deferred,
   }
@@ -756,4 +766,94 @@ export async function howToUse() {
     null,
     2,
   )
+}
+
+// ── check_slop: structural (AST) pass ───────────────────────────────────────
+// Parses JSX/TSX and detects tells that aren't a single string: cards nested in
+// cards, the solid+outline button duo, identical card grids, skipped heading
+// levels. Best-effort — errorRecovery keeps partial trees; caller try/catches.
+const CARD_NAME = /Card$/
+const BUTTON_NAMES = new Set(['Button', 'SplitButton', 'IconButton'])
+
+function jsxName(node) {
+  const n = node.openingElement && node.openingElement.name
+  if (!n) return ''
+  if (n.type === 'JSXIdentifier') return n.name
+  if (n.type === 'JSXMemberExpression') return n.property && n.property.name ? n.property.name : ''
+  return ''
+}
+
+function jsxAttr(node, attr) {
+  const attrs = (node.openingElement && node.openingElement.attributes) || []
+  const a = attrs.find((x) => x.type === 'JSXAttribute' && x.name && x.name.name === attr)
+  if (!a || !a.value) return undefined
+  if (a.value.type === 'StringLiteral') return a.value.value
+  if (a.value.type === 'JSXExpressionContainer' && a.value.expression && a.value.expression.type === 'StringLiteral') {
+    return a.value.expression.value
+  }
+  return undefined
+}
+
+function astFindings(src) {
+  const ast = parse(src, { sourceType: 'module', plugins: ['jsx', 'typescript'], errorRecovery: true })
+  const findings = []
+  const headingLevels = []
+  let nestedFlagged = false
+
+  const jsxChildren = (node) => (node.children || []).filter((c) => c.type === 'JSXElement')
+
+  function walk(node, inCard) {
+    if (!node || typeof node !== 'object') return
+    if (node.type === 'JSXElement') {
+      const name = jsxName(node)
+      if (CARD_NAME.test(name)) {
+        if (inCard && !nestedFlagged) {
+          nestedFlagged = true
+          findings.push({ id: 'nested-cards', severity: 'P1', category: 'layout', via: 'ast', message: 'Card nested inside a Card — the deepest everything-a-card tell.', fix: 'Separate with spacing / type / dividers; a card inside a card is almost always wrong.', source: 'impeccable, Setu' })
+        }
+      }
+      if (/^h[1-6]$/.test(name)) headingLevels.push(Number(name[1]))
+
+      const kids = jsxChildren(node)
+      const variants = kids.filter((k) => BUTTON_NAMES.has(jsxName(k))).map((k) => jsxAttr(k, 'variant'))
+      if (variants.length >= 2) {
+        const hasSolid = variants.some((v) => v === 'solid' || v === undefined) // solid is the default
+        const hasOutline = variants.some((v) => v === 'outline' || v === 'ghost')
+        if (hasSolid && hasOutline) {
+          findings.push({ id: 'filled-outline-duo', severity: 'P1', category: 'component', via: 'ast', message: 'Solid + outline/ghost button pair — the default action-row preset.', fix: 'One clear primary; make the secondary `soft`, not outline. Avoid the fill-vs-outline couplet.', source: 'Setu, impeccable' })
+        }
+      }
+      const cardCounts = {}
+      for (const k of kids) {
+        const kn = jsxName(k)
+        if (CARD_NAME.test(kn)) cardCounts[kn] = (cardCounts[kn] || 0) + 1
+      }
+      if (Object.values(cardCounts).some((n) => n >= 3)) {
+        findings.push({ id: 'identical-card-grid', severity: 'P2', category: 'layout', via: 'ast', message: '3+ identical sibling cards — the icon-title-blurb grid tell.', fix: 'Vary block size by importance; separate with space + type, not a symmetric card row.', source: 'impeccable, Setu' })
+      }
+
+      const nowInCard = inCard || CARD_NAME.test(name)
+      for (const c of node.children || []) walk(c, nowInCard)
+      return
+    }
+    for (const key of Object.keys(node)) {
+      const v = node[key]
+      if (Array.isArray(v)) {
+        for (const x of v) if (x && typeof x === 'object' && x.type) walk(x, inCard)
+      } else if (v && typeof v === 'object' && v.type) {
+        walk(v, inCard)
+      }
+    }
+  }
+  walk(ast.program, false)
+
+  for (let i = 1; i < headingLevels.length; i++) {
+    if (headingLevels[i] - headingLevels[i - 1] > 1) {
+      findings.push({ id: 'skipped-heading-level', severity: 'P1', category: 'a11y', via: 'ast', message: `Heading jumps h${headingLevels[i - 1]} → h${headingLevels[i]} — skips a level.`, fix: 'Use sequential heading levels; style with classes, not by picking a smaller tag.', source: 'axe a11y' })
+      break
+    }
+  }
+
+  const seen = new Set()
+  return findings.filter((f) => (seen.has(f.id) ? false : (seen.add(f.id), true)))
 }

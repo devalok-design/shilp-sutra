@@ -148,6 +148,11 @@ try {
   check('check_slop returns guidance + Setu line', slopText.includes('signature-first') && slopText.includes('setu.devalok.dev'), slopText.slice(0, 120))
   const clean = await call('check_slop', { code: '<Button variant="soft" className="bg-surface-2 text-body-sm focus-visible:ring-2">Go</Button>' }, 18)
   check('check_slop passes clean code', (clean.result?.content?.[0]?.text ?? '').includes('"verdict": "clean"'))
+  // AST structural pass + agent self-critique block.
+  const ast = await call('check_slop', { code: 'function X(){return (<div><Card><Card>x</Card></Card><div><Button variant="solid">A</Button><Button variant="outline">B</Button></div><h1>T</h1><h3>S</h3></div>)}' }, 20)
+  const astText = ast.result?.content?.[0]?.text ?? ''
+  check('check_slop AST flags nested-cards + button-duo + skipped-heading', astText.includes('nested-cards') && astText.includes('filled-outline-duo') && astText.includes('skipped-heading-level'), astText.slice(0, 200))
+  check('check_slop returns self_critique block', astText.includes('self_critique') && astText.includes('AI made that'), astText.slice(0, 120))
 
   // how_to_use: returns the tool map + the writing-a-component sequence.
   const how = await call('how_to_use', {}, 19)

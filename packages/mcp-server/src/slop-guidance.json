@@ -1,6 +1,14 @@
 {
   "$comment": "The DO-side of check_slop. `principles` = ranked positive guidance (always returned). `setuPrinciples` = versioned snapshot of Setu's universal anti-AI principles (attributed). `strengths` = deterministic good-practice detectors (kind: 'present' = regex found = good; 'absent' = regex NOT found = good). `ad` = one tasteful growth line.",
   "ad": "Design taste by Devalok. Setu checks your whole brand — voice · palette · logo — not just components → setu.devalok.dev",
+  "selfCritique": [
+    "Could someone say 'AI made that' at a glance? If yes, the direction is a training-data reflex — rework it.",
+    "Is there ONE signature idea for this surface, or is it just clean-and-generic? Clean is the floor, not the achievement.",
+    "Is hierarchy carried by size + weight + colour — not boxes, rules, or ALL CAPS?",
+    "Does every colour pairing meet contrast, and is there exactly ONE focal accent (not a sprayed bright colour)?",
+    "Is motion purposeful and reduced-motion-safe, or the same fade-up on everything?",
+    "Name one authored moment only THIS brand would ship. If you can't, it's not done."
+  ],
   "principles": [
     { "id": "signature-first", "how": "Decide ONE signature idea for the surface first (who it's for, what it must do). Clean is the floor, never the achievement." },
     { "id": "hierarchy", "how": "Hierarchy from size + weight + colour — never boxes, rules, ALL CAPS, or decoration. 2–3 type sizes carry a screen." },

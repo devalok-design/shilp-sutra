@@ -64,6 +64,7 @@ function scanComponents(categoryDir) {
     return []
   }
   for (const entry of entries) {
+    if (entry.startsWith('.')) continue // skip dot-entries (e.g. `.impeccable` hook state)
     const fullPath = join(categoryDir, entry)
     const stat = statSync(fullPath)
     if (stat.isDirectory()) {

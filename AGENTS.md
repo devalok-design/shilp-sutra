@@ -20,7 +20,7 @@ If you are a human, read [README.md](./README.md) instead.
 
 ## How to get details, in priority order
 
-1. **shilp-sutra MCP** — version-exact answers as JSON, cheapest on context. Hosted at `https://shilp-sutra.devalok.in/mcp` (connect it if it isn't already; it beats reading the frozen docs in `node_modules`). The tool surface is listed under "MCP tools" below. Always pass the consumer's installed version (from `node_modules/@devalok/shilp-sutra/package.json`) as `version`.
+1. **shilp-sutra MCP** — version-exact answers as JSON, cheapest on context. Hosted at `https://shilp-sutra.devalok.in/mcp`. On install the package writes a project-scoped `.mcp.json` declaring this server, so your client (Claude Code / Cursor / Codex) should prompt you to approve it — approve it. If it is not wired yet, add it in one command: `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp` (or the equivalent in your agent). It beats reading the frozen docs in `node_modules`. The tool surface is listed under "MCP tools" below. Always pass the consumer's installed version (from `node_modules/@devalok/shilp-sutra/package.json`) as `version`.
 2. **`packages/core/llms.txt`** — the ~3K-token router: what exists + where to get detail. Load this by default; it is deliberately tiny.
 3. **`packages/core/docs/components/<tier>/<name>.md`** — single-component doc (~3K tokens: props, examples, composability, gotchas). Read ONLY the components you're using — never bulk-read the directory or concatenate these.
 4. **`packages/core/mcp-manifest.json`** — everything machine-readable (props, tokens, composition; react-docgen shape). Prefer targeted reads over prose when you need structured data without the MCP.

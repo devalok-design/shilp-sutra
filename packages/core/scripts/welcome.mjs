@@ -183,7 +183,7 @@ function buildFullBanner(version, prevVersion) {
   lines.push(row(`     ${colour('https://shilp-sutra.devalok.in/themer', DIM)}`))
   lines.push(colour(EMPTY, PINK_DIM))
   lines.push(row(`   ${colour('▸', PINK)} Wire your AI agent (Claude Code / Cursor / Codex):`))
-  lines.push(row(`     ${colour('connect the live docs MCP → https://shilp-sutra.devalok.in/mcp', DIM)}`))
+  lines.push(row(`     ${colour('live docs MCP added to .mcp.json — approve it to enable', DIM)}`))
   lines.push(row(`     ${colour('(version-exact setup + peer preflight; beats guessing)', DIM)}`))
   lines.push(row(`     ${colour('or copy the skill: cp -r node_modules/@devalok/shilp-sutra/skill \\', DIM)}`))
   lines.push(row(`        ${colour('~/.claude/skills/shilp-sutra', DIM)}`))
@@ -215,6 +215,59 @@ function buildCompactBanner(version, prevVersion) {
   ].join('\n')
 }
 
+// ── MCP auto-discovery ───────────────────────────────────────────────────────
+// Write a project-scoped `.mcp.json` pointing at the hosted docs MCP so an AI
+// coding agent DISCOVERS it right after install. This runs even when stdout is
+// piped (unlike the banner) — a config file is not console noise, and the agent
+// that just ran `install` is exactly who should find it. It is never silent-
+// forced: Claude Code (and peers) still PROMPT the user to approve a project
+// MCP server before enabling it. Safety: additive merge (never clobbers other
+// servers or an existing shilp-sutra entry), skips CI and dev installs, honours
+// opt-out, and a write-once sentinel so a user who deletes it is not re-nagged.
+const SEP = process.platform === 'win32' ? '\\' : '/'
+const MCP_URL = 'https://shilp-sutra.devalok.in/mcp'
+
+function tryWriteMcpConfig() {
+  try {
+    if (process.env.SHILP_SUTRA_NO_WELCOME === '1' || process.env.SHILP_SUTRA_NO_WELCOME === 'true') return
+    if (process.env.SHILP_SUTRA_NO_MCP === '1' || process.env.SHILP_SUTRA_NO_MCP === 'true') return
+    if (process.env.CI) return // writing agent config into a CI checkout is pointless/unwanted
+
+    const initCwd = process.env.INIT_CWD
+    const cwd = process.cwd()
+    const isInsideNodeModules = cwd.includes(`${SEP}node_modules${SEP}`) || cwd.includes('/node_modules/')
+    if (!isInsideNodeModules) return // dev install inside the DS repo itself
+    if (!initCwd || initCwd === cwd) return // no consumer root → unusual context
+
+    // Write-once-ever sentinel (survives re-installs; respects user deletion of .mcp.json)
+    const parts = PKG_DIR.split(/[/\\]/)
+    const nmIdx = parts.lastIndexOf('node_modules')
+    const sentinel = nmIdx === -1 ? null : join(parts.slice(0, nmIdx + 1).join(SEP), '.shilp-sutra-mcp-written')
+    if (sentinel && existsSync(sentinel)) return
+
+    const target = join(initCwd, '.mcp.json')
+    let config = { mcpServers: {} }
+    if (existsSync(target)) {
+      try {
+        config = JSON.parse(readFileSync(target, 'utf-8'))
+      } catch {
+        return // existing but unparseable — never clobber a hand-authored config
+      }
+      if (!config || typeof config !== 'object') return
+      if (!config.mcpServers || typeof config.mcpServers !== 'object') config.mcpServers = {}
+      if (config.mcpServers['shilp-sutra']) {
+        if (sentinel) writeFileSync(sentinel, MCP_URL + '\n')
+        return // already declared — leave the consumer's version untouched
+      }
+    }
+    config.mcpServers['shilp-sutra'] = { type: 'http', url: MCP_URL }
+    writeFileSync(target, JSON.stringify(config, null, 2) + '\n')
+    if (sentinel) writeFileSync(sentinel, MCP_URL + '\n')
+  } catch {
+    // Never break the consumer install — a failed config write is a no-op.
+  }
+}
+
 // ── Main ────────────────────────────────────────────────────────────────────
 function main() {
   // --preview / --compact bypass all guards. Used by maintainers + by the
@@ -222,6 +275,11 @@ function main() {
   // shipping a broken one. Compose only — never writes the sentinel.
   const preview = process.argv.includes('--preview')
   const forceCompact = process.argv.includes('--compact')
+
+  // MCP auto-discovery runs regardless of TTY — an agent-run (piped) install is
+  // precisely when the agent should discover the docs MCP. Must come before the
+  // TTY skip below, which only governs the human-facing banner.
+  if (!preview) tryWriteMcpConfig()
 
   if (!preview) {
     const skipReason = shouldSkip()

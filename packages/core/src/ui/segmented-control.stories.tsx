@@ -34,6 +34,12 @@ const twoOptions: SegmentedControlOption[] = [
   { id: 'archived', text: 'Archived' },
 ]
 
+const iconOnlyOptions: SegmentedControlOption[] = [
+  { id: 'board', icon: IconLayoutGrid, ariaLabel: 'Board' },
+  { id: 'list', icon: IconList, ariaLabel: 'List' },
+  { id: 'calendar', icon: IconCalendar, ariaLabel: 'Calendar' },
+]
+
 // -- Meta ----
 
 const meta: Meta<typeof SegmentedControl> = {
@@ -50,12 +56,15 @@ const meta: Meta<typeof SegmentedControl> = {
     },
     variant: {
       control: 'select',
-      options: ['default', 'solid', 'accent'],
+      options: ['soft', 'solid'],
+    },
+    fullWidth: {
+      control: 'boolean',
     },
     disabled: {
       control: 'boolean',
     },
-    onSelect: { action: 'onSelect' },
+    onValueChange: { action: 'onValueChange' },
   },
 }
 export default meta
@@ -65,15 +74,17 @@ type Story = StoryObj<typeof SegmentedControl>
 
 function ControlledDemo({
   size = 'md',
-  variant = 'default',
+  variant = 'soft',
   options = textOptions,
   disabled = false,
+  fullWidth = false,
   defaultId,
 }: {
   size?: SegmentedControlSize
   variant?: SegmentedControlVariant
   options?: SegmentedControlOption[]
   disabled?: boolean
+  fullWidth?: boolean
   defaultId?: string
 }) {
   const [selectedId, setSelectedId] = useState(defaultId ?? options[0].id)
@@ -83,9 +94,10 @@ function ControlledDemo({
       size={size}
       variant={variant}
       options={options}
-      selectedId={selectedId}
-      onSelect={setSelectedId}
+      value={selectedId}
+      onValueChange={setSelectedId}
       disabled={disabled}
+      fullWidth={fullWidth}
     />
   )
 }
@@ -95,9 +107,9 @@ function ControlledDemo({
 export const Default: Story = {
   args: {
     size: 'md',
-    variant: 'default',
+    variant: 'soft',
     options: textOptions,
-    selectedId: 'board',
+    value: 'board',
   },
 }
 
@@ -106,7 +118,7 @@ export const Solid: Story = {
     size: 'md',
     variant: 'solid',
     options: textOptions,
-    selectedId: 'board',
+    value: 'board',
   },
 }
 
@@ -115,7 +127,7 @@ export const Small: Story = {
     size: 'sm',
     variant: 'solid',
     options: textOptions,
-    selectedId: 'list',
+    value: 'list',
   },
 }
 
@@ -124,7 +136,7 @@ export const Large: Story = {
     size: 'lg',
     variant: 'solid',
     options: textOptions,
-    selectedId: 'calendar',
+    value: 'calendar',
   },
 }
 
@@ -133,16 +145,16 @@ export const WithIcons: Story = {
     size: 'md',
     variant: 'solid',
     options: iconOptions,
-    selectedId: 'board',
+    value: 'board',
   },
 }
 
 export const WithIconsDefault: Story = {
   args: {
     size: 'md',
-    variant: 'default',
+    variant: 'soft',
     options: iconOptions,
-    selectedId: 'list',
+    value: 'list',
   },
 }
 
@@ -151,7 +163,7 @@ export const MixedIconsAndText: Story = {
     size: 'md',
     variant: 'solid',
     options: mixedOptions,
-    selectedId: 'overview',
+    value: 'overview',
   },
 }
 
@@ -160,7 +172,52 @@ export const TwoOptions: Story = {
     size: 'md',
     variant: 'solid',
     options: twoOptions,
-    selectedId: 'active',
+    value: 'active',
+  },
+}
+
+export const FullWidth: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 360 }}>
+      <ControlledDemo variant="soft" options={textOptions} fullWidth />
+      <ControlledDemo variant="solid" options={twoOptions} fullWidth />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With `fullWidth`, segments split the container equally instead of hugging their content — a 3-item switcher gives each a third, a 2-item toggle splits 50/50. Use for view switchers and toolbar toggles that should fill their column.',
+      },
+    },
+  },
+}
+
+export const IconOnly: Story = {
+  render: () => <ControlledDemo options={iconOnlyOptions} />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Icon-only segments: omit `text` and set `ariaLabel` on each option so screen readers still announce a meaningful name.',
+      },
+    },
+  },
+}
+
+export const RTL: Story = {
+  render: () => (
+    <div dir="rtl">
+      <ControlledDemo options={iconOptions} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Right-to-left: Arrow keys track reading order (ArrowLeft moves to the next option, ArrowRight to the previous). The thumb slides accordingly.',
+      },
+    },
   },
 }
 
@@ -169,7 +226,7 @@ export const Disabled: Story = {
     size: 'md',
     variant: 'solid',
     options: textOptions,
-    selectedId: 'board',
+    value: 'board',
     disabled: true,
   },
 }
@@ -177,9 +234,9 @@ export const Disabled: Story = {
 export const DisabledDefault: Story = {
   args: {
     size: 'md',
-    variant: 'default',
+    variant: 'soft',
     options: iconOptions,
-    selectedId: 'list',
+    value: 'list',
     disabled: true,
   },
 }
@@ -231,15 +288,15 @@ export const AllSizes: Story = {
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      {/* Default variant */}
+      {/* Soft variant */}
       <div>
         <p className="mb-ds-04 text-ds-md font-accent font-semibold text-surface-fg">
-          Default
+          Soft
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <ControlledDemo size="sm" variant="default" options={iconOptions} />
-          <ControlledDemo size="md" variant="default" options={iconOptions} />
-          <ControlledDemo size="lg" variant="default" options={iconOptions} />
+          <ControlledDemo size="sm" variant="soft" options={iconOptions} />
+          <ControlledDemo size="md" variant="soft" options={iconOptions} />
+          <ControlledDemo size="lg" variant="soft" options={iconOptions} />
         </div>
       </div>
 
@@ -262,7 +319,7 @@ export const AllVariants: Story = {
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <ControlledDemo size="md" variant="solid" options={textOptions} />
-          <ControlledDemo size="md" variant="default" options={textOptions} />
+          <ControlledDemo size="md" variant="soft" options={textOptions} />
         </div>
       </div>
 
@@ -273,7 +330,7 @@ export const AllVariants: Story = {
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <ControlledDemo size="md" variant="solid" options={iconOptions} disabled />
-          <ControlledDemo size="md" variant="default" options={iconOptions} disabled />
+          <ControlledDemo size="md" variant="soft" options={iconOptions} disabled />
         </div>
       </div>
     </div>

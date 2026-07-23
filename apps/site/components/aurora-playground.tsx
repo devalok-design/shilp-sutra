@@ -251,32 +251,32 @@ export function AuroraPlayground() {
             <SegmentedControl
               size="sm"
               options={INTENSITY_OPTIONS}
-              selectedId={s.intensity}
-              onSelect={(id) => update('intensity', id as AuroraIntensity)}
+              value={s.intensity}
+              onValueChange={(id) => update('intensity', id as AuroraIntensity)}
             />
           </ControlRow>
           <ControlRow label="Shape">
             <SegmentedControl
               size="sm"
               options={SHAPE_OPTIONS}
-              selectedId={s.shape}
-              onSelect={(id) => update('shape', id as AuroraShape)}
+              value={s.shape}
+              onValueChange={(id) => update('shape', id as AuroraShape)}
             />
           </ControlRow>
           <ControlRow label="Position">
             <SegmentedControl
               size="sm"
               options={POSITION_OPTIONS}
-              selectedId={s.position}
-              onSelect={(id) => update('position', id as AuroraPosition)}
+              value={s.position}
+              onValueChange={(id) => update('position', id as AuroraPosition)}
             />
           </ControlRow>
           <ControlRow label="Layers">
             <SegmentedControl
               size="sm"
               options={LAYER_OPTIONS}
-              selectedId={String(s.layers)}
-              onSelect={(id) => update('layers', Number(id) as AuroraLayers)}
+              value={String(s.layers)}
+              onValueChange={(id) => update('layers', Number(id) as AuroraLayers)}
             />
           </ControlRow>
           <ControlRow label={`Speed · ${s.speed.toFixed(2)}`}>
@@ -292,16 +292,16 @@ export function AuroraPlayground() {
             <SegmentedControl
               size="sm"
               options={PARALLAX_OPTIONS}
-              selectedId={s.parallax}
-              onSelect={(id) => update('parallax', id as AuroraParallax)}
+              value={s.parallax}
+              onValueChange={(id) => update('parallax', id as AuroraParallax)}
             />
           </ControlRow>
           <ControlRow label="Grain">
             <SegmentedControl
               size="sm"
               options={GRAIN_OPTIONS}
-              selectedId={s.grain}
-              onSelect={(id) => update('grain', id as AuroraGrain)}
+              value={s.grain}
+              onValueChange={(id) => update('grain', id as AuroraGrain)}
             />
           </ControlRow>
 

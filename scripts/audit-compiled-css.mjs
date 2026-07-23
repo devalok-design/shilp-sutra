@@ -109,7 +109,10 @@ const MUST_EMIT = [
   /\bduration-(instant|fast-[0-9]+|moderate-[0-9a-z]+|slow-[0-9]+)\b/g,
   /\bease-(productive|expressive)-[a-z]+/g,
   /\bz-(base|raised|dropdown|sticky|overlay|modal|popover|toast|tooltip)\b/g,
-  /\b(text-heading|text-body|text-label|text-label-plain)-[a-z0-9]+/g,
+  // `text-label-plain` MUST precede `text-label`, and `text-label` carries a
+  // negative lookahead, so `text-label-plain[-tier]` isn't mis-split into a bare
+  // `text-label-plain` (which has no CSS) — e.g. from the tw-merge classGroup config.
+  /\b(text-heading|text-body|text-label-plain|text-label(?!-plain))-[a-z0-9]+/g,
   /\btext-(caption|overline|code)\b/g,
   /\bfocus-ring(?:-inset|-sm)?\b/g,
   /\btouch-target\b/g,

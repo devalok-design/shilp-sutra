@@ -116,12 +116,12 @@ export function SiteHeader() {
               <img
                 src="/brand/shilp-sutra/wordmark.svg"
                 alt="Shilp Sutra"
-                className="h-4 w-auto shrink-0 dark:hidden"
+                className="h-[22px] w-auto shrink-0 dark:hidden"
               />
               <img
                 src="/brand/shilp-sutra/wordmark-white.svg"
                 alt="Shilp Sutra"
-                className="h-4 w-auto shrink-0 hidden dark:block"
+                className="h-[22px] w-auto shrink-0 hidden dark:block"
               />
               <span className="text-ds-xs font-mono shrink-0 hidden sm:inline text-surface-fg-subtle leading-none self-center">
                 v{SHILP_SUTRA_MINOR}

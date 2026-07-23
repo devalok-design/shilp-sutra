@@ -17,7 +17,7 @@
     comparisonLabel: string (shown after delta, e.g. "vs last month")
     secondaryLabel: string (below main value, e.g. "of $50,000 target")
     progress: number (0-100, renders thin progress bar below value)
-    variant: "default" | "elevated" | "outline" | "flat" (default = ring-in-shadow, no border; elevated = stronger shadow; outline = border, no shadow; flat = filled, no edge) — delegated to Card
+    variant: "default" | "elevated" | "outline" | "flat" (default = tonal border-card hairline, no shadow; elevated = shadow, no border; outline = strong border, no shadow; flat = filled, no edge) — delegated to Card
     size: "sm" | "md" (default) | "lg" — delegated to Card's size axis; sm tightens padding to 16px and steps the value down to text-ds-2xl (use for dense KPI rows / narrow stat grids)
     accentStyle: "none" | "icon" | "tint" (none [default]; icon = accent chip around icon; tint = accent surface wash + accent value)
     iconFill: "soft" | "solid" (chip style when accentStyle="icon"; default soft)

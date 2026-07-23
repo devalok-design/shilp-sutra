@@ -26,12 +26,16 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
+        // Tonal (default): depth from a surface-tone shift + a whisper hairline in the
+        // surface's own colour (`border-card`), NO shadow — the DS-wide anti-slop edge
+        // (Setu tonal-elevation). The `color` prop overrides the hairline colour to paint
+        // a deliberate accent/status edge.
+        default: 'bg-surface-raised border border-card shadow-none',
         // Elevation-led: the shadow's own ring is the edge (make-kit rule #6 — no
-        // border+shadow double-edge). border-transparent keeps the `color` prop able to
-        // paint a deliberate colored edge without a grey one by default.
-        default: 'bg-surface-raised border border-transparent shadow-raised',
+        // border+shadow double-edge). Reach for it when a card should visibly pop
+        // (a dragged tile, a spotlight panel). border-transparent keeps `color` paintable.
         elevated: 'bg-surface-raised border border-transparent shadow-raised-hover',
-        // Border-led: a visible edge, no shadow.
+        // Border-led, strong: a firmly visible edge, no shadow.
         outline: 'bg-transparent border border-surface-border-strong shadow-none',
         flat: 'bg-surface-raised border-none shadow-none',
       },
@@ -67,10 +71,11 @@ const cardVariants = cva(
  * Props for Card — a general-purpose content container with 4 elevation/style variants and
  * an optional interactive hover state.
  *
- * **Variants (elevation-led vs border-led — never both):** `default` (ring-in-shadow, no border) |
- * `elevated` (stronger shadow-raised-hover, no border) | `outline` (visible border, no shadow) |
- * `flat` (filled background, no edge). The shadow tokens carry their own 1px ring, so elevated
- * variants need no explicit border (make-kit rule #6).
+ * **Variants (tonal, elevation-led, or border-led — never border+shadow together):** `default`
+ * (tonal — surface shift + `border-card` hairline, no shadow) | `elevated` (shadow-raised-hover,
+ * no border — use when a card should visibly pop) | `outline` (strong visible border, no shadow) |
+ * `flat` (filled background, no edge). The shadow tokens carry their own 1px ring, so `elevated`
+ * needs no explicit border (make-kit rule #6).
  *
  * **Composition:** Use sub-components `<CardHeader>`, `<CardTitle>`, `<CardDescription>`,
  * `<CardContent>`, and `<CardFooter>` for consistent internal spacing. Text content must live

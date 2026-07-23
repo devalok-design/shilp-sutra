@@ -20,8 +20,8 @@ import { type FlashPreset, type FlashSpec, type FlashSpeed,StatFlash } from './s
  * Props for StatCard — a dashboard metric tile displaying a label, a large numeric value,
  * an optional trend delta (with directional arrow icon), and an optional header icon.
  *
- * **Surface:** delegated to `Card` via `variant` — `default` (ring-in-shadow, no border) |
- * `elevated` | `outline` (border, no shadow) | `flat`. StatCard composes `<Card>`, so the surface,
+ * **Surface:** delegated to `Card` via `variant` — `default` (tonal hairline, no shadow) |
+ * `elevated` (shadow) | `outline` (strong border, no shadow) | `flat`. StatCard composes `<Card>`, so the surface,
  * padding (gap model), and elevation all live in one place.
  *
  * **Accent:** `accentStyle="none"` (default) is neutral; `"icon"` wraps `icon` in an accent chip
@@ -88,7 +88,7 @@ export interface StatCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   secondaryLabel?: string
   /** Progress toward a target (0-100). Renders a thin progress bar below the value. */
   progress?: number
-  /** Surface variant, delegated to Card: `default` (ring-in-shadow) | `elevated` | `outline` (border, no shadow) | `flat`. @default 'default' */
+  /** Surface variant, delegated to Card: `default` (tonal hairline, no shadow) | `elevated` (shadow) | `outline` (strong border, no shadow) | `flat`. @default 'default' */
   variant?: 'default' | 'elevated' | 'outline' | 'flat'
   /**
    * Tile density, delegated to Card's size axis. `sm` tightens padding to 16px and steps

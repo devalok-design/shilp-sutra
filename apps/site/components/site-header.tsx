@@ -91,7 +91,7 @@ export function SiteHeader() {
             // 10px corners no longer need the extra inset that the full-pill
             // version required — left padding back to a normal value, symmetric
             // with the right side's button-relative padding.
-            'px-ds-04 sm:px-ds-05 py-ds-02',
+            'px-ds-04 sm:px-ds-05 py-ds-02b',
             // Rounded rectangle — 10px corners on a ~56px bar reads clearly
             // as a rectangle, not a pill. Earlier 24px (rounded-bubble) was
             // still half the bar height and looked capsule-y.
@@ -116,12 +116,12 @@ export function SiteHeader() {
               <img
                 src="/brand/shilp-sutra/wordmark.svg"
                 alt="Shilp Sutra"
-                className="h-5 w-auto shrink-0 dark:hidden"
+                className="h-4 w-auto shrink-0 dark:hidden"
               />
               <img
                 src="/brand/shilp-sutra/wordmark-white.svg"
                 alt="Shilp Sutra"
-                className="h-5 w-auto shrink-0 hidden dark:block"
+                className="h-4 w-auto shrink-0 hidden dark:block"
               />
               <span className="text-ds-xs font-mono shrink-0 hidden sm:inline text-surface-fg-subtle leading-none self-center">
                 v{SHILP_SUTRA_MINOR}
@@ -159,8 +159,8 @@ export function SiteHeader() {
               aria-label="View on GitHub"
               onClick={() => track('cta_click', { cta: 'github', location: 'header' })}
             >
-              <Button variant="ghost" size="icon-md" aria-label="GitHub">
-                <IconBrandGithub size={18} />
+              <Button variant="ghost" size="icon-sm" aria-label="GitHub">
+                <IconBrandGithub size={16} />
               </Button>
             </a>
             <ThemeToggle />

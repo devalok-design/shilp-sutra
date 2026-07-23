@@ -63,13 +63,13 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
           visual weight for "this is interactive" without shouting. */}
       <Button
         variant="soft"
-        size="compact-md"
+        size="compact-sm"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={`Active brand: ${activePreset.name}. Click to change.`}
-        startIcon={<IconPalette size={14} />}
-        endIcon={<IconChevronDown size={14} className={open ? 'rotate-180 transition-transform' : 'transition-transform'} />}
+        startIcon={<IconPalette size={12} />}
+        endIcon={<IconChevronDown size={12} className={open ? 'rotate-180 transition-transform' : 'transition-transform'} />}
       >
         <span className="hidden sm:inline">{mounted ? activePreset.name : 'Brand'}</span>
       </Button>

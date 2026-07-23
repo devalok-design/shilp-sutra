@@ -40,11 +40,11 @@ export function ThemeToggle() {
   return (
     <Button
       variant="ghost"
-      size="icon-md"
+      size="icon-sm"
       aria-label={mounted ? `Switch to ${theme === 'light' ? 'dark' : 'light'} theme` : 'Toggle theme'}
       onClick={toggle}
     >
-      {mounted && theme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
+      {mounted && theme === 'dark' ? <IconSun size={16} /> : <IconMoon size={16} />}
     </Button>
   )
 }

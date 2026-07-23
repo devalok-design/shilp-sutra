@@ -25,9 +25,9 @@ export function Hero() {
           </Link>
         </Text>
         <h1 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-3xl text-balance">
-          Your brand.
+          Your brand. Every component.
           <br />
-          Every component. <span className="text-accent-11">Out of the box.</span>
+          <span className="text-accent-11">Out of the box.</span>
         </h1>
         <Text variant="body-lg" className="text-surface-fg max-w-2xl text-balance">
           Pick one colour. Watch every button, badge, card, and form match instantly. Light mode,

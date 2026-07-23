@@ -129,10 +129,10 @@ For runtime toggling inside React components, use `useColorMode`:
 import { useColorMode } from "@devalok/shilp-sutra/hooks/use-color-mode";
 
 export function ThemeToggle() {
-  const { mode, toggle } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <button onClick={toggle} aria-label="Toggle theme">
-      {mode === "dark" ? "☀" : "☾"}
+    <button onClick={toggleColorMode} aria-label="Toggle theme">
+      {colorMode === "dark" ? "☀" : "☾"}
     </button>
   );
 }

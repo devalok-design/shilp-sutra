@@ -1,5 +1,43 @@
 # @devalok/shilp-sutra
 
+## 0.52.0
+
+### Minor Changes
+
+- [#176](https://github.com/devalok-design/shilp-sutra/pull/176) [`a0107f0`](https://github.com/devalok-design/shilp-sutra/commit/a0107f0a7ea420d20da0bfb2d95544933083d86b) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Dogfood fixes: Button `info` color, Icon `style` passthrough, ColorInput hex draft, SearchInput centering, recipe/type drift.
+
+  Addresses agent-filed feedback ([#174](https://github.com/devalok-design/shilp-sutra/issues/174), [#173](https://github.com/devalok-design/shilp-sutra/issues/173), [#143](https://github.com/devalok-design/shilp-sutra/issues/143), [#142](https://github.com/devalok-design/shilp-sutra/issues/142)):
+
+  - **Button** — add `info` to the `color` prop (and `processingColor`). The semantic-intent set is now aligned with Card: `accent · error · success · warning · info · neutral`, so a single intent token can tint a Button + Card + Badge set. Type **widening**, non-breaking. Category hues (`teal`, `amber`, …) remain Badge-only by design — see the new color support matrix in `make-kit/foundations/color.md`. `info` is fully wired through the Button family: `ButtonGroup` dividers, `SplitButton` (both halves + divider + outline border), and the processing marching-ants overlay — previously any `color` outside the old five silently fell back to `accent` in those maps.
+  - **Icon** — forwards a `style` prop to the rendered icon (all render paths: static, animated, draw, loading), so decorative `opacity`/`transform` no longer needs a wrapper `<span>`. New optional prop; non-breaking.
+  - **ColorInput** — the hex field now keeps a local draft so in-progress (<6 char) typing isn't clobbered by the committed color; commits at 6 chars, discards an incomplete value cleanly on blur/close. Removes the need for consumer `pnpm patch`es. ([#142](https://github.com/devalok-design/shilp-sutra/issues/142))
+  - **SearchInput** — the clear (✕) button is now vertically centered in the input; the animated wrapper was uncentered and sat a few px high. ([#143](https://github.com/devalok-design/shilp-sutra/issues/143))
+  - **Docs** — fixed `useColorMode()` and `IconProvider`/`Icon size` examples that drifted from the shipped types across setup-vite / setup-remix / server-components recipes (both `skill/references` and `docs/recipes` copies) and the make-kit (`setup.md`, `foundations/dark-mode.md`, `foundations/icons.md`). `useColorMode` returns `{ colorMode, setColorMode, toggleColorMode }`; icon size is a tier (`"sm"`), never a pixel number. ([#173](https://github.com/devalok-design/shilp-sutra/issues/173))
+
+- [#175](https://github.com/devalok-design/shilp-sutra/pull/175) [`39b593e`](https://github.com/devalok-design/shilp-sutra/commit/39b593edc830434e4f192f9f84801f32d59d09b0) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Auto-discover the docs MCP on install.
+
+  On install the package now writes a project-scoped `.mcp.json` declaring the hosted docs MCP (`https://shilp-sutra.devalok.in/mcp`), so an AI coding agent (Claude Code / Cursor / Codex) discovers it right after `install` and the client prompts to approve it — no manual wiring. The write runs even on piped / non-TTY installs (exactly when an agent runs the install), unlike the human-facing welcome banner.
+
+  Safety: additive merge (never clobbers other servers or an existing `shilp-sutra` entry), skips CI and dev installs, write-once via sentinel (a user who deletes `.mcp.json` is not re-nagged), never throws, and opt-out via `SHILP_SUTRA_NO_MCP=1` (or the existing `SHILP_SUTRA_NO_WELCOME=1`).
+
+  `AGENTS.md` also now gives the one-line manual wire — `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp` — for agents that read the docs instead.
+
+- [#178](https://github.com/devalok-design/shilp-sutra/pull/178) [`22a49a8`](https://github.com/devalok-design/shilp-sutra/commit/22a49a8c37de70d9b7243ec2defd8de846cde7f0) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **SegmentedControl visual rebuild.** Reconstructed to match the modern segmented-control pattern (iOS / shadcn / Radix), fixing the muddy "edge-soup" look (a bordered + inset-shadowed track under a ring-carrying pill thumb).
+
+  - **Rounded-rect, not full pill** — track `rounded-ds-lg`, thumb `rounded-ds-md` (inner radius sits tighter inside the track).
+  - **Single edge treatment** — track is a translucent recess (`--color-segment-track`) with no border and no inset shadow; the thumb defines its own edge with one ring-less soft shadow (`--shadow-segment`). New tokens added to `semantic.css`.
+  - **Dark-mode fix** — elevation inverts in dark (faint lighter track fill), so the groove reads on near-black surfaces where a "sunken" darker track vanished.
+  - **`fullWidth` prop (new)** — segments split the container equally instead of hugging content; use for full-width toggles and view switchers.
+  - **Motion** — crisp bounce-free thumb glide (~300ms, reduced-motion aware) plus a `motion-safe` press-scale on each segment for tactile feedback.
+  - **Canonical controlled/uncontrolled API (new)** — `value` / `defaultValue` / `onValueChange`, matching Tabs/ToggleGroup. Uncontrolled mode works with `defaultValue` (falls back to the first option).
+  - **44px touch targets** — each segment now meets the WCAG touch minimum (`touch-target`) while keeping its dense visual height.
+  - **Option `text` widened `string` → `ReactNode`** and made optional — segments can hold a count badge/custom node, or be icon-only.
+  - **Icon-only segments** — set `ariaLabel` per option for the accessible name when `text` is omitted.
+  - **RTL** — Arrow-key navigation tracks reading order (ArrowLeft → next, ArrowRight → previous) in a right-to-left context.
+  - **Deprecated aliases** — `variant="default"` → `"soft"`, `selectedId` → `value`, `onSelect` → `onValueChange`. All old names still accepted at runtime; update call sites (removed in a future major).
+
+  New tokens: `--color-segment-track`, `--color-segment-thumb`, `--shadow-segment`.
+
 ## 0.51.0
 
 ### Minor Changes

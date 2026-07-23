@@ -153,8 +153,8 @@ Both `<Suspense>` and `<LoadingSkeleton>` are server-safe.
 import { useColorMode } from "@devalok/shilp-sutra/hooks/use-color-mode";
 
 export default function ServerPage() {
-  const { mode } = useColorMode(); // breaks
-  return <div>{mode}</div>;
+  const { colorMode } = useColorMode(); // breaks
+  return <div>{colorMode}</div>;
 }
 ```
 

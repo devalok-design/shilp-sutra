@@ -123,10 +123,10 @@ Wire the runtime hook from anywhere in the app (e.g., a header button):
 import { useColorMode } from "@devalok/shilp-sutra/hooks/use-color-mode";
 
 export function ThemeToggle() {
-  const { mode, toggle } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <button onClick={toggle} aria-label="Toggle theme">
-      {mode === "dark" ? "☀" : "☾"}
+    <button onClick={toggleColorMode} aria-label="Toggle theme">
+      {colorMode === "dark" ? "☀" : "☾"}
     </button>
   );
 }

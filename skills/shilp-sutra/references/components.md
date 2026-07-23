@@ -2,7 +2,7 @@
 
 # @devalok/shilp-sutra
 
-> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps, v0.49.5.
+> Radix UI + Tailwind 4 (CSS-first) + CVA design system for Devalok apps, v0.50.0.
 > Built on the same primitives as shadcn/ui but with DIFFERENT prop APIs — never guess from shadcn knowledge; verify every prop.
 > This file is a ROUTER: it tells you what exists and where to get details. Do not look for prop tables here — fetch them per component (MCP tool or per-component doc file below).
 
@@ -127,6 +127,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [content-card](docs/components/composed/content-card.md): **DEPRECATED (v0.44.0)** — will be removed in the next major
 - [date-picker](docs/components/composed/date-picker.md)
 - [deadline-indicator](docs/components/composed/deadline-indicator.md)
+- [diff](docs/components/composed/diff.md)
 - [emoji-picker](docs/components/composed/emoji-picker.md)
 - [empty-state](docs/components/composed/empty-state.md): Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe due to Framer Motion dependency
 - [error-boundary](docs/components/composed/error-boundary.md)

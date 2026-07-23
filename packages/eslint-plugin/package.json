@@ -1,6 +1,6 @@
 {
   "name": "@devalok/eslint-plugin-shilp-sutra",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "ESLint rules for @devalok/shilp-sutra — catches deprecated APIs, peer-cliff barrel imports, TW3-era utility classnames, and ships autofixes that turn breaking-change migrations into one-command codemods.",
   "type": "module",
   "publishConfig": {

@@ -33,7 +33,7 @@ const meta: Meta<typeof Button> = {
     },
     color: {
       control: 'select',
-      options: ['accent', 'error', 'success', 'warning', 'neutral'],
+      options: ['accent', 'error', 'success', 'warning', 'info', 'neutral'],
     },
     size: {
       control: 'select',

@@ -62,6 +62,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
       <AnimatePresence>
         {hasValue && onClear && (
           <motion.div
+            className="flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}

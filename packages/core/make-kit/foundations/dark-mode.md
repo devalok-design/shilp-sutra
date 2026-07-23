@@ -18,17 +18,14 @@ Dark tokens are **algorithmically derived** from the OKLCH primitives, not hand-
 import { useColorMode } from '@devalok/shilp-sutra/hooks/use-color-mode'
 
 function ThemeToggle() {
-  const { mode, resolvedMode, setMode } = useColorMode()
-  // mode: 'light' | 'dark' | 'system'
-  // resolvedMode: 'light' | 'dark' (after resolving 'system')
+  const { colorMode, setColorMode, toggleColorMode } = useColorMode()
+  // colorMode: 'light' | 'dark' | 'system'
+  // setColorMode(next): set an explicit mode  ·  toggleColorMode(): flip light↔dark
 
   return (
-    <Button
-      variant="soft"
-      onClick={() => setMode(resolvedMode === 'dark' ? 'light' : 'dark')}
-    >
-      <Icon icon={resolvedMode === 'dark' ? IconSun : IconMoon} />
-      {resolvedMode === 'dark' ? 'Light' : 'Dark'}
+    <Button variant="soft" onClick={toggleColorMode}>
+      <Icon icon={colorMode === 'dark' ? IconSun : IconMoon} />
+      {colorMode === 'dark' ? 'Light' : 'Dark'}
     </Button>
   )
 }

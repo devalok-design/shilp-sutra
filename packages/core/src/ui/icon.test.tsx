@@ -154,6 +154,12 @@ describe('Icon', () => {
     expect(svg).toHaveAttribute('stroke-width', '2.5')
   })
 
+  it('forwards style to the rendered icon', () => {
+    const { container } = render(<Icon icon={IconPlus} style={{ opacity: 0.5 }} />)
+    const svg = container.querySelector('svg')
+    expect(svg).toHaveStyle({ opacity: '0.5' })
+  })
+
   // ── a11y ───────────────────────────────────────────────────────────────────
   it('has no a11y violations (with label)', async () => {
     const { container } = render(<Icon icon={IconPlus} label="Add item" />)

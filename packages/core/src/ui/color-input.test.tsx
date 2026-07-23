@@ -92,6 +92,27 @@ describe('ColorInput', () => {
     expect(screen.getByRole('button', { name: /Color picker/i })).toBeInTheDocument()
   })
 
+  it('retains in-progress (<6 char) hex typing without clobbering (#142)', async () => {
+    const user = userEvent.setup()
+    render(<ColorInput value="#000000" />)
+    await user.click(screen.getByRole('button'))
+    const hexField = await screen.findByLabelText('Hex')
+    await user.clear(hexField)
+    await user.type(hexField, '1a')
+    expect(hexField).toHaveValue('1A')
+  })
+
+  it('commits hex color once 6 chars are entered (#142)', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(<ColorInput value="#000000" onChange={onChange} />)
+    await user.click(screen.getByRole('button'))
+    const hexField = await screen.findByLabelText('Hex')
+    await user.clear(hexField)
+    await user.type(hexField, '1a2b3c')
+    expect(onChange).toHaveBeenCalledWith('#1a2b3c')
+  })
+
   it('has no a11y violations', async () => {
     const { container } = render(<ColorInput value="#ff0000" />)
     const results = await axe(container)

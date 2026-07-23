@@ -25,6 +25,7 @@ const COLOR_MAP: Record<string, string> = {
   error:   'var(--color-error-11)',
   success: 'var(--color-success-11)',
   warning: 'var(--color-warning-11)',
+  info:    'var(--color-info-11)',
   neutral: 'var(--color-surface-fg)',
 }
 

@@ -101,14 +101,14 @@ function getDividerColor(variant?: string, color?: string): string {
   if (variant === 'solid') {
     const map: Record<string, string> = {
       accent: 'bg-accent-11/20', error: 'bg-error-11/20', success: 'bg-success-11/20',
-      warning: 'bg-warning-11/20', neutral: 'bg-neutral-8/30',
+      warning: 'bg-warning-11/20', info: 'bg-info-11/20', neutral: 'bg-neutral-8/30',
     }
     return map[color ?? 'accent'] ?? map.accent
   }
   if (variant === 'soft') {
     const map: Record<string, string> = {
       accent: 'bg-accent-5', error: 'bg-error-5', success: 'bg-success-5',
-      warning: 'bg-warning-5', neutral: 'bg-neutral-4',
+      warning: 'bg-warning-5', info: 'bg-info-5', neutral: 'bg-neutral-4',
     }
     return map[color ?? 'accent'] ?? map.accent
   }

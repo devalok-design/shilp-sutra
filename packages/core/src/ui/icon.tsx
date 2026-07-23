@@ -69,6 +69,8 @@ export interface IconProps {
    */
   state?: 'idle' | 'loading' | 'success' | 'error'
   className?: string
+  /** Inline styles forwarded to the rendered icon (e.g. decorative opacity/transform). */
+  style?: React.CSSProperties
 }
 
 /**
@@ -90,7 +92,7 @@ export interface IconProps {
  * <Icon icon={IconPlus} state="success" />            // animated checkmark
  */
 export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ icon: TablerIcon, size, stroke, label, animate, state, className }, ref) => {
+  ({ icon: TablerIcon, size, stroke, label, animate, state, className, style }, ref) => {
     const ctx = useIconContext()
     const resolvedSize = size ?? ctx.size ?? 'md'
     const resolvedStroke = stroke ?? ctx.stroke ?? 'regular'
@@ -111,6 +113,7 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
             exit={{ opacity: 0 }}
             transition={tweens.fade}
             className="inline-flex"
+            style={style}
           >
             <Spinner size={spinnerSize} state={spinnerState} variant="bare" />
           </motion.span>
@@ -144,6 +147,7 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
             strokeLinecap="round"
             strokeLinejoin="round"
             className={className}
+            style={style}
             aria-hidden={label ? undefined : 'true'}
             aria-label={label}
             role={label ? 'img' : undefined}
@@ -181,9 +185,9 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
     if (prefersReduced || (!animatePreset && !animateObject)) {
       // Static render (no animation or reduced motion)
       return label ? (
-        <TablerIcon ref={ref as any} size={px} stroke={sw} className={className} title={label} aria-label={label} role="img" />
+        <TablerIcon ref={ref as any} size={px} stroke={sw} className={className} style={style} title={label} aria-label={label} role="img" />
       ) : (
-        <TablerIcon ref={ref as any} size={px} stroke={sw} className={className} aria-hidden="true" />
+        <TablerIcon ref={ref as any} size={px} stroke={sw} className={className} style={style} aria-hidden="true" />
       )
     }
 
@@ -203,6 +207,7 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps>(
       <motion.span
         ref={ref as any}
         className={cn('inline-flex', className)}
+        style={style}
         {...motionProps}
       >
         {iconEl}

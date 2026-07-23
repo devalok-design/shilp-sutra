@@ -10,10 +10,15 @@ import { Icon } from './icon'
 describeConformance('Button', (props) => <Button {...props}>Click me</Button>, {
   variants: ['solid', 'soft', 'outline', 'ghost', 'link'],
   sizes: ['xs', 'sm', 'md', 'lg'],
-  colors: ['accent', 'error', 'success', 'warning', 'neutral'],
+  colors: ['accent', 'error', 'success', 'warning', 'info', 'neutral'],
 })
 
 describe('Button', () => {
+  it('applies info color (solid) classes', () => {
+    render(<Button color="info">Info</Button>)
+    expect(screen.getByRole('button').className).toContain('bg-info-9')
+  })
+
   it('renders children', () => {
     render(<Button>Click me</Button>)
     expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument()

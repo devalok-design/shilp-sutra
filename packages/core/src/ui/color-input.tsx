@@ -189,7 +189,10 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
 
     // Internal color state — syncs with prop, allows uncontrolled use
     const [internalColor, setInternalColor] = React.useState(value)
-    React.useEffect(() => { setInternalColor(value) }, [value])
+    // Draft state for the hex field so in-progress (<6 char) typing isn't clobbered
+    // by re-renders off internalColor. null = show the committed color.
+    const [hexDraft, setHexDraft] = React.useState<string | null>(null)
+    React.useEffect(() => { setInternalColor(value); setHexDraft(null) }, [value])
 
     // Track color when popover opened (for reset) + undo history
     const [openColor, setOpenColor] = React.useState(value)
@@ -203,6 +206,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
         setOpenColor(internalColor)
         setUndoStack([])
       }
+      setHexDraft(null)
       setOpen(isOpen)
     }
 
@@ -216,6 +220,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
         return [...prev.slice(-19), internalColor]
       })
       setInternalColor(hex)
+      setHexDraft(null)
       onChange?.(hex)
     }
 
@@ -426,15 +431,16 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       <FormatInput
                         id={`${instanceId}-hex`}
                         label="Hex"
-                        value={internalColor.replace('#', '').toUpperCase()}
+                        value={hexDraft ?? internalColor.replace('#', '').toUpperCase()}
                         onChange={(v) => {
                           const clean = v.replace(/[^0-9a-fA-F]/g, '').slice(0, 6)
+                          setHexDraft(clean.toUpperCase())
                           if (clean.length === 6) handleDiscreteChange(`#${clean}`)
                         }}
                         onBlur={() => {
-                          // Revert display to current color if input is incomplete
-                          const display = internalColor.replace('#', '').toUpperCase()
-                          if (display.length !== 6) setInternalColor(internalColor)
+                          // Drop any incomplete draft; display falls back to the
+                          // committed color. A complete value already committed onChange.
+                          setHexDraft(null)
                         }}
                         disabled={disabled}
                         maxLength={6}

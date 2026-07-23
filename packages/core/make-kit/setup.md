@@ -53,7 +53,7 @@ import { IconProvider } from '@devalok/shilp-sutra/ui/icon-context'
 export default function App({ children }) {
   return (
     <MotionProvider reducedMotion="user">
-      <IconProvider size={16}>
+      <IconProvider size="sm">
         {children}
         <Toaster />
       </IconProvider>
@@ -63,7 +63,7 @@ export default function App({ children }) {
 ```
 
 - `MotionProvider` — required. `reducedMotion="user"` respects OS preference. Without this provider, motion primitives still work but reduced-motion is ignored.
-- `IconProvider` — optional but recommended. Sets default icon size for all `<Icon>` children. Override per-call with `<Icon size={20} />`.
+- `IconProvider` — optional but recommended. Sets default icon size for all `<Icon>` children. Size is a tier (`"xs" | "sm" | "md" | "lg" | "xl" | "2xl"`), not a pixel number. Override per-call with `<Icon size="lg" />`.
 - `Toaster` — only needed if the app calls `toast(...)`. Mount exactly once.
 
 ## Dark mode toggle
@@ -74,9 +74,9 @@ Add the `.dark` class on `<html>` or `<body>` to flip the entire token system to
 import { useColorMode } from '@devalok/shilp-sutra/hooks/use-color-mode'
 
 function ThemeToggle() {
-  const { mode, setMode } = useColorMode() // 'light' | 'dark' | 'system'
+  const { colorMode, setColorMode } = useColorMode() // 'light' | 'dark' | 'system'
   return (
-    <Button onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
+    <Button onClick={() => setColorMode(colorMode === 'dark' ? 'light' : 'dark')}>
       Toggle theme
     </Button>
   )

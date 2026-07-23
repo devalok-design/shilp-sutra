@@ -103,6 +103,26 @@ Available as `accent-1` … `accent-12`. Apply via `bg-accent-N`, `text-accent-N
 
 The same 12-step pattern repeats for `error-*`, `success-*`, `warning-*`, `info-*` (subset: 2, 3, 4, 5, 6, 7, 9, 10, 11).
 
+## Component `color` prop — support matrix
+
+The `color` prop accepts a different set per component, because each serves a different job. **The shared intent set — safe to pass to all three from one token — is `accent` · `error` · `success` · `warning` · `info` · `neutral`.**
+
+| color | Button | Card | Badge |
+|---|:---:|:---:|:---:|
+| `accent` | ✅ | ✅ | ✅ |
+| `error` | ✅ | ✅ | ✅ |
+| `success` | ✅ | ✅ | ✅ |
+| `warning` | ✅ | ✅ | ✅ |
+| `info` | ✅ | ✅ | ✅ |
+| `neutral` | ✅ | ✅ | ✅ |
+| `default` | — | ✅ | ✅ |
+| `teal` `amber` `slate` `indigo` `cyan` `orange` `emerald` | — | — | ✅ |
+| `custom` (`--badge-color`) | — | — | ✅ |
+
+- **Button / Card** carry the six **semantic intents** — they communicate *state or emphasis* (a destructive action, a warning panel). That set is aligned across both.
+- **Badge** adds a **category palette** (`teal`, `amber`, `indigo`, …) plus `custom`, because badges label/categorize many peer items where hue is a taxonomy, not a status. Those category hues are intentionally **not** on Button/Card — a "teal primary button" would read as an intent that doesn't exist.
+- To tint a Card + Badge + Button set from one variable, constrain the token to the shared intent set above.
+
 ## Theming — never hardcode
 
 Consumers swap the accent by overriding `--color-accent-1` through `--color-accent-12` in a `:root { }` block placed **after** the kit's CSS import. Dark mode is derived algorithmically — no separate dark overrides needed.

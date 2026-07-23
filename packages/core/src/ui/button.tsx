@@ -34,6 +34,7 @@ export const buttonVariants = cva(
         error: '',
         success: '',
         warning: '',
+        info: '',
         neutral: '',
       },
       weight: {
@@ -61,6 +62,7 @@ export const buttonVariants = cva(
       { variant: 'solid', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised' },
       { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg hover:bg-success-10 shadow-raised' },
       { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg hover:bg-warning-10 shadow-raised' },
+      { variant: 'solid', color: 'info',    className: 'bg-info-9 text-info-fg hover:bg-info-10 shadow-raised' },
       { variant: 'solid', color: 'neutral', className: 'bg-neutral-5 text-surface-fg hover:bg-neutral-7 shadow-raised' },
 
       // ============ SOFT ============
@@ -68,6 +70,7 @@ export const buttonVariants = cva(
       { variant: 'soft', color: 'error',   className: 'bg-error-3 text-error-11 hover:bg-error-4 active:bg-error-5' },
       { variant: 'soft', color: 'success', className: 'bg-success-3 text-success-11 hover:bg-success-4 active:bg-success-5' },
       { variant: 'soft', color: 'warning', className: 'bg-warning-3 text-warning-11 hover:bg-warning-4 active:bg-warning-5' },
+      { variant: 'soft', color: 'info',    className: 'bg-info-3 text-info-11 hover:bg-info-4 active:bg-info-5' },
       { variant: 'soft', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg-muted hover:bg-surface-raised-active active:bg-neutral-5' },
 
       // ============ OUTLINE ============
@@ -75,6 +78,7 @@ export const buttonVariants = cva(
       { variant: 'outline', color: 'error',   className: 'bg-transparent text-error-11 border-error-7 hover:bg-error-3 active:bg-error-4' },
       { variant: 'outline', color: 'success', className: 'bg-transparent text-success-11 border-success-7 hover:bg-success-3 active:bg-success-4' },
       { variant: 'outline', color: 'warning', className: 'bg-transparent text-warning-11 border-warning-7 hover:bg-warning-3 active:bg-warning-4' },
+      { variant: 'outline', color: 'info',    className: 'bg-transparent text-info-11 border-info-7 hover:bg-info-3 active:bg-info-4' },
       { variant: 'outline', color: 'neutral', className: 'bg-transparent text-surface-fg border-surface-border-strong hover:bg-surface-raised-hover active:bg-surface-raised-active' },
 
       // ============ GHOST ============
@@ -83,6 +87,7 @@ export const buttonVariants = cva(
       { variant: 'ghost', color: 'error',   className: 'bg-transparent text-error-11 hover:bg-error-3 active:bg-error-4' },
       { variant: 'ghost', color: 'success', className: 'bg-transparent text-success-11 hover:bg-success-3 active:bg-success-4' },
       { variant: 'ghost', color: 'warning', className: 'bg-transparent text-warning-11 hover:bg-warning-3 active:bg-warning-4' },
+      { variant: 'ghost', color: 'info',    className: 'bg-transparent text-info-11 hover:bg-info-3 active:bg-info-4' },
       { variant: 'ghost', color: 'neutral', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg active:bg-surface-raised-active' },
 
       // ============ LINK ============
@@ -90,6 +95,7 @@ export const buttonVariants = cva(
       { variant: 'link', color: 'error',   className: 'text-error-11' },
       { variant: 'link', color: 'success', className: 'text-success-11' },
       { variant: 'link', color: 'warning', className: 'text-warning-11' },
+      { variant: 'link', color: 'info',    className: 'text-info-11' },
       { variant: 'link', color: 'neutral', className: 'text-surface-fg-muted' },
     ],
     defaultVariants: {
@@ -159,7 +165,7 @@ const BUTTON_TO_ICON_SIZE: Record<string, IconSize> = {
  * - `variant` controls **visual style**: `"solid"` (default, filled) | `"soft"` (tinted bg) |
  *   `"outline"` (bordered) | `"ghost"` (transparent, for toolbars) | `"link"` (underline, inline)
  * - `color` controls **semantic intent**: `"accent"` (default, brand) | `"error"` (destructive) |
- *   `"success"` | `"warning"` | `"neutral"` (subdued)
+ *   `"success"` | `"warning"` | `"info"` | `"neutral"` (subdued)
  *
  * **Sizes:** `xs` | `sm` | `md` (default) | `lg` for text buttons;
  * `compact-xs` | `compact-sm` | `compact-md` for height-less inline buttons;
@@ -239,7 +245,7 @@ export interface ButtonProps
   processing?: boolean | 'ambient' | 'working' | 'urgent'
 
   /** Override processing animation color. Defaults to button's own color. */
-  processingColor?: 'accent' | 'error' | 'success' | 'warning' | 'neutral'
+  processingColor?: 'accent' | 'error' | 'success' | 'warning' | 'info' | 'neutral'
 
   /** Disable button during processing. Default: true. Set false for cancel-by-click patterns. */
   processingDisabled?: boolean

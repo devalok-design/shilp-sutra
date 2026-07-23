@@ -17,7 +17,7 @@ import { Icon } from '@devalok/shilp-sutra/ui/icon'
 import { IconHome, IconUser, IconSettings } from '@tabler/icons-react'
 
 <Icon icon={IconHome} />
-<Icon icon={IconUser} size={20} />
+<Icon icon={IconUser} size="lg" />
 <Icon icon={IconSettings} className="text-fg-muted" />
 ```
 
@@ -55,7 +55,7 @@ Don't add `className="h-4 w-4"` on every Icon. Wrap a subtree:
 ```tsx
 import { IconProvider } from '@devalok/shilp-sutra/ui/icon-context'
 
-<IconProvider size={16}>
+<IconProvider size="sm">
   <NavSection>
     <Icon icon={IconHome} />
     <Icon icon={IconUser} />
@@ -64,7 +64,7 @@ import { IconProvider } from '@devalok/shilp-sutra/ui/icon-context'
 </IconProvider>
 ```
 
-Override per-icon with `<Icon icon={...} size={24} />`.
+Override per-icon with `<Icon icon={...} size="xl" />`.
 
 Default sizes by component context:
 

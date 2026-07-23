@@ -6,7 +6,7 @@
 
 ## Props
     variant: "solid" | "soft" | "outline" | "ghost" | "link"
-    color: "accent" | "error" | "success" | "warning" | "neutral"
+    color: "accent" | "error" | "success" | "warning" | "info" | "neutral"
     size: "xs" | "sm" | "md" | "lg" | "compact-xs" | "compact-sm" | "compact-md" | "icon" | "icon-xs" | "icon-sm" | "icon-md" | "icon-lg"
     weight: "semibold" | "normal"
     shape: "default" | "pill"
@@ -17,7 +17,7 @@
     fullWidth: boolean
     asChild: boolean
     processing: boolean | 'ambient' | 'working' | 'urgent' (marching ants SVG border)
-    processingColor: 'accent' | 'error' | 'success' | 'warning' | 'neutral' (override animation color)
+    processingColor: 'accent' | 'error' | 'success' | 'warning' | 'info' | 'neutral' (override animation color)
     processingDisabled: boolean (disable button during processing, default: true)
     onClickAsync: (e: MouseEvent) => Promise<void> (auto loading->success/error->idle, auto-activates processing)
     asyncFeedbackDuration: number (ms, default 1500)

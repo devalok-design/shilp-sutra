@@ -384,8 +384,8 @@
      --radius-overlay-lg    rounded-overlay-lg    Dialog, AlertDialog, Sheet, BottomSheet, ColorInput picker
      --radius-pill          rounded-pill          Badge, Dot, Radio, Switch, Slider, Progress, Avatar circle
      --radius-bubble        rounded-bubble        ChatMessage bubble
-     (SegmentedControl is a rounded-RECT, not a pill: track rounded-ds-lg,
-      thumb rounded-ds-md — thumb inner radius sits tighter inside the track.)
+     (SegmentedControl is a rounded-RECT, not a pill: track rounded-surface,
+      thumb rounded-control — thumb inner radius sits tighter inside the track.)
      ─────────────────────────────────────────────────────────── */
   --radius-control:        6px;
   --radius-control-inner:  2px;

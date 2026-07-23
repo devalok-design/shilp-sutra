@@ -202,7 +202,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
         aria-label={props['aria-label'] ?? 'Segmented control'}
         onKeyDown={handleKeyDown}
         className={cn(
-          'p-ds-01 rounded-ds-lg bg-segment-track',
+          'p-ds-01 rounded-surface bg-segment-track',
           fullWidth ? 'flex w-full' : 'inline-flex w-fit',
           disabled && 'opacity-action-disabled pointer-events-none',
           className,
@@ -224,7 +224,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
                 disabled={disabled}
                 onClick={() => emit(option.id)}
                 className={cn(
-                  'relative inline-flex items-center justify-center gap-ds-02 rounded-ds-md',
+                  'relative inline-flex items-center justify-center gap-ds-02 rounded-control',
                   'font-medium outline-hidden',
                   // `touch-target` adds a 44px min hit area via ::before without
                   // changing the visual (dense) height.
@@ -249,7 +249,7 @@ const SegmentedControl = React.forwardRef<HTMLDivElement, SegmentedControlProps>
                     layoutId="segment-thumb"
                     initial={false}
                     className={cn(
-                      'absolute inset-0 rounded-ds-md pointer-events-none',
+                      'absolute inset-0 rounded-control pointer-events-none',
                       thumbStyles[resolvedVariant],
                     )}
                     transition={thumbTransition}

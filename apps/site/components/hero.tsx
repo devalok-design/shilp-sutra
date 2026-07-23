@@ -24,8 +24,8 @@ export function Hero() {
             Devalok
           </Link>
         </Text>
-        <h1 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-3xl text-balance">
-          Your brand. Every component.
+        <h1 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-4xl">
+          <span className="sm:whitespace-nowrap">Your brand. Every component.</span>
           <br />
           <span className="text-accent-11">Out of the box.</span>
         </h1>

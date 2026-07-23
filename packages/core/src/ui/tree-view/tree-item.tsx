@@ -184,11 +184,11 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           )}
 
           {/* Label */}
-          <span className="min-w-0 truncate text-ds-sm">{label}</span>
+          <span className="min-w-0 truncate text-body-sm">{label}</span>
 
           {/* Secondary label */}
           {secondaryLabel && (
-            <span className="ml-auto truncate text-ds-xs text-surface-fg-muted">
+            <span className="ml-auto truncate text-caption text-surface-fg-muted">
               {secondaryLabel}
             </span>
           )}

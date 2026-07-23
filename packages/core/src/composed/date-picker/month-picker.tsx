@@ -62,7 +62,7 @@ export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
 
   return (
     <div ref={ref} {...props} className={cn("w-[252px]", className)}>
-      <div className="text-center pb-ds-04 text-ds-md font-semibold text-surface-fg">
+      <div className="text-center pb-ds-04 text-body-md font-semibold text-surface-fg">
         {currentYear}
       </div>
       <div role="grid" aria-label="Month picker" tabIndex={-1} onKeyDown={handleKeyDown}>
@@ -83,7 +83,7 @@ export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
                   disabled={isDisabled || false}
                   onClick={() => !isDisabled && onMonthSelect(index)}
                   className={cn(
-                    'h-ds-sm-plus rounded-control text-ds-md transition-colors focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+                    'h-ds-sm-plus rounded-control text-body-md transition-colors focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
                     isDisabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
                     isSelected &&
                       'bg-accent-9 text-accent-fg',

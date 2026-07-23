@@ -92,7 +92,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           <h3
             className={cn(
               'text-surface-fg',
-              compact ? 'text-ds-md font-semibold' : 'text-ds-base font-semibold',
+              compact ? 'text-body-md font-semibold' : 'text-body-lg font-semibold',
             )}
           >
             {title}
@@ -101,7 +101,7 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
             <p
               className={cn(
                 'text-surface-fg-subtle',
-                compact ? 'text-ds-sm' : 'text-ds-md',
+                compact ? 'text-body-sm' : 'text-body-md',
               )}
             >
               {description}

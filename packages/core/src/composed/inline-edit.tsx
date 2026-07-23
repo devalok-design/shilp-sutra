@@ -15,7 +15,7 @@ export interface InlineEditProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   value: string
   onSave: (newValue: string) => void | Promise<void>
   placeholder?: string
-  /** CSS class applied to the editable text (e.g. 'text-ds-lg font-semibold') */
+  /** CSS class applied to the editable text (e.g. 'text-heading-xs font-semibold') */
   textClassName?: string
   readOnly?: boolean
   maxLength?: number

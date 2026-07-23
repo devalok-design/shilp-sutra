@@ -110,7 +110,7 @@ const LoadingBlock = React.memo(function LoadingBlock({
             <StepIcon status={step.status} />
             <span
               className={cn(
-                'text-ds-sm',
+                'text-body-sm',
                 step.status === 'done' || step.status === 'active'
                   ? 'text-surface-fg'
                   : 'text-surface-fg-subtle',

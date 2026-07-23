@@ -74,7 +74,7 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
           className={cn(
-            'flex items-center gap-ds-02 py-ds-02 text-ds-xs text-surface-fg-subtle/50 italic',
+            'flex items-center gap-ds-02 py-ds-02 text-caption text-surface-fg-subtle/50 italic',
             className,
           )}
           {...motionProps(props)}
@@ -250,10 +250,10 @@ function MessageAuthor({
 
   return (
     <div className="flex items-baseline gap-ds-02">
-      <span className="font-semibold text-ds-md text-surface-fg">{name}</span>
+      <span className="font-semibold text-body-md text-surface-fg">{name}</span>
       {badge}
       {timeStr && (
-        <span className="text-ds-sm text-surface-fg-subtle/50">{timeStr}</span>
+        <span className="text-body-sm text-surface-fg-subtle/50">{timeStr}</span>
       )}
     </div>
   )
@@ -270,7 +270,7 @@ function MessageBody({ children, className, ...props }: MessageBodyProps) {
   return (
     <div
       className={cn(
-        'text-ds-md leading-relaxed text-surface-fg whitespace-pre-wrap',
+        'text-body-md leading-relaxed text-surface-fg whitespace-pre-wrap',
         className,
       )}
       {...props}
@@ -344,7 +344,7 @@ function MessageEditableBody({
 
   if (isEditing) {
     return (
-      <div className="text-ds-md leading-relaxed">
+      <div className="text-body-md leading-relaxed">
         <Textarea
           ref={textareaRef}
           value={editDraft}
@@ -352,10 +352,10 @@ function MessageEditableBody({
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
           // compact inline-edit overrides on top of the Textarea base
-          className="resize-none rounded-control-inner bg-surface-raised-hover px-ds-02 py-ds-01 text-ds-md leading-relaxed"
+          className="resize-none rounded-control-inner bg-surface-raised-hover px-ds-02 py-ds-01 text-body-md leading-relaxed"
           rows={2}
         />
-        <div className="mt-ds-01 text-ds-xs text-surface-fg-subtle/50">
+        <div className="mt-ds-01 text-caption text-surface-fg-subtle/50">
           Enter to save · Escape to cancel
         </div>
       </div>
@@ -365,7 +365,7 @@ function MessageEditableBody({
   return (
     <div
       className={cn(
-        'text-ds-md leading-relaxed text-surface-fg whitespace-pre-wrap',
+        'text-body-md leading-relaxed text-surface-fg whitespace-pre-wrap',
         canEdit && 'cursor-pointer hover:bg-surface-raised-hover rounded-control-inner transition-colors',
       )}
       onClick={handleStartEdit}
@@ -407,7 +407,7 @@ function MessageReactions({ reactions, onReact }: MessageReactionsProps) {
           onClick={() => onReact(r.emoji)}
           aria-label={`${r.emoji} ${r.count} reaction${r.count !== 1 ? 's' : ''}${r.reacted ? ', you reacted' : ''}`}
           className={cn(
-            'inline-flex items-center gap-ds-01 rounded-pill px-ds-02 py-ds-01 text-ds-xs transition-colors',
+            'inline-flex items-center gap-ds-01 rounded-pill px-ds-02 py-ds-01 text-body-xs transition-colors',
             r.reacted
               ? 'bg-accent-3 ring-1 ring-accent-6'
               : 'bg-surface-raised-hover hover:bg-surface-raised-active',

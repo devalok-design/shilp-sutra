@@ -162,7 +162,7 @@ describe('Table', () => {
     expect(screen.getByRole('table')).toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-base')
   })
 
-  it('header cells are quieter than data — text-ds-sm muted, density-tracked padding', () => {
+  it('header cells are quieter than data — text-body-sm muted, density-tracked padding', () => {
     render(
       <Table>
         <TableHeader>
@@ -172,7 +172,7 @@ describe('Table', () => {
         </TableHeader>
       </Table>,
     )
-    expect(screen.getByRole('columnheader')).toHaveClass('text-ds-sm', 'font-medium', 'text-surface-fg-muted', 'py-(--table-py)')
+    expect(screen.getByRole('columnheader')).toHaveClass('text-body-sm', 'font-medium', 'text-surface-fg-muted', 'py-(--table-py)')
   })
 
   describe('numeric', () => {

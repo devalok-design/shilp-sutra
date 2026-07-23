@@ -15,7 +15,7 @@ const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
       ref={ref}
       {...props}
       className={cn(
-        'rounded-surface border border-surface-border-strong bg-surface-raised p-ds-05b',
+        'rounded-surface border border-card-strong bg-surface-raised p-ds-05b',
         className,
       )}
     >
@@ -56,7 +56,7 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
       ref={ref}
       {...props}
       className={cn(
-        'overflow-hidden rounded-surface border border-surface-border-strong',
+        'overflow-hidden rounded-surface border border-card-strong',
         className,
       )}
     >
@@ -134,7 +134,7 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
           {Array.from({ length: cardsPerColumn }).map((_, cardIndex) => (
             <div
               key={`card-${colIndex}-${cardIndex}`}
-              className="rounded-surface border border-surface-border-strong bg-surface-raised p-ds-04"
+              className="rounded-surface border border-card-strong bg-surface-raised p-ds-04"
               style={{ animationDelay: `${(colIndex * cardsPerColumn + cardIndex) * 50}ms` }}
             >
               <div className="space-y-ds-03">

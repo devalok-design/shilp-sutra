@@ -71,8 +71,8 @@ try {
   const list = await rpc('tools/list', {}, 2)
   const names = (list.result?.tools ?? []).map((t) => t.name).sort()
   check(
-    'tools/list has all 11',
-    JSON.stringify(names) === JSON.stringify(['detect_framework', 'find_component', 'get_component', 'get_setup', 'get_tokens', 'preflight', 'report_issue', 'search_docs', 'upgrade', 'validate_snippet', 'verify_setup']),
+    'tools/list has all 13',
+    JSON.stringify(names) === JSON.stringify(['check_slop', 'detect_framework', 'find_component', 'get_component', 'get_setup', 'get_tokens', 'how_to_use', 'preflight', 'report_issue', 'search_docs', 'upgrade', 'validate_snippet', 'verify_setup']),
     names.join(',')
   )
 
@@ -139,6 +139,25 @@ try {
   const rep = await call('report_issue', { category: 'bug', title: 'smoke test — should not file', body: 'smoke' }, 16)
   const repText = rep.result?.content?.[0]?.text ?? ''
   check('report_issue not-configured is graceful', rep.result?.isError === true && repText.includes('not enabled'), repText.slice(0, 200))
+
+  // check_slop: flags a deliberately sloppy snippet + surfaces guidance + the Setu line.
+  const slopCode = '<div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-3xl shadow-2xl"><span className="text-xs uppercase tracking-widest">About</span><h2 className="bg-clip-text text-transparent">T</h2></div>'
+  const slop = await call('check_slop', { code: slopCode }, 17)
+  const slopText = slop.result?.content?.[0]?.text ?? ''
+  check('check_slop flags gradient-text + purple + eyebrow', slopText.includes('gradient-text') && slopText.includes('purple-blue-gradient') && slopText.includes('eyebrow-kicker'), slopText.slice(0, 200))
+  check('check_slop returns guidance + Setu line', slopText.includes('signature-first') && slopText.includes('setu.devalok.dev'), slopText.slice(0, 120))
+  const clean = await call('check_slop', { code: '<Button variant="soft" className="bg-surface-2 text-body-sm focus-visible:ring-2">Go</Button>' }, 18)
+  check('check_slop passes clean code', (clean.result?.content?.[0]?.text ?? '').includes('"verdict": "clean"'))
+  // AST structural pass + agent self-critique block.
+  const ast = await call('check_slop', { code: 'function X(){return (<div><Card><Card>x</Card></Card><div><Button variant="solid">A</Button><Button variant="outline">B</Button></div><h1>T</h1><h3>S</h3></div>)}' }, 20)
+  const astText = ast.result?.content?.[0]?.text ?? ''
+  check('check_slop AST flags nested-cards + button-duo + skipped-heading', astText.includes('nested-cards') && astText.includes('filled-outline-duo') && astText.includes('skipped-heading-level'), astText.slice(0, 200))
+  check('check_slop returns self_critique block', astText.includes('self_critique') && astText.includes('AI made that'), astText.slice(0, 120))
+
+  // how_to_use: returns the tool map + the writing-a-component sequence.
+  const how = await call('how_to_use', {}, 19)
+  const howText = how.result?.content?.[0]?.text ?? ''
+  check('how_to_use lists check_slop + sequences', howText.includes('check_slop') && howText.includes('writing_a_component'), howText.slice(0, 120))
 } finally {
   if (child) child.kill()
 }

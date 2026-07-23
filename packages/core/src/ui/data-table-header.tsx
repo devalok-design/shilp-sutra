@@ -162,8 +162,8 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
                     aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
                     className={cn(
                       'h-ds-xs-plus w-full rounded-control',
-                      'border border-surface-border-strong bg-surface-raised-hover',
-                      'px-ds-02 text-ds-sm',
+                      'border border-card-strong bg-surface-raised-hover',
+                      'px-ds-02 text-body-sm',
                       'text-surface-fg placeholder:text-surface-fg-subtle',
                       'outline-hidden focus:border-accent-7',
                     )}

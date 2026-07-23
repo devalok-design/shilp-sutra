@@ -19,7 +19,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={`stat-${i}`}
-            className="flex flex-col gap-ds-04 rounded-overlay-lg border border-surface-border-strong bg-surface-raised p-ds-05b"
+            className="flex flex-col gap-ds-04 rounded-overlay-lg border border-card-strong bg-surface-raised p-ds-05b"
           >
             <div className="flex items-center justify-between">
               <Skeleton className={cn('h-ds-04 w-ds-11', shimmer)} />
@@ -32,7 +32,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
       </div>
 
       {/* Attendance calendar placeholder */}
-      <div className="rounded-overlay-lg border border-surface-border-strong bg-surface-raised p-ds-06">
+      <div className="rounded-overlay-lg border border-card-strong bg-surface-raised p-ds-06">
         <div className="mb-ds-06 flex items-center justify-between">
           <Skeleton className={cn('h-ds-05b w-[128px]', shimmer)} />
           <div className="flex items-center gap-ds-03">
@@ -96,7 +96,7 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement, ProjectListSkeleton
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={`proj-${i}`}
-            className="flex flex-col gap-ds-05 rounded-overlay-lg border border-surface-border-strong bg-surface-raised p-ds-05b"
+            className="flex flex-col gap-ds-05 rounded-overlay-lg border border-card-strong bg-surface-raised p-ds-05b"
           >
             {/* Top row: status + org */}
             <div className="flex items-center justify-between">
@@ -138,7 +138,7 @@ export interface TaskDetailSkeletonProps extends React.ComponentPropsWithoutRef<
 const TaskDetailSkeleton = React.forwardRef<HTMLDivElement, TaskDetailSkeletonProps>(
   function TaskDetailSkeleton({ className, ...props }, ref) {
   return (
-    <div ref={ref} {...props} className={cn("flex h-full flex-col gap-0 rounded-overlay-lg border border-surface-border-strong bg-surface-raised", className)}>
+    <div ref={ref} {...props} className={cn("flex h-full flex-col gap-0 rounded-overlay-lg border border-card-strong bg-surface-raised", className)}>
       {/* Header */}
       <div className="flex items-center justify-between border-b border-surface-border-strong px-ds-05b py-ds-05">
         <Skeleton className={cn('h-ds-05b w-[192px]', shimmer)} />

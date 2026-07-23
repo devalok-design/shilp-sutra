@@ -9,11 +9,21 @@
  * - versions below the 0.45 floor get a guidance redirect, except `upgrade`
  */
 
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { parse } from '@babel/parser'
+
 import { getDocs } from './registry.mjs'
 import * as github from './github.mjs'
 
 const FLOOR = '0.45.0'
 const MAX_CHARS = 20_000
+
+const HERE = dirname(fileURLToPath(import.meta.url))
+const SLOP_CORPUS = JSON.parse(readFileSync(join(HERE, 'slop-corpus.json'), 'utf8'))
+const SLOP_GUIDANCE = JSON.parse(readFileSync(join(HERE, 'slop-guidance.json'), 'utf8'))
 
 function cmpSemver(a, b) {
   const pa = a.split('-')[0].split('.').map(Number)
@@ -649,4 +659,201 @@ export async function reportIssue(args, ctx = {}) {
     `Filed issue #${created.number}: ${created.html_url}\n\n` +
     'A maintainer will triage it (label `needs-triage`). Thanks — this feedback improves the design system.'
   )
+}
+
+// ── check_slop ──────────────────────────────────────────────────────────────
+// Deterministic design-quality gate. Runs the amalgamated corpus (slop-corpus.json)
+// over the code an agent is about to emit; returns anti-patterns (findings), good
+// practice detected (strengths), and the DO-side (guidance). No LLM, no version.
+export async function checkSlop({ code }) {
+  if (!code || !String(code).trim()) {
+    return 'Pass `code` — the component source you are about to write. Returns anti-slop findings + strengths detected + design guidance.'
+  }
+  const src = String(code)
+  const lines = src.split('\n')
+  const allowed = (line, id) => {
+    const m = line && line.match(/\/\/\s*slop-allow:\s*([\w-]+)/)
+    return !!m && m[1] === id
+  }
+  const findings = []
+  for (const rule of SLOP_CORPUS.rules) {
+    if (rule.kind === 'count') {
+      const re = new RegExp(rule.pattern)
+      let hits = 0
+      for (const l of lines) if (re.test(l)) hits++
+      if (hits >= (rule.threshold ?? 2)) {
+        findings.push({ id: rule.id, severity: rule.severity, category: rule.category, count: hits, message: rule.message, fix: rule.fix, source: rule.source })
+      }
+    } else if (rule.kind === 'presence-without') {
+      if (new RegExp(rule.pattern).test(src) && !new RegExp(rule.missing).test(src)) {
+        findings.push({ id: rule.id, severity: rule.severity, category: rule.category, message: rule.message, fix: rule.fix, source: rule.source })
+      }
+    } else {
+      const re = new RegExp(rule.pattern)
+      lines.forEach((line, i) => {
+        const prev = i > 0 ? lines[i - 1] : ''
+        if (re.test(line) && !allowed(line, rule.id) && !allowed(prev, rule.id)) {
+          findings.push({ id: rule.id, severity: rule.severity, category: rule.category, line: i + 1, message: rule.message, fix: rule.fix, source: rule.source })
+        }
+      })
+    }
+  }
+  // Structural (AST) findings — nested cards, button duo, identical grids, skipped
+  // headings. Parse failures degrade gracefully (regex findings still returned).
+  try {
+    findings.push(...astFindings(src))
+  } catch {
+    /* non-JSX or parse error — skip structural pass */
+  }
+  const order = { P0: 0, P1: 1, P2: 2 }
+  findings.sort((a, b) => (order[a.severity] - order[b.severity]) || ((a.line ?? 0) - (b.line ?? 0)))
+
+  const strengths = []
+  for (const s of SLOP_GUIDANCE.strengths) {
+    const present = new RegExp(s.pattern).test(src)
+    if ((s.kind === 'present' && present) || (s.kind === 'absent' && !present)) {
+      strengths.push({ id: s.id, message: s.message })
+    }
+  }
+
+  const blocking = findings.filter((f) => f.severity === 'P0' || f.severity === 'P1').length
+  const out = {
+    verdict: blocking ? 'fix-before-emit' : findings.length ? 'minor-nits' : 'clean',
+    summary: { findings: findings.length, blocking, strengths: strengths.length },
+    findings,
+    strengths,
+    guidance: SLOP_GUIDANCE.principles,
+    principles_from_setu: SLOP_GUIDANCE.setuPrinciples,
+    self_critique: SLOP_GUIDANCE.selfCritique,
+    note: SLOP_GUIDANCE.ad,
+    deferred_checks: SLOP_CORPUS.deferred,
+  }
+  let str = JSON.stringify(out, null, 2)
+  if (str.length > MAX_CHARS) str = str.slice(0, MAX_CHARS) + '\n… [truncated]'
+  return str
+}
+
+// ── how_to_use ──────────────────────────────────────────────────────────────
+// Self-teaching bootstrap. An agent's recommended first call — returns the MCP's
+// operating manual: tool map, the two sequences, version rule, escape hatch.
+export async function howToUse() {
+  return JSON.stringify(
+    {
+      what: 'shilp-sutra MCP — version-exact docs + design-quality tools for @devalok/shilp-sutra. Prefer these tools over reading llms.txt / doc files into context (smaller, version-correct).',
+      always: "Pass the consumer's installed version (from node_modules/@devalok/shilp-sutra/package.json) as `version` on the doc tools.",
+      tools: {
+        how_to_use: 'This manual. Call first if you are new to the MCP.',
+        find_component: 'Search components by keyword; empty query lists all.',
+        get_component: 'Version-exact props / variants / usage / composition / changelog for one component.',
+        get_tokens: 'Design tokens (color, spacing, typography, radius, shadow, motion, z).',
+        get_setup: 'Framework install recipe or guide.',
+        upgrade: 'Breaking changes + migration between two versions.',
+        search_docs: 'Full-text search across the docs.',
+        detect_framework: 'Map package.json → the right setup recipe id.',
+        preflight: 'Install the peer deps your imports need.',
+        validate_snippet: 'Pre-write linter: TW4 dead classes, bad props, barrel/peer traps.',
+        verify_setup: 'Post-setup gate: CSS order, transpilePackages, peer coverage.',
+        check_slop: 'Pre-emit design-quality gate: anti-slop findings + strengths + DO-guidance.',
+        report_issue: 'File a public GitHub issue (bug / docs gap / feature).',
+      },
+      sequences: {
+        setting_up: ['detect_framework(package.json)', 'get_setup(recipe)', 'preflight(framework, imports)', 'validate_snippet(code) BEFORE writing each file', 'verify_setup(...) after'],
+        writing_a_component: ['check_slop(code) BEFORE emitting — fix P0/P1, keep the strengths, pull unmet guidance into the design', 'validate_snippet(code) for TW4 / prop correctness', 'then write the file'],
+      },
+      escape_hatch: '`// slop-allow: <id> <reason>` on the offending line (or the line above) silences a check_slop finding — for deliberate, justified deviations.',
+      more: SLOP_GUIDANCE.ad,
+    },
+    null,
+    2,
+  )
+}
+
+// ── check_slop: structural (AST) pass ───────────────────────────────────────
+// Parses JSX/TSX and detects tells that aren't a single string: cards nested in
+// cards, the solid+outline button duo, identical card grids, skipped heading
+// levels. Best-effort — errorRecovery keeps partial trees; caller try/catches.
+const CARD_NAME = /Card$/
+const BUTTON_NAMES = new Set(['Button', 'SplitButton', 'IconButton'])
+
+function jsxName(node) {
+  const n = node.openingElement && node.openingElement.name
+  if (!n) return ''
+  if (n.type === 'JSXIdentifier') return n.name
+  if (n.type === 'JSXMemberExpression') return n.property && n.property.name ? n.property.name : ''
+  return ''
+}
+
+function jsxAttr(node, attr) {
+  const attrs = (node.openingElement && node.openingElement.attributes) || []
+  const a = attrs.find((x) => x.type === 'JSXAttribute' && x.name && x.name.name === attr)
+  if (!a || !a.value) return undefined
+  if (a.value.type === 'StringLiteral') return a.value.value
+  if (a.value.type === 'JSXExpressionContainer' && a.value.expression && a.value.expression.type === 'StringLiteral') {
+    return a.value.expression.value
+  }
+  return undefined
+}
+
+function astFindings(src) {
+  const ast = parse(src, { sourceType: 'module', plugins: ['jsx', 'typescript'], errorRecovery: true })
+  const findings = []
+  const headingLevels = []
+  let nestedFlagged = false
+
+  const jsxChildren = (node) => (node.children || []).filter((c) => c.type === 'JSXElement')
+
+  function walk(node, inCard) {
+    if (!node || typeof node !== 'object') return
+    if (node.type === 'JSXElement') {
+      const name = jsxName(node)
+      if (CARD_NAME.test(name)) {
+        if (inCard && !nestedFlagged) {
+          nestedFlagged = true
+          findings.push({ id: 'nested-cards', severity: 'P1', category: 'layout', via: 'ast', message: 'Card nested inside a Card — the deepest everything-a-card tell.', fix: 'Separate with spacing / type / dividers; a card inside a card is almost always wrong.', source: 'impeccable, Setu' })
+        }
+      }
+      if (/^h[1-6]$/.test(name)) headingLevels.push(Number(name[1]))
+
+      const kids = jsxChildren(node)
+      const variants = kids.filter((k) => BUTTON_NAMES.has(jsxName(k))).map((k) => jsxAttr(k, 'variant'))
+      if (variants.length >= 2) {
+        const hasSolid = variants.some((v) => v === 'solid' || v === undefined) // solid is the default
+        const hasOutline = variants.some((v) => v === 'outline' || v === 'ghost')
+        if (hasSolid && hasOutline) {
+          findings.push({ id: 'filled-outline-duo', severity: 'P1', category: 'component', via: 'ast', message: 'Solid + outline/ghost button pair — the default action-row preset.', fix: 'One clear primary; make the secondary `soft`, not outline. Avoid the fill-vs-outline couplet.', source: 'Setu, impeccable' })
+        }
+      }
+      const cardCounts = {}
+      for (const k of kids) {
+        const kn = jsxName(k)
+        if (CARD_NAME.test(kn)) cardCounts[kn] = (cardCounts[kn] || 0) + 1
+      }
+      if (Object.values(cardCounts).some((n) => n >= 3)) {
+        findings.push({ id: 'identical-card-grid', severity: 'P2', category: 'layout', via: 'ast', message: '3+ identical sibling cards — the icon-title-blurb grid tell.', fix: 'Vary block size by importance; separate with space + type, not a symmetric card row.', source: 'impeccable, Setu' })
+      }
+
+      const nowInCard = inCard || CARD_NAME.test(name)
+      for (const c of node.children || []) walk(c, nowInCard)
+      return
+    }
+    for (const key of Object.keys(node)) {
+      const v = node[key]
+      if (Array.isArray(v)) {
+        for (const x of v) if (x && typeof x === 'object' && x.type) walk(x, inCard)
+      } else if (v && typeof v === 'object' && v.type) {
+        walk(v, inCard)
+      }
+    }
+  }
+  walk(ast.program, false)
+
+  for (let i = 1; i < headingLevels.length; i++) {
+    if (headingLevels[i] - headingLevels[i - 1] > 1) {
+      findings.push({ id: 'skipped-heading-level', severity: 'P1', category: 'a11y', via: 'ast', message: `Heading jumps h${headingLevels[i - 1]} → h${headingLevels[i]} — skips a level.`, fix: 'Use sequential heading levels; style with classes, not by picking a smaller tag.', source: 'axe a11y' })
+      break
+    }
+  }
+
+  const seen = new Set()
+  return findings.filter((f) => (seen.has(f.id) ? false : (seen.add(f.id), true)))
 }

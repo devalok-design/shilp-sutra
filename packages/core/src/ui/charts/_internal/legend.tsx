@@ -19,7 +19,7 @@ export function Legend({ items, position = 'bottom', className }: LegendProps) {
   return (
     <div
       className={cn(
-        'flex gap-ds-04 text-ds-sm text-surface-fg-muted',
+        'flex gap-ds-04 text-body-sm text-surface-fg-muted',
         isVertical ? 'flex-col' : 'flex-row flex-wrap justify-center',
         className,
       )}

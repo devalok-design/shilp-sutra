@@ -155,7 +155,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
     <>
       <Card ref={ref} className={className} {...(props as Omit<typeof props, 'color'>)}>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-ds-md font-semibold">
+          <CardTitle className="text-body-md font-semibold">
             Notification Preferences
           </CardTitle>
           <Button
@@ -174,7 +174,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             </div>
           ) : preferences.length === 0 ? (
             <div className="py-ds-07 text-center">
-              <p className="text-ds-md text-surface-fg-subtle">
+              <p className="text-body-md text-surface-fg-subtle">
                 No custom preferences set. All notifications are delivered by
                 default.
               </p>
@@ -200,10 +200,10 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
 
                     {/* Info */}
                     <div className="min-w-0 flex-1">
-                      <p className="text-ds-md font-medium text-surface-fg">
+                      <p className="text-body-md font-medium text-surface-fg">
                         {channelInfo.label}
                       </p>
-                      <p className="text-ds-sm text-surface-fg-subtle">
+                      <p className="text-body-sm text-surface-fg-subtle">
                         {getProjectName(pref.projectId)}
                       </p>
                     </div>
@@ -213,7 +213,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                       value={pref.minTier}
                       onValueChange={(v) => onUpdateTier?.(pref, v)}
                     >
-                      <SelectTrigger className="h-ds-xs-plus w-[130px] text-ds-sm">
+                      <SelectTrigger className="h-ds-xs-plus w-[130px] text-body-sm">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -227,7 +227,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
 
                     {/* Muted toggle */}
                     <div className="flex items-center gap-ds-02b">
-                      <span className="text-ds-sm text-surface-fg-subtle">
+                      <span className="text-body-sm text-surface-fg-subtle">
                         {pref.muted ? 'Muted' : 'Active'}
                       </span>
                       <Switch
@@ -266,7 +266,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
           </DialogHeader>
           <div className="flex flex-col gap-ds-05 pt-ds-03">
             <div className="flex flex-col gap-ds-02b">
-              <label htmlFor="pref-scope" className="text-ds-sm font-medium text-surface-fg-muted">
+              <label htmlFor="pref-scope" className="text-body-sm font-medium text-surface-fg-muted">
                 Scope
               </label>
               <Select value={newProjectId} onValueChange={setNewProjectId}>
@@ -287,7 +287,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label htmlFor="pref-channel" className="text-ds-sm font-medium text-surface-fg-muted">
+              <label htmlFor="pref-channel" className="text-body-sm font-medium text-surface-fg-muted">
                 Channel
               </label>
               <Select value={newChannel} onValueChange={setNewChannel}>
@@ -302,7 +302,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             </div>
 
             <div className="flex flex-col gap-ds-02b">
-              <label htmlFor="pref-min-tier" className="text-ds-sm font-medium text-surface-fg-muted">
+              <label htmlFor="pref-min-tier" className="text-body-sm font-medium text-surface-fg-muted">
                 Minimum Tier
               </label>
               <Select value={newMinTier} onValueChange={setNewMinTier}>
@@ -320,7 +320,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
             </div>
 
             <div className="flex items-center justify-between">
-              <label htmlFor="pref-muted" className="text-ds-md text-surface-fg">
+              <label htmlFor="pref-muted" className="text-body-md text-surface-fg">
                 Mute this channel
               </label>
               <Switch id="pref-muted" checked={newMuted} onCheckedChange={setNewMuted} />

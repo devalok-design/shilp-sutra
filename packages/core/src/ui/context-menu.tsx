@@ -79,7 +79,7 @@ const ContextMenuSubTrigger = React.forwardRef<
   <ContextMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded-control px-ds-03 py-ds-02b text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[state=open]:bg-surface-raised data-[state=open]:text-surface-fg",
+      "flex cursor-default select-none items-center rounded-control px-ds-03 py-ds-02b text-body-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[state=open]:bg-surface-raised data-[state=open]:text-surface-fg",
       inset && "pl-ds-07",
       className
     )}
@@ -170,7 +170,7 @@ const ContextMenuItem = React.forwardRef<
   <ContextMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-control px-ds-03 py-ds-02b text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
+      "relative flex cursor-default select-none items-center rounded-control px-ds-03 py-ds-02b text-body-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       inset && "pl-ds-07",
       className
     )}
@@ -186,7 +186,7 @@ const ContextMenuCheckboxItem = React.forwardRef<
   <ContextMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-control py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
+      "relative flex cursor-default select-none items-center rounded-control py-ds-02b pl-ds-07 pr-ds-03 text-body-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       className
     )}
     checked={checked}
@@ -210,7 +210,7 @@ const ContextMenuRadioItem = React.forwardRef<
   <ContextMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-control py-ds-02b pl-ds-07 pr-ds-03 text-ds-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
+      "relative flex cursor-default select-none items-center rounded-control py-ds-02b pl-ds-07 pr-ds-03 text-body-md outline-hidden focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled",
       className
     )}
     {...props}
@@ -234,7 +234,7 @@ const ContextMenuLabel = React.forwardRef<
   <ContextMenuPrimitive.Label
     ref={ref}
     className={cn(
-      "px-ds-03 py-ds-02b text-ds-md font-semibold text-surface-fg",
+      "px-ds-03 py-ds-02b text-body-md font-semibold text-surface-fg",
       inset && "pl-ds-07",
       className
     )}
@@ -262,7 +262,7 @@ const ContextMenuShortcut = ({
   return (
     <span
       className={cn(
-        "ml-auto text-ds-sm text-surface-fg-subtle",
+        "ml-auto text-body-sm text-surface-fg-subtle",
         className
       )}
       {...props}

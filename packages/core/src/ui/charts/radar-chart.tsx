@@ -15,10 +15,28 @@ import { ChartTooltip, useChartTooltip } from './_internal/tooltip'
 export interface RadarChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Data array (one entry per data point / axis) */
   data: Record<string, string | number>[]
-  /** Axis labels (3-8 axes) */
+  /**
+   * Axis labels. Reads best at 3–8; supported up to ~16 — past ~10 labels
+   * auto-switch to radial (rotated) orientation and truncate. For very high
+   * counts a horizontal bar list is clearer than a radar.
+   */
   axes: string[]
   /** Series to plot */
   series: { key: string; label: string; color?: string }[]
+  /**
+   * Axis-label orientation. `horizontal` (anchored, best ≤8 axes), `radial`
+   * (rotated along each spoke, best for many axes), or `auto` (radial past 10).
+   * @default 'auto'
+   */
+  labelMode?: 'auto' | 'horizontal' | 'radial'
+  /** Truncate axis labels to N characters (full text stays in the tooltip). Defaults to 16 in radial mode, off otherwise. */
+  maxLabelChars?: number
+  /** Draw a dashed benchmark/target ring — one value for a uniform target, or one per axis. */
+  target?: number | number[]
+  /** Called when an axis label or vertex is clicked (drill-down into that dimension). */
+  onAxisClick?: (axis: string, index: number) => void
+  /** Per-axis descriptions (aligned to `axes`). When set, hovering a label shows the description in a tooltip. */
+  axisDescriptions?: string[]
   /** Max value (auto-detect if not set) */
   maxValue?: number
   /** Number of concentric grid rings (default: 5) */
@@ -54,6 +72,11 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
       showTooltip = true,
       showLegend = false,
       animate = true,
+      labelMode = 'auto',
+      maxLabelChars,
+      target,
+      onAxisClick,
+      axisDescriptions,
       ariaLabel,
       className,
       ...props
@@ -78,7 +101,21 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
 
   // Radar chart is square — use the smaller of width/height
   const svgSize = containerWidth > 0 ? Math.min(containerWidth, height) : height
-  const radius = svgSize / 2 - 40 // leave room for labels
+
+  // Label layout: past ~10 axes, horizontal labels collide, so switch to
+  // radial (rotated along each spoke) and truncate. Margin is derived from the
+  // longest displayed label instead of a fixed 40px, so labels never clip.
+  const effectiveLabelMode = labelMode === 'auto' ? (axes.length > 10 ? 'radial' : 'horizontal') : labelMode
+  const truncLen = maxLabelChars ?? (effectiveLabelMode === 'radial' ? 16 : undefined)
+  const displayLabel = (s: string) => (truncLen && s.length > truncLen ? `${s.slice(0, truncLen - 1)}…` : s)
+  const longestChars = Math.max(1, ...axes.map((a) => displayLabel(a).length))
+  const LABEL_FONT = 11 // ≈ text-body-xs
+  const labelPx = longestChars * LABEL_FONT * 0.58
+  const labelMargin =
+    effectiveLabelMode === 'horizontal'
+      ? Math.min(labelPx + 14, svgSize * 0.36)
+      : Math.min(labelPx * 0.7 + 18, svgSize * 0.3)
+  const radius = Math.max(svgSize / 2 - labelMargin, 48) // leave room for labels
 
   // Resolve colors for each series
   const colors = series.map((s, i) => resolveColor(s.color, i))
@@ -103,6 +140,11 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
   // Convert a data row into an array of values aligned with axes
   const getSeriesValues = (seriesKey: string): number[] =>
     axes.map((_, i) => Number(data[i]?.[seriesKey]) || 0)
+
+  // Optional benchmark/target ring — uniform value or per-axis array.
+  const targetValues =
+    target == null ? null : axes.map((_, i) => (Array.isArray(target) ? Number(target[i]) || 0 : target))
+  const targetPath = targetValues ? radarLine(targetValues) : null
 
   // Convert polar to cartesian for a given axis index and value
   const polarToXY = (axisIndex: number, value: number) => {
@@ -178,26 +220,73 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
               {/* Axis labels */}
               {axes.map((label, i) => {
                 const angle = angleSlice * i - Math.PI / 2
+                const display = displayLabel(label)
+                const clickable = !!onAxisClick
+                const desc = axisDescriptions?.[i]
+                const common = {
+                  className: cn(
+                    'fill-surface-fg-muted text-body-xs',
+                    clickable && 'cursor-pointer hover:fill-surface-fg',
+                    !clickable && desc && 'cursor-help hover:fill-surface-fg',
+                  ),
+                  onClick: clickable ? () => onAxisClick(label, i) : undefined,
+                  role: clickable ? 'button' : undefined,
+                  tabIndex: clickable ? 0 : undefined,
+                  onMouseMove: desc
+                    ? (e: React.MouseEvent<SVGTextElement>) => {
+                        const rect = e.currentTarget.closest('div')?.getBoundingClientRect()
+                        show(
+                          e.clientX - (rect?.left ?? 0),
+                          e.clientY - (rect?.top ?? 0),
+                          <div>
+                            <div className="font-medium">{label}</div>
+                            <div className="max-w-[220px] text-surface-fg-muted">{desc}</div>
+                          </div>,
+                        )
+                      }
+                    : undefined,
+                  onMouseLeave: desc ? hide : undefined,
+                }
+                const titleEl = display !== label ? <title>{label}</title> : null
+
+                if (effectiveLabelMode === 'radial') {
+                  const labelRadius = radius + 10
+                  const x = labelRadius * Math.cos(angle)
+                  const y = labelRadius * Math.sin(angle)
+                  let deg = (angle * 180) / Math.PI
+                  let anchor: 'start' | 'end' = 'start'
+                  // Flip labels on the left half so they read upright.
+                  if (deg > 90 || deg < -90) {
+                    deg += 180
+                    anchor = 'end'
+                  }
+                  return (
+                    <text
+                      key={`label-${i}`}
+                      x={x}
+                      y={y}
+                      textAnchor={anchor}
+                      dominantBaseline="central"
+                      transform={`rotate(${deg} ${x} ${y})`}
+                      {...common}
+                    >
+                      {titleEl}
+                      {display}
+                    </text>
+                  )
+                }
+
                 const labelRadius = radius + 18
                 const x = labelRadius * Math.cos(angle)
                 const y = labelRadius * Math.sin(angle)
-
-                // Determine text-anchor based on position
                 let textAnchor: 'start' | 'middle' | 'end' = 'middle'
                 if (Math.abs(Math.cos(angle)) > 0.1) {
                   textAnchor = Math.cos(angle) > 0 ? 'start' : 'end'
                 }
-
                 return (
-                  <text
-                    key={`label-${i}`}
-                    x={x}
-                    y={y}
-                    textAnchor={textAnchor}
-                    dominantBaseline="central"
-                    className="fill-surface-fg-muted text-ds-xs"
-                  >
-                    {label}
+                  <text key={`label-${i}`} x={x} y={y} textAnchor={textAnchor} dominantBaseline="central" {...common}>
+                    {titleEl}
+                    {display}
                   </text>
                 )
               })}
@@ -216,12 +305,24 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                     y={y}
                     textAnchor="start"
                     dominantBaseline="auto"
-                    className="fill-surface-fg-subtle text-ds-xs"
+                    className="fill-surface-fg-subtle text-body-xs"
                   >
                     {levelValue}
                   </text>
                 )
               })}
+
+              {/* Target / benchmark ring */}
+              {targetPath && (
+                <path
+                  d={targetPath}
+                  fill="none"
+                  stroke="var(--color-accent-9)"
+                  strokeWidth={1.5}
+                  strokeDasharray="4,3"
+                  opacity={0.75}
+                />
+              )}
 
               {/* Data polygons — one per series */}
               {series.map((s, seriesIdx) => {
@@ -278,6 +379,7 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                       r={16}
                       fill="transparent"
                       className="cursor-pointer"
+                      onClick={onAxisClick ? () => onAxisClick(axisLabel, i) : undefined}
                       onMouseMove={(e) => {
                         const rect = e.currentTarget
                           .closest('div')
@@ -315,8 +417,8 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
             </g>
           </svg>
 
-          {/* Tooltip overlay */}
-          {showTooltip && <ChartTooltip state={tooltip} />}
+          {/* Tooltip overlay — for vertex values and/or axis descriptions */}
+          {(showTooltip || axisDescriptions) && <ChartTooltip state={tooltip} />}
         </>
       )}
 

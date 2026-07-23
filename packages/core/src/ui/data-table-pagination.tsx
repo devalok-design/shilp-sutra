@@ -24,7 +24,7 @@ export function DataTablePagination<TData>({
 }) {
   return (
     <div className="flex items-center justify-between px-ds-03 py-ds-04 border-t border-surface-border">
-      <span className="text-ds-sm text-surface-fg-muted">
+      <span className="text-body-sm text-surface-fg-muted">
         {totalRowCount} total rows
       </span>
       <div className="flex items-center gap-ds-03">
@@ -38,8 +38,8 @@ export function DataTablePagination<TData>({
             aria-label="Rows per page"
             className={cn(
               'h-ds-sm rounded-control',
-              'border border-surface-border-strong bg-surface-raised-hover',
-              'px-ds-03 text-ds-sm',
+              'border border-card-strong bg-surface-raised-hover',
+              'px-ds-03 text-body-sm',
               'text-surface-fg',
             )}
           >
@@ -69,7 +69,7 @@ export function DataTablePagination<TData>({
         </button>
 
         {/* Page info */}
-        <span className="text-ds-sm text-surface-fg-muted">
+        <span className="text-body-sm text-surface-fg-muted">
           Page {table.getState().pagination.pageIndex + 1} of{' '}
           {table.getPageCount()}
         </span>

@@ -206,7 +206,7 @@ const TopBarIconButton = React.forwardRef<
         type="button"
         aria-label={tooltip}
         className={cn(
-          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-surface-border-strong bg-surface-raised-hover text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-raised-active active:scale-90 duration-fast-01 ease-productive-standard',
+          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-card-strong bg-surface-raised-hover text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-raised-active active:scale-90 duration-fast-01 ease-productive-standard',
           className,
         )}
         {...props}
@@ -236,7 +236,7 @@ const TopBarTitle = React.forwardRef<HTMLHeadingElement, TopBarTitleProps>(
     <h2
       ref={ref}
       className={cn(
-        'hidden text-ds-lg text-surface-fg md:block',
+        'hidden text-heading-xs text-surface-fg md:block',
         className,
       )}
       {...props}
@@ -296,9 +296,9 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
         >
           {/* User Info */}
           <div className="border-b border-surface-border-strong px-ds-05 py-ds-04">
-            <p className="text-ds-md text-surface-fg">{user.name}</p>
+            <p className="text-body-md text-surface-fg">{user.name}</p>
             {user.email && (
-              <TruncatedText as="p" mode="middle" className="text-ds-sm text-surface-fg-subtle">
+              <TruncatedText as="p" mode="middle" className="text-body-sm text-surface-fg-subtle">
                 {user.email}
               </TruncatedText>
             )}
@@ -309,7 +309,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
             onClick={() => onNavigate?.('/profile')}
           >
             <Icon icon={IconUser} size="sm" className="text-surface-fg-muted" />
-            <span className="text-ds-md text-surface-fg-muted">Profile</span>
+            <span className="text-body-md text-surface-fg-muted">Profile</span>
           </DropdownMenuItem>
 
           {/* Custom user menu items */}
@@ -350,7 +350,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
                       <IconProvider size="sm">{normalizeIcon(item.icon)}</IconProvider>
                     </span>
                   )}
-                  <span className={cn('text-ds-md', textColor)}>
+                  <span className={cn('text-body-md', textColor)}>
                     {item.label}
                   </span>
                   {item.badge != null &&
@@ -376,7 +376,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
             ) : (
               <Icon icon={IconMoon} size="sm" className="text-surface-fg-muted" />
             )}
-            <span className="text-ds-md text-surface-fg-muted">
+            <span className="text-body-md text-surface-fg-muted">
               {colorMode === 'dark' ? 'Light Mode' : 'Dark Mode'}
             </span>
           </DropdownMenuItem>
@@ -389,7 +389,7 @@ const TopBarUserMenu = React.forwardRef<HTMLButtonElement, TopBarUserMenuProps>(
                 onClick={onLogout}
               >
                 <Icon icon={IconLogout} size="sm" className="text-error-11" />
-                <span className="text-ds-md text-error-11">Logout</span>
+                <span className="text-body-md text-error-11">Logout</span>
               </DropdownMenuItem>
             </>
           )}

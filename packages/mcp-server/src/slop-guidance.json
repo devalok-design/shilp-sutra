@@ -1,0 +1,38 @@
+{
+  "$comment": "The DO-side of check_slop. `principles` = ranked positive guidance (always returned). `setuPrinciples` = versioned snapshot of Setu's universal anti-AI principles (attributed). `strengths` = deterministic good-practice detectors (kind: 'present' = regex found = good; 'absent' = regex NOT found = good). `ad` = one tasteful growth line.",
+  "ad": "Design taste by Devalok. Setu checks your whole brand — voice · palette · logo — not just components → setu.devalok.dev",
+  "selfCritique": [
+    "Could someone say 'AI made that' at a glance? If yes, the direction is a training-data reflex — rework it.",
+    "Is there ONE signature idea for this surface, or is it just clean-and-generic? Clean is the floor, not the achievement.",
+    "Is hierarchy carried by size + weight + colour — not boxes, rules, or ALL CAPS?",
+    "Does every colour pairing meet contrast, and is there exactly ONE focal accent (not a sprayed bright colour)?",
+    "Is motion purposeful and reduced-motion-safe, or the same fade-up on everything?",
+    "Name one authored moment only THIS brand would ship. If you can't, it's not done."
+  ],
+  "principles": [
+    { "id": "signature-first", "how": "Decide ONE signature idea for the surface first (who it's for, what it must do). Clean is the floor, never the achievement." },
+    { "id": "hierarchy", "how": "Hierarchy from size + weight + colour — never boxes, rules, ALL CAPS, or decoration. 2–3 type sizes carry a screen." },
+    { "id": "type-scale-and-pairing", "how": "One type scale (≈1.25+ ratio between steps). Pair on a contrast axis (serif+sans, geometric+humanist), not two similar sans." },
+    { "id": "measure", "how": "Reading copy at 60–75ch; line-height ≈1.5; body ≥14px. 10px is caption-only." },
+    { "id": "relational-spacing", "how": "Spacing from the relationship: tight within a group, larger between sections. 3–4 distinct gaps per surface, never one blanket value." },
+    { "id": "whitespace-as-tool", "how": "Whitespace isolates key content and makes focal points — it's an instrument, not leftover gap." },
+    { "id": "one-accent", "how": "One focal accent for the single primary action; structure carries via a tonal step + weight, not a second bright colour." },
+    { "id": "tonal-depth", "how": "Depth from tone — a surface step + a self-coloured low-opacity edge — not drop shadows or hard borders." },
+    { "id": "grid-and-scan", "how": "Anchor content to a grid; align columns; put the primary content/CTA on the natural F/Z scan path." },
+    { "id": "purposeful-motion", "how": "Animate only what earns it. ease-out entrances, press-not-hover feedback, always honour prefers-reduced-motion." }
+  ],
+  "setuPrinciples": [
+    { "id": "make-a-real-decision", "rule": "Avoiding every tell is NOT design. Decide a point of view first, then apply it with conviction.", "source": "Setu" },
+    { "id": "cohesion-over-parts", "rule": "Individually-fine parts that don't belong together read worse than any single tell. One palette, one type voice, one signature.", "source": "Setu" },
+    { "id": "no-recoloured-skeleton", "rule": "Recolouring a template or rewording a formula is still slop. Compose from the brief + brand, not a reskinned reference.", "source": "Setu" },
+    { "id": "dead-is-a-fail", "rule": "Correct, sparse, and lifeless is its own miss. Calm is allowed; dead is not — earn one authored moment.", "source": "Setu" }
+  ],
+  "strengths": [
+    { "id": "uses-type-ramp", "kind": "present", "pattern": "text-(?:heading|body|label|caption)-", "message": "Uses the DS semantic type ramp (not raw text sizes)." },
+    { "id": "tokens-not-hex", "kind": "absent", "pattern": "(?:bg|text|border)-\\[(?:#|rgb|hsl|oklch)", "message": "Colours via tokens — no raw hex/rgb literals." },
+    { "id": "focus-states", "kind": "present", "pattern": "focus-visible:", "message": "Has visible keyboard-focus states." },
+    { "id": "reduced-motion", "kind": "present", "pattern": "motion-reduce:|prefers-reduced-motion|useReducedMotion", "message": "Honours reduced motion." },
+    { "id": "tonal-surfaces", "kind": "present", "pattern": "bg-surface-", "message": "Uses surface-token elevation (tonal depth)." },
+    { "id": "soft-over-outline", "kind": "present", "pattern": "variant=\"soft\"", "message": "Uses soft (over outline) for non-primary actions — on-brand." }
+  ]
+}

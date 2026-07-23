@@ -115,9 +115,9 @@ describe('MarkdownViewer', () => {
       <MarkdownViewer content="# Compact Heading" compact />,
     )
     const heading = screen.getByRole('heading', { level: 1 })
-    // compact h1 gets text-ds-md instead of text-ds-lg
-    expect(heading.className).toContain('text-ds-md')
-    expect(heading.className).not.toContain('text-ds-lg')
+    // compact h1 gets text-body-md instead of text-heading-xs
+    expect(heading.className).toContain('text-body-md')
+    expect(heading.className).not.toContain('text-heading-xs')
     // Root should still render
     expect(container.firstElementChild).toBeInTheDocument()
   })
@@ -125,7 +125,7 @@ describe('MarkdownViewer', () => {
   it('non-compact mode applies larger heading size', () => {
     render(<MarkdownViewer content="# Large Heading" />)
     const heading = screen.getByRole('heading', { level: 1 })
-    expect(heading.className).toContain('text-ds-lg')
+    expect(heading.className).toContain('text-heading-xs')
   })
 
   // ── className merging ─────────────────────────────────────────────────

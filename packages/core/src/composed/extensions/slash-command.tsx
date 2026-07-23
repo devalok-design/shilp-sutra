@@ -105,7 +105,7 @@ const SlashCommandList = React.forwardRef<SlashCommandListRef, SlashCommandListP
         {renderedGroups.map((group, gi) => (
           <div key={group.label} role="group" aria-label={group.label}>
             {gi > 0 && <div className="my-ds-01 border-t border-surface-border" />}
-            <div className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">
+            <div className="px-ds-03 py-ds-01 text-caption font-medium text-surface-fg-subtle">
               {group.label}
             </div>
             {group.items.map(({ command: cmd, flatIndex: fi }) => {
@@ -130,9 +130,9 @@ const SlashCommandList = React.forwardRef<SlashCommandListRef, SlashCommandListP
                     </span>
                   )}
                   <div className="flex flex-col">
-                    <span className="text-ds-sm text-surface-fg">{cmd.label}</span>
+                    <span className="text-body-sm text-surface-fg">{cmd.label}</span>
                     {cmd.description && (
-                      <span className="text-ds-xs text-surface-fg-subtle">{cmd.description}</span>
+                      <span className="text-caption text-surface-fg-subtle">{cmd.description}</span>
                     )}
                   </div>
                 </button>

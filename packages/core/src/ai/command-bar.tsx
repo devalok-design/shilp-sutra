@@ -539,7 +539,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
             className={cn(
               'flex-1 bg-transparent text-surface-fg outline-hidden',
               'placeholder:text-surface-fg-subtle',
-              isCompact ? 'h-9 text-ds-sm' : 'h-12 text-ds-base',
+              isCompact ? 'h-9 text-body-sm' : 'h-12 text-body-lg',
               isProcessing && 'cursor-wait',
               disabled && 'cursor-not-allowed opacity-50',
             )}
@@ -582,7 +582,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                 animate={{ opacity: 1 }}
                 exit={isReduced ? undefined : { opacity: 0 }}
                 transition={tweenFade}
-                className="hidden shrink-0 select-none rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex"
+                className="hidden shrink-0 select-none rounded-control border border-card-strong bg-surface-raised px-ds-02b py-ds-01 text-body-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex"
               >
                 {getModifierDisplay(isMac)}J
               </motion.kbd>
@@ -621,7 +621,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
               className="flex items-center justify-center py-ds-07"
             >
               {emptyState ?? (
-                <p className="text-ds-md text-surface-fg-subtle">
+                <p className="text-body-md text-surface-fg-subtle">
                   {emptyMessage}
                 </p>
               )}
@@ -641,7 +641,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
               className="mb-ds-02"
             >
               <div className="px-ds-03 pb-ds-02 pt-ds-03">
-                <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+                <span className="text-label-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                   {group.label}
                 </span>
               </div>
@@ -690,13 +690,13 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                       </span>
                     )}
                     <div className="flex flex-1 flex-col">
-                      <span className="text-ds-md">
+                      <span className="text-body-md">
                         {item.renderLabel
                           ? item.renderLabel(query)
                           : item.label}
                       </span>
                       {item.description && (
-                        <span className="text-ds-sm text-surface-fg-subtle">
+                        <span className="text-body-sm text-surface-fg-subtle">
                           {item.description}
                         </span>
                       )}
@@ -743,7 +743,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
           {...props}
         >
           {greeting && (
-            <p className="text-ds-lg text-surface-fg-muted mb-ds-04">
+            <p className="text-heading-xs text-surface-fg-muted mb-ds-04">
               {greeting}
             </p>
           )}
@@ -763,7 +763,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                     onSearch?.(hint)
                     inputRef.current?.focus()
                   }}
-                  className="rounded-control border border-surface-border-strong bg-surface-overlay px-ds-03 py-ds-01 text-ds-sm text-surface-fg-subtle transition-colors duration-fast-02 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted"
+                  className="rounded-control border border-card-strong bg-surface-overlay px-ds-03 py-ds-01 text-body-sm text-surface-fg-subtle transition-colors duration-fast-02 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted"
                 >
                   {hint}
                 </button>
@@ -847,31 +847,31 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
               {hasGroups && (
                 <div className="flex items-center gap-ds-02b">
                   <div className="flex items-center gap-ds-01">
-                    <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-kbd">
+                    <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-card-strong bg-surface-raised shadow-kbd">
                       <Icon icon={IconArrowUp} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
-                    <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-kbd">
+                    <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-card-strong bg-surface-raised shadow-kbd">
                       <Icon icon={IconArrowDown} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                   </div>
-                  <span className="text-ds-xs text-surface-fg-subtle">
+                  <span className="text-caption text-surface-fg-subtle">
                     Navigate
                   </span>
                 </div>
               )}
               <div className="flex items-center gap-ds-02b">
-                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
+                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-card-strong bg-surface-raised px-ds-02b shadow-kbd">
                   <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                 </kbd>
-                <span className="text-ds-xs text-surface-fg-subtle">
+                <span className="text-caption text-surface-fg-subtle">
                   Submit
                 </span>
               </div>
               <div className="flex items-center gap-ds-02b">
-                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
+                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-card-strong bg-surface-raised px-ds-02b text-caption font-medium text-surface-fg-subtle shadow-kbd">
                   Esc
                 </kbd>
-                <span className="text-ds-xs text-surface-fg-subtle">
+                <span className="text-caption text-surface-fg-subtle">
                   Close
                 </span>
               </div>

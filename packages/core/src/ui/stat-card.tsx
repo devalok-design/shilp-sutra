@@ -92,7 +92,7 @@ export interface StatCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   variant?: 'default' | 'elevated' | 'outline' | 'flat'
   /**
    * Tile density, delegated to Card's size axis. `sm` tightens padding to 16px and steps
-   * the value down to `text-ds-2xl` — use it for dense KPI rows and narrow stat grids
+   * the value down to `text-heading-md` — use it for dense KPI rows and narrow stat grids
    * (e.g. stat-row's 140px tiles). @default 'md'
    */
   size?: CardSize
@@ -288,7 +288,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       <motion.div
         className={cn(
           // Rhythm comes from CardContent's flex gap — no placement margins.
-          'flex items-center gap-ds-02 text-ds-sm font-medium',
+          'flex items-center gap-ds-02 text-body-sm font-medium',
           deltaColour,
         )}
         initial={{ opacity: 0, y: 8 }}
@@ -319,7 +319,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       <>
         <div className="flex items-center justify-between">
           <motion.p
-            className="text-ds-md font-medium text-surface-fg-muted"
+            className="text-body-md font-medium text-surface-fg-muted"
             {...revealProps}
           >
             {resolvedLabel}
@@ -362,17 +362,17 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
               <motion.p
                 className={cn(
                   'inline-block font-semibold',
-                  size === 'sm' ? 'text-ds-2xl' : 'text-ds-3xl',
+                  size === 'sm' ? 'text-heading-md' : 'text-heading-lg',
                   accentStyle === 'tint' ? 'text-accent-11' : 'text-surface-fg',
                 )}
                 {...revealProps}
               >
                 {prefix && (
-                  <span className={cn('text-surface-fg-muted', size === 'sm' ? 'text-ds-md' : 'text-ds-lg')}>{prefix}</span>
+                  <span className={cn('text-surface-fg-muted', size === 'sm' ? 'text-body-md' : 'text-heading-xs')}>{prefix}</span>
                 )}
                 <span className="tabular-nums">{value}</span>
                 {suffix && (
-                  <span className={cn('text-surface-fg-muted', size === 'sm' ? 'text-ds-md' : 'text-ds-lg')}>{suffix}</span>
+                  <span className={cn('text-surface-fg-muted', size === 'sm' ? 'text-body-md' : 'text-heading-xs')}>{suffix}</span>
                 )}
               </motion.p>
             </div>
@@ -380,7 +380,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           </div>
           {secondaryLabel && (
             <motion.p
-              className="text-ds-sm text-surface-fg-subtle"
+              className="text-body-sm text-surface-fg-subtle"
               {...revealProps}
             >
               {secondaryLabel}
@@ -409,7 +409,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         {footer && (
           <>
             <div aria-hidden="true" className="h-px w-full bg-surface-border-subtle" />
-            <CardFooter className="text-ds-sm">
+            <CardFooter className="text-body-sm">
               <motion.div
                 className="w-full"
                 initial={false}

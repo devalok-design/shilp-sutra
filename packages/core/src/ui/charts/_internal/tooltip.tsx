@@ -27,7 +27,7 @@ export function ChartTooltip({ state, className }: ChartTooltipProps) {
         'rounded-overlay-sm border border-surface-border-strong',
         'bg-surface-overlay px-ds-03 py-ds-02',
         'shadow-raised-hover',
-        'text-ds-sm text-surface-fg',
+        'text-body-sm text-surface-fg',
         className,
       )}
       style={{ left: state.x + 12, top: state.y - 12 }}

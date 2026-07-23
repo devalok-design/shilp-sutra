@@ -130,11 +130,11 @@ export default function AudioPreview({ url, fileName, onError }: { url: string; 
         {/* File name + time */}
         <div className="flex-1 min-w-0">
           {fileName && (
-            <TruncatedText as="p" mode="middle" className="text-ds-sm font-semibold text-surface-fg">
+            <TruncatedText as="p" mode="middle" className="text-body-sm font-semibold text-surface-fg">
               {fileName}
             </TruncatedText>
           )}
-          <p className="text-ds-xs font-mono text-surface-fg-muted tabular-nums">
+          <p className="text-caption font-mono text-surface-fg-muted tabular-nums">
             {formatTime(currentTime)} / {formatTime(duration)}
           </p>
         </div>

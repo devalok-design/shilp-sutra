@@ -163,9 +163,9 @@ const tabsTriggerVariants = cva(
         ],
       },
       size: {
-        sm: 'px-ds-03 py-ds-02 text-ds-xs',
-        md: 'px-ds-05 py-ds-03 text-ds-sm',
-        lg: 'px-ds-06 py-ds-04 text-ds-md',
+        sm: 'px-ds-03 py-ds-02 text-body-xs',
+        md: 'px-ds-05 py-ds-03 text-body-sm',
+        lg: 'px-ds-06 py-ds-04 text-body-md',
       },
     },
     defaultVariants: { variant: 'line', size: 'md' },

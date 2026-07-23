@@ -137,18 +137,18 @@ const variantConfig = {
   inline:   { minHeight: 40, maxHeight: 160, showToolbar: false, toolbarPosition: 'top' as const },
 }
 
-// ── Chat prose (tighter than RTE, text-ds-md to match Input) ────
+// ── Chat prose (tighter than RTE, text-body-md to match Input) ────
 
 const CHAT_PROSE = [
   'prose prose-sm max-w-none focus:outline-hidden',
-  'font-body text-ds-md leading-relaxed text-surface-fg',
+  'font-body text-body-md leading-relaxed text-surface-fg',
   '[&_p.is-editor-empty:first-child]:relative',
   '[&_p.is-editor-empty:first-child::before]:text-surface-fg-subtle [&_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_p.is-editor-empty:first-child::before]:pointer-events-none [&_p.is-editor-empty:first-child::before]:absolute [&_p.is-editor-empty:first-child::before]:left-0 [&_p.is-editor-empty:first-child::before]:top-0 [&_p.is-editor-empty:first-child::before]:w-full [&_p.is-editor-empty:first-child::before]:truncate',
   '[&_p]:mb-ds-01 [&_p]:text-surface-fg',
   '[&_p:last-child]:mb-0',
   '[&_ul]:ml-ds-04 [&_ul]:list-disc [&_ol]:ml-ds-04 [&_ol]:list-decimal',
   '[&_li]:text-surface-fg',
-  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02 [&_code]:py-[1px] [&_code]:text-ds-md [&_code]:text-accent-11',
+  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02 [&_code]:py-[1px] [&_code]:text-body-md [&_code]:text-accent-11',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_a]:text-accent-11 [&_a]:underline',
@@ -191,13 +191,13 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
       {/* min-w-[200px]: component-specific dropdown width — no design token equivalent */}
       {open && (
         <div className="absolute bottom-full right-0 mb-ds-02 min-w-[200px] rounded-surface bg-surface-overlay p-ds-02 shadow-floating z-popover">
-          <p className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">Send options</p>
+          <p className="px-ds-03 py-ds-01 text-caption font-medium text-surface-fg-subtle">Send options</p>
           {options.map((opt, i) => (
             <button
               key={i}
               type="button"
               onClick={() => { opt.onSelect(); setOpen(false) }}
-              className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
+              className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02 text-body-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
             >
               {opt.icon && <opt.icon className="h-ico-sm w-ico-sm text-surface-fg-muted" />}
               {opt.label}
@@ -236,7 +236,7 @@ function EmojiPickerPopover({ onSelect, onClose }: { onSelect: (emoji: EmojiData
 
   const fallback = (
     <div className="flex h-[435px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-floating">
-      <span className="text-ds-sm text-surface-fg-subtle">Loading…</span>
+      <span className="text-body-sm text-surface-fg-subtle">Loading…</span>
     </div>
   )
 
@@ -981,7 +981,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
             return (
               <div className={cn(
-                'flex justify-end px-ds-04 pb-ds-02 text-ds-xs tabular-nums transition-opacity duration-fast-01',
+                'flex justify-end px-ds-04 pb-ds-02 text-body-xs tabular-nums transition-opacity duration-fast-01',
                 ratio >= 1 ? 'text-error-11 font-medium' : ratio >= 0.9 ? 'text-warning-11' : 'text-surface-fg-subtle',
               )}>
                 {charCount}/{maxLength}
@@ -1107,7 +1107,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
         {/* Disclaimer */}
         {disclaimer && (
-          <p className="mt-ds-02 text-center text-ds-xs text-surface-fg-subtle/50">
+          <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle/50">
             {disclaimer}
           </p>
         )}

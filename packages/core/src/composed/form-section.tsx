@@ -36,11 +36,11 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(({
 }, ref) => {
   const header = (
     <div className="flex flex-col gap-ds-01">
-      <span className="text-ds-md font-semibold text-surface-fg font-sans">
+      <span className="text-body-md font-semibold text-surface-fg font-sans">
         {title}
       </span>
       {description && (
-        <span className="text-ds-sm text-surface-fg-muted font-sans">
+        <span className="text-body-sm text-surface-fg-muted font-sans">
           {description}
         </span>
       )}

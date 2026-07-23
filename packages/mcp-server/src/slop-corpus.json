@@ -1,0 +1,174 @@
+{
+  "$comment": "Amalgamated anti-slop signatures for the check_slop MCP tool. Sources: shilp-sutra slop-corpus, Setu anti-patterns, impeccable absolute bans, 2026 web AI-slop tells, axe-style a11y. Deterministic (regex), no LLM. kind: 'line' (regex per line), 'count' (>=threshold matching lines), 'presence-without' (need present + missing absent). Escape: `// slop-allow: <id> <reason>` on the line or line above.",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "gradient-text",
+      "category": "color",
+      "severity": "P0",
+      "kind": "line",
+      "pattern": "bg-clip-text|text-transparent",
+      "message": "Gradient/clipped text — decorative, never meaningful.",
+      "fix": "Solid colour; carry emphasis with weight or size, not a gradient fill.",
+      "source": "impeccable, Setu"
+    },
+    {
+      "id": "purple-blue-gradient",
+      "category": "color",
+      "severity": "P1",
+      "kind": "line",
+      "pattern": "(?:from|via|to)-(?:purple|violet|indigo|fuchsia)-[0-9]",
+      "message": "Purple/indigo/violet gradient — the #1 AI-generated colour tell.",
+      "fix": "Use the brand's real palette. If no brand colour, pick a deliberate, unexpected hue — not the default gradient.",
+      "source": "web-2026, Setu off-mean-palette"
+    },
+    {
+      "id": "raw-color-literal",
+      "category": "color",
+      "severity": "P1",
+      "kind": "line",
+      "pattern": "\\b(?:bg|text|border|fill|stroke|ring|from|via|to|decoration|outline|caret|accent)-\\[(?:#[0-9a-fA-F]{3,8}|rgba?\\(|hsla?\\(|oklch\\(|oklab\\()",
+      "message": "Raw colour literal bypasses the token system.",
+      "fix": "Use a semantic colour token, or mark a deliberate deviation with `// slop-allow: raw-color-literal <why>`.",
+      "source": "shilp-sutra, Setu raw-hex"
+    },
+    {
+      "id": "side-stripe",
+      "category": "visual",
+      "severity": "P0",
+      "kind": "line",
+      "pattern": "border-(?:l|r)-\\[(?:[2-9]|\\d{2,})px\\]",
+      "message": "Side-stripe accent border (>1px left/right) — the single most recognizable AI card tell.",
+      "fix": "Full border, a background tint, a leading marker, or nothing.",
+      "source": "impeccable, Setu accent-rail"
+    },
+    {
+      "id": "dark-neon-default",
+      "category": "color",
+      "severity": "P2",
+      "kind": "line",
+      "pattern": "bg-(?:slate|zinc|gray|neutral)-9(?:00|50)\\b",
+      "message": "Near-black slate/zinc ground — the v0/Cursor dark-default signature (esp. with neon accents).",
+      "fix": "Match the brand's actual mode; if dark is right, warm/neutralise it to a chosen hue, never stock slate.",
+      "source": "web-2026, Setu dark-mode-default"
+    },
+    {
+      "id": "glassmorphism",
+      "category": "visual",
+      "severity": "P2",
+      "kind": "line",
+      "pattern": "backdrop-blur-(?:lg|xl|2xl|3xl)",
+      "message": "Heavy backdrop-blur — glassmorphism-by-default reads generic unless flawless.",
+      "fix": "Solid, intentional surfaces; reserve blur for genuine layering over a real backdrop.",
+      "source": "web-2026, Setu blob-glass-glow"
+    },
+    {
+      "id": "gradient-blob",
+      "category": "visual",
+      "severity": "P2",
+      "kind": "line",
+      "pattern": "blur-(?:2xl|3xl)",
+      "message": "Large blur — usually a decorative gradient orb/blob behind a hero.",
+      "fix": "One authored atmosphere (directional light, grained gradient in a brand colour), not floating blurred radials.",
+      "source": "web-2026, Setu candy-gradient-bg"
+    },
+    {
+      "id": "heavy-shadow",
+      "category": "visual",
+      "severity": "P2",
+      "kind": "line",
+      "pattern": "shadow-(?:xl|2xl)\\b",
+      "message": "Heavy drop shadow — depth-by-shadow on cards reads AI-default.",
+      "fix": "Depth from tonal elevation; reserve one subtle shadow for true overlays.",
+      "source": "Setu default-shadow"
+    },
+    {
+      "id": "sparkle-ai-glyph",
+      "category": "visual",
+      "severity": "P1",
+      "kind": "line",
+      "pattern": "IconSparkles|✦|✨",
+      "message": "Four-point sparkle / AI-magic glyph — brands the product as generic-AI.",
+      "fix": "An icon depicting the real action, or the brand's own mark.",
+      "source": "Setu sparkle-ai-glyph"
+    },
+    {
+      "id": "large-radius",
+      "category": "spacing",
+      "severity": "P2",
+      "kind": "line",
+      "pattern": "rounded-(?:2xl|3xl|\\[(?:2[4-9]|[3-9]\\d)px\\])",
+      "message": "Oversized radius (24px+) — softens the UI into uniform blobs.",
+      "fix": "One radius vocabulary: ~10px cards, ~6px controls, pill for tags.",
+      "source": "impeccable, Setu rounded-everything"
+    },
+    {
+      "id": "eyebrow-kicker",
+      "category": "type",
+      "severity": "P1",
+      "kind": "line",
+      "pattern": "text-(?:xs|\\[1[01]px\\])[^\"'`]*uppercase[^\"'`]*tracking-(?:wide|wider|widest)|uppercase[^\"'`]*tracking-(?:wide|wider|widest)[^\"'`]*text-(?:xs|\\[1[01]px\\])",
+      "message": "Small uppercase tracked label — the eyebrow/kicker above a heading (2023-era AI scaffold).",
+      "fix": "Let the heading + size signpost the section; vary how sections begin. No eyebrows.",
+      "source": "impeccable, Setu eyebrow-kicker"
+    },
+    {
+      "id": "tracked-caps-overuse",
+      "category": "type",
+      "severity": "P1",
+      "kind": "count",
+      "threshold": 3,
+      "pattern": "uppercase[^\"'`]*tracking|tracking[^\"'`]*uppercase",
+      "message": "Tracked-uppercase on 3+ roles — caps-on-everything reads as a template.",
+      "fix": "Caps for at most ONE deliberate role (e.g. data-table headers); mixed-case for the rest.",
+      "source": "shilp-sutra, Setu case-discipline"
+    },
+    {
+      "id": "hover-lift",
+      "category": "motion",
+      "severity": "P1",
+      "kind": "line",
+      "pattern": "hover:-?translate-y-|hover:scale-1[0-9][0-9]",
+      "message": "Hover lift / scale ('boop') — a template reflex; controls shouldn't move on hover.",
+      "fix": "State change via a tonal colour shift; press feedback via active:scale-97, not hover-lift.",
+      "source": "Setu hover-boop"
+    },
+    {
+      "id": "transition-all",
+      "category": "motion",
+      "severity": "P2",
+      "kind": "line",
+      "pattern": "\\btransition-all\\b",
+      "message": "`transition-all` animates every property (incl. layout) — janky, unfocused.",
+      "fix": "Name exact properties (transition-colors / transition-transform); use ease-out for entrances.",
+      "source": "Setu, impeccable"
+    },
+    {
+      "id": "no-reduced-motion",
+      "category": "motion",
+      "severity": "P1",
+      "kind": "presence-without",
+      "pattern": "\\banimate-(?!none)|initial=\\{|whileInView=",
+      "missing": "motion-reduce:|prefers-reduced-motion|useReducedMotion",
+      "message": "Animation present with no reduced-motion fallback.",
+      "fix": "Honour prefers-reduced-motion (degrade to instant/crossfade); never gate content visibility on a reveal.",
+      "source": "Setu no-reduced-motion, a11y"
+    },
+    {
+      "id": "img-missing-alt",
+      "category": "a11y",
+      "severity": "P1",
+      "kind": "line",
+      "pattern": "<img(?![^>]*\\balt=)[^>]*/?>",
+      "message": "`<img>` without an `alt` attribute.",
+      "fix": "Add alt text (empty alt=\"\" for decorative images).",
+      "source": "axe a11y"
+    }
+  ],
+  "deferred": [
+    "hero-metric template — big number + small label + gradient dot (fuzzy layout shape; agent-judge via self_critique)",
+    "01/02/03 decorative numbered section markers (needs content-sequence context — numbers are only slop when not a real sequence)",
+    "safe-face identity — Inter/Roboto carrying the display headings (needs font-role context)",
+    "icon-title-blurb repetition beyond cards (AST covers 3+ identical Card siblings; generic repeated blocks not yet)"
+  ]
+}

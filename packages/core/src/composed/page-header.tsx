@@ -42,7 +42,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
         {...props}
       >
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <BreadcrumbNav className="text-ds-sm">
+          <BreadcrumbNav className="text-body-sm">
             <BreadcrumbList>
               {breadcrumbs.map((crumb, index) => {
                 const isLast = index === breadcrumbs.length - 1
@@ -69,7 +69,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
               {resolvedTitle && (
                 <h1
                   className={cn(
-                    'text-ds-2xl font-semibold text-surface-fg',
+                    'text-heading-md font-semibold text-surface-fg',
                     titleClassName,
                   )}
                 >
@@ -77,7 +77,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
                 </h1>
               )}
               {subtitle && (
-                <p className="text-ds-md text-surface-fg-subtle line-clamp-2">
+                <p className="text-body-md text-surface-fg-subtle line-clamp-2">
                   {subtitle}
                 </p>
               )}

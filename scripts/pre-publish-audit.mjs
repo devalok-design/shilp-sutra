@@ -224,6 +224,31 @@ gate('Core docs CVA accuracy (no HIGH drift vs source)', () => {
   }
 })
 
+// Anti-slop signature check - hard gate. The corpus (scripts/slop-corpus.json)
+// grows from real audit findings; P0/P1 hits fail unless annotated with a
+// `// slop-allow: <id> <reason>` escape. Currently clean.
+gate('Anti-slop signatures (check-slop)', () => {
+  try {
+    execSync('node scripts/check-slop.mjs --check', {
+      cwd: join(ROOT, 'packages/core'),
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'check-slop found P0/P1 slop signatures'
+  }
+})
+
+// CVA axis-liveness - ADVISORY (non-blocking). Known under-demoed axes exist;
+// surface the count so it doesn't rot, promote to a hard gate once backfilled.
+try {
+  execSync('node scripts/check-cva-liveness.mjs --check', { cwd: join(ROOT, 'packages/core'), stdio: 'pipe' })
+  console.log('  ✓ CVA axis-liveness: every declared variant value is exercised in stories')
+} catch {
+  console.log('  ⚠ CVA axis-liveness (advisory): some declared axes are not exercised in stories - run node scripts/check-cva-liveness.mjs')
+}
+
 // Gate A: the MCP tool lists (README/AGENTS) are GENERATED from the registered
 // server.tool() set between <!-- BEGIN:mcp-tools --> markers — so omitting or
 // inventing a tool is structurally impossible. This gate only enforces that the

@@ -1,0 +1,54 @@
+{
+  "$comment": "Anti-slop signature corpus. Grows from real audit findings (see docs/plans/2026-07-23-anti-slop-program.md). Each rule: id, severity (P0>P1>P2), kind ('line' = regex per line; 'count-per-file' = >=threshold matching lines in one file), pattern (JS regex source, applied with 'i'? no — case-sensitive), message, setu (rule ref). Suppress on a line with `// slop-allow: <id> <reason>` (line rules) or anywhere in the file (count rules).",
+  "rules": [
+    {
+      "id": "side-stripe",
+      "severity": "P0",
+      "kind": "line",
+      "pattern": "border-(l|r)-\\[(?:[2-9]|\\d{2,})px\\]",
+      "message": "Side-stripe accent border (>1px left/right). The single most recognizable AI tell. Use a full border, a background tint, a leading marker, or nothing.",
+      "setu": "ui §5 accent-rail-and-double-edge"
+    },
+    {
+      "id": "gradient-text",
+      "severity": "P0",
+      "kind": "line",
+      "pattern": "bg-clip-text|text-transparent",
+      "message": "Gradient/clipped text. Decorative, never meaningful. Solid colour; emphasis via weight or size.",
+      "setu": "anti-patterns gradient-text"
+    },
+    {
+      "id": "sparkle-ai-glyph",
+      "severity": "P1",
+      "kind": "line",
+      "pattern": "IconSparkles|✦|✨",
+      "message": "Four-point sparkle / AI-magic glyph brands the component as generic-AI. Use an icon depicting the real action or the brand mark.",
+      "setu": "anti-patterns sparkle-ai-glyph"
+    },
+    {
+      "id": "large-radius",
+      "severity": "P2",
+      "kind": "line",
+      "pattern": "rounded-(2xl|3xl|\\[(?:2[4-9]|[3-9]\\d)px\\])",
+      "message": "Oversized radius (24px+). Softens the UI into uniform blobs. Use the radius vocabulary: rounded-ds-lg cards, rounded-ds-md controls, pill for tags.",
+      "setu": "ui §5 rounded-everything"
+    },
+    {
+      "id": "heavy-shadow",
+      "severity": "P2",
+      "kind": "line",
+      "pattern": "shadow-(xl|2xl)\\b",
+      "message": "Heavy drop shadow. Devalok forbids card shadows; depth from tonal elevation. Reserve one subtle shadow for true overlays only.",
+      "setu": "ui §5 default-shadow"
+    },
+    {
+      "id": "caps-overuse",
+      "severity": "P1",
+      "kind": "count-per-file",
+      "pattern": "uppercase[^\"'`]*tracking|tracking[^\"'`]*uppercase",
+      "threshold": 3,
+      "message": "Tracked-uppercase on 3+ roles in one component (caps-on-everything). Caps for at most ONE deliberate role (e.g. data-table column headers); mixed-case for the rest.",
+      "setu": "ui §3.4 case-discipline"
+    }
+  ]
+}

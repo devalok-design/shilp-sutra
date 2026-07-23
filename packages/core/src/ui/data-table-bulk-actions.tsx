@@ -40,7 +40,7 @@ export function DataTableBulkActions<TData>({
       role="toolbar"
       aria-label="Bulk actions"
     >
-      <span className="text-ds-sm font-medium text-surface-fg whitespace-nowrap">
+      <span className="text-body-sm font-medium text-surface-fg whitespace-nowrap">
         {selectedRows.length} selected
       </span>
       <div className="h-5 w-px bg-surface-border" aria-hidden="true" />

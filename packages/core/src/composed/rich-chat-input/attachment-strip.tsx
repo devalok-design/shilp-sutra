@@ -108,10 +108,10 @@ export function AttachmentStrip({
                   className="text-surface-fg-muted"
                 />
                 {/* max-w-[120px]: component-specific truncation width for file names */}
-                <TruncatedText mode="middle" className="max-w-[120px] text-ds-xs text-surface-fg-muted">
+                <TruncatedText mode="middle" className="max-w-[120px] text-caption text-surface-fg-muted">
                   {att.name}
                 </TruncatedText>
-                <span className="text-ds-xs text-surface-fg-subtle">
+                <span className="text-caption text-surface-fg-subtle">
                   {formatSize(att.size)}
                 </span>
                 <button

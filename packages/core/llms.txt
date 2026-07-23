@@ -125,6 +125,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [content-card](docs/components/composed/content-card.md): **DEPRECATED (v0.44.0)** — will be removed in the next major
 - [date-picker](docs/components/composed/date-picker.md)
 - [deadline-indicator](docs/components/composed/deadline-indicator.md)
+- [diff](docs/components/composed/diff.md)
 - [emoji-picker](docs/components/composed/emoji-picker.md)
 - [empty-state](docs/components/composed/empty-state.md): Note: EmptyState was server-safe prior to v0.18.0 but is NO LONGER server-safe due to Framer Motion dependency
 - [error-boundary](docs/components/composed/error-boundary.md)

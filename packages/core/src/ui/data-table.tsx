@@ -640,7 +640,7 @@ export function DataTable<TData, TValue>({
               placeholder="Search all columns..."
               aria-label="Search all columns"
               className={cn(
-                'flex-1 bg-transparent text-ds-md',
+                'flex-1 bg-transparent text-body-md',
                 'text-surface-fg placeholder:text-surface-fg-subtle',
                 'outline-hidden',
               )}

@@ -24,8 +24,8 @@ export function ErrorFallback({ message, url }: { message: string; url: string }
     <div className="flex flex-col items-center justify-center gap-ds-04 rounded-control border border-surface-border bg-surface-sunken p-ds-08 text-center">
       <Icon icon={IconAlertTriangle} size="2xl" className="text-warning-9" />
       <div>
-        <p className="text-ds-md font-semibold text-surface-fg">Preview unavailable</p>
-        <p className="text-ds-sm text-surface-fg-muted mt-ds-01">{message}</p>
+        <p className="text-body-md font-semibold text-surface-fg">Preview unavailable</p>
+        <p className="text-body-sm text-surface-fg-muted mt-ds-01">{message}</p>
       </div>
       <Button variant="outline" size="xs" startIcon={<Icon icon={IconDownload} />} asChild>
         <a href={url} download target="_blank" rel="noopener noreferrer">Download file</a>

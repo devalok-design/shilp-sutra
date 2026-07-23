@@ -234,14 +234,14 @@ function ToastContent({
         {/* Text */}
         <div className="min-w-0 flex-1">
           {title && (
-            <p className="text-ds-md font-semibold text-surface-fg">
+            <p className="text-body-md font-semibold text-surface-fg">
               {title}
             </p>
           )}
           {description && (
             <p
               className={cn(
-                'text-ds-sm text-surface-fg-muted',
+                'text-body-sm text-surface-fg-muted',
                 title && 'mt-0.5',
               )}
             >
@@ -256,7 +256,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="text-ds-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-raised-hover rounded-control-inner px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
+                  className="text-body-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-raised-hover rounded-control-inner px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
                 >
                   {action.label}
                 </button>
@@ -265,7 +265,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={cancel.onClick}
-                  className="text-ds-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
+                  className="text-body-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
                 >
                   {cancel.label}
                 </button>
@@ -414,7 +414,7 @@ function UploadFileRow({
       </div>
 
       {/* Filename */}
-      <span className="min-w-0 flex-1 truncate text-ds-xs text-surface-fg">
+      <span className="min-w-0 flex-1 truncate text-body-xs text-surface-fg">
         {file.name}
       </span>
 
@@ -428,19 +428,19 @@ function UploadFileRow({
             className="flex-1"
           />
           {file.progress !== undefined && (
-            <span className="shrink-0 text-ds-xs tabular-nums text-surface-fg-muted">
+            <span className="shrink-0 text-caption tabular-nums text-surface-fg-muted">
               {file.progress}%
             </span>
           )}
         </div>
       ) : file.status === 'complete' ? (
-        <span className="text-ds-xs text-success-11">Done</span>
+        <span className="text-body-xs text-success-11">Done</span>
       ) : file.status === 'error' ? (
-        <span className="max-w-[60px] truncate text-ds-xs text-error-11">
+        <span className="max-w-[60px] truncate text-body-xs text-error-11">
           {file.error || 'Failed'}
         </span>
       ) : (
-        <span className="text-ds-xs text-surface-fg-muted">
+        <span className="text-caption text-surface-fg-muted">
           {formatFileSize(file.size)}
         </span>
       )}
@@ -587,7 +587,7 @@ function UploadToastContent({
               </motion.div>
             )}
           </AnimatePresence>
-          <p className="text-ds-md font-semibold text-surface-fg">
+          <p className="text-body-md font-semibold text-surface-fg">
             {allTerminal
               ? errorCount > 0
                 ? `${completeCount} of ${files.length} uploaded`
@@ -596,7 +596,7 @@ function UploadToastContent({
           </p>
         </div>
         {!allTerminal && (
-          <p className="mt-0.5 text-ds-xs text-surface-fg-muted">
+          <p className="mt-0.5 text-caption text-surface-fg-muted">
             {completeCount} of {files.length} complete
             {errorCount > 0 && ` · ${errorCount} failed`}
           </p>

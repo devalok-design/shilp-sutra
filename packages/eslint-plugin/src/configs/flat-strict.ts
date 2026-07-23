@@ -21,6 +21,7 @@ const config = {
     'shilp-sutra/no-css-var-bracket': 'error',
     'shilp-sutra/no-iconbutton-children': 'error',
     'shilp-sutra/no-bare-shadow': 'error',
+    'shilp-sutra/require-mutation-annotation': 'error',
     'shilp-sutra/toast-object-syntax': 'error',
   } as const,
 }

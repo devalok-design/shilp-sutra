@@ -32,9 +32,9 @@ export interface SegmentedControlProps extends Omit<React.HTMLAttributes<HTMLDiv
 /* ── Size config ───────────────────────────────────────────── */
 
 const sizeConfig = {
-  sm: { button: 'h-7 px-ds-04 text-ds-sm', icon: 'h-3.5 w-3.5' },
-  md: { button: 'h-8 px-ds-05 text-ds-md', icon: 'h-4 w-4' },
-  lg: { button: 'h-10 px-ds-06 text-ds-md', icon: 'h-4 w-4' },
+  sm: { button: 'h-7 px-ds-04 text-body-sm', icon: 'h-3.5 w-3.5' },
+  md: { button: 'h-8 px-ds-05 text-body-md', icon: 'h-4 w-4' },
+  lg: { button: 'h-10 px-ds-06 text-body-md', icon: 'h-4 w-4' },
 } as const
 
 /* ── Pill styles per variant ───────────────────────────────── */

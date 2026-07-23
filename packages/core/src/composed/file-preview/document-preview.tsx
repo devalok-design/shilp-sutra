@@ -95,7 +95,7 @@ export default function DocumentPreview({ url, initialPage, onError }: { url: st
           <Button variant="ghost" size="icon-xs" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1} aria-label="Previous page (←)" title="Previous page">
             <Icon icon={IconChevronLeft} size="sm" />
           </Button>
-          <div className="flex items-center gap-ds-01 text-ds-xs text-surface-fg-muted">
+          <div className="flex items-center gap-ds-01 text-caption text-surface-fg-muted">
             <input
               type="text"
               value={pageInput}

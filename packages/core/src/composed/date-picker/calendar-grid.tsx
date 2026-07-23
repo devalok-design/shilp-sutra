@@ -203,7 +203,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           type="button"
           onClick={onHeaderClick}
           className={cn(
-            'text-ds-md font-semibold text-surface-fg',
+            'text-body-md font-semibold text-surface-fg',
             onHeaderClick &&
               'cursor-pointer rounded-control px-ds-02 transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover',
           )}
@@ -237,7 +237,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
           <div
             key={wd}
             role="columnheader"
-            className="flex h-ds-sm items-center justify-center text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle"
+            className="flex h-ds-sm items-center justify-center text-label-xs font-semibold uppercase tracking-wider text-surface-fg-subtle"
           >
             {wd}
           </div>
@@ -270,7 +270,7 @@ export const CalendarGrid = React.forwardRef<HTMLDivElement, CalendarGridProps>(
               aria-selected={isSelected || edge || undefined}
               aria-disabled={!inMonth || disabled || undefined}
               className={cn(
-                'relative flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-control text-ds-md font-body transition-colors duration-fast-01 ease-productive-standard',
+                'relative flex h-ds-sm w-ds-sm-plus items-center justify-center rounded-control text-body-md font-body transition-colors duration-fast-01 ease-productive-standard',
                 !inMonth && 'pointer-events-none opacity-0',
                 inMonth && disabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
                 inMonth && !disabled && !isSelected && !edge && !inRange &&

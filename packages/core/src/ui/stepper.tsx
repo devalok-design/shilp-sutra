@@ -155,7 +155,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
       <>
         <div
           className={cn(
-            'relative shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-pill text-ds-sm font-semibold',
+            'relative shrink-0 flex items-center justify-center w-ds-sm h-ds-sm rounded-pill text-body-sm font-semibold',
             'transition-[background-color,border-color,color] duration-moderate-01 ease-productive-standard',
             state === 'completed' && 'bg-accent-9 text-accent-fg',
             state === 'active' && 'bg-accent-9 text-accent-fg',
@@ -181,7 +181,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
         <div className="flex flex-col">
           <span
             className={cn(
-              'text-ds-md font-medium leading-ds-snug',
+              'text-body-md font-medium leading-ds-snug',
               state === 'pending'
                 ? 'text-surface-fg-subtle'
                 : 'text-surface-fg',
@@ -190,7 +190,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
             {label}
           </span>
           {description && (
-            <span className="text-ds-sm text-surface-fg-muted leading-ds-relaxed">
+            <span className="text-body-sm text-surface-fg-muted leading-ds-relaxed">
               {description}
             </span>
           )}

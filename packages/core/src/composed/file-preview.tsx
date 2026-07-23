@@ -106,7 +106,7 @@ function FilePreview({
       {(fileName || fileSize) && (
         <div className="flex items-center gap-ds-03">
           {fileName && (
-            <TruncatedText mode="middle" className="min-w-0 text-ds-sm font-semibold text-surface-fg">
+            <TruncatedText mode="middle" className="min-w-0 text-body-sm font-semibold text-surface-fg">
               {fileName}
             </TruncatedText>
           )}

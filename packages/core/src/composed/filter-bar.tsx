@@ -163,9 +163,9 @@ function FilterMultiSelect({
 
   // Trigger button sized by FilterBar context
   const triggerSizeClasses: Record<string, string> = {
-    xs: 'h-ds-xs-plus text-ds-sm px-ds-02',
-    sm: 'h-ds-sm text-ds-sm px-ds-03',
-    md: 'h-ds-md text-ds-md px-ds-04',
+    xs: 'h-ds-xs-plus text-body-sm px-ds-02',
+    sm: 'h-ds-sm text-body-sm px-ds-03',
+    md: 'h-ds-md text-body-md px-ds-04',
   }
 
   return (

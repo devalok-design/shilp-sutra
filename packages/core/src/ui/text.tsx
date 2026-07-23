@@ -4,6 +4,7 @@ import * as React from 'react'
 
 import { cn } from './lib/utils'
 
+// slop-allow: caps-overuse — this primitive DEFINES the uppercase label-* variants; not on-surface caps overuse
 const textVariants = cva('font-sans', {
   variants: {
     variant: {

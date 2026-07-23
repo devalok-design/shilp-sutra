@@ -310,7 +310,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
     // intentional: a 9px corner pill, smaller than Badge's smallest size (xs).
     // Not worth a sub-xs Badge size for one call site — kept as a documented exception.
     const defaultBadge = (
-      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-2 py-1 text-ds-2xs leading-none font-semibold uppercase tracking-wide shadow-overlay">
+      <span className="pointer-events-none inline-flex items-center rounded-pill bg-accent-9 text-accent-fg px-2 py-1 text-label-xs leading-none font-semibold uppercase tracking-wide shadow-overlay">
         {lastUsedLabel}
       </span>
     )
@@ -353,7 +353,7 @@ const OAuthButton = React.forwardRef<HTMLButtonElement, OAuthButtonProps>(
           </span>
         ) : null}
         {helperText ? (
-          <span className="mt-ds-02 text-ds-sm text-surface-fg-subtle">{helperText}</span>
+          <span className="mt-ds-02 text-body-sm text-surface-fg-subtle">{helperText}</span>
         ) : null}
       </div>
     )
@@ -459,7 +459,7 @@ const OAuthDivider = React.forwardRef<HTMLDivElement, OAuthDividerProps>(
       {...props}
     >
       <hr aria-hidden="true" className="flex-1 border-t border-surface-border-subtle" />
-      <span className="text-ds-sm text-surface-fg-subtle uppercase tracking-wide">{label}</span>
+      <span className="text-label-sm text-surface-fg-subtle uppercase tracking-wide">{label}</span>
       <hr aria-hidden="true" className="flex-1 border-t border-surface-border-subtle" />
     </div>
   ),
@@ -528,21 +528,21 @@ const OAuthConnectionRow = React.forwardRef<HTMLDivElement, OAuthConnectionRowPr
         <div className="flex items-center gap-ds-03 min-w-0">
           {normalizeIcon(icon) ?? <DefaultGlyph size={24} aria-hidden />}
           <div className="flex flex-col min-w-0">
-            <TruncatedText className="text-ds-md font-semibold text-surface-fg">{name}</TruncatedText>
+            <TruncatedText className="text-body-md font-semibold text-surface-fg">{name}</TruncatedText>
             {accountLabel ? (
               // Account labels are usually an email — middle-truncate to keep the domain.
               // Only a string can be measured/truncated; fall back to a plain clip otherwise.
               typeof accountLabel === 'string' ? (
-                <TruncatedText mode="middle" className="text-ds-sm text-surface-fg-muted">
+                <TruncatedText mode="middle" className="text-body-sm text-surface-fg-muted">
                   {accountLabel}
                 </TruncatedText>
               ) : (
-                <span className="text-ds-sm text-surface-fg-muted truncate">{accountLabel}</span>
+                <span className="text-body-sm text-surface-fg-muted truncate">{accountLabel}</span>
               )
             ) : connected ? (
-              <span className="text-ds-sm text-success-11">Connected</span>
+              <span className="text-body-sm text-success-11">Connected</span>
             ) : (
-              <span className="text-ds-sm text-surface-fg-subtle">Not connected</span>
+              <span className="text-body-sm text-surface-fg-subtle">Not connected</span>
             )}
           </div>
         </div>

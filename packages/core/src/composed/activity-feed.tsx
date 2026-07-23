@@ -171,7 +171,7 @@ function ActivityEntry({
       {/* Content */}
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-center justify-between gap-ds-02">
-          <div className={cn('min-w-0 flex-1 flex items-center gap-ds-01 flex-wrap', compact ? 'text-ds-xs' : 'text-ds-sm')}>
+          <div className={cn('min-w-0 flex-1 flex items-center gap-ds-01 flex-wrap', compact ? 'text-body-xs' : 'text-body-sm')}>
             {item.actor && (
               <span className="font-medium text-surface-fg">{item.actor.name} </span>
             )}
@@ -196,7 +196,7 @@ function ActivityEntry({
           <time
             className={cn(
               'shrink-0 whitespace-nowrap text-surface-fg-subtle',
-              compact ? 'text-ds-xs' : 'text-ds-sm',
+              compact ? 'text-body-xs' : 'text-body-sm',
             )}
             dateTime={
               (typeof item.timestamp === 'string'
@@ -211,7 +211,7 @@ function ActivityEntry({
 
         {/* Expandable detail */}
         {expandedDetail && item.detail && (
-          <div id={detailId} className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-ds-sm text-surface-fg-muted">
+          <div id={detailId} className="mt-ds-02 animate-in fade-in slide-in-from-top-1 text-body-sm text-surface-fg-muted">
             {item.detail}
           </div>
         )}
@@ -268,7 +268,7 @@ function GroupHeader({
       )}
     >
       <hr className="flex-1 border-surface-border" />
-      <span className="bg-surface-base px-ds-03 text-ds-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
+      <span className="bg-surface-base px-ds-03 text-label-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
         {label}
       </span>
       <hr className="flex-1 border-surface-border" />

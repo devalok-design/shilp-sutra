@@ -29,11 +29,11 @@ export function ReplyBanner({ author, preview, onDismiss }: ReplyBannerProps) {
         className="flex items-center gap-ds-03 border-b border-surface-border px-ds-04 py-ds-02b"
       >
         <div className="flex-1 min-w-0">
-          <span className="text-ds-sm font-semibold text-surface-fg">
+          <span className="text-body-sm font-semibold text-surface-fg">
             Replying to {author}
           </span>
           <span className="mx-ds-02 text-surface-fg-subtle">&middot;</span>
-          <span className="text-ds-sm text-surface-fg-muted truncate">
+          <span className="text-body-sm text-surface-fg-muted truncate">
             {preview}
           </span>
         </div>

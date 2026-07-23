@@ -79,7 +79,7 @@ function RecordingOverlay({
       {/* Timer */}
       <span
         className={cn(
-          'text-ds-sm font-mono tabular-nums whitespace-nowrap',
+          'text-body-sm font-mono tabular-nums whitespace-nowrap',
           timerColorClass
         )}
         aria-label={`${timer.minutes} minutes ${timer.secs} seconds`}

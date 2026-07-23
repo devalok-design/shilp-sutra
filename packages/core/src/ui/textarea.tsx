@@ -26,10 +26,10 @@ const textareaVariants = cva(
       // Min-height ramp 48/60/80/120: 48/80 map to spacing tokens (ds-09/ds-11);
       // 60/120 have no exact token so stay arbitrary (allowed). Rendered sizes unchanged.
       size: {
-        xs: 'min-h-ds-09 text-ds-sm px-ds-02 py-ds-02',
-        sm: 'min-h-[60px] text-ds-sm px-ds-03 py-ds-02',
-        md: 'min-h-ds-11 text-ds-md px-ds-04 py-ds-03',
-        lg: 'min-h-[120px] text-ds-md px-ds-05 py-ds-04',
+        xs: 'min-h-ds-09 text-body-sm px-ds-02 py-ds-02',
+        sm: 'min-h-[60px] text-body-sm px-ds-03 py-ds-02',
+        md: 'min-h-ds-11 text-body-md px-ds-04 py-ds-03',
+        lg: 'min-h-[120px] text-body-md px-ds-05 py-ds-04',
       },
     },
     defaultVariants: { size: 'md' },

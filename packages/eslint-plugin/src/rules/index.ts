@@ -12,6 +12,7 @@ import noDeprecatedSurfaceToken from './no-deprecated-surface-token'
 import noIconButtonChildren from './no-iconbutton-children'
 import noTailwindConfigPreset from './no-tailwind-config-preset'
 import preferPerComponentImport from './prefer-per-component-import'
+import requireMutationAnnotation from './require-mutation-annotation'
 import toastObjectSyntax from './toast-object-syntax'
 import useToastDeprecated from './use-toast-deprecated'
 
@@ -26,6 +27,7 @@ export const rules = {
   'no-iconbutton-children': noIconButtonChildren,
   'no-tailwind-config-preset': noTailwindConfigPreset,
   'prefer-per-component-import': preferPerComponentImport,
+  'require-mutation-annotation': requireMutationAnnotation,
   'toast-object-syntax': toastObjectSyntax,
   'use-toast-deprecated': useToastDeprecated,
 } as const

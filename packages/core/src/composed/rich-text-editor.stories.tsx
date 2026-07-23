@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import * as React from 'react'
 import { fn } from 'storybook/test'
 import { RichTextEditor, RichTextViewer } from './rich-text-editor'
 import type { MentionItem } from './rich-text-editor'
@@ -206,4 +207,98 @@ export const ViewerFullContent: EditorStory = {
   render: () => (
     <RichTextViewer content={viewerRichContent} />
   ),
+}
+
+const initialMarkdown = `## Brand voice
+
+Our voice is **warm** and *direct*. We write short, load-bearing sentences.
+
+- Speak plainly to every client
+- Avoid jargon
+- Match the client's register
+
+> Different by Design`
+
+/** Markdown in, Markdown out — the format Setu stores. Edit above; the raw Markdown updates live below. */
+export const MarkdownMode: EditorStory = {
+  name: 'Markdown mode',
+  render: () => {
+    const [md, setMd] = React.useState(initialMarkdown)
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 600, maxWidth: '100%' }}>
+        <RichTextEditor
+          format="markdown"
+          content={initialMarkdown}
+          onChange={setMd}
+          toolbar={['bold', 'italic', 'h2', 'h3', 'blockquote', 'bulletList', 'orderedList', 'link']}
+        />
+        <div>
+          <div style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-surface-fg-subtle)', marginBottom: 6 }}>
+            onChange output (Markdown)
+          </div>
+          <pre style={{ margin: 0, padding: 12, background: 'var(--color-surface-sunken)', borderRadius: 8, fontSize: 13, whiteSpace: 'pre-wrap', color: 'var(--color-surface-fg-muted)' }}>{md}</pre>
+        </div>
+      </div>
+    )
+  },
+}
+
+/** Slot composition — place the toolbar wherever you want (here: below the content). */
+export const SlotComposition: EditorStory = {
+  name: 'Slots (toolbar at bottom)',
+  render: () => (
+    <div style={{ width: 600, maxWidth: '100%' }}>
+      <RichTextEditor.Provider content="<p>The toolbar is composed <strong>below</strong> the content here.</p>">
+        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 12, border: '1px solid var(--color-surface-border-strong)', background: 'var(--color-surface-raised)' }}>
+          <RichTextEditor.Content />
+          <div style={{ borderTop: '1px solid var(--color-surface-border-strong)' }}>
+            <RichTextEditor.Toolbar />
+          </div>
+        </div>
+      </RichTextEditor.Provider>
+    </div>
+  ),
+}
+
+/** Built-in source toggle — the corner button (top-right) flips the editor to raw Markdown and back, animated. */
+export const SourceToggle: EditorStory = {
+  name: 'Source toggle (built-in)',
+  render: () => {
+    const [md, setMd] = React.useState(initialMarkdown)
+    return (
+      <div style={{ width: 600, maxWidth: '100%' }}>
+        <RichTextEditor sourceToggle format="markdown" content={initialMarkdown} onChange={setMd} />
+        <p style={{ marginTop: 8, fontSize: 12, color: 'var(--color-surface-fg-subtle)' }}>
+          Click the icon in the top-right to switch between the visual editor and Markdown source.
+        </p>
+      </div>
+    )
+  },
+}
+
+/** External control — the toggle state is driven by your own button via `sourceMode` / `onSourceModeChange`. */
+export const SourceToggleExternal: EditorStory = {
+  name: 'Source toggle (external button)',
+  render: () => {
+    const [md, setMd] = React.useState(initialMarkdown)
+    const [source, setSource] = React.useState(false)
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 600, maxWidth: '100%' }}>
+        <button
+          type="button"
+          onClick={() => setSource((s) => !s)}
+          style={{ alignSelf: 'flex-start', fontSize: 13, padding: '4px 10px', borderRadius: 8, border: '1px solid var(--color-surface-border-strong)', background: 'var(--color-surface-2)', color: 'var(--color-surface-fg)', cursor: 'pointer' }}
+        >
+          {source ? 'Show visual editor' : 'Show Markdown source'}
+        </button>
+        <RichTextEditor
+          format="markdown"
+          content={initialMarkdown}
+          onChange={setMd}
+          sourceMode={source}
+          onSourceModeChange={setSource}
+        />
+      </div>
+    )
+  },
 }

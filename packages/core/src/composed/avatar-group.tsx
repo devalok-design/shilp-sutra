@@ -102,10 +102,10 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     // Match Avatar fallback font sizes so the "+N" badge text is consistent
     const textSizeMap: Record<string, string> = {
       xs: 'text-[9px]',
-      sm: 'text-ds-xs',
-      md: 'text-ds-sm',
-      lg: 'text-ds-md',
-      xl: 'text-ds-lg',
+      sm: 'text-body-xs',
+      md: 'text-body-sm',
+      lg: 'text-body-md',
+      xl: 'text-heading-xs',
     }
     const textSizeClass = textSizeMap[size ?? 'md']
 
@@ -239,7 +239,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   className="border-surface-border-strong bg-surface-base text-surface-fg"
                   sideOffset={6}
                 >
-                  <p className="text-ds-sm">{user.name}</p>
+                  <p className="text-body-sm">{user.name}</p>
                 </TooltipContent>
               </Tooltip>
             )
@@ -287,7 +287,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               >
                 <div className="flex flex-col gap-ds-01">
                   {users.slice(max).map((user, i) => (
-                    <p key={i} className="text-ds-sm">{user.name}</p>
+                    <p key={i} className="text-body-sm">{user.name}</p>
                   ))}
                 </div>
               </TooltipContent>

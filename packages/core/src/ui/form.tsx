@@ -100,7 +100,7 @@ const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProp
         ref={ref}
         id={id}
         role={state === 'error' ? 'alert' : undefined}
-        className={cn('text-ds-sm', helperStateClasses[state], className)}
+        className={cn('text-body-sm', helperStateClasses[state], className)}
         initial={{ opacity: 0, y: -4 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -4 }}

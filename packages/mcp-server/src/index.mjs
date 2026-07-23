@@ -128,9 +128,18 @@ function buildServer(ctx = {}) {
         'Before answering any shilp-sutra question, read the consumer\'s installed version from ' +
         'node_modules/@devalok/shilp-sutra/package.json and pass it as `version` on every call. ' +
         'Prefer these tools over reading llms.txt or component docs into context — responses are smaller and version-correct. ' +
+        'NEW to this MCP? call how_to_use first — it returns the tool map, the two work sequences, and the version rule. ' +
         'SETTING UP in a project? Run this sequence instead of guessing: detect_framework(package.json) → get_setup(recipe) → preflight(framework, imports) to install peer deps → validate_snippet(code) BEFORE you write each file → verify_setup(...) after. This closes the four setup traps: peer-dep cliffs, TW4 dead classes (which fail silently), wrong-recipe, and mis-wired CSS/config. ' +
+        'WRITING a component? call check_slop(code) BEFORE you emit it — deterministic design-quality gate returning anti-slop findings + strengths + DO-guidance; fix P0/P1, keep the strengths, pull unmet guidance in. ' +
         'If you hit a bug, a broken recipe, a docs gap, or want to suggest a feature, call report_issue — it files a public GitHub issue for maintainer triage.',
     }
+  )
+
+  server.tool(
+    'how_to_use',
+    'START HERE if new to this MCP. Returns the operating manual as JSON: the tool map, the two work sequences (setting-up, writing-a-component), the version rule, and the slop-allow escape hatch.',
+    {},
+    instrument(ctx, 'how_to_use', tools.howToUse)
   )
 
   server.tool(
@@ -201,6 +210,13 @@ function buildServer(ctx = {}) {
     'Pre-write linter. Paste the JSX/TSX/CSS you are about to write; returns TW4 dead-class usage (bare `shadow`, `shadow-0N`, `-surface-N`, `bg-gradient-to-*`, `-[--x]`, removed `/tailwind` preset), removed Button variant/color values, invalid enum prop values (checked against the version-exact manifest), and barrel imports of peer-cliff components. Catches the SILENT failures (a dead class throws no error, it just renders nothing).',
     { code: z.string().describe('The code you intend to write (JSX/TSX/CSS).'), version: VERSION_PARAM },
     instrument(ctx, 'validate_snippet', tools.validateSnippet)
+  )
+
+  server.tool(
+    'check_slop',
+    'Pre-emit DESIGN-QUALITY gate (complements validate_snippet, which checks correctness). Paste the component source; returns anti-slop findings (gradient text, purple gradients, side-stripes, eyebrow kickers, tracked-caps overuse, hover-lift, heavy shadow, glassmorphism, missing reduced-motion/alt, raw colours), strengths detected (type ramp, tokens-not-hex, focus states, tonal surfaces), and ranked DO-guidance (hierarchy, type scale, whitespace, one accent, tonal depth, purposeful motion). Deterministic, no LLM. Fix P0/P1, keep the strengths, pull unmet guidance in. Silence a false positive with `// slop-allow: <id> <reason>`.',
+    { code: z.string().describe('The component source you are about to write (JSX/TSX/CSS).') },
+    instrument(ctx, 'check_slop', tools.checkSlop)
   )
 
   server.tool(

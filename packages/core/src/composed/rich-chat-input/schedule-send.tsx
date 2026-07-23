@@ -104,7 +104,7 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
       <select
         value={hours12}
         onChange={(e) => setHour(Number(e.target.value))}
-        className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-02 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+        className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-02 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         aria-label="Hour"
       >
         {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
@@ -112,13 +112,13 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
         ))}
       </select>
 
-      <span className="text-ds-sm text-surface-fg-subtle font-medium">:</span>
+      <span className="text-body-sm text-surface-fg-subtle font-medium">:</span>
 
       {/* Minute — 5-min steps */}
       <select
         value={minutes - (minutes % 5)}
         onChange={(e) => setMinute(Number(e.target.value))}
-        className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-02 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+        className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-02 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         aria-label="Minute"
       >
         {Array.from({ length: 12 }, (_, i) => i * 5).map((m) => (
@@ -176,19 +176,19 @@ function CompactDateTimeEntry({
     <div className="space-y-ds-03">
       {/* Date input */}
       <div className="flex items-center justify-between">
-        <span className="text-ds-xs font-medium text-surface-fg-subtle">Date</span>
+        <span className="text-caption font-medium text-surface-fg-subtle">Date</span>
         <input
           type="date"
           value={dateStr}
           min={minDateStr}
           onChange={handleDateChange}
-          className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-03 text-ds-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+          className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-raised px-ds-03 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         />
       </div>
 
       {/* Time row */}
       <div className="flex items-center justify-between">
-        <span className="text-ds-xs font-medium text-surface-fg-subtle">Time</span>
+        <span className="text-caption font-medium text-surface-fg-subtle">Time</span>
         <InlineTimePicker value={selected} onChange={onChange} />
       </div>
     </div>
@@ -231,7 +231,7 @@ function FullDateTimePicker({
         className="w-full"
       />
       <div className="flex items-center justify-between border-t border-surface-border pt-ds-03">
-        <span className="text-ds-xs font-medium text-surface-fg-subtle">Time</span>
+        <span className="text-caption font-medium text-surface-fg-subtle">Time</span>
         <InlineTimePicker value={selected} onChange={onChange} />
       </div>
     </div>
@@ -271,7 +271,7 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
     return (
       <div className="p-ds-04" style={{ minWidth: 270 }}>
         <div className="mb-ds-03 flex items-center justify-between">
-          <p className="text-ds-sm font-medium text-surface-fg">Pick date & time</p>
+          <p className="text-body-sm font-medium text-surface-fg">Pick date & time</p>
           <Button
             variant="ghost"
             size="icon-xs"
@@ -304,7 +304,7 @@ export function ScheduleDropdownContent({ onSchedule, onClose, onOpenDialog }: S
 
   return (
     <div className="p-ds-02" style={{ minWidth: 260 }}>
-      <p className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">
+      <p className="px-ds-03 py-ds-01 text-caption font-medium text-surface-fg-subtle">
         Schedule send
       </p>
       {presets.map((preset, i) => (
@@ -420,7 +420,7 @@ export function ScheduleBanner({ date, onClear, onEdit }: { date: Date; onClear:
       transition={{ duration: durations.moderate01 }}
       className="overflow-hidden"
     >
-      <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b text-ds-xs text-accent-11 bg-accent-2 border-b border-accent-4">
+      <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b text-body-xs text-accent-11 bg-accent-2 border-b border-accent-4">
         <Icon icon={IconClock} size="xs" className="shrink-0" />
         <span className="min-w-0 flex-1 truncate">
           Scheduled for {formatScheduleTime(date)}

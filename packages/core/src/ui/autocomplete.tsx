@@ -233,7 +233,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           placeholder={placeholder}
           disabled={disabled}
           className={cn(
-            'flex h-ds-md w-full rounded-control border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03 font-sans text-ds-md text-surface-fg placeholder:text-surface-fg-subtle',
+            'flex h-ds-md w-full rounded-control border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03 font-sans text-body-md text-surface-fg placeholder:text-surface-fg-subtle',
             'outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-[var(--border-focus-offset)]',
             'transition-colors duration-fast-01',
             disabled && 'opacity-action-disabled cursor-not-allowed',
@@ -278,7 +278,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={tweens.fade}
-                      className="px-ds-04 py-ds-03 text-ds-md text-surface-fg-muted"
+                      className="px-ds-04 py-ds-03 text-body-md text-surface-fg-muted"
                     >
                       {emptyText}
                     </motion.li>
@@ -291,7 +291,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
                         aria-selected={highlightedIndex === index}
                         variants={itemVariants}
                         className={cn(
-                          'cursor-pointer px-ds-04 py-ds-03 text-ds-md text-surface-fg transition-colors duration-fast-01',
+                          'cursor-pointer px-ds-04 py-ds-03 text-body-md text-surface-fg transition-colors duration-fast-01',
                           highlightedIndex === index && 'bg-accent-3',
                           value?.value === option.value && 'font-semibold',
                         )}

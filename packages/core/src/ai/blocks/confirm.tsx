@@ -27,7 +27,7 @@ const ConfirmBlock = React.memo(function ConfirmBlock({
   return (
     <BlockShell confidence={confidence}>
       {data.description && (
-        <p className="text-ds-sm text-surface-fg-muted mb-3">
+        <p className="text-body-sm text-surface-fg-muted mb-3">
           {data.description}
         </p>
       )}
@@ -50,13 +50,13 @@ const ConfirmBlock = React.memo(function ConfirmBlock({
           <CollapsibleTrigger asChild>
             <button
               type="button"
-              className="text-ds-xs text-surface-fg-subtle underline cursor-pointer"
+              className="text-caption text-surface-fg-subtle underline cursor-pointer"
             >
               Why this action?
             </button>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <p className="text-ds-sm text-surface-fg-muted mt-2 p-3 bg-surface-raised rounded-surface">
+            <p className="text-body-sm text-surface-fg-muted mt-2 p-3 bg-surface-raised rounded-surface">
               {data.rationale}
             </p>
           </CollapsibleContent>

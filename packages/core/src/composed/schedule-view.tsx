@@ -134,7 +134,7 @@ function TimeColumn({ startHour, endHour }: TimeColumnProps) {
       {hours.map((hour) => (
         <div
           key={hour}
-          className="text-ds-xs text-surface-fg-muted pr-ds-02 text-right"
+          className="text-caption text-surface-fg-muted pr-ds-02 text-right"
           style={{ height: `${slotHeight}%` }}
         >
           {formatHourLabel(hour)}
@@ -197,7 +197,7 @@ function DayColumn({
       {showHeader && (
         <div
           className={cn(
-            'text-center text-ds-sm font-semibold py-ds-02 border-b border-surface-border-strong',
+            'text-center text-body-sm font-semibold py-ds-02 border-b border-surface-border-strong',
             todayInView
               ? 'text-accent-11 bg-accent-2'
               : 'text-surface-fg bg-surface-raised',
@@ -235,7 +235,7 @@ function DayColumn({
               type="button"
               className={cn(
                 'absolute left-ds-01 right-ds-01 rounded-control-inner px-ds-02 py-ds-01',
-                'text-left text-ds-xs font-medium overflow-hidden cursor-pointer',
+                'text-left text-body-xs font-medium overflow-hidden cursor-pointer',
                 'hover:shadow-raised transition-[box-shadow] duration-fast-02 ease-productive-standard',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 colorClass,
@@ -309,7 +309,7 @@ const ScheduleView = React.forwardRef<HTMLDivElement, ScheduleViewProps>(
             : `Week schedule starting ${format(days[0], 'MMMM d, yyyy')}`
         }
         className={cn(
-          'flex rounded-control border border-surface-border-strong bg-surface-raised overflow-hidden',
+          'flex rounded-control border border-card-strong bg-surface-raised overflow-hidden',
           'h-[480px]',
           className,
         )}

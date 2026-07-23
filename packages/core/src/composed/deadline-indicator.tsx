@@ -107,7 +107,7 @@ const DeadlineIndicator = React.forwardRef<HTMLSpanElement, DeadlineIndicatorPro
     const inner = (
       <motion.span
         ref={ref}
-        className={cn('inline-flex items-center gap-ds-01 font-sans text-ds-sm', colorClass, className)}
+        className={cn('inline-flex items-center gap-ds-01 font-sans text-body-sm', colorClass, className)}
         animate={{ opacity: [1, 0.7, 1] }}
         transition={{ duration: 2, repeat: Infinity }}
         {...motionProps(props)}
@@ -123,7 +123,7 @@ const DeadlineIndicator = React.forwardRef<HTMLSpanElement, DeadlineIndicatorPro
   const inner = (
     <span
       ref={ref}
-      className={cn('inline-flex items-center gap-ds-01 font-sans text-ds-sm', colorClass, className)}
+      className={cn('inline-flex items-center gap-ds-01 font-sans text-body-sm', colorClass, className)}
       {...props}
     >
       {showIcon && <Icon icon={IconClock} size="xs" />}

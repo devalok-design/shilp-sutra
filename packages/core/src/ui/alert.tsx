@@ -123,8 +123,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     const iconSize = size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'
     const dismissIconSize = size === 'sm' ? 'xs' : 'sm'
-    const textClass = size === 'sm' ? 'text-ds-xs' : size === 'lg' ? 'text-ds-md' : 'text-ds-md'
-    const titleClass = size === 'sm' ? 'text-ds-sm' : size === 'lg' ? 'text-ds-lg' : 'text-ds-md'
+    const textClass = size === 'sm' ? 'text-body-xs' : size === 'lg' ? 'text-body-md' : 'text-body-md'
+    const titleClass = size === 'sm' ? 'text-body-sm' : size === 'lg' ? 'text-heading-xs' : 'text-body-md'
 
     return (
       <AnimatePresence onExitComplete={onDismiss}>

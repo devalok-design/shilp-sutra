@@ -176,7 +176,7 @@ const BlockTable = React.memo(function BlockTable({
                   <TableCell
                     key={col.key}
                     className={cn(
-                      'text-ds-sm py-ds-02b px-ds-04',
+                      'text-body-sm py-ds-02b px-ds-04',
                       col.variant === 'number' &&
                         'text-right tabular-nums font-medium',
                     )}

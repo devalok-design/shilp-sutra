@@ -243,7 +243,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             disabled={disabled}
             className={cn(
               'inline-flex items-center gap-ds-02 rounded-control px-ds-03 py-ds-02',
-              'text-ds-sm font-medium',
+              'text-body-sm font-medium',
               'border border-surface-border-strong',
               'bg-surface-raised-hover text-surface-fg-muted',
               'hover:bg-accent-2',
@@ -278,7 +278,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             <p
               role="alert"
               aria-live="polite"
-              className="mt-ds-02 text-ds-xs text-error-11"
+              className="mt-ds-02 text-body-xs text-error-11"
             >
               {displayError}
             </p>
@@ -358,7 +358,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               </motion.div>
             )}
           </AnimatePresence>
-          <span id={inputId + '-label'} className="text-ds-sm text-surface-fg-muted">
+          <span id={inputId + '-label'} className="text-body-sm text-surface-fg-muted">
             {defaultLabel}
           </span>
           {uploading ? (
@@ -378,7 +378,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               </div>
             </div>
           ) : (
-            <span className="text-ds-xs text-surface-fg-subtle">
+            <span className="text-caption text-surface-fg-subtle">
               {defaultSublabel}
             </span>
           )}
@@ -404,7 +404,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           {displayError && (
             <motion.p
               role="alert"
-              className="mt-ds-02 text-ds-xs text-error-11"
+              className="mt-ds-02 text-body-xs text-error-11"
               initial={{ opacity: 0, x: 0 }}
               animate={{ opacity: 1, x: [0, -4, 4, -4, 4, 0] }}
               exit={{ opacity: 0 }}

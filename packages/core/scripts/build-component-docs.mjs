@@ -58,6 +58,8 @@ function scanComponents(categoryDir) {
   }
 
   for (const entry of entries) {
+    // Skip dot-entries (e.g. `.impeccable` hook state dirs) — not components.
+    if (entry.startsWith('.')) continue
     const fullPath = join(categoryDir, entry)
     const stat = statSync(fullPath)
 

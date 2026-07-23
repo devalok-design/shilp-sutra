@@ -506,7 +506,7 @@ const SidebarGroupLabel = forwardRef<
       ref={ref}
       data-sidebar="group-label"
       className={cn(
-        'flex h-ds-sm shrink-0 items-center rounded-control px-ds-03 text-ds-sm font-medium text-surface-fg-muted outline-hidden ring-accent-9 transition-[margin,opacity] duration-moderate-02 ease-productive-exit focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+        'flex h-ds-sm shrink-0 items-center rounded-control px-ds-03 text-body-sm font-medium text-surface-fg-muted outline-hidden ring-accent-9 transition-[margin,opacity] duration-moderate-02 ease-productive-exit focus-visible:ring-2 [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}
@@ -543,7 +543,7 @@ const SidebarGroupContent = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
     <div
       ref={ref}
       data-sidebar="group-content"
-      className={cn('w-full text-ds-md', className)}
+      className={cn('w-full text-body-md', className)}
       {...props}
     />
   ),
@@ -585,9 +585,9 @@ const sidebarMenuButtonVariants = cva(
           'hover:bg-surface-raised-hover bg-surface-raised shadow-[0_0_0_1px_var(--color-surface-border)] hover:text-surface-fg hover:shadow-[0_0_0_1px_var(--color-surface-border-strong)]',
       },
       size: {
-        md: 'h-ds-sm text-ds-md',
-        sm: 'h-ds-xs-plus text-ds-sm',
-        lg: 'h-ds-lg text-ds-md group-data-[collapsible=icon]:p-0!',
+        md: 'h-ds-sm text-body-md',
+        sm: 'h-ds-xs-plus text-body-sm',
+        lg: 'h-ds-lg text-body-md group-data-[collapsible=icon]:p-0!',
       },
     },
     defaultVariants: {
@@ -706,7 +706,7 @@ const SidebarMenuBadge = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
       ref={ref}
       data-sidebar="menu-badge"
       className={cn(
-        'pointer-events-none absolute right-ds-02 flex h-5 min-w-5 select-none items-center justify-center rounded-control px-ds-02 text-ds-sm font-medium tabular-nums text-surface-fg',
+        'pointer-events-none absolute right-ds-02 flex h-5 min-w-5 select-none items-center justify-center rounded-control px-ds-02 text-body-sm font-medium tabular-nums text-surface-fg',
         'peer-hover/menu-button:text-surface-fg peer-data-[active=true]/menu-button:text-surface-fg',
         'peer-data-[size=sm]/menu-button:top-1',
         'peer-data-[size=md]/menu-button:top-ds-02b',
@@ -797,8 +797,8 @@ const SidebarMenuSubButton = forwardRef<
       className={cn(
         'hover:bg-surface-raised-hover active:bg-accent-2 flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-control px-ds-03 text-surface-fg outline-hidden ring-accent-9 hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0 [&>svg]:text-surface-fg',
         'data-[active=true]:bg-accent-2 data-[active=true]:text-surface-fg',
-        size === 'sm' && 'text-ds-sm',
-        size === 'md' && 'text-ds-md',
+        size === 'sm' && 'text-body-sm',
+        size === 'md' && 'text-body-md',
         'group-data-[collapsible=icon]:hidden',
         className,
       )}

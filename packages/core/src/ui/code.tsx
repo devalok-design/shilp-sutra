@@ -37,7 +37,7 @@ const Code = React.forwardRef<HTMLPreElement | HTMLElement, CodeProps>(
         <pre
           ref={ref as React.Ref<HTMLPreElement>}
           className={cn(
-            'overflow-x-auto rounded-surface border border-surface-border-strong bg-surface-raised p-ds-05 font-mono text-ds-sm leading-ds-relaxed text-surface-fg',
+            'overflow-x-auto rounded-surface border border-card-strong bg-surface-raised p-ds-05 font-mono text-body-sm leading-ds-relaxed text-surface-fg',
             className,
           )}
           {...props}
@@ -51,7 +51,7 @@ const Code = React.forwardRef<HTMLPreElement | HTMLElement, CodeProps>(
       <code
         ref={ref}
         className={cn(
-          'rounded-control-inner bg-surface-raised-hover border border-surface-border px-ds-02 py-ds-01 font-mono text-ds-sm text-surface-fg',
+          'rounded-control-inner bg-surface-raised-hover border border-card px-ds-02 py-ds-01 font-mono text-body-sm text-surface-fg',
           className,
         )}
         {...props}

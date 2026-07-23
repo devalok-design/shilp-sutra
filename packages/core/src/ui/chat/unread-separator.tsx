@@ -16,7 +16,7 @@ function UnreadSeparator({
   return (
     <div className={cn('relative flex items-center py-ds-02', className)}>
       <div className="flex-1 border-t-2 border-accent-7" />
-      <span className="px-ds-03 text-ds-xs font-semibold text-accent-11">
+      <span className="px-ds-03 text-body-xs font-semibold text-accent-11">
         {count ? `${count} ${label}` : label}
       </span>
       <div className="flex-1 border-t-2 border-accent-7" />

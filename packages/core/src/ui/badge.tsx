@@ -56,10 +56,10 @@ const badgeVariants = cva(
         soft: 'border border-transparent',
       },
       size: {
-        xs: 'h-4 px-ds-02b text-ds-xs gap-ds-02',
-        sm: 'h-5 px-ds-03 text-ds-xs gap-ds-02',
-        md: 'h-6 px-2.5 text-ds-xs gap-ds-02b', /* px-2.5=10px — no exact DS token */
-        lg: 'h-7 px-ds-04 text-ds-sm gap-ds-02b',
+        xs: 'h-4 px-ds-02b text-body-xs gap-ds-02',
+        sm: 'h-5 px-ds-03 text-body-xs gap-ds-02',
+        md: 'h-6 px-2.5 text-body-xs gap-ds-02b', /* px-2.5=10px — no exact DS token */
+        lg: 'h-7 px-ds-04 text-body-sm gap-ds-02b',
       },
     },
     defaultVariants: {

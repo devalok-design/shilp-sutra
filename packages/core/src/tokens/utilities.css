@@ -332,3 +332,11 @@
 
 @utility bg-gradient-brand      { background-image: var(--gradient-brand-light); }
 @utility bg-gradient-brand-dark { background-image: var(--gradient-brand-dark); }
+
+/* ───────────────────────────────────────────────────────────────────
+   Card edge — the faint hairline for card/panel containers (NOT interactive
+   controls, which use border-surface-border/-strong for WCAG 1.4.11 contrast).
+   Single tunable source of truth; pairs with `border` (width) on the element.
+   ─────────────────────────────────────────────────────────────────── */
+
+@utility border-card { border-color: var(--color-surface-border-card); }

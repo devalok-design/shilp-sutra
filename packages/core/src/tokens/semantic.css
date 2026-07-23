@@ -181,9 +181,11 @@
   --color-surface-fg:            var(--neutral-12);
   --color-surface-fg-muted:      var(--neutral-11);
   --color-surface-fg-subtle:     var(--neutral-9);  /* darkened for WCAG AA 4.5:1 */
-  --color-surface-border:        var(--neutral-6);  /* bumped for WCAG 1.4.11 */
+  --color-surface-border:        var(--neutral-6);  /* bumped for WCAG 1.4.11 (interactive/control edge) */
   --color-surface-border-strong: var(--neutral-7);
   --color-surface-border-subtle: var(--neutral-5);
+  /* Card/panel edge — a faint hairline (NOT for interactive controls, which need the contrast-bumped token above). */
+  --color-surface-border-card:   color-mix(in oklch, var(--neutral-5) 30%, transparent);
   --color-backdrop:              oklch(0 0 0 / 0.4);
 
   /* Overlay + disabled — promoted from internal :root into @theme so
@@ -595,6 +597,8 @@
   --color-surface-border-strong: var(--neutral-5);
   --color-surface-overlay:       oklch(0.13 0.0002 350);
   --color-surface-border-subtle: var(--neutral-3);
+  /* Card edge in dark: a hair stronger so it still reads on the near-black base. */
+  --color-surface-border-card:   color-mix(in oklch, var(--neutral-6) 45%, transparent);
   --color-backdrop:              oklch(0 0 0 / 0.6);
 
   /* Overlay */
@@ -720,6 +724,7 @@
     --color-surface-border:         CanvasText;
     --color-surface-border-strong:  CanvasText;
     --color-surface-border-subtle:  GrayText;
+    --color-surface-border-card:    GrayText;
     --color-backdrop: Canvas;
     --color-overlay:  Canvas;
     --color-disabled: GrayText;

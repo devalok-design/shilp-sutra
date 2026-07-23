@@ -26,6 +26,7 @@ const config = {
     'shilp-sutra/no-iconbutton-children': 'error',
     // Recommended (warn / advisory)
     'shilp-sutra/no-bare-shadow': 'warn',
+    'shilp-sutra/require-mutation-annotation': 'warn',
     'shilp-sutra/toast-object-syntax': 'warn',
   },
 }

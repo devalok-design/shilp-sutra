@@ -230,9 +230,9 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
                 />
               )}
               <span className="flex-1 min-w-0">
-                <span className="block truncate text-ds-md font-body text-surface-fg">{item.label}</span>
+                <span className="block truncate text-body-md font-body text-surface-fg">{item.label}</span>
                 {item.description && (
-                  <span className="block truncate text-ds-xs text-surface-fg-subtle">{item.description}</span>
+                  <span className="block truncate text-caption text-surface-fg-subtle">{item.description}</span>
                 )}
               </span>
             </>
@@ -276,7 +276,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
               onKeyDown={handleSearchKeyDown}
               aria-label="Search"
               aria-activedescendant={focusedIndex >= 0 ? `msp-item-${focusedIndex}` : undefined}
-              className="w-full bg-transparent text-ds-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-hidden"
+              className="w-full bg-transparent text-body-md font-body text-surface-fg placeholder:text-surface-fg-subtle outline-hidden"
             />
             {loading && <Spinner size="sm" />}
           </div>
@@ -286,7 +286,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
             {filteredGroups
               ? filteredGroups.map((group) => (
                   <div key={group.label}>
-                    <div className="px-ds-04 py-ds-02 text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+                    <div className="px-ds-04 py-ds-02 text-label-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                       {group.label}
                     </div>
                     {group.items.map(renderItemRow)}
@@ -294,7 +294,7 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
                 ))
               : filteredItems.map(renderItemRow)}
             {!loading && filteredItems.length === 0 && (
-              <p className="px-ds-04 py-ds-05 text-center text-ds-sm font-body text-surface-fg-subtle">
+              <p className="px-ds-04 py-ds-05 text-center text-body-sm font-body text-surface-fg-subtle">
                 {emptyMessage}
               </p>
             )}

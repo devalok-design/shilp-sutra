@@ -96,7 +96,7 @@ function CodeBlock({ language, code, mb }: { language: string; code: string; mb:
   if (!modules) {
     return (
       <div className={cn('group relative', mb)}>
-        <pre className="bg-surface-sunken rounded-control p-ds-04 overflow-x-auto text-ds-sm font-mono">
+        <pre className="bg-surface-sunken rounded-control p-ds-04 overflow-x-auto text-body-sm font-mono">
           <code>{code}</code>
         </pre>
         <CopyButton code={code} />
@@ -113,7 +113,7 @@ function CodeBlock({ language, code, mb }: { language: string; code: string; mb:
         customStyle={{
           margin: 0,
           borderRadius: 'var(--radius-ds-md)',
-          fontSize: 'var(--text-ds-sm)',
+          fontSize: 'var(--text-body-sm)',
           padding: 'var(--spacing-ds-04)',
         }}
       >
@@ -144,7 +144,7 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
           h1: ({ children }) => {
             const slug = slugify(extractText(children))
             return (
-              <h1 id={slug} className={cn('group', compact ? 'text-ds-md' : 'text-ds-lg', 'font-semibold text-surface-fg', mt, mb)}>
+              <h1 id={slug} className={cn('group', compact ? 'text-body-md' : 'text-heading-xs', 'font-semibold text-surface-fg', mt, mb)}>
                 <a href={`#${slug}`} className="opacity-0 group-hover:opacity-100 text-surface-fg-subtle mr-ds-02 no-underline" aria-hidden="true">
                   #
                 </a>
@@ -155,7 +155,7 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
           h2: ({ children }) => {
             const slug = slugify(extractText(children))
             return (
-              <h2 id={slug} className={cn('group', 'text-ds-md font-semibold text-surface-fg', compact ? 'mt-ds-03' : 'mt-ds-04', mb)}>
+              <h2 id={slug} className={cn('group', 'text-body-md font-semibold text-surface-fg', compact ? 'mt-ds-03' : 'mt-ds-04', mb)}>
                 <a href={`#${slug}`} className="opacity-0 group-hover:opacity-100 text-surface-fg-subtle mr-ds-02 no-underline" aria-hidden="true">
                   #
                 </a>
@@ -166,7 +166,7 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
           h3: ({ children }) => {
             const slug = slugify(extractText(children))
             return (
-              <h3 id={slug} className={cn('group', 'text-ds-md font-semibold text-surface-fg', 'mt-ds-03', mb)}>
+              <h3 id={slug} className={cn('group', 'text-body-md font-semibold text-surface-fg', 'mt-ds-03', mb)}>
                 <a href={`#${slug}`} className="opacity-0 group-hover:opacity-100 text-surface-fg-subtle mr-ds-02 no-underline" aria-hidden="true">
                   #
                 </a>
@@ -175,7 +175,7 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
             )
           },
           p: ({ children }) => (
-            <p className={cn('text-ds-md text-surface-fg leading-ds-relaxed', mb)}>
+            <p className={cn('text-body-md text-surface-fg leading-ds-relaxed', mb)}>
               {children}
             </p>
           ),
@@ -197,7 +197,7 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
               return <CodeBlock language={lang} code={codeString} mb={mb} />
             }
             return (
-              <code className="bg-surface-sunken rounded-control-inner px-1.5 py-0.5 text-ds-sm font-mono text-surface-fg" {...codeProps}>
+              <code className="bg-surface-sunken rounded-control-inner px-1.5 py-0.5 text-body-sm font-mono text-surface-fg" {...codeProps}>
                 {children}
               </code>
             )
@@ -211,12 +211,12 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
             </blockquote>
           ),
           ul: ({ children }) => (
-            <ul className={cn('list-disc pl-ds-06 text-ds-md text-surface-fg space-y-ds-01', mb)}>
+            <ul className={cn('list-disc pl-ds-06 text-body-md text-surface-fg space-y-ds-01', mb)}>
               {children}
             </ul>
           ),
           ol: ({ children }) => (
-            <ol className={cn('list-decimal pl-ds-06 text-ds-md text-surface-fg space-y-ds-01', mb)}>
+            <ol className={cn('list-decimal pl-ds-06 text-body-md text-surface-fg space-y-ds-01', mb)}>
               {children}
             </ol>
           ),
@@ -228,12 +228,12 @@ const MarkdownViewer = React.forwardRef<HTMLDivElement, MarkdownViewerProps>(({
             </div>
           ),
           th: ({ children }) => (
-            <th className="border border-surface-border-subtle px-ds-03 py-ds-02 text-left text-ds-sm font-semibold bg-surface-sunken">
+            <th className="border border-surface-border-subtle px-ds-03 py-ds-02 text-left text-body-sm font-semibold bg-surface-sunken">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="border border-surface-border-subtle px-ds-03 py-ds-02 text-ds-sm">
+            <td className="border border-surface-border-subtle px-ds-03 py-ds-02 text-body-sm">
               {children}
             </td>
           ),

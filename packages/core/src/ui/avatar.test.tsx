@@ -56,7 +56,7 @@ describe('Avatar', () => {
       </Avatar>,
     )
     const fallback = container.querySelector('[data-slot="avatar-fallback"]')
-    expect(fallback?.className).toContain('text-ds-lg')
+    expect(fallback?.className).toContain('text-heading-xs')
   })
 
   it('deterministic fallback color is consistent for the same seed', () => {

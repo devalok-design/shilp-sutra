@@ -81,11 +81,11 @@ const ringShapeMap: Record<string, string> = {
 
 // ── Fallback font sizes that scale with avatar size ─────────────────────────
 const fallbackTextSizeMap: Record<AvatarSize, string> = {
-  xs: 'text-ds-2xs',
-  sm: 'text-ds-xs',
-  md: 'text-ds-sm',
-  lg: 'text-ds-md',
-  xl: 'text-ds-lg',
+  xs: 'text-body-xs',
+  sm: 'text-body-xs',
+  md: 'text-body-sm',
+  lg: 'text-body-md',
+  xl: 'text-heading-xs',
 }
 
 // ── Deterministic fallback colors ───────────────────────────────────────────

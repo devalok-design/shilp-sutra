@@ -195,19 +195,19 @@ function NotificationItem({
         <TruncatedText
           as="p"
           className={cn(
-            'text-ds-md text-surface-fg',
+            'text-body-md text-surface-fg',
             !notification.isRead && 'font-semibold',
           )}
         >
           {notification.title}
         </TruncatedText>
         {notification.body && (
-          <p className="mt-ds-01 line-clamp-2 text-ds-sm text-surface-fg-subtle">
+          <p className="mt-ds-01 line-clamp-2 text-body-sm text-surface-fg-subtle">
             {notification.body}
           </p>
         )}
         <div className="mt-ds-02 flex items-center gap-ds-03">
-          <span className="text-ds-sm text-surface-fg-subtle">
+          <span className="text-body-sm text-surface-fg-subtle">
             {formatRelativeTime(notification.createdAt)}
           </span>
           {notification.project && (
@@ -215,7 +215,7 @@ function NotificationItem({
               <span className="text-surface-fg-subtle">
                 &middot;
               </span>
-              <TruncatedText className="text-ds-sm text-surface-fg-subtle">
+              <TruncatedText className="text-body-sm text-surface-fg-subtle">
                 {notification.project.title}
               </TruncatedText>
             </>
@@ -344,12 +344,12 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         <div className="flex items-center gap-ds-03">
           {/* On mobile the SheetTitle provides the accessible heading; on desktop use h3 */}
           {!isMobile && (
-            <h3 className="text-ds-md font-semibold text-surface-fg">
+            <h3 className="text-body-md font-semibold text-surface-fg">
               Notifications
             </h3>
           )}
           {unreadCount > 0 && (
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-pill bg-accent-2 px-ds-02b text-ds-sm font-semibold text-accent-11">
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-pill bg-accent-2 px-ds-02b text-body-sm font-semibold text-accent-11">
               {unreadCount}
             </span>
           )}
@@ -359,7 +359,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             <button
               type="button"
               onClick={onMarkAllRead}
-              className="flex items-center gap-ds-02 text-ds-sm text-surface-fg-subtle transition-colors hover:text-accent-11"
+              className="flex items-center gap-ds-02 text-body-sm text-surface-fg-subtle transition-colors hover:text-accent-11"
             >
               <Icon icon={IconChecks} size="sm" />
               Mark all read
@@ -381,10 +381,10 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
               <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-pill bg-surface-raised">
                 <Icon icon={IconInbox} size="lg" className="text-surface-fg-subtle" />
               </div>
-              <p className="mt-ds-04 text-ds-md text-surface-fg-subtle">
+              <p className="mt-ds-04 text-body-md text-surface-fg-subtle">
                 No notifications yet
               </p>
-              <p className="mt-ds-02 text-ds-sm text-surface-fg-subtle">
+              <p className="mt-ds-02 text-body-sm text-surface-fg-subtle">
                 You&apos;re all caught up!
               </p>
             </div>
@@ -396,7 +396,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
             return (
               <div key={group}>
                 <div className="sticky top-0 z-raised bg-surface-overlay px-ds-05 py-ds-02b">
-                  <span className="text-ds-sm font-medium text-surface-fg-subtle">
+                  <span className="text-body-sm font-medium text-surface-fg-subtle">
                     {group}
                   </span>
                 </div>
@@ -442,7 +442,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       ref={ref}
       aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
       className={cn(
-        'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-surface-border-strong bg-surface-raised text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-raised-hover',
+        'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-card-strong bg-surface-raised text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-raised-hover',
         className,
       )}
     >
@@ -452,7 +452,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
           initial={{ rotate: 0 }}
           animate={prefersReducedMotion ? undefined : { rotate: [0, -3, 3, -1, 1, 0] }}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: durations.slow01, ease: 'easeInOut' }}
-          className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-pill bg-accent-9 px-ds-02 text-ds-xs font-semibold text-accent-fg"
+          className="absolute -right-ds-01 -top-ds-01 flex h-4 min-w-4 items-center justify-center rounded-pill bg-accent-9 px-ds-02 text-body-xs font-semibold text-accent-fg"
         >
           {unreadCount > 99 ? '99+' : unreadCount}
         </motion.span>
@@ -476,7 +476,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         </Tooltip>
 
         <SheetContent side="bottom" className={cn('p-0', popoverClassName)} responsive={false}>
-          <SheetTitle className="px-ds-05 pt-ds-04 text-ds-md font-semibold text-surface-fg">
+          <SheetTitle className="px-ds-05 pt-ds-04 text-body-md font-semibold text-surface-fg">
             Notifications
           </SheetTitle>
           {panelContent}

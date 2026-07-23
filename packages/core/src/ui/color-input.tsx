@@ -137,12 +137,12 @@ function FormatInput({
 }) {
   return (
     <div className={cn('flex flex-col gap-ds-01', className)}>
-      <label htmlFor={id} className="text-ds-xs font-medium uppercase tracking-wider text-surface-fg-muted">
+      <label htmlFor={id} className="text-label-xs font-medium uppercase tracking-wider text-surface-fg-muted">
         {label}
       </label>
       <div className="flex items-center">
         {prefix && (
-          <span className="text-ds-sm text-surface-fg-muted">{prefix}</span>
+          <span className="text-body-sm text-surface-fg-muted">{prefix}</span>
         )}
         <input
           id={id}
@@ -153,7 +153,7 @@ function FormatInput({
           onBlur={onBlur}
           maxLength={maxLength}
           className={cn(
-            'h-ds-xs-plus w-full rounded-control-inner border border-surface-border bg-surface-overlay px-ds-02 font-mono text-ds-sm text-surface-fg transition-colors',
+            'h-ds-xs-plus w-full rounded-control-inner border border-surface-border bg-surface-overlay px-ds-02 font-mono text-body-sm text-surface-fg transition-colors',
             'focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
             disabled && 'cursor-not-allowed opacity-50',
           )}
@@ -306,7 +306,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 type="button"
                 disabled={disabled}
                 className={cn(
-                  'group flex items-center justify-center rounded-control px-ds-04 py-ds-02 font-mono text-ds-sm font-medium',
+                  'group flex items-center justify-center rounded-control px-ds-04 py-ds-02 font-mono text-body-sm font-medium',
                   'focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
@@ -357,7 +357,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                   WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
                 }} />
                 {/* Hex value */}
-                <span className="relative z-10 py-ds-02 pl-6 pr-ds-03 font-mono text-ds-sm text-surface-fg">
+                <span className="relative z-10 py-ds-02 pl-6 pr-ds-03 font-mono text-body-sm text-surface-fg">
                   {internalColor.toUpperCase()}
                 </span>
               </motion.button>
@@ -394,7 +394,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       type="button"
                       onClick={() => setFormat(f)}
                       className={cn(
-                        'relative min-h-6 rounded-control-inner px-ds-02 py-px text-ds-xs font-semibold uppercase tracking-wider transition-colors',
+                        'relative min-h-6 rounded-control-inner px-ds-02 py-px text-label-xs font-semibold uppercase tracking-wider transition-colors',
                         format === f
                           ? 'text-accent-11'
                           : 'text-surface-fg-muted hover:text-surface-fg',
@@ -524,7 +524,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     style={{ backgroundColor: openColor }}
                     title={`Original: ${openColor}`}
                   />
-                  <span className="text-ds-xs text-surface-fg-muted">
+                  <span className="text-caption text-surface-fg-muted">
                     {openColor.toUpperCase()}
                   </span>
                   <span className="flex-1" />
@@ -532,7 +532,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     <button
                       type="button"
                       onClick={handleUndo}
-                      className="min-h-6 rounded-control-inner px-ds-02 py-px text-ds-xs font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
+                      className="min-h-6 rounded-control-inner px-ds-02 py-px text-caption font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
                     >
                       Undo
                     </button>
@@ -541,7 +541,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="min-h-6 rounded-control-inner px-ds-02 py-px text-ds-xs font-medium text-surface-fg-muted transition-colors hover:text-error-11"
+                      className="min-h-6 rounded-control-inner px-ds-02 py-px text-caption font-medium text-surface-fg-muted transition-colors hover:text-error-11"
                     >
                       Reset
                     </button>

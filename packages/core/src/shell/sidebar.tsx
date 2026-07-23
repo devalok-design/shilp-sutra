@@ -253,7 +253,7 @@ function NavLink({
                 <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true">
                   <IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider>
                 </span>
-                <span className="text-ds-base truncate">{item.title}</span>
+                <span className="text-body-lg truncate">{item.title}</span>
               </Link>
             </SidebarMenuButton>
             {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
@@ -318,7 +318,7 @@ function NavLink({
           className="min-w-0"
         >
           <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md shrink-0" aria-hidden="true"><IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider></span>
-          <span className="text-ds-base truncate">{item.title}</span>
+          <span className="text-body-lg truncate">{item.title}</span>
         </Link>
       </SidebarMenuButton>
       {badgeContent && <SidebarMenuBadge>{badgeContent}</SidebarMenuBadge>}
@@ -376,7 +376,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
         {/* Logo Header */}
         <SidebarHeader className="px-ds-06 py-ds-06">
           {logo ?? (
-            <span className="text-ds-lg font-semibold text-surface-fg">
+            <span className="text-heading-xs font-semibold text-surface-fg">
               Logo
             </span>
           )}
@@ -394,10 +394,10 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
               </AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col">
-              <TruncatedText className="text-ds-md text-surface-fg">
+              <TruncatedText className="text-body-md text-surface-fg">
                 {user.name ?? ''}
               </TruncatedText>
-              <TruncatedText className="text-ds-sm text-surface-fg-subtle">
+              <TruncatedText className="text-body-sm text-surface-fg-subtle">
                 {user.designation || user.role || ''}
               </TruncatedText>
             </div>
@@ -420,7 +420,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
             <div key={group.label}>
               {idx > 0 && <SidebarSeparator />}
               <SidebarGroup>
-                <SidebarGroupLabel className="px-ds-04 text-ds-sm text-surface-fg-subtle">
+                <SidebarGroupLabel className="px-ds-04 text-body-sm text-surface-fg-subtle">
                   {group.label}
                 </SidebarGroupLabel>
                 {group.action && (
@@ -487,7 +487,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
                     </span>
                   )}
                   <div className="flex min-w-0 flex-col gap-ds-03">
-                    <p className="text-ds-sm text-surface-fg line-clamp-2">{footer.promo.text}</p>
+                    <p className="text-body-sm text-surface-fg line-clamp-2">{footer.promo.text}</p>
                     {footer.promo.action && (
                       footer.promo.action.href ? (
                         <Button asChild variant="solid" size="sm" className="self-start">
@@ -516,7 +516,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
 
             {/* Links + version on same line */}
             {(footer.links?.length || footer.version) && (
-              <div className="flex items-center gap-ds-03 text-ds-sm text-surface-fg-subtle">
+              <div className="flex items-center gap-ds-03 text-body-sm text-surface-fg-subtle">
                 {footer.links?.map((link, i) => (
                   <React.Fragment key={link.href}>
                     {i > 0 && <span>·</span>}
@@ -539,7 +539,7 @@ const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
           </SidebarFooter>
         ) : footerLinks.length > 0 ? (
           <SidebarFooter className="px-ds-06 py-ds-05">
-            <div className="flex items-center gap-ds-03 text-ds-sm text-surface-fg-subtle">
+            <div className="flex items-center gap-ds-03 text-body-sm text-surface-fg-subtle">
               {footerLinks.map((link, i) => (
                 <React.Fragment key={link.href}>
                   {i > 0 && <span>·</span>}

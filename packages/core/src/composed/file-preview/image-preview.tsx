@@ -109,7 +109,7 @@ export default function ImagePreview({ url, alt, onError }: { url: string; alt?:
                   <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out (-)" title="Zoom out">
                     <Icon icon={IconZoomOut} size="sm" />
                   </Button>
-                  <span className="text-ds-xs font-mono text-surface-fg-muted w-12 text-center tabular-nums select-none">
+                  <span className="text-caption font-mono text-surface-fg-muted w-12 text-center tabular-nums select-none">
                     {zoom}%
                   </span>
                   <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in (+)" title="Zoom in">

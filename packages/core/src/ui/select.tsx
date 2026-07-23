@@ -58,10 +58,10 @@ export const selectTriggerVariants = cva(
         warning: 'border-warning-7',
       },
       size: {
-        xs: 'h-ds-xs-plus text-ds-sm px-ds-02',
-        sm: 'h-ds-sm text-ds-sm px-ds-03',
-        md: 'h-ds-md text-ds-md px-ds-04',
-        lg: 'h-ds-lg text-ds-md px-ds-05',
+        xs: 'h-ds-xs-plus text-body-sm px-ds-02',
+        sm: 'h-ds-sm text-body-sm px-ds-03',
+        md: 'h-ds-md text-body-md px-ds-04',
+        lg: 'h-ds-lg text-body-md px-ds-05',
       },
     },
     defaultVariants: { variant: 'default', state: 'default', size: 'md' },
@@ -190,7 +190,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    className={cn('px-ds-03 py-ds-02b text-ds-md font-semibold', className)}
+    className={cn('px-ds-03 py-ds-02b text-body-md font-semibold', className)}
     {...props}
   />
 ))
@@ -203,7 +203,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-control py-ds-02b pl-ds-03 pr-ds-07 text-ds-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
+      'relative flex w-full cursor-default select-none items-center rounded-control py-ds-02b pl-ds-03 pr-ds-07 text-body-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     {...props}

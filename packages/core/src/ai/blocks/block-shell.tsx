@@ -36,7 +36,7 @@ const BlockShell = React.memo(function BlockShell({
       )}
     >
       {low && (
-        <span className="absolute right-ds-03 top-ds-03 inline-flex items-center gap-1 rounded-pill bg-warning-3 px-ds-02 py-px text-ds-xs font-semibold text-warning-11">
+        <span className="absolute right-ds-03 top-ds-03 inline-flex items-center gap-1 rounded-pill bg-warning-3 px-ds-02 py-px text-body-xs font-semibold text-warning-11">
           <Icon icon={IconAlertTriangle} size="xs" aria-hidden />
           Low confidence
         </span>

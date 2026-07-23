@@ -71,8 +71,8 @@ const heightClass: Record<SplitButtonSize, string> = {
 }
 
 const textClass: Record<SplitButtonSize, string> = {
-  xs: 'text-ds-sm', sm: 'text-ds-sm', md: 'text-ds-md',
-  'icon-xs': 'text-ds-sm', 'icon-sm': 'text-ds-sm', 'icon-md': 'text-ds-md',
+  xs: 'text-body-sm', sm: 'text-body-sm', md: 'text-body-md',
+  'icon-xs': 'text-body-sm', 'icon-sm': 'text-body-sm', 'icon-md': 'text-body-md',
 }
 
 const primaryPadding: Record<SplitButtonSize, string> = {

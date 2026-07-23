@@ -121,7 +121,7 @@ const cardVariants = cva(
  * // Flat card for a sidebar panel section (no shadow):
  * <Card variant="flat">
  *   <CardContent>
- *     <p className="text-surface-fg-muted text-ds-sm">No recent activity</p>
+ *     <p className="text-surface-fg-muted text-body-sm">No recent activity</p>
  *   </CardContent>
  * </Card>
  */
@@ -201,7 +201,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('text-ds-md text-surface-fg-muted', className)}
+    className={cn('text-body-md text-surface-fg-muted', className)}
     {...props}
   />
 ))

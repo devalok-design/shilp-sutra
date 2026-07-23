@@ -25,10 +25,10 @@ const inputWrapperVariants = cva(
   {
     variants: {
       size: {
-        xs: 'h-ds-xs-plus text-ds-sm',
-        sm: 'h-ds-sm text-ds-sm',
-        md: 'h-ds-md text-ds-md',
-        lg: 'h-ds-lg text-ds-md',
+        xs: 'h-ds-xs-plus text-body-sm',
+        sm: 'h-ds-sm text-body-sm',
+        md: 'h-ds-md text-body-md',
+        lg: 'h-ds-lg text-body-md',
       },
     },
     defaultVariants: { size: 'md' },
@@ -142,10 +142,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     const labelTextMap: Record<string, string> = {
-      xs: 'text-ds-sm',
-      sm: 'text-ds-sm',
-      md: 'text-ds-sm',
-      lg: 'text-ds-md',
+      xs: 'text-body-sm',
+      sm: 'text-body-sm',
+      md: 'text-body-sm',
+      lg: 'text-body-md',
     }
 
     const inputPadding: Record<string, string> = {

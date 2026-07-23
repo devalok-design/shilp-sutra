@@ -97,7 +97,7 @@ function BottomNavLink({
         aria-label={item.title}
         aria-current={isActive ? 'page' : undefined}
         className={cn(
-          'flex h-16 w-full cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm transition-colors duration-fast-02 ease-productive-standard',
+          'flex h-16 w-full cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-body-sm transition-colors duration-fast-02 ease-productive-standard',
           isActive
             ? 'font-semibold text-accent-11'
             : 'text-surface-fg-subtle',
@@ -194,7 +194,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             }}
           >
             <div className="mb-ds-04 flex items-center justify-between">
-              <span className="text-ds-md font-semibold text-surface-fg">
+              <span className="text-body-md font-semibold text-surface-fg">
                 More
               </span>
               <button
@@ -212,7 +212,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   href={item.href}
                   onClick={() => setShowMore(false)}
                   className={cn(
-                    'flex flex-col items-center gap-ds-02b rounded-overlay-lg p-ds-04 text-ds-sm transition-colors ease-productive-standard',
+                    'flex flex-col items-center gap-ds-02b rounded-overlay-lg p-ds-04 text-body-sm transition-colors ease-productive-standard',
                     isActive(item.href, item.exact)
                       ? 'bg-surface-raised-hover text-accent-11'
                       : 'text-surface-fg-subtle hover:bg-surface-raised-hover',
@@ -258,7 +258,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             whileTap={prefersReducedMotion ? undefined : { y: -2 }}
             transition={prefersReducedMotion ? { duration: 0 } : springs.snappy}
             className={cn(
-              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-ds-sm',
+              'flex h-16 max-w-[70px] flex-1 cursor-pointer flex-col items-center gap-ds-02 p-ds-02 pt-0 text-body-sm',
               showMore || isMoreActive
                 ? 'font-semibold text-accent-11'
                 : 'text-surface-fg-subtle',

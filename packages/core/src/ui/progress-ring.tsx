@@ -15,9 +15,9 @@ const colorMap: Record<string, string> = {
 }
 
 const sizeConfig = {
-  sm: { size: 32, strokeWidth: 3, fontSize: 'text-ds-xs' },
-  md: { size: 48, strokeWidth: 3.5, fontSize: 'text-ds-sm' },
-  lg: { size: 64, strokeWidth: 4, fontSize: 'text-ds-md' },
+  sm: { size: 32, strokeWidth: 3, fontSize: 'text-body-xs' },
+  md: { size: 48, strokeWidth: 3.5, fontSize: 'text-body-sm' },
+  lg: { size: 64, strokeWidth: 4, fontSize: 'text-body-md' },
 } as const
 
 /**

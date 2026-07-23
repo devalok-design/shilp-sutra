@@ -20,7 +20,7 @@ const ErrorBlock = React.memo(function ErrorBlock({
         </div>
       </Alert>
       {data.suggestion && (
-        <p className="mt-2 text-ds-sm text-surface-fg-muted">
+        <p className="mt-2 text-body-sm text-surface-fg-muted">
           {data.suggestion}
         </p>
       )}

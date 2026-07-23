@@ -23,32 +23,32 @@
 :root {
   /* ── Heading Variants ──────────────────────── */
   --typo-heading-2xl-size:     var(--text-ds-6xl);
-  --typo-heading-2xl-weight:   var(--font-weight-regular);
+  --typo-heading-2xl-weight:   var(--font-weight-semibold);
   --typo-heading-2xl-leading:  var(--leading-ds-tight);
   --typo-heading-2xl-tracking: -0.025em;
 
   --typo-heading-xl-size:      var(--text-ds-5xl);
-  --typo-heading-xl-weight:    var(--font-weight-regular);
+  --typo-heading-xl-weight:    var(--font-weight-semibold);
   --typo-heading-xl-leading:   var(--leading-ds-tight);
   --typo-heading-xl-tracking:  -0.025em;
 
   --typo-heading-lg-size:      var(--text-ds-4xl);
-  --typo-heading-lg-weight:    var(--font-weight-regular);
+  --typo-heading-lg-weight:    var(--font-weight-semibold);
   --typo-heading-lg-leading:   var(--leading-ds-tight);
   --typo-heading-lg-tracking:  -0.02em;
 
   --typo-heading-md-size:      var(--text-ds-3xl);
-  --typo-heading-md-weight:    var(--font-weight-regular);
+  --typo-heading-md-weight:    var(--font-weight-semibold);
   --typo-heading-md-leading:   var(--leading-ds-tight);
   --typo-heading-md-tracking:  -0.02em;
 
   --typo-heading-sm-size:      var(--text-ds-2xl);
-  --typo-heading-sm-weight:    var(--font-weight-regular);
+  --typo-heading-sm-weight:    var(--font-weight-semibold);
   --typo-heading-sm-leading:   var(--leading-ds-snug);
   --typo-heading-sm-tracking:  -0.015em;
 
   --typo-heading-xs-size:      var(--text-ds-xl);
-  --typo-heading-xs-weight:    var(--font-weight-regular);
+  --typo-heading-xs-weight:    var(--font-weight-semibold);
   --typo-heading-xs-leading:   var(--leading-ds-snug);
   --typo-heading-xs-tracking:  0;
 

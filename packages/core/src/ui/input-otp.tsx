@@ -15,9 +15,9 @@ type InputOTPSize = 'sm' | 'md' | 'lg'
 const InputOTPSizeContext = React.createContext<InputOTPSize>('md')
 
 const slotSizeClasses: Record<InputOTPSize, string> = {
-  sm: 'h-ds-sm w-ds-sm text-ds-sm',
-  md: 'h-ds-sm-plus w-ds-sm-plus text-ds-md',
-  lg: 'h-ds-md w-ds-md text-ds-lg',
+  sm: 'h-ds-sm w-ds-sm text-body-sm',
+  md: 'h-ds-sm-plus w-ds-sm-plus text-body-md',
+  lg: 'h-ds-md w-ds-md text-heading-xs',
 }
 
 // ── InputOTP ────────────────────────────────────────────────────────

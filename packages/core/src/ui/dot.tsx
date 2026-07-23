@@ -84,10 +84,10 @@ const dotVariants = cva('relative inline-flex shrink-0 rounded-pill', {
 })
 
 const labelTextSize: Record<DotSize, string> = {
-  xs: 'text-ds-xs',
-  sm: 'text-ds-xs',
-  md: 'text-ds-sm',
-  lg: 'text-ds-sm',
+  xs: 'text-body-xs',
+  sm: 'text-body-xs',
+  md: 'text-body-sm',
+  lg: 'text-body-sm',
 }
 
 /**

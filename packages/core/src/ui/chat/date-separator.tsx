@@ -35,7 +35,7 @@ function DateSeparator({ date, format, className }: DateSeparatorProps) {
   return (
     <div className={cn('flex items-center gap-ds-03 py-ds-03', className)}>
       <div className="flex-1 border-t border-surface-border-subtle" />
-      <span className="text-ds-xs font-medium text-surface-fg-subtle/50 uppercase tracking-wider">
+      <span className="text-label-xs font-medium text-surface-fg-subtle/50 uppercase tracking-wider">
         {label}
       </span>
       <div className="flex-1 border-t border-surface-border-subtle" />

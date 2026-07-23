@@ -206,7 +206,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
 
   // Compact time selector styles
   const selectBase =
-    'h-ds-sm rounded-control border border-surface-border-strong bg-surface-overlay px-ds-02 text-ds-md text-surface-fg transition-colors duration-fast-01 ease-productive-standard hover:border-surface-border-strong focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 cursor-pointer appearance-none'
+    'h-ds-sm rounded-control border border-surface-border-strong bg-surface-overlay px-ds-02 text-body-md text-surface-fg transition-colors duration-fast-01 ease-productive-standard hover:border-surface-border-strong focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 cursor-pointer appearance-none'
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -226,7 +226,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
           <Icon icon={IconCalendarClock} size="sm" stroke="light" className="text-surface-fg-subtle" />
           <span
             className={cn(
-              'text-ds-md',
+              'text-body-md',
               displayText
                 ? 'text-surface-fg'
                 : 'text-surface-fg-subtle',
@@ -248,7 +248,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
           {/* Time selection row */}
           {view === 'days' && (
             <div className="flex items-center gap-ds-02 border-t border-surface-border-strong pt-ds-04">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+              <span className="text-label-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                 Time
               </span>
 
@@ -267,7 +267,7 @@ const DateTimePicker = React.forwardRef<HTMLButtonElement, DateTimePickerProps>(
                 ))}
               </select>
 
-              <span className="text-ds-md font-semibold text-surface-fg-subtle">
+              <span className="text-body-md font-semibold text-surface-fg-subtle">
                 :
               </span>
 

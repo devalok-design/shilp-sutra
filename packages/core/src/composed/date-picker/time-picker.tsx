@@ -165,7 +165,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
     'flex flex-col gap-ds-01 overflow-y-auto max-h-[200px] px-ds-01'
 
   const itemBase =
-    'flex h-ds-sm w-full items-center justify-center rounded-control text-ds-md transition-colors duration-fast-01 ease-productive-standard cursor-pointer'
+    'flex h-ds-sm w-full items-center justify-center rounded-control text-body-md transition-colors duration-fast-01 ease-productive-standard cursor-pointer'
   const itemSelected =
     'bg-accent-9 text-accent-fg'
   const itemDefault =
@@ -191,7 +191,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           <Icon icon={IconClock} size="sm" stroke="light" className="text-surface-fg-subtle" />
           <span
             className={cn(
-              'text-ds-md',
+              'text-body-md',
               displayText
                 ? 'text-surface-fg'
                 : 'text-surface-fg-subtle',
@@ -209,7 +209,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
         <div className="flex gap-ds-03" role="group" aria-label="Time picker">
           {/* Hours column */}
           <div className="flex flex-col items-center gap-ds-02">
-            <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+            <span className="text-caption font-medium text-surface-fg-subtle">
               Hr
             </span>
             <div className={cn(columnClass, 'min-w-ds-09')}>
@@ -233,7 +233,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
 
           {/* Minutes column */}
           <div className="flex flex-col items-center gap-ds-02">
-            <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+            <span className="text-caption font-medium text-surface-fg-subtle">
               Min
             </span>
             <div className={cn(columnClass, 'min-w-ds-09')}>
@@ -258,7 +258,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           {/* Seconds column */}
           {showSeconds && (
             <div className="flex flex-col items-center gap-ds-02">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+              <span className="text-caption font-medium text-surface-fg-subtle">
                 Sec
               </span>
               <div className={cn(columnClass, 'min-w-ds-09')}>
@@ -284,7 +284,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
           {/* AM/PM toggle for 12h format */}
           {timeFormat === '12h' && (
             <div className="flex flex-col items-center gap-ds-02">
-              <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+              <span className="text-caption font-medium text-surface-fg-subtle">
                 &nbsp;
               </span>
               <div className="flex flex-col gap-ds-01 px-ds-01">

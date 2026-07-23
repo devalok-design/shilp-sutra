@@ -130,14 +130,14 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
         {/* Error IconInfoCircle */}
         <div className="flex flex-col gap-ds-03">
           {status && (
-            <span className="text-ds-sm text-surface-fg-subtle">
+            <span className="text-body-sm text-surface-fg-subtle">
               Error {status}
             </span>
           )}
-          <h2 className="text-ds-2xl font-semibold text-surface-fg">
+          <h2 className="text-heading-md font-semibold text-surface-fg">
             {errorConfig.title}
           </h2>
-          <p className="text-ds-base text-surface-fg-subtle">
+          <p className="text-body-lg text-surface-fg-subtle">
             {message || errorConfig.message}
           </p>
         </div>
@@ -157,11 +157,11 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
 
         {/* Dev stack trace */}
         {isDev && stack && (
-          <div className="w-full overflow-auto rounded-surface border border-surface-border-strong bg-surface-raised p-ds-05 text-left">
-            <p className="text-ds-sm mb-ds-03 font-semibold text-surface-fg">
+          <div className="w-full overflow-auto rounded-surface border border-card-strong bg-surface-raised p-ds-05 text-left">
+            <p className="text-body-sm mb-ds-03 font-semibold text-surface-fg">
               Stack Trace (development only)
             </p>
-            <pre className="whitespace-pre-wrap text-ds-sm text-surface-fg-subtle">
+            <pre className="whitespace-pre-wrap text-body-sm text-surface-fg-subtle">
               {stack}
             </pre>
           </div>

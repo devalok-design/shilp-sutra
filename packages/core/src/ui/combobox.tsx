@@ -33,10 +33,10 @@ export const comboboxTriggerVariants = cva(
   {
     variants: {
       size: {
-        xs: 'h-ds-xs-plus text-ds-sm px-ds-02',
-        sm: 'h-ds-sm text-ds-sm px-ds-03',
-        md: 'h-ds-md text-ds-md px-ds-04',
-        lg: 'h-ds-lg text-ds-md px-ds-05',
+        xs: 'h-ds-xs-plus text-body-sm px-ds-02',
+        sm: 'h-ds-sm text-body-sm px-ds-03',
+        md: 'h-ds-md text-body-md px-ds-04',
+        lg: 'h-ds-lg text-body-md px-ds-05',
       },
     },
     defaultVariants: { size: 'md' },
@@ -55,18 +55,18 @@ const iconSizeMap: Record<NonNullable<ComboboxSize>, IconSize> = {
 
 /** Maps combobox size to pill text + padding classes */
 const pillSizeMap: Record<NonNullable<ComboboxSize>, string> = {
-  xs: 'px-ds-02 py-0 text-ds-xs',
-  sm: 'px-ds-02 py-0 text-ds-xs',
-  md: 'px-ds-03 py-[1px] text-ds-sm',
-  lg: 'px-ds-03 py-[2px] text-ds-sm',
+  xs: 'px-ds-02 py-0 text-body-xs',
+  sm: 'px-ds-02 py-0 text-body-xs',
+  md: 'px-ds-03 py-[1px] text-body-sm',
+  lg: 'px-ds-03 py-[2px] text-body-sm',
 }
 
 /** Maps combobox size to overflow text classes */
 const overflowTextMap: Record<NonNullable<ComboboxSize>, string> = {
-  xs: 'text-ds-xs',
-  sm: 'text-ds-xs',
-  md: 'text-ds-sm',
-  lg: 'text-ds-sm',
+  xs: 'text-body-xs',
+  sm: 'text-body-xs',
+  md: 'text-body-sm',
+  lg: 'text-body-sm',
 }
 
 /**
@@ -476,7 +476,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                     <input
                       ref={searchInputRef}
                       type="text"
-                      className="flex-1 bg-transparent py-ds-03 text-ds-md outline-hidden placeholder:text-surface-fg-subtle"
+                      className="flex-1 bg-transparent py-ds-03 text-body-md outline-hidden placeholder:text-surface-fg-subtle"
                       placeholder={searchPlaceholder}
                       value={search}
                       onChange={(e) => {
@@ -497,7 +497,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
 
                   {/* Options list */}
                   {filteredOptions.length === 0 ? (
-                    <div className="px-ds-04 py-ds-05 text-center text-ds-md text-surface-fg-subtle">
+                    <div className="px-ds-04 py-ds-05 text-center text-body-md text-surface-fg-subtle">
                       {emptyMessage}
                     </div>
                   ) : (
@@ -519,7 +519,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                             aria-selected={selected}
                             aria-disabled={option.disabled || undefined}
                             className={cn(
-                              'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-control px-ds-04 py-ds-03 text-ds-md outline-hidden',
+                              'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-control px-ds-04 py-ds-03 text-body-md outline-hidden',
                               'transition-colors duration-fast-01 ease-productive-standard',
                               highlightedIndex === index &&
                                 'bg-accent-2',
@@ -558,7 +558,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
                                 <>
                                   <span>{option.label}</span>
                                   {option.description && (
-                                    <span className="text-ds-sm text-surface-fg-muted">
+                                    <span className="text-body-sm text-surface-fg-muted">
                                       {option.description}
                                     </span>
                                   )}

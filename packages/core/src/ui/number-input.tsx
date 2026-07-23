@@ -48,10 +48,10 @@ const iconSizeMap: Record<NonNullable<NumberInputSize>, IconSize> = {
 
 /** Maps size to input text and width classes */
 const inputSizeMap: Record<NonNullable<NumberInputSize>, string> = {
-  xs: 'text-ds-sm w-ds-06b',
-  sm: 'text-ds-sm w-ds-sm-plus',
-  md: 'text-ds-md w-ds-sm-plus',
-  lg: 'text-ds-md w-ds-md',
+  xs: 'text-body-sm w-ds-06b',
+  sm: 'text-body-sm w-ds-sm-plus',
+  md: 'text-body-md w-ds-sm-plus',
+  lg: 'text-body-md w-ds-md',
 }
 
 /** Maps state to border color classes */

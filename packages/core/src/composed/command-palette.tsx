@@ -368,14 +368,14 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
               aria-activedescendant={filteredItems[activeIndex] ? `command-item-${instanceId}-${filteredItems[activeIndex].id}` : undefined}
               aria-autocomplete="list"
               className={cn(
-                'flex-1 bg-transparent text-ds-base text-surface-fg outline-hidden',
+                'flex-1 bg-transparent text-body-lg text-surface-fg outline-hidden',
                 'placeholder:text-surface-fg-subtle',
               )}
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
             />
-            <kbd className="hidden shrink-0 select-none rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex">
+            <kbd className="hidden shrink-0 select-none rounded-control border border-card-strong bg-surface-raised px-ds-02b py-ds-01 text-body-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex">
               Esc
             </kbd>
           </div>
@@ -397,7 +397,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                 className="flex items-center justify-center py-ds-07"
               >
                 {emptyState ?? (
-                  <p className="text-ds-md text-surface-fg-subtle">
+                  <p className="text-body-md text-surface-fg-subtle">
                     {emptyMessage}
                   </p>
                 )}
@@ -413,7 +413,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                 className="mb-ds-02"
               >
                 <div className="px-ds-03 pb-ds-02 pt-ds-03">
-                  <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+                  <span className="text-label-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
                     {group.label}
                   </span>
                 </div>
@@ -456,11 +456,11 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                         </span>
                       )}
                       <div className="flex min-w-0 flex-1 flex-col">
-                        <span className="truncate text-ds-md">
+                        <span className="truncate text-body-md">
                           {item.renderLabel ? item.renderLabel(query) : item.label}
                         </span>
                         {item.description && (
-                          <span className="line-clamp-1 text-ds-sm text-surface-fg-subtle">
+                          <span className="line-clamp-1 text-body-sm text-surface-fg-subtle">
                             {item.description}
                           </span>
                         )}
@@ -471,7 +471,7 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                             <kbd
                               key={i}
                               className={cn(
-                                'inline-flex min-w-ds-05b items-center justify-center rounded border px-ds-02b py-ds-01 text-ds-xs font-medium shadow-kbd transition-colors duration-fast-02 ease-productive-standard',
+                                'inline-flex min-w-ds-05b items-center justify-center rounded border px-ds-02b py-ds-01 text-body-xs font-medium shadow-kbd transition-colors duration-fast-02 ease-productive-standard',
                                 isActive
                                   ? 'bg-accent-2 text-accent-11 border-accent-6'
                                   : 'bg-surface-raised text-surface-fg-subtle border-surface-border-strong',
@@ -514,23 +514,23 @@ const CommandPalette = React.forwardRef<HTMLDivElement, CommandPaletteProps>(
                 <div key={i} className="flex items-center gap-ds-02b">
                   {hint.keys === '↑↓' ? (
                     <div className="flex items-center gap-ds-01">
-                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-kbd">
+                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-card-strong bg-surface-raised shadow-kbd">
                         <Icon icon={IconArrowUp} size="xs" className="text-surface-fg-subtle" />
                       </kbd>
-                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-surface-border-strong bg-surface-raised shadow-kbd">
+                      <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-card-strong bg-surface-raised shadow-kbd">
                         <Icon icon={IconArrowDown} size="xs" className="text-surface-fg-subtle" />
                       </kbd>
                     </div>
                   ) : hint.keys === '↵' ? (
-                    <kbd className="inline-flex h-ds-05b items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b shadow-kbd">
+                    <kbd className="inline-flex h-ds-05b items-center justify-center rounded-control border border-card-strong bg-surface-raised px-ds-02b shadow-kbd">
                       <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                   ) : (
-                    <kbd className="inline-flex h-ds-05b items-center justify-center rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b text-ds-xs font-medium text-surface-fg-subtle shadow-kbd">
+                    <kbd className="inline-flex h-ds-05b items-center justify-center rounded-control border border-card-strong bg-surface-raised px-ds-02b text-caption font-medium text-surface-fg-subtle shadow-kbd">
                       {hint.keys}
                     </kbd>
                   )}
-                  <span className="text-ds-xs text-surface-fg-subtle">
+                  <span className="text-caption text-surface-fg-subtle">
                     {hint.label}
                   </span>
                 </div>

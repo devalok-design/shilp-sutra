@@ -93,7 +93,7 @@ function AgentHeader({
   return (
     <div className="flex items-center gap-ds-02b mb-ds-03">
       {icon && <span className="h-4 w-4 flex items-center justify-center"><IconProvider size="sm">{normalizeIcon(icon)}</IconProvider></span>}
-      <span className="text-ds-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
+      <span className="text-label-xs font-semibold uppercase tracking-wider text-surface-fg-subtle">
         {name}
       </span>
     </div>
@@ -112,7 +112,7 @@ function UserMessage({
   if (reducedMotion) {
     return (
       <div className="bg-surface-raised rounded-surface px-ds-05 py-ds-04">
-        <p className="text-ds-sm text-surface-fg">{message.content}</p>
+        <p className="text-body-sm text-surface-fg">{message.content}</p>
       </div>
     )
   }
@@ -124,7 +124,7 @@ function UserMessage({
       animate={{ opacity: 1, y: 0 }}
       transition={springs.snappy}
     >
-      <p className="text-ds-sm text-surface-fg">{message.content}</p>
+      <p className="text-body-sm text-surface-fg">{message.content}</p>
     </motion.div>
   )
 }
@@ -188,7 +188,7 @@ function ProcessingIndicator({
               <StepStatusIcon status={step.status} />
               <span
                 className={cn(
-                  'text-ds-sm',
+                  'text-body-sm',
                   step.status === 'pending'
                     ? 'text-surface-fg-subtle'
                     : 'text-surface-fg',
@@ -226,7 +226,7 @@ function ProcessingIndicator({
               }}
             />
           ))}
-        <span className="ml-ds-02b text-ds-sm text-surface-fg-subtle">
+        <span className="ml-ds-02b text-body-sm text-surface-fg-subtle">
           {agent.name} is thinking...
         </span>
       </div>
@@ -241,7 +241,7 @@ function ScrollToBottomPill({ onClick }: { onClick: () => void }) {
     <motion.button
       role="button"
       aria-label="Scroll to latest response"
-      className="absolute bottom-ds-04 left-1/2 -translate-x-1/2 z-10 flex items-center gap-ds-02 bg-accent-9 text-accent-fg text-ds-xs font-medium rounded-pill px-ds-04 py-ds-02 shadow-floating"
+      className="absolute bottom-ds-04 left-1/2 -translate-x-1/2 z-10 flex items-center gap-ds-02 bg-accent-9 text-accent-fg text-body-xs font-medium rounded-pill px-ds-04 py-ds-02 shadow-floating"
       initial={{ y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}

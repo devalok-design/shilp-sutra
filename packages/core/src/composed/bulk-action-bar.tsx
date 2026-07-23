@@ -58,7 +58,7 @@ const ActionButton = React.forwardRef<HTMLDivElement, { action: BulkActionBarAct
         className="flex items-center gap-ds-02"
         tabIndex={tabIndex}
       >
-        <span className="text-ds-sm text-surface-fg-muted whitespace-nowrap">
+        <span className="text-body-sm text-surface-fg-muted whitespace-nowrap">
           {action.confirmMessage ?? 'Are you sure?'}
         </span>
         <Button

@@ -57,7 +57,7 @@ export const YearPicker = React.forwardRef<HTMLDivElement, YearPickerProps>(
 
   return (
     <div ref={ref} {...props} className={cn("w-[252px]", className)}>
-      <div className="text-center pb-ds-04 text-ds-md font-semibold text-surface-fg">
+      <div className="text-center pb-ds-04 text-body-md font-semibold text-surface-fg">
         {startYear} &ndash; {startYear + 11}
       </div>
       <div role="grid" aria-label="Year picker" tabIndex={-1} onKeyDown={handleKeyDown}>
@@ -78,7 +78,7 @@ export const YearPicker = React.forwardRef<HTMLDivElement, YearPickerProps>(
                   disabled={isDisabled || false}
                   onClick={() => !isDisabled && onYearSelect(year)}
                   className={cn(
-                    'h-ds-sm-plus rounded-control text-ds-md transition-colors focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+                    'h-ds-sm-plus rounded-control text-body-md transition-colors focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
                     isDisabled && 'opacity-action-disabled pointer-events-none cursor-not-allowed',
                     isSelected &&
                       'bg-accent-9 text-accent-fg',

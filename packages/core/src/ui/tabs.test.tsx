@@ -56,7 +56,7 @@ describe('Tabs', () => {
       const list = screen.getByTestId('list')
       expect(list.className).toContain('h-8')
       const trigger = screen.getByRole('tab', { name: 'Tab One' })
-      expect(trigger.className).toContain('text-ds-xs')
+      expect(trigger.className).toContain('text-body-xs')
     })
 
     it('applies md size classes by default', () => {
@@ -71,7 +71,7 @@ describe('Tabs', () => {
       const list = screen.getByTestId('list')
       expect(list.className).toContain('h-10')
       const trigger = screen.getByRole('tab', { name: 'Tab One' })
-      expect(trigger.className).toContain('text-ds-sm')
+      expect(trigger.className).toContain('text-body-sm')
     })
 
     it('applies lg size classes to list and triggers', () => {
@@ -86,7 +86,7 @@ describe('Tabs', () => {
       const list = screen.getByTestId('list')
       expect(list.className).toContain('h-12')
       const trigger = screen.getByRole('tab', { name: 'Tab One' })
-      expect(trigger.className).toContain('text-ds-md')
+      expect(trigger.className).toContain('text-body-md')
     })
   })
 

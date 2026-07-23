@@ -35,7 +35,7 @@ const BUILT_IN_BLOCKS: Record<string, React.ComponentType<BlockComponentProps<an
 function FallbackBlock({ data, type }: { data: Record<string, unknown>; type: string }) {
   return (
     <Alert color="info" variant="subtle" title={`Unknown block type: ${type}`}>
-      <pre className="mt-2 text-ds-xs whitespace-pre-wrap">
+      <pre className="mt-2 text-body-xs whitespace-pre-wrap">
         {JSON.stringify(data, null, 2)}
       </pre>
     </Alert>

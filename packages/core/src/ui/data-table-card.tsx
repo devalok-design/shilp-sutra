@@ -122,7 +122,7 @@ export function DataTableCards<TData>({
                       : cell.column.id
 
                   return (
-                    <div key={cell.id} className="flex justify-between gap-ds-03 text-ds-sm">
+                    <div key={cell.id} className="flex justify-between gap-ds-03 text-body-sm">
                       <span className="shrink-0 text-surface-fg-muted">{header}</span>
                       <span className="min-w-0 text-right text-surface-fg">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -222,7 +222,7 @@ const ProgressLabel = React.forwardRef<HTMLSpanElement, ProgressLabelProps>(
     return (
       <span
         ref={ref}
-        className={cn('shrink-0 text-ds-sm font-medium text-surface-fg', className)}
+        className={cn('shrink-0 text-body-sm font-medium text-surface-fg', className)}
         {...props}
       />
     )
@@ -247,7 +247,7 @@ const ProgressValue = React.forwardRef<HTMLSpanElement, ProgressValueProps>(
     return (
       <span
         ref={ref}
-        className={cn('shrink-0 text-ds-xs text-surface-fg-muted tabular-nums', className)}
+        className={cn('shrink-0 text-caption text-surface-fg-muted tabular-nums', className)}
         {...props}
       >
         {children ?? (indeterminate ? '' : format ? format(pct, value, max) : `${Math.round(pct)}%`)}

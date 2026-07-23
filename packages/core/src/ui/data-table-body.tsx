@@ -63,7 +63,7 @@ function CellEditInput({
       className={cn(
         'h-ds-xs-plus w-full rounded-control',
         'border border-accent-7 bg-surface-raised-hover',
-        'px-ds-02 text-ds-sm',
+        'px-ds-02 text-body-sm',
         'text-surface-fg placeholder:text-surface-fg-subtle',
         'outline-hidden focus:border-accent-7',
       )}

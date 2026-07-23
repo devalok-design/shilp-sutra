@@ -414,7 +414,7 @@ const ResponsiveModalTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn('text-ds-lg font-semibold text-surface-fg', className)}
+    className={cn('text-heading-xs font-semibold text-surface-fg', className)}
     {...props}
   />
 ))
@@ -426,7 +426,7 @@ const ResponsiveModalDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn('text-ds-md text-surface-fg-muted', className)}
+    className={cn('text-body-md text-surface-fg-muted', className)}
     {...props}
   />
 ))

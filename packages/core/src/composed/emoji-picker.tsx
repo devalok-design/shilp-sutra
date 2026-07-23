@@ -78,14 +78,14 @@ function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
       <div className="p-ds-03">
         <Frimousse.Search
           placeholder="Search emoji…"
-          className="w-full rounded-control bg-surface-raised px-ds-03 py-ds-02b text-ds-sm text-surface-fg placeholder:text-surface-fg-subtle focus-ring"
+          className="w-full rounded-control bg-surface-raised px-ds-03 py-ds-02b text-body-sm text-surface-fg placeholder:text-surface-fg-subtle focus-ring"
         />
       </div>
       <Frimousse.Viewport className="relative flex-1 overflow-y-auto">
-        <Frimousse.Loading className="absolute inset-0 flex items-center justify-center text-ds-sm text-surface-fg-muted">
+        <Frimousse.Loading className="absolute inset-0 flex items-center justify-center text-body-sm text-surface-fg-muted">
           Loading…
         </Frimousse.Loading>
-        <Frimousse.Empty className="absolute inset-0 flex items-center justify-center text-ds-sm text-surface-fg-muted">
+        <Frimousse.Empty className="absolute inset-0 flex items-center justify-center text-body-sm text-surface-fg-muted">
           No emoji found.
         </Frimousse.Empty>
         <Frimousse.List
@@ -93,7 +93,7 @@ function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
           components={{
             CategoryHeader: ({ category, ...props }) => (
               <div
-                className="bg-surface-overlay px-ds-03 pb-ds-01 pt-ds-03 text-ds-xs font-medium text-surface-fg-muted"
+                className="bg-surface-overlay px-ds-03 pb-ds-01 pt-ds-03 text-caption font-medium text-surface-fg-muted"
                 {...props}
               >
                 {category.label}
@@ -126,12 +126,12 @@ function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
         <Frimousse.ActiveEmoji>
           {({ emoji }) =>
             emoji ? (
-              <span className="flex min-w-0 items-center gap-ds-02 text-ds-sm text-surface-fg-muted">
+              <span className="flex min-w-0 items-center gap-ds-02 text-body-sm text-surface-fg-muted">
                 <span className="text-[1.375rem] leading-none">{emoji.emoji}</span>
                 <span className="truncate">{emoji.label}</span>
               </span>
             ) : (
-              <span className="text-ds-sm text-surface-fg-subtle">Pick an emoji…</span>
+              <span className="text-body-sm text-surface-fg-subtle">Pick an emoji…</span>
             )
           }
         </Frimousse.ActiveEmoji>

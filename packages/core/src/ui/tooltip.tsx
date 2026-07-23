@@ -96,7 +96,7 @@ const TooltipContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95, ...slideInit }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                'z-tooltip overflow-hidden rounded-overlay-sm bg-surface-inverted px-ds-04 py-ds-02b text-ds-sm text-surface-inverted-fg shadow-floating',
+                'z-tooltip overflow-hidden rounded-overlay-sm bg-surface-inverted px-ds-04 py-ds-02b text-body-sm text-surface-inverted-fg shadow-floating',
                 className,
               )}
             >

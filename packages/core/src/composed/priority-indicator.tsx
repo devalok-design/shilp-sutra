@@ -133,7 +133,7 @@ const PriorityIndicator = React.forwardRef<HTMLDivElement, PriorityIndicatorProp
             <Icon icon={PriorityIcon} size="sm" className={config.color} />
           </div>
         )}
-        <span className="text-ds-sm text-surface-fg-muted">
+        <span className="text-body-sm text-surface-fg-muted">
           {config.label}
         </span>
       </div>

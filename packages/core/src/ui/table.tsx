@@ -44,7 +44,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
         className={cn(
           // overflow-x-clip contains TableRowLink's 100vw stretch pseudo-element
           // without creating a horizontal scrollbar (the wrapper owns scrolling).
-          "w-full caption-bottom text-ds-md overflow-x-clip [--table-edge:var(--card-spacing,var(--spacing-ds-04))]",
+          "w-full caption-bottom text-body-md overflow-x-clip [--table-edge:var(--card-spacing,var(--spacing-ds-04))]",
           densityClasses[density],
           striped && "[&_tbody_tr:nth-child(even)]:bg-surface-base",
           className,
@@ -127,7 +127,7 @@ const TableHead = React.forwardRef<
     className={cn(
       // Header is quieter than the data: one step smaller, medium, muted.
       // Height tracks density via the same --table-py the body cells read.
-      "py-(--table-py) px-ds-04 first:pl-(--table-edge) last:pr-(--table-edge) text-left align-middle text-ds-sm font-medium text-surface-fg-muted [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+      "py-(--table-py) px-ds-04 first:pl-(--table-edge) last:pr-(--table-edge) text-left align-middle text-body-sm font-medium text-surface-fg-muted [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
       numeric && "text-right",
       className,
     )}
@@ -200,7 +200,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-ds-05 text-ds-md text-surface-fg-muted", className)}
+    className={cn("mt-ds-05 text-body-md text-surface-fg-muted", className)}
     {...props}
   />
 ))

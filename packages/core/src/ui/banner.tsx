@@ -10,7 +10,7 @@ import { motionProps,springs } from './lib/motion'
 import { cn } from './lib/utils'
 
 const bannerVariants = cva(
-  'flex flex-wrap items-center gap-ds-04 px-ds-06 py-ds-04 text-ds-md font-medium border-b',
+  'flex flex-wrap items-center gap-ds-04 px-ds-06 py-ds-04 text-body-md font-medium border-b',
   {
     variants: {
       color: {

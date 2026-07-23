@@ -21,9 +21,9 @@ const toggleVariants = cva(
           'border border-surface-border-strong bg-transparent hover:bg-surface-raised-hover hover:border-surface-border-strong',
       },
       size: {
-        sm: 'h-ds-sm px-ds-03 text-ds-sm',
-        md: 'h-ds-md px-ds-04 text-ds-md',
-        lg: 'h-ds-lg px-ds-05 text-ds-base',
+        sm: 'h-ds-sm px-ds-03 text-body-sm',
+        md: 'h-ds-md px-ds-04 text-body-md',
+        lg: 'h-ds-lg px-ds-05 text-body-lg',
       },
       color: {
         accent: 'data-[state=on]:bg-accent-2 data-[state=on]:text-accent-11',

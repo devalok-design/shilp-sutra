@@ -213,7 +213,7 @@ const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePickerProps
           <Icon icon={IconCalendarEvent} size="sm" stroke="light" className="text-surface-fg-subtle" />
           <span
             className={cn(
-              'text-ds-md',
+              'text-body-md',
               rangeStart && rangeEnd
                 ? 'text-surface-fg'
                 : 'text-surface-fg-subtle',

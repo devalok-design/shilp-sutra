@@ -60,7 +60,7 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
             aria-selected={index === selectedIndex}
             onClick={() => command(item)}
             className={cn(
-              'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left text-ds-sm',
+              'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left text-body-sm',
               index === selectedIndex ? 'bg-surface-raised text-surface-fg' : 'text-surface-fg-muted hover:bg-surface-raised',
             )}
           >

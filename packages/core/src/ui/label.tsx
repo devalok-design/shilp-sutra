@@ -24,7 +24,7 @@ const Label = React.forwardRef<
       ref={ref}
       htmlFor={resolvedHtmlFor}
       className={cn(
-        'font-sans text-ds-md font-medium text-surface-fg leading-none transition-opacity duration-fast-01 ease-productive-standard peer-disabled:opacity-action-disabled',
+        'font-sans text-body-md font-medium text-surface-fg leading-none transition-opacity duration-fast-01 ease-productive-standard peer-disabled:opacity-action-disabled',
         className,
       )}
       {...props}

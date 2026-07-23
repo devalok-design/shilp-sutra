@@ -29,12 +29,14 @@ const TARGETS = ['packages/mcp-server/README.md', 'AGENTS.md']
 // here still appears under "Other" AND the generator warns — so completeness is
 // guaranteed even if someone forgets to categorise a new tool.
 const CATEGORY = {
+  how_to_use: 'Reference',
   find_component: 'Reference', get_component: 'Reference', get_tokens: 'Reference',
   get_setup: 'Reference', upgrade: 'Reference', search_docs: 'Reference',
   detect_framework: 'Setup', preflight: 'Setup', validate_snippet: 'Setup', verify_setup: 'Setup',
+  check_slop: 'Quality',
   report_issue: 'Write',
 }
-const ORDER = ['Reference', 'Setup', 'Write', 'Other']
+const ORDER = ['Reference', 'Setup', 'Quality', 'Write', 'Other']
 
 function firstSentence(desc) {
   const s = desc.replace(/\s+/g, ' ').trim()

@@ -175,12 +175,13 @@ This complements the static `llms.txt` router + `mcp-manifest.json` with interac
 
 ## Hosted Docs MCP (`packages/mcp-server`, live at `https://shilp-sutra.devalok.in/mcp`)
 
-Serves version-exact docs from published npm tarballs. **11 tools** (spec: `docs/specs/mcp-manifest-standard.md`):
-- Reference: `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`
+Serves version-exact docs from published npm tarballs. **13 tools** (spec: `docs/specs/mcp-manifest-standard.md`):
+- Reference: `how_to_use` (self-teaching bootstrap — tool map + sequences), `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`
 - Setup journey (0.47+): `detect_framework`, `preflight`, `validate_snippet`, `verify_setup` — close the peer-dep-cliff, TW4-dead-class, wrong-recipe, mis-wired-config traps. `preflight`/`verify_setup` read the manifest's per-component `peers` field.
+- Quality (0.50+): `check_slop` — deterministic pre-emit design-quality gate. Amalgamated corpus (`slop-corpus.json`) + guidance (`slop-guidance.json`, incl. a versioned snapshot of Setu's universal principles + a one-line Setu growth pointer). Returns findings + strengths + DO-guidance; escape `// slop-allow: <id> <reason>`. Version-independent (no tarball). Complements `validate_snippet` (correctness) with design quality.
 - Write: `report_issue` (files a public agent-feedback issue).
 
-Manifest emitter (`build-mcp-manifest.mjs`) attaches structured `peers[]` per component (mirrors the recipe optional-peer table; a build advisory flags drift). Smoke: `packages/mcp-server/scripts/smoke.mjs` covers all 11 (runs in CI on any MCP-relevant change).
+Tool list is GENERATED into README/AGENTS via `scripts/generate-tool-list.mjs` (`<!-- BEGIN:mcp-tools -->` markers; drift gate) — add new tools to its `CATEGORY` map. Manifest emitter (`build-mcp-manifest.mjs`) attaches structured `peers[]` per component. Smoke: `packages/mcp-server/scripts/smoke.mjs` covers all 13 (runs in CI on any MCP-relevant change).
 
 ## CI: Turborepo remote cache (0.47+)
 

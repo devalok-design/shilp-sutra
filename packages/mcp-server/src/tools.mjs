@@ -9,11 +9,19 @@
  * - versions below the 0.45 floor get a guidance redirect, except `upgrade`
  */
 
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { getDocs } from './registry.mjs'
 import * as github from './github.mjs'
 
 const FLOOR = '0.45.0'
 const MAX_CHARS = 20_000
+
+const HERE = dirname(fileURLToPath(import.meta.url))
+const SLOP_CORPUS = JSON.parse(readFileSync(join(HERE, 'slop-corpus.json'), 'utf8'))
+const SLOP_GUIDANCE = JSON.parse(readFileSync(join(HERE, 'slop-guidance.json'), 'utf8'))
 
 function cmpSemver(a, b) {
   const pa = a.split('-')[0].split('.').map(Number)
@@ -648,5 +656,104 @@ export async function reportIssue(args, ctx = {}) {
   return (
     `Filed issue #${created.number}: ${created.html_url}\n\n` +
     'A maintainer will triage it (label `needs-triage`). Thanks — this feedback improves the design system.'
+  )
+}
+
+// ── check_slop ──────────────────────────────────────────────────────────────
+// Deterministic design-quality gate. Runs the amalgamated corpus (slop-corpus.json)
+// over the code an agent is about to emit; returns anti-patterns (findings), good
+// practice detected (strengths), and the DO-side (guidance). No LLM, no version.
+export async function checkSlop({ code }) {
+  if (!code || !String(code).trim()) {
+    return 'Pass `code` — the component source you are about to write. Returns anti-slop findings + strengths detected + design guidance.'
+  }
+  const src = String(code)
+  const lines = src.split('\n')
+  const allowed = (line, id) => {
+    const m = line && line.match(/\/\/\s*slop-allow:\s*([\w-]+)/)
+    return !!m && m[1] === id
+  }
+  const findings = []
+  for (const rule of SLOP_CORPUS.rules) {
+    if (rule.kind === 'count') {
+      const re = new RegExp(rule.pattern)
+      let hits = 0
+      for (const l of lines) if (re.test(l)) hits++
+      if (hits >= (rule.threshold ?? 2)) {
+        findings.push({ id: rule.id, severity: rule.severity, category: rule.category, count: hits, message: rule.message, fix: rule.fix, source: rule.source })
+      }
+    } else if (rule.kind === 'presence-without') {
+      if (new RegExp(rule.pattern).test(src) && !new RegExp(rule.missing).test(src)) {
+        findings.push({ id: rule.id, severity: rule.severity, category: rule.category, message: rule.message, fix: rule.fix, source: rule.source })
+      }
+    } else {
+      const re = new RegExp(rule.pattern)
+      lines.forEach((line, i) => {
+        const prev = i > 0 ? lines[i - 1] : ''
+        if (re.test(line) && !allowed(line, rule.id) && !allowed(prev, rule.id)) {
+          findings.push({ id: rule.id, severity: rule.severity, category: rule.category, line: i + 1, message: rule.message, fix: rule.fix, source: rule.source })
+        }
+      })
+    }
+  }
+  const order = { P0: 0, P1: 1, P2: 2 }
+  findings.sort((a, b) => (order[a.severity] - order[b.severity]) || ((a.line ?? 0) - (b.line ?? 0)))
+
+  const strengths = []
+  for (const s of SLOP_GUIDANCE.strengths) {
+    const present = new RegExp(s.pattern).test(src)
+    if ((s.kind === 'present' && present) || (s.kind === 'absent' && !present)) {
+      strengths.push({ id: s.id, message: s.message })
+    }
+  }
+
+  const blocking = findings.filter((f) => f.severity === 'P0' || f.severity === 'P1').length
+  const out = {
+    verdict: blocking ? 'fix-before-emit' : findings.length ? 'minor-nits' : 'clean',
+    summary: { findings: findings.length, blocking, strengths: strengths.length },
+    findings,
+    strengths,
+    guidance: SLOP_GUIDANCE.principles,
+    principles_from_setu: SLOP_GUIDANCE.setuPrinciples,
+    note: SLOP_GUIDANCE.ad,
+    deferred_checks: SLOP_CORPUS.deferred,
+  }
+  let str = JSON.stringify(out, null, 2)
+  if (str.length > MAX_CHARS) str = str.slice(0, MAX_CHARS) + '\n… [truncated]'
+  return str
+}
+
+// ── how_to_use ──────────────────────────────────────────────────────────────
+// Self-teaching bootstrap. An agent's recommended first call — returns the MCP's
+// operating manual: tool map, the two sequences, version rule, escape hatch.
+export async function howToUse() {
+  return JSON.stringify(
+    {
+      what: 'shilp-sutra MCP — version-exact docs + design-quality tools for @devalok/shilp-sutra. Prefer these tools over reading llms.txt / doc files into context (smaller, version-correct).',
+      always: "Pass the consumer's installed version (from node_modules/@devalok/shilp-sutra/package.json) as `version` on the doc tools.",
+      tools: {
+        how_to_use: 'This manual. Call first if you are new to the MCP.',
+        find_component: 'Search components by keyword; empty query lists all.',
+        get_component: 'Version-exact props / variants / usage / composition / changelog for one component.',
+        get_tokens: 'Design tokens (color, spacing, typography, radius, shadow, motion, z).',
+        get_setup: 'Framework install recipe or guide.',
+        upgrade: 'Breaking changes + migration between two versions.',
+        search_docs: 'Full-text search across the docs.',
+        detect_framework: 'Map package.json → the right setup recipe id.',
+        preflight: 'Install the peer deps your imports need.',
+        validate_snippet: 'Pre-write linter: TW4 dead classes, bad props, barrel/peer traps.',
+        verify_setup: 'Post-setup gate: CSS order, transpilePackages, peer coverage.',
+        check_slop: 'Pre-emit design-quality gate: anti-slop findings + strengths + DO-guidance.',
+        report_issue: 'File a public GitHub issue (bug / docs gap / feature).',
+      },
+      sequences: {
+        setting_up: ['detect_framework(package.json)', 'get_setup(recipe)', 'preflight(framework, imports)', 'validate_snippet(code) BEFORE writing each file', 'verify_setup(...) after'],
+        writing_a_component: ['check_slop(code) BEFORE emitting — fix P0/P1, keep the strengths, pull unmet guidance into the design', 'validate_snippet(code) for TW4 / prop correctness', 'then write the file'],
+      },
+      escape_hatch: '`// slop-allow: <id> <reason>` on the offending line (or the line above) silences a check_slop finding — for deliberate, justified deviations.',
+      more: SLOP_GUIDANCE.ad,
+    },
+    null,
+    2,
   )
 }

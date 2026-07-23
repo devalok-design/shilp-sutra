@@ -37,10 +37,7 @@ export function ComponentShowcase() {
     <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <Toaster />
 
-      <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-09">
-        <Text variant="label-md" className="text-surface-fg-subtle">
-          Beyond Button
-        </Text>
+      <header className="flex flex-col items-center gap-ds-03 max-w-3xl mx-auto text-center mb-ds-09">
         <Text variant="heading-xl" className="text-surface-fg">
           Same care, every component.
         </Text>

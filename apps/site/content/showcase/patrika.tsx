@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconBookmark,
@@ -44,7 +44,12 @@ import {
   TooltipTrigger,
 } from '@devalok/shilp-sutra/ui/tooltip'
 
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const PATRIKA_STYLE = showcaseVisualStyle('patrika') as CSSProperties
+const PATRIKA_SHAPE = showcaseShape('patrika')
 
 type IssueEntry = {
   number: string
@@ -164,7 +169,7 @@ export function PatrikaShowcase() {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-09">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-09" data-shape={PATRIKA_SHAPE} style={PATRIKA_STYLE}>
         <article ref={articleRef} className="flex flex-col gap-ds-07">
           {/* Reading-progress strip */}
           <motion.div

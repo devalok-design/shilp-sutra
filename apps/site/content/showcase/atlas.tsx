@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type CSSProperties } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconBell,
@@ -34,7 +34,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/u
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
 
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const ATLAS_STYLE = showcaseVisualStyle('atlas') as CSSProperties
+const ATLAS_SHAPE = showcaseShape('atlas')
 
 type ProjectRow = {
   id: string
@@ -221,7 +226,7 @@ export function AtlasShowcase() {
 
   return (
     <TooltipProvider delayDuration={150}>
-      <div className="flex flex-col gap-ds-05">
+      <div className="flex flex-col gap-ds-05" data-shape={ATLAS_SHAPE} style={ATLAS_STYLE}>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

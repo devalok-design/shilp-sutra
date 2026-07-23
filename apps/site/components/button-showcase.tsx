@@ -44,10 +44,7 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 export function ButtonShowcase() {
   return (
     <section className="mx-auto max-w-6xl px-page-x py-ds-12">
-      <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-09">
-        <Text variant="label-md" className="text-surface-fg-subtle">
-          Look closer
-        </Text>
+      <header className="flex flex-col items-center gap-ds-03 max-w-3xl mx-auto text-center mb-ds-09">
         <Text variant="heading-xl" className="text-surface-fg">
           We sweat the small stuff.
         </Text>
@@ -66,7 +63,7 @@ export function ButtonShowcase() {
 
       <ContextualScenes />
 
-      <footer className="mt-ds-09 flex flex-col items-start gap-ds-02 max-w-2xl">
+      <footer className="mt-ds-09 flex flex-col items-center gap-ds-02 max-w-2xl mx-auto text-center">
         <a
           href="/components/button"
           className="text-ds-sm text-accent-11 underline underline-offset-2 hover:text-accent-12"
@@ -161,10 +158,7 @@ function LoadingDemo() {
 function ContextualScenes() {
   return (
     <div className="flex flex-col gap-ds-06">
-      <header className="flex flex-col gap-ds-03 max-w-3xl">
-        <Text variant="label-md" className="text-surface-fg-subtle">
-          Wherever you ship, it fits
-        </Text>
+      <header className="flex flex-col items-center gap-ds-03 max-w-3xl mx-auto text-center">
         <Text variant="heading-md" className="text-surface-fg">
           The same Button, across ten products.
         </Text>

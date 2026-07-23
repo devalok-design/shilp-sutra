@@ -1,17 +1,19 @@
 /**
  * Brand presets — proof that shilp-sutra recolors cleanly.
  *
- * The chrome switcher offers two preset brands and a "Custom →" link to /theming.
+ * The chrome switcher offers preset brands and a "Custom →" link to /theming.
  * Each preset is a full 12-step OKLCH ramp (light + dark) that overrides
  * `--color-accent-1` through `--color-accent-12`. `--color-accent-fg` is
  * auto-tuned from accent-9 lightness at apply time (see brand-runtime).
  *
- * Devalok is the default — it mirrors shilp-sutra's own Blooming Lotus pink
- * (H:360) verbatim, so picking "Devalok" is a no-op visually.
+ * Shilp Sutra teal is the default — the site's own brand identity (H:188).
+ * Devalok pink, Indigo, and Sage remain selectable for anyone who wants them.
  *
  * Adding a preset:
  *  1. Pick a hue. Keep H consistent across light + dark.
- *  2. Mirror the L and C curves used here (or run packages/core/src/tokens/generate-scale.ts).
+ *  2. Mirror the L curve used here — chroma should be fit to what the hue can
+ *     actually reach in-gamut (teal's chroma ceiling is much lower than
+ *     pink's; don't just uniformly scale another preset's C values).
  *  3. Verify accent-9 in light mode has L between 0.50 and 0.62 so accent-fg auto-tune flips correctly.
  */
 
@@ -31,6 +33,52 @@ export type BrandPreset = {
   /** Single hue used across the whole ramp */
   hue: number
   ramp: BrandRamp
+}
+
+/**
+ * Shilp Sutra — the product's own teal identity (H:188).
+ * Chroma is NOT a uniform scale of Devalok's curve — it's fit from the
+ * actual brand-palette swatches (Figma node 103:1155), since teal's in-gamut
+ * chroma ceiling peaks around L 0.7-0.78 and falls off in both directions,
+ * unlike pink's monotonic rise to a step-9/10 peak. Same L curve as every
+ * other preset, so accent-fg auto-tune behaves identically.
+ */
+const SHILP_SUTRA: BrandPreset = {
+  id: 'shilp-sutra',
+  name: 'Shilp Sutra',
+  description: 'Studio teal',
+  origin: "The product's own brand identity.",
+  hue: 188,
+  ramp: {
+    light: [
+      'oklch(0.99 0.004 188)',
+      'oklch(0.97 0.007 188)',
+      'oklch(0.93 0.028 188)',
+      'oklch(0.89 0.055 188)',
+      'oklch(0.84 0.088 188)',
+      'oklch(0.78 0.112 188)',
+      'oklch(0.7 0.115 188)',
+      'oklch(0.62 0.105 188)',
+      'oklch(0.55 0.096 188)',
+      'oklch(0.5 0.087 188)',
+      'oklch(0.43 0.075 188)',
+      'oklch(0.32 0.053 188)',
+    ],
+    dark: [
+      'oklch(0.11 0.004 188)',
+      'oklch(0.17 0.007 188)',
+      'oklch(0.23 0.032 188)',
+      'oklch(0.29 0.06 188)',
+      'oklch(0.34 0.088 188)',
+      'oklch(0.38 0.112 188)',
+      'oklch(0.44 0.107 188)',
+      'oklch(0.53 0.111 188)',
+      'oklch(0.54 0.106 188)',
+      'oklch(0.49 0.096 188)',
+      'oklch(0.76 0.07 188)',
+      'oklch(0.88 0.033 188)',
+    ],
+  },
 }
 
 /**
@@ -159,8 +207,8 @@ const SAGE: BrandPreset = {
   },
 }
 
-export const BRAND_PRESETS: BrandPreset[] = [DEVALOK, INDIGO, SAGE]
-export const DEFAULT_BRAND_ID = 'devalok'
+export const BRAND_PRESETS: BrandPreset[] = [SHILP_SUTRA, DEVALOK, INDIGO, SAGE]
+export const DEFAULT_BRAND_ID = 'shilp-sutra'
 
 export function getPreset(id: string): BrandPreset | undefined {
   return BRAND_PRESETS.find((p) => p.id === id)

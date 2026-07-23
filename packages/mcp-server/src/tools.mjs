@@ -491,22 +491,6 @@ export async function detectFramework({ packageJson, hasAppDir, hasPagesDir, ver
 
 // ── verify_setup ───────────────────────────────────────────────────────────────
 
-// CSS comments do NOT nest: in `/* a /* b */ c */` the first `*/` closes the
-// comment and ` c */` becomes stray tokens that corrupt the following rule, which
-// the build then silently drops (warning only, exit 0). A pasted Themer block
-// whose header carries a nested comment loses its entire `:root{}` accent/radius
-// override this way — the brand color never applies. Flag it here.
-function hasNestedComment(css) {
-  let inComment = false
-  for (let i = 0; i < css.length - 1; i++) {
-    const two = css[i] + css[i + 1]
-    if (!inComment && two === '/*') { inComment = true; i++; continue }
-    if (inComment && two === '/*') return true // second open before the first close
-    if (inComment && two === '*/') { inComment = false; i++; continue }
-  }
-  return false
-}
-
 export async function verifySetup({ framework, globalsCss, nextConfig, imports = [], installedDeps, version }) {
   const d = await load(version)
   if (d.redirect) return d.redirect
@@ -526,8 +510,6 @@ export async function verifySetup({ framework, globalsCss, nextConfig, imports =
       if (twIdx < ssIdx) pass('CSS import order (tailwindcss before shilp-sutra)')
       else fail('CSS import order', '`@import "tailwindcss"` MUST come before `@import "@devalok/shilp-sutra/css"`, or no DS utilities generate.')
     }
-    if (hasNestedComment(css)) fail('CSS has no nested comments', 'A block in your CSS contains a nested `/* ... */` comment. CSS comments do not nest — the first `*/` closes early and the rule that follows (often your pasted accent/token override) is silently dropped at build, so the brand color never applies. Remove the inner comment.')
-    else pass('CSS comment hygiene')
   } else {
     checks.push({ check: 'CSS', status: 'skipped', note: 'Pass `globalsCss` to verify the two imports + order.' })
   }

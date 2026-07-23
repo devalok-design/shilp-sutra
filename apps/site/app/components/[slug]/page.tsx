@@ -3,16 +3,19 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { IconArrowUpRight, IconShieldCheck } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
+import { CategorySidebar, type CategorySidebarGroup } from '@/components/category-sidebar'
 import { Markdown } from '@/components/markdown'
 import { PageHeader } from '@/components/page-header'
 import { PreviewCodeTabs } from '@/components/preview-code-tabs'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { FUNCTION_CATEGORIES } from '@/lib/component-categories'
 import {
   extractExampleCode,
   findLayerForSlug,
   getComponentDocRaw,
   getRegistry,
+  groupByFunction,
 } from '@/lib/component-registry'
 import { getPreview, hasPreview } from '@/lib/preview-registry'
 
@@ -53,11 +56,28 @@ export default async function ComponentDetailPage({ params }: { params: Promise<
   const preview = hasPreview(slug) ? getPreview(slug) : null
   const exampleCode = extractExampleCode(raw)
 
+  const grouped = groupByFunction(items)
+  const sidebarGroups: CategorySidebarGroup[] = FUNCTION_CATEGORIES.map(({ key, label }) => ({
+    key,
+    label,
+    items: grouped[key].map((c) => ({ slug: c.slug, title: c.name })),
+  }))
+
   return (
     <>
       <SiteHeader />
       <main id="main" className="flex-1">
-        <div className="mx-auto max-w-5xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
+        <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09 grid grid-cols-1 lg:grid-cols-[14rem_1fr] gap-ds-06 lg:gap-ds-09">
+          <aside className="lg:sticky lg:top-24 lg:self-start">
+            <CategorySidebar
+              basePath="/components"
+              currentSlug={slug}
+              groups={sidebarGroups}
+              currentCategory={item.functionCategory}
+              navLabel="Component categories"
+            />
+          </aside>
+          <div className="min-w-0">
           <nav aria-label="Breadcrumb" className="mb-ds-06">
             <Link
               href="/components"
@@ -133,6 +153,7 @@ export default async function ComponentDetailPage({ params }: { params: Promise<
             </Text>
             <Markdown source={stripped} />
           </section>
+          </div>
         </div>
       </main>
       <SiteFooter />

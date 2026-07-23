@@ -24,7 +24,7 @@ export function Hero() {
             Devalok
           </Link>
         </Text>
-        <h1 className="text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-3xl text-balance">
+        <h1 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-3xl text-balance">
           Your brand. Every component.
           <br className="hidden md:inline" />{' '}
           <span className="text-accent-11">Out of the box.</span>
@@ -41,7 +41,12 @@ export function Hero() {
             event="cta_click"
             eventProps={{ cta: 'try-it-on', location: 'hero' }}
           >
-            <Button size="lg" className="w-full sm:w-auto">Try it on</Button>
+            <Button
+              size="lg"
+              className="w-full sm:w-auto bg-highlight-9 text-highlight-fg hover:bg-highlight-10"
+            >
+              Try it on
+            </Button>
           </TrackedLink>
           <TrackedLink
             href="/components"

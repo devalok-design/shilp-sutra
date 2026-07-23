@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { IconHeartFilled } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
+// "Devalok" is deliberately not in this list — per the Figma footer spec it
+// sits stacked under the brand blurb (its own row, first column), not as a
+// fifth sibling column. See the JSX below.
 const linkGroups = [
   {
     heading: 'Package',
@@ -17,7 +20,6 @@ const linkGroups = [
     links: [
       { label: 'Showcase', href: '/showcase' },
       { label: 'Components', href: '/components' },
-      { label: 'Blocks', href: '/blocks' },
       { label: 'Theming', href: '/theming' },
       { label: 'Docs', href: '/docs' },
       { label: 'Storybook', href: 'https://devalok-design.github.io/shilp-sutra/', external: true },
@@ -31,27 +33,56 @@ const linkGroups = [
       { label: 'Agent Skill', href: 'https://github.com/devalok-design/shilp-sutra/tree/main/skills/shilp-sutra', external: true },
     ],
   },
-  {
-    heading: 'Devalok',
-    links: [
-      { label: 'devalok.in', href: 'https://devalok.in', external: true },
-      { label: 'Karm', href: 'https://karm.devalok.in', external: true },
-      { label: 'BharatTools', href: 'https://bharattools.in', external: true },
-      { label: 'Gurukul', href: 'https://gurukul.devalok.in', external: true },
-    ],
-  },
 ] as const
+
+const devalokGroup = {
+  heading: 'Devalok',
+  links: [
+    { label: 'devalok.in', href: 'https://devalok.in', external: true },
+    { label: 'Karm', href: 'https://karm.devalok.in', external: true },
+    { label: 'BharatTools', href: 'https://bharattools.in', external: true },
+    { label: 'Gurukul', href: 'https://gurukul.devalok.in', external: true },
+  ],
+} as const
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-surface-border-subtle bg-surface-sunken">
       <div className="mx-auto max-w-6xl px-page-x py-ds-09">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-ds-08">
-          <div className="col-span-2 md:col-span-2 flex flex-col gap-ds-03">
-            <Text variant="heading-sm" className="text-surface-fg">shilp-sutra</Text>
-            <Text variant="body-sm" className="text-surface-fg-muted max-w-sm">
-              Your brand. Every component. Out of the box. A React design system from Devalok. Tailwind 4 · OKLCH · 120+ components · MIT.
-            </Text>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-ds-08">
+          <div className="col-span-2 md:col-span-1 flex flex-col gap-ds-06">
+            <div className="flex flex-col gap-ds-03">
+              <img
+                src="/brand/shilp-sutra/wordmark.svg"
+                alt="Shilp Sutra"
+                className="h-6 w-auto dark:hidden"
+              />
+              <img
+                src="/brand/shilp-sutra/wordmark-white.svg"
+                alt="Shilp Sutra"
+                className="h-6 w-auto hidden dark:block"
+              />
+              <Text variant="body-sm" className="text-surface-fg-muted max-w-sm">
+                Your brand. Every component. Out of the box. A React design system from Devalok. Tailwind 4 · OKLCH · 120+ components · MIT.
+              </Text>
+            </div>
+            <div className="flex flex-col gap-ds-02">
+              <Text variant="label-md" className="text-surface-fg-subtle">{devalokGroup.heading}</Text>
+              <ul className="flex flex-col gap-ds-02">
+                {devalokGroup.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           {linkGroups.map((group) => (
             <div key={group.heading} className="flex flex-col gap-ds-02">

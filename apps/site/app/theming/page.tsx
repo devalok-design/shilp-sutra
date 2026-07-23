@@ -1,15 +1,16 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
-import { ThemingEditor } from '@/components/theming-editor'
+import { ThemingHub } from '@/components/themer/ThemingHub'
 
 export const metadata: Metadata = {
   title: 'Theming',
   description:
-    'Build your own brand on shilp-sutra. Live OKLCH editor. Pick a hue, see every component recolour, export the CSS.',
+    'Build your own brand on shilp-sutra. Pick an archetype, paste your brand color, take a wizard, or dial OKLCH by hand — one page, one live preview, install + CSS to paste.',
 }
 
 export default function ThemingPage() {
@@ -21,42 +22,13 @@ export default function ThemingPage() {
           <div className="flex flex-col gap-ds-09">
             <PageHeader
               eyebrow="Theming"
-              title="Be yourself in OKLCH."
-              subtitle="Pick a hue. Set the chroma. The twelve-step ramp generates itself."
-              description="Every component on the site recolours live as you move the sliders. Buttons, badges, alerts, focus rings. Drop the exported CSS into your project and your whole app follows."
-              meta={
-                <Text variant="body-sm" className="text-surface-fg-subtle">
-                  No theme provider, CSS-vars only. Light and dark generate together, from the same
-                  algorithm shilp-sutra ships with.
-                </Text>
-              }
+              title="One color in. Everything out."
+              subtitle="Every component recolors — buttons, badges, alerts, focus rings, light and dark. Move the sliders, pick a preset, or paste your hex. Export the CSS and your whole app follows."
             />
 
-            <ThemingEditor />
-
-            <section className="border-t border-surface-border-subtle pt-ds-08">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-ds-04 rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-05">
-                <div className="flex flex-col gap-ds-02">
-                  <Text variant="label-sm" className="text-surface-fg-subtle">
-                    Not sure where to start?
-                  </Text>
-                  <Text variant="heading-sm" className="text-surface-fg">
-                    Try the Themer.
-                  </Text>
-                  <Text variant="body-sm" className="text-surface-fg-muted">
-                    Four entry doors: pick an archetype, paste your brand color, take a wizard, or
-                    just see a result page. Each drops you at install + CSS to paste, no editing
-                    required.
-                  </Text>
-                </div>
-                <Link
-                  href="/themer"
-                  className="inline-flex shrink-0 items-center gap-ds-02 rounded-control bg-accent-9 px-ds-05 py-ds-03 text-ds-sm font-medium text-accent-fg hover:bg-accent-10"
-                >
-                  Open the Themer →
-                </Link>
-              </div>
-            </section>
+            <Suspense fallback={null}>
+              <ThemingHub />
+            </Suspense>
 
             <section className="border-t border-surface-border-subtle pt-ds-08">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-06">
@@ -91,6 +63,28 @@ export default function ThemingPage() {
                     that.
                   </Text>
                 </div>
+              </div>
+            </section>
+
+            <section className="border-t border-surface-border-subtle pt-ds-08 flex flex-col gap-ds-03 max-w-2xl">
+              <span className="text-ds-xs text-surface-fg-subtle">Under the hood</span>
+              <Text variant="heading-sm" className="text-surface-fg">
+                CSS variables. No JS theme provider.
+              </Text>
+              <Text variant="body-sm" className="text-surface-fg-muted leading-relaxed">
+                Whichever door you pick above, you walk out with the same thing: a CSS block of
+                role tokens + an OKLCH accent ramp. Paste into your global stylesheet. Every
+                shilp-sutra component follows. Switch themes by toggling a class, or write{' '}
+                <code className="font-mono text-ds-sm text-surface-fg">data-archetype=&quot;apple&quot;</code>{' '}
+                on the body and reload.
+              </Text>
+              <div className="flex flex-wrap gap-ds-03 text-ds-sm mt-ds-02">
+                <Link href="/docs/customize-brand" className="text-accent-11 underline underline-offset-2 hover:text-accent-12">
+                  Customize-brand recipe
+                </Link>
+                <Link href="/agents" className="text-accent-11 underline underline-offset-2 hover:text-accent-12">
+                  AI agent setup
+                </Link>
               </div>
             </section>
           </div>

@@ -13,10 +13,7 @@ export function DevalokBlock() {
   return (
     <section className="mx-auto max-w-4xl px-page-x py-ds-12">
       <div className="flex flex-col gap-ds-06">
-        <div className="flex flex-col gap-ds-03 max-w-3xl">
-          <Text variant="label-md" className="text-surface-fg-subtle">
-            Who&apos;s behind this
-          </Text>
+        <div className="flex flex-col items-center gap-ds-03 max-w-3xl mx-auto text-center">
           <Text variant="heading-xl" className="text-surface-fg">
             A studio that ships its own tools.
           </Text>

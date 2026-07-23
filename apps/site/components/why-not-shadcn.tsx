@@ -30,10 +30,7 @@ export function WhyNotShadcn() {
   return (
     <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <div className="flex flex-col gap-ds-08">
-        <div className="flex flex-col gap-ds-03 max-w-3xl">
-          <Text variant="label-md" className="text-surface-fg-subtle">
-            Why this, not shadcn
-          </Text>
+        <div className="flex flex-col items-center gap-ds-03 max-w-3xl mx-auto text-center">
           <Text variant="heading-xl" className="text-surface-fg">
             shadcn looks like shadcn. This looks like you.
           </Text>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type CSSProperties } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { motion } from 'framer-motion'
 import {
@@ -29,7 +29,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/u
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
 
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const VAIDYA_STYLE = showcaseVisualStyle('vaidya') as CSSProperties
+const VAIDYA_SHAPE = showcaseShape('vaidya')
 
 type VitalStatus = 'normal' | 'watch' | 'critical'
 type Trend = 'up' | 'down' | 'flat'
@@ -264,7 +269,7 @@ export function VaidyaShowcase() {
   )
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-ds-05">
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-ds-05" data-shape={VAIDYA_SHAPE} style={VAIDYA_STYLE}>
       <div className="flex flex-col gap-ds-05">
         {/* Identity card */}
         <Card>

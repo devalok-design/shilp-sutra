@@ -12,6 +12,7 @@ import { MiraShowcase } from '@/content/showcase/mira'
 import { PatrikaShowcase } from '@/content/showcase/patrika'
 import { VaidyaShowcase } from '@/content/showcase/vaidya'
 import { generateRamp } from '@/lib/ramp-generator'
+import { showcaseFontFamily } from '@/lib/showcase-visuals'
 
 type CanvasMode = 'light' | 'dark'
 
@@ -61,7 +62,7 @@ function rampInlineStyle(hue: number, chroma: number): CSSProperties {
  * brand-coloured boxShadow halo pulse around the canvas the moment the
  * active surface swaps.
  */
-export function UnifiedCanvas() {
+export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' | 'bottom' } = {}) {
   const [activeIdx, setActiveIdx] = useState<number>(0)
   const [mode, setMode] = useState<CanvasMode>('light')
   const prevIdx = useRef<number>(0)
@@ -78,17 +79,26 @@ export function UnifiedCanvas() {
 
   return (
     <section id="canvas" className="mx-auto max-w-6xl px-page-x py-ds-12">
-      <header className="flex flex-col gap-ds-04 max-w-3xl mb-ds-06">
-        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
-          See it run
-        </span>
-        <h2 className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg text-balance">
+      <header className="flex flex-col items-center gap-ds-04 max-w-3xl mx-auto text-center mb-ds-06">
+        <h2 className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg text-balance">
           One library. Many worlds.
         </h2>
         <p className="text-ds-md text-surface-fg-muted leading-relaxed max-w-2xl">
           Each tab below opens a different product surface. Built from the same components, painted by a different brand.
         </p>
       </header>
+
+      {ctaPosition === 'top' && (
+        <div className="flex flex-wrap items-center justify-end gap-ds-03 mb-ds-04">
+          <Link
+            href={`/theming?hue=${active.hue}&chroma=${active.chroma}`}
+            className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:underline underline-offset-2"
+          >
+            Take {active.product}&apos;s brand into the editor
+            <IconArrowUpRight size={14} />
+          </Link>
+        </div>
+      )}
 
       <motion.div
         animate={{
@@ -123,6 +133,7 @@ export function UnifiedCanvas() {
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
                   className="text-ds-md text-surface-fg font-semibold truncate"
+                  style={{ fontFamily: showcaseFontFamily(active.slug) }}
                 >
                   {active.product}
                 </motion.span>
@@ -212,7 +223,12 @@ export function UnifiedCanvas() {
                         ].join(' ')}
                         style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}
                       />
-                      <span className="text-ds-sm font-semibold whitespace-nowrap">{s.product}</span>
+                      <span
+                        className="text-ds-sm font-semibold whitespace-nowrap"
+                        style={{ fontFamily: showcaseFontFamily(s.slug) }}
+                      >
+                        {s.product}
+                      </span>
                     </div>
                     <span className="text-ds-xs text-surface-fg-subtle hidden md:inline">{s.industry}</span>
                   </button>
@@ -261,15 +277,17 @@ export function UnifiedCanvas() {
         </Link>
       </motion.div>
 
-      <footer className="mt-ds-05 flex flex-wrap items-center justify-end gap-ds-03">
-        <Link
-          href={`/theming?hue=${active.hue}&chroma=${active.chroma}`}
-          className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:underline underline-offset-2"
-        >
-          Take {active.product}&apos;s brand into the editor
-          <IconArrowUpRight size={14} />
-        </Link>
-      </footer>
+      {ctaPosition === 'bottom' && (
+        <footer className="mt-ds-05 flex flex-wrap items-center justify-end gap-ds-03">
+          <Link
+            href={`/theming?hue=${active.hue}&chroma=${active.chroma}`}
+            className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:underline underline-offset-2"
+          >
+            Take {active.product}&apos;s brand into the editor
+            <IconArrowUpRight size={14} />
+          </Link>
+        </footer>
+      )}
     </section>
   )
 }

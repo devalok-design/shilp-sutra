@@ -131,9 +131,6 @@ try {
   const ver = await call('verify_setup', { globalsCss: '@import "@devalok/shilp-sutra/css";\n@import "tailwindcss";' }, 15)
   check('verify_setup catches CSS import order', (ver.result?.content?.[0]?.text ?? '').includes('CSS import order'))
 
-  const nest = await call('verify_setup', { globalsCss: '@import "tailwindcss";\n@import "@devalok/shilp-sutra/css";\n/* head /* nested */\n */\n:root{--color-accent-9:oklch(0.55 0.198 8)}' }, 16)
-  check('verify_setup catches nested CSS comment (dropped override)', (nest.result?.content?.[0]?.text ?? '').includes('nested'))
-
   // report_issue: without GITHUB_APP_* configured (as in smoke/local), it must
   // fail gracefully — a clear "not enabled" error, never a crash or a write.
   const rep = await call('report_issue', { category: 'bug', title: 'smoke test — should not file', body: 'smoke' }, 16)

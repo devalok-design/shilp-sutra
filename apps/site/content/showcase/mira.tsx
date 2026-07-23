@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type CSSProperties } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconCheck,
@@ -32,6 +32,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/u
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { ToggleGroup, ToggleGroupItem } from '@devalok/shilp-sutra/ui/toggle-group'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
+
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
+const MIRA_STYLE = showcaseVisualStyle('mira') as CSSProperties
+const MIRA_SHAPE = showcaseShape('mira')
 
 type ColourId = 'haldi' | 'kumkum' | 'neel' | 'sage' | 'kala'
 
@@ -178,7 +183,7 @@ export function MiraShowcase() {
 
   return (
     <TooltipProvider delayDuration={150}>
-      <div className="flex flex-col gap-ds-06">
+      <div className="flex flex-col gap-ds-06" data-shape={MIRA_SHAPE} style={MIRA_STYLE}>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>

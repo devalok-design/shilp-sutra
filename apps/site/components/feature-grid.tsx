@@ -20,34 +20,31 @@ const pillars = [
   {
     icon: IconPalette,
     title: 'Your brand. Live.',
-    body: 'Pick one colour. Every button, badge, alert, and form across the entire library recolours. Light mode, dark mode, hover, pressed, focus, every state. No theme provider. No re-render. CSS-vars do the work.',
+    body: 'Pick one colour. Zero config: badges, alert, card, form controls. Light mode, dark mode, every screen. No spreadsheet of hex codes. CSS variables do the work.',
   },
   {
     icon: IconShield,
     title: 'The boring work, done.',
-    body: 'Keyboard navigation, screen-reader labels, visible focus rings, forced-colors mode, touch targets sized for real fingers. Surface-layer hygiene runs in CI on every PR. The work that usually slips is the work that ships.',
+    body: 'Keyboard navigation, screen reader labels, roving tabindex focus trap, dismissable popovers, focus-visible outlines. An API that puts care in the right places, an event that visually stays in the work first-class.',
   },
   {
     icon: IconLayoutGrid,
-    title: 'Real pages, not toys.',
-    body: 'Dashboards. Settings. Pricing. Sign-up. Data tables. Five full blocks ship today, more this beta. Real spacing, real copy, real states. The stuff your users actually use.',
+    title: 'No tantrums, not toys.',
+    body: 'Dashboards. Settings. Pricing. Sign-up. Data tables. Toast. The full production stack. Not a storybook-only side project. Not a grid of coloured dot circles. The stuff your users actually use.',
   },
 ] as const
 
 const promise = {
   icon: IconUsers,
   title: 'For builders, by builders.',
-  body: 'Indie devs, studio teams, designers reaching for code, coding agents. One library, one install. Devalok ships on it; so do Karm, Devalok Hiring, BharatTools, and Gurukul.',
+  body: 'Indie devs, studio teams, enterprise marching orders, resting agents. One library, one model. Devalok ships it all on its own. Devalok Hiring, BharatTools, and Gurukul.',
 } as const
 
 export function FeatureGrid() {
   return (
     <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <div className="flex flex-col gap-ds-08">
-        <div className="flex flex-col gap-ds-03 max-w-3xl">
-          <Text variant="label-md" className="text-surface-fg-subtle">
-            What&apos;s inside
-          </Text>
+        <div className="flex flex-col items-center gap-ds-03 max-w-3xl mx-auto text-center">
           <Text variant="heading-xl" className="text-surface-fg">
             Three pillars. One promise.
           </Text>

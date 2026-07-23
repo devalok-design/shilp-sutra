@@ -35,7 +35,7 @@ export function PageHeader({
       {eyebrow && (
         <div className="text-ds-xs text-surface-fg-subtle">{eyebrow}</div>
       )}
-      <h1 className="text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg text-balance">
+      <h1 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg text-balance">
         {title}
       </h1>
       {subtitle && (

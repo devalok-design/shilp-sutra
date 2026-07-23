@@ -28,7 +28,7 @@ export function FeaturedComponents() {
           <span className="text-ds-xs text-surface-fg-subtle">
             Featured · live demos
           </span>
-          <h2 className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg">
+          <h2 className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg">
             Try them before you click.
           </h2>
           <p className="text-ds-md text-surface-fg-muted">

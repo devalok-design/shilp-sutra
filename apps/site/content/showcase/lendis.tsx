@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
@@ -43,7 +43,12 @@ import {
   TooltipTrigger,
 } from '@devalok/shilp-sutra/ui/tooltip'
 
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const LENDIS_STYLE = showcaseVisualStyle('lendis') as CSSProperties
+const LENDIS_SHAPE = showcaseShape('lendis')
 
 type Rail = 'UPI' | 'IMPS' | 'NEFT' | 'SWIFT' | 'Card'
 type Status = 'settled' | 'pending' | 'failed'
@@ -322,7 +327,7 @@ export function LendisShowcase() {
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col gap-ds-05">
+      <div className="flex flex-col gap-ds-05" data-shape={LENDIS_SHAPE} style={LENDIS_STYLE}>
         <Alert variant="subtle" color="warning" title="Restricted corridor">
           USD wallet transfers to non-FATF jurisdictions are paused pending RBI A.P. (DIR) circular review. INR rails
           remain open.

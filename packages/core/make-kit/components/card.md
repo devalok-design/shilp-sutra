@@ -22,15 +22,15 @@ import {
 - Header / actions / footer are built in as slots (`CardHeader`, `CardAction`, `CardFooter`) — don't reach for a wrapper. (`<ContentCard>` is deprecated; use Card slots.)
 - Need just a tinted region with no card affordance? Use a `<div className="bg-surface-raised">` (rare; usually Card is right).
 
-Card renders on `surface-raised` with `shadow-raised`. **Never** override its background or border.
+Card renders on `surface-raised`. The `default` variant is tonal — a surface-tone shift plus a whisper hairline (`border-card`), no shadow. **Never** override its background or border.
 
 ## Variants
 
 | Variant | Use |
 |---|---|
-| `default` (default) | `surface-raised` + `shadow-raised`. Standard card. |
-| `elevated` | Slightly stronger shadow. Use for hero / hovered emphasis. |
-| `outline` | `surface-raised` + border-only (no shadow). Dense lists where 12 cards stacked together would feel too lifted. |
+| `default` (default) | `surface-raised` + tonal `border-card` hairline, no shadow. Standard card — depth from tone, not a drop shadow. |
+| `elevated` | `shadow-raised-hover`, no border. Use when a card must visibly pop (hero, dragged tile, spotlight panel). |
+| `outline` | `surface-raised` + strong border-only (no shadow). Dense lists where stacked shadowed cards would feel too lifted. |
 | `flat` | `surface-raised` + no shadow, no border. For cards inside an already-elevated container. |
 
 ## Colors

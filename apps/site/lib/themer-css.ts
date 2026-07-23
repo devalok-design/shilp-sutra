@@ -42,7 +42,7 @@ export function generateThemerCss(state: ThemerState): string {
     ` * Paste into your global stylesheet, AFTER the shilp-sutra import:`,
     ` *   @import "tailwindcss";`,
     ` *   @import "@devalok/shilp-sutra/css";`,
-    ` *   /* this block here */`,
+    ` *   ...then this block, right here`,
     ` */`,
   ]
     .filter(Boolean)

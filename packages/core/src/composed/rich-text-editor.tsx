@@ -9,6 +9,7 @@ import {
   IconBlockquote,
   IconBold,
   IconCode,
+  IconEye,
   IconH2,
   IconH3,
   IconHighlight,
@@ -30,8 +31,10 @@ import { ListKit } from '@tiptap/extension-list'
 import Mention from '@tiptap/extension-mention'
 import TextAlign from '@tiptap/extension-text-align'
 import { Placeholder } from '@tiptap/extensions'
+import { Markdown } from '@tiptap/markdown'
 import { type Editor,EditorContent, useEditor, useEditorState } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
 
 import { Button } from '../ui/button'
@@ -46,15 +49,16 @@ import { createSuggestionRenderer } from './extensions/mention-suggestion'
 
 const PROSE_CLASSES = [
   'prose prose-sm max-w-none',
-  'font-body text-ds-md leading-relaxed text-surface-fg',
-  '[&_h2]:text-ds-xl [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-surface-fg',
-  '[&_h3]:text-ds-base [&_h3]:font-semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-surface-fg',
+  'font-body text-body-md leading-relaxed text-surface-fg',
+  '[&_h2]:text-heading-sm [&_h2]:mb-ds-03 [&_h2]:mt-ds-05 [&_h2]:text-surface-fg',
+  '[&_h3]:text-body-lg [&_h3]:font-semibold [&_h3]:mb-ds-02b [&_h3]:mt-ds-04 [&_h3]:text-surface-fg',
   '[&_p]:mb-ds-02b [&_p]:text-surface-fg-muted',
   '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
   '[&_li]:text-surface-fg-muted',
-  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-ds-md [&_code]:text-accent-11',
+  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-body-md [&_code]:text-accent-11',
   '[&_pre]:rounded-surface [&_pre]:bg-surface-raised [&_pre]:p-ds-04',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
+  // slop-allow: side-stripe — blockquote left-rule is standard typography, not a card accent-rail
   '[&_blockquote]:border-l-[3px] [&_blockquote]:border-accent-6 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-surface-fg-subtle',
   '[&_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_ul[data-type="taskList"]]:ml-0 [&_ul[data-type="taskList"]]:list-none [&_li[data-type="taskItem"]]:flex [&_li[data-type="taskItem"]]:items-start [&_li[data-type="taskItem"]]:gap-ds-02',
@@ -156,7 +160,7 @@ function LinkButton({ editor }: { editor: Editor }) {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="https://..."
-            className="h-ds-sm w-[240px] rounded-control-inner border border-surface-border-strong bg-surface-overlay px-ds-03 text-ds-sm text-surface-fg focus:border-accent-7 focus:outline-hidden"
+            className="h-ds-sm w-[240px] rounded-control-inner border border-surface-border-strong bg-surface-overlay px-ds-03 text-body-sm text-surface-fg focus:border-accent-7 focus:outline-hidden"
           />
           <Button type="submit" variant="solid" size="sm">
             Apply
@@ -171,12 +175,16 @@ function ToolbarDivider() {
   return <div className="mx-ds-02 h-ds-05 w-px bg-surface-border" />
 }
 
-function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
+function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick, trailing, showControls = true }: {
   editor: Editor
   toolbar?: ToolbarItem[]
   onImageClick?: () => void
   onFileClick?: () => void
   onEmojiClick?: () => void
+  /** Right-aligned content (e.g. a source-view toggle). */
+  trailing?: React.ReactNode
+  /** Hide the formatting controls, keeping only `trailing`. @default true */
+  showControls?: boolean
 }) {
   // v3: useEditorState subscribes to specific state slices so the toolbar
   // re-renders only when active-state or can-undo/redo actually changes.
@@ -217,7 +225,8 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
   const hasHistory = show('undo') || show('redo')
 
   return (
-    <div role="toolbar" aria-label="Text formatting" className="flex flex-wrap items-center gap-ds-01 border-b border-surface-border-strong px-ds-04 py-ds-02b">
+    <div role="toolbar" aria-label="Text formatting" className="flex min-h-[2.75rem] flex-wrap items-center gap-ds-01 border-b border-surface-border-strong px-ds-04 py-ds-02b">
+      {showControls && (<>
       {/* Inline formatting */}
       {show('bold') && (
         <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={state.isBold} title="Bold">
@@ -347,6 +356,8 @@ function Toolbar({ editor, toolbar, onImageClick, onFileClick, onEmojiClick }: {
           <Icon icon={IconArrowForwardUp} size="sm" />
         </ToolbarButton>
       )}
+      </>)}
+      {trailing && <div className="ml-auto flex items-center pl-ds-02">{trailing}</div>}
     </div>
   )
 }
@@ -356,7 +367,7 @@ const LazyPicker = React.lazy(() =>
 )
 
 function EmojiPickerLazy({ onSelect }: { onSelect: (emoji: EmojiData) => void }) {
-  const fallback = <div className="flex h-[435px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-raised-hover"><span className="text-ds-sm text-surface-fg-subtle">Loading…</span></div>
+  const fallback = <div className="flex h-[435px] w-[352px] items-center justify-center rounded-surface bg-surface-overlay shadow-raised-hover"><span className="text-body-sm text-surface-fg-subtle">Loading…</span></div>
 
   return (
     <React.Suspense fallback={fallback}>
@@ -382,14 +393,20 @@ export interface MentionItem {
 /**
  * A Tiptap-powered rich text editor with a configurable toolbar, @mentions,
  * emoji suggestions, file/image uploads, and task lists.
- * Outputs sanitized HTML via `onChange`.
+ *
+ * Emits HTML by default, or Markdown when `format="markdown"`. NOTE: the HTML
+ * output is the editor's raw HTML and is NOT sanitized — do not render it as
+ * untrusted content without sanitizing it first. Storing Markdown (and
+ * rendering via MarkdownViewer) sidesteps that risk entirely.
  */
 export interface RichTextEditorProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'content'> {
-  /** Initial HTML content. Updates are NOT reactive — use `onChange` for controlled state. */
+  /** Content format read and emitted. `markdown` for Markdown in/out; `html` uses HTML. @default 'html' */
+  format?: 'html' | 'markdown'
+  /** Initial content, interpreted per `format`. Updates are NOT reactive — use `onChange` for controlled state. */
   content?: string
   placeholder?: string
-  /** Called with the editor's HTML string whenever content changes. */
-  onChange?: (html: string) => void
+  /** Called with the editor content (HTML, or Markdown when `format="markdown"`) whenever it changes. */
+  onChange?: (value: string) => void
   className?: string
   /** Set to false to render in read-only mode (e.g. for previewing). */
   editable?: boolean
@@ -407,10 +424,55 @@ export interface RichTextEditorProps extends Omit<React.ComponentPropsWithoutRef
   onMentionSelect?: (item: MentionItem) => void
   /** Emoji art style. @default 'native' */
   emojiSet?: EmojiSet
+  /** Show a source-view toggle (raw Markdown ⇄ visual) in the top-right of the default editor. @default false */
+  sourceToggle?: boolean
+  /** Controlled source-view state — drive it from an external button. */
+  sourceMode?: boolean
+  /** Uncontrolled initial source-view state. @default false */
+  defaultSourceMode?: boolean
+  /** Called when the source view toggles (raw Markdown ⇄ visual). */
+  onSourceModeChange?: (source: boolean) => void
 }
 
-const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
-  function RichTextEditor({
+// --------------------------- compound slot context ------------------------
+
+interface RTEContextValue {
+  editor: Editor
+  toolbar?: ToolbarItem[]
+  editable: boolean
+  onImageClick: () => void
+  onFileClick?: () => void
+  onEmojiClick: () => void
+  /** Raw-Markdown source view active. */
+  sourceMode: boolean
+  setSourceMode: (source: boolean) => void
+  toggleSource: () => void
+  sourceText: string
+  onSourceChange: (value: string) => void
+}
+
+const RTEContext = React.createContext<RTEContextValue | null>(null)
+
+/** Access the editor + toolbar wiring inside a `<RichTextEditor.Provider>`. */
+function useRichTextEditor(): RTEContextValue {
+  const ctx = React.useContext(RTEContext)
+  if (!ctx) throw new Error('RichTextEditor.Toolbar / .Content must be used within <RichTextEditor.Provider>')
+  return ctx
+}
+
+export interface RichTextEditorProviderProps extends RichTextEditorProps {
+  children?: React.ReactNode
+}
+
+/**
+ * Owns the Tiptap editor + all upload/emoji/mention plumbing and provides it to
+ * `RichTextEditor.Toolbar` / `RichTextEditor.Content`. Compose your own layout
+ * (toolbar top/bottom/floating, or bring your own) around these slots, or use
+ * `<RichTextEditor>` for the batteries-included default.
+ */
+const RichTextEditorProvider = React.forwardRef<HTMLDivElement, RichTextEditorProviderProps>(
+  function RichTextEditorProvider({
+  format = 'html',
   content = '',
   placeholder = 'Start writing...',
   onChange,
@@ -422,14 +484,33 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
   mentions,
   onMentionSearch,
   onMentionSelect,
+  sourceMode: sourceModeProp,
+  defaultSourceMode = false,
+  onSourceModeChange,
   // @deprecated no-op since the frimousse migration (native-only emoji). Kept
   // out of `...props` so it never leaks onto the DOM.
   emojiSet: _emojiSet = 'native',
+  // Default-render-only flag; dropped here so it never leaks onto the DOM.
+  sourceToggle: _sourceToggle,
+  children,
   ...props
 }, ref) {
   const editorRef = React.useRef<ReturnType<typeof useEditor>>(null)
   const isInternalChangeRef = React.useRef(false)
+  const reduceMotion = useReducedMotion()
   const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
+
+  // Source view (raw Markdown), controllable.
+  const [uncontrolledSource, setUncontrolledSource] = React.useState(defaultSourceMode)
+  const sourceMode = sourceModeProp ?? uncontrolledSource
+  const setSourceMode = React.useCallback(
+    (v: boolean) => {
+      if (sourceModeProp === undefined) setUncontrolledSource(v)
+      onSourceModeChange?.(v)
+    },
+    [sourceModeProp, onSourceModeChange],
+  )
+  const [sourceText, setSourceText] = React.useState('')
   const emojiPickerRef = React.useRef<HTMLDivElement>(null)
   const imageInputRef = React.useRef<HTMLInputElement>(null)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
@@ -514,8 +595,10 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
       ] : []),
       EmojiNode,
       createEmojiSuggestion(),
+      Markdown,
     ],
     content,
+    contentType: format === 'markdown' ? 'markdown' : undefined,
     editable,
     editorProps: {
       handleDrop: (_view, event, _slice, moved) => {
@@ -555,7 +638,7 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
     },
     onUpdate: ({ editor: ed }) => {
       isInternalChangeRef.current = true
-      onChange?.(ed.getHTML())
+      onChange?.(format === 'markdown' ? ed.getMarkdown() : ed.getHTML())
       queueMicrotask(() => {
         isInternalChangeRef.current = false
       })
@@ -580,44 +663,78 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
 
   React.useEffect(() => {
     if (isInternalChangeRef.current) return
-    if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content, { emitUpdate: false })
+    if (!editor) return
+    const current = format === 'markdown' ? editor.getMarkdown() : editor.getHTML()
+    if (content !== current) {
+      editor.commands.setContent(content, {
+        emitUpdate: false,
+        contentType: format === 'markdown' ? 'markdown' : undefined,
+      })
     }
-  }, [editor, content])
+  }, [editor, content, format])
+
+  // Entering source view: seed the textarea with the editor's current Markdown.
+  React.useEffect(() => {
+    if (sourceMode && editor) setSourceText(editor.getMarkdown())
+    // Only re-seed on the source-mode transition, not on every keystroke.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sourceMode])
 
   if (!editor) return null
 
+  const onSourceChange = (v: string) => {
+    setSourceText(v)
+    // Push edits back into the doc so `onChange` fires in the configured format.
+    editor.commands.setContent(v, { contentType: 'markdown' })
+  }
+
+  const ctx: RTEContextValue = {
+    editor,
+    toolbar,
+    editable,
+    onImageClick: () => imageInputRef.current?.click(),
+    onFileClick: onFileUpload ? () => fileInputRef.current?.click() : undefined,
+    onEmojiClick: () => setShowEmojiPicker((prev) => !prev),
+    sourceMode,
+    setSourceMode,
+    toggleSource: () => setSourceMode(!sourceMode),
+    sourceText,
+    onSourceChange,
+  }
+
   return (
-    <div ref={ref} {...props} className={cn('relative', className)}>
-      {/* Emoji picker rendered outside the overflow-hidden box so it isn't clipped */}
-      {showEmojiPicker && (
-        <div
-          ref={emojiPickerRef}
-          className="absolute bottom-full right-0 z-popover mb-ds-02"
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') {
-              e.stopPropagation()
-              setShowEmojiPicker(false)
-            }
-          }}
-        >
-          <EmojiPickerLazy
-            onSelect={({ id, native }) => {
-              editor.chain().focus().insertContent({
-                type: 'emojiNode',
-                attrs: { id, native },
-              }).run()
-              setShowEmojiPicker(false)
-            }}
-          />
-        </div>
-      )}
-      <div
-        className={cn(
-          'overflow-hidden rounded-surface border border-surface-border-strong bg-surface-raised',
-          'transition-colors ease-productive-standard focus-within:border-surface-border-strong',
-        )}
-      >
+    <RTEContext.Provider value={ctx}>
+      <div ref={ref} {...props} className={cn('relative', className)}>
+        {/* Emoji picker rendered outside the overflow-hidden box so it isn't clipped */}
+        <AnimatePresence>
+          {showEmojiPicker && (
+            <motion.div
+              key="emoji-picker"
+              ref={emojiPickerRef}
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.96, y: 4 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 4 }}
+              transition={{ duration: 0.14, ease: 'easeOut' }}
+              className="absolute bottom-full right-0 z-popover mb-ds-02 origin-bottom-right"
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  e.stopPropagation()
+                  setShowEmojiPicker(false)
+                }
+              }}
+            >
+              <EmojiPickerLazy
+                onSelect={({ id, native }) => {
+                  editor.chain().focus().insertContent({
+                    type: 'emojiNode',
+                    attrs: { id, native },
+                  }).run()
+                  setShowEmojiPicker(false)
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <input
           ref={imageInputRef}
           type="file"
@@ -643,31 +760,145 @@ const RichTextEditor = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
             }}
           />
         )}
-        {editable && (
-          <Toolbar
-            editor={editor}
-            toolbar={toolbar}
-            onImageClick={() => imageInputRef.current?.click()}
-            onFileClick={onFileUpload ? () => fileInputRef.current?.click() : undefined}
-            onEmojiClick={() => setShowEmojiPicker((prev) => !prev)}
-          />
-        )}
-        <EditorContent editor={editor} />
+        {children}
       </div>
-    </div>
+    </RTEContext.Provider>
   )
 },
 )
 
-RichTextEditor.displayName = 'RichTextEditor'
+RichTextEditorProvider.displayName = 'RichTextEditor.Provider'
+
+/**
+ * The formatting toolbar. Reads the editor from `<RichTextEditor.Provider>`.
+ * In source view the format controls hide but `trailing` (e.g. the source
+ * toggle) stays, so the bar persists.
+ */
+function RichTextEditorToolbarSlot({ trailing }: { trailing?: React.ReactNode }) {
+  const { editor, toolbar, editable, sourceMode, onImageClick, onFileClick, onEmojiClick } = useRichTextEditor()
+  if (!editable) return null
+  const showControls = !sourceMode
+  if (!showControls && !trailing) return null
+  return (
+    <Toolbar
+      editor={editor}
+      toolbar={toolbar}
+      showControls={showControls}
+      trailing={trailing}
+      onImageClick={onImageClick}
+      onFileClick={onFileClick}
+      onEmojiClick={onEmojiClick}
+    />
+  )
+}
+RichTextEditorToolbarSlot.displayName = 'RichTextEditor.Toolbar'
+
+/** The content area — the visual editor, or a raw-Markdown textarea in source view. */
+function RichTextEditorContentSlot() {
+  const { editor, sourceMode, sourceText, onSourceChange } = useRichTextEditor()
+  const reduce = useReducedMotion()
+  const enter = reduce ? { opacity: 0 } : { opacity: 0, y: 4 }
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      {sourceMode ? (
+        <motion.div key="source" initial={enter} animate={{ opacity: 1, y: 0 }} exit={enter} transition={{ duration: 0.14, ease: 'easeOut' }}>
+          <textarea
+            value={sourceText}
+            onChange={(e) => onSourceChange(e.target.value)}
+            spellCheck={false}
+            aria-label="Markdown source"
+            className="block min-h-[120px] w-full resize-y bg-surface-raised px-ds-04 py-ds-04 font-mono text-body-sm leading-ds-relaxed text-surface-fg focus:outline-hidden"
+          />
+        </motion.div>
+      ) : (
+        <motion.div key="visual" initial={enter} animate={{ opacity: 1, y: 0 }} exit={enter} transition={{ duration: 0.14, ease: 'easeOut' }}>
+          <EditorContent editor={editor} />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
+RichTextEditorContentSlot.displayName = 'RichTextEditor.Content'
+
+/**
+ * A source-view toggle (raw Markdown ⇄ visual). Text + icon by default;
+ * pass `iconOnly` for a compact button. Place it anywhere inside a Provider.
+ */
+function RichTextEditorSourceToggleSlot({ className, iconOnly = false }: { className?: string; iconOnly?: boolean }) {
+  const { sourceMode, toggleSource } = useRichTextEditor()
+  const aria = sourceMode ? 'Switch to visual editor' : 'Switch to Markdown source'
+  const icon = sourceMode ? IconEye : IconCode
+  if (iconOnly) {
+    return (
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        aria-pressed={sourceMode}
+        aria-label={aria}
+        title={aria}
+        className={className}
+        onClick={toggleSource}
+      >
+        <Icon icon={icon} size="sm" />
+      </Button>
+    )
+  }
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="sm"
+      aria-pressed={sourceMode}
+      aria-label={aria}
+      startIcon={icon}
+      className={className}
+      onClick={toggleSource}
+    >
+      {sourceMode ? 'Editor' : 'Markdown'}
+    </Button>
+  )
+}
+RichTextEditorSourceToggleSlot.displayName = 'RichTextEditor.SourceToggle'
+
+// Batteries-included default: Provider + bordered box + toolbar-over-content.
+const RichTextEditorBase = React.forwardRef<HTMLDivElement, RichTextEditorProps>(
+  function RichTextEditor(props, ref) {
+    return (
+      <RichTextEditorProvider ref={ref} {...props}>
+        <div
+          className={cn(
+            'overflow-hidden rounded-surface border border-surface-border-strong bg-surface-raised',
+            'transition-colors ease-productive-standard focus-within:border-surface-border-strong',
+          )}
+        >
+          <RichTextEditorToolbarSlot
+            trailing={props.sourceToggle ? <RichTextEditorSourceToggleSlot /> : undefined}
+          />
+          <RichTextEditorContentSlot />
+        </div>
+      </RichTextEditorProvider>
+    )
+  },
+)
+RichTextEditorBase.displayName = 'RichTextEditor'
+
+const RichTextEditor = Object.assign(RichTextEditorBase, {
+  Provider: RichTextEditorProvider,
+  Toolbar: RichTextEditorToolbarSlot,
+  Content: RichTextEditorContentSlot,
+  SourceToggle: RichTextEditorSourceToggleSlot,
+})
 
 export interface RichTextViewerProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
   content: string
+  /** Content format. `markdown` parses Markdown; `html` (default) parses HTML. @default 'html' */
+  format?: 'html' | 'markdown'
   className?: string
 }
 
 const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
-  function RichTextViewer({ content, className, ...props }, ref) {
+  function RichTextViewer({ content, format = 'html', className, ...props }, ref) {
   const editor = useEditor({
     immediatelyRender: false, // SSR-safe — prevents hydration mismatch in Next.js
     extensions: [
@@ -703,8 +934,10 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
       Mention.configure({
         HTMLAttributes: { class: 'mention' },
       }),
+      Markdown,
     ],
     content,
+    contentType: format === 'markdown' ? 'markdown' : undefined,
     editable: false,
     editorProps: {
       attributes: {
@@ -725,4 +958,12 @@ const RichTextViewer = React.forwardRef<HTMLDivElement, RichTextViewerProps>(
 
 RichTextViewer.displayName = 'RichTextViewer'
 
-export { RichTextEditor, RichTextViewer }
+export {
+  RichTextEditor,
+  RichTextEditorProvider,
+  RichTextEditorToolbarSlot as RichTextEditorToolbar,
+  RichTextEditorContentSlot as RichTextEditorContent,
+  RichTextEditorSourceToggleSlot as RichTextEditorSourceToggle,
+  useRichTextEditor,
+  RichTextViewer,
+}

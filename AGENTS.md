@@ -176,12 +176,16 @@ Set up shilp-sutra theming for this project via the Themer.
 My brand: <hex OR archetype name>
 
 Steps:
-1. Map my brand input to query params (archetype=<name>, or hue=<0-360>&chroma=<0.10-0.20>, or default archetype=devalok&hue=340&chroma=0.19).
+1. Map my brand input to query params. The endpoint accepts ONLY these — pick the case that fits:
+   - Archetype name  → `archetype=<name>`
+   - A hex color     → CONVERT the hex to OKLCH first, then pass `hue=<0-360>&chroma=<0.10-0.20>` (numeric). There is NO `hex` or `color` param — passing one is silently ignored and you get the default devalok theme (wrong color, no error). Example: `#D33163` → hue 8, chroma 0.198 → `hue=8&chroma=0.198`.
+   - Nothing given   → `archetype=devalok`
 2. Fetch GET https://shilp-sutra.devalok.in/themer/result.json?<params>
    Response: { archetype, density, shape, motion, hue, chroma, css, pasteAfter, pasteLocation, doNotPasteInside }
-3. Paste the response `css` field AFTER the line in `pasteAfter` in the project's global stylesheet. Not inside any `@layer`.
+   Sanity-check the echoed `hue`/`chroma` in the response match what you sent — if they came back null, your params didn't parse.
+3. Paste the response `css` field AFTER the line in `pasteAfter` in the project's global stylesheet. Not inside any `@layer`. Paste it verbatim, unmodified.
 4. If @devalok/shilp-sutra isn't installed, install it first per the matching install-<framework>.md recipe.
-5. Verify with a Button or Card on any page — radius + accent should match https://shilp-sutra.devalok.in/themer/result?<params>.
+5. Verify with a Button or Card on any page — radius + accent should match https://shilp-sutra.devalok.in/themer/result?<params>. If the accent DIDN'T change, the override was dropped at build: check the pasted block sits at the stylesheet top level (not inside `@layer`) and the build log has no CSS-parse warning near it.
 ````
 
 When the user has already been to the Themer, they may paste a *filled-in* version with the JSON URL pre-built — skip step 1, go straight to fetch.

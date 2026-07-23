@@ -91,7 +91,7 @@ export function SiteHeader() {
             // 10px corners no longer need the extra inset that the full-pill
             // version required — left padding back to a normal value, symmetric
             // with the right side's button-relative padding.
-            'pl-ds-04 pr-ds-02 sm:pl-ds-05 sm:pr-ds-02 py-ds-02',
+            'px-ds-04 sm:px-ds-05 py-ds-02',
             // Rounded rectangle — 10px corners on a ~56px bar reads clearly
             // as a rectangle, not a pill. Earlier 24px (rounded-bubble) was
             // still half the bar height and looked capsule-y.
@@ -123,7 +123,7 @@ export function SiteHeader() {
                 alt="Shilp Sutra"
                 className="h-5 w-auto shrink-0 hidden dark:block"
               />
-              <span className="text-ds-xs font-mono mt-0.5 shrink-0 hidden sm:inline text-surface-fg-subtle">
+              <span className="text-ds-xs font-mono shrink-0 hidden sm:inline text-surface-fg-subtle leading-none self-center">
                 v{SHILP_SUTRA_MINOR}
               </span>
             </Link>
@@ -136,7 +136,7 @@ export function SiteHeader() {
             {navLinks.map((link) => {
               const isAccent = 'accent' in link && link.accent
               const base = isAccent
-                ? 'inline-flex items-center gap-ds-02 text-ds-sm text-secondary-11 hover:text-secondary-12 transition-colors duration-fast-01'
+                ? 'inline-flex items-center gap-ds-02 whitespace-nowrap text-ds-sm text-secondary-11 hover:text-secondary-12 transition-colors duration-fast-01'
                 : 'text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01'
               return (
                 <Link key={link.href} href={link.href} className={base}>

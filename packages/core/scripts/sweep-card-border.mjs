@@ -35,6 +35,7 @@ const ALL_SIDE_BORDER = /(?:^|[\s"'`(])border(?=[\s"'`)])/ // bare `border`, not
 const INTERACTIVE = /focus:|focus-visible:|hover:border|<input|<textarea|<select|<button|aria-invalid/
 const CANDIDATE = /\bborder-surface-border(?:-subtle)?\b(?!\/)/ // not -strong, not -card, not already /NN
 
+const DIRECTIONAL = /\bborder-[tblrxy](?:-|\b)/ // border-b/t/l/r = divider, not a card edge
 function classify(line) {
   if (!CANDIDATE.test(line)) return null
   const card = CARD_BG.test(line) || CARD_ROUND.test(line)
@@ -42,6 +43,13 @@ function classify(line) {
   const interactive = INTERACTIVE.test(line)
   if (card && allSide && !interactive) return 'high'
   return 'low'
+}
+/** Why a low site was skipped — so the review can focus on real card candidates. */
+function lowReason(line) {
+  if (INTERACTIVE.test(line)) return 'interactive-edge'
+  if (DIRECTIONAL.test(line) && !ALL_SIDE_BORDER.test(line)) return 'directional-divider'
+  if (!(CARD_BG.test(line) || CARD_ROUND.test(line))) return 'no-card-signal'
+  return 'other'
 }
 
 function scan(dir, files) {
@@ -72,7 +80,10 @@ for (const file of files) {
     const verdict = classify(line)
     if (!verdict) return line
     // Control-component files: downgrade every candidate to review — never auto-soften a control edge.
-    if (verdict === 'low' || isControl) { low.push({ rel, line: i + 1 }); return line }
+    if (verdict === 'low' || isControl) {
+      low.push({ rel, line: i + 1, reason: isControl ? 'control-file' : lowReason(line), text: line.trim().slice(0, 90) })
+      return line
+    }
     high.push({ rel, line: i + 1 })
     changed = true
     swaps++
@@ -87,5 +98,13 @@ console.log(`  low/left-for-review: ${low.length}\n`)
 console.log('  high-confidence files:')
 const byFile = high.reduce((m, h) => ((m[h.rel] = (m[h.rel] || 0) + 1), m), {})
 for (const [f, n] of Object.entries(byFile).sort((a, b) => b[1] - a[1]).slice(0, 20)) console.log(`  ${String(n).padStart(3)}  ${f}`)
-if (!WRITE) console.log(`\n  Dry-run. Re-run with --write, then typecheck + visual diff.\n`)
-else console.log(`\n  Applied ${swaps} swaps → border-card. Next: pnpm typecheck, then visual diff.\n`)
+// Low bucket summary — what was skipped and why.
+const buckets = low.reduce((m, l) => ((m[l.reason] = (m[l.reason] || 0) + 1), m), {})
+console.log('\n  Low (left for review) by reason:')
+for (const [r, n] of Object.entries(buckets).sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(3)}  ${r}`)
+console.log('\n  → Real card candidates to review (reason=other / no-card-signal):')
+const candidates = low.filter((l) => l.reason === 'other' || l.reason === 'no-card-signal')
+for (const c of candidates.slice(0, 40)) console.log(`  ${c.rel}:${c.line}  ${c.text}`)
+console.log(`  (${candidates.length} candidates; the rest are control-edges/dividers that correctly keep their border.)`)
+if (!WRITE) console.log(`\n  Dry-run.\n`)
+else console.log(`\n  Applied ${swaps} swaps → border-card.\n`)

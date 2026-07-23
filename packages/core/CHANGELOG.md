@@ -1,5 +1,13 @@
 # @devalok/shilp-sutra
 
+## 0.51.0
+
+### Minor Changes
+
+- [#171](https://github.com/devalok-design/shilp-sutra/pull/171) [`f273c89`](https://github.com/devalok-design/shilp-sutra/commit/f273c89ba947796c4b7c1fd18d26eab19cf0b159) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Card `default` variant is now **tonal** — depth from a surface-tone shift plus a whisper `border-card` hairline, no drop shadow. Previously `default` led with `shadow-raised`. This aligns the base `Card` primitive with the tonal card-edge direction the rest of the DS adopted in 0.50.0 (Setu `tonal-elevation`: depth from tone, not a shadow).
+
+  **Visual change, not an API change.** No props, types, DOM structure, or ARIA changed — a `<Card>` with no `variant` now renders with a tonal hairline instead of a shadow. Cards that want the old floated look should pass `variant="elevated"` (shadow, no border). `outline` (strong border) and `flat` (no edge) are unchanged. `StatCard` inherits this via its delegated `variant`.
+
 ## 0.50.0
 
 ### Minor Changes

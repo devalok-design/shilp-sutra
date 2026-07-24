@@ -14,6 +14,7 @@ import type { ComponentType } from 'react'
 
 import { DashboardBlock, dashboardMeta } from '@/content/blocks/dashboard/index'
 import { PricingBlock, pricingMeta } from '@/content/blocks/pricing/index'
+import { SidebarAppBlock, sidebarAppMeta } from '@/content/blocks/sidebar-app/index'
 import { SignupBlock, signupMeta } from '@/content/blocks/signup/index'
 
 const REPO_ROOT = resolve(process.cwd(), '..', '..')
@@ -33,6 +34,7 @@ export type Block = BlockMeta & {
 }
 
 const BLOCKS: Block[] = [
+  { ...sidebarAppMeta, Component: SidebarAppBlock },
   { ...dashboardMeta, Component: DashboardBlock },
   { ...signupMeta, Component: SignupBlock },
   { ...pricingMeta, Component: PricingBlock },

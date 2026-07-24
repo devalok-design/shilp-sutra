@@ -3,6 +3,16 @@
 /**
  * AppSidebar -- Application-layer sidebar built on the Sidebar primitive.
  *
+ * @deprecated Since 0.54.0 — scheduled for removal in the next MAJOR (1.0.0).
+ * The config-driven wrapper is being retired in favour of the composable
+ * `Sidebar` primitives + the copy-and-own **App sidebar preset** (the
+ * `sidebar-app` entry in the Preset Library). The preset renders the same
+ * shape (logo, grouped nav, collapsible sub-items, badges, group `+` action,
+ * user footer) but lives in YOUR codebase, so you shape it directly instead of
+ * feeding a config prop. Migrate by copying the preset and replacing your
+ * `<AppSidebar navGroups={…} />` with the pasted composition.
+ * Preset: https://shilp-sutra.devalok.in/blocks/sidebar-app
+ *
  * Design-system token migration (2026-02-28):
  *   All V1 colour tokens have been replaced with semantic design-system tokens.
  *   Typography classes replaced with Tailwind equivalents.
@@ -108,6 +118,10 @@ export interface SidebarFooterConfig {
   promo?: SidebarPromo
 }
 
+/**
+ * @deprecated Since 0.54.0 — removal in 1.0.0. Prefer composing the `Sidebar`
+ * primitives; start from the `sidebar-app` preset.
+ */
 export interface AppSidebarProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /** Currently active pathname -- used to highlight the active nav item */
@@ -330,6 +344,11 @@ function NavLink({
 // AppSidebar
 // -----------------------------------------------------------------------
 
+/**
+ * @deprecated Since 0.54.0 — removal in 1.0.0. Use the composable `Sidebar`
+ * primitives + the `sidebar-app` preset (https://shilp-sutra.devalok.in/blocks/sidebar-app).
+ * See the file-level doc comment for the migration path.
+ */
 const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(
   (
     {

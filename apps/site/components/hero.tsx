@@ -11,7 +11,7 @@ export function Hero() {
       <BrahmaBackdrop />
       {/* Content sits in a left column; the Brahma identity composition owns the
           right. pt clears the floating pill (~70–80px). */}
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col px-page-x pt-ds-13 pb-ds-12 md:pt-[7rem] md:pb-[6rem] lg:pt-[10rem] lg:pb-[9rem]">
+      <div className="relative z-10 mx-auto flex w-full max-w-[96rem] flex-col px-page-x pt-ds-11 pb-ds-10 md:pt-ds-13 md:pb-ds-12">
         <div className="flex flex-col items-center gap-ds-06 text-center md:gap-ds-07 lg:max-w-[40rem] lg:items-start lg:text-left">
           <h1 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg text-balance hero-rise" style={{ ['--hero-delay' as string]: '4450ms' } as React.CSSProperties}>
             A design system that takes{' '}

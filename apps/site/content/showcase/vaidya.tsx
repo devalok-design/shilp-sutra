@@ -29,12 +29,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/u
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
 
-import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+import { showcaseButtonShape, showcaseButtonVariant, showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
 const VAIDYA_STYLE = showcaseVisualStyle('vaidya') as CSSProperties
 const VAIDYA_SHAPE = showcaseShape('vaidya')
+const VAIDYA_BUTTON_VARIANT = showcaseButtonVariant('vaidya')
+const VAIDYA_BUTTON_SHAPE = showcaseButtonShape('vaidya')
 
 type VitalStatus = 'normal' | 'watch' | 'critical'
 type Trend = 'up' | 'down' | 'flat'
@@ -531,6 +533,8 @@ export function VaidyaShowcase() {
               })}
             </div>
             <Button
+              variant={VAIDYA_BUTTON_VARIANT}
+              shape={VAIDYA_BUTTON_SHAPE}
               size="lg"
               startIcon={<IconCalendarPlus size={16} />}
               fullWidth

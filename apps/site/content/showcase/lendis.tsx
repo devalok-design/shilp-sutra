@@ -43,12 +43,14 @@ import {
   TooltipTrigger,
 } from '@devalok/shilp-sutra/ui/tooltip'
 
-import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+import { showcaseButtonShape, showcaseButtonVariant, showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
 const LENDIS_STYLE = showcaseVisualStyle('lendis') as CSSProperties
 const LENDIS_SHAPE = showcaseShape('lendis')
+const LENDIS_BUTTON_VARIANT = showcaseButtonVariant('lendis')
+const LENDIS_BUTTON_SHAPE = showcaseButtonShape('lendis')
 
 type Rail = 'UPI' | 'IMPS' | 'NEFT' | 'SWIFT' | 'Card'
 type Status = 'settled' | 'pending' | 'failed'
@@ -555,6 +557,8 @@ export function LendisShowcase() {
                 </FormField>
 
                 <Button
+                  variant={LENDIS_BUTTON_VARIANT}
+                  shape={LENDIS_BUTTON_SHAPE}
                   size="lg"
                   fullWidth
                   disabled={amountState === 'error' || amountNum === 0}

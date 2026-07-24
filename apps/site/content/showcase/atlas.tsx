@@ -34,12 +34,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/u
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
 
-import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+import { showcaseButtonShape, showcaseButtonVariant, showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
 const ATLAS_STYLE = showcaseVisualStyle('atlas') as CSSProperties
 const ATLAS_SHAPE = showcaseShape('atlas')
+const ATLAS_BUTTON_VARIANT = showcaseButtonVariant('atlas')
+const ATLAS_BUTTON_SHAPE = showcaseButtonShape('atlas')
 
 type ProjectRow = {
   id: string
@@ -300,7 +302,7 @@ export function AtlasShowcase() {
                   </Tooltip>
                   <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                     <SheetTrigger asChild>
-                      <Button startIcon={<IconPlus size={14} />}>New project</Button>
+                      <Button variant={ATLAS_BUTTON_VARIANT} shape={ATLAS_BUTTON_SHAPE} startIcon={<IconPlus size={14} />}>New project</Button>
                     </SheetTrigger>
                     <SheetContent>
                       <SheetHeader>

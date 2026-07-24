@@ -44,12 +44,14 @@ import {
   TooltipTrigger,
 } from '@devalok/shilp-sutra/ui/tooltip'
 
-import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+import { showcaseButtonShape, showcaseButtonVariant, showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
 const PATRIKA_STYLE = showcaseVisualStyle('patrika') as CSSProperties
 const PATRIKA_SHAPE = showcaseShape('patrika')
+const PATRIKA_BUTTON_VARIANT = showcaseButtonVariant('patrika')
+const PATRIKA_BUTTON_SHAPE = showcaseButtonShape('patrika')
 
 type IssueEntry = {
   number: string
@@ -711,7 +713,8 @@ export function PatrikaShowcase() {
                 />
               </FormField>
               <Button
-                variant="solid"
+                variant={PATRIKA_BUTTON_VARIANT}
+                shape={PATRIKA_BUTTON_SHAPE}
                 color="accent"
                 size="md"
                 fullWidth

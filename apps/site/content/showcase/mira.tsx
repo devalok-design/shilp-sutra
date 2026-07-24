@@ -33,10 +33,12 @@ import { Text } from '@devalok/shilp-sutra/ui/text'
 import { ToggleGroup, ToggleGroupItem } from '@devalok/shilp-sutra/ui/toggle-group'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
 
-import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+import { showcaseButtonShape, showcaseButtonVariant, showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
 
 const MIRA_STYLE = showcaseVisualStyle('mira') as CSSProperties
 const MIRA_SHAPE = showcaseShape('mira')
+const MIRA_BUTTON_VARIANT = showcaseButtonVariant('mira')
+const MIRA_BUTTON_SHAPE = showcaseButtonShape('mira')
 
 type ColourId = 'haldi' | 'kumkum' | 'neel' | 'sage' | 'kala'
 
@@ -497,7 +499,7 @@ export function MiraShowcase() {
                             {formatInr(cart.reduce((sum, l) => sum + l.priceInr, 0))}
                           </Text>
                         </div>
-                        <Button size="md" fullWidth>
+                        <Button variant={MIRA_BUTTON_VARIANT} shape={MIRA_BUTTON_SHAPE} size="md" fullWidth>
                           Checkout
                         </Button>
                       </>

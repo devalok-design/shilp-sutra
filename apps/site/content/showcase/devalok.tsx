@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 
 import { motion } from 'framer-motion'
 
@@ -23,7 +23,14 @@ import { Input } from '@devalok/shilp-sutra/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/ui/tabs'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
+import { showcaseButtonShape, showcaseButtonVariant, showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const DEVALOK_STYLE = showcaseVisualStyle('devalok') as CSSProperties
+const DEVALOK_SHAPE = showcaseShape('devalok')
+const DEVALOK_BUTTON_VARIANT = showcaseButtonVariant('devalok')
+const DEVALOK_BUTTON_SHAPE = showcaseButtonShape('devalok')
 
 const principles = [
   {
@@ -116,7 +123,7 @@ export function DevalokShowcase() {
   const [sent, setSent] = useState(false)
 
   return (
-    <div className="flex flex-col gap-ds-09">
+    <div className="flex flex-col gap-ds-09" data-shape={DEVALOK_SHAPE} style={DEVALOK_STYLE}>
       <header className="flex flex-col gap-ds-04 max-w-3xl">
         <div className="flex items-center gap-ds-04">
           <img
@@ -374,8 +381,9 @@ export function DevalokShowcase() {
               required
             />
             <Button
+              variant={DEVALOK_BUTTON_VARIANT}
+              shape={DEVALOK_BUTTON_SHAPE}
               size="lg"
-              variant="soft"
               disabled={!email.trim()}
               onClickAsync={async () => {
                 await sleep(1500)

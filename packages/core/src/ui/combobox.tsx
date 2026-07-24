@@ -28,7 +28,10 @@ export const comboboxTriggerVariants = cva(
     'border border-surface-border-strong bg-surface-raised-hover',
     'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
-    'disabled:cursor-not-allowed disabled:opacity-action-disabled',
+    // Trigger is a div[role=combobox] (so chip remove-buttons in multi-select
+    // aren't nested in a <button>), so disabled styling keys off data-disabled,
+    // not the :disabled pseudo-class.
+    'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-action-disabled',
   ],
   {
     variants: {
@@ -171,7 +174,7 @@ const MAX_VISIBLE_PILLS = 2
 /** Approximate height of a single option item in px */
 const ITEM_HEIGHT_PX = 36
 
-const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
+const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
   (
     {
       options,
@@ -424,24 +427,38 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
       <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
         <div className={cn('relative', className)} {...rest}>
         <PopoverPrimitive.Trigger asChild disabled={disabled}>
-          <button
+          {/* role=combobox on a <div>, NOT a <button> — a native button can't
+              legally contain the chip remove-<button>s rendered in multi-select
+              (invalid HTML + a11y break). This is the W3C select-only combobox
+              pattern. Radix Trigger wires click/toggle; we add the keyboard-open
+              (Enter/Space/ArrowDown) a real button would have given for free. */}
+          <div
             ref={ref}
-            type="button"
             role="combobox"
+            tabIndex={disabled ? -1 : 0}
+            data-disabled={disabled || undefined}
             // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
             id={externalId ?? fieldCtx.inputId}
             aria-expanded={open}
             aria-controls={listboxId}
             aria-haspopup="listbox"
+            aria-disabled={disabled || undefined}
             // Explicit accessibleLabel wins. Inside a FormField, let the visible <Label>
             // provide the name (via htmlFor); only fall back to placeholder when standalone.
             aria-label={accessibleLabel ?? (fieldCtx.inputId ? undefined : placeholder)}
             aria-invalid={isError || undefined}
             aria-describedby={ariaDescribedBy}
             aria-required={ariaRequired || undefined}
-            disabled={disabled}
+            onKeyDown={(e) => {
+              if (disabled) return
+              if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                e.preventDefault()
+                handleOpenChange(true)
+              }
+            }}
             className={cn(
               comboboxTriggerVariants({ size }),
+              'cursor-pointer',
               open && 'border-accent-7',
               state && stateBorderClasses[state],
               triggerClassName,
@@ -449,7 +466,7 @@ const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
           >
             {renderTriggerContent()}
             <Icon icon={IconChevronDown} size={resolvedIconSize} className={cn("ml-ds-02 shrink-0 opacity-50 transition-transform duration-fast-01 ease-productive-standard", open && 'rotate-180')} />
-          </button>
+          </div>
         </PopoverPrimitive.Trigger>
 
         <PopoverPrimitive.Portal>

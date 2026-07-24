@@ -12,7 +12,7 @@ import { getAllBlocks, getBlockSource } from '@/lib/blocks-registry'
 export const metadata: Metadata = {
   title: 'Showcase',
   description:
-    'Real pages, plus six fictional industries, one library. Dashboards and blocks lifted from real work, then SaaS/fintech/D2C/healthcare/editorial/studio brand mocks — each with its own OKLCH ramp.',
+    'Full pages you can copy and ship, plus the same shilp-sutra library shown across six different industry brands: SaaS, fintech, D2C, healthcare, editorial, and studio.',
 }
 
 export default async function ShowcaseIndexPage() {
@@ -28,18 +28,17 @@ export default async function ShowcaseIndexPage() {
           <div className="flex flex-col gap-ds-09">
             <PageHeader
               title="Real pages, then real brands."
-              subtitle="Full-page blocks lifted from real work. Then six industries, one library."
-              description="Blocks are multi-component surfaces you copy and ship. The library below proves the range: the same shilp-sutra components under six different OKLCH ramps."
+              subtitle="Full pages you can copy and ship, then the same library wearing six different brands."
             />
 
             <section className="flex flex-col gap-ds-05">
               <header className="flex flex-col gap-ds-02 max-w-2xl">
                 <h2 className="font-display text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
-                  Real pages, not toys.
+                  Full pages, not toys.
                 </h2>
                 <Text variant="body-sm" className="text-surface-fg-muted">
-                  Dashboards, sign-up flows, pricing. Each one recolours with the brand
-                  switcher. Copy the source, paste, ship.
+                  Dashboards, sign-up flows, pricing. Each recolours with the brand switcher. Copy
+                  the source and ship.
                 </Text>
               </header>
 

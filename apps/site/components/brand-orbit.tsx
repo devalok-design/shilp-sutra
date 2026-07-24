@@ -105,9 +105,10 @@ export function BrandOrbit() {
   }, [reduce])
 
   return (
-    <div aria-hidden className="pointer-events-none relative isolate select-none py-ds-06">
-      {/* Layer 1 — conveyor */}
-      <div className="absolute inset-0 flex flex-col justify-center gap-ds-05 [mask-image:linear-gradient(to_right,transparent,black_14%,black_86%,transparent)]">
+    <div aria-hidden className="pointer-events-none relative isolate select-none overflow-hidden py-ds-06">
+      {/* Layer 1 — conveyor. overflow-hidden on BOTH this root and the row
+          container so the w-max belts never widen the page (mobile h-scroll). */}
+      <div className="absolute inset-0 flex flex-col justify-center gap-ds-05 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_14%,black_86%,transparent)]">
         {COMPONENT_ROWS.map((row, i) => (
           <ConveyorRow key={i} items={row} duration={54 + i * 12} reverse={i % 2 === 1} reduce={!!reduce} />
         ))}

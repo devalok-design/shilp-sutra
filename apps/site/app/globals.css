@@ -15,6 +15,9 @@ body {
 /* Floating pill bar overlaps top of viewport — anchor jumps must clear it. */
 html {
   scroll-padding-top: 5.5rem;
+  /* Safety net: never let a stray-wide element create horizontal scroll (it
+     breaks the fixed, viewport-width topbar). `clip` still allows vertical. */
+  overflow-x: clip;
 }
 
 /* Hero backdrop hairline — the source #EAEAEA in light; a faint white in dark so
@@ -186,6 +189,13 @@ html {
   .hero-rise {
     opacity: 0;
     animation: hero-rise 0.6s cubic-bezier(0.618, 0, 0.382, 1) var(--hero-delay, 0ms) both;
+  }
+  /* Mobile/tablet has no elaborate backdrop composition (specimens are lg-only),
+     so the copy appears quickly instead of waiting out the desktop timeline. */
+  @media (max-width: 1023px) {
+    .hero-rise {
+      animation-delay: 140ms;
+    }
   }
 }
 

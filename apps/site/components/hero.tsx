@@ -66,7 +66,7 @@ export function Hero() {
         </div>
         {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
             Three capability-led chips per docs/copy/shilp-sutra-copy-context.md §10. */}
-        <ul className="mt-ds-08 w-full max-w-full flex flex-nowrap items-center justify-center gap-x-ds-04 overflow-x-auto text-ds-xl text-surface-fg-muted text-difference whitespace-nowrap">
+        <ul className="mt-ds-08 w-full flex flex-nowrap items-center justify-center gap-x-ds-04 text-ds-base text-surface-fg-muted text-difference whitespace-nowrap">
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="w-1.5 h-1.5 rounded-pill bg-success-9" />
             Powers Karm, Hiring + studio tools

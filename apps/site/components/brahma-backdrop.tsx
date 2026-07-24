@@ -120,20 +120,36 @@ const ZONES = [
 export function BrahmaBackdrop() {
   const reduce = useReducedMotion()
   const measureRef = useRef<HTMLDivElement>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
   const [gx0, setGx0] = useState<number | null>(null)
+  const [size, setSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 })
 
-  // Measure the content container's left edge → the grid's x-origin. Keeps the
-  // grid, circles and specimens locked to where the copy actually starts.
+  // Measure the content container's left edge → the grid's x-origin, and the
+  // backdrop's own size → how many grid lines to draw. Keeps grid, circles and
+  // specimens locked to where the copy actually starts.
   useEffect(() => {
     const measure = () => {
       if (measureRef.current) setGx0(measureRef.current.getBoundingClientRect().left)
+      if (rootRef.current) {
+        const r = rootRef.current.getBoundingClientRect()
+        setSize({ w: r.width, h: r.height })
+      }
     }
     measure()
     window.addEventListener('resize', measure)
     return () => window.removeEventListener('resize', measure)
   }, [])
 
-  const ready = gx0 !== null
+  const ready = gx0 !== null && size.w > 0
+
+  // Grid line positions (px), aligned to the container-left origin (gx0).
+  const vLines: number[] = []
+  const hLines: number[] = []
+  if (ready) {
+    const startX = gx0 - Math.ceil(gx0 / CELL) * CELL
+    for (let x = startX; x <= size.w; x += CELL) vLines.push(x)
+    for (let y = 0; y <= size.h; y += CELL) hLines.push(y)
+  }
   const ox = ready ? gx0 + ORIGIN_COL * CELL : 0
   const oy = ORIGIN_ROW * CELL
 
@@ -158,7 +174,7 @@ export function BrahmaBackdrop() {
   const py = (row: number) => `${row * CELL}px`
 
   return (
-    <div aria-hidden inert className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div ref={rootRef} aria-hidden inert className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* Invisible probe that mirrors the hero content container, so we can read
           its left edge and anchor the grid to it. */}
       <div className="absolute inset-x-0 top-0 mx-auto max-w-[96rem] px-page-x">
@@ -167,25 +183,52 @@ export function BrahmaBackdrop() {
 
       {/* Keyed wrapper — remounts on theme toggle to replay the entrance (A5). */}
       <div key={replay} style={{ display: 'contents' }}>
-      {/* Functional grid — uniform cells, anchored to the container's left edge. */}
-      {ready && (
-        <motion.div
-          className="absolute inset-0"
-          initial={{ opacity: reduce ? 1 : 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: reduce ? 0 : 1.2, delay: reduce ? 0 : 0.3 }}
-          style={{
-            backgroundImage: `repeating-linear-gradient(to right, var(--hero-grid) 0 1px, transparent 1px ${CELL}px), repeating-linear-gradient(to bottom, var(--hero-grid) 0 1px, transparent 1px ${CELL}px)`,
-            backgroundPosition: `${gx0}px 0`,
-            // Grid lines draw in dark, then settle to the faint hairline.
-            animation: reduce ? undefined : 'hero-grid-settle 2.6s cubic-bezier(0.23,1,0.32,1) 0.3s both',
-          }}
-        />
-      )}
-
       {/* SVG in raw px (no viewBox) so circles are true circles at grid coords. */}
       {ready && (
         <svg className="absolute inset-0 h-full w-full" fill="none">
+          {/* Functional grid — real SVG lines that DRAW themselves (pathLength),
+              in dark trace → settle to faint hairline. Staggered outward from the
+              circle origin so the grid builds from the centre. */}
+          {vLines.map((x, i) => {
+            const dist = Math.abs(x - ox)
+            const delay = 0.3 + (dist / CELL) * 0.06
+            return (
+              <motion.line
+                key={`v-${i}`}
+                x1={x}
+                y1={0}
+                x2={x}
+                y2={size.h}
+                stroke={HAIRLINE}
+                strokeWidth={1}
+                className={reduce ? undefined : 'hero-line-anim'}
+                style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: '1.4s' } as React.CSSProperties)}
+                initial={strokeInitial}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={reduce ? { duration: 0 } : { pathLength: { duration: 0.7, delay, ease: EASE_OUT }, opacity: { duration: 0.2, delay } }}
+              />
+            )
+          })}
+          {hLines.map((y, i) => {
+            const dist = Math.abs(y - oy)
+            const delay = 0.3 + (dist / CELL) * 0.06
+            return (
+              <motion.line
+                key={`h-${i}`}
+                x1={0}
+                y1={y}
+                x2={size.w}
+                y2={y}
+                stroke={HAIRLINE}
+                strokeWidth={1}
+                className={reduce ? undefined : 'hero-line-anim'}
+                style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: '1.4s' } as React.CSSProperties)}
+                initial={strokeInitial}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={reduce ? { duration: 0 } : { pathLength: { duration: 0.7, delay, ease: EASE_OUT }, opacity: { duration: 0.2, delay } }}
+              />
+            )
+          })}
           {ZONES.map((z, i) => (
             <motion.rect
               key={`zone-${i}`}

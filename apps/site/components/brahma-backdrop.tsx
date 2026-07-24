@@ -175,8 +175,10 @@ export function BrahmaBackdrop() {
           animate={{ opacity: 1 }}
           transition={{ duration: reduce ? 0 : 1.2, delay: reduce ? 0 : 0.3 }}
           style={{
-            backgroundImage: `repeating-linear-gradient(to right, ${HAIRLINE} 0 1px, transparent 1px ${CELL}px), repeating-linear-gradient(to bottom, ${HAIRLINE} 0 1px, transparent 1px ${CELL}px)`,
+            backgroundImage: `repeating-linear-gradient(to right, var(--hero-grid) 0 1px, transparent 1px ${CELL}px), repeating-linear-gradient(to bottom, var(--hero-grid) 0 1px, transparent 1px ${CELL}px)`,
             backgroundPosition: `${gx0}px 0`,
+            // Grid lines draw in dark, then settle to the faint hairline.
+            animation: reduce ? undefined : 'hero-grid-settle 2.6s cubic-bezier(0.23,1,0.32,1) 0.3s both',
           }}
         />
       )}
@@ -204,13 +206,17 @@ export function BrahmaBackdrop() {
             const dur = 2.1 + (i % 3) * 0.2
             return (
               <g key={`c-${i}`}>
-                {/* opening right (center to the right of origin) */}
+                {/* opening right (center to the right of origin). The
+                    hero-line-anim class draws the stroke in DARK, then settles
+                    to the faint hairline (--sdelay/--sdur sync to pathLength). */}
                 <motion.circle
                   cx={ox + r}
                   cy={oy}
                   r={r}
                   stroke={HAIRLINE}
                   strokeWidth={1.25}
+                  className={reduce ? undefined : 'hero-line-anim'}
+                  style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: `${dur + 0.9}s` } as React.CSSProperties)}
                   initial={strokeInitial}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={
@@ -226,6 +232,8 @@ export function BrahmaBackdrop() {
                   r={r}
                   stroke={HAIRLINE}
                   strokeWidth={1.25}
+                  className={reduce ? undefined : 'hero-line-anim'}
+                  style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay + 0.1}s`, ['--sdur' as string]: `${dur + 0.9}s` } as React.CSSProperties)}
                   initial={strokeInitial}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={

@@ -9,7 +9,6 @@ import {
   IconChevronRight,
   IconCopy,
   IconFingerprint,
-  IconMail,
 } from '@tabler/icons-react'
 import { Badge } from '@devalok/shilp-sutra/ui/badge'
 import { Button } from '@devalok/shilp-sutra/ui/button'
@@ -181,7 +180,7 @@ export function ThemingHub() {
   return (
     <div className="flex flex-col gap-ds-09">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-ds-08 items-start">
-        <section className="flex flex-col gap-ds-05 rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-06 lg:sticky lg:top-24">
+        <section className="flex flex-col gap-ds-05 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-06 lg:sticky lg:top-24">
             <div role="tablist" aria-label="Theming mode" className="flex items-center gap-ds-05 border-b border-surface-border-subtle">
               {(
                 [
@@ -264,9 +263,8 @@ export function ThemingHub() {
                   </div>
                 </div>
                 <p className="text-ds-xs text-surface-fg-subtle -mt-ds-02">
-                  Brand color blurs into hue below and suggests a matching archetype. Corner
-                  radius overrides whatever the archetype would otherwise pick — leave blank to
-                  use it.
+                  Your colour sets the hue and picks a matching archetype. Leave radius blank
+                  to use the archetype default.
                 </p>
 
                 <SliderField
@@ -330,7 +328,7 @@ export function ThemingHub() {
                 </button>
               </div>
             ) : (
-              <div className="flex flex-col gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-1 p-ds-02">
+              <div className="flex flex-col gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-sunken p-ds-02">
                 {ARCHETYPE_ORDER.map((name) => {
                   const isActive = archetype === name
                   const accent = ARCHETYPE_ACCENT[name]
@@ -342,13 +340,13 @@ export function ThemingHub() {
                       className={[
                         'flex items-center gap-ds-07 px-ds-06 py-ds-05 rounded-control border text-left transition-colors duration-fast-01',
                         isActive
-                          ? 'border-surface-border bg-surface-2 shadow-raised'
-                          : 'border-surface-border-subtle bg-transparent hover:bg-surface-2/60',
+                          ? 'border-surface-border bg-surface-raised shadow-raised'
+                          : 'border-surface-border-subtle bg-transparent hover:bg-surface-raised/60',
                       ].join(' ')}
                     >
                       <span
                         aria-hidden
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-surface-2 border border-surface-border-subtle text-surface-fg"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-surface-raised border border-surface-border-subtle text-surface-fg"
                       >
                         <IconFingerprint size={16} />
                       </span>
@@ -368,7 +366,7 @@ export function ThemingHub() {
             )}
         </section>
 
-        <section className="flex flex-col gap-ds-04 rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-06">
+        <section className="flex flex-col gap-ds-04 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-06">
             <div className="flex items-center justify-between">
               <Text variant="label-sm" className="text-surface-fg-subtle">
                 Live preview
@@ -403,8 +401,7 @@ export function ThemingHub() {
                 className="text-surface-fg-muted"
                 style={{ fontSize: `${role.bodySize}px`, lineHeight: role.leading }}
               >
-                A card with role tokens applied. Shape, density, and shadow come from the
-                archetype preset.
+                Shape, spacing, and shadow all come from the archetype.
               </p>
               <div className="flex flex-wrap items-center gap-ds-03">
                 <button
@@ -467,8 +464,8 @@ export function ThemingHub() {
                   Brand-tinted notice
                 </Text>
                 <Text variant="body-sm" className="text-surface-fg mt-ds-01">
-                  Surface, border, and text all read against the active hue. The DS does the
-                  heavy lifting; you only pick the colour.
+                  Surface, border, and text all follow your colour. You pick it, the system
+                  does the rest.
                 </Text>
               </div>
             </div>
@@ -499,18 +496,18 @@ export function ThemingHub() {
                     <code>{css}</code>
                   </pre>
                   <Text variant="body-sm" className="text-surface-fg-subtle">
-                    Paste this into your consumer CSS after the{' '}
+                    Paste this after your{' '}
                     <code className="font-mono text-surface-fg">
                       @import &quot;@devalok/shilp-sutra/css&quot;
                     </code>{' '}
-                    line. Your whole app picks up the new ramp instantly. See the{' '}
+                    line and every component follows. Need radius, fonts, or spacing? See the{' '}
                     <a
                       href="/docs/customize-brand"
                       className="underline underline-offset-2 hover:text-surface-fg"
                     >
                       customize-brand recipe
-                    </a>{' '}
-                    for deeper customizations (radius, fonts, spacing).
+                    </a>
+                    .
                   </Text>
                   <InstallTabs />
                 </>
@@ -518,56 +515,6 @@ export function ThemingHub() {
             </div>
         </section>
       </div>
-
-      <section className="flex flex-col gap-ds-06">
-        <div className="flex flex-col items-center gap-ds-02 text-center max-w-2xl mx-auto">
-          <Text variant="heading-md" className="text-surface-fg">
-            Four ways in. Same CSS out
-          </Text>
-          <Text variant="body-sm" className="text-surface-fg-muted">
-            Four entry doors: pick an archetype, paste your brand color, take a wizard, or just
-            see a result page. Each drops you at install + CSS to paste, no editing required.
-          </Text>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-ds-05">
-          <div className="flex flex-col gap-ds-04 rounded-control border border-surface-border-subtle bg-surface-2 p-ds-05">
-            <div className="flex h-32 items-center justify-center rounded-control bg-surface-1 px-ds-06">
-              <div className="w-full h-1 rounded-pill bg-surface-border-subtle relative">
-                <div
-                  className="absolute inset-y-0 left-0 rounded-pill bg-accent-9"
-                  style={{ width: '35%' }}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col gap-ds-02">
-              <Text variant="label-sm" className="text-surface-fg inline-flex items-center gap-ds-02">
-                <IconMail size={14} /> Walk me through it
-              </Text>
-              <Text variant="body-sm" className="text-surface-fg-muted">
-                Answer five questions about your product and we pick the tokens, surfaces, and
-                radius that fit.
-              </Text>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-ds-04 rounded-control border border-surface-border-subtle bg-surface-2 p-ds-05">
-            <div className="flex h-32 items-center justify-center gap-ds-03 rounded-control bg-surface-1">
-              <span className="text-ds-lg font-semibold text-success-11">4.5:1</span>
-              <Badge color="accent" variant="soft">PASS AA</Badge>
-            </div>
-            <div className="flex flex-col gap-ds-02">
-              <Text variant="label-sm" className="text-surface-fg inline-flex items-center gap-ds-02">
-                <IconMail size={14} /> Show me a result page
-              </Text>
-              <Text variant="body-sm" className="text-surface-fg-muted">
-                See a fully themed component set before you commit to anything — copy the CSS if
-                it feels right.
-              </Text>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

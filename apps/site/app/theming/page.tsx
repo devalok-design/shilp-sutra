@@ -21,9 +21,8 @@ export default function ThemingPage() {
         <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
-              eyebrow="Theming"
-              title="One color in. Everything out."
-              subtitle="Every component recolors — buttons, badges, alerts, focus rings, light and dark. Move the sliders, pick a preset, or paste your hex. Export the CSS and your whole app follows."
+              title="One colour in. Everything out."
+              subtitle="Pick a colour and every component follows, in light and dark. Copy the CSS and your whole app matches."
             />
 
             <Suspense fallback={null}>
@@ -72,11 +71,8 @@ export default function ThemingPage() {
                 CSS variables. No JS theme provider.
               </Text>
               <Text variant="body-sm" className="text-surface-fg-muted leading-relaxed">
-                Whichever door you pick above, you walk out with the same thing: a CSS block of
-                role tokens + an OKLCH accent ramp. Paste into your global stylesheet. Every
-                shilp-sutra component follows. Switch themes by toggling a class, or write{' '}
-                <code className="font-mono text-ds-sm text-surface-fg">data-archetype=&quot;apple&quot;</code>{' '}
-                on the body and reload.
+                You walk out with one CSS block: role tokens plus an OKLCH accent ramp. Paste it
+                into your global stylesheet and every shilp-sutra component follows.
               </Text>
               <div className="flex flex-wrap gap-ds-03 text-ds-sm mt-ds-02">
                 <Link href="/docs/customize-brand" className="text-accent-11 underline underline-offset-2 hover:text-accent-12">

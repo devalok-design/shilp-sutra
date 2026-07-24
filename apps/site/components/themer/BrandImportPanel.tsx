@@ -62,7 +62,7 @@ export function BrandImportPanel() {
               value={hex}
               onChange={(e) => setHex(e.target.value)}
               onBlur={handleHexBlur}
-              className="flex-1 rounded-control border border-surface-border-subtle bg-surface-2 px-ds-03 py-ds-02 text-ds-md font-mono text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+              className="flex-1 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-ds-md font-mono text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
               placeholder="#d946a6"
             />
             <input
@@ -128,7 +128,7 @@ export function BrandImportPanel() {
           ))}
         </div>
 
-        <div className="rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-04 flex flex-col gap-ds-02">
+        <div className="rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-04 flex flex-col gap-ds-02">
           <span className="text-ds-xs text-surface-fg-subtle">
             Suggested archetype
           </span>

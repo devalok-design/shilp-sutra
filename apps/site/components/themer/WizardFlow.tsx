@@ -108,7 +108,7 @@ export function WizardFlow() {
           <span>
             {step + 1} / {total}
           </span>
-          <div className="h-[2px] flex-1 bg-surface-3 rounded-pill overflow-hidden">
+          <div className="h-[2px] flex-1 bg-surface-raised-hover rounded-pill overflow-hidden">
             <div
               className="h-full bg-accent-9 transition-all duration-moderate-01"
               style={{ width: `${((step + (isDone ? 1 : 0)) / total) * 100}%` }}
@@ -130,7 +130,7 @@ export function WizardFlow() {
                   'group flex flex-col gap-ds-01 rounded-control border p-ds-04 text-left transition-colors duration-fast-01',
                   isSelected
                     ? 'border-accent-9 bg-accent-2'
-                    : 'border-surface-border-subtle bg-surface-2 hover:border-surface-border-strong hover:bg-surface-3',
+                    : 'border-surface-border-subtle bg-surface-raised hover:border-surface-border-strong hover:bg-surface-raised-hover',
                 ].join(' ')}
               >
                 <span className="text-ds-md font-medium text-surface-fg">{c.label}</span>

@@ -22,7 +22,7 @@ body:
     id: package-version
     attributes:
       label: shilp-sutra version
-      placeholder: "0.38.0"
+      placeholder: "0.52.0"
     validations:
       required: true
 

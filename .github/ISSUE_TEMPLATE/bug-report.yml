@@ -14,7 +14,7 @@ body:
     attributes:
       label: Package version
       description: Output of `pnpm view @devalok/shilp-sutra version` OR the version pinned in your lockfile.
-      placeholder: "0.38.0"
+      placeholder: "0.52.0"
     validations:
       required: true
 
@@ -37,7 +37,7 @@ body:
     id: framework-version
     attributes:
       label: Framework version
-      placeholder: "Next 15.2.0 / Vite 5.4.0 / Astro 5.0.0"
+      placeholder: "Next 15.x / Vite 8.x / Astro 5.x"
     validations:
       required: true
 

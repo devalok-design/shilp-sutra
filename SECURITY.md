@@ -2,13 +2,15 @@
 
 ## Supported Versions
 
-We patch security issues on the latest minor release line only. Older minors do not receive backported fixes; upgrade to a supported version.
+While Shilp Sutra is pre-1.0, we patch security issues on the **latest published minor release line only**. Older minors do not receive backported fixes; upgrade to a supported version. Because we release frequently, we describe support by position rather than pinning version numbers (which go stale) — check the [npm version badge](https://www.npmjs.com/package/@devalok/shilp-sutra) for the current line.
 
-| Version  | Status                  |
-|----------|-------------------------|
-| `0.38.x` | ✅ Active               |
-| `0.37.x` | ✅ Critical fixes only  |
-| `< 0.37` | ❌ Unsupported          |
+| Release line                        | Status                                        |
+|-------------------------------------|-----------------------------------------------|
+| Latest published minor (`0.x`)      | ✅ Active — security patches land here         |
+| Immediately previous minor          | ⚠️ Critical fixes only, best-effort           |
+| Anything older                      | ❌ Unsupported — upgrade to the latest minor   |
+
+Once we reach `1.0.0`, this policy will be revised to cover the latest major line and the previous major for a defined window.
 
 ## Reporting a Vulnerability
 

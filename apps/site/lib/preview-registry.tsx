@@ -1,7 +1,6 @@
 /**
- * Live-preview registry — maps a component slug to its hand-curated preview.
- * GENERATED shape (slug -> { Hero, Variants }); edit the .preview.tsx files, then
- * re-run the generator in this file's history. Server-safe data map.
+ * Live-preview registry — slug -> { Hero, Variants }. Server-safe data map.
+ * Generated from the .preview.tsx exports in content/components.
  */
 import type { ComponentType } from "react"
 
@@ -27,12 +26,15 @@ import { ComboboxHero, ComboboxVariants } from "@/content/components/combobox.pr
 import { ConfirmDialogHero, ConfirmDialogVariants } from "@/content/components/confirm-dialog.preview"
 import { ContentCardHero, ContentCardVariants } from "@/content/components/content-card.preview"
 import { ContextMenuHero, ContextMenuVariants } from "@/content/components/context-menu.preview"
+import { DataTableHero, DataTableVariants } from "@/content/components/data-table.preview"
 import { DeadlineIndicatorHero, DeadlineIndicatorVariants } from "@/content/components/deadline-indicator.preview"
 import { DialogHero, DialogVariants } from "@/content/components/dialog.preview"
 import { DotHero, DotVariants } from "@/content/components/dot.preview"
 import { DropdownMenuHero, DropdownMenuVariants } from "@/content/components/dropdown-menu.preview"
 import { EmptyStateHero, EmptyStateVariants } from "@/content/components/empty-state.preview"
 import { FileUploadHero, FileUploadVariants } from "@/content/components/file-upload.preview"
+import { FormSectionHero, FormSectionVariants } from "@/content/components/form-section.preview"
+import { FormHero, FormVariants } from "@/content/components/form.preview"
 import { HoverCardHero, HoverCardVariants } from "@/content/components/hover-card.preview"
 import { IconButtonHero, IconButtonVariants } from "@/content/components/icon-button.preview"
 import { InputOtpHero, InputOtpVariants } from "@/content/components/input-otp.preview"
@@ -100,12 +102,15 @@ const PREVIEW_MAP: Record<string, ComponentPreview> = {
   "confirm-dialog": { Hero: ConfirmDialogHero, Variants: ConfirmDialogVariants },
   "content-card": { Hero: ContentCardHero, Variants: ContentCardVariants },
   "context-menu": { Hero: ContextMenuHero, Variants: ContextMenuVariants },
+  "data-table": { Hero: DataTableHero, Variants: DataTableVariants },
   "deadline-indicator": { Hero: DeadlineIndicatorHero, Variants: DeadlineIndicatorVariants },
   dialog: { Hero: DialogHero, Variants: DialogVariants },
   dot: { Hero: DotHero, Variants: DotVariants },
   "dropdown-menu": { Hero: DropdownMenuHero, Variants: DropdownMenuVariants },
   "empty-state": { Hero: EmptyStateHero, Variants: EmptyStateVariants },
   "file-upload": { Hero: FileUploadHero, Variants: FileUploadVariants },
+  "form-section": { Hero: FormSectionHero, Variants: FormSectionVariants },
+  form: { Hero: FormHero, Variants: FormVariants },
   "hover-card": { Hero: HoverCardHero, Variants: HoverCardVariants },
   "icon-button": { Hero: IconButtonHero, Variants: IconButtonVariants },
   "input-otp": { Hero: InputOtpHero, Variants: InputOtpVariants },
@@ -149,12 +154,6 @@ const PREVIEW_MAP: Record<string, ComponentPreview> = {
   "truncated-text": { Hero: TruncatedTextHero, Variants: TruncatedTextVariants },
 }
 
-export function hasPreview(slug: string): boolean {
-  return slug in PREVIEW_MAP
-}
-export function getPreviewSlugs(): string[] {
-  return Object.keys(PREVIEW_MAP)
-}
-export function getPreview(slug: string): ComponentPreview | null {
-  return PREVIEW_MAP[slug] ?? null
-}
+export function hasPreview(slug: string): boolean { return slug in PREVIEW_MAP }
+export function getPreviewSlugs(): string[] { return Object.keys(PREVIEW_MAP) }
+export function getPreview(slug: string): ComponentPreview | null { return PREVIEW_MAP[slug] ?? null }

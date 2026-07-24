@@ -57,7 +57,7 @@ export function Hero() {
             <Button
               variant="soft"
               size="lg"
-              className="w-full sm:w-auto dark:bg-transparent dark:text-accent-11 dark:underline dark:underline-offset-4 dark:hover:bg-transparent dark:hover:text-accent-10 dark:shadow-none"
+              className="w-full sm:w-auto"
               endIcon={<IconArrowRight size={18} />}
             >
               See what&apos;s inside

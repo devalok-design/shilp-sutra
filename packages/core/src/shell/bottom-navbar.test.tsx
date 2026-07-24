@@ -124,6 +124,18 @@ describe('BottomNavbar', () => {
     expect(screen.queryByRole('button', { name: 'More navigation options' })).not.toBeInTheDocument()
   })
 
+  it('renders activeIcon on the active item, plain icon otherwise', () => {
+    const items: BottomNavItem[] = [
+      { title: 'Home', href: '/', exact: true, icon: <svg data-testid="home-idle" />, activeIcon: <svg data-testid="home-active" /> },
+      { title: 'Docs', href: '/docs', icon: <svg data-testid="docs-idle" />, activeIcon: <svg data-testid="docs-active" /> },
+    ]
+    render(<BottomNavbar currentPath="/" primaryItems={items} />)
+    expect(screen.getByTestId('home-active')).toBeInTheDocument()
+    expect(screen.queryByTestId('home-idle')).not.toBeInTheDocument()
+    expect(screen.getByTestId('docs-idle')).toBeInTheDocument()
+    expect(screen.queryByTestId('docs-active')).not.toBeInTheDocument()
+  })
+
   it('has no accessibility violations', async () => {
     const { container } = render(
       <BottomNavbar currentPath="/" primaryItems={primaryItems} moreItems={moreItems} user={admin} />,

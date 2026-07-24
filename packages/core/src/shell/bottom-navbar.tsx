@@ -36,6 +36,8 @@ export interface BottomNavItem {
   href: string
   /** Icon for this nav item. Accepts any `IconInput`. */
   icon: IconInput
+  /** Icon shown when the item is active — e.g. a filled variant. Falls back to `icon`. */
+  activeIcon?: IconInput
   /** When true, the route matches only when the path is exactly equal */
   exact?: boolean
   /** Notification badge count. 0 or undefined = hidden, 1–99 = shown, >99 = "99+" */
@@ -176,10 +178,12 @@ function BottomNavLink({
           {isActive && indicator === 'underline' && (
             <ActiveIndicator indicator="underline" reduced={reduced} />
           )}
-          <div className="relative p-ds-03">
+          <div className="relative px-ds-04 py-ds-01">
             {isActive && indicator === 'pill' && <ActiveIndicator indicator="pill" reduced={reduced} />}
             <span className="relative [&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">
-              <IconProvider size="md">{normalizeIcon(item.icon)}</IconProvider>
+              <IconProvider size="md">
+                {normalizeIcon(isActive && item.activeIcon ? item.activeIcon : item.icon)}
+              </IconProvider>
             </span>
             {item.badge != null && <NavBadge count={item.badge} />}
           </div>

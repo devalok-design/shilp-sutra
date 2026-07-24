@@ -11,8 +11,23 @@ import {
   IconUserCircle,
   IconShieldCheck,
   IconSettings,
+  IconHome,
+  IconHomeFilled,
+  IconBell,
+  IconBellFilled,
+  IconMessage,
+  IconMessageFilled,
+  IconUser,
+  IconUserFilled,
 } from '@tabler/icons-react'
 import type { BottomNavItem, BottomNavbarUser } from './bottom-navbar'
+
+const filledItems: BottomNavItem[] = [
+  { title: 'Home', href: '/', icon: <IconHome />, activeIcon: <IconHomeFilled />, exact: true },
+  { title: 'Messages', href: '/messages', icon: <IconMessage />, activeIcon: <IconMessageFilled />, badge: 3 },
+  { title: 'Alerts', href: '/alerts', icon: <IconBell />, activeIcon: <IconBellFilled /> },
+  { title: 'Profile', href: '/profile', icon: <IconUser />, activeIcon: <IconUserFilled /> },
+]
 
 // ── Mock Data ────────────────────────────────────────────────
 
@@ -236,5 +251,27 @@ export const WithBadges: Story = {
       { title: 'Tasks', href: '/my-tasks', icon: <IconListCheck />, badge: 147 },
     ],
     moreItems,
+  },
+}
+
+export const FilledWhenSelected: Story = {
+  name: 'Filled icon when selected',
+  args: {
+    currentPath: '/',
+    user: mockUser,
+    primaryItems: filledItems,
+    moreItems: [],
+    indicator: 'pill',
+  },
+}
+
+export const FilledLabelsOnSelected: Story = {
+  name: 'Filled + labels on selected',
+  args: {
+    currentPath: '/messages',
+    user: mockUser,
+    primaryItems: filledItems,
+    moreItems: [],
+    labelVisibility: 'selected',
   },
 }

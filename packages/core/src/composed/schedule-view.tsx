@@ -258,7 +258,7 @@ function DayColumn({
         <div
           className={cn(
             'border-b border-surface-border-strong py-ds-02 text-center text-body-sm font-semibold',
-            todayInView ? 'bg-accent-2 text-accent-11' : 'bg-surface-2 text-surface-fg',
+            todayInView ? 'bg-accent-2 text-accent-11' : 'bg-surface-raised text-surface-fg',
           )}
         >
           {format(date, 'EEE d')}
@@ -454,7 +454,7 @@ const ScheduleView = React.forwardRef<HTMLDivElement, ScheduleViewProps>(
               ? `Schedule for ${format(date, 'EEEE, MMMM d, yyyy')}`
               : `Week schedule starting ${format(days[0], 'MMMM d, yyyy')}`
           }
-          className="flex overflow-hidden rounded-surface border border-surface-border-strong bg-surface-2"
+          className="flex overflow-hidden rounded-surface border border-surface-border-strong bg-surface-raised"
           style={{ height: typeof height === 'number' ? `${height}px` : height }}
         >
           <TimeColumn startHour={startHour} endHour={endHour} />

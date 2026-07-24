@@ -97,10 +97,13 @@ export function SiteHeader() {
             // still half the bar height and looked capsule-y.
             'rounded-surface border',
             'forced-colors:bg-[Canvas] forced-colors:border-[CanvasText]',
-            // Persistent card surface — always on, at the top of the page or
-            // scrolled. bg/65 + heavy blur + saturate so any content
-            // scrolling underneath reads as frost through the bar.
-            'bg-surface-base/65 backdrop-blur-2xl backdrop-saturate-150 border-surface-border-subtle/60 shadow-overlay',
+            // Nav pill stays light in both themes — the wordmark logo is solid
+            // black in both light and dark mode (icon square just swaps its
+            // own background from teal-gradient to black), so the bar itself
+            // has to stay light-toned or the black logo/text would vanish
+            // against a dark surface. Overrides the theme-token surface here
+            // only; rest of the site still themes normally.
+            'bg-white/80 dark:bg-white/85 backdrop-blur-2xl backdrop-saturate-150 border-black/10 dark:border-black/10 shadow-overlay',
           ].join(' ')}
         >
           {/* Logo cluster — on mobile the BrandSwitcher sits inline with the
@@ -136,8 +139,8 @@ export function SiteHeader() {
             {navLinks.map((link) => {
               const isAccent = 'accent' in link && link.accent
               const base = isAccent
-                ? 'inline-flex items-center gap-ds-02 whitespace-nowrap text-ds-sm text-secondary-11 hover:text-secondary-12 transition-colors duration-fast-01'
-                : 'text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01'
+                ? 'inline-flex items-center gap-ds-02 whitespace-nowrap text-ds-sm text-secondary-11 dark:text-secondary-11 hover:text-secondary-12 dark:hover:text-secondary-12 transition-colors duration-fast-01'
+                : 'text-ds-sm text-surface-fg-muted dark:text-neutral-11 hover:text-surface-fg dark:hover:text-neutral-12 transition-colors duration-fast-01'
               return (
                 <Link key={link.href} href={link.href} className={base}>
                   {isAccent && <span className="w-1.5 h-1.5 rounded-pill bg-secondary-9" />}
@@ -159,7 +162,7 @@ export function SiteHeader() {
               aria-label="View on GitHub"
               onClick={() => track('cta_click', { cta: 'github', location: 'header' })}
             >
-              <Button variant="ghost" size="icon-sm" aria-label="GitHub">
+              <Button variant="ghost" size="icon-sm" aria-label="GitHub" className="text-neutral-11 dark:text-neutral-11 hover:text-neutral-12 dark:hover:text-neutral-12">
                 <IconBrandGithub size={16} />
               </Button>
             </a>

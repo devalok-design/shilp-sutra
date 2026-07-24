@@ -1,17 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import { MuseoModerno } from 'next/font/google'
 import { BrandInit } from '@/components/brand-init'
 import { ThemeInit } from '@/components/theme-init'
 import { PostHogProvider } from '@/components/posthog-provider'
 import { SHILP_SUTRA_MINOR } from '@/lib/version'
 import './globals.css'
-
-const museoModerno = MuseoModerno({
-  subsets: ['latin'],
-  weight: ['500', '600'],
-  variable: '--font-museo-moderno',
-  display: 'swap',
-})
 
 const SITE_URL = 'https://shilp-sutra.devalok.in'
 const SITE_TITLE = 'shilp-sutra · Devalok Design System'
@@ -106,7 +98,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-shape="slightly-rounded" suppressHydrationWarning className={museoModerno.variable}>
+    <html lang="en" data-shape="slightly-rounded" suppressHydrationWarning>
       <head>
         <BrandInit />
         <ThemeInit />

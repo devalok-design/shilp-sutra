@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import * as React from 'react'
 import { BottomNavbar } from './bottom-navbar'
+import { LinkProvider } from './link-context'
 import {
   IconLayoutDashboard,
   IconCalendarCheck,
@@ -273,5 +275,63 @@ export const FilledLabelsOnSelected: Story = {
     primaryItems: filledItems,
     moreItems: [],
     labelVisibility: 'selected',
+  },
+}
+
+export const IndicatorNone: Story = {
+  name: 'Indicator: none (iOS filled + tint)',
+  args: {
+    currentPath: '/messages',
+    user: mockUser,
+    primaryItems: filledItems,
+    moreItems: [],
+    indicator: 'none',
+  },
+}
+
+export const IndicatorTint: Story = {
+  name: 'Indicator: tint (whole cell)',
+  args: {
+    currentPath: '/alerts',
+    user: mockUser,
+    primaryItems: filledItems,
+    moreItems: [],
+    indicator: 'tint',
+  },
+}
+
+/**
+ * Interactive — clicking a tab updates `currentPath`, so the active indicator
+ * animates (slides) to the tapped item. This is the motion you can't see in the
+ * static stories (where `currentPath` is a fixed prop).
+ */
+export const Interactive: Story = {
+  render: function InteractiveNav() {
+    const [path, setPath] = React.useState('/')
+    const NavLink = React.useMemo(
+      () =>
+        React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }>(
+          function NavLink({ href, onClick, ...props }, ref) {
+            return (
+              <a
+                ref={ref}
+                href={href}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setPath(href)
+                  onClick?.(e)
+                }}
+                {...props}
+              />
+            )
+          },
+        ),
+      [],
+    )
+    return (
+      <LinkProvider component={NavLink}>
+        <BottomNavbar currentPath={path} user={mockUser} primaryItems={filledItems} moreItems={moreItems} indicator="pill" />
+      </LinkProvider>
+    )
   },
 }

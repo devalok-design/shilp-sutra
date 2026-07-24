@@ -54,8 +54,14 @@ export interface BottomNavItem {
   canView?: (user: BottomNavbarUser | null) => boolean
 }
 
-/** Active-item indicator: a top underline (default) or a Material-3 pill behind the icon. */
-export type BottomNavIndicator = 'underline' | 'pill'
+/**
+ * Active-item indicator, animated between items on selection:
+ * - `pill` (default) — Material-3 tonal pill behind the icon
+ * - `underline` — top accent bar (Material-2 tab style)
+ * - `tint` — subtle background tint on the whole active cell
+ * - `none` — no shape; rely on the filled `activeIcon` + accent color (iOS)
+ */
+export type BottomNavIndicator = 'pill' | 'underline' | 'tint' | 'none'
 /** Show labels always (default) or only for the selected item (narrow viewports). */
 export type BottomNavLabelVisibility = 'always' | 'selected'
 
@@ -68,7 +74,7 @@ export interface BottomNavbarProps extends React.HTMLAttributes<HTMLElement> {
   primaryItems?: BottomNavItem[]
   /** Additional items shown in the "More" overflow sheet */
   moreItems?: BottomNavItem[]
-  /** Active-indicator style. @default 'underline' */
+  /** Active-indicator style. @default 'pill' */
   indicator?: BottomNavIndicator
   /** Label visibility. @default 'always' */
   labelVisibility?: BottomNavLabelVisibility
@@ -113,32 +119,36 @@ function NavBadge({ count }: { count: number }) {
 // Active indicator (shared-element)
 // -----------------------------------------------------------------------
 
+/**
+ * The active-item indicator. A single shared-element (`layoutId`) that SLIDES
+ * to the selected item and fades in on first appearance. `none` renders
+ * nothing (the filled `activeIcon` + accent color carry the state).
+ */
 function ActiveIndicator({
   indicator,
+  layoutId,
   reduced,
 }: {
   indicator: BottomNavIndicator
+  layoutId: string
   reduced: boolean
 }) {
-  const transition = reduced ? { duration: 0 } : springs.snappy
-  if (indicator === 'pill') {
-    return (
-      <motion.span
-        layoutId="bottom-nav-indicator"
-        aria-hidden="true"
-        transition={transition}
-        className="absolute inset-0 rounded-pill bg-accent-3"
-      />
-    )
+  if (indicator === 'none') return null
+  const common = {
+    layoutId,
+    'aria-hidden': true as const,
+    transition: reduced ? { duration: 0 } : springs.snappy,
+    initial: reduced ? false : { opacity: 0 },
+    animate: { opacity: 1 },
   }
-  return (
-    <motion.span
-      layoutId="bottom-nav-indicator"
-      aria-hidden="true"
-      transition={transition}
-      className="absolute top-0 h-[3px] w-full rounded-b-control-inner bg-accent-9"
-    />
-  )
+  if (indicator === 'underline') {
+    return <motion.span {...common} className="absolute top-0 h-[3px] w-full rounded-b-control-inner bg-accent-9" />
+  }
+  if (indicator === 'tint') {
+    return <motion.span {...common} className="absolute inset-0 rounded-control bg-accent-3" />
+  }
+  // pill (default) — Material-3 tonal pill behind the icon
+  return <motion.span {...common} className="absolute inset-0 rounded-pill bg-accent-3" />
 }
 
 // -----------------------------------------------------------------------
@@ -146,18 +156,20 @@ function ActiveIndicator({
 // -----------------------------------------------------------------------
 
 const itemClass =
-  'flex h-16 w-full min-w-0 cursor-pointer flex-col items-center justify-center gap-ds-02 px-ds-01 pt-0 text-body-sm transition-colors duration-fast-02 ease-productive-standard'
+  'relative flex h-16 w-full min-w-0 cursor-pointer flex-col items-center justify-center gap-ds-02 px-ds-01 pt-0 text-body-sm transition-colors duration-fast-02 ease-productive-standard'
 
 function BottomNavLink({
   item,
   isActive,
   indicator,
+  indicatorId,
   showLabel,
   reduced,
 }: {
   item: BottomNavItem
   isActive: boolean
   indicator: BottomNavIndicator
+  indicatorId: string
   showLabel: boolean
   reduced: boolean
 }) {
@@ -174,12 +186,18 @@ function BottomNavLink({
         aria-current={isActive ? 'page' : undefined}
         className={cn(itemClass, isActive ? 'font-semibold text-accent-11' : 'text-surface-fg-subtle')}
       >
+        {/* tint covers the whole cell — sits behind the content */}
+        {isActive && indicator === 'tint' && (
+          <ActiveIndicator indicator="tint" layoutId={indicatorId} reduced={reduced} />
+        )}
         <div className="relative flex w-full min-w-0 flex-col items-center gap-ds-02">
           {isActive && indicator === 'underline' && (
-            <ActiveIndicator indicator="underline" reduced={reduced} />
+            <ActiveIndicator indicator="underline" layoutId={indicatorId} reduced={reduced} />
           )}
           <div className="relative px-ds-04 py-ds-01">
-            {isActive && indicator === 'pill' && <ActiveIndicator indicator="pill" reduced={reduced} />}
+            {isActive && indicator === 'pill' && (
+              <ActiveIndicator indicator="pill" layoutId={indicatorId} reduced={reduced} />
+            )}
             <span className="relative [&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">
               <IconProvider size="md">
                 {normalizeIcon(isActive && item.activeIcon ? item.activeIcon : item.icon)}
@@ -205,7 +223,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
       user = null,
       primaryItems = [],
       moreItems = [],
-      indicator = 'underline',
+      indicator = 'pill',
       labelVisibility = 'always',
       className,
       ...props
@@ -215,6 +233,9 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
     const Link = useLink()
     const reduced = useReducedMotion() ?? false
     const [showMore, setShowMore] = useState(false)
+    // Scope the shared-element layoutId per instance so two navbars don't animate into each other.
+    const instanceId = React.useId()
+    const indicatorId = `${instanceId}-nav-indicator`
 
     const isActive = (path: string, exact = false) => {
       if (exact || path === '/') return currentPath === path
@@ -245,6 +266,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
             item={item}
             isActive={isActive(item.href, item.exact)}
             indicator={indicator}
+            indicatorId={indicatorId}
             showLabel={labelVisibility === 'always' || isActive(item.href, item.exact)}
             reduced={reduced}
           />
@@ -264,12 +286,17 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                   moreSelected ? 'font-semibold text-accent-11' : 'text-surface-fg-subtle',
                 )}
               >
+                {moreSelected && indicator === 'tint' && (
+                  <ActiveIndicator indicator="tint" layoutId={indicatorId} reduced={reduced} />
+                )}
                 <div className="relative flex w-full min-w-0 flex-col items-center gap-ds-02">
                   {moreSelected && indicator === 'underline' && (
-                    <ActiveIndicator indicator="underline" reduced={reduced} />
+                    <ActiveIndicator indicator="underline" layoutId={indicatorId} reduced={reduced} />
                   )}
-                  <div className="relative p-ds-03">
-                    {moreSelected && indicator === 'pill' && <ActiveIndicator indicator="pill" reduced={reduced} />}
+                  <div className="relative px-ds-04 py-ds-01">
+                    {moreSelected && indicator === 'pill' && (
+                      <ActiveIndicator indicator="pill" layoutId={indicatorId} reduced={reduced} />
+                    )}
                     <Icon icon={IconDots} />
                   </div>
                   {showMoreLabel && <span className="max-w-full truncate text-center">More</span>}

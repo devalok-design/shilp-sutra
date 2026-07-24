@@ -9,7 +9,7 @@
     user?: BottomNavbarUser | null (drives per-item role gating, optional)
     primaryItems?: BottomNavItem[] (max 4 recommended, optional)
     moreItems?: BottomNavItem[] (overflow items in "More" sheet, optional)
-    indicator?: 'underline' | 'pill' (active-item indicator style)
+    indicator?: 'pill' | 'underline' | 'tint' | 'none' (active-item indicator; default 'pill')
     labelVisibility?: 'always' | 'selected'
     className?: string
 
@@ -21,7 +21,7 @@ BottomNavbarUser: { name: string, role?: string }
     user: null
     primaryItems: []
     moreItems: []
-    indicator: 'underline'
+    indicator: 'pill'
     labelVisibility: 'always'
 
 ## Example
@@ -47,7 +47,7 @@ BottomNavbarUser: { name: string, role?: string }
 - **Badge numbers** cap at 99+ (composes the `Badge` primitive).
 - **Role gating:** each item may declare `roles: string[]` (shown only when `user.role` matches) or a `canView(user)` predicate for arbitrary logic (`canView` wins). Items with neither are always visible. Gating applies to both `primaryItems` and `moreItems`.
 - **Overflow sheet:** the "More" surface is the DS `Sheet` (`side="bottom"`) — it inherits focus trap, scroll lock, return-focus, and `aria-modal`; the trigger is wired with `aria-haspopup`/`aria-controls` automatically.
-- **Indicator + labels:** `indicator="pill"` gives a Material-3 pill behind the active icon (vs the default top underline); `labelVisibility="selected"` shows labels only for the active item (narrow viewports).
+- **Indicator (animated):** the active indicator slides to the selected item (shared-element `layoutId`) and fades in on first appearance. Modes: `pill` (default, Material-3 tonal pill behind the icon), `underline` (top accent bar), `tint` (subtle bg on the whole active cell), `none` (no shape — pair with `activeIcon` for the iOS filled-icon look). `labelVisibility="selected"` shows labels only for the active item.
 - **Filled-when-active:** set `activeIcon` on an item (e.g. a Tabler `*Filled` variant) to swap the icon for a filled version while it's the active route; falls back to `icon`.
 - **Not for desktop:** The viewport-fixed positioning + touch-optimized sizing don't translate well to desktop. Hide behind `md:hidden`.
 
@@ -62,7 +62,7 @@ BottomNavbarUser: { name: string, role?: string }
 - **Changed** Overflow "More" menu re-founded on the DS `Sheet` primitive — inherits focus trap, scroll lock, return-focus, `aria-modal`, and trigger↔panel ARIA wiring (was a hand-rolled `role="dialog"` with none of these). Composes `Badge` for notification counts and the Sheet's built-in close (≥ touch target).
 - **Added** Per-item role gating: `roles?: string[]` and `canView?: (user) => boolean` on `BottomNavItem`. The previously-inert `user` prop now drives it.
 - **Added** `activeIcon` per item — a filled/alternate icon shown while active (falls back to `icon`). Tightened the icon lozenge padding so icon-only items read less airy.
-- **Added** `indicator` ('underline' | 'pill') and `labelVisibility` ('always' | 'selected').
+- **Added** `indicator` (default **`pill`** — Material-3; plus `underline`, `tint`, `none`) and `labelVisibility` ('always' | 'selected'). The active indicator animates (slides) between items via a shared-element `layoutId`.
 - **Added** Label truncation + logical (RTL-safe) properties; overflow grid adapts to item count.
 - **Fixed** Notification badge `zoom-in` animation now reduced-motion gated.
 

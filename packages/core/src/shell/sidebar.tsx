@@ -11,7 +11,7 @@
  * user footer) but lives in YOUR codebase, so you shape it directly instead of
  * feeding a config prop. Migrate by copying the preset and replacing your
  * `<AppSidebar navGroups={…} />` with the pasted composition.
- * Preset: https://shilp-sutra.devalok.in/blocks/sidebar-app
+ * Preset: https://shilp-sutra.devalok.in/presets/sidebar-app
  *
  * Design-system token migration (2026-02-28):
  *   All V1 colour tokens have been replaced with semantic design-system tokens.
@@ -346,7 +346,7 @@ function NavLink({
 
 /**
  * @deprecated Since 0.54.0 — removal in 1.0.0. Use the composable `Sidebar`
- * primitives + the `sidebar-app` preset (https://shilp-sutra.devalok.in/blocks/sidebar-app).
+ * primitives + the `sidebar-app` preset (https://shilp-sutra.devalok.in/presets/sidebar-app).
  * See the file-level doc comment for the migration path.
  */
 const AppSidebar = React.forwardRef<HTMLDivElement, AppSidebarProps>(

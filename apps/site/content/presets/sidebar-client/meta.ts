@@ -1,0 +1,10 @@
+export const meta = {
+  slug: 'sidebar-client',
+  component: 'SidebarClient',
+  title: 'Client-portal sidebar',
+  description:
+    'A leaner, flat navigation for a customer-facing portal — dashboard, deliverables, invoices, messages, support, and a footer help card. No nested sections.',
+  categories: ['sidebar', 'navigation', 'shell'],
+  uses: ['Sidebar', 'Button', 'Text', 'Tabler icons'],
+  brandNotes: 'Soft button for the footer CTA (per DS default for secondary actions); single accent.',
+}

@@ -1,19 +1,22 @@
 'use client'
 
 /**
- * App sidebar — the batteries-included navigation shell, composed entirely from
- * shilp-sutra's `Sidebar` primitives. This is the copy-and-own replacement for
- * the (deprecated) `AppSidebar` config component: same shape (logo, grouped nav,
- * collapsible sub-items, badges, a group "+" action, user footer), but it's YOUR
- * file — edit the markup directly instead of feeding a config prop.
+ * App sidebar — batteries-included navigation shell, composed from shilp-sutra's
+ * `Sidebar` primitives. Copy-and-own replacement for the deprecated `AppSidebar`
+ * config component: same shape (logo, grouped nav, collapsible sub-items, badges,
+ * a group "+" action, user footer), but it's YOUR file — edit the markup directly.
  *
- * Wiring notes for a real app:
- *  - Swap the plain <a> for your router's Link (e.g. next/link).
- *  - Replace the hardcoded `CURRENT_PATH` with your real active path
- *    (usePathname() in Next, useLocation() in React Router).
- *  - For a full-page shell that collapses to an icon rail, drop `collapsible="none"`
- *    and the bordered frame, use <Sidebar collapsible="icon"> + <SidebarInset>, and
- *    render a <SidebarTrigger /> in your top bar.
+ * Prerequisites: `@devalok/shilp-sutra` installed and its CSS imported
+ *   @import "tailwindcss";
+ *   @import "@devalok/shilp-sutra/css";
+ * (framer-motion ^12 is a required peer of the package.)
+ *
+ * Wiring for a real app:
+ *  - Swap each <a> for your router's Link (next/link, react-router, …).
+ *  - Replace CURRENT_PATH with your live path (usePathname / useLocation).
+ *  - Put <SidebarProvider> at your layout root. For a full-page shell that
+ *    collapses to an icon rail, use <Sidebar collapsible="icon"> and render the
+ *    page body inside <SidebarInset> with a <SidebarTrigger /> in your top bar.
  */
 
 import {
@@ -54,25 +57,20 @@ import { Text } from '@devalok/shilp-sutra/ui/text'
 
 // In a real app this comes from the router (usePathname / useLocation).
 const CURRENT_PATH = '/projects/karm'
-
 const isActive = (href: string, exact = false) =>
   exact || href === '/' ? CURRENT_PATH === href : CURRENT_PATH.startsWith(href)
 
-export function SidebarAppBlock() {
+export function SidebarApp() {
   const projectsActive = CURRENT_PATH.startsWith('/projects')
 
   return (
-    <SidebarProvider
-      // Embedded, non-fixed layout so the preview sits inside a card.
-      // For a real full-page shell, remove this wrapper's height/border and use
-      // the fixed layout (see the wiring notes at the top of this file).
-      className="min-h-0 h-[32rem] overflow-hidden rounded-control border border-surface-border-subtle"
-    >
+    // Put SidebarProvider at your layout root. `collapsible="none"` renders a
+    // persistent sidebar; switch to "icon" + <SidebarInset> for a collapsing shell.
+    <SidebarProvider className="min-h-0">
       <Sidebar collapsible="none" className="border-r border-surface-border-subtle bg-surface-raised">
-        {/* Logo / workspace header */}
         <SidebarHeader className="px-ds-05 py-ds-05">
           <div className="flex items-center gap-ds-03">
-            <div className="flex h-8 w-8 items-center justify-center rounded-control bg-accent-9 text-accent-contrast font-semibold">
+            <div className="flex h-8 w-8 items-center justify-center rounded-control bg-accent-9 font-semibold text-accent-contrast">
               K
             </div>
             <div className="flex flex-col leading-tight">
@@ -83,7 +81,6 @@ export function SidebarAppBlock() {
         </SidebarHeader>
 
         <SidebarContent>
-          {/* Primary nav group */}
           <SidebarGroup>
             <SidebarGroupLabel>Workspace</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -104,7 +101,6 @@ export function SidebarAppBlock() {
                       <span>My Tasks</span>
                     </a>
                   </SidebarMenuButton>
-                  {/* S10: count badge */}
                   <SidebarMenuBadge>5</SidebarMenuBadge>
                 </SidebarMenuItem>
 
@@ -121,16 +117,13 @@ export function SidebarAppBlock() {
             </SidebarGroupContent>
           </SidebarGroup>
 
-          {/* Projects group — has a "+" group action (S11) and a collapsible parent (S9) */}
           <SidebarGroup>
             <SidebarGroupLabel>Projects</SidebarGroupLabel>
-            {/* S11: group action button */}
             <SidebarGroupAction aria-label="New project" title="New project">
               <IconPlus />
             </SidebarGroupAction>
             <SidebarGroupContent>
               <SidebarMenu>
-                {/* S9: collapsible parent that is also a link */}
                 <Collapsible defaultOpen={projectsActive} className="group/collapsible">
                   <SidebarMenuItem>
                     <div className="relative">
@@ -179,7 +172,6 @@ export function SidebarAppBlock() {
           </SidebarGroup>
         </SidebarContent>
 
-        {/* User footer */}
         <SidebarFooter className="px-ds-04 py-ds-04">
           <SidebarMenu>
             <SidebarMenuItem>
@@ -199,14 +191,6 @@ export function SidebarAppBlock() {
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
-
-      {/* Light content area so the sidebar reads as part of an app shell */}
-      <div className="flex-1 bg-surface-base p-ds-06">
-        <Text variant="heading-sm" className="text-surface-fg">Projects</Text>
-        <Text variant="body-md" className="mt-ds-02 text-surface-fg-muted">
-          Your app content renders here, beside the sidebar.
-        </Text>
-      </div>
     </SidebarProvider>
   )
 }

@@ -17,7 +17,7 @@ and every new pattern meant a new config prop. We're moving to the shadcn model:
 
 **Replacement.** A new **App sidebar preset** (`sidebar-app`) renders the exact
 shape `AppSidebar` produced, as a plain composition you paste into your app and
-edit directly. Preview + source: https://shilp-sutra.devalok.in/blocks/sidebar-app
+edit directly. Preview + source: https://shilp-sutra.devalok.in/presets/sidebar-app
 
 **Migration.** Replace `<AppSidebar navGroups={…} user={…} currentPath={…} />`
 with the pasted preset composition; wire your router's `Link` and active-path in

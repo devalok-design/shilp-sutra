@@ -90,9 +90,14 @@ coordinated migration. MCP-delivered preset makes it AI-automatable.
 - `shadcn build` reads `registry.json` → emits `public/r/<name>.json` (inlines file `content`).
 - Namespaced install is first-party: consumer `components.json` → `{ registries: { "@devalok":
   "https://shilp-sutra.devalok.in/r/{name}.json" } }` → `npx shadcn add @devalok/sidebar-app`.
-- **PHASE 0 SPIKE (gate, 0.5–1d):** real `shadcn add` of a hand-written hybrid item into a fresh
-  Vite+TW4 app. Verify (a) external `@devalok/*` import NOT rewritten, (b) `@devalok/shilp-sutra`
-  actually npm-installed, (c) renders styled once the pkg CSS is imported. De-risks everything.
+- **PHASE 0 SPIKE — DONE, PASSED (2026-07-25).** Real `npx shadcn@latest add ./item.json` into a
+  minimal TS project (hand-written components.json). Confirmed: (a) external `@devalok/shilp-sutra/*`
+  + `@tabler/icons-react` imports written **verbatim, not rewritten**; (b) shadcn ran
+  `npm install "@devalok/shilp-sutra@^X" "@tabler/icons-react"` and added them to package.json
+  (the `dependencies` path is real — first run even rejected `^0.54.0` as unpublished, proving it);
+  (c) `target: "components/devalok/<file>"` resolved against the consumer `@/components` alias →
+  `src/components/devalok/…`. **DECISION: use plain `components/<…>` target form** (no `@components/`
+  alias-token needed). Hybrid model validated end-to-end.
 
 ## Hard gotchas
 - **CSS prerequisite is THE trap.** Presets emit NO `cssVars` (tokens come from the installed

@@ -35,6 +35,8 @@ export function ThemeToggle() {
     setTheme(next)
     applyTheme(next)
     window.localStorage.setItem('theme', next)
+    // Let the hero backdrop replay its entrance in the new theme (A5).
+    window.dispatchEvent(new CustomEvent('ss-theme-change'))
   }
 
   return (

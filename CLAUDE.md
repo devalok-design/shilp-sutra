@@ -103,23 +103,25 @@ Skipping any of the above is NOT a time-saver. The cost of rebuild is 3-5× the 
 
 Every component MUST use the correct surface level. This is a hard rule, enforced by `pre-publish-audit.mjs`.
 
+**Use the SEMANTIC NAMED tokens — never the numbered classes.** `bg-surface-1..4` (and `text-`/`border-`/`ring-surface-1..4`) are DEPRECATED and hard-flagged by the audit's *Source Hygiene* gate (`No deprecated surface tokens in components`) — no per-file allowlist, no exceptions. They map to raw neutral steps and do NOT invert for dark mode; the named tokens are theme-aware (base/raised swap neutral steps between light and dark so elevation reads correctly in both). This gate is **release-only, not in PR CI** — a numbered class sails through the PR and only fails post-merge in `integration.yml`. Cost a release cycle on 0.53.0 (schedule-view rebuild used `bg-surface-2`).
+
 ```
-surface-1 → Page background, overlays (Dialog, Sheet, Popover, DropdownMenu,
-            Select, Combobox, Toast, HoverCard, etc.), sticky headers,
-            input controls, floating toolbars
-surface-chrome → shell chrome: TopBar, Sidebar, BottomNavbar. Its OWN tier
-            (bg-surface-chrome) so chrome's surface is an explicit, independently
-            tunable decision (Carbon/Atlassian/Ant model), not coupled to the card
-            surface. Currently equals `raised` — chrome reads slightly elevated in
-            dark — but can diverge without touching cards.
-surface-2 → Cards, widgets, panels, editor containers — anything that sits ON the page
-surface-3 → Hover states on surface-2 elements, skeleton shimmers, track fills
-surface-4 → Active/pressed states, hover on surface-3 elements
+bg-surface-base    → Page background (the canvas everything sits on)
+bg-surface-overlay → Overlays: Dialog, Sheet, Popover, DropdownMenu, Select,
+                     Combobox, Toast, HoverCard, sticky headers, input controls,
+                     floating toolbars
+bg-surface-chrome  → shell chrome: TopBar, Sidebar, BottomNavbar. Its OWN tier so
+                     chrome's surface is an explicit, independently tunable decision
+                     (Carbon/Atlassian/Ant model), not coupled to the card surface.
+                     Currently equals `raised` — chrome reads slightly elevated in
+                     dark — but can diverge without touching cards.
+bg-surface-raised        → Cards, widgets, panels, editor containers — anything ON the page
+bg-surface-raised-hover  → Hover on raised elements, skeleton shimmers, track fills
+bg-surface-raised-active → Active/pressed states, hover on raised-hover elements
+bg-surface-sunken        → Wells/insets that recede below the page
 ```
 
-**The rule:** If a component renders as a card/widget/panel on the page, its background is `bg-surface-2`, NOT `bg-surface-1`. If you add `bg-surface-1` to a non-overlay component, the pre-publish audit will flag it.
-
-To add a legitimate exception, add the filename to `SURFACE1_ALLOWLIST` in `scripts/pre-publish-audit.mjs` with a comment explaining why.
+**The rule:** If a component renders as a card/widget/panel on the page, its background is `bg-surface-raised`, NOT `bg-surface-base`. `bg-surface-base` is the page canvas + overlay backdrops only. When unsure which tier, grep a sibling component for its `bg-surface-*` usage and match — never reach for a numbered class.
 
 ## Publishing
 

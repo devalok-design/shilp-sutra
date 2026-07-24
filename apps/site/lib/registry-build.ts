@@ -135,6 +135,11 @@ export async function buildRegistryIndex() {
     title: p.title,
     description: p.description,
     categories: p.categories,
+    // Non-standard extras for discovery surfaces (our MCP, the /presets page).
+    // The shadcn CLI resolves items by their own URL, not the index, so extra
+    // fields here are harmless to it.
+    installName: p.installName,
+    uses: p.uses,
   }))
   return {
     $schema: 'https://ui.shadcn.com/schema/registry.json',

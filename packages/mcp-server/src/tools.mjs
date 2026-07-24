@@ -736,6 +736,146 @@ export async function checkSlop({ code }) {
 // ── how_to_use ──────────────────────────────────────────────────────────────
 // Self-teaching bootstrap. An agent's recommended first call — returns the MCP's
 // operating manual: tool map, the two sequences, version rule, escape hatch.
+// ── Preset Library ────────────────────────────────────────────────────────
+// Discovery/preview over the LIVE site registry (shadcn-compatible). Presets are
+// copy-and-own, version-independent — no `version` param. Install stays
+// shadcn-CLI-native (`shadcn add @devalok/<name>`); these tools are the layer
+// the shadcn MCP can't provide: discovery, source preview, install guidance.
+
+const REGISTRY_BASE = (process.env.REGISTRY_BASE_URL || 'https://shilp-sutra.devalok.in').replace(/\/$/, '')
+const REGISTRY_TTL_MS = 5 * 60 * 1000
+const registryCache = new Map()
+
+async function fetchRegistry(path) {
+  const hit = registryCache.get(path)
+  if (hit && Date.now() - hit.at < REGISTRY_TTL_MS) return hit.data
+  const res = await fetch(`${REGISTRY_BASE}${path}`, { headers: { accept: 'application/json' } })
+  if (!res.ok) throw new Error(`registry ${path} → ${res.status}`)
+  const data = await res.json()
+  registryCache.set(path, { at: Date.now(), data })
+  return data
+}
+
+function presetBanner() {
+  return (
+    'shilp-sutra Preset Library — pre-assembled screens built FROM shilp-sutra ' +
+    'components. You copy + own the source (version-independent). Install with the ' +
+    'shadcn CLI: `npx shadcn@latest add @devalok/<name>`.\n\n'
+  )
+}
+
+function registriesSnippet() {
+  return `"registries": { "@devalok": "${REGISTRY_BASE}/r/{name}.json" }`
+}
+
+function normalizeName(name) {
+  return String(name || '').replace(/^@devalok\//, '').replace(/\.json$/, '').trim()
+}
+
+export async function listPresets({ category, query } = {}) {
+  let index
+  try {
+    index = await fetchRegistry('/r/registry.json')
+  } catch (e) {
+    return presetBanner() + `Could not reach the registry (${e.message}). Try again shortly.`
+  }
+  let items = index.items || []
+  if (category) items = items.filter((i) => (i.categories || []).includes(category))
+  if (query) {
+    const q = query.toLowerCase()
+    items = items.filter((i) =>
+      `${i.name} ${i.title} ${i.description} ${(i.uses || []).join(' ')}`.toLowerCase().includes(q),
+    )
+  }
+  const out = items.map((i) => {
+    const installName = i.installName || `@devalok/${i.name}`
+    return {
+      name: i.name,
+      installName,
+      title: i.title,
+      description: i.description,
+      categories: i.categories,
+      uses: i.uses,
+      install: `npx shadcn@latest add ${installName}`,
+      mcpPrompt: `add the ${installName} preset`,
+    }
+  })
+  return cap(
+    presetBanner() +
+      `First time? register the namespace once in components.json → ${registriesSnippet()}\n\n` +
+      JSON.stringify(out, null, 2),
+  )
+}
+
+export async function getPreset({ name }) {
+  const slug = normalizeName(name)
+  let item
+  try {
+    item = await fetchRegistry(`/r/${slug}.json`)
+  } catch {
+    let names = ''
+    try {
+      const index = await fetchRegistry('/r/registry.json')
+      names = (index.items || []).map((i) => i.name).join(', ')
+    } catch {
+      /* ignore */
+    }
+    return presetBanner() + `No preset "${slug}".` + (names ? ` Available: ${names}.` : '')
+  }
+  // Echo the item without inlined file content (use preview_preset for source).
+  const lean = {
+    ...item,
+    files: (item.files || []).map(({ path, type, target }) => ({ path, type, target })),
+  }
+  const install = [
+    '## Install',
+    '1. Register the namespace once in components.json:',
+    '```json',
+    `{ ${registriesSnippet()} }`,
+    '```',
+    '2. Add the preset:',
+    '```bash',
+    `npx shadcn@latest add @devalok/${slug}`,
+    '```',
+    `Or tell your agent: "add the @devalok/${slug} preset".`,
+    '',
+    item.docs || '',
+  ].join('\n')
+  return cap(
+    presetBanner() +
+      install +
+      '\n\n## registry-item (files listed; call preview_preset for source)\n```json\n' +
+      JSON.stringify(lean, null, 2) +
+      '\n```',
+  )
+}
+
+export async function previewPreset({ name, file } = {}) {
+  const slug = normalizeName(name)
+  let item
+  try {
+    item = await fetchRegistry(`/r/${slug}.json`)
+  } catch {
+    return presetBanner() + `No preset "${slug}". Call list_presets to see available names.`
+  }
+  const files = item.files || []
+  const chosen = file ? files.find((f) => f.path.endsWith(file) || f.target.endsWith(file)) : files[0]
+  if (!chosen) {
+    return presetBanner() + `No file "${file}" in "${slug}". Files: ${files.map((f) => f.path).join(', ')}.`
+  }
+  const header =
+    `// ${item.title} — ${chosen.target}\n` +
+    `// Primitives resolve from @devalok/shilp-sutra (installed by \`shadcn add\`). READ-ONLY preview.\n`
+  return cap(
+    presetBanner() +
+      '```tsx\n' +
+      header +
+      chosen.content +
+      '\n```\n\n' +
+      (item.meta && item.meta.source ? `Source: ${item.meta.source}` : ''),
+  )
+}
+
 export async function howToUse() {
   return JSON.stringify(
     {
@@ -754,11 +894,15 @@ export async function howToUse() {
         validate_snippet: 'Pre-write linter: TW4 dead classes, bad props, barrel/peer traps.',
         verify_setup: 'Post-setup gate: CSS order, transpilePackages, peer coverage.',
         check_slop: 'Pre-emit design-quality gate: anti-slop findings + strengths + DO-guidance.',
+        list_presets: 'Discover Preset Library items (pre-assembled screens built from shilp-sutra). Version-independent.',
+        get_preset: 'Full detail + install steps (components.json namespace + shadcn add) for one preset.',
+        preview_preset: 'Read-only TSX source of a preset — show/adapt without installing.',
         report_issue: 'File a public GitHub issue (bug / docs gap / feature).',
       },
       sequences: {
         setting_up: ['detect_framework(package.json)', 'get_setup(recipe)', 'preflight(framework, imports)', 'validate_snippet(code) BEFORE writing each file', 'verify_setup(...) after'],
         writing_a_component: ['check_slop(code) BEFORE emitting — fix P0/P1, keep the strengths, pull unmet guidance into the design', 'validate_snippet(code) for TW4 / prop correctness', 'then write the file'],
+        using_a_preset: ['list_presets(category?) to discover', 'get_preset(name) for install steps + registry-item', 'add the @devalok registry to components.json (once)', 'npx shadcn add @devalok/<name> — or tell the agent "add the @devalok/<name> preset"', 'preview_preset(name) to read/adapt the source without installing'],
       },
       escape_hatch: '`// slop-allow: <id> <reason>` on the offending line (or the line above) silences a check_slop finding — for deliberate, justified deviations.',
       more: SLOP_GUIDANCE.ad,

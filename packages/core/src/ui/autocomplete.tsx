@@ -1,69 +1,64 @@
 'use client'
 
-import { autoUpdate,flip, offset, shift, size, useFloating } from '@floating-ui/react-dom'
-import { AnimatePresence,motion } from 'framer-motion'
+import { autoUpdate, flip, offset, shift, size as sizeMiddleware, useFloating } from '@floating-ui/react-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
 
+import { useMotion } from '../motion/motion-provider'
 import { useFormField } from './form'
-import { springs, tweens } from './lib/motion'
+import { Input, type InputProps } from './input'
+import { tweens } from './lib/motion'
 import { cn } from './lib/utils'
+import { Spinner } from './spinner'
 
-const listVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.03 } },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 4 },
-  visible: { opacity: 1, y: 0, transition: springs.snappy },
-}
-
-type AutocompleteOption = {
+export type AutocompleteOption = {
   label: string
   value: string
 }
 
 /**
- * Props for Autocomplete — a free-text input with a live-filtered dropdown list, keyboard
- * navigation, and ARIA combobox semantics. Suitable for "type to search" fields where the
- * full list is known ahead of time (client-side filtering only).
+ * A free-text input with a live-filtered dropdown, keyboard navigation, and
+ * combobox ARIA. The field itself is the DS `Input`, so it inherits size,
+ * error/state painting, read-only, hover, and FormField wiring.
  *
- * **Key distinction from Combobox:** Autocomplete allows free-text input (no forced selection),
- * while `<Combobox>` enforces selection from the list. Use Autocomplete for search-as-you-type
- * with suggestions; use Combobox for structured single or multi-select dropdowns.
- *
- * **`value`:** A full `AutocompleteOption` object (or null), not just the string value.
- * The input's text is synced to `value.label` on mount.
- *
- * @example
- * // City search autocomplete:
- * <Autocomplete
- *   options={[{ value: 'mumbai', label: 'Mumbai' }, { value: 'delhi', label: 'Delhi' }]}
- *   value={selectedCity}
- *   onValueChange={(opt) => setSelectedCity(opt)}
- *   placeholder="Search cities..."
- * />
- *
- * @example
- * // Employee name lookup with custom empty text:
- * <Autocomplete
- *   options={employees.map(e => ({ value: e.id, label: e.fullName }))}
- *   onValueChange={(opt) => setAssignee(opt.value)}
- *   emptyText="No employees found"
- *   placeholder="Search employees..."
- * />
- * // These are just a few ways — feel free to combine props creatively!
+ * Free-text (no forced selection) — for enforced selection use `Combobox`.
+ * `value`/`defaultValue` are a full `AutocompleteOption` (or null).
  */
-type AutocompleteProps = React.HTMLAttributes<HTMLDivElement> & {
+export type AutocompleteProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> & {
   options: AutocompleteOption[]
+  /** Controlled selection. */
   value?: AutocompleteOption | null
+  /** Initial selection for uncontrolled mode. */
+  defaultValue?: AutocompleteOption | null
   onValueChange?: (option: AutocompleteOption) => void
   placeholder?: string
   emptyText?: string
   disabled?: boolean
+  /** Input size (forwarded to the composed `Input`). */
+  size?: InputProps['size']
+  /** Field state (forwarded to `Input`); overrides FormField auto-consumption. */
+  state?: InputProps['state']
+  /** Show a loading spinner + `loadingText` (async "type to search"). */
+  isLoading?: boolean
+  loadingText?: string
+  /** Custom option renderer. Receives the option and the current query. */
+  renderOption?: (option: AutocompleteOption, query: string) => React.ReactNode
   className?: string
   id?: string
+}
+
+/** Bold the matched substring inside an option label. */
+function HighlightMatch({ label, query }: { label: string; query: string }) {
+  const idx = query ? label.toLowerCase().indexOf(query.toLowerCase()) : -1
+  if (idx === -1) return <>{label}</>
+  return (
+    <>
+      {label.slice(0, idx)}
+      <span className="font-semibold text-accent-11">{label.slice(idx, idx + query.length)}</span>
+      {label.slice(idx + query.length)}
+    </>
+  )
 }
 
 const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
@@ -71,10 +66,16 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
     {
       options,
       value,
+      defaultValue = null,
       onValueChange,
       placeholder,
       emptyText = 'No options',
       disabled,
+      size,
+      state,
+      isLoading = false,
+      loadingText = 'Loading…',
+      renderOption,
       className,
       id: externalId,
       ...props
@@ -86,15 +87,20 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
     const listboxId = `${baseId}-listbox`
     const optionIdPrefix = `${baseId}-option`
 
-    const [query, setQuery] = React.useState(value?.label ?? '')
+    // Controlled / uncontrolled selection
+    const isControlled = value !== undefined
+    const [internalValue, setInternalValue] = React.useState<AutocompleteOption | null>(defaultValue)
+    const selected = isControlled ? value : internalValue
+
+    const [query, setQuery] = React.useState(selected?.label ?? '')
     const [isOpen, setIsOpen] = React.useState(false)
     const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
     const internalRef = React.useRef<HTMLInputElement>(null)
-    const listRef = React.useRef<HTMLUListElement>(null)
     const containerRef = React.useRef<HTMLDivElement>(null)
     const floatingRef = React.useRef<HTMLUListElement>(null)
+    const { reducedMotion } = useMotion()
 
-    // Floating UI positioning
+    // Floating UI — anchor the dropdown to the whole field (container width)
     const { refs, floatingStyles } = useFloating({
       open: isOpen,
       placement: 'bottom-start',
@@ -103,7 +109,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
         offset(4),
         flip(),
         shift(),
-        size({
+        sizeMiddleware({
           apply({ availableHeight, rects, elements }) {
             Object.assign(elements.floating.style, {
               maxHeight: `${Math.min(availableHeight, 240)}px`,
@@ -114,38 +120,35 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
       ],
     })
 
-    // Compose external + internal ref + floating reference ref for input
-    const composedRef = React.useCallback(
-      (node: HTMLInputElement | null) => {
-        (internalRef as React.MutableRefObject<HTMLInputElement | null>).current = node
+    const setContainer = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        containerRef.current = node
         refs.setReference(node)
+      },
+      [refs],
+    )
+
+    const composedInputRef = React.useCallback(
+      (node: HTMLInputElement | null) => {
+        internalRef.current = node
         if (typeof ref === 'function') ref(node)
         else if (ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = node
       },
-      [ref, refs],
+      [ref],
     )
 
-    // Compose floating ref + listRef
-    const composedFloatingRef = React.useCallback(
+    const setFloating = React.useCallback(
       (node: HTMLUListElement | null) => {
-        (listRef as React.MutableRefObject<HTMLUListElement | null>).current = node
-        ;(floatingRef as React.MutableRefObject<HTMLUListElement | null>).current = node
+        floatingRef.current = node
         refs.setFloating(node)
       },
       [refs],
     )
 
-    // Sync query when value changes externally
+    // Sync query when the selection changes externally
     React.useEffect(() => {
-      setQuery(value?.label ?? '')
-    }, [value])
-
-    // Cleanup blur timeout on unmount
-    React.useEffect(() => {
-      return () => {
-        // Option selected — close and blur handled by relatedTarget check
-      }
-    }, [])
+      setQuery(selected?.label ?? '')
+    }, [selected])
 
     const filtered = React.useMemo(
       () =>
@@ -160,13 +163,15 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
         setQuery(option.label)
         setIsOpen(false)
         setHighlightedIndex(-1)
+        if (!isControlled) setInternalValue(option)
         onValueChange?.(option)
       },
-      [onValueChange],
+      [isControlled, onValueChange],
     )
 
     const handleKeyDown = React.useCallback(
       (e: React.KeyboardEvent) => {
+        if (disabled) return
         if (!isOpen) {
           if (e.key === 'ArrowDown' || e.key === 'Enter') setIsOpen(true)
           return
@@ -190,9 +195,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
             break
           case 'Enter':
             e.preventDefault()
-            if (highlightedIndex >= 0 && filtered[highlightedIndex]) {
-              handleSelect(filtered[highlightedIndex])
-            }
+            if (highlightedIndex >= 0 && filtered[highlightedIndex]) handleSelect(filtered[highlightedIndex])
             break
           case 'Escape':
             setIsOpen(false)
@@ -200,44 +203,33 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
             break
         }
       },
-      [isOpen, filtered, highlightedIndex, handleSelect],
+      [disabled, isOpen, filtered, highlightedIndex, handleSelect],
     )
 
+    // FormField wiring is auto-consumed by Input; only used here to decide the
+    // standalone accessible-name fallback + the combobox aria-controls id.
     const fieldCtx = useFormField()
-    const isError = fieldCtx.state === 'error'
-    const ariaDescribedBy = fieldCtx.helperTextId
-    const ariaRequired = fieldCtx.required
-
-    const highlightedOptionId =
-      highlightedIndex >= 0 ? `${optionIdPrefix}-${highlightedIndex}` : undefined
+    const hasFieldName = !!(externalId || fieldCtx.inputId)
+    const highlightedOptionId = highlightedIndex >= 0 ? `${optionIdPrefix}-${highlightedIndex}` : undefined
 
     return (
-      <div ref={containerRef} className={cn('relative', className)} {...props}>
-        <input
-          ref={composedRef}
+      <div ref={setContainer} className={cn('relative', className)} {...props}>
+        <Input
+          ref={composedInputRef}
           type="text"
           role="combobox"
-          // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
-          id={externalId ?? fieldCtx.inputId}
+          size={size}
+          state={state}
+          id={externalId}
+          value={query}
+          placeholder={placeholder}
+          disabled={disabled}
           aria-expanded={isOpen}
           aria-autocomplete="list"
           aria-controls={isOpen ? listboxId : undefined}
           aria-activedescendant={highlightedOptionId}
-          aria-invalid={isError || undefined}
-          aria-describedby={ariaDescribedBy}
-          aria-required={ariaRequired || undefined}
-          // Named by the associated <Label> (FormField) or an external label via id.
-          // Only when there's no association mechanism, fall back to placeholder.
-          aria-label={externalId || fieldCtx.inputId ? undefined : placeholder}
-          value={query}
-          placeholder={placeholder}
-          disabled={disabled}
-          className={cn(
-            'flex h-ds-md w-full rounded-control border border-surface-border-strong bg-surface-raised-hover px-ds-04 py-ds-03 font-sans text-body-md text-surface-fg placeholder:text-surface-fg-subtle',
-            'outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-[var(--border-focus-offset)]',
-            'transition-colors duration-fast-01',
-            disabled && 'opacity-action-disabled cursor-not-allowed',
-          )}
+          aria-label={hasFieldName ? undefined : placeholder}
+          endSection={isLoading ? <Spinner size="sm" /> : undefined}
           onChange={(e) => {
             setQuery(e.target.value)
             setIsOpen(true)
@@ -245,12 +237,8 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
           }}
           onFocus={() => setIsOpen(true)}
           onBlur={(e) => {
-            // Close only if focus moved outside both the container and the portal dropdown
             const target = e.relatedTarget as Node | null
-            if (
-              !containerRef.current?.contains(target) &&
-              !floatingRef.current?.contains(target)
-            ) {
+            if (!containerRef.current?.contains(target) && !floatingRef.current?.contains(target)) {
               setIsOpen(false)
             }
           }}
@@ -262,51 +250,42 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
               {isOpen && (
                 <motion.ul
                   id={listboxId}
-                  ref={composedFloatingRef}
+                  ref={setFloating}
                   role="listbox"
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={listVariants}
+                  initial={reducedMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
+                  transition={reducedMotion ? { duration: 0 } : tweens.fade}
                   style={floatingStyles}
-                  className={cn(
-                    'z-popover overflow-auto rounded-overlay bg-surface-overlay shadow-raised-hover',
-                  )}
+                  className="z-popover overflow-auto rounded-overlay bg-surface-overlay shadow-raised-hover"
                 >
-                  {filtered.length === 0 ? (
-                    <motion.li
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={tweens.fade}
-                      className="px-ds-04 py-ds-03 text-body-md text-surface-fg-muted"
-                    >
-                      {emptyText}
-                    </motion.li>
+                  {isLoading ? (
+                    <li className="flex items-center gap-ds-03 px-ds-04 py-ds-03 text-body-md text-surface-fg-muted">
+                      <Spinner size="sm" />
+                      {loadingText}
+                    </li>
+                  ) : filtered.length === 0 ? (
+                    <li className="px-ds-04 py-ds-03 text-body-md text-surface-fg-muted">{emptyText}</li>
                   ) : (
                     filtered.map((option, index) => (
-                      <motion.li
+                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- WAI-ARIA combobox: keyboard nav is on the input via aria-activedescendant; options are pointer affordances, not focusable tab stops
+                      <li
                         key={option.value}
                         id={`${optionIdPrefix}-${index}`}
                         role="option"
                         aria-selected={highlightedIndex === index}
-                        variants={itemVariants}
+                        title={option.label}
                         className={cn(
-                          'cursor-pointer px-ds-04 py-ds-03 text-body-md text-surface-fg transition-colors duration-fast-01',
+                          'cursor-pointer truncate px-ds-04 py-ds-03 text-body-md text-surface-fg transition-colors duration-fast-01',
                           highlightedIndex === index && 'bg-accent-3',
-                          value?.value === option.value && 'font-semibold',
+                          selected?.value === option.value && 'font-semibold',
                         )}
                         onMouseDown={(e) => e.preventDefault()}
                         onClick={() => handleSelect(option)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault()
-                            handleSelect(option)
-                          }
-                        }}
                         onMouseEnter={() => setHighlightedIndex(index)}
                       >
-                        {option.label}
-                      </motion.li>
+                        {renderOption ? renderOption(option, query) : <HighlightMatch label={option.label} query={query} />}
+                      </li>
                     ))
                   )}
                 </motion.ul>
@@ -320,4 +299,4 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
 )
 Autocomplete.displayName = 'Autocomplete'
 
-export { Autocomplete, type AutocompleteOption,type AutocompleteProps }
+export { Autocomplete }

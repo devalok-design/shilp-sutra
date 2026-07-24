@@ -139,3 +139,37 @@ export const AllVariants: Story = {
     </div>
   ),
 }
+
+export const Loading: Story = {
+  render: () => (
+    <div style={{ maxWidth: 320 }}>
+      <Autocomplete options={fruitOptions} placeholder="Search…" isLoading loadingText="Searching…" />
+    </div>
+  ),
+}
+
+export const CustomOption: Story = {
+  name: 'Custom option (renderOption)',
+  render: () => (
+    <div style={{ maxWidth: 320 }}>
+      <Autocomplete
+        options={fruitOptions}
+        placeholder="Search fruits..."
+        renderOption={(o) => (
+          <span className="flex items-center justify-between gap-ds-03">
+            <span>{o.label}</span>
+            <span className="text-body-sm text-surface-fg-subtle">{o.value}</span>
+          </span>
+        )}
+      />
+    </div>
+  ),
+}
+
+export const Uncontrolled: Story = {
+  render: () => (
+    <div style={{ maxWidth: 320 }}>
+      <Autocomplete options={fruitOptions} defaultValue={{ label: 'Banana', value: 'banana' }} placeholder="Search fruits..." />
+    </div>
+  ),
+}

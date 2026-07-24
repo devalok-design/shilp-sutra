@@ -1,0 +1,46 @@
+# composed/filter-bar — finish-bar audit
+Finish: 3/5   Market: LAGS (Linear / Airtable filter bar)   Rebuild: polish
+
+FilterBar is a functionally clean, semantically correct composed toolbar — real `role="toolbar"` + `aria-label`, controlled search, all-semantic tokens, role radius, none of the named systemic tells (no `border-card-strong`, no `slide-no-fade`, no `rounded-ds-*`/`rounded-full`, no arbitrary `p-[..]`/`h-[..]`). But it has not moved structurally since the 2026-07-01 baseline (also 3/5): the **only** change is the multi-select count badge spring `bouncy → snappy` (motion.ts `springs.snappy`, filter-bar.tsx:197). Every structural finding from that audit is still live — closed data-shape wrappers that amputate the wrapped primitives, a copied `SelectTrigger` size CVA (drift), a truncated `xs/sm/md` size axis, controlled-only search with a silent-hide footgun, a hand-rolled trigger with no DS focus-ring, and motion still unguarded against `prefers-reduced-motion`.
+
+## Scores
+| Axis | Verdict | Note |
+|---|---|---|
+| visual-integrity | gap | No slop tells; role radius (`rounded-control`/`-pill`); semantic tokens throughout. BUT the multi-select trigger rests on a **hover token** (`bg-surface-raised-hover` at rest, :181) so it reads pre-hovered, and hover then goes to `-active` (the pressed token). `w-40`/`w-48` are hardcoded fixed widths (standard scale, not arbitrary brackets — not a magic-number flag, but non-`ds-` and cap i18n growth). |
+| accessibility | gap | Real `toolbar`/`aria-label`; SearchInput/Button/Select are accessible; PopoverTrigger `asChild` forwards `aria-haspopup`/`-expanded` to the trigger. BUT hand-rolled trigger has **no DS focus-ring** (only the browser default survives → inconsistent with sibling SelectTrigger's accent ring); active-filter is a **color-only** accent border on FilterSelect (no aria / non-color cue → lost under forced-colors + to AT). |
+| api-composability | ✗ | `FilterSelect`/`FilterMultiSelect` are **closed `{label,value,options}` data-shape wrappers** that hide every escape hatch of the primitive they wrap — no grouped Select, no custom `SelectItem`/icons, and none of MultiSelectPopover's `groups`/`renderItem`/`onSearch`/`maxSelections`/`emptyMessage`. `FilterMultiSelect` **re-rolls the trigger** (copies SelectTrigger's size CVA byte-for-byte, :165-169) instead of composing it. Sub-parts lack `forwardRef`. Search is controlled-only; passing `searchValue` without `onSearchChange` silently renders nothing. For a *composed-layer* kit whose job is composition, this is below bar. |
+| docs-dx | gap | Doc exists, prop tables match source, composability + gotchas present. Missing: `className`/rest-spread passthrough, and the `searchValue`-without-handler silent-hide gotcha. |
+| testing | gap | FilterBar container well covered (toolbar role, search render/hide, clear-all, children, className) + `describeConformance`. BUT **no vitest-axe assertion**, and `FilterSelect`/`FilterMultiSelect` are **entirely untested** (no active-border, no count badge, no multi-select toggle). |
+| motion | gap | Count badge downgraded to `springs.snappy` (good, was `bouncy`). BUT `initial={{ scale: 0.8 }}` has **no opacity** (a scale-pop on a mundane counter) and there is **no `useReducedMotion` guard anywhere** in the file → animates under `prefers-reduced-motion`. Sibling popover's per-item `delay: index*0.02` stagger re-runs on every open. |
+| state-coverage | gap | default/hover/active(filtered)/loading(async popover)/empty(popover `emptyMessage`) present. Missing: **disabled** (no passthrough on FilterSelect or the trigger), **error**, and focus is inconsistent (see a11y). |
+| content-resilience | gap | `truncate` + `whitespace-nowrap` on labels; `flex-wrap` on the bar; popover scrolls (`max-h-[240px]`). BUT fixed `w-40`/`w-48` cap long labels / i18n expansion. Chevron is non-directional so RTL is acceptable via logical `gap`. |
+| theming-resilience | ✓ | Accent-swap safe (`border-accent-7`, semantic surfaces); role radius honors `[data-shape]`; light/dark via surface tokens; `border-surface-border-strong` keeps the trigger visible on near-black (no dark vanish). Only caveat = the resting hover-token (noted under visual), which still themes. |
+| system-cohesion | gap | Shares DS spring/radius/spacing, but the **copied trigger CVA is active drift** — it already lags SelectTrigger (missing the `lg` branch SelectTrigger ships), and the `xs/sm/md` axis diverges from canonical `xs/sm/md/lg` that both SearchInput and SelectTrigger support. Two triggers in one bar behave differently under keyboard. |
+| craft | gap | Nice touches (truncation, count Badge, active border, `opacity-50` chevron, `shrink-0`). Undercut by the focus-ring inconsistency and hover-at-rest surface. |
+| perceived-performance | ✓ | Controlled updates are instant; async popover has Spinner + 300ms debounce; count-badge pop is cheap; no CLS in the bar itself. (Popover per-item stagger can cascade on long lists — sibling-file concern.) |
+| market-benchmark | ✗ | LAGS Linear/Airtable-class filter bars: no add-filter menu, no removable filter **chips/tokens**, no operator selection, no faceted result counts, and consumers are boxed into `options:{value,label}[]`. Radix/Base UI ship no FilterBar primitive, so the bar to clear is product-DS (Linear/Vercel/Airtable). |
+| cross-DS-adoption | gap | Concrete imports available (see below) — currently none adopted. |
+
+## Top gaps (prioritized)
+- [P0] api-composability — closed data-shape wrappers amputate `Select`/`MultiSelectPopover` (`groups`/`renderItem`/`onSearch`/`maxSelections`/custom items) → forward the underlying props or accept `children`/`slots` so consumers reach the primitive.
+- [P1] api-composability / system-cohesion — `FilterMultiSelect` re-rolls the trigger with a copied size CVA (`triggerSizeClasses`, :165-169) → compose a real `SelectTrigger`/`Button` as the MultiSelectPopover child; delete the parallel map (also kills the missing-`lg` drift and the `Record<string,string>` weak typing).
+- [P1] accessibility — hand-rolled trigger has no DS focus-ring; active FilterSelect is color-only → add the `focus-ring` utility + a non-color / `aria` active cue (survives forced-colors + AT). Resolved for free by composing the real trigger.
+- [P1] motion — no `useReducedMotion` guard; count-badge scale-pop lacks a fade → gate the transition (`prefersReduced ? {duration:0} : springs.snappy`) and add `opacity` to the enter.
+- [P2] api-composability — search is controlled-only; `searchValue` alone silently hides the input → add `defaultSearchValue` (uncontrolled) or a `search?: boolean` to decouple "show input" from "is controlled".
+- [P2] system-cohesion — widen `FilterBarSize` to `xs|sm|md|lg` to match the controls it propagates to.
+- [P2] testing/docs — add a vitest-axe assertion + FilterSelect/FilterMultiSelect coverage; document `className` passthrough + the silent-hide gotcha.
+
+## What it does well
+- Correct `role="toolbar"` + `aria-label="Filters"`; SearchInput / Clear-all Button / Select are all real accessible controls; MultiSelectPopover has full `listbox`/`option` roles, arrow-key nav, and `aria-activedescendant`.
+- All-semantic tokens, role radius (`rounded-control`/`-pill`), correct surface layering (`bg-surface-raised` controls, `bg-surface-overlay` popover) — **none of the named systemic tells** (no `border-card-strong`, no `slide-no-fade`, no `rounded-ds-*`/`rounded-full`, no arbitrary `p-[..]`/`h-[..]`).
+- Size cascades cleanly via context; `forwardRef` + `displayName` on the container; canonical `onValueChange`; controlled search wired correctly.
+- Motion regressed nicely from the baseline's celebration-tier `bouncy` to productive `snappy` on the count badge.
+
+## Cross-DS adoption ideas
+- **Linear / Airtable** — active filters render as **removable chips/tokens** ("Status: Active ✕") rather than a 1px accent border; adopt a chip row so active state is explicit, removable, and forced-colors-safe.
+- **Linear** — an **"Add filter" menu** (pick which facet to filter by) instead of pre-placing every FilterSelect; lets the bar scale to many facets without horizontal crowding.
+- **TanStack Table / Airtable** — **faceted counts** on options ("Active (12)"); MultiSelectPopover already has the item model to carry a count suffix.
+- **React Aria / Base UI** — expose the primitive via **slots** (`renderTrigger`, or accept a real `<Select>` child styled by context) instead of a flattened `options` prop — the escape-hatch pattern this kit is missing.
+
+## Rebuild note
+**Polish, not rebuild** — the architecture (context-sized toolbar + filter parts) is sound; the fixes are in-place and mostly additive. Order: (1) compose the real trigger to kill F5/G2/focus-ring/typing in one move; (2) open the escape hatches (forward primitive props or accept `children`/`slots`) — this is the one borderline-structural change to the sub-component API, but it can ship additively; (3) guard motion + add the fade; (4) widen the size axis; (5) uncontrolled search + decouple the silent-hide; (6) tests + docs. Closing the composability P0 and the a11y focus gap is what moves it from 3 → 4. Reaching market parity (5 / LEADS) needs the chip-based active-filter model + add-filter menu from the cross-DS ideas — a separate feature, not a fix.

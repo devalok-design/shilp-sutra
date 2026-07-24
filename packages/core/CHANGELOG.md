@@ -1,5 +1,64 @@
 # @devalok/shilp-sutra
 
+## 0.53.0
+
+### Minor Changes
+
+- [#186](https://github.com/devalok-design/shilp-sutra/pull/186) [`ce3fd1b`](https://github.com/devalok-design/shilp-sutra/commit/ce3fd1ba94f523644ba781997138f547386e6c1e) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **Autocomplete rebuild (finish-bar).** Re-parented onto the DS `Input` primitive instead of a hand-rolled `<input>`, closing the composition drift and a painted-error gap, and adding the capabilities that put it at market parity.
+
+  - **Composes `Input`** — inherits `size`, error/`state` painting, read-only, hover, and FormField auto-consumption. (Previously re-rolled the field: `ring-offset`/`focus-visible` drift from `Input`, hardcoded height, and it read FormField `error` but never painted it.)
+  - **Uncontrolled mode** — new `defaultValue`.
+  - **`size` / `state`** forwarded to the field.
+  - **Async** — new `isLoading` + `loadingText` (spinner in the field and the listbox).
+  - **`renderOption`** slot for custom option content; default now **bolds the matched substring** in each option.
+  - Dropped a keystroke-frequency stagger animation, a dead cleanup effect, and copy-pasted AI-filler JSDoc. Option labels truncate. Dropdown fade is reduced-motion gated.
+  - Doc corrected (it DOES auto-consume FormField, via Input).
+
+  Non-breaking: the `value` object API + `onValueChange` are unchanged; new props are additive.
+
+- [#184](https://github.com/devalok-design/shilp-sutra/pull/184) [`2ed13fd`](https://github.com/devalok-design/shilp-sutra/commit/2ed13fd1874f5d5e45ba8fa48afffa961c990c87) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **BottomNavbar rebuild (finish-bar).** The overflow "More" menu is now the DS `Sheet` (`side="bottom"`) instead of a hand-rolled `role="dialog"`, so it inherits focus trap, scroll lock, return-focus, `aria-modal`, and `aria-haspopup`/`aria-controls` trigger wiring — closing a real accessibility gap in primary mobile navigation.
+
+  - **Role gating (new):** `BottomNavItem` gains `roles?: string[]` (visible only when `user.role` matches) and `canView?: (user) => boolean` (arbitrary logic, wins over `roles`). The previously-inert `user` prop now drives this. Non-breaking — items with neither field are always visible.
+  - **`indicator` (new):** default **`pill`** (Material-3 tonal pill behind the icon), plus `underline`, `tint` (whole-cell), and `none` (no shape — pair with `activeIcon` for the iOS filled look). The active indicator **animates** — a shared-element (`layoutId`) that slides to the selected item and fades in on first appearance.
+  - **`labelVisibility` (new):** `'always'` (default) or `'selected'` (labels only for the active item, for narrow viewports).
+  - **`activeIcon` (new):** a per-item filled/alternate icon shown while the route is active (falls back to `icon`) — the iOS/Material filled-when-selected affordance. Icon lozenge padding tightened so icon-only items (e.g. `labelVisibility="selected"`) read less airy.
+  - Composes `Badge` for notification counts (was re-rolled); Sheet's built-in close replaces the sub-44px hand-rolled one.
+  - Label truncation + logical (RTL-safe) properties; overflow grid adapts to item count instead of a fixed 4 columns.
+  - Notification-badge `zoom-in` animation is now reduced-motion gated.
+  - Restored test coverage (RTL + vitest-axe: active state, badges, role gating, More-sheet open/close).
+
+- [#185](https://github.com/devalok-design/shilp-sutra/pull/185) [`f088c92`](https://github.com/devalok-design/shilp-sutra/commit/f088c92d0f5653952431e721c9f610d220011d98) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **PriorityIndicator rebuild (finish-bar).** Recomposed on the `Badge` primitive instead of a bespoke re-rolled chip, fixing two P0s (unguarded infinite motion + no compact accessible name) and the radius/motion drift from `Badge`.
+
+  - **Severity by weight, not motion.** URGENT is now a solid `Badge` (static, high-contrast) so the top tier reads at a glance. The perpetual scale-pulse is **removed** (it was unguarded infinite motion — WCAG 2.2.2 Pause/Stop/Hide). No animation at all now.
+  - **Real compact a11y.** Icon-only chips carry `role="img"` + `aria-label` (was a mouse-only `title` on a `<div>`).
+  - **New `iconOnly`** replaces the dead `display` CVA axis (both its branches emitted empty strings). `display` is kept as a **deprecated alias** (`'compact'` → icon-only).
+  - **New `children`** overrides the label for i18n / custom copy.
+  - Unknown `priority` values now fall back to MEDIUM instead of throwing.
+  - Doc corrected (LOW = slate, not success; not server-safe).
+
+  Note: because it now composes `Badge`, the rendered element (and forwarded `ref`) is a `span` rather than a `div`, and the chip uses `Badge`'s pill radius. Behavioral API (`priority`) is unchanged.
+
+- [#187](https://github.com/devalok-design/shilp-sutra/pull/187) [`bd929e0`](https://github.com/devalok-design/shilp-sutra/commit/bd929e0a71a6a876b467a4832ae2ae3831f8ea45) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **ScheduleView rebuild (finish-bar).** Fixes the P0 a11y flood, the overlapping-event illegibility, the stale now-line, and the surface/border regression.
+
+  - **No more phantom tab stops.** Slots are focusable/keyboard-navigable only when `onSlotClick` is set; otherwise they're inert grid lines. A read-only week view previously exposed ~140 sequential tab stops. Interactive slots now use **roving tabindex + Arrow/Home/End** navigation (RTL-aware) — one tab stop into the widget.
+  - **Overlapping events** partition into side-by-side columns (greedy interval colouring) instead of stacking on top of each other.
+  - **Live now-line** — ticks every minute and scrolls into view on mount (was frozen at mount time).
+  - **Surface fix** — shell uses the `surface-2` card tier + `rounded-surface` + a real border (was `surface-raised` + the dead `border-card-strong` class).
+  - **RTL** — logical properties throughout; now-dot centered via transform.
+  - **New props:** `selectedEventId` (rings the active event), `renderEvent` (custom event body), `header` (toolbar slot), `emptyState`, `height`.
+
+  Non-breaking: `view`/`date`/`events`/`onEventClick`/`onSlotClick` unchanged; new props additive.
+
+  Scope note: full ARIA grid-matrix semantics (`role="grid"` with row/column indices) were intentionally not adopted — the component stays a labelled `region` with keyboard-navigable slots, which is honest and lint-clean rather than a partial/broken grid.
+
+### Patch Changes
+
+- [#182](https://github.com/devalok-design/shilp-sutra/pull/182) [`c441b72`](https://github.com/devalok-design/shilp-sutra/commit/c441b720868ccd85f21edf157954fd036e6fd2e1) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Two DS-wide fixes from the finish-bar audit:
+
+  - **Reduced motion respected without a provider.** `useMotion()` now falls back to the OS `prefers-reduced-motion` setting when no `<MotionProvider>` is mounted (previously the context default hardcoded `reducedMotion: false`, so components ignored the preference unless a provider wrapped them). Every shilp-sutra component that gates animation on `useMotion().reducedMotion` now honors reduced motion out of the box; a provider remains an explicit override.
+
+  - **`border-card-strong` is now a real utility.** It was referenced by ~11 components (kbd caps, code blocks, skeleton/panel outlines, chips) but never defined — the border fell back to `currentColor`. Added `@utility border-card-strong` mapping to the dark-mode-aware `--color-surface-border`, restoring the intended hairline.
+
 ## 0.52.0
 
 ### Minor Changes

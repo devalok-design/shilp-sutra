@@ -1,103 +1,160 @@
 /**
  * Live-preview registry — maps a component slug to its hand-curated preview.
- *
- * Static imports. Each preview file starts with `"use client"` so the React
- * components stay client-side, but the registry itself is plain server-safe
- * data (a slug → component map). Server components import this directly
- * and render the matching preview into the detail page.
- *
- * Adding a preview:
- *   1. Create apps/site/content/components/<slug>.preview.tsx (use client)
- *   2. Export named hero + variants components
- *   3. Add the slug to PREVIEW_MAP below
+ * GENERATED shape (slug -> { Hero, Variants }); edit the .preview.tsx files, then
+ * re-run the generator in this file's history. Server-safe data map.
  */
-import type { ComponentType } from 'react'
+import type { ComponentType } from "react"
 
-import { AccordionHero, AccordionVariants } from '@/content/components/accordion.preview'
-import { AlertHero, AlertVariants } from '@/content/components/alert.preview'
-import { AvatarHero, AvatarVariants } from '@/content/components/avatar.preview'
-import { BadgeHero, BadgeVariants } from '@/content/components/badge.preview'
-import { BreadcrumbHero, BreadcrumbVariants } from '@/content/components/breadcrumb.preview'
-import { ButtonHero, ButtonVariants } from '@/content/components/button.preview'
-import { CardHero, CardVariants } from '@/content/components/card.preview'
-import { CheckboxHero, CheckboxVariants } from '@/content/components/checkbox.preview'
-import { ComboboxHero, ComboboxVariants } from '@/content/components/combobox.preview'
-import { DotHero, DotVariants } from '@/content/components/dot.preview'
-import { InputHero, InputVariants } from '@/content/components/input.preview'
-import { LabelHero, LabelVariants } from '@/content/components/label.preview'
-import { NumberInputHero, NumberInputVariants } from '@/content/components/number-input.preview'
-import { PaginationHero, PaginationVariants } from '@/content/components/pagination.preview'
-import { ProgressHero, ProgressVariants } from '@/content/components/progress.preview'
-import { RadioHero, RadioVariants } from '@/content/components/radio.preview'
-import { SearchInputHero, SearchInputVariants } from '@/content/components/search-input.preview'
-import {
-  SegmentedControlHero,
-  SegmentedControlVariants,
-} from '@/content/components/segmented-control.preview'
-import { SelectHero, SelectVariants } from '@/content/components/select.preview'
-import { SeparatorHero, SeparatorVariants } from '@/content/components/separator.preview'
-import { SkeletonHero, SkeletonVariants } from '@/content/components/skeleton.preview'
-import { SliderHero, SliderVariants } from '@/content/components/slider.preview'
-import { SpinnerHero, SpinnerVariants } from '@/content/components/spinner.preview'
-import { StatCardHero, StatCardVariants } from '@/content/components/stat-card.preview'
-import { StepperHero, StepperVariants } from '@/content/components/stepper.preview'
-import { SwitchHero, SwitchVariants } from '@/content/components/switch.preview'
-import { TabsHero, TabsVariants } from '@/content/components/tabs.preview'
-import { TextareaHero, TextareaVariants } from '@/content/components/textarea.preview'
-import { ToggleHero, ToggleVariants } from '@/content/components/toggle.preview'
-import { ToggleGroupHero, ToggleGroupVariants } from '@/content/components/toggle-group.preview'
+import { AccordionHero, AccordionVariants } from "@/content/components/accordion.preview"
+import { AlertDialogHero, AlertDialogVariants } from "@/content/components/alert-dialog.preview"
+import { AlertHero, AlertVariants } from "@/content/components/alert.preview"
+import { AutocompleteHero, AutocompleteVariants } from "@/content/components/autocomplete.preview"
+import { AvatarGroupHero, AvatarGroupVariants } from "@/content/components/avatar-group.preview"
+import { AvatarHero, AvatarVariants } from "@/content/components/avatar.preview"
+import { BadgeGroupHero, BadgeGroupVariants } from "@/content/components/badge-group.preview"
+import { BadgeHero, BadgeVariants } from "@/content/components/badge.preview"
+import { BannerHero, BannerVariants } from "@/content/components/banner.preview"
+import { BreadcrumbHero, BreadcrumbVariants } from "@/content/components/breadcrumb.preview"
+import { ButtonGroupHero, ButtonGroupVariants } from "@/content/components/button-group.preview"
+import { ButtonHero, ButtonVariants } from "@/content/components/button.preview"
+import { CardHero, CardVariants } from "@/content/components/card.preview"
+import { CheckboxHero, CheckboxVariants } from "@/content/components/checkbox.preview"
+import { CodeHero, CodeVariants } from "@/content/components/code.preview"
+import { CollapsibleHero, CollapsibleVariants } from "@/content/components/collapsible.preview"
+import { ColorInputHero, ColorInputVariants } from "@/content/components/color-input.preview"
+import { ColorSwatchHero, ColorSwatchVariants } from "@/content/components/color-swatch.preview"
+import { ComboboxHero, ComboboxVariants } from "@/content/components/combobox.preview"
+import { ConfirmDialogHero, ConfirmDialogVariants } from "@/content/components/confirm-dialog.preview"
+import { ContentCardHero, ContentCardVariants } from "@/content/components/content-card.preview"
+import { ContextMenuHero, ContextMenuVariants } from "@/content/components/context-menu.preview"
+import { DeadlineIndicatorHero, DeadlineIndicatorVariants } from "@/content/components/deadline-indicator.preview"
+import { DialogHero, DialogVariants } from "@/content/components/dialog.preview"
+import { DotHero, DotVariants } from "@/content/components/dot.preview"
+import { DropdownMenuHero, DropdownMenuVariants } from "@/content/components/dropdown-menu.preview"
+import { EmptyStateHero, EmptyStateVariants } from "@/content/components/empty-state.preview"
+import { FileUploadHero, FileUploadVariants } from "@/content/components/file-upload.preview"
+import { HoverCardHero, HoverCardVariants } from "@/content/components/hover-card.preview"
+import { IconButtonHero, IconButtonVariants } from "@/content/components/icon-button.preview"
+import { InputOtpHero, InputOtpVariants } from "@/content/components/input-otp.preview"
+import { InputHero, InputVariants } from "@/content/components/input.preview"
+import { LabelHero, LabelVariants } from "@/content/components/label.preview"
+import { LinkHero, LinkVariants } from "@/content/components/link.preview"
+import { MenubarHero, MenubarVariants } from "@/content/components/menubar.preview"
+import { NavigationMenuHero, NavigationMenuVariants } from "@/content/components/navigation-menu.preview"
+import { NumberInputHero, NumberInputVariants } from "@/content/components/number-input.preview"
+import { PageHeaderHero, PageHeaderVariants } from "@/content/components/page-header.preview"
+import { PaginationHero, PaginationVariants } from "@/content/components/pagination.preview"
+import { PopoverHero, PopoverVariants } from "@/content/components/popover.preview"
+import { PriorityIndicatorHero, PriorityIndicatorVariants } from "@/content/components/priority-indicator.preview"
+import { ProgressRingHero, ProgressRingVariants } from "@/content/components/progress-ring.preview"
+import { ProgressHero, ProgressVariants } from "@/content/components/progress.preview"
+import { RadioHero, RadioVariants } from "@/content/components/radio.preview"
+import { ResponsiveModalHero, ResponsiveModalVariants } from "@/content/components/responsive-modal.preview"
+import { SearchInputHero, SearchInputVariants } from "@/content/components/search-input.preview"
+import { SegmentedControlHero, SegmentedControlVariants } from "@/content/components/segmented-control.preview"
+import { SelectHero, SelectVariants } from "@/content/components/select.preview"
+import { SeparatorHero, SeparatorVariants } from "@/content/components/separator.preview"
+import { SheetHero, SheetVariants } from "@/content/components/sheet.preview"
+import { SimpleTooltipHero, SimpleTooltipVariants } from "@/content/components/simple-tooltip.preview"
+import { SkeletonHero, SkeletonVariants } from "@/content/components/skeleton.preview"
+import { SliderHero, SliderVariants } from "@/content/components/slider.preview"
+import { SpinnerHero, SpinnerVariants } from "@/content/components/spinner.preview"
+import { SplitButtonHero, SplitButtonVariants } from "@/content/components/split-button.preview"
+import { StatCardHero, StatCardVariants } from "@/content/components/stat-card.preview"
+import { StatFlashHero, StatFlashVariants } from "@/content/components/stat-flash.preview"
+import { StatusBadgeHero, StatusBadgeVariants } from "@/content/components/status-badge.preview"
+import { StepperHero, StepperVariants } from "@/content/components/stepper.preview"
+import { SwitchHero, SwitchVariants } from "@/content/components/switch.preview"
+import { TableRowLinkHero, TableRowLinkVariants } from "@/content/components/table-row-link.preview"
+import { TableHero, TableVariants } from "@/content/components/table.preview"
+import { TabsHero, TabsVariants } from "@/content/components/tabs.preview"
+import { TextareaHero, TextareaVariants } from "@/content/components/textarea.preview"
+import { ToggleGroupHero, ToggleGroupVariants } from "@/content/components/toggle-group.preview"
+import { ToggleHero, ToggleVariants } from "@/content/components/toggle.preview"
+import { TooltipHero, TooltipVariants } from "@/content/components/tooltip.preview"
+import { TreeViewHero, TreeViewVariants } from "@/content/components/tree-view.preview"
+import { TruncatedTextHero, TruncatedTextVariants } from "@/content/components/truncated-text.preview"
 
-export type ComponentPreview = {
-  Hero: ComponentType
-  Variants?: ComponentType
-}
+export type ComponentPreview = { Hero: ComponentType; Variants?: ComponentType }
 
 const PREVIEW_MAP: Record<string, ComponentPreview> = {
-  // Buttons & actions
-  button: { Hero: ButtonHero, Variants: ButtonVariants },
-  toggle: { Hero: ToggleHero, Variants: ToggleVariants },
-  'toggle-group': { Hero: ToggleGroupHero, Variants: ToggleGroupVariants },
-  'segmented-control': { Hero: SegmentedControlHero, Variants: SegmentedControlVariants },
-  // Forms & inputs
-  input: { Hero: InputHero, Variants: InputVariants },
-  textarea: { Hero: TextareaHero, Variants: TextareaVariants },
-  checkbox: { Hero: CheckboxHero, Variants: CheckboxVariants },
-  switch: { Hero: SwitchHero, Variants: SwitchVariants },
-  radio: { Hero: RadioHero, Variants: RadioVariants },
-  label: { Hero: LabelHero, Variants: LabelVariants },
-  select: { Hero: SelectHero, Variants: SelectVariants },
-  combobox: { Hero: ComboboxHero, Variants: ComboboxVariants },
-  slider: { Hero: SliderHero, Variants: SliderVariants },
-  'number-input': { Hero: NumberInputHero, Variants: NumberInputVariants },
-  'search-input': { Hero: SearchInputHero, Variants: SearchInputVariants },
-  // Data display
-  card: { Hero: CardHero, Variants: CardVariants },
-  badge: { Hero: BadgeHero, Variants: BadgeVariants },
-  avatar: { Hero: AvatarHero, Variants: AvatarVariants },
-  dot: { Hero: DotHero, Variants: DotVariants },
-  'stat-card': { Hero: StatCardHero, Variants: StatCardVariants },
-  skeleton: { Hero: SkeletonHero, Variants: SkeletonVariants },
-  // Feedback
-  alert: { Hero: AlertHero, Variants: AlertVariants },
-  progress: { Hero: ProgressHero, Variants: ProgressVariants },
-  spinner: { Hero: SpinnerHero, Variants: SpinnerVariants },
-  // Navigation
-  tabs: { Hero: TabsHero, Variants: TabsVariants },
   accordion: { Hero: AccordionHero, Variants: AccordionVariants },
+  "alert-dialog": { Hero: AlertDialogHero, Variants: AlertDialogVariants },
+  alert: { Hero: AlertHero, Variants: AlertVariants },
+  autocomplete: { Hero: AutocompleteHero, Variants: AutocompleteVariants },
+  "avatar-group": { Hero: AvatarGroupHero, Variants: AvatarGroupVariants },
+  avatar: { Hero: AvatarHero, Variants: AvatarVariants },
+  "badge-group": { Hero: BadgeGroupHero, Variants: BadgeGroupVariants },
+  badge: { Hero: BadgeHero, Variants: BadgeVariants },
+  banner: { Hero: BannerHero, Variants: BannerVariants },
   breadcrumb: { Hero: BreadcrumbHero, Variants: BreadcrumbVariants },
+  "button-group": { Hero: ButtonGroupHero, Variants: ButtonGroupVariants },
+  button: { Hero: ButtonHero, Variants: ButtonVariants },
+  card: { Hero: CardHero, Variants: CardVariants },
+  checkbox: { Hero: CheckboxHero, Variants: CheckboxVariants },
+  code: { Hero: CodeHero, Variants: CodeVariants },
+  collapsible: { Hero: CollapsibleHero, Variants: CollapsibleVariants },
+  "color-input": { Hero: ColorInputHero, Variants: ColorInputVariants },
+  "color-swatch": { Hero: ColorSwatchHero, Variants: ColorSwatchVariants },
+  combobox: { Hero: ComboboxHero, Variants: ComboboxVariants },
+  "confirm-dialog": { Hero: ConfirmDialogHero, Variants: ConfirmDialogVariants },
+  "content-card": { Hero: ContentCardHero, Variants: ContentCardVariants },
+  "context-menu": { Hero: ContextMenuHero, Variants: ContextMenuVariants },
+  "deadline-indicator": { Hero: DeadlineIndicatorHero, Variants: DeadlineIndicatorVariants },
+  dialog: { Hero: DialogHero, Variants: DialogVariants },
+  dot: { Hero: DotHero, Variants: DotVariants },
+  "dropdown-menu": { Hero: DropdownMenuHero, Variants: DropdownMenuVariants },
+  "empty-state": { Hero: EmptyStateHero, Variants: EmptyStateVariants },
+  "file-upload": { Hero: FileUploadHero, Variants: FileUploadVariants },
+  "hover-card": { Hero: HoverCardHero, Variants: HoverCardVariants },
+  "icon-button": { Hero: IconButtonHero, Variants: IconButtonVariants },
+  "input-otp": { Hero: InputOtpHero, Variants: InputOtpVariants },
+  input: { Hero: InputHero, Variants: InputVariants },
+  label: { Hero: LabelHero, Variants: LabelVariants },
+  link: { Hero: LinkHero, Variants: LinkVariants },
+  menubar: { Hero: MenubarHero, Variants: MenubarVariants },
+  "navigation-menu": { Hero: NavigationMenuHero, Variants: NavigationMenuVariants },
+  "number-input": { Hero: NumberInputHero, Variants: NumberInputVariants },
+  "page-header": { Hero: PageHeaderHero, Variants: PageHeaderVariants },
   pagination: { Hero: PaginationHero, Variants: PaginationVariants },
-  stepper: { Hero: StepperHero, Variants: StepperVariants },
+  popover: { Hero: PopoverHero, Variants: PopoverVariants },
+  "priority-indicator": { Hero: PriorityIndicatorHero, Variants: PriorityIndicatorVariants },
+  "progress-ring": { Hero: ProgressRingHero, Variants: ProgressRingVariants },
+  progress: { Hero: ProgressHero, Variants: ProgressVariants },
+  radio: { Hero: RadioHero, Variants: RadioVariants },
+  "responsive-modal": { Hero: ResponsiveModalHero, Variants: ResponsiveModalVariants },
+  "search-input": { Hero: SearchInputHero, Variants: SearchInputVariants },
+  "segmented-control": { Hero: SegmentedControlHero, Variants: SegmentedControlVariants },
+  select: { Hero: SelectHero, Variants: SelectVariants },
   separator: { Hero: SeparatorHero, Variants: SeparatorVariants },
+  sheet: { Hero: SheetHero, Variants: SheetVariants },
+  "simple-tooltip": { Hero: SimpleTooltipHero, Variants: SimpleTooltipVariants },
+  skeleton: { Hero: SkeletonHero, Variants: SkeletonVariants },
+  slider: { Hero: SliderHero, Variants: SliderVariants },
+  spinner: { Hero: SpinnerHero, Variants: SpinnerVariants },
+  "split-button": { Hero: SplitButtonHero, Variants: SplitButtonVariants },
+  "stat-card": { Hero: StatCardHero, Variants: StatCardVariants },
+  "stat-flash": { Hero: StatFlashHero, Variants: StatFlashVariants },
+  "status-badge": { Hero: StatusBadgeHero, Variants: StatusBadgeVariants },
+  stepper: { Hero: StepperHero, Variants: StepperVariants },
+  switch: { Hero: SwitchHero, Variants: SwitchVariants },
+  "table-row-link": { Hero: TableRowLinkHero, Variants: TableRowLinkVariants },
+  table: { Hero: TableHero, Variants: TableVariants },
+  tabs: { Hero: TabsHero, Variants: TabsVariants },
+  textarea: { Hero: TextareaHero, Variants: TextareaVariants },
+  "toggle-group": { Hero: ToggleGroupHero, Variants: ToggleGroupVariants },
+  toggle: { Hero: ToggleHero, Variants: ToggleVariants },
+  tooltip: { Hero: TooltipHero, Variants: TooltipVariants },
+  "tree-view": { Hero: TreeViewHero, Variants: TreeViewVariants },
+  "truncated-text": { Hero: TruncatedTextHero, Variants: TruncatedTextVariants },
 }
 
 export function hasPreview(slug: string): boolean {
   return slug in PREVIEW_MAP
 }
-
 export function getPreviewSlugs(): string[] {
   return Object.keys(PREVIEW_MAP)
 }
-
 export function getPreview(slug: string): ComponentPreview | null {
   return PREVIEW_MAP[slug] ?? null
 }

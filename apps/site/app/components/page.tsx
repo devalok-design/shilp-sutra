@@ -7,6 +7,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { FUNCTION_CATEGORIES } from '@/lib/component-categories'
 import { getRegistry, groupByFunction } from '@/lib/component-registry'
+import { getPreviewSlugs } from '@/lib/preview-registry'
 import { SHILP_SUTRA_MINOR } from '@/lib/version'
 
 export const metadata: Metadata = {
@@ -54,7 +55,7 @@ export default async function ComponentsPage() {
                     {items.length} components · browse by category or search by name.
                   </h2>
                 </header>
-                <ComponentGrid items={items} />
+                <ComponentGrid items={items} previewSlugs={getPreviewSlugs()} />
               </div>
             </div>
           </div>

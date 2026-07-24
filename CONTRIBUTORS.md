@@ -1,6 +1,6 @@
 # Contributors
 
-shilp-sutra is built by the team at [Devalok Design & Strategy Studios](https://devalok.com).
+shilp-sutra is built by the team at [Devalok Design & Strategy Studios](https://devalok.in).
 
 ## Core Team
 

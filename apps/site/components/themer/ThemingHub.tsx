@@ -2,24 +2,14 @@
 
 import * as React from 'react'
 import { useSearchParams } from 'next/navigation'
-import {
-  IconArrowUpRight,
-  IconCheck,
-  IconChevronDown,
-  IconChevronRight,
-  IconCopy,
-  IconFingerprint,
-} from '@tabler/icons-react'
-import { Badge } from '@devalok/shilp-sutra/ui/badge'
-import { Button } from '@devalok/shilp-sutra/ui/button'
+import { IconArrowUpRight, IconCheck, IconCopy, IconFingerprint } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 import { InstallTabs } from '../install-tabs'
+import { ThemePreviewApp } from './ThemePreviewApp'
 import {
   type ArchetypeName,
   ARCHETYPE_TITLES,
-  darkSurface,
-  mergeArchetype,
   suggestArchetypeByHue,
 } from '@/lib/archetype-presets'
 import { deriveAccentFg, generateRamp } from '@/lib/ramp-generator'
@@ -145,7 +135,8 @@ export function ThemingHub() {
   }))
   const [hex, setHex] = React.useState('#d946a6')
   const [copiedCss, setCopiedCss] = React.useState(false)
-  const [exportOpen, setExportOpen] = React.useState(false)
+  const [copiedPrompt, setCopiedPrompt] = React.useState(false)
+  const [outputTab, setOutputTab] = React.useState<'css' | 'prompt'>('css')
   const exportRef = React.useRef<HTMLDivElement>(null)
 
   const archetype = state.archetype ?? 'devalok'
@@ -154,13 +145,6 @@ export function ThemingHub() {
 
   const isDark = useIsDark()
   const ramp = React.useMemo(() => generateRamp(hue, chroma), [hue, chroma])
-  const role = React.useMemo(() => mergeArchetype(archetype), [archetype])
-  // In dark mode the archetype presets' light-only surfaces (near-white bg,
-  // light border, soft shadow) would render a white card — swap for derived
-  // dark counterparts so the preview matches the page theme.
-  const surface = React.useMemo(() => (isDark ? { ...role, ...darkSurface(role) } : role), [role, isDark])
-  const archetypeAccent = ARCHETYPE_ACCENT[archetype]
-  const archetypeAccentColor = `oklch(0.5 ${archetypeAccent.chroma} ${archetypeAccent.hue})`
 
   const liveSampleStyle = React.useMemo(() => {
     const style: Record<string, string> = {}
@@ -179,6 +163,13 @@ export function ThemingHub() {
     return style as React.CSSProperties
   }, [ramp, state.customRadius, isDark])
   const css = React.useMemo(() => generateThemerCss(state), [state])
+  // Ready-to-paste prompt for an AI editor (Cursor/Claude/Copilot) — wraps the
+  // generated CSS in an instruction so the agent applies the theme end-to-end.
+  const agentPrompt = React.useMemo(
+    () =>
+      `Apply this brand theme to my shilp-sutra app. Paste the CSS below into my global stylesheet, right after the \`@import "@devalok/shilp-sutra/css";\` line, so every component picks up the accent ramp and radius:\n\n${css}`,
+    [css],
+  )
 
   const applyHex = (value: string) => {
     setHex(value)
@@ -203,8 +194,17 @@ export function ThemingHub() {
     }
   }
 
+  const copyPrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(agentPrompt)
+      setCopiedPrompt(true)
+      setTimeout(() => setCopiedPrompt(false), 1800)
+    } catch {
+      // clipboard blocked — no fallback noise
+    }
+  }
+
   const scrollToExport = () => {
-    setExportOpen(true)
     exportRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
@@ -212,6 +212,7 @@ export function ThemingHub() {
     <div className="flex flex-col gap-ds-09">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-ds-08 items-start">
         <section className="flex flex-col gap-ds-05 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-06 lg:sticky lg:top-24">
+            <StepLabel n={1} title="Pick your colour" />
             <div role="tablist" aria-label="Theming mode" className="flex items-center gap-ds-05 border-b border-surface-border-subtle">
               {(
                 [
@@ -397,155 +398,113 @@ export function ThemingHub() {
             )}
         </section>
 
-        <section className="flex flex-col gap-ds-04 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-06">
-            <div className="flex items-center justify-between">
-              <Text variant="label-sm" className="text-surface-fg-subtle">
-                Live preview
-              </Text>
-              <button
-                type="button"
-                onClick={scrollToExport}
-                className="inline-flex items-center gap-ds-01 text-ds-sm text-accent-11 hover:text-accent-12"
-              >
-                Use this <IconArrowUpRight size={14} />
-              </button>
-            </div>
-
-            <div
-              className="flex flex-col gap-ds-04"
-              style={{
-                background: surface.bg,
-                border: `${role.bw}px solid ${surface.bc}`,
-                borderRadius: `${role.rs}px`,
-                boxShadow: surface.shad,
-                padding: `${role.cp}px`,
-              }}
-            >
-              <Text
-                variant="heading-sm"
-                className="text-surface-fg"
-                style={{ fontWeight: role.fontWeight }}
-              >
-                {capitalize(archetype)}
-              </Text>
-              <p
-                className="text-surface-fg-muted"
-                style={{ fontSize: `${role.bodySize}px`, lineHeight: role.leading }}
-              >
-                Shape, spacing, and shadow all come from the archetype.
-              </p>
-              <div className="flex flex-wrap items-center gap-ds-03">
-                <button
-                  type="button"
-                  className="font-medium text-white"
-                  style={{
-                    background: archetypeAccentColor,
-                    borderRadius: `${role.rc}px`,
-                    paddingInline: `${role.px}px`,
-                    paddingBlock: `${role.py}px`,
-                  }}
-                >
-                  Primary
-                </button>
-                <input
-                  type="text"
-                  placeholder="Type here"
-                  className="text-surface-fg placeholder:text-surface-fg-subtle bg-surface-overlay"
-                  style={{
-                    borderRadius: `${role.rc}px`,
-                    border: `${role.bw}px solid ${surface.bc}`,
-                    paddingInline: `${role.px}px`,
-                    paddingBlock: `${role.py}px`,
-                  }}
-                />
-              </div>
-            </div>
-
-            <div
-              className="flex flex-col gap-ds-05 p-ds-06 rounded-control bg-surface-raised border border-surface-border-subtle"
-              style={liveSampleStyle}
-            >
-              <div className="flex flex-wrap items-center gap-ds-02">
-                <Button>Solid</Button>
-                <Button variant="soft">Soft</Button>
-                <Button variant="outline">Outline</Button>
-                <Button variant="ghost">Ghost</Button>
-                <Button variant="link">Link</Button>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-ds-02">
-                <Badge>New</Badge>
-                <Badge color="success">Live</Badge>
-                <Badge color="warning">Draft</Badge>
-                <Badge color="error">Removed</Badge>
-                <Badge variant="soft" color="accent">Beta</Badge>
-              </div>
-
-              <div className="flex flex-col gap-ds-02">
-                <label className="text-ds-sm text-surface-fg-muted">Email</label>
-                <input
-                  type="email"
-                  placeholder="namaskar@devalok.in"
-                  className="w-full h-ds-md px-ds-04 rounded-control border border-surface-border bg-surface-overlay text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
-                />
-              </div>
-
-              <div className="rounded-control border border-accent-7 bg-accent-2 p-ds-05">
-                <Text variant="label-sm" className="text-accent-11">
-                  Brand-tinted notice
-                </Text>
-                <Text variant="body-sm" className="text-surface-fg mt-ds-01">
-                  Surface, border, and text all follow your colour. You pick it, the system
-                  does the rest.
-                </Text>
-              </div>
-            </div>
-
-            <div ref={exportRef} className="flex flex-col gap-ds-04 border-t border-surface-border-subtle pt-ds-05 scroll-mt-24">
-              <div className="flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={() => setExportOpen((v) => !v)}
-                  aria-expanded={exportOpen}
-                  className="inline-flex items-center gap-ds-02 text-ds-xs font-medium uppercase tracking-wide text-surface-fg-subtle hover:text-surface-fg"
-                >
-                  {exportOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
-                  Export CSS
-                </button>
-                <button
-                  type="button"
-                  onClick={copyRampCss}
-                  className="inline-flex items-center gap-ds-02 text-ds-sm text-surface-fg-muted hover:text-surface-fg"
-                >
-                  {copiedCss ? <IconCheck size={14} /> : <IconCopy size={14} />}
-                  {copiedCss ? 'Copied' : 'Copy'}
-                </button>
-              </div>
-              {exportOpen && (
-                <>
-                  <pre className="max-h-64 overflow-auto rounded-control border border-surface-border-subtle bg-surface-raised p-ds-04 text-ds-xs font-mono text-surface-fg-muted leading-relaxed">
-                    <code>{css}</code>
-                  </pre>
-                  <Text variant="body-sm" className="text-surface-fg-subtle">
-                    Paste this after your{' '}
-                    <code className="font-mono text-surface-fg">
-                      @import &quot;@devalok/shilp-sutra/css&quot;
-                    </code>{' '}
-                    line and every component follows. Need radius, fonts, or spacing? See the{' '}
-                    <a
-                      href="/docs/customize-brand"
-                      className="underline underline-offset-2 hover:text-surface-fg"
-                    >
-                      customize-brand recipe
-                    </a>
-                    .
-                  </Text>
-                  <InstallTabs />
-                </>
-              )}
-            </div>
+        {/* STEP 2 — see it on a real screen */}
+        <section className="flex flex-col gap-ds-04">
+          <StepLabel n={2} title="See it on a real screen" />
+          <p className="text-ds-sm text-surface-fg-muted">
+            A real product screen, recoloured live. Move the slider and watch it follow.
+          </p>
+          <ThemePreviewApp style={liveSampleStyle} />
+          <button
+            type="button"
+            onClick={scrollToExport}
+            className="inline-flex w-fit items-center gap-ds-01 text-ds-sm text-accent-11 hover:text-accent-12"
+          >
+            Looks right? Ship it <IconArrowUpRight size={14} />
+          </button>
         </section>
       </div>
+
+      {/* STEP 3 — ship it: CSS or AI-prompt, one paste */}
+      <section
+        ref={exportRef}
+        className="flex scroll-mt-24 flex-col gap-ds-05 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-06"
+      >
+        <StepLabel n={3} title="Ship it" />
+        <p className="text-ds-sm text-surface-fg-muted">
+          Copy the CSS into your stylesheet, or hand the prompt to your AI editor. One paste and
+          every component follows.
+        </p>
+
+        <div role="tablist" aria-label="Output format" className="flex items-center gap-ds-05 border-b border-surface-border-subtle">
+          {(
+            [
+              { key: 'css', label: 'Copy CSS' },
+              { key: 'prompt', label: 'Copy AI prompt' },
+            ] as const
+          ).map((tab) => {
+            const isActive = outputTab === tab.key
+            return (
+              <button
+                key={tab.key}
+                role="tab"
+                type="button"
+                aria-selected={isActive}
+                onClick={() => setOutputTab(tab.key)}
+                className={[
+                  '-mb-px border-b-2 px-ds-01 py-ds-03 text-ds-sm font-medium transition-colors duration-fast-01',
+                  isActive
+                    ? 'border-accent-9 text-surface-fg'
+                    : 'border-transparent text-surface-fg-muted hover:text-surface-fg',
+                ].join(' ')}
+              >
+                {tab.label}
+              </button>
+            )
+          })}
+        </div>
+
+        <div className="relative">
+          <button
+            type="button"
+            onClick={outputTab === 'css' ? copyRampCss : copyPrompt}
+            className="absolute right-ds-03 top-ds-03 z-10 inline-flex items-center gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-muted transition-colors duration-fast-01 hover:text-surface-fg"
+          >
+            {(outputTab === 'css' ? copiedCss : copiedPrompt) ? (
+              <IconCheck size={13} />
+            ) : (
+              <IconCopy size={13} />
+            )}
+            {(outputTab === 'css' ? copiedCss : copiedPrompt) ? 'Copied' : 'Copy'}
+          </button>
+          <pre className="max-h-72 overflow-auto rounded-control border border-surface-border-subtle bg-surface-base p-ds-04 pr-ds-10 text-ds-xs font-mono leading-relaxed text-surface-fg-muted">
+            <code>{outputTab === 'css' ? css : agentPrompt}</code>
+          </pre>
+        </div>
+
+        {outputTab === 'css' ? (
+          <div className="flex flex-col gap-ds-04">
+            <Text variant="body-sm" className="text-surface-fg-subtle">
+              Paste after your{' '}
+              <code className="font-mono text-surface-fg">@import &quot;@devalok/shilp-sutra/css&quot;</code>{' '}
+              line. Need radius, fonts, or spacing? See the{' '}
+              <a href="/docs/customize-brand" className="underline underline-offset-2 hover:text-surface-fg">
+                customize-brand recipe
+              </a>
+              .
+            </Text>
+            <InstallTabs />
+          </div>
+        ) : (
+          <Text variant="body-sm" className="text-surface-fg-subtle">
+            Paste this into Cursor, Claude, or Copilot. It installs nothing new — it just themes the
+            shilp-sutra components you are already using.
+          </Text>
+        )}
+      </section>
+    </div>
+  )
+}
+
+function StepLabel({ n, title }: { n: number; title: string }) {
+  return (
+    <div className="flex items-center gap-ds-03">
+      <span className="flex size-6 shrink-0 items-center justify-center rounded-pill bg-accent-9 text-ds-xs font-bold text-accent-fg">
+        {n}
+      </span>
+      <Text variant="heading-sm" className="text-surface-fg">
+        {title}
+      </Text>
     </div>
   )
 }

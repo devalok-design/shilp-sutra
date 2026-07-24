@@ -66,17 +66,17 @@ export function Hero() {
         </div>
         {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
             Three capability-led chips per docs/copy/shilp-sutra-copy-context.md §10. */}
-        <ul className="mt-ds-08 w-full max-w-2xl grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 gap-ds-02 text-ds-xl text-surface-fg-muted text-difference">
+        <ul className="mt-ds-08 w-full max-w-full flex flex-nowrap items-center justify-center gap-x-ds-04 overflow-x-auto text-ds-xl text-surface-fg-muted text-difference whitespace-nowrap">
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="w-1.5 h-1.5 rounded-pill bg-success-9" />
             Powers Karm, Hiring + studio tools
           </li>
           <li className="inline-flex items-center justify-center gap-ds-02">
-            <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>
+            <span aria-hidden className="text-surface-fg-subtle/60">·</span>
             WCAG-AA · forced-colors verified
           </li>
           <li className="inline-flex items-center justify-center gap-ds-02">
-            <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>
+            <span aria-hidden className="text-surface-fg-subtle/60">·</span>
             120+ components · 1,750+ tests
           </li>
         </ul>

@@ -12,18 +12,6 @@ body {
   font-family: var(--font-sans);
 }
 
-/*
- * Shilp Sutra's own type system: Museo Moderno for display/headings, Inter
- * for body (Inter is already the DS default --font-sans, untouched).
- * Site-wide base — NOT tied to which accent-color brand preset is active,
- * so switching to Devalok/Indigo/Sage in BrandSwitcher recolors the accent
- * ramp only, headings stay Museo Moderno. --font-museo-moderno is next/font's
- * self-hosted variable, set on <html> in layout.tsx.
- */
-html {
-  --font-display: var(--font-museo-moderno), var(--font-sans);
-}
-
 /* Floating pill bar overlaps top of viewport — anchor jumps must clear it. */
 html {
   scroll-padding-top: 5.5rem;

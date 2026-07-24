@@ -15,8 +15,15 @@ const LAYER_LABELS: Record<Layer, string> = {
 }
 
 
-export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
+export function ComponentGrid({
+  items,
+  previewSlugs = [],
+}: {
+  items: ComponentMeta[]
+  previewSlugs?: string[]
+}) {
   const [query, setQuery] = useState('')
+  const previewSet = useMemo(() => new Set(previewSlugs), [previewSlugs])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -92,6 +99,11 @@ export function ComponentGrid({ items }: { items: ComponentMeta[] }) {
                         <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-overlay text-ds-xs text-surface-fg-subtle font-mono">
                           {LAYER_LABELS[item.layer]}
                         </span>
+                        {previewSet.has(item.slug) && (
+                          <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-ds-xs font-mono">
+                            live preview
+                          </span>
+                        )}
                         {item.serverSafe && (
                           <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-success-3 text-success-11 text-ds-xs font-mono">
                             rsc-safe

@@ -132,7 +132,7 @@ export function AuroraPlayground() {
                 type="button"
                 onClick={() => applyPreset(id)}
                 className={
-                  'group text-left rounded-control border bg-surface-2 overflow-hidden transition-colors focus-visible:focus-ring ' +
+                  'group text-left rounded-control border bg-surface-raised overflow-hidden transition-colors focus-visible:focus-ring ' +
                   (isActive
                     ? 'border-accent-9 ring-1 ring-accent-9/30'
                     : 'border-surface-border hover:border-surface-border-strong')
@@ -229,7 +229,7 @@ export function AuroraPlayground() {
             </div>
           </div>
 
-          <details className="rounded-control border border-surface-border bg-surface-2 px-ds-04 py-ds-03 text-ds-sm">
+          <details className="rounded-control border border-surface-border bg-surface-raised px-ds-04 py-ds-03 text-ds-sm">
             <summary className="cursor-pointer text-surface-fg-muted">Show the JSX</summary>
             <pre className="mt-ds-03 overflow-x-auto rounded-control-inner bg-surface-base p-ds-04 text-ds-xs font-mono text-surface-fg leading-relaxed">
               <code>{codeSnippet}</code>
@@ -305,7 +305,7 @@ export function AuroraPlayground() {
             />
           </ControlRow>
 
-          <div className="flex items-center justify-between rounded-control border border-surface-border bg-surface-2 px-ds-04 py-ds-03">
+          <div className="flex items-center justify-between rounded-control border border-surface-border bg-surface-raised px-ds-04 py-ds-03">
             <Text variant="body-sm" className="text-surface-fg">
               Breathing
             </Text>

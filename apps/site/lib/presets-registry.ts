@@ -17,13 +17,13 @@ import { join, resolve } from 'node:path'
 import type { ComponentType } from 'react'
 
 import { SidebarApp } from '@/content/presets/sidebar-app/preset'
-import { meta as sidebarAppMeta } from '@/content/presets/sidebar-app/meta'
+import sidebarAppMeta from '@/content/presets/sidebar-app/meta.json'
 import { SidebarProjects } from '@/content/presets/sidebar-projects/preset'
-import { meta as sidebarProjectsMeta } from '@/content/presets/sidebar-projects/meta'
+import sidebarProjectsMeta from '@/content/presets/sidebar-projects/meta.json'
 import { SidebarClient } from '@/content/presets/sidebar-client/preset'
-import { meta as sidebarClientMeta } from '@/content/presets/sidebar-client/meta'
+import sidebarClientMeta from '@/content/presets/sidebar-client/meta.json'
 import { SidebarMinimal } from '@/content/presets/sidebar-minimal/preset'
-import { meta as sidebarMinimalMeta } from '@/content/presets/sidebar-minimal/meta'
+import sidebarMinimalMeta from '@/content/presets/sidebar-minimal/meta.json'
 
 const REPO_ROOT = resolve(process.cwd(), '..', '..')
 const PRESETS_DIR = join(REPO_ROOT, 'apps', 'site', 'content', 'presets')

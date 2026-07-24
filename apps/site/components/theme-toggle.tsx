@@ -41,6 +41,7 @@ export function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon-sm"
+      className="text-neutral-11 dark:text-neutral-11 hover:text-neutral-12 dark:hover:text-neutral-12"
       aria-label={mounted ? `Switch to ${theme === 'light' ? 'dark' : 'light'} theme` : 'Toggle theme'}
       onClick={toggle}
     >

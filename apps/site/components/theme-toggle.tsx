@@ -14,9 +14,9 @@ function applyTheme(theme: Theme) {
 
 function readInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'light'
-  const stored = window.localStorage.getItem('theme') as Theme | null
-  if (stored === 'light' || stored === 'dark') return stored
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  // Default light; only dark if the user explicitly chose it (matches the
+  // pre-hydration script in theme-init.tsx — system preference is ignored).
+  return window.localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
 }
 
 export function ThemeToggle() {
@@ -35,13 +35,15 @@ export function ThemeToggle() {
     setTheme(next)
     applyTheme(next)
     window.localStorage.setItem('theme', next)
+    // Let the hero backdrop replay its entrance in the new theme (A5).
+    window.dispatchEvent(new CustomEvent('ss-theme-change'))
   }
 
   return (
     <Button
       variant="ghost"
       size="icon-sm"
-      className="text-[oklch(0.43_0.0074_350)] dark:text-[oklch(0.43_0.0074_350)] hover:text-[oklch(0.32_0.0042_350)] dark:hover:text-[oklch(0.32_0.0042_350)]"
+      className="text-surface-fg-muted hover:text-surface-fg"
       aria-label={mounted ? `Switch to ${theme === 'light' ? 'dark' : 'light'} theme` : 'Toggle theme'}
       onClick={toggle}
     >

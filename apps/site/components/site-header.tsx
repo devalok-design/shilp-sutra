@@ -13,8 +13,8 @@ import { ThemeToggle } from './theme-toggle'
 const navLinks = [
   { href: '/components', label: 'Components' },
   { href: '/theming', label: 'Theming' },
+  { href: '/showcase', label: 'Showcase' },
   { href: '/docs', label: 'Docs' },
-  { href: '/agents', label: 'For AI editors', accent: true },
 ] as const
 
 /**
@@ -76,13 +76,11 @@ export function SiteHeader() {
             // still half the bar height and looked capsule-y.
             'rounded-surface border',
             'forced-colors:bg-[Canvas] forced-colors:border-[CanvasText]',
-            // Nav pill stays light in both themes — the wordmark logo is solid
-            // black in both light and dark mode (icon square just swaps its
-            // own background from teal-gradient to black), so the bar itself
-            // has to stay light-toned or the black logo/text would vanish
-            // against a dark surface. Overrides the theme-token surface here
-            // only; rest of the site still themes normally.
-            'bg-white/80 dark:bg-white/85 backdrop-blur-2xl backdrop-saturate-150 border-black/10 dark:border-black/10 shadow-overlay',
+            // Themed floating bar. Light: near-white raised surface. Dark: the
+            // raised dark surface (the wordmark swaps to its white variant in
+            // dark, below, so nothing vanishes). Translucent + blurred so the
+            // backdrop shows through.
+            'bg-surface-raised/80 border-surface-border-subtle backdrop-blur-2xl backdrop-saturate-150 shadow-overlay',
           ].join(' ')}
         >
           {/* Logo cluster — on mobile the BrandSwitcher sits inline with the
@@ -98,13 +96,16 @@ export function SiteHeader() {
               <img
                 src="/brand/shilp-sutra/wordmark.svg?v=2"
                 alt="Shilp Sutra"
-                className="h-[18px] w-auto shrink-0"
+                className="h-[18px] w-auto shrink-0 dark:hidden"
+              />
+              <img
+                src="/brand/shilp-sutra/wordmark-white.svg"
+                alt="Shilp Sutra"
+                className="hidden h-[18px] w-auto shrink-0 dark:block"
               />
               {/* Version superscript — takes the exact slot the brand wordmark
-                  gives "1.0", styled to match it (brand sans, near-black,
-                  raised to the cap-line, bare major.minor) but wired to the
-                  LIVE package version instead of a frozen "1.0". */}
-              <span className="text-[8px] font-medium leading-none tracking-tight shrink-0 hidden sm:inline text-[#131514] self-start -ml-[2px] mt-[1px]">
+                  gives "1.0", styled to match it, wired to the LIVE version. */}
+              <span className="text-[8px] font-medium leading-none tracking-tight shrink-0 hidden sm:inline text-surface-fg-muted self-start -ml-[2px] mt-[1px]">
                 {SHILP_SUTRA_MINOR}
               </span>
             </Link>
@@ -114,17 +115,15 @@ export function SiteHeader() {
           </div>
 
           <nav className="hidden md:flex items-center gap-ds-05">
-            {navLinks.map((link) => {
-              const isAccent = 'accent' in link && link.accent
-              const base = isAccent
-                ? 'inline-flex items-center gap-ds-02 whitespace-nowrap text-ds-sm text-secondary-11 dark:text-[oklch(0.43_0.0884_300)] hover:text-secondary-12 dark:hover:text-[oklch(0.32_0.0884_300)] transition-colors duration-fast-01'
-                : 'text-ds-sm text-surface-fg-muted dark:text-[oklch(0.43_0.0074_350)] hover:text-surface-fg dark:hover:text-[oklch(0.32_0.0042_350)] transition-colors duration-fast-01'
-              return (
-                <Link key={link.href} href={link.href} className={base}>
-                  {link.label}
-                </Link>
-              )
-            })}
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-ds-sm text-surface-fg-muted hover:text-surface-fg transition-colors duration-fast-01"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
           {/* Order: github → light/dark → hamburger(mobile) → brand (rightmost).
@@ -139,7 +138,7 @@ export function SiteHeader() {
               aria-label="View on GitHub"
               onClick={() => track('cta_click', { cta: 'github', location: 'header' })}
             >
-              <Button variant="ghost" size="icon-sm" aria-label="GitHub" className="text-[oklch(0.43_0.0074_350)] dark:text-[oklch(0.43_0.0074_350)] hover:text-[oklch(0.32_0.0042_350)] dark:hover:text-[oklch(0.32_0.0042_350)]">
+              <Button variant="ghost" size="icon-sm" aria-label="GitHub" className="text-surface-fg-muted hover:text-surface-fg">
                 <IconBrandGithub size={16} />
               </Button>
             </a>

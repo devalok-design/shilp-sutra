@@ -3,6 +3,7 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 import { BrahmaBackdrop } from './brahma-backdrop'
+import { CopyInstallButton } from './copy-install-button'
 import { TrackedLink } from './tracked-link'
 
 export function Hero() {
@@ -18,50 +19,41 @@ export function Hero() {
             <span className="text-accent-11">your brand&apos;s shape.</span>
           </h1>
           <Text variant="body-lg" className="max-w-2xl text-pretty text-surface-fg hero-rise" style={{ ['--hero-delay' as string]: '4600ms' } as React.CSSProperties}>
-            One hue in. Every button, badge, card, and form follows. Radius, spacing, shadow, light
-            and dark. No re-render, no config files.
+            Pick one colour and your whole interface matches it. Buttons, cards, forms, light and
+            dark. Install with one prompt and start building.
           </Text>
           <div className="mt-ds-03 flex w-full max-w-sm flex-col gap-ds-03 sm:w-auto sm:max-w-none sm:flex-row hero-rise" style={{ ['--hero-delay' as string]: '4750ms' } as React.CSSProperties}>
-          <TrackedLink
-            href="/theming"
-            className="w-full sm:w-auto"
-            event="cta_click"
-            eventProps={{ cta: 'try-it-on', location: 'hero' }}
-          >
-            <Button size="lg" className="w-full sm:w-auto">
-              Try it on
-            </Button>
-          </TrackedLink>
-          <TrackedLink
-            href="/components"
-            className="w-full sm:w-auto"
-            event="cta_click"
-            eventProps={{ cta: 'see-components', location: 'hero' }}
-          >
-            <Button
-              variant="soft"
-              size="lg"
+            <CopyInstallButton />
+            <TrackedLink
+              href="/theming"
               className="w-full sm:w-auto"
-              endIcon={<IconArrowRight size={18} />}
+              event="cta_click"
+              eventProps={{ cta: 'make-it-yours', location: 'hero' }}
             >
-              See what&apos;s inside
-            </Button>
-          </TrackedLink>
-        </div>
-          {/* Trust chips — capability-led, per docs/copy/shilp-sutra-copy-context.md §10. */}
-          <ul className="mt-ds-08 flex w-full flex-wrap items-center justify-center gap-x-ds-04 gap-y-ds-02 text-ds-base text-surface-fg-muted lg:justify-start hero-rise" style={{ ['--hero-delay' as string]: '4880ms' } as React.CSSProperties}>
-            <li className="inline-flex items-center gap-ds-02 whitespace-nowrap">
-              <span aria-hidden className="h-1.5 w-1.5 rounded-pill bg-success-9" />
-              Powers Karm, Hiring + studio tools
-            </li>
-            <li className="inline-flex items-center gap-ds-02 whitespace-nowrap">
-              <span aria-hidden className="text-surface-fg-subtle/60">·</span>
-              WCAG-AA · forced-colors verified
-            </li>
-            <li className="inline-flex items-center gap-ds-02 whitespace-nowrap">
-              <span aria-hidden className="text-surface-fg-subtle/60">·</span>
-              120+ components · 1,750+ tests
-            </li>
+              <Button
+                variant="soft"
+                size="lg"
+                className="w-full sm:w-auto"
+                endIcon={<IconArrowRight size={18} />}
+              >
+                Make it yours
+              </Button>
+            </TrackedLink>
+          </div>
+          {/* Trust chips — layman signals that matter for a DS; no slop. */}
+          <ul className="mt-ds-08 flex w-full flex-wrap items-center justify-center gap-x-ds-03 gap-y-ds-02 text-ds-base text-surface-fg-muted lg:justify-start hero-rise" style={{ ['--hero-delay' as string]: '4880ms' } as React.CSSProperties}>
+            {['120+ components', 'WCAG-AA accessible', 'MIT · open source', 'React 19 + Tailwind 4'].map(
+              (chip, i) => (
+                <li key={chip} className="inline-flex items-center gap-ds-03 whitespace-nowrap">
+                  {i > 0 && (
+                    <span aria-hidden className="text-surface-fg-subtle/50">
+                      ·
+                    </span>
+                  )}
+                  {chip}
+                </li>
+              ),
+            )}
           </ul>
         </div>
       </div>

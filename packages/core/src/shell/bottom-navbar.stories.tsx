@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import * as React from 'react'
 import { BottomNavbar } from './bottom-navbar'
+import { LinkProvider } from './link-context'
 import {
   IconLayoutDashboard,
   IconCalendarCheck,
@@ -11,8 +13,23 @@ import {
   IconUserCircle,
   IconShieldCheck,
   IconSettings,
+  IconHome,
+  IconHomeFilled,
+  IconBell,
+  IconBellFilled,
+  IconMessage,
+  IconMessageFilled,
+  IconUser,
+  IconUserFilled,
 } from '@tabler/icons-react'
 import type { BottomNavItem, BottomNavbarUser } from './bottom-navbar'
+
+const filledItems: BottomNavItem[] = [
+  { title: 'Home', href: '/', icon: <IconHome />, activeIcon: <IconHomeFilled />, exact: true },
+  { title: 'Messages', href: '/messages', icon: <IconMessage />, activeIcon: <IconMessageFilled />, badge: 3 },
+  { title: 'Alerts', href: '/alerts', icon: <IconBell />, activeIcon: <IconBellFilled /> },
+  { title: 'Profile', href: '/profile', icon: <IconUser />, activeIcon: <IconUserFilled /> },
+]
 
 // ── Mock Data ────────────────────────────────────────────────
 
@@ -38,8 +55,9 @@ const moreItems: BottomNavItem[] = [
   { title: 'Devsabha', href: '/devsabha', icon: <IconBook /> },
   { title: 'Adjustments', href: '/adjustments', icon: <IconAdjustmentsHorizontal /> },
   { title: 'Profile', href: '/profile', icon: <IconUserCircle /> },
-  { title: 'Admin', href: '/admin', icon: <IconShieldCheck /> },
-  { title: 'IconSettings', href: '/admin/system-config', icon: <IconSettings /> },
+  // Role-gated: only visible when user.role === 'Admin'
+  { title: 'Admin', href: '/admin', icon: <IconShieldCheck />, roles: ['Admin'] },
+  { title: 'System', href: '/admin/system-config', icon: <IconSettings />, roles: ['Admin'] },
 ]
 
 // ── Meta ─────────────────────────────────────────────────────
@@ -155,21 +173,61 @@ export const NoMoreItems: Story = {
 }
 
 export const AssociateRole: Story = {
+  name: 'Role-gated (Associate — admin items auto-hidden)',
   args: {
     currentPath: '/',
     user: associateUser,
     primaryItems,
-    moreItems: moreItems.filter((i) => i.href !== '/admin' && i.href !== '/admin/system-config'),
+    // No manual filtering — the Admin/System items declare roles: ['Admin'],
+    // so they hide automatically for a non-admin user.
+    moreItems,
   },
 }
 
 export const NoUser: Story = {
-  name: 'No User (Hidden)',
+  name: 'No user (role-gated items hidden)',
   args: {
     currentPath: '/',
     user: null,
     primaryItems,
     moreItems,
+  },
+}
+
+export const CanViewPredicate: Story = {
+  name: 'Custom visibility (canView)',
+  args: {
+    currentPath: '/',
+    user: associateUser,
+    primaryItems,
+    // Arbitrary per-item logic — here: hide Adjustments unless the name starts with 'A'.
+    moreItems: moreItems.map((i) =>
+      i.href === '/adjustments'
+        ? { ...i, canView: (u) => !!u && u.name.startsWith('A') }
+        : i,
+    ),
+  },
+}
+
+export const PillIndicator: Story = {
+  name: 'Material-3 pill indicator',
+  args: {
+    currentPath: '/attendance',
+    user: mockUser,
+    primaryItems,
+    moreItems,
+    indicator: 'pill',
+  },
+}
+
+export const LabelsOnSelected: Story = {
+  name: 'Labels on selected only',
+  args: {
+    currentPath: '/projects',
+    user: mockUser,
+    primaryItems,
+    moreItems,
+    labelVisibility: 'selected',
   },
 }
 
@@ -195,5 +253,85 @@ export const WithBadges: Story = {
       { title: 'Tasks', href: '/my-tasks', icon: <IconListCheck />, badge: 147 },
     ],
     moreItems,
+  },
+}
+
+export const FilledWhenSelected: Story = {
+  name: 'Filled icon when selected',
+  args: {
+    currentPath: '/',
+    user: mockUser,
+    primaryItems: filledItems,
+    moreItems: [],
+    indicator: 'pill',
+  },
+}
+
+export const FilledLabelsOnSelected: Story = {
+  name: 'Filled + labels on selected',
+  args: {
+    currentPath: '/messages',
+    user: mockUser,
+    primaryItems: filledItems,
+    moreItems: [],
+    labelVisibility: 'selected',
+  },
+}
+
+export const IndicatorNone: Story = {
+  name: 'Indicator: none (iOS filled + tint)',
+  args: {
+    currentPath: '/messages',
+    user: mockUser,
+    primaryItems: filledItems,
+    moreItems: [],
+    indicator: 'none',
+  },
+}
+
+export const IndicatorTint: Story = {
+  name: 'Indicator: tint (whole cell)',
+  args: {
+    currentPath: '/alerts',
+    user: mockUser,
+    primaryItems: filledItems,
+    moreItems: [],
+    indicator: 'tint',
+  },
+}
+
+/**
+ * Interactive — clicking a tab updates `currentPath`, so the active indicator
+ * animates (slides) to the tapped item. This is the motion you can't see in the
+ * static stories (where `currentPath` is a fixed prop).
+ */
+export const Interactive: Story = {
+  render: function InteractiveNav() {
+    const [path, setPath] = React.useState('/')
+    const NavLink = React.useMemo(
+      () =>
+        React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }>(
+          function NavLink({ href, onClick, ...props }, ref) {
+            return (
+              <a
+                ref={ref}
+                href={href}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setPath(href)
+                  onClick?.(e)
+                }}
+                {...props}
+              />
+            )
+          },
+        ),
+      [],
+    )
+    return (
+      <LinkProvider component={NavLink}>
+        <BottomNavbar currentPath={path} user={mockUser} primaryItems={filledItems} moreItems={moreItems} indicator="pill" />
+      </LinkProvider>
+    )
   },
 }

@@ -86,10 +86,20 @@ describe('MotionProvider', () => {
     expect(screen.getByTestId('reduced')).toHaveTextContent('false')
   })
 
-  it('useMotion() without provider returns default context', () => {
+  it('useMotion() without provider falls back to OS preference (motion on)', () => {
+    mockUseReducedMotion.mockReturnValue(false)
     render(<MotionConsumer />)
     expect(screen.getByTestId('reduced')).toHaveTextContent('false')
     expect(screen.getByTestId('has-springs')).toHaveTextContent('yes')
     expect(screen.getByTestId('has-tweens')).toHaveTextContent('yes')
+  })
+
+  it('useMotion() without provider RESPECTS OS reduced motion (no provider required)', () => {
+    // Regression guard: prior to the fix the context default hardcoded
+    // reducedMotion:false, so components ignored prefers-reduced-motion unless
+    // a MotionProvider was mounted. Now the OS preference is honored by default.
+    mockUseReducedMotion.mockReturnValue(true)
+    render(<MotionConsumer />)
+    expect(screen.getByTestId('reduced')).toHaveTextContent('true')
   })
 })

@@ -340,3 +340,9 @@
    ─────────────────────────────────────────────────────────────────── */
 
 @utility border-card { border-color: var(--color-surface-border-card); }
+/* Stronger card edge (kbd caps, code blocks, skeleton/panel outlines, chip
+   borders) — one step up from the faint `border-card` mix. Dark-mode aware via
+   the semantic token. Was referenced in ~11 components with no matching utility
+   (dead class → border fell back to currentColor); defined here to restore the
+   intended hairline. */
+@utility border-card-strong { border-color: var(--color-surface-border); }

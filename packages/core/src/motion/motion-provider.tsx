@@ -13,11 +13,10 @@ type MotionContextValue = {
   reducedMotion: boolean
 }
 
-const MotionContext = React.createContext<MotionContextValue>({
-  springs,
-  tweens,
-  reducedMotion: false,
-})
+// `null` default = "no MotionProvider mounted". `useMotion()` detects this and
+// falls back to the OS `prefers-reduced-motion` setting, so components respect
+// reduced motion out of the box — a provider is an override, not a requirement.
+const MotionContext = React.createContext<MotionContextValue | null>(null)
 
 type MotionProviderProps = {
   children: React.ReactNode
@@ -43,8 +42,12 @@ function MotionProvider({ children, reducedMotion = 'user' }: MotionProviderProp
   )
 }
 
-function useMotion() {
-  return React.useContext(MotionContext)
+function useMotion(): MotionContextValue {
+  const ctx = React.useContext(MotionContext)
+  // Always called (hook order stable); only used when no provider is mounted.
+  const osPreference = useFMReducedMotion() ?? false
+  if (ctx) return ctx
+  return { springs, tweens, reducedMotion: osPreference }
 }
 
 export { MotionProvider, type MotionProviderProps,useMotion }

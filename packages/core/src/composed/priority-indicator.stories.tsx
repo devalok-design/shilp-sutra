@@ -10,9 +10,13 @@ const meta: Meta<typeof PriorityIndicator> = {
       control: 'select',
       options: ['LOW', 'MEDIUM', 'HIGH', 'URGENT'],
     },
+    iconOnly: {
+      control: 'boolean',
+    },
     display: {
       control: 'select',
       options: ['full', 'compact'],
+      description: 'Deprecated — use `iconOnly`.',
     },
   },
 }
@@ -105,11 +109,31 @@ export const SideBySideComparison: Story = {
       {(['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const).map((priority) => (
         <div key={priority} style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
           <div style={{ width: 120 }}>
-            <PriorityIndicator priority={priority} display="full" />
+            <PriorityIndicator priority={priority} />
           </div>
-          <PriorityIndicator priority={priority} display="compact" />
+          <PriorityIndicator priority={priority} iconOnly />
         </div>
       ))}
     </div>
   ),
+}
+
+export const IconOnly: Story = {
+  name: 'Icon only (accessible)',
+  render: () => (
+    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      <PriorityIndicator priority="LOW" iconOnly />
+      <PriorityIndicator priority="MEDIUM" iconOnly />
+      <PriorityIndicator priority="HIGH" iconOnly />
+      <PriorityIndicator priority="URGENT" iconOnly />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Icon-only chips carry a real accessible name (`role="img"` + `aria-label`), not a mouse-only `title`. URGENT is a solid fill so the top tier reads at a glance — severity is conveyed by weight, never motion.',
+      },
+    },
+  },
 }

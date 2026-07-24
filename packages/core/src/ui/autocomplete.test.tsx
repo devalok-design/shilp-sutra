@@ -156,6 +156,50 @@ describe('Autocomplete', () => {
     expect(screen.getByRole('combobox')).toBeDisabled()
   })
 
+  // ── Uncontrolled ─────────────────────────────────────────────────────────
+  it('uncontrolled: defaultValue seeds the input and selection updates internally', async () => {
+    const user = userEvent.setup()
+    render(<Autocomplete options={cities} defaultValue={cities[1]} />)
+    const input = screen.getByRole('combobox')
+    expect(input).toHaveValue('Delhi')
+    await user.click(input)
+    await user.clear(input) // clear the seeded filter so all options show
+    await user.click(await screen.findByRole('option', { name: /mumbai/i }))
+    expect(input).toHaveValue('Mumbai')
+  })
+
+  // ── Loading ──────────────────────────────────────────────────────────────
+  it('isLoading shows the loading text in the listbox', async () => {
+    const user = userEvent.setup()
+    render(<Autocomplete options={cities} isLoading loadingText="Searching…" />)
+    await user.click(screen.getByRole('combobox'))
+    expect(await screen.findByText('Searching…')).toBeInTheDocument()
+  })
+
+  // ── Matched-text highlight ─────────────────────────────────────────────────
+  it('bolds the matched substring in an option', async () => {
+    const user = userEvent.setup()
+    render(<Autocomplete options={cities} />)
+    const input = screen.getByRole('combobox')
+    await user.type(input, 'mum')
+    const option = await screen.findByRole('option', { name: /mumbai/i })
+    // the matched span carries the emphasis class
+    expect(option.querySelector('.font-semibold')?.textContent?.toLowerCase()).toBe('mum')
+  })
+
+  // ── renderOption ───────────────────────────────────────────────────────────
+  it('renderOption customizes option content', async () => {
+    const user = userEvent.setup()
+    render(
+      <Autocomplete
+        options={cities}
+        renderOption={(o) => <span data-testid="custom">{o.value.toUpperCase()}</span>}
+      />,
+    )
+    await user.click(screen.getByRole('combobox'))
+    expect((await screen.findAllByTestId('custom'))[0]).toHaveTextContent('MUMBAI')
+  })
+
   // ── a11y ───────────────────────────────────────────────────────────────────
   it('has no a11y violations', async () => {
     const { container } = render(

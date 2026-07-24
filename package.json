@@ -78,7 +78,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "remark-gfm": "^4.0.1",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.0",
     "storybook": "^10.5.3",
     "storybook-dark-mode": "^5.0.0",
     "tailwindcss": "^4.3.3",
@@ -108,7 +108,11 @@
       "sharp"
     ],
     "overrides": {
-      "@typescript-eslint/rule-tester": "8.65.0"
+      "@typescript-eslint/rule-tester": "8.65.0",
+      "esbuild@<0.28.1": "^0.28.1",
+      "@hono/node-server@<2.0.5": "^2.0.5",
+      "sharp@<0.35.0": "^0.35.0",
+      "postcss@<8.5.12": "^8.5.12"
     },
     "peerDependencyRules": {
       "allowedVersions": {

@@ -150,7 +150,7 @@ If a change touches public-API surface, it's a real semver event. Err toward the
 
 ## Beta SLA
 
-> Active for the `0.40.0` public beta window. See [docs/plans/2026-05-24-beta-release-plan.md](./docs/plans/2026-05-24-beta-release-plan.md) for the full beta plan.
+> Active for the pre-1.0 public beta. See [docs/plans/2026-05-24-beta-release-plan.md](./docs/plans/2026-05-24-beta-release-plan.md) for the full beta plan.
 
 The beta SLA scopes maintainer commitment honestly — bot ack is automated, human commitment is to **triage**, not fix.
 

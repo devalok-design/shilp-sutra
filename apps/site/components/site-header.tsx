@@ -12,6 +12,7 @@ import { ThemeToggle } from './theme-toggle'
 
 const navLinks = [
   { href: '/components', label: 'Components' },
+  { href: '/presets', label: 'Presets' },
   { href: '/theming', label: 'Theming' },
   { href: '/showcase', label: 'Showcase' },
   { href: '/docs', label: 'Docs' },

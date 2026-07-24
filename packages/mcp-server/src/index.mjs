@@ -131,6 +131,7 @@ function buildServer(ctx = {}) {
         'NEW to this MCP? call how_to_use first — it returns the tool map, the two work sequences, and the version rule. ' +
         'SETTING UP in a project? Run this sequence instead of guessing: detect_framework(package.json) → get_setup(recipe) → preflight(framework, imports) to install peer deps → validate_snippet(code) BEFORE you write each file → verify_setup(...) after. This closes the four setup traps: peer-dep cliffs, TW4 dead classes (which fail silently), wrong-recipe, and mis-wired CSS/config. ' +
         'WRITING a component? call check_slop(code) BEFORE you emit it — deterministic design-quality gate returning anti-slop findings + strengths + DO-guidance; fix P0/P1, keep the strengths, pull unmet guidance in. ' +
+        'NEED A WHOLE SCREEN (a sidebar, dashboard, auth flow)? call list_presets — the Preset Library ships pre-assembled, ownable screens built from shilp-sutra. get_preset(name) gives install steps; then `shadcn add @devalok/<name>` drops the source into the app. Don\'t hand-build what a preset already covers. ' +
         'If you hit a bug, a broken recipe, a docs gap, or want to suggest a feature, call report_issue — it files a public GitHub issue for maintainer triage.',
     }
   )
@@ -217,6 +218,33 @@ function buildServer(ctx = {}) {
     'Pre-emit DESIGN-QUALITY gate (complements validate_snippet, which checks correctness). Paste the component source; returns anti-slop findings (gradient text, purple gradients, side-stripes, eyebrow kickers, tracked-caps overuse, hover-lift, heavy shadow, glassmorphism, missing reduced-motion/alt, raw colours), strengths detected (type ramp, tokens-not-hex, focus states, tonal surfaces), and ranked DO-guidance (hierarchy, type scale, whitespace, one accent, tonal depth, purposeful motion). Deterministic, no LLM. Fix P0/P1, keep the strengths, pull unmet guidance in. Silence a false positive with `// slop-allow: <id> <reason>`.',
     { code: z.string().describe('The component source you are about to write (JSX/TSX/CSS).') },
     instrument(ctx, 'check_slop', tools.checkSlop)
+  )
+
+  server.tool(
+    'list_presets',
+    'Discover the shilp-sutra Preset Library — pre-assembled real-world screens (sidebars, dashboards, auth) built FROM shilp-sutra components. Returns each preset with its install name, the `shadcn add` command, and the natural-language install prompt. Presets are copy-and-own and version-independent (no version param). Install stays shadcn-CLI-native; this is discovery.',
+    {
+      category: z.string().optional().describe('Filter by category, e.g. "sidebar", "navigation", "shell".'),
+      query: z.string().optional().describe('Keyword filter over title/description/uses.'),
+    },
+    instrument(ctx, 'list_presets', tools.listPresets)
+  )
+
+  server.tool(
+    'get_preset',
+    'Full detail for one preset: the shadcn registry-item (dependencies, files, docs), plus the exact install steps — the components.json `registries` snippet to register the @devalok namespace once, and the `shadcn add @devalok/<name>` command. Call before installing so you wire the namespace + CSS prerequisite correctly.',
+    { name: z.string().describe('Preset name, e.g. "sidebar-app" (with or without the @devalok/ prefix).') },
+    instrument(ctx, 'get_preset', tools.getPreset)
+  )
+
+  server.tool(
+    'preview_preset',
+    'READ-ONLY TSX source of a preset (+ its GitHub source URL), so you can show it, learn the composition, or adapt it inline WITHOUT installing. To install instead, use `shadcn add @devalok/<name>`. Primitives resolve from the installed @devalok/shilp-sutra package.',
+    {
+      name: z.string().describe('Preset name, e.g. "sidebar-projects".'),
+      file: z.string().optional().describe('For multi-file presets, which file; omit for the primary component.'),
+    },
+    instrument(ctx, 'preview_preset', tools.previewPreset)
   )
 
   server.tool(

@@ -19,6 +19,7 @@ import { InstallTabs } from '../install-tabs'
 import {
   type ArchetypeName,
   ARCHETYPE_TITLES,
+  darkSurface,
   mergeArchetype,
   suggestArchetypeByHue,
 } from '@/lib/archetype-presets'
@@ -76,6 +77,28 @@ function capitalize(s: string): string {
 }
 
 /**
+ * Track the site's `.dark` class on <html> so the live preview picks the
+ * matching surface + accent ramp. The ThemeToggle flips this class at runtime,
+ * so we observe it rather than reading once. Lazy-init reads the class directly
+ * (this component only renders client-side — it sits behind the page's
+ * useSearchParams Suspense boundary), avoiding a light-card flash in dark mode.
+ */
+function useIsDark(): boolean {
+  const [isDark, setIsDark] = React.useState(
+    () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
+  )
+  React.useEffect(() => {
+    const el = document.documentElement
+    const update = () => setIsDark(el.classList.contains('dark'))
+    update()
+    const observer = new MutationObserver(update)
+    observer.observe(el, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
+  return isDark
+}
+
+/**
  * Crude hex → OKLCH-hue approximation. Good enough to pick a hue band
  * (which is all we need to suggest an archetype).
  */
@@ -130,24 +153,32 @@ export function ThemingHub() {
   const hue = state.hue ?? 340
   const chroma = state.chroma ?? 0.19
 
+  const isDark = useIsDark()
   const ramp = React.useMemo(() => generateRamp(hue, chroma), [hue, chroma])
   const role = React.useMemo(() => mergeArchetype(archetype), [archetype])
+  // In dark mode the archetype presets' light-only surfaces (near-white bg,
+  // light border, soft shadow) would render a white card — swap for derived
+  // dark counterparts so the preview matches the page theme.
+  const surface = React.useMemo(() => (isDark ? { ...role, ...darkSurface(role) } : role), [role, isDark])
   const archetypeAccent = ARCHETYPE_ACCENT[archetype]
   const archetypeAccentColor = `oklch(0.5 ${archetypeAccent.chroma} ${archetypeAccent.hue})`
 
   const liveSampleStyle = React.useMemo(() => {
     const style: Record<string, string> = {}
-    ramp.light.forEach((s) => {
+    // Inject the ramp for the CURRENT theme — the light ramp on a dark surface
+    // washes accent-tinted elements (Beta badge, brand notice) out to near-white.
+    const activeRamp = isDark ? ramp.dark : ramp.light
+    activeRamp.forEach((s) => {
       style[`--color-accent-${s.step}`] = s.value
     })
-    style['--color-accent-fg'] = deriveAccentFg(ramp.light[8].value)
+    style['--color-accent-fg'] = deriveAccentFg(activeRamp[8].value)
     if (state.customRadius != null) {
       style['--radius-control'] = `${state.customRadius}px`
       style['--radius-surface'] = `${Math.round(state.customRadius * 1.6)}px`
       style['--radius-control-inner'] = `${Math.max(state.customRadius - 2, 0)}px`
     }
     return style as React.CSSProperties
-  }, [ramp, state.customRadius])
+  }, [ramp, state.customRadius, isDark])
   const css = React.useMemo(() => generateThemerCss(state), [state])
 
   const applyHex = (value: string) => {
@@ -385,10 +416,10 @@ export function ThemingHub() {
             <div
               className="flex flex-col gap-ds-04"
               style={{
-                background: role.bg,
-                border: `${role.bw}px solid ${role.bc}`,
+                background: surface.bg,
+                border: `${role.bw}px solid ${surface.bc}`,
                 borderRadius: `${role.rs}px`,
-                boxShadow: role.shad,
+                boxShadow: surface.shad,
                 padding: `${role.cp}px`,
               }}
             >
@@ -425,7 +456,7 @@ export function ThemingHub() {
                   className="text-surface-fg placeholder:text-surface-fg-subtle bg-surface-overlay"
                   style={{
                     borderRadius: `${role.rc}px`,
-                    border: `${role.bw}px solid ${role.bc}`,
+                    border: `${role.bw}px solid ${surface.bc}`,
                     paddingInline: `${role.px}px`,
                     paddingBlock: `${role.py}px`,
                   }}

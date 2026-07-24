@@ -134,6 +134,41 @@ export function mergeArchetype(
   }
 }
 
+/** Parse the leading `oklch(L C H …)` triple from a colour string. */
+function parseOklch(s: string): { l: number; c: number; h: number } | null {
+  const m = s.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/i)
+  if (!m) return null
+  return { l: Number(m[1]), c: Number(m[2]), h: Number(m[3]) }
+}
+
+/**
+ * Dark-mode counterparts for an archetype's surface values (bg/border/shadow).
+ *
+ * The `ARCHETYPES` presets above are light-mode only — near-white backgrounds
+ * with light hairline borders and soft black shadows. Rendering those verbatim
+ * on a dark page produces a white card (the /theming preview bug fixed here).
+ *
+ * We derive dark surfaces by flipping OKLCH lightness while preserving the
+ * archetype's hue/chroma tint (so Devalok's card still reads warm, Linear's
+ * still reads neutral), and swap the shadow: flat archetypes keep a subtle
+ * light inset edge, elevated ones get a darker drop shadow that actually reads
+ * against a dark background. Light-mode values are untouched.
+ */
+export function darkSurface(
+  v: ArchetypeRoleValues,
+): Pick<ArchetypeRoleValues, 'bg' | 'bc' | 'shad'> {
+  const bg = parseOklch(v.bg)
+  const bc = parseOklch(v.bc)
+  const isFlat = v.shad.includes('inset')
+  return {
+    bg: bg ? `oklch(0.185 ${Math.min(bg.c + 0.004, 0.03)} ${bg.h})` : 'oklch(0.185 0.005 280)',
+    bc: bc ? `oklch(0.32 ${Math.min(bc.c, 0.03)} ${bc.h})` : 'oklch(0.32 0.006 280)',
+    shad: isFlat
+      ? `inset 0 0 0 ${v.bw}px oklch(1 0 0 / 0.05)`
+      : '0 8px 24px oklch(0 0 0 / 0.45), 0 1px 2px oklch(0 0 0 / 0.3)',
+  }
+}
+
 /** Archetype defaults — used to suppress "override" labelling when consumer didn't change anything. */
 export const ARCHETYPE_DEFAULTS: Record<ArchetypeName, {
   density: DensityName

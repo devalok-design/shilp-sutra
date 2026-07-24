@@ -47,7 +47,7 @@ html {
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-line-anim {
-    animation: hero-stroke var(--sdur, 2s) cubic-bezier(0.23, 1, 0.32, 1) var(--sdelay, 0ms) both;
+    animation: hero-stroke var(--sdur, 2s) cubic-bezier(0.618, 0, 0.382, 1) var(--sdelay, 0ms) both;
   }
 }
 
@@ -185,6 +185,26 @@ html {
 @media (prefers-reduced-motion: no-preference) {
   .hero-rise {
     opacity: 0;
-    animation: hero-rise 0.6s cubic-bezier(0.23, 1, 0.32, 1) var(--hero-delay, 0ms) both;
+    animation: hero-rise 0.6s cubic-bezier(0.618, 0, 0.382, 1) var(--hero-delay, 0ms) both;
+  }
+}
+
+/* Hero easter-egg chips (Learn More / link tile) — fade in late, WITH the other
+   specimens. Rests at 0.45 opacity (looks decorative/disabled). Hover uses
+   transform, not opacity, so the animation's held opacity doesn't fight it. */
+@keyframes egg-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+.hero-egg {
+  opacity: 0.45;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-egg {
+    animation: egg-in 0.5s cubic-bezier(0.618, 0, 0.382, 1) var(--egg-delay, 5.5s) both;
   }
 }

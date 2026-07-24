@@ -219,7 +219,7 @@ export function AuroraPlayground() {
               <Text variant="label-md" className="text-surface-fg-subtle">
                 Live preview
               </Text>
-              <h2 className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] text-surface-fg max-w-2xl text-balance">
+              <h2 className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] text-surface-fg max-w-2xl text-balance">
                 The library that <span className="text-accent-11">looks like yours.</span>
               </h2>
               <Text variant="body-md" className="text-surface-fg-muted max-w-lg">
@@ -251,32 +251,32 @@ export function AuroraPlayground() {
             <SegmentedControl
               size="sm"
               options={INTENSITY_OPTIONS}
-              value={s.intensity}
-              onValueChange={(id) => update('intensity', id as AuroraIntensity)}
+              selectedId={s.intensity}
+              onSelect={(id) => update('intensity', id as AuroraIntensity)}
             />
           </ControlRow>
           <ControlRow label="Shape">
             <SegmentedControl
               size="sm"
               options={SHAPE_OPTIONS}
-              value={s.shape}
-              onValueChange={(id) => update('shape', id as AuroraShape)}
+              selectedId={s.shape}
+              onSelect={(id) => update('shape', id as AuroraShape)}
             />
           </ControlRow>
           <ControlRow label="Position">
             <SegmentedControl
               size="sm"
               options={POSITION_OPTIONS}
-              value={s.position}
-              onValueChange={(id) => update('position', id as AuroraPosition)}
+              selectedId={s.position}
+              onSelect={(id) => update('position', id as AuroraPosition)}
             />
           </ControlRow>
           <ControlRow label="Layers">
             <SegmentedControl
               size="sm"
               options={LAYER_OPTIONS}
-              value={String(s.layers)}
-              onValueChange={(id) => update('layers', Number(id) as AuroraLayers)}
+              selectedId={String(s.layers)}
+              onSelect={(id) => update('layers', Number(id) as AuroraLayers)}
             />
           </ControlRow>
           <ControlRow label={`Speed · ${s.speed.toFixed(2)}`}>
@@ -292,16 +292,16 @@ export function AuroraPlayground() {
             <SegmentedControl
               size="sm"
               options={PARALLAX_OPTIONS}
-              value={s.parallax}
-              onValueChange={(id) => update('parallax', id as AuroraParallax)}
+              selectedId={s.parallax}
+              onSelect={(id) => update('parallax', id as AuroraParallax)}
             />
           </ControlRow>
           <ControlRow label="Grain">
             <SegmentedControl
               size="sm"
               options={GRAIN_OPTIONS}
-              value={s.grain}
-              onValueChange={(id) => update('grain', id as AuroraGrain)}
+              selectedId={s.grain}
+              onSelect={(id) => update('grain', id as AuroraGrain)}
             />
           </ControlRow>
 

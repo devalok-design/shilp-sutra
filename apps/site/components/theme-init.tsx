@@ -8,7 +8,7 @@
  * interpolation or user input. This is the standard Next.js / next-themes
  * pattern for preventing theme-flash; there is no XSS surface here.
  */
-const SCRIPT = `(function(){try{var s=localStorage.getItem('theme');var d=s==='dark'||(s==null&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');}catch(e){}})();`
+const SCRIPT = `(function(){try{var s=localStorage.getItem('theme');if(s==='dark')document.documentElement.classList.add('dark');}catch(e){}})();`
 
 export function ThemeInit() {
   return <script dangerouslySetInnerHTML={{ __html: SCRIPT }} />

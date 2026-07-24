@@ -10,18 +10,19 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 export function AgentCallout() {
   return (
     <section className="mx-auto max-w-4xl px-page-x py-ds-12">
-      <div className="rounded-surface border border-accent-7 bg-accent-2 p-ds-08 flex flex-col gap-ds-05">
-        <header className="flex flex-col gap-ds-03">
+      <div className="rounded-surface border border-accent-7 bg-accent-2 p-ds-08 flex flex-col items-center gap-ds-05 text-center">
+        <header className="flex flex-col items-center gap-ds-03">
           <h2 className="text-ds-xl text-surface-fg font-semibold">
             Your editor already knows the library.
           </h2>
           <p className="text-ds-md text-surface-fg-muted max-w-2xl">
-            Built for AI editors. Install the Agent Skill once. Cursor, Claude Code, Codex, Aider
-            then write code that compiles the first time. Every component, every prop, every gotcha.
+            Install the Agent Skill once and Cursor, Claude Code, Codex, and Aider read every
+            component, prop, and setup step straight from the source, so you stop pasting docs
+            into a chat window.
           </p>
         </header>
 
-        <footer className="flex flex-wrap items-center gap-ds-03 pt-ds-02">
+        <footer className="flex flex-wrap items-center justify-center gap-ds-03 pt-ds-02">
           <Link href="/agents">
             <Button size="md" endIcon={<IconArrowRight size={14} />}>
               Set up your editor

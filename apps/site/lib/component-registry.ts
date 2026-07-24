@@ -9,6 +9,7 @@
  */
 import { promises as fs } from 'node:fs'
 import { join, resolve } from 'node:path'
+import { categoryForSlug, type FunctionCategoryKey } from './component-categories'
 
 const REPO_ROOT = resolve(process.cwd(), '..', '..')
 const DOCS_DIR = join(REPO_ROOT, 'packages', 'core', 'docs', 'components')
@@ -20,6 +21,7 @@ export type ComponentMeta = {
   slug: string
   name: string
   layer: Layer
+  functionCategory: FunctionCategoryKey
   importPath: string
   serverSafe: boolean
   variants: string[]
@@ -55,6 +57,7 @@ function parse(layer: Layer, slug: string, raw: string): ComponentMeta {
     slug,
     name,
     layer,
+    functionCategory: categoryForSlug(slug),
     importPath,
     serverSafe,
     variants,
@@ -94,6 +97,21 @@ export async function getRegistry(): Promise<ComponentMeta[]> {
 export function groupByLayer(items: ComponentMeta[]): Record<Layer, ComponentMeta[]> {
   const out: Record<Layer, ComponentMeta[]> = { ui: [], composed: [], shell: [] }
   for (const item of items) out[item.layer].push(item)
+  return out
+}
+
+export function groupByFunction(items: ComponentMeta[]): Record<FunctionCategoryKey, ComponentMeta[]> {
+  const out: Record<FunctionCategoryKey, ComponentMeta[]> = {
+    actions: [],
+    forms: [],
+    feedback: [],
+    'data-display': [],
+    navigation: [],
+    overlays: [],
+    layout: [],
+    other: [],
+  }
+  for (const item of items) out[item.functionCategory].push(item)
   return out
 }
 

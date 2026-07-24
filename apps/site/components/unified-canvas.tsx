@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, type CSSProperties } from 'react'
-import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { IconArrowUpRight, IconChevronLeft, IconChevronRight, IconMoon, IconSun } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
@@ -12,6 +12,7 @@ import { MiraShowcase } from '@/content/showcase/mira'
 import { PatrikaShowcase } from '@/content/showcase/patrika'
 import { VaidyaShowcase } from '@/content/showcase/vaidya'
 import { generateRamp } from '@/lib/ramp-generator'
+import { showcaseFontFamily } from '@/lib/showcase-visuals'
 
 type CanvasMode = 'light' | 'dark'
 
@@ -61,10 +62,11 @@ function rampInlineStyle(hue: number, chroma: number): CSSProperties {
  * brand-coloured boxShadow halo pulse around the canvas the moment the
  * active surface swaps.
  */
-export function UnifiedCanvas() {
+export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' | 'bottom' } = {}) {
   const [activeIdx, setActiveIdx] = useState<number>(0)
   const [mode, setMode] = useState<CanvasMode>('light')
   const prevIdx = useRef<number>(0)
+  const reduceMotion = useReducedMotion()
   const direction = activeIdx >= prevIdx.current ? 1 : -1
 
   const active = SURFACES[activeIdx]
@@ -78,26 +80,39 @@ export function UnifiedCanvas() {
 
   return (
     <section id="canvas" className="mx-auto max-w-6xl px-page-x py-ds-12">
-      <header className="flex flex-col gap-ds-04 max-w-3xl mb-ds-06">
-        <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide">
-          See it run
-        </span>
-        <h2 className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg text-balance">
+      <header className="flex flex-col gap-ds-03 max-w-2xl mb-ds-08">
+        <h2 className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg">
           One library. Many worlds.
         </h2>
-        <p className="text-ds-md text-surface-fg-muted leading-relaxed max-w-2xl">
-          Each tab below opens a different product surface. Built from the same components, painted by a different brand.
+        <p className="text-ds-md text-surface-fg-muted">
+          Each tab opens a different product surface. Same components underneath, a different brand on top.
         </p>
       </header>
 
+      {ctaPosition === 'top' && (
+        <div className="flex flex-wrap items-center justify-end gap-ds-03 mb-ds-04">
+          <Link
+            href={`/theming?hue=${active.hue}&chroma=${active.chroma}`}
+            className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:underline underline-offset-2"
+          >
+            Take {active.product}&apos;s brand into the editor
+            <IconArrowUpRight size={14} />
+          </Link>
+        </div>
+      )}
+
       <motion.div
-        animate={{
-          boxShadow: [
-            `0 0 0 0 oklch(0.55 ${active.chroma} ${active.hue} / 0)`,
-            `0 0 0 6px oklch(0.55 ${active.chroma} ${active.hue} / 0.18)`,
-            `0 0 0 0 oklch(0.55 ${active.chroma} ${active.hue} / 0)`,
-          ],
-        }}
+        animate={
+          reduceMotion
+            ? undefined
+            : {
+                boxShadow: [
+                  `0 0 0 0 oklch(0.55 ${active.chroma} ${active.hue} / 0)`,
+                  `0 0 0 6px oklch(0.55 ${active.chroma} ${active.hue} / 0.18)`,
+                  `0 0 0 0 oklch(0.55 ${active.chroma} ${active.hue} / 0)`,
+                ],
+              }
+        }
         transition={{ duration: 0.7, times: [0, 0.4, 1], ease: [0.2, 0, 0.38, 0.9] }}
         key={`halo-${active.slug}`}
         className={[
@@ -109,11 +124,11 @@ export function UnifiedCanvas() {
         {/* Chrome */}
         <div className="flex items-center justify-between gap-ds-02 px-ds-03 sm:px-ds-05 py-ds-03 bg-surface-raised border-b border-surface-border-subtle">
           <div className="flex items-center gap-ds-03 min-w-0">
-            <span className="hidden sm:flex items-center gap-1 shrink-0">
-              <span className="w-2.5 h-2.5 rounded-pill bg-error-9" />
-              <span className="w-2.5 h-2.5 rounded-pill bg-warning-9" />
-              <span className="w-2.5 h-2.5 rounded-pill bg-success-9" />
-            </span>
+            <span
+              aria-hidden
+              className="hidden sm:block w-2 h-2 rounded-pill shrink-0"
+              style={{ background: `oklch(0.55 ${active.chroma} ${active.hue})` }}
+            />
             <span className="flex items-center gap-ds-02 min-w-0">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
@@ -123,6 +138,7 @@ export function UnifiedCanvas() {
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
                   className="text-ds-md text-surface-fg font-semibold truncate"
+                  style={{ fontFamily: showcaseFontFamily(active.slug) }}
                 >
                   {active.product}
                 </motion.span>
@@ -212,7 +228,12 @@ export function UnifiedCanvas() {
                         ].join(' ')}
                         style={{ background: `oklch(0.55 ${s.chroma} ${s.hue})` }}
                       />
-                      <span className="text-ds-sm font-semibold whitespace-nowrap">{s.product}</span>
+                      <span
+                        className="text-ds-sm font-semibold whitespace-nowrap"
+                        style={{ fontFamily: showcaseFontFamily(s.slug) }}
+                      >
+                        {s.product}
+                      </span>
                     </div>
                     <span className="text-ds-xs text-surface-fg-subtle hidden md:inline">{s.industry}</span>
                   </button>
@@ -241,10 +262,10 @@ export function UnifiedCanvas() {
             <motion.div
               key={`${active.slug}-${mode}`}
               custom={direction}
-              initial={{ opacity: 0, x: direction * 24 }}
+              initial={reduceMotion ? false : { opacity: 0, x: direction * 24 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction * -24 }}
-              transition={{ duration: 0.26, ease: [0.2, 0, 0.38, 0.9] }}
+              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: direction * -24 }}
+              transition={{ duration: reduceMotion ? 0.12 : 0.26, ease: [0.2, 0, 0.38, 0.9] }}
             >
               <ActiveComponent />
             </motion.div>
@@ -261,15 +282,17 @@ export function UnifiedCanvas() {
         </Link>
       </motion.div>
 
-      <footer className="mt-ds-05 flex flex-wrap items-center justify-end gap-ds-03">
-        <Link
-          href={`/theming?hue=${active.hue}&chroma=${active.chroma}`}
-          className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:underline underline-offset-2"
-        >
-          Take {active.product}&apos;s brand into the editor
-          <IconArrowUpRight size={14} />
-        </Link>
-      </footer>
+      {ctaPosition === 'bottom' && (
+        <footer className="mt-ds-05 flex flex-wrap items-center justify-end gap-ds-03">
+          <Link
+            href={`/theming?hue=${active.hue}&chroma=${active.chroma}`}
+            className="inline-flex items-center gap-ds-02 text-ds-sm text-accent-11 hover:underline underline-offset-2"
+          >
+            Take {active.product}&apos;s brand into the editor
+            <IconArrowUpRight size={14} />
+          </Link>
+        </footer>
+      )}
     </section>
   )
 }

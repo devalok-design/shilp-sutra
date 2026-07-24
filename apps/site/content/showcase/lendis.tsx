@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
@@ -43,7 +43,12 @@ import {
   TooltipTrigger,
 } from '@devalok/shilp-sutra/ui/tooltip'
 
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const LENDIS_STYLE = showcaseVisualStyle('lendis') as CSSProperties
+const LENDIS_SHAPE = showcaseShape('lendis')
 
 type Rail = 'UPI' | 'IMPS' | 'NEFT' | 'SWIFT' | 'Card'
 type Status = 'settled' | 'pending' | 'failed'
@@ -123,7 +128,7 @@ function MetricTile({
   tooltip: string
 }) {
   return (
-    <div className="flex flex-col gap-ds-01 p-ds-04 rounded-ds-md bg-surface-2 border border-surface-border-subtle">
+    <div className="flex flex-col gap-ds-01 p-ds-04 rounded-surface bg-surface-base border border-surface-border-subtle">
       <div className="flex items-center gap-ds-02 min-w-0">
         <Text variant="label-xs" className="text-surface-fg-subtle uppercase tracking-wide truncate">
           {label}
@@ -235,7 +240,7 @@ export function LendisShowcase() {
           <div className="flex items-center gap-ds-03 min-w-0">
             <span
               className={[
-                'w-8 h-8 rounded-ds-sm flex items-center justify-center shrink-0',
+                'w-8 h-8 rounded-control-inner flex items-center justify-center shrink-0',
                 t.direction === 'debit' ? 'bg-warning-3 text-warning-11' : 'bg-success-3 text-success-11',
               ].join(' ')}
               aria-hidden
@@ -322,7 +327,7 @@ export function LendisShowcase() {
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col gap-ds-05">
+      <div className="flex flex-col gap-ds-05" data-shape={LENDIS_SHAPE} style={LENDIS_STYLE}>
         <Alert variant="subtle" color="warning" title="Restricted corridor">
           USD wallet transfers to non-FATF jurisdictions are paused pending RBI A.P. (DIR) circular review. INR rails
           remain open.
@@ -432,7 +437,7 @@ export function LendisShowcase() {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-ds-03">
-                  <span className="w-9 h-9 rounded-full bg-success-3 text-success-11 flex items-center justify-center">
+                  <span className="w-9 h-9 rounded-pill bg-success-3 text-success-11 flex items-center justify-center">
                     <IconShieldCheck size={16} aria-hidden />
                   </span>
                   <div className="flex flex-col">
@@ -462,7 +467,7 @@ export function LendisShowcase() {
                     aria-valuenow={kycScore}
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    className="relative h-2 w-full overflow-hidden rounded-pill bg-surface-3 border border-surface-border-subtle"
+                    className="relative h-2 w-full overflow-hidden rounded-pill bg-surface-raised-hover border border-surface-border-subtle"
                   >
                     <div
                       className="absolute inset-y-0 left-0 bg-success-9 rounded-pill transition-[width] duration-moderate-02 ease-productive-standard"
@@ -506,7 +511,7 @@ export function LendisShowcase() {
                   />
                 </FormField>
 
-                <div className="flex items-center gap-ds-03 p-ds-03 rounded-ds-md bg-surface-2 border border-surface-border-subtle min-w-0">
+                <div className="flex items-center gap-ds-03 p-ds-03 rounded-surface bg-surface-base border border-surface-border-subtle min-w-0">
                   <Avatar size="sm">
                     <AvatarFallback>
                       {beneficiaries.find((b) => b.value === beneficiary)?.label.slice(0, 2).toUpperCase() ?? 'YS'}
@@ -570,7 +575,7 @@ export function LendisShowcase() {
                       animate={{ opacity: 1, y: 0, height: 'auto' }}
                       exit={{ opacity: 0, y: -8, height: 0 }}
                       transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
-                      className="flex flex-col gap-ds-03 p-ds-04 rounded-ds-md border border-accent-7 bg-accent-2 shadow-overlay"
+                      className="flex flex-col gap-ds-03 p-ds-04 rounded-surface border border-accent-7 bg-accent-2"
                     >
                       <div className="flex items-center justify-between">
                         <Text variant="label-md" className="text-surface-fg font-semibold">

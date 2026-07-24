@@ -30,6 +30,8 @@ export interface ThemerState {
   chroma?: number
   focusRing?: FocusRingName
   texture?: TextureName
+  /** Manual corner-radius override in px (0-64), takes precedence over the archetype/shape preset when set. */
+  customRadius?: number
 }
 
 const ARCHETYPES: ArchetypeName[] = ['linear', 'stripe', 'apple', 'material', 'notion', 'vercel', 'devalok']
@@ -65,6 +67,7 @@ export function parseThemerParams(params: URLSearchParams | string | undefined |
     chroma: pickNumber(p.get('chroma'), 0, 0.37),
     focusRing: pickEnum(p.get('focusRing'), FOCUS_RINGS),
     texture: pickEnum(p.get('texture'), TEXTURES),
+    customRadius: pickNumber(p.get('radius'), 0, 64),
   }
 }
 
@@ -79,6 +82,7 @@ export function serializeThemerState(state: ThemerState): URLSearchParams {
   if (state.chroma != null) params.set('chroma', state.chroma.toFixed(3))
   if (state.focusRing) params.set('focusRing', state.focusRing)
   if (state.texture) params.set('texture', state.texture)
+  if (state.customRadius != null) params.set('radius', String(Math.round(state.customRadius)))
   return params
 }
 

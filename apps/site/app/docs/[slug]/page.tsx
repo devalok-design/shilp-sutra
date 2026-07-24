@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
-import { DocsSidebar, type DocsSidebarGroup } from '@/components/docs-sidebar'
+import { CategorySidebar, type CategorySidebarGroup } from '@/components/category-sidebar'
 import { Markdown } from '@/components/markdown'
 import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -32,10 +32,10 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
   const next = idx < slugs.length - 1 ? slugs[idx + 1] : null
 
   const grouped = groupedDocs()
-  const sidebarGroups: DocsSidebarGroup[] = (['install', 'customize', 'reference', 'troubleshoot'] as const).map((key) => ({
+  const sidebarGroups: CategorySidebarGroup[] = (['install', 'customize', 'reference', 'troubleshoot'] as const).map((key) => ({
     key,
     label: getCategoryLabel(key),
-    docs: grouped[key]
+    items: grouped[key]
       .map((s) => {
         const meta = getDocMeta(s)
         return meta ? { slug: s, title: meta.title } : null
@@ -49,7 +49,13 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
       <main id="main" className="flex-1">
         <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09 grid grid-cols-1 lg:grid-cols-[14rem_1fr] gap-ds-06 lg:gap-ds-09">
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <DocsSidebar currentSlug={slug} groups={sidebarGroups} currentCategory={doc.category} />
+            <CategorySidebar
+              basePath="/docs"
+              currentSlug={slug}
+              groups={sidebarGroups}
+              currentCategory={doc.category}
+              navLabel="Docs navigation"
+            />
           </aside>
           <article className="min-w-0">
             <PageHeader eyebrow={getCategoryLabel(doc.category)} title={doc.title} />

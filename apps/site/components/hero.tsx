@@ -1,47 +1,36 @@
-import Link from 'next/link'
 import { IconArrowRight } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
-import { AuroraBloom } from '@devalok/shilp-sutra-brand/aurora'
+import { BrahmaBackdrop } from './brahma-backdrop'
 import { TrackedLink } from './tracked-link'
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden isolate">
-      <AuroraBloom />
-      {/* pt accounts for floating pill (~70–80px). Aurora-bloom reaches up to the
-          true top of the section so the pill sits *over* the bloom — magic stays. */}
-      <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-13 pb-ds-12 md:pt-[8rem] md:pb-[7rem] lg:pt-[13rem] lg:pb-[10rem] flex flex-col items-center text-center gap-ds-06 md:gap-ds-08">
-        <Text variant="label-md" className="text-surface-fg-muted text-difference">
-          From{' '}
-          <Link
-            href="https://devalok.in"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-accent-11 transition-colors duration-fast-01"
-          >
-            Devalok
-          </Link>
-        </Text>
-        <h1 className="text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-3xl text-balance">
-          Your brand. Every component.
-          <br className="hidden md:inline" />{' '}
-          <span className="text-accent-11">Out of the box.</span>
-        </h1>
-        <Text variant="body-lg" className="text-surface-fg max-w-2xl text-balance">
-          Pick one colour. Watch every button, badge, card, and form match instantly. Light mode,
-          dark mode, every screen. No spreadsheet of hex codes. No config files. Just your brand,
-          everywhere.
-        </Text>
-        <div className="w-full max-w-sm sm:max-w-none sm:w-auto flex flex-col sm:flex-row gap-ds-03 mt-ds-03">
+    <section className="relative isolate overflow-hidden min-h-[720px] lg:min-h-[900px]">
+      <BrahmaBackdrop />
+      {/* Content sits in a left column; the Brahma identity composition owns the
+          right. pt clears the floating pill (~70–80px). */}
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col px-page-x pt-ds-13 pb-ds-12 md:pt-[7rem] md:pb-[6rem] lg:pt-[10rem] lg:pb-[9rem]">
+        <div className="flex flex-col items-center gap-ds-06 text-center md:gap-ds-07 lg:max-w-[40rem] lg:items-start lg:text-left">
+          <h1 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg text-balance hero-rise" style={{ ['--hero-delay' as string]: '4450ms' } as React.CSSProperties}>
+            A design system that takes{' '}
+            <span className="text-accent-11">your brand&apos;s shape.</span>
+          </h1>
+          <Text variant="body-lg" className="max-w-2xl text-pretty text-surface-fg hero-rise" style={{ ['--hero-delay' as string]: '4600ms' } as React.CSSProperties}>
+            One hue in. Every button, badge, card, and form follows. Radius, spacing, shadow, light
+            and dark. No re-render, no config files.
+          </Text>
+          <div className="mt-ds-03 flex w-full max-w-sm flex-col gap-ds-03 sm:w-auto sm:max-w-none sm:flex-row hero-rise" style={{ ['--hero-delay' as string]: '4750ms' } as React.CSSProperties}>
           <TrackedLink
             href="/theming"
             className="w-full sm:w-auto"
             event="cta_click"
             eventProps={{ cta: 'try-it-on', location: 'hero' }}
           >
-            <Button size="lg" className="w-full sm:w-auto">Try it on</Button>
+            <Button size="lg" className="w-full sm:w-auto">
+              Try it on
+            </Button>
           </TrackedLink>
           <TrackedLink
             href="/components"
@@ -49,27 +38,32 @@ export function Hero() {
             event="cta_click"
             eventProps={{ cta: 'see-components', location: 'hero' }}
           >
-            <Button variant="soft" size="lg" className="w-full sm:w-auto" endIcon={<IconArrowRight size={18} />}>
+            <Button
+              variant="soft"
+              size="lg"
+              className="w-full sm:w-auto"
+              endIcon={<IconArrowRight size={18} />}
+            >
               See what&apos;s inside
             </Button>
           </TrackedLink>
         </div>
-        {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
-            Three capability-led chips per docs/copy/shilp-sutra-copy-context.md §10. */}
-        <ul className="mt-ds-08 w-full max-w-2xl grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 gap-ds-02 text-ds-xs text-surface-fg-muted text-difference">
-          <li className="inline-flex items-center justify-center gap-ds-02">
-            <span aria-hidden className="w-1.5 h-1.5 rounded-pill bg-success-9" />
-            Powers Karm, Hiring + studio tools
-          </li>
-          <li className="inline-flex items-center justify-center gap-ds-02">
-            <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>
-            WCAG-AA · forced-colors verified
-          </li>
-          <li className="inline-flex items-center justify-center gap-ds-02">
-            <span aria-hidden className="hidden sm:inline text-surface-fg-subtle/60">·</span>
-            120+ components · 1,750+ tests
-          </li>
-        </ul>
+          {/* Trust chips — capability-led, per docs/copy/shilp-sutra-copy-context.md §10. */}
+          <ul className="mt-ds-08 flex w-full flex-wrap items-center justify-center gap-x-ds-04 gap-y-ds-02 text-ds-base text-surface-fg-muted lg:justify-start hero-rise" style={{ ['--hero-delay' as string]: '4880ms' } as React.CSSProperties}>
+            <li className="inline-flex items-center gap-ds-02 whitespace-nowrap">
+              <span aria-hidden className="h-1.5 w-1.5 rounded-pill bg-success-9" />
+              Powers Karm, Hiring + studio tools
+            </li>
+            <li className="inline-flex items-center gap-ds-02 whitespace-nowrap">
+              <span aria-hidden className="text-surface-fg-subtle/60">·</span>
+              WCAG-AA · forced-colors verified
+            </li>
+            <li className="inline-flex items-center gap-ds-02 whitespace-nowrap">
+              <span aria-hidden className="text-surface-fg-subtle/60">·</span>
+              120+ components · 1,750+ tests
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
   )

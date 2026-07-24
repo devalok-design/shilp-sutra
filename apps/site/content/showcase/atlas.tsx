@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type CSSProperties } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconBell,
@@ -34,7 +34,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/u
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
 
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const ATLAS_STYLE = showcaseVisualStyle('atlas') as CSSProperties
+const ATLAS_SHAPE = showcaseShape('atlas')
 
 type ProjectRow = {
   id: string
@@ -221,7 +226,7 @@ export function AtlasShowcase() {
 
   return (
     <TooltipProvider delayDuration={150}>
-      <div className="flex flex-col gap-ds-05">
+      <div className="flex flex-col gap-ds-05" data-shape={ATLAS_SHAPE} style={ATLAS_STYLE}>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -269,7 +274,7 @@ export function AtlasShowcase() {
                         <span className="relative inline-flex">
                           <IconBell size={16} />
                           {!notificationsRead && (
-                            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-accent-9" />
+                            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-pill bg-accent-9" />
                           )}
                         </span>
                       </Button>
@@ -305,7 +310,7 @@ export function AtlasShowcase() {
                         </SheetDescription>
                       </SheetHeader>
                       <div className="flex flex-col gap-ds-03 py-ds-04">
-                        <div className="flex flex-col gap-ds-02 rounded-surface border border-surface-border-subtle bg-surface-2 p-ds-04 min-w-0">
+                        <div className="flex flex-col gap-ds-02 rounded-surface border border-surface-border-subtle bg-surface-base p-ds-04 min-w-0">
                           <Text variant="body-sm" className="text-surface-fg-subtle">Suggested name</Text>
                           <span className="text-ds-md font-semibold text-surface-fg">Discovery sprint</span>
                           <span className="inline-flex items-center gap-ds-01 text-ds-xs text-surface-fg-subtle">
@@ -356,7 +361,7 @@ export function AtlasShowcase() {
                           header: 'Project',
                           cell: ({ row }: { row: { original: ProjectRow } }) => (
                             <div className="flex items-center gap-ds-03 min-w-0">
-                              <span className="w-8 h-8 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+                              <span className="w-8 h-8 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
                                 <IconFolderOpen size={14} />
                               </span>
                               <div className="flex flex-col min-w-0">
@@ -471,7 +476,7 @@ export function AtlasShowcase() {
                             </Avatar>
                             <Dot
                               {...presenceToDot[m.presence]}
-                              className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-2"
+                              className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-raised"
                             />
                           </div>
                           <div className="flex flex-col min-w-0 flex-1">
@@ -521,7 +526,7 @@ export function AtlasShowcase() {
                   {team.map((m) => (
                     <li
                       key={m.name}
-                      className="flex items-center gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard"
+                      className="flex items-center gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-control hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard"
                     >
                       <div className="relative">
                         <Avatar size="sm">
@@ -529,7 +534,7 @@ export function AtlasShowcase() {
                         </Avatar>
                         <Dot
                           {...presenceToDot[m.presence]}
-                          className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-2"
+                          className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-raised"
                         />
                       </div>
                       <div className="flex flex-col min-w-0 flex-1">
@@ -581,7 +586,7 @@ export function AtlasShowcase() {
                           type="button"
                           onClick={() => setActiveChannel(c.name)}
                           aria-pressed={isActive}
-                          className={`w-full flex items-center gap-ds-02 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md transition-colors duration-fast-02 ease-productive-standard text-left ${
+                          className={`w-full flex items-center gap-ds-02 px-ds-02 -mx-ds-02 py-ds-02 rounded-control transition-colors duration-fast-02 ease-productive-standard text-left ${
                             isActive ? 'bg-accent-3 text-accent-11' : 'hover:bg-surface-raised-hover text-surface-fg'
                           }`}
                         >
@@ -644,7 +649,7 @@ function SparklineTile({ label, value, series }: { label: string; value: string;
       <svg viewBox={`0 0 ${w} ${h}`} className="mt-ds-02 w-full h-7" preserveAspectRatio="none" aria-hidden>
         <polyline
           fill="none"
-          stroke="var(--accent-9)"
+          stroke="var(--color-accent-9)"
           strokeWidth={1.5}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -685,11 +690,11 @@ function CalendarItem({
       type="button"
       onClick={onSelect}
       aria-pressed={active}
-      className={`flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-ds-md transition-colors duration-fast-02 ease-productive-standard text-left w-full ${
+      className={`flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-control transition-colors duration-fast-02 ease-productive-standard text-left w-full ${
         active ? 'bg-surface-raised-hover' : 'hover:bg-surface-raised-hover'
       }`}
     >
-      <span className="w-8 h-8 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+      <span className="w-8 h-8 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
         <Icon size={14} />
       </span>
       <div className="flex flex-col min-w-0 flex-1">

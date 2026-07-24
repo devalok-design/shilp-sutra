@@ -116,7 +116,7 @@ export default function DocsIndexPage() {
                 <span className="text-ds-xs text-surface-fg-subtle">
                   Install
                 </span>
-                <h2 className="text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
+                <h2 className="font-display text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
                   Pick your framework.
                 </h2>
                 <Text variant="body-sm" className="text-surface-fg-muted">

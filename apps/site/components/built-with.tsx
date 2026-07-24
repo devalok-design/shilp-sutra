@@ -91,6 +91,25 @@ const KARM: Consumer = {
   chroma: 0.19,
 }
 
+/**
+ * Setu — per the Figma source (node 66:4431), two identical mid-size cards
+ * sit between the Karm flagship and the three secondary cards, both tagged
+ * "AI Tool" with the same copy and ramp. Reproduced literally as designed.
+ */
+const SETU: Consumer = {
+  name: 'Setu',
+  type: 'AI Tool',
+  punchline: 'The studio runs on Karm. Karm runs on shilp-sutra.',
+  pitch: 'Project workspaces for design studios — triage, track, and deliver client work with low-friction review.',
+  version: '0.40.x',
+  domain: null,
+  href: null,
+  status: 'AI Tool',
+  uses: [],
+  hue: 360,
+  chroma: 0.19,
+}
+
 const SECONDARIES: Consumer[] = [
   {
     name: 'Devalok Hiring',
@@ -277,7 +296,7 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
   return (
     <article
       style={style}
-      className="relative overflow-hidden rounded-surface border border-accent-7 bg-linear-to-br from-accent-2 via-accent-3 to-accent-2"
+      className="relative overflow-hidden rounded-surface border border-accent-7 bg-accent-2"
     >
       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-ds-06 lg:gap-ds-08 p-ds-05 sm:p-ds-06 lg:p-ds-08">
         {/* Left — identity + pitch */}
@@ -354,10 +373,7 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
               artifact. Hidden below sm to avoid cramping a phone viewport. */}
           <div className="hidden sm:flex rounded-control bg-surface-base shadow-overlay p-ds-04 flex-col gap-ds-03">
             <div className="flex items-center gap-ds-02 min-w-0">
-              <span aria-hidden className="w-2 h-2 rounded-pill bg-error-9 shrink-0" />
-              <span aria-hidden className="w-2 h-2 rounded-pill bg-warning-9 shrink-0" />
-              <span aria-hidden className="w-2 h-2 rounded-pill bg-success-9 shrink-0" />
-              <span className="ml-ds-02 text-ds-xs font-mono text-surface-fg-subtle truncate">
+              <span className="text-ds-xs font-mono text-surface-fg-subtle truncate">
                 {consumer.domain ?? 'internal'}
               </span>
             </div>
@@ -377,6 +393,42 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
             </div>
           </div>
         </div>
+      </div>
+    </article>
+  )
+}
+
+/** Mid-size "AI Tool" card — sits between the Karm flagship and the secondary grid. */
+function MediumCard({ consumer }: { consumer: Consumer }) {
+  const style = useBrandRamp(consumer.hue, consumer.chroma)
+  return (
+    <article
+      style={style}
+      className="flex flex-col gap-ds-04 rounded-surface border border-surface-border-subtle bg-linear-to-br from-accent-2 to-surface-base p-ds-06"
+    >
+      <span className="text-ds-xs uppercase tracking-wide text-accent-11 w-fit">
+        {consumer.type}
+      </span>
+      <div className="flex flex-col gap-ds-02">
+        <SwatchStrip size="sm" />
+        <div className="flex items-center justify-between text-ds-xs font-mono text-surface-fg-subtle">
+          <span>hue {consumer.hue}</span>
+          <span>chroma {consumer.chroma}</span>
+        </div>
+      </div>
+      <Text variant="heading-sm" className="text-surface-fg text-balance">
+        {consumer.punchline}
+      </Text>
+      <Text variant="body-sm" className="text-surface-fg-muted">
+        {consumer.pitch}
+      </Text>
+      <div className="mt-auto flex items-center justify-between gap-ds-03 pt-ds-02">
+        <Button variant="soft" size="sm" disabled>
+          Open {consumer.name}
+        </Button>
+        <span className="text-ds-xs font-mono text-surface-fg-subtle">
+          shilp-sutra@{consumer.version}
+        </span>
       </div>
     </article>
   )
@@ -486,10 +538,7 @@ export function BuiltWith() {
   return (
     <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <div className="flex flex-col gap-ds-08">
-        <div className="flex flex-col gap-ds-03 max-w-3xl">
-          <Text variant="label-md" className="text-surface-fg-subtle">
-            Shipped on shilp-sutra
-          </Text>
+        <div className="flex flex-col items-center gap-ds-03 max-w-3xl mx-auto text-center">
           <Text variant="heading-xl" className="text-surface-fg text-balance">
             Devalok ships its own tools on it.
           </Text>
@@ -501,6 +550,11 @@ export function BuiltWith() {
         </div>
 
         <FeaturedCard consumer={KARM} />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-ds-04">
+          <MediumCard consumer={SETU} />
+          <MediumCard consumer={SETU} />
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-ds-04">
           {SECONDARIES.map((c) => (

@@ -207,7 +207,7 @@ export function DevalokShowcase() {
               {practices.map((p) => (
                 <li
                   key={p.name}
-                  className="flex flex-col gap-ds-02 p-ds-04 rounded-ds-md bg-surface-overlay border border-transparent hover:border-surface-border-strong transition-colors duration-fast-02 ease-productive-standard"
+                  className="flex flex-col gap-ds-02 p-ds-04 rounded-surface bg-surface-overlay border border-transparent hover:border-surface-border-strong transition-colors duration-fast-02 ease-productive-standard"
                 >
                   <div className="flex items-center justify-between gap-ds-02">
                     <div className="flex items-center gap-ds-02 min-w-0">
@@ -295,7 +295,7 @@ export function DevalokShowcase() {
             {ramp.map((r) => (
               <div key={r.label} className="flex flex-col gap-ds-02">
                 <div
-                  className={`h-20 rounded-ds-md ${r.token} border border-surface-border`}
+                  className={`h-20 rounded-surface ${r.token} border border-surface-border`}
                   aria-hidden
                 />
                 <div className="flex items-center justify-between gap-ds-02">
@@ -447,7 +447,7 @@ function Surface({
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="group flex items-center justify-between gap-ds-03 rounded-ds-sm -mx-ds-02 px-ds-02 py-ds-01 hover:bg-surface-overlay transition-colors duration-fast-02 ease-productive-standard"
+        className="group flex items-center justify-between gap-ds-03 rounded-control -mx-ds-02 px-ds-02 py-ds-01 hover:bg-surface-overlay transition-colors duration-fast-02 ease-productive-standard"
       >
         {body}
       </a>

@@ -5,7 +5,7 @@ import { SHILP_SUTRA_MINOR } from '@/lib/version'
  * Dynamic Open Graph image for the homepage.
  *
  * Resolves to `https://shilp-sutra.devalok.in/opengraph-image` at runtime.
- * Renders the brand pink ramp + tagline + product mark using ImageResponse
+ * Renders the brand teal ramp + tagline + product mark using ImageResponse
  * (Edge-runtime built into Next 15). No external assets, no design pipeline
  * dependency.
  *
@@ -32,10 +32,10 @@ export default async function OpengraphImage() {
           padding: 72,
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif',
-          color: '#1a0a14',
-          // Devalok pink ramp: accent-1 wash with accent-3 in the corner glow
+          color: '#0a1a18',
+          // Shilp Sutra teal ramp: accent-1 wash with accent-3 in the corner glow
           background:
-            'linear-gradient(135deg, #fff8fa 0%, #ffecf1 60%, #fddae3 100%)',
+            'linear-gradient(135deg, #f3f8f7 0%, #e6f3f2 60%, #c6ebe6 100%)',
           position: 'relative',
         }}
       >
@@ -46,7 +46,7 @@ export default async function OpengraphImage() {
               width: 14,
               height: 14,
               borderRadius: 9999,
-              background: '#de297b',
+              background: '#008c84',
             }}
           />
           <div
@@ -54,7 +54,7 @@ export default async function OpengraphImage() {
               fontSize: 22,
               fontWeight: 500,
               letterSpacing: 0.3,
-              color: '#782445',
+              color: '#0f4a46',
             }}
           >
             {`From Devalok · Public beta v${SHILP_SUTRA_MINOR}`}
@@ -78,17 +78,17 @@ export default async function OpengraphImage() {
               lineHeight: 1.02,
               fontWeight: 700,
               letterSpacing: -2.5,
-              color: '#160812',
+              color: '#081514',
             }}
           >
             <span>Your brand. Every component.&nbsp;</span>
-            <span style={{ color: '#ba005e' }}>Out of the box.</span>
+            <span style={{ color: '#006e68' }}>Out of the box.</span>
           </div>
           <div
             style={{
               fontSize: 30,
               lineHeight: 1.35,
-              color: '#5b2639',
+              color: '#2c5551',
               maxWidth: 880,
             }}
           >
@@ -104,7 +104,7 @@ export default async function OpengraphImage() {
             justifyContent: 'space-between',
             alignItems: 'center',
             fontSize: 22,
-            color: '#6a3446',
+            color: '#3a6864',
           }}
         >
           <div
@@ -117,7 +117,7 @@ export default async function OpengraphImage() {
             shilp-sutra.devalok.in
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <div style={{ width: 8, height: 8, borderRadius: 9999, background: '#de297b' }} />
+            <div style={{ width: 8, height: 8, borderRadius: 9999, background: '#008c84' }} />
             <span>Made in Bharat by Devalok</span>
           </div>
         </div>

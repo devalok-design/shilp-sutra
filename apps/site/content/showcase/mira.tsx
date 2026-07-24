@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type CSSProperties } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconCheck,
@@ -32,6 +32,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/u
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { ToggleGroup, ToggleGroupItem } from '@devalok/shilp-sutra/ui/toggle-group'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
+
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
+const MIRA_STYLE = showcaseVisualStyle('mira') as CSSProperties
+const MIRA_SHAPE = showcaseShape('mira')
 
 type ColourId = 'haldi' | 'kumkum' | 'neel' | 'sage' | 'kala'
 
@@ -178,7 +183,7 @@ export function MiraShowcase() {
 
   return (
     <TooltipProvider delayDuration={150}>
-      <div className="flex flex-col gap-ds-06">
+      <div className="flex flex-col gap-ds-06" data-shape={MIRA_SHAPE} style={MIRA_STYLE}>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -267,7 +272,7 @@ export function MiraShowcase() {
                 </Text>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-success-3 text-success-11">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-pill bg-success-3 text-success-11">
                       <IconLeaf size={11} />
                     </span>
                   </TooltipTrigger>
@@ -275,7 +280,7 @@ export function MiraShowcase() {
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-3 text-accent-11">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-pill bg-accent-3 text-accent-11">
                       <IconShieldCheck size={11} />
                     </span>
                   </TooltipTrigger>
@@ -348,13 +353,13 @@ export function MiraShowcase() {
                           aria-label={`${c.name}: ${c.story}`}
                           aria-pressed={active}
                           onClick={() => setColour(c.id)}
-                          className="relative w-9 h-9 shrink-0 rounded-full border border-surface-border-subtle transition-transform duration-fast-01 hover:scale-105 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
+                          className="relative w-9 h-9 shrink-0 rounded-pill border border-surface-border-subtle transition-transform duration-fast-01 hover:scale-105 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
                           style={{ background: c.value }}
                         >
                           {active && (
                             <motion.span
                               layoutId="mira-colour-ring"
-                              className="absolute -inset-1 rounded-full border-2 border-accent-9"
+                              className="absolute -inset-1 rounded-pill border-2 border-accent-9"
                               transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                             />
                           )}
@@ -460,7 +465,7 @@ export function MiraShowcase() {
                         return (
                           <div
                             key={i}
-                            className="flex items-center gap-ds-03 p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2"
+                            className="flex items-center gap-ds-03 p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-base"
                           >
                             <span
                               className="w-10 h-10 rounded-control shrink-0 border border-surface-border-subtle"
@@ -657,19 +662,19 @@ export function MiraShowcase() {
                 recycled-card box. Tracked, signed, and carbon-offset on the courier leg.
               </Text>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-ds-03 text-ds-sm">
-                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 shadow-raised">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised">
                   <div className="text-surface-fg font-semibold">India</div>
                   <div className="text-surface-fg-muted tabular-nums">3 working days · free over ₹2,500</div>
                 </li>
-                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 shadow-raised">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised">
                   <div className="text-surface-fg font-semibold">USA · UK · EU</div>
                   <div className="text-surface-fg-muted tabular-nums">7-9 working days · flat $14 · DDP</div>
                 </li>
-                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 shadow-raised">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised">
                   <div className="text-surface-fg font-semibold">Singapore · Australia</div>
                   <div className="text-surface-fg-muted tabular-nums">5-7 working days · flat $14</div>
                 </li>
-                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-2 shadow-raised">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised">
                   <div className="text-surface-fg font-semibold">Rest of world</div>
                   <div className="text-surface-fg-muted tabular-nums">10-14 working days · flat $22</div>
                 </li>

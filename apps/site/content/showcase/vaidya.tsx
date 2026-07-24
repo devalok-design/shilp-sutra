@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type CSSProperties } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { motion } from 'framer-motion'
 import {
@@ -29,7 +29,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@devalok/shilp-sutra/u
 import { Text } from '@devalok/shilp-sutra/ui/text'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@devalok/shilp-sutra/ui/tooltip'
 
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const VAIDYA_STYLE = showcaseVisualStyle('vaidya') as CSSProperties
+const VAIDYA_SHAPE = showcaseShape('vaidya')
 
 type VitalStatus = 'normal' | 'watch' | 'critical'
 type Trend = 'up' | 'down' | 'flat'
@@ -264,7 +269,7 @@ export function VaidyaShowcase() {
   )
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-ds-05">
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-ds-05" data-shape={VAIDYA_SHAPE} style={VAIDYA_STYLE}>
       <div className="flex flex-col gap-ds-05">
         {/* Identity card */}
         <Card>
@@ -380,9 +385,9 @@ export function VaidyaShowcase() {
                     return (
                       <li
                         key={m.name}
-                        className="flex items-start gap-ds-04 px-ds-03 -mx-ds-03 py-ds-03 rounded-ds-md border-b border-surface-border-subtle last:border-b-0 hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard"
+                        className="flex items-start gap-ds-04 px-ds-03 -mx-ds-03 py-ds-03 rounded-control border-b border-surface-border-subtle last:border-b-0 hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard"
                       >
-                        <span className="w-9 h-9 rounded-ds-sm bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
+                        <span className="w-9 h-9 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
                           <IconPill size={16} />
                         </span>
                         <div className="flex flex-col flex-1 min-w-0">
@@ -579,7 +584,7 @@ export function VaidyaShowcase() {
                   <span
                     aria-label={c.active ? 'Active now' : 'Offline'}
                     className={[
-                      'absolute -right-0.5 -bottom-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-surface-raised',
+                      'absolute -right-0.5 -bottom-0.5 w-2.5 h-2.5 rounded-pill ring-2 ring-surface-raised',
                       c.active ? 'bg-success-9' : 'bg-surface-fg-subtle',
                     ].join(' ')}
                   />
@@ -627,7 +632,7 @@ function VitalTile({ vital }: { vital: Vital }) {
             <span className="text-ds-xs text-surface-fg-subtle uppercase tracking-wide truncate">{vital.label}</span>
             <span
               className={[
-                'w-7 h-7 rounded-ds-sm flex items-center justify-center',
+                'w-7 h-7 rounded-control-inner flex items-center justify-center',
                 vital.status === 'normal'
                   ? 'bg-success-3 text-success-11'
                   : vital.status === 'watch'

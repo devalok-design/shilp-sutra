@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconBookmark,
@@ -44,7 +44,12 @@ import {
   TooltipTrigger,
 } from '@devalok/shilp-sutra/ui/tooltip'
 
+import { showcaseShape, showcaseVisualStyle } from '@/lib/showcase-visuals'
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const PATRIKA_STYLE = showcaseVisualStyle('patrika') as CSSProperties
+const PATRIKA_SHAPE = showcaseShape('patrika')
 
 type IssueEntry = {
   number: string
@@ -164,7 +169,7 @@ export function PatrikaShowcase() {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-09">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-ds-09" data-shape={PATRIKA_SHAPE} style={PATRIKA_STYLE}>
         <article ref={articleRef} className="flex flex-col gap-ds-07">
           {/* Reading-progress strip */}
           <motion.div
@@ -317,7 +322,7 @@ export function PatrikaShowcase() {
                 <TooltipTrigger asChild>
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center align-super text-ds-xs text-accent-11 hover:text-accent-12 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 rounded-ds-sm mx-ds-01 tabular-nums"
+                    className="inline-flex items-center justify-center align-super text-ds-xs text-accent-11 hover:text-accent-12 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 rounded-control-inner mx-ds-01 tabular-nums"
                     aria-label="Footnote 1"
                   >
                     [1]
@@ -515,7 +520,7 @@ export function PatrikaShowcase() {
                   {photoEssay.map((p) => (
                     <div
                       key={p.src}
-                      className="relative aspect-square rounded-ds-md overflow-hidden border border-surface-border-subtle"
+                      className="relative aspect-square rounded-surface overflow-hidden border border-surface-border-subtle"
                     >
                       <img
                         src={p.src}
@@ -649,7 +654,7 @@ export function PatrikaShowcase() {
                           setActiveTocId(entry.number)
                         }}
                         className={[
-                          'flex items-start gap-ds-03 px-ds-03 -mx-ds-03 py-ds-03 rounded-ds-md border-l-2 transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
+                          'flex items-start gap-ds-03 px-ds-03 -mx-ds-03 py-ds-03 rounded-control border-l-2 transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                           isActive
                             ? 'bg-accent-3 border-accent-9 text-accent-11'
                             : 'border-transparent hover:bg-surface-raised-hover text-surface-fg',

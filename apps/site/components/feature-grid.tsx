@@ -19,37 +19,34 @@ import { CARD_RESTING } from '@/lib/card-recipe'
 const pillars = [
   {
     icon: IconPalette,
-    title: 'Your brand. Live.',
-    body: 'Pick one colour. Every button, badge, alert, and form across the entire library recolours. Light mode, dark mode, hover, pressed, focus, every state. No theme provider. No re-render. CSS-vars do the work.',
+    title: 'Your brand, everywhere',
+    body: "Set one colour and every button, badge, card, and form recolours across light and dark. CSS variables carry it, so there's no config file and no list of hex codes to keep in sync.",
   },
   {
     icon: IconShield,
-    title: 'The boring work, done.',
-    body: 'Keyboard navigation, screen-reader labels, visible focus rings, forced-colors mode, touch targets sized for real fingers. Surface-layer hygiene runs in CI on every PR. The work that usually slips is the work that ships.',
+    title: 'The tedious parts, handled',
+    body: "Keyboard navigation, screen-reader labels, focus traps, roving tabindex, dismissable popovers, visible focus rings. The accessibility work lives inside every component, so you don't rewire it on each screen.",
   },
   {
     icon: IconLayoutGrid,
-    title: 'Real pages, not toys.',
-    body: 'Dashboards. Settings. Pricing. Sign-up. Data tables. Five full blocks ship today, more this beta. Real spacing, real copy, real states. The stuff your users actually use.',
+    title: 'Real production components',
+    body: 'Dashboards, settings, pricing, sign-up, data tables, toasts. The full set a shipping product needs, ready to drop in.',
   },
 ] as const
 
 const promise = {
   icon: IconUsers,
-  title: 'For builders, by builders.',
-  body: 'Indie devs, studio teams, designers reaching for code, coding agents. One library, one install. Devalok ships on it; so do Karm, Devalok Hiring, BharatTools, and Gurukul.',
+  title: 'We build on it too',
+  body: "shilp-sutra runs Devalok's own products: Karm, Devalok Hiring, BharatTools, and Gurukul. One library, one team maintaining it, shaped by shipping real software.",
 } as const
 
 export function FeatureGrid() {
   return (
     <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <div className="flex flex-col gap-ds-08">
-        <div className="flex flex-col gap-ds-03 max-w-3xl">
-          <Text variant="label-md" className="text-surface-fg-subtle">
-            What&apos;s inside
-          </Text>
+        <div className="flex flex-col items-center gap-ds-03 max-w-3xl mx-auto text-center">
           <Text variant="heading-xl" className="text-surface-fg">
-            Three pillars. One promise.
+            Built to ship real products.
           </Text>
         </div>
 

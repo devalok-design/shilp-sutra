@@ -9,12 +9,12 @@ export function ShowcasePicker({ currentSlug }: { currentSlug: string }) {
 
   return (
     <section aria-label="More showcases" className="mt-ds-12 pt-ds-08 border-t border-surface-border-subtle">
-      <header className="flex flex-col gap-ds-02 max-w-3xl mb-ds-06">
-        <Text variant="label-sm" className="text-surface-fg-subtle">
-          See another industry
-        </Text>
+      <header className="flex flex-col gap-ds-02 max-w-2xl mb-ds-06">
         <Text variant="heading-md" className="text-surface-fg">
           Same library, somewhere else.
+        </Text>
+        <Text variant="body-sm" className="text-surface-fg-muted">
+          Five more industries, each built from the very same components.
         </Text>
       </header>
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-ds-04">

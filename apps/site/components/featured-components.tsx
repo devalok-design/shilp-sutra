@@ -24,16 +24,13 @@ export function FeaturedComponents() {
   return (
     <TooltipProvider delayDuration={200}>
       <section className="mb-ds-12">
-        <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-08">
-          <span className="text-ds-xs text-surface-fg-subtle">
-            Featured · live demos
-          </span>
-          <h2 className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg">
+        <header className="flex flex-col gap-ds-03 max-w-2xl mb-ds-08">
+          <h2 className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg">
             Try them before you click.
           </h2>
           <p className="text-ds-md text-surface-fg-muted">
-            Six primitives that shape a product&apos;s rhythm. Every one rendered live below.
-            Scroll past for the full 119-component browse.
+            Six primitives that shape a product&apos;s rhythm, rendered live below. Scroll on for
+            the full 119-component browse.
           </p>
         </header>
 
@@ -66,7 +63,7 @@ function FeatureCard({
   children: React.ReactNode
 }) {
   return (
-    <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-surface bg-surface-raised shadow-raised transition-[box-shadow,translate] duration-fast-02 ease-productive-standard hover:shadow-raised-hover hover:-translate-y-px">
+    <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-surface bg-surface-raised shadow-raised">
       <header className="flex flex-col">
         <span className="text-ds-xs text-surface-fg-subtle">{slug}</span>
         <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>

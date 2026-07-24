@@ -92,7 +92,7 @@ export function LotusShowcase() {
         <Text variant="label-md" className="text-surface-fg-subtle drop-shadow-sm">
           A field of lotuses
         </Text>
-        <h2 className="text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] text-surface-fg max-w-2xl text-balance drop-shadow-md">
+        <h2 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] text-surface-fg max-w-2xl text-balance drop-shadow-md">
           Pink at the tip,
           <br />
           <span className="text-accent-11">white at the base.</span>

@@ -24,6 +24,10 @@ export function generateThemerCss(state: ThemerState): string {
   const chroma = state.chroma ?? 0.19
 
   const role = mergeArchetype(archetype, density, shape)
+  if (state.customRadius != null) {
+    role.rc = state.customRadius
+    role.rs = Math.round(state.customRadius * 1.6)
+  }
   const ramp = generateRamp(hue, chroma)
 
   const lightRamp = ramp.light.map((s) => `  --color-accent-${s.step}: ${s.value};`).join('\n')
@@ -37,12 +41,13 @@ export function generateThemerCss(state: ThemerState): string {
     density ? ` * density:   ${density}` : null,
     shape ? ` * shape:     ${shape}` : null,
     state.motion ? ` * motion:    ${state.motion}` : null,
+    state.customRadius != null ? ` * radius:    ${state.customRadius}px (manual override)` : null,
     ` * accent:    hue ${Math.round(hue)}° / chroma ${chroma.toFixed(3)}`,
     ` *`,
     ` * Paste into your global stylesheet, AFTER the shilp-sutra import:`,
     ` *   @import "tailwindcss";`,
     ` *   @import "@devalok/shilp-sutra/css";`,
-    ` *   ...then this block, right here`,
+    ` *   /* this block here */`,
     ` */`,
   ]
     .filter(Boolean)

@@ -37,16 +37,13 @@ export function ComponentShowcase() {
     <section className="mx-auto max-w-6xl px-page-x py-ds-12">
       <Toaster />
 
-      <header className="flex flex-col gap-ds-03 max-w-3xl mb-ds-09">
-        <Text variant="label-md" className="text-surface-fg-subtle">
-          Beyond Button
-        </Text>
+      <header className="flex flex-col gap-ds-03 max-w-2xl mb-ds-08">
         <Text variant="heading-xl" className="text-surface-fg">
           Same care, every component.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          Four favourites from the 118 others. Each one picked because it changes the shape of
-          what a real product can do, not because it ticks a box.
+          Four favourites from the 118 others. Each picked because it changes the shape of what a
+          real product can do, not because it ticks a box.
         </Text>
       </header>
 

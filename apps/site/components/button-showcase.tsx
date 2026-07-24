@@ -49,9 +49,7 @@ export function ButtonShowcase() {
           We sweat the small stuff.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          A button is just a button. Until you click one and something feels wrong. The spinner
-          shifts the text. The check never comes. The loading bar lies. Ours don&apos;t do that.
-          Click through.
+          Click through. A good button never leaves you guessing while it works.
         </Text>
       </header>
 
@@ -82,13 +80,8 @@ export function ButtonShowcase() {
 function AsyncDemo() {
   return (
     <DemoCard
-      title="One prop. Three states."
-      caption={
-        <>
-          <code className="font-mono">onClickAsync</code> runs loading →&nbsp;success
-          →&nbsp;reset. Click it.
-        </>
-      }
+      title="One click, three states."
+      caption="It loads, confirms, then resets. Try it."
     >
       <Button
         size="lg"
@@ -116,7 +109,7 @@ function ProcessingDemo() {
   return (
     <DemoCard
       title="Patience, animated."
-      caption="Long jobs need a different feel from short ones. Watch the marching border change pace."
+      caption="Long jobs should feel different from quick ones. Change the pace."
     >
       <Button key={speed} processing={speed} processingDisabled={false} variant="solid" size="lg">
         Running pipeline
@@ -141,7 +134,7 @@ function LoadingDemo() {
   return (
     <DemoCard
       title="The text stays still."
-      caption="Spinners that replace the label feel broken. Pick a side; the label sticks."
+      caption="Spinners that hide the label feel broken. Pick a side."
     >
       <Button loading loadingPosition={pos} size="lg" variant="soft" startIcon={<IconSend size={16} />}>
         Confirming order
@@ -163,9 +156,7 @@ function ContextualScenes() {
           The same Button, across ten products.
         </Text>
         <Text variant="body-sm" className="text-surface-fg-muted">
-          Email, music, banking, social, code, calendar, deploys. Each card lifts a real
-          interaction shape. The variant, colour, size, and compound shape pick themselves
-          from what the user is being asked to do.
+          One component, doing its job across ten real products.
         </Text>
       </header>
 
@@ -233,7 +224,7 @@ function SceneEmail() {
   return (
     <Scene
       product="Email · Gmail-shaped"
-      why="Primary action with an attached alternative. SplitButton fuses the two visually so the user reads it as one decision."
+      why="Send now, or open the other ways to send."
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex items-center gap-ds-02">
@@ -345,7 +336,7 @@ function SceneMusic() {
   return (
     <Scene
       product="Music · Spotify-shaped"
-      why="One Button row driving real audio. Play toggles playback, the progress strip tracks position, scrubbing seeks. No native browser chrome."
+      why="Real audio, real controls. Play, skip, and scrub the bar."
     >
       <div className="flex flex-col gap-ds-04">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
@@ -445,7 +436,7 @@ function SceneStreaming() {
   return (
     <Scene
       product="Streaming · Netflix-shaped"
-      why="High-emotion conversion. Pill shape + warning hue catches the eye without screaming red."
+      why="The one action that matters, warm enough to notice."
     >
       <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
@@ -485,7 +476,7 @@ function SceneCodeEditor() {
   return (
     <Scene
       product="Code editor · VS Code-shaped"
-      why="ButtonGroup attached. Same context, three sibling actions, shared border radius. Reads as one toolbar."
+      why="Three related actions, joined into one tidy toolbar."
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex items-center gap-ds-02">
@@ -535,7 +526,7 @@ function SceneSocial() {
   return (
     <Scene
       product="Social · X-shaped"
-      why="Ghost variant + icon + counter. Three sibling actions stay quiet until tapped. Content does the work."
+      why="Quiet until you tap. The post stays the star."
     >
       <div className="flex flex-col gap-ds-03">
         <div className="flex items-center gap-ds-03 min-w-0">
@@ -625,7 +616,7 @@ function SceneCalendar() {
   return (
     <Scene
       product="Calendar · Google Calendar-shaped"
-      why="Top-level create with three flavours. SplitButton reveals the alternatives without cluttering the toolbar."
+      why="One create button with its extra options tucked away."
     >
       <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
@@ -684,7 +675,7 @@ function SceneBanking() {
   return (
     <Scene
       product="Banking · Wise-shaped"
-      why="Irreversible + sensitive. Solid + lg + onClickAsync. The user sees the confirm cycle, then it rests."
+      why="Money moving. It shows the check, then settles."
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
@@ -738,7 +729,7 @@ function SceneDeploy() {
   return (
     <Scene
       product="DevOps · Vercel-shaped"
-      why="Long-running with high stakes. Processing='urgent' keeps the dotted border alive; processingDisabled=false lets the user roll back."
+      why="A long build you can watch, and stop if you need to."
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01 min-w-0">
@@ -786,7 +777,7 @@ function SceneNotes() {
   return (
     <Scene
       product="Notes · Notion-shaped"
-      why="One primary, many cousins. SplitButton again. This time the dropdown is content variety, not delivery options."
+      why="One new-page button, a few templates tucked inside."
     >
       <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">
@@ -846,7 +837,7 @@ function SceneCommerce() {
   return (
     <Scene
       product="Commerce · Stripe Checkout-shaped"
-      why="Two-emphasis row. Soft + outline pair: equal weight, different priority signalled by tone alone."
+      why="Two actions, one takes the lead."
     >
       <div className="flex flex-wrap items-center justify-between gap-ds-03">
         <div className="flex flex-col gap-ds-01">

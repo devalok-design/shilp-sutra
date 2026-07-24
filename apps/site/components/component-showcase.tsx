@@ -42,8 +42,7 @@ export function ComponentShowcase() {
           Same care, every component.
         </Text>
         <Text variant="body-md" className="text-surface-fg-muted">
-          Four favourites from the 118 others. Each picked because it changes the shape of what a
-          real product can do, not because it ticks a box.
+          Four of the 118. Each one changes what a product can do.
         </Text>
       </header>
 
@@ -131,7 +130,7 @@ function CommandPaletteDemo() {
     <DemoCard
       eyebrow="Command Palette"
       title="Press ⌘K from anywhere."
-      caption="Power-user shortcut your team will type into muscle memory. Keyboard-first, search-driven, focus-trapped."
+      caption="The shortcut power users reach for. Works from anywhere."
     >
       <div className="flex flex-col gap-ds-04 items-start">
         <Button
@@ -146,7 +145,7 @@ function CommandPaletteDemo() {
           Open palette
         </Button>
         <div className="text-ds-xs text-surface-fg-subtle">
-          Try the shortcut. Works from anywhere on this page.
+          Works anywhere on this page.
         </div>
       </div>
 
@@ -164,7 +163,7 @@ function ToastDemo() {
     <DemoCard
       eyebrow="Toast"
       title="The system answers back."
-      caption="Success. Warning. Error. They stack, they breathe, they dismiss when you're done. Fire a few. Watch them queue."
+      caption="Success, warning, error. They stack and clear themselves. Fire a few."
     >
       <div className="flex flex-wrap items-center gap-ds-02">
         <Button
@@ -201,7 +200,7 @@ function ToastDemo() {
         </Button>
       </div>
       <div className="mt-auto pt-ds-04 text-ds-xs text-surface-fg-subtle">
-        Built on sonner. role=&quot;alert&quot; for assertive errors, role=&quot;status&quot; for the rest.
+        Screen readers announce the urgent ones first.
       </div>
     </DemoCard>
   )
@@ -231,7 +230,7 @@ function ComboboxDemo() {
     <DemoCard
       eyebrow="Combobox"
       title="Search becomes the interface."
-      caption="Filter as you type. Keyboard-navigable. Built on Radix Popover + a focus-trapped command list. Plays well with virtualization for big lists."
+      caption="Filter as you type. Works with the keyboard, handles big lists."
     >
       <div className="flex flex-col gap-ds-03 items-start w-full max-w-sm">
         <Combobox
@@ -244,7 +243,7 @@ function ComboboxDemo() {
           triggerClassName="w-full"
         />
         <div className="text-ds-xs text-surface-fg-subtle">
-          Try typing &quot;ko&quot; or &quot;bes&quot;. Results filter live.
+          Try typing &quot;ko&quot; or &quot;bes&quot;.
         </div>
       </div>
     </DemoCard>
@@ -270,7 +269,7 @@ function ChartDemo() {
     <DemoCard
       eyebrow="Charts"
       title="Numbers that move."
-      caption="Built on d3-scale + framer-motion. Animate-in on mount, hover for tooltip, keyboard-accessible focus rings on data points."
+      caption="Animates in, shows a tooltip on hover, reachable by keyboard."
     >
       <div className="flex items-baseline justify-between gap-ds-03 mb-ds-04">
         <div className="flex flex-col">

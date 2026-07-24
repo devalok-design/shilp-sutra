@@ -108,9 +108,12 @@ export const SHOWCASE_VISUALS: Record<string, ShowcaseVisual> = {
 export function showcaseVisualStyle(slug: string): Record<string, string> {
   const v = SHOWCASE_VISUALS[slug]
   if (!v) return {}
+  // Brand font drives HEADINGS only (--font-display). Body/UI text stays on the
+  // DS default sans (--font-sans left untouched) so dense dashboard copy reads
+  // cleanly instead of rendering data tables in a display/serif face. Brand
+  // character still lands via colour + shape + shadow + headings.
   return {
     '--font-display': v.font,
-    '--font-sans': v.font,
     '--shadow-raised': v.shadow.raised,
     '--shadow-raised-hover': v.shadow.raisedHover,
     '--shadow-floating': v.shadow.floating,

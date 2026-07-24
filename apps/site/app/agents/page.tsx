@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { IconBrandGithub, IconFileText, IconPlug, IconRobot, IconTerminal } from '@tabler/icons-react'
+import { IconBrandGithub, IconFileText, IconMessage, IconPlug, IconRobot, IconTerminal } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
@@ -52,6 +52,27 @@ const resources = [
     body: 'Agent contract at the repo root. The rules every coding agent should follow when working on shilp-sutra or a consumer of it.',
     cmd: 'cat AGENTS.md',
     href: 'https://github.com/devalok-design/shilp-sutra/blob/main/AGENTS.md',
+  },
+]
+
+const chatSurfaces = [
+  {
+    name: 'claude.ai / Claude Desktop',
+    body: 'Connect the MCP directly for version-exact docs on demand, or add the chat skill.',
+    cmd: 'claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp',
+    href: 'https://github.com/devalok-design/shilp-sutra/blob/main/skills/shilp-sutra/chat-skill/SKILL.md',
+  },
+  {
+    name: 'ChatGPT',
+    body: 'Paste the instruction block into a Custom GPT or your Custom Instructions.',
+    cmd: null,
+    href: 'https://github.com/devalok-design/shilp-sutra/blob/main/skills/shilp-sutra/chat-skill/chatgpt-instructions.md',
+  },
+  {
+    name: 'Gemini',
+    body: 'Paste the instruction block into a Gem.',
+    cmd: null,
+    href: 'https://github.com/devalok-design/shilp-sutra/blob/main/skills/shilp-sutra/chat-skill/gemini-instructions.md',
   },
 ]
 
@@ -138,6 +159,47 @@ export default function AgentsPage() {
                     <Link href={r.href} target="_blank" rel="noreferrer">
                       <Button variant="ghost" size="sm" startIcon={<IconBrandGithub size={14} />}>
                         View on GitHub
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-ds-12 pt-ds-08 border-t border-surface-border-subtle mb-ds-12">
+            <header className="flex flex-col gap-ds-02 max-w-2xl mb-ds-06">
+              <Text variant="label-sm" className="text-surface-fg-subtle">
+                Not in an editor?
+              </Text>
+              <Text variant="heading-md" className="text-surface-fg">
+                Building in claude.ai, ChatGPT, or Gemini? Point it here first.
+              </Text>
+              <Text variant="body-sm" className="text-surface-fg-muted">
+                Chat assistants have no editor to load the skill, so they fall back to
+                shadcn or MUI answers that do not match this library. Give yours the
+                orientation below, then let it read the MCP for the rest.
+              </Text>
+            </header>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-ds-04">
+              {chatSurfaces.map((c) => (
+                <Card key={c.name}>
+                  <CardHeader>
+                    <div className="flex items-center gap-ds-02">
+                      <IconMessage size={16} className="text-accent-11 shrink-0" />
+                      <CardTitle className="text-[length:var(--typo-heading-sm-size)]">{c.name}</CardTitle>
+                    </div>
+                    <CardDescription>{c.body}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-ds-03">
+                    {c.cmd ? (
+                      <pre className="px-ds-03 py-ds-03 rounded-control-inner border border-surface-border-subtle bg-surface-overlay overflow-x-auto text-ds-xs font-mono text-surface-fg whitespace-pre">
+                        <code>{c.cmd}</code>
+                      </pre>
+                    ) : null}
+                    <Link href={c.href} target="_blank" rel="noreferrer">
+                      <Button variant="ghost" size="sm" startIcon={<IconBrandGithub size={14} />}>
+                        Get the instructions
                       </Button>
                     </Link>
                   </CardContent>

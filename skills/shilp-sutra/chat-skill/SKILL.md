@@ -10,8 +10,6 @@ description: >
   knowledge whenever shilp-sutra is in the project.
 license: MIT
 metadata:
-  version: "0.53.0"
-  variant: chat
   author: Devalok Design & Strategy Studio
   homepage: https://github.com/devalok-design/shilp-sutra
   npm: https://www.npmjs.com/package/@devalok/shilp-sutra

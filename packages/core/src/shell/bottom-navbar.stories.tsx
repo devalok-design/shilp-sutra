@@ -38,8 +38,9 @@ const moreItems: BottomNavItem[] = [
   { title: 'Devsabha', href: '/devsabha', icon: <IconBook /> },
   { title: 'Adjustments', href: '/adjustments', icon: <IconAdjustmentsHorizontal /> },
   { title: 'Profile', href: '/profile', icon: <IconUserCircle /> },
-  { title: 'Admin', href: '/admin', icon: <IconShieldCheck /> },
-  { title: 'IconSettings', href: '/admin/system-config', icon: <IconSettings /> },
+  // Role-gated: only visible when user.role === 'Admin'
+  { title: 'Admin', href: '/admin', icon: <IconShieldCheck />, roles: ['Admin'] },
+  { title: 'System', href: '/admin/system-config', icon: <IconSettings />, roles: ['Admin'] },
 ]
 
 // ── Meta ─────────────────────────────────────────────────────
@@ -155,21 +156,61 @@ export const NoMoreItems: Story = {
 }
 
 export const AssociateRole: Story = {
+  name: 'Role-gated (Associate — admin items auto-hidden)',
   args: {
     currentPath: '/',
     user: associateUser,
     primaryItems,
-    moreItems: moreItems.filter((i) => i.href !== '/admin' && i.href !== '/admin/system-config'),
+    // No manual filtering — the Admin/System items declare roles: ['Admin'],
+    // so they hide automatically for a non-admin user.
+    moreItems,
   },
 }
 
 export const NoUser: Story = {
-  name: 'No User (Hidden)',
+  name: 'No user (role-gated items hidden)',
   args: {
     currentPath: '/',
     user: null,
     primaryItems,
     moreItems,
+  },
+}
+
+export const CanViewPredicate: Story = {
+  name: 'Custom visibility (canView)',
+  args: {
+    currentPath: '/',
+    user: associateUser,
+    primaryItems,
+    // Arbitrary per-item logic — here: hide Adjustments unless the name starts with 'A'.
+    moreItems: moreItems.map((i) =>
+      i.href === '/adjustments'
+        ? { ...i, canView: (u) => !!u && u.name.startsWith('A') }
+        : i,
+    ),
+  },
+}
+
+export const PillIndicator: Story = {
+  name: 'Material-3 pill indicator',
+  args: {
+    currentPath: '/attendance',
+    user: mockUser,
+    primaryItems,
+    moreItems,
+    indicator: 'pill',
+  },
+}
+
+export const LabelsOnSelected: Story = {
+  name: 'Labels on selected only',
+  args: {
+    currentPath: '/projects',
+    user: mockUser,
+    primaryItems,
+    moreItems,
+    labelVisibility: 'selected',
   },
 }
 

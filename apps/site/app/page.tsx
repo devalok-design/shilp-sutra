@@ -1,86 +1,50 @@
-import Link from 'next/link'
-import { IconArrowRight } from '@tabler/icons-react'
-import { Button } from '@devalok/shilp-sutra/ui/button'
-import { Text } from '@devalok/shilp-sutra/ui/text'
+import { AgentCallout } from '@/components/agent-callout'
+import { BetaBanner } from '@/components/beta-banner'
+import { BuiltWith } from '@/components/built-with'
+import { ButtonShowcase } from '@/components/button-showcase'
+import { ComponentShowcase } from '@/components/component-showcase'
+import { DevalokBlock } from '@/components/devalok-block'
+import { FeatureGrid } from '@/components/feature-grid'
+import { Hero } from '@/components/hero'
+import { SiteFooter } from '@/components/site-footer'
+import { SiteHeader } from '@/components/site-header'
+import { StackSupport } from '@/components/stack-support'
+import { UnifiedCanvas } from '@/components/unified-canvas'
 
-import { AuroraBloom } from '@devalok/shilp-sutra-brand/aurora'
-import { TrackedLink } from './tracked-link'
-
-export function Hero() {
+/**
+ * Landing flow. Beta banner + built-with strip + Devalok block added per
+ * docs/copy/shilp-sutra-copy-context.md §6 + §7 + §5. Wedge row + stack strip
+ * added right under the hero per §2 — answer "why this, not shadcn?" and
+ * "does this fit my stack?" before the reader scrolls.
+ *
+ *   0. BetaBanner       — public-beta strip, dismissable, homepage only
+ *   1. Hero              — what we are
+ *   2. StackSupport      — framework strip; kills the "my stack?" doubt (§6)
+ *   3. UnifiedCanvas     — six industries in one tabbed canvas, all live
+ *   4. ButtonShowcase    — one component, ten worlds (close-up craft)
+ *   5. BuiltWith         — Devalok's own products carrying shilp-sutra
+ *   6. ComponentShowcase — curated grid of components in context
+ *   7. FeatureGrid       — three pillars + builder promise
+ *   8. AgentCallout      — teaser; full pitch at /agents
+ *   9. DevalokBlock      — who's behind this, with a quiet link to devalok.in
+ */
+export default function HomePage() {
   return (
-    <section className="relative overflow-hidden isolate">
-      <AuroraBloom />
-      {/* pt accounts for floating pill (~70–80px). Aurora-bloom reaches up to the
-          true top of the section so the pill sits *over* the bloom — magic stays. */}
-      <div className="relative z-10 mx-auto max-w-4xl px-page-x pt-ds-13 pb-ds-12 md:pt-[8rem] md:pb-[7rem] lg:pt-[13rem] lg:pb-[10rem] flex flex-col items-center text-center gap-ds-06 md:gap-ds-08">
-        <Text variant="label-md" className="text-surface-fg-muted text-difference">
-          From{' '}
-          <Link
-            href="https://devalok.in"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-accent-11 transition-colors duration-fast-01"
-          >
-            Devalok
-          </Link>
-        </Text>
-        <h1 className="font-display text-[length:var(--typo-heading-2xl-size)] font-[number:var(--typo-heading-2xl-weight)] leading-[var(--typo-heading-2xl-leading)] tracking-[var(--typo-heading-2xl-tracking)] text-surface-fg max-w-4xl">
-          <span className="sm:whitespace-nowrap">Your brand. Every component.</span>
-          <br />
-          <span className="text-accent-11">Out of the box.</span>
-        </h1>
-        <Text variant="body-lg" className="text-surface-fg max-w-3xl text-balance">
-          Pick one colour. Watch every button, badge, card, and form match instantly. Light mode,
-          dark mode, every screen. No spreadsheet of hex codes. No config files. Just your brand,
-          everywhere.
-        </Text>
-        <div className="w-full max-w-sm sm:max-w-none sm:w-auto flex flex-col sm:flex-row gap-ds-03 mt-ds-03">
-          <TrackedLink
-            href="/theming"
-            className="w-full sm:w-auto"
-            event="cta_click"
-            eventProps={{ cta: 'try-it-on', location: 'hero' }}
-          >
-            <Button
-              size="lg"
-              className="w-full sm:w-auto bg-highlight-9 text-highlight-fg hover:bg-highlight-10"
-            >
-              Try it on
-            </Button>
-          </TrackedLink>
-          <TrackedLink
-            href="/components"
-            className="w-full sm:w-auto"
-            event="cta_click"
-            eventProps={{ cta: 'see-components', location: 'hero' }}
-          >
-            <Button
-              variant="soft"
-              size="lg"
-              className="w-full sm:w-auto"
-              endIcon={<IconArrowRight size={18} />}
-            >
-              See what&apos;s inside
-            </Button>
-          </TrackedLink>
-        </div>
-        {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
-            Three capability-led chips per docs/copy/shilp-sutra-copy-context.md §10. */}
-        <ul className="mt-ds-08 w-full max-w-full flex flex-nowrap items-center justify-center gap-x-ds-04 overflow-x-auto text-ds-xl text-surface-fg-muted text-difference whitespace-nowrap">
-          <li className="inline-flex items-center justify-center gap-ds-02">
-            <span aria-hidden className="w-1.5 h-1.5 rounded-pill bg-success-9" />
-            Powers Karm, Hiring + studio tools
-          </li>
-          <li className="inline-flex items-center justify-center gap-ds-02">
-            <span aria-hidden className="text-surface-fg-subtle/60">·</span>
-            WCAG-AA · forced-colors verified
-          </li>
-          <li className="inline-flex items-center justify-center gap-ds-02">
-            <span aria-hidden className="text-surface-fg-subtle/60">·</span>
-            120+ components · 1,750+ tests
-          </li>
-        </ul>
-      </div>
-    </section>
+    <>
+      <BetaBanner />
+      <SiteHeader />
+      <main id="main" className="flex-1">
+        <Hero />
+        <StackSupport />
+        <UnifiedCanvas />
+        <ButtonShowcase />
+        <BuiltWith />
+        <ComponentShowcase />
+        <FeatureGrid />
+        <AgentCallout />
+        <DevalokBlock />
+      </main>
+      <SiteFooter />
+    </>
   )
 }

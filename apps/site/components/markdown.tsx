@@ -1,6 +1,17 @@
+import { isValidElement, type ReactNode } from 'react'
 import Link from 'next/link'
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { MarkdownCodeBlock } from '@/components/markdown-code-block'
+
+/** Recursively collect the raw text of a code node's children into a string. */
+function nodeToText(node: ReactNode): string {
+  if (node == null || typeof node === 'boolean') return ''
+  if (typeof node === 'string' || typeof node === 'number') return String(node)
+  if (Array.isArray(node)) return node.map(nodeToText).join('')
+  if (isValidElement(node)) return nodeToText((node.props as { children?: ReactNode }).children)
+  return ''
+}
 
 const components: Components = {
   h1: (props) => (
@@ -65,12 +76,10 @@ const components: Components = {
     )
   },
   code: ({ children, className, ...rest }) => {
-    const isBlock = typeof className === 'string' && className.startsWith('language-')
-    if (isBlock) {
+    const match = typeof className === 'string' ? className.match(/language-(\w+)/) : null
+    if (match) {
       return (
-        <code className="block font-mono text-ds-sm leading-relaxed text-surface-fg whitespace-pre" {...rest}>
-          {children}
-        </code>
+        <MarkdownCodeBlock code={nodeToText(children).replace(/\n$/, '')} language={match[1]} />
       )
     }
     return (
@@ -82,11 +91,9 @@ const components: Components = {
       </code>
     )
   },
-  pre: ({ children }) => (
-    <pre className="my-ds-04 px-ds-04 py-ds-04 rounded-control border border-surface-border bg-surface-overlay overflow-x-auto">
-      {children}
-    </pre>
-  ),
+  // Fenced blocks render as a self-contained MarkdownCodeBlock (its own <div><pre>),
+  // so the wrapping <pre> just passes children through — avoids invalid <pre><div>.
+  pre: ({ children }) => <>{children}</>,
   table: (props) => (
     <div className="my-ds-05 overflow-x-auto rounded-control border border-surface-border">
       <table className="w-full text-ds-sm" {...props} />

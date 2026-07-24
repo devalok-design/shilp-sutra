@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { IconChevronDown, IconPalette } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { BRAND_PRESETS, DEFAULT_BRAND_ID } from '@/lib/brand-presets'
@@ -118,6 +119,7 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
 
   const activeSwatch = SWATCHES.find((s) => s.key === activeKey)
   const triggerLabel = !mounted ? 'Brand' : activeSwatch ? activeSwatch.name : 'Custom'
+  const reduce = useReducedMotion()
 
   return (
     <div ref={containerRef} className="relative">
@@ -139,10 +141,16 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
         <span className="hidden sm:inline">{triggerLabel}</span>
       </Button>
 
-      {open && (
-        <div
+      <AnimatePresence>
+        {open && (
+        <motion.div
           role="dialog"
           aria-label="Choose a brand colour"
+          initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: -6 }}
+          animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+          exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: -6 }}
+          transition={{ duration: reduce ? 0 : 0.16, ease: [0.23, 1, 0.32, 1] }}
+          style={{ transformOrigin: align === 'start' ? 'top left' : 'top right' }}
           className={[
             'absolute mt-ds-03 w-[19rem] max-w-[calc(100vw-2rem)]',
             'rounded-overlay border border-surface-border-subtle bg-surface-overlay shadow-overlay',
@@ -225,8 +233,9 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
             <span>Open theming editor</span>
             <span className="text-surface-fg-subtle">→</span>
           </Link>
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

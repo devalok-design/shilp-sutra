@@ -29,7 +29,7 @@ export function Hero() {
           <br />
           <span className="text-accent-11">Out of the box.</span>
         </h1>
-        <Text variant="body-lg" className="text-surface-fg max-w-2xl text-balance">
+        <Text variant="body-lg" className="text-surface-fg max-w-3xl text-balance">
           Pick one colour. Watch every button, badge, card, and form match instantly. Light mode,
           dark mode, every screen. No spreadsheet of hex codes. No config files. Just your brand,
           everywhere.
@@ -54,14 +54,19 @@ export function Hero() {
             event="cta_click"
             eventProps={{ cta: 'see-components', location: 'hero' }}
           >
-            <Button variant="soft" size="lg" className="w-full sm:w-auto" endIcon={<IconArrowRight size={18} />}>
+            <Button
+              variant="soft"
+              size="lg"
+              className="w-full sm:w-auto dark:bg-transparent dark:text-accent-11 dark:underline dark:underline-offset-4 dark:hover:bg-transparent dark:hover:text-accent-10 dark:shadow-none"
+              endIcon={<IconArrowRight size={18} />}
+            >
               See what&apos;s inside
             </Button>
           </TrackedLink>
         </div>
         {/* Trust chips. Below sm: 2-col grid so chips align cleanly; sm+: inline wrap with dots.
             Three capability-led chips per docs/copy/shilp-sutra-copy-context.md §10. */}
-        <ul className="mt-ds-08 w-full max-w-2xl grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 gap-ds-02 text-ds-xs text-surface-fg-muted text-difference">
+        <ul className="mt-ds-08 w-full max-w-2xl grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-ds-04 sm:gap-y-ds-02 gap-ds-02 text-ds-xl text-surface-fg-muted text-difference">
           <li className="inline-flex items-center justify-center gap-ds-02">
             <span aria-hidden className="w-1.5 h-1.5 rounded-pill bg-success-9" />
             Powers Karm, Hiring + studio tools

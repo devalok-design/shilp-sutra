@@ -105,11 +105,37 @@ export default function DocsIndexPage() {
         <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
-              eyebrow="Docs"
               title="Pick your stack. Ship in five minutes."
-              subtitle="Six framework recipes, plus theming, server components, and troubleshoot."
-              description="Every recipe is the same as the one shipped inside the npm tarball at node_modules/@devalok/shilp-sutra/docs/recipes/. Single source of truth, no drift."
+              subtitle="Framework recipes, theming, server components, and troubleshooting. The same recipes ship inside the npm package."
             />
+
+            {/* For AI editors — first-class path. The MCP serves version-exact
+                docs so agents stop guessing. */}
+            <section className="flex flex-col gap-ds-04 rounded-surface border border-accent-6 bg-accent-2 p-ds-06">
+              <div className="flex items-center gap-ds-02">
+                <IconCode size={16} className="text-accent-11" />
+                <Text variant="label-sm" className="font-semibold uppercase tracking-wide text-accent-11">
+                  For AI editors
+                </Text>
+              </div>
+              <Text variant="heading-sm" className="text-surface-fg">
+                Point your editor at the docs MCP.
+              </Text>
+              <Text variant="body-sm" className="max-w-2xl text-surface-fg-muted">
+                Cursor, Claude, Copilot, and Aider can read every component, prop, token, and setup
+                step straight from the source. Add the server once and stop pasting docs into chat.
+              </Text>
+              <code className="w-fit rounded-control bg-surface-base px-ds-03 py-ds-02 font-mono text-ds-sm text-surface-fg">
+                https://shilp-sutra.devalok.in/mcp
+              </code>
+              <Link
+                href="/agents"
+                className="inline-flex w-fit items-center gap-ds-01 text-ds-sm text-accent-11 hover:text-accent-12"
+              >
+                Full editor setup
+                <IconArrowRight size={14} />
+              </Link>
+            </section>
 
             <section className="flex flex-col gap-ds-05">
               <header className="flex flex-col gap-ds-02 max-w-3xl">
@@ -137,25 +163,6 @@ export default function DocsIndexPage() {
               <DocsSection eyebrow="Troubleshoot" title="When things break." items={TROUBLESHOOT} />
             </div>
 
-            <section className="rounded-control border border-surface-border-subtle bg-surface-raised p-ds-06 flex flex-col gap-ds-03">
-              <div className="flex items-center gap-ds-02">
-                <IconCode size={16} className="text-surface-fg-subtle" />
-                <Text variant="label-sm" className="text-surface-fg-subtle">
-                  Working with an AI editor?
-                </Text>
-              </div>
-              <Text variant="body-sm" className="text-surface-fg-muted max-w-3xl">
-                Install the Agent Skill once. Cursor, Claude Code, Codex, Aider then know every
-                component, every setup step, every gotcha. No more pasting docs into chat.
-              </Text>
-              <Link
-                href="/agents"
-                className="text-ds-sm text-accent-11 hover:text-accent-12 inline-flex items-center gap-ds-01 w-fit"
-              >
-                Set up your editor
-                <IconArrowRight size={14} />
-              </Link>
-            </section>
           </div>
         </div>
       </main>

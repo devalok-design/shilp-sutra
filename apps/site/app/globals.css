@@ -51,6 +51,30 @@ html {
   }
 }
 
+/* Grid-layer colour: draws in the dark trace, then settles to the hairline.
+   Drives --hero-grid, used by the repeating-linear-gradient grid. Registered so
+   the keyframe can animate it (unregistered custom props don't animate). */
+@property --hero-grid {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #eaeaea;
+}
+:root {
+  --hero-grid: #eaeaea;
+}
+.dark {
+  --hero-grid: color-mix(in oklch, white 9%, transparent);
+}
+@keyframes hero-grid-settle {
+  0%,
+  60% {
+    --hero-grid: var(--hero-line-trace);
+  }
+  100% {
+    --hero-grid: var(--hero-line);
+  }
+}
+
 /*
  * Colour hierarchy — Figma "Branding" palette (node 103:1155):
  *   Primary   -> --color-accent-*    Teal.  Brand-preset default (brand-presets.ts) —

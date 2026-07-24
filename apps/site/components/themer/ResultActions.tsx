@@ -36,14 +36,14 @@ export function ResultActions({ css }: ResultActionsProps) {
         <button
           type="button"
           onClick={() => copy(css, setCssState)}
-          className="inline-flex items-center gap-ds-02 rounded-control border border-surface-border-strong bg-surface-2 px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-3"
+          className="inline-flex items-center gap-ds-02 rounded-control border border-surface-border-strong bg-surface-raised px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-raised-hover"
         >
           {cssState === 'copied' ? 'Copied' : 'Copy CSS'}
         </button>
         <button
           type="button"
           onClick={() => copy(window.location.href, setShareState)}
-          className="inline-flex items-center gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-2 px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg-muted hover:text-surface-fg hover:bg-surface-3"
+          className="inline-flex items-center gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover"
         >
           {shareState === 'copied' ? 'Share URL copied' : 'Copy share URL'}
         </button>

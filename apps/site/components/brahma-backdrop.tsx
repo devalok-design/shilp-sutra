@@ -86,7 +86,12 @@ type Chip = { id: string; left: number; top: number; node: React.ReactNode; lg?:
 const swatch = (size: string, color: string, border = false) => (
   <div
     className={`${size} rounded-control shadow-raised`}
-    style={{ background: color, ...(border ? { boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.12)' } : null) }}
+    style={{
+      background: color,
+      // Swatches bound to accent tokens recolour when the brand preset changes.
+      transition: 'background-color 450ms ease',
+      ...(border ? { boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.12)' } : null),
+    }}
   />
 )
 
@@ -111,7 +116,7 @@ const chips: Chip[] = [
     lg: true,
     node: (
       <span
-        className="inline-flex select-none items-center rounded-control px-ds-04 py-ds-03 text-ds-sm font-medium shadow-raised"
+        className="inline-flex select-none items-center rounded-control px-ds-04 py-ds-03 text-ds-sm font-medium opacity-45"
         style={{ background: C.lime, color: C.ink }}
       >
         Learn More
@@ -136,11 +141,12 @@ const chips: Chip[] = [
     ),
   },
   { id: 'sq-black', left: 178, top: 1035, lg: true, node: swatch('size-8', C.ink) },
-  // Small stack riding the deity's right arm (source rects 6681–6684).
-  { id: 'arm-blue', left: 1831, top: 611, lg: true, node: swatch('size-5', C.blue) },
-  { id: 'arm-lime', left: 1831, top: 645, lg: true, node: swatch('size-5', C.lime) },
-  { id: 'arm-black', left: 1831, top: 679, lg: true, node: swatch('size-5', C.ink) },
-  { id: 'arm-white', left: 1831, top: 712, lg: true, node: swatch('size-5', '#FFFFFF', true) },
+  // Stack riding the deity's right arm — a mini ramp of the ACTIVE brand accent,
+  // so it recolours live when the preset changes (source rects 6681–6684).
+  { id: 'arm-1', left: 1831, top: 611, lg: true, node: swatch('size-5', 'var(--color-accent-11)') },
+  { id: 'arm-2', left: 1831, top: 645, lg: true, node: swatch('size-5', 'var(--color-accent-9)') },
+  { id: 'arm-3', left: 1831, top: 679, lg: true, node: swatch('size-5', 'var(--color-accent-7)') },
+  { id: 'arm-4', left: 1831, top: 712, lg: true, node: swatch('size-5', 'var(--color-accent-5)') },
 ]
 
 export function BrahmaBackdrop() {

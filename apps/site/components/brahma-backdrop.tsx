@@ -24,12 +24,15 @@
  */
 
 import { useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { IconLink } from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@devalok/shilp-sutra/ui/avatar'
 import { Switch } from '@devalok/shilp-sutra/ui/switch'
 
-import { BrahmaArt } from './brahma-art'
+// Code-split the 700KB+ deity vector out of the initial bundle — it flickers in
+// last (3.6s), so loading its chunk after first paint costs nothing visible.
+const BrahmaArt = dynamic(() => import('./brahma-art').then((m) => m.BrahmaArt), { ssr: false })
 
 // ── Source-frame geometry (px in the 1920×1080 Figma frame) ──────────────────
 const FRAME_W = 1920

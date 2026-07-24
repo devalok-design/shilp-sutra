@@ -7,7 +7,7 @@ import { TrackedLink } from './tracked-link'
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden min-h-[720px] lg:min-h-[900px]">
+    <section className="relative isolate flex min-h-svh flex-col justify-center overflow-hidden">
       <BrahmaBackdrop />
       {/* Content sits in a left column; the Brahma identity composition owns the
           right. pt clears the floating pill (~70–80px). */}

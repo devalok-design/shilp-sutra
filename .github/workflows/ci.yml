@@ -32,7 +32,12 @@ jobs:
       - name: Detect change scope
         id: scope
         run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
+          # Fetch the base ref WITH ancestry (no --depth=1). The three-dot diff
+          # below needs a merge-base; a shallow depth-1 fetch only has the base
+          # tip, so when a branch's fork-point is not the current base tip (base
+          # advanced after branching), merge-base fails: "no merge base", exit
+          # 128. Checkout already uses fetch-depth: 0, so full history is cheap.
+          git fetch origin ${{ github.base_ref }}
           CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
           echo "$CHANGED"
           # mcp_only: EVERY changed file is under packages/mcp-server/ → skip the

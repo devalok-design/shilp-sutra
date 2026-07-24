@@ -91,10 +91,13 @@ export function CategorySidebar({
             </button>
             {expanded && (
               <ul id={listId} aria-labelledby={headerId} className="flex flex-col gap-ds-01 mt-ds-02">
-                {group.items.map((doc) => {
+                {group.items.map((doc, i) => {
                   const isActive = doc.slug === currentSlug
+                  // Key by slug+index: `sidebar` is documented in both ui/ and
+                  // shell/, so a plain slug key collides. (Root cause is a DS
+                  // docs slug clash — flagged for a rename.)
                   return (
-                    <li key={doc.slug}>
+                    <li key={`${doc.slug}-${i}`}>
                       <Link
                         href={`${basePath}/${doc.slug}`}
                         className={[

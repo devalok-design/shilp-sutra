@@ -128,7 +128,13 @@ describe('Combobox', () => {
 
   it('renders disabled state', () => {
     render(<Combobox options={fruits} onValueChange={vi.fn()} disabled placeholder="Pick" />)
-    expect(screen.getByRole('combobox')).toBeDisabled()
+    // Trigger is a div[role=combobox] (not a native button, so chip remove-
+    // buttons in multi-select aren't illegally nested), so disabled is conveyed
+    // via aria-disabled + removed from the tab order rather than the :disabled
+    // pseudo-class.
+    const trigger = screen.getByRole('combobox')
+    expect(trigger).toHaveAttribute('aria-disabled', 'true')
+    expect(trigger).toHaveAttribute('tabindex', '-1')
   })
 
   it('does not open popover when disabled', async () => {

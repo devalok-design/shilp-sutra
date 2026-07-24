@@ -119,12 +119,7 @@ export function SiteHeader() {
               <img
                 src="/brand/shilp-sutra/wordmark.svg"
                 alt="Shilp Sutra"
-                className="h-[22px] w-auto shrink-0 dark:hidden"
-              />
-              <img
-                src="/brand/shilp-sutra/wordmark-white.svg"
-                alt="Shilp Sutra"
-                className="h-[22px] w-auto shrink-0 hidden dark:block"
+                className="h-[22px] w-auto shrink-0"
               />
               <span className="text-ds-xs font-mono shrink-0 hidden sm:inline text-surface-fg-subtle leading-none self-center">
                 v{SHILP_SUTRA_MINOR}
@@ -139,8 +134,8 @@ export function SiteHeader() {
             {navLinks.map((link) => {
               const isAccent = 'accent' in link && link.accent
               const base = isAccent
-                ? 'inline-flex items-center gap-ds-02 whitespace-nowrap text-ds-sm text-secondary-11 dark:text-secondary-11 hover:text-secondary-12 dark:hover:text-secondary-12 transition-colors duration-fast-01'
-                : 'text-ds-sm text-surface-fg-muted dark:text-neutral-11 hover:text-surface-fg dark:hover:text-neutral-12 transition-colors duration-fast-01'
+                ? 'inline-flex items-center gap-ds-02 whitespace-nowrap text-ds-sm text-secondary-11 dark:text-[oklch(0.43_0.0884_300)] hover:text-secondary-12 dark:hover:text-[oklch(0.32_0.0884_300)] transition-colors duration-fast-01'
+                : 'text-ds-sm text-surface-fg-muted dark:text-[oklch(0.43_0.0074_350)] hover:text-surface-fg dark:hover:text-[oklch(0.32_0.0042_350)] transition-colors duration-fast-01'
               return (
                 <Link key={link.href} href={link.href} className={base}>
                   {isAccent && <span className="w-1.5 h-1.5 rounded-pill bg-secondary-9" />}
@@ -162,7 +157,7 @@ export function SiteHeader() {
               aria-label="View on GitHub"
               onClick={() => track('cta_click', { cta: 'github', location: 'header' })}
             >
-              <Button variant="ghost" size="icon-sm" aria-label="GitHub" className="text-neutral-11 dark:text-neutral-11 hover:text-neutral-12 dark:hover:text-neutral-12">
+              <Button variant="ghost" size="icon-sm" aria-label="GitHub" className="text-[oklch(0.43_0.0074_350)] dark:text-[oklch(0.43_0.0074_350)] hover:text-[oklch(0.32_0.0042_350)] dark:hover:text-[oklch(0.32_0.0042_350)]">
                 <IconBrandGithub size={16} />
               </Button>
             </a>

@@ -33,7 +33,8 @@ const ORIGIN_ROW = 5
 // internally tangent at the origin (they "ripple" from one grid point).
 const RADII_CELLS = [3.4, 4.9, 6.6]
 
-const EASE_OUT = [0.23, 1, 0.32, 1] as const
+// Golden-ratio easing curve: control points at φ⁻¹ (0.618) and φ⁻² (0.382).
+const EASE_OUT = [0.618, 0, 0.382, 1] as const
 const HAIRLINE = 'var(--hero-line)'
 
 // Exact identity palette (fixed specimens). Accent-bound swatches use tokens.
@@ -73,37 +74,12 @@ const chips: Chip[] = [
       </Avatar>
     ),
   },
-  { id: 'sq-blue', col: 6, row: 2, node: swatch('size-8', C.blue) },
-  {
-    id: 'learn',
-    col: 7,
-    row: 6,
-    lg: true,
-    node: (
-      <span
-        className="inline-flex select-none items-center rounded-control px-ds-04 py-ds-03 text-ds-sm font-medium opacity-45"
-        style={{ background: C.lime, color: C.ink }}
-      >
-        Learn More
-      </span>
-    ),
-  },
-  { id: 'sq-lime', col: 6, row: 7, lg: true, node: swatch('size-8', C.lime) },
-  {
-    id: 'link',
-    col: 0,
-    row: 8,
-    lg: true,
-    node: (
-      <div
-        className="flex size-[4.5rem] items-center justify-center rounded-control shadow-raised"
-        style={{ background: C.ink, color: C.inkFg }}
-      >
-        <IconLink size={30} />
-      </div>
-    ),
-  },
-  { id: 'sq-black', col: 2, row: 9, lg: true, node: swatch('size-8', C.ink) },
+  // 'learn' (the faded easter-egg chip) is rendered separately below — it must
+  // live OUTSIDE the inert layer to stay clickable.
+  // 'link' (the ink tile) is also an easter egg — rendered below, outside inert.
+  { id: 'sq-blue', col: 8, row: 2, lg: true, node: swatch('size-8', C.blue) },
+  { id: 'sq-lime', col: 8, row: 7, lg: true, node: swatch('size-8', C.lime) },
+  { id: 'sq-black', col: 10, row: 8.7, lg: true, node: swatch('size-8', C.ink) },
   // Right-arm stack — a mini ramp of the ACTIVE accent (recolours with preset).
   { id: 'arm-1', col: 15, row: 5, lg: true, node: swatch('size-5', 'var(--color-accent-11)') },
   { id: 'arm-2', col: 15, row: 5.4, lg: true, node: swatch('size-5', 'var(--color-accent-9)') },
@@ -158,7 +134,7 @@ export function BrahmaBackdrop() {
     hidden: reduce ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.92 },
     shown: { opacity: 1, scale: 1 },
   }
-  const chipDelays = useMemo(() => chips.map(() => 2.9 + Math.random() * 1.2), [])
+  const chipDelays = useMemo(() => chips.map(() => 4.8 + Math.random() * 1.8), [])
 
   // A5 — replay the whole entrance when the theme is toggled on this page.
   // ThemeToggle dispatches 'ss-theme-change'; bumping this key remounts the
@@ -174,6 +150,7 @@ export function BrahmaBackdrop() {
   const py = (row: number) => `${row * CELL}px`
 
   return (
+    <>
     <div ref={rootRef} aria-hidden inert className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* Invisible probe that mirrors the hero content container, so we can read
           its left edge and anchor the grid to it. */}
@@ -191,7 +168,7 @@ export function BrahmaBackdrop() {
               circle origin so the grid builds from the centre. */}
           {vLines.map((x, i) => {
             const dist = Math.abs(x - ox)
-            const delay = 0.3 + (dist / CELL) * 0.06
+            const delay = 0.5 + (dist / CELL) * 0.09
             return (
               <motion.line
                 key={`v-${i}`}
@@ -202,16 +179,16 @@ export function BrahmaBackdrop() {
                 stroke={HAIRLINE}
                 strokeWidth={1}
                 className={reduce ? undefined : 'hero-line-anim'}
-                style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: '1.4s' } as React.CSSProperties)}
+                style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: '2.0s' } as React.CSSProperties)}
                 initial={strokeInitial}
                 animate={{ pathLength: 1, opacity: 1 }}
-                transition={reduce ? { duration: 0 } : { pathLength: { duration: 0.7, delay, ease: EASE_OUT }, opacity: { duration: 0.2, delay } }}
+                transition={reduce ? { duration: 0 } : { pathLength: { duration: 1.1, delay, ease: EASE_OUT }, opacity: { duration: 0.2, delay } }}
               />
             )
           })}
           {hLines.map((y, i) => {
             const dist = Math.abs(y - oy)
-            const delay = 0.3 + (dist / CELL) * 0.06
+            const delay = 0.5 + (dist / CELL) * 0.09
             return (
               <motion.line
                 key={`h-${i}`}
@@ -222,10 +199,10 @@ export function BrahmaBackdrop() {
                 stroke={HAIRLINE}
                 strokeWidth={1}
                 className={reduce ? undefined : 'hero-line-anim'}
-                style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: '1.4s' } as React.CSSProperties)}
+                style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: '2.0s' } as React.CSSProperties)}
                 initial={strokeInitial}
                 animate={{ pathLength: 1, opacity: 1 }}
-                transition={reduce ? { duration: 0 } : { pathLength: { duration: 0.7, delay, ease: EASE_OUT }, opacity: { duration: 0.2, delay } }}
+                transition={reduce ? { duration: 0 } : { pathLength: { duration: 1.1, delay, ease: EASE_OUT }, opacity: { duration: 0.2, delay } }}
               />
             )
           })}
@@ -245,8 +222,8 @@ export function BrahmaBackdrop() {
           ))}
           {RADII_CELLS.map((rc, i) => {
             const r = rc * CELL
-            const delay = 1.3 + i * 0.22
-            const dur = 2.1 + (i % 3) * 0.2
+            const delay = 2.2 + i * 0.34
+            const dur = 3.0 + (i % 3) * 0.3
             return (
               <g key={`c-${i}`}>
                 {/* opening right (center to the right of origin). The
@@ -301,8 +278,8 @@ export function BrahmaBackdrop() {
           reduce
             ? { duration: 0 }
             : {
-                duration: 1.05,
-                delay: 3.6,
+                duration: 1.3,
+                delay: 5.2,
                 times: [0, 0.09, 0.16, 0.28, 0.4, 0.52, 0.7, 1],
                 ease: EASE_OUT,
               }
@@ -334,5 +311,37 @@ export function BrahmaBackdrop() {
       )}
       </div>
     </div>
+
+    {/* Easter eggs — the faded "Learn More" chip and the ink link-tile look
+        decorative/disabled but rickroll on click. They live OUTSIDE the inert
+        decorative layer so they stay clickable. Mouse-only (tabIndex -1,
+        aria-hidden) so they never trap keyboard users. */}
+    {ready && (
+      <>
+        <a
+          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          target="_blank"
+          rel="noreferrer"
+          aria-hidden
+          tabIndex={-1}
+          className="hero-egg pointer-events-auto absolute z-20 hidden select-none rounded-control px-ds-04 py-ds-03 text-ds-sm font-medium transition-transform duration-fast-02 hover:scale-105 lg:block"
+          style={{ left: px(9.2), top: py(5.4), background: C.lime, color: C.ink, ['--egg-delay' as string]: '5.4s' }}
+        >
+          Learn More
+        </a>
+        <a
+          href="https://www.youtube.com/watch?v=iik25wqIuFo"
+          target="_blank"
+          rel="noreferrer"
+          aria-hidden
+          tabIndex={-1}
+          className="hero-egg pointer-events-auto absolute z-20 hidden size-[4.5rem] items-center justify-center rounded-control shadow-raised transition-transform duration-fast-02 hover:scale-105 lg:flex"
+          style={{ left: px(9), top: py(8), background: C.ink, color: C.inkFg, ['--egg-delay' as string]: '5.8s' }}
+        >
+          <IconLink size={30} />
+        </a>
+      </>
+    )}
+    </>
   )
 }

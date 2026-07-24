@@ -78,7 +78,7 @@ export function BetaBanner() {
       aria-label="Public beta notice"
       className="relative z-popover border-b border-accent-7 bg-accent-2"
     >
-      <div className="relative mx-auto max-w-6xl px-page-x py-ds-02 flex items-center justify-center">
+      <div className="mx-auto max-w-6xl px-page-x py-ds-02 flex items-center justify-center">
         <p className="text-ds-xs sm:text-ds-sm text-accent-12 text-center pr-ds-06">
           <strong className="font-semibold">Public beta · v{SHILP_SUTRA_MINOR}.</strong>
           {' '}
@@ -93,15 +93,15 @@ export function BetaBanner() {
             Give feedback →
           </Link>
         </p>
-        <button
-          type="button"
-          onClick={dismiss}
-          aria-label="Dismiss beta notice"
-          className="absolute right-page-x top-1/2 -translate-y-1/2 shrink-0 rounded-control-inner p-ds-01 text-accent-11 hover:bg-accent-3 transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8"
-        >
-          <IconX size={16} aria-hidden />
-        </button>
       </div>
+      <button
+        type="button"
+        onClick={dismiss}
+        aria-label="Dismiss beta notice"
+        className="absolute right-1 top-1/2 -translate-y-1/2 shrink-0 rounded-control-inner p-ds-01 text-accent-11 hover:bg-accent-3 transition-colors duration-fast-01 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8"
+      >
+        <IconX size={16} aria-hidden />
+      </button>
     </div>
   )
 }

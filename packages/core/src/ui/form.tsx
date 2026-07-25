@@ -13,6 +13,13 @@ interface FormFieldContextValue {
   helperTextId?: string
   /** Auto-generated id shared between Label (htmlFor) and the field input (id). */
   inputId?: string
+  /**
+   * Auto-generated id of the Label itself. Non-labellable controls (e.g. the
+   * Combobox trigger, a `div[role=combobox]`, which `<label htmlFor>` can't target)
+   * reference this via `aria-labelledby` to still adopt the visible label as their
+   * accessible name.
+   */
+  labelId?: string
   required?: boolean
 }
 const FormFieldContext = React.createContext<FormFieldContextValue>({})
@@ -55,9 +62,10 @@ const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
     const autoId = React.useId()
     const resolvedHelperId = helperTextId || `${autoId}-helper`
     const resolvedInputId = inputId || `${autoId}-input`
+    const resolvedLabelId = `${resolvedInputId}-label`
     const contextValue = React.useMemo(
-      () => ({ state, helperTextId: resolvedHelperId, inputId: resolvedInputId, required }),
-      [state, resolvedHelperId, resolvedInputId, required],
+      () => ({ state, helperTextId: resolvedHelperId, inputId: resolvedInputId, labelId: resolvedLabelId, required }),
+      [state, resolvedHelperId, resolvedInputId, resolvedLabelId, required],
     )
 
     return (

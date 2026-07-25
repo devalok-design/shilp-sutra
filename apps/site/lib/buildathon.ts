@@ -15,6 +15,8 @@ export const CONTACT_EMAIL = 'hello@devalok.in'
 
 export const DATES = '25-31 July, 2026'
 export const CLOSES = '31 July, 11:59 PM IST'
+/** Short form, for places where the time of day is noise (e.g. a hero plate). */
+export const CLOSES_SHORT = '31 July'
 export const PRIZE = '$15,000'
 
 /**

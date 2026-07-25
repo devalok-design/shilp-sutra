@@ -1,27 +1,32 @@
 'use client'
 
 /**
- * BuildathonStrip — the running-buildathon notice in the homepage hero, sitting
- * with the CTAs rather than as a bar pinned to the top of the window.
+ * BuildathonStrip — the running-buildathon announcement in the homepage hero,
+ * sitting with the CTAs rather than as a bar pinned to the top of the window.
  *
- * Carries the buildathon page's visual language deliberately and sparingly: the
- * top hairline it uses for set-off asides, and the poster's lime plate on exactly
- * one value — the time remaining. Lime is the one emphasis device across both
- * surfaces, and it stops meaning anything if it spreads.
+ * It borrows the poster's own hierarchy rather than inventing a promo panel:
+ * a small label, then one number at display scale on the lime plate, then the
+ * offer. Lime marks the deadline here and on /buildathon and nothing else on
+ * either surface — that is what makes the two read as one system.
+ *
+ * There is deliberately no card, border or shadow around it. The hairline and
+ * the plate carry the block; wrapping it in a tinted, rounded, shadowed slab
+ * would turn it into the stock pre-footer CTA banner, and it would compete with
+ * the hero composition instead of sitting under it.
  *
  * Two constraints shape the timer:
  *
  * 1. The homepage is statically prerendered, so a countdown computed on the
- *    server would freeze at build time and quietly lie. The remaining time is
- *    therefore computed on the client.
+ *    server would freeze at build time and quietly lie about the deadline. The
+ *    remaining time is therefore computed on the client.
  * 2. Content must never depend on JS having run. The server render — and the
  *    first client render, so hydration matches — shows the absolute deadline,
  *    which is true whether or not the effect ever fires. The live figure
  *    replaces it after mount as an enhancement.
  *
- * It is also NOT the stock DAYS/HRS/MIN/SEC box widget. One compressed phrase,
- * ticking at minute resolution: a real deadline stated plainly, not urgency
- * theatre. The whole strip disappears once entries close.
+ * It is also NOT the stock DAYS/HRS/MIN/SEC box widget. One phrase at the
+ * coarsest honest unit, ticking at minute resolution: a real deadline stated
+ * plainly, not urgency theatre. The whole block disappears once entries close.
  */
 
 import { useEffect, useState } from 'react'
@@ -29,27 +34,27 @@ import { IconArrowRight } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 import { TrackedLink } from './tracked-link'
-import { CLOSES, CLOSES_AT, PRIZE, isOpen } from '@/lib/buildathon'
+import { CLOSES_SHORT, CLOSES_AT, PRIZE, isOpen } from '@/lib/buildathon'
 
 const LIME = '#D5EF72'
 const LIME_INK = '#131514'
 
-/** Largest-two-units phrasing: "4 days, 6 hours" → "6 hours, 12 minutes" → "12 minutes". */
+/**
+ * One unit, the coarsest that is still honest: "6 days left" → "18 hours left"
+ * → "42 minutes left". At display scale a two-unit phrase reads as a spec, and
+ * the finer unit is not what a reader needs from a homepage.
+ */
 function formatRemaining(ms: number): string | null {
   if (ms <= 0) return null
-  const totalMinutes = Math.floor(ms / 60_000)
-  const days = Math.floor(totalMinutes / 1440)
-  const hours = Math.floor((totalMinutes % 1440) / 60)
-  const minutes = totalMinutes % 60
-  const unit = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
-
-  if (days > 0) return `${unit(days, 'day')}, ${unit(hours, 'hour')} left`
-  if (hours > 0) return `${unit(hours, 'hour')}, ${unit(minutes, 'minute')} left`
-  return `${unit(Math.max(minutes, 1), 'minute')} left`
+  const minutes = Math.floor(ms / 60_000)
+  const unit = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'} left`
+  if (minutes >= 1440) return unit(Math.floor(minutes / 1440), 'day')
+  if (minutes >= 60) return unit(Math.floor(minutes / 60), 'hour')
+  return unit(Math.max(minutes, 1), 'minute')
 }
 
 export function BuildathonStrip() {
-  // null until mounted, so server HTML and first client render agree.
+  // null until mounted, so the server HTML and the first client render agree.
   const [remaining, setRemaining] = useState<string | null>(null)
   const [closed, setClosed] = useState(false)
 
@@ -70,38 +75,42 @@ export function BuildathonStrip() {
     return () => clearInterval(id)
   }, [])
 
-  // Server-side gate plus a client-side one, so the strip vanishes on a page
-  // that was prerendered while the buildathon was still open.
+  // Gated server-side as well as here, so a page prerendered while entries were
+  // open still drops the block once they close.
   if (!isOpen() || closed) return null
 
   return (
-    <div className="w-full border-t border-surface-border-subtle pt-ds-04">
+    <div className="w-full border-t border-surface-border-subtle pt-ds-05">
       <TrackedLink
         href="/buildathon"
         event="cta_click"
         eventProps={{ cta: 'buildathon-strip', location: 'home-hero' }}
-        className="group flex flex-col items-center gap-ds-03 text-center sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-ds-04 sm:text-left"
+        className="group flex flex-col items-center gap-ds-03 text-center lg:items-start lg:text-left"
       >
         <Text variant="label-sm" as="span" className="text-surface-fg-subtle">
-          Buildathon running
+          Build with Shilp Sutra · an open buildathon
         </Text>
 
+        {/* The number is the block. Clamped so it stays big on desktop without
+            overflowing the narrow column on a phone. */}
         <span
-          className="px-ds-02 py-ds-01 text-ds-sm font-semibold tabular-nums"
+          className="inline-block px-ds-03 py-ds-01 font-display text-[clamp(1.75rem,5.5vw,2.75rem)] font-semibold leading-[1.15] tabular-nums"
           style={{ background: LIME, color: LIME_INK }}
         >
-          {remaining ?? `closes ${CLOSES}`}
+          {remaining ?? `Closes ${CLOSES_SHORT}`}
         </span>
 
-        {/* "Build on Shilp Sutra" is dropped on purpose: the reader is already on
-            the Shilp Sutra site, and the label above says what this is. Keeping it
-            pushed the strip onto a second line for no added meaning. */}
-        <span className="inline-flex items-baseline gap-ds-02 text-ds-base text-surface-fg">
-          Win {PRIZE} of brand and GTM support
+        <Text variant="body-lg" as="span" className="text-pretty text-surface-fg">
+          Build anything on Shilp Sutra and win {PRIZE} of brand identity, GTM strategy, and
+          ongoing support from Devalok.
+        </Text>
+
+        <span className="mt-ds-01 inline-flex items-center gap-ds-02 text-ds-md font-semibold text-accent-11">
+          See how to enter
           <IconArrowRight
-            size={16}
+            size={18}
             aria-hidden
-            className="translate-y-[0.15em] transition-transform duration-fast-02 group-hover:translate-x-[3px]"
+            className="transition-transform duration-fast-02 group-hover:translate-x-[3px]"
           />
         </span>
       </TrackedLink>

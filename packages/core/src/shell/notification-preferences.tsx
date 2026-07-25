@@ -213,7 +213,10 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                       value={pref.minTier}
                       onValueChange={(v) => onUpdateTier?.(pref, v)}
                     >
-                      <SelectTrigger className="h-ds-xs-plus w-[130px] text-body-sm">
+                      <SelectTrigger
+                        aria-label={`Minimum notification tier for ${channelInfo.label} on ${getProjectName(pref.projectId)}`}
+                        className="h-ds-xs-plus w-[130px] text-body-sm"
+                      >
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -231,6 +234,7 @@ const NotificationPreferences = React.forwardRef<HTMLDivElement, NotificationPre
                         {pref.muted ? 'Muted' : 'Active'}
                       </span>
                       <Switch
+                        aria-label={`${pref.muted ? 'Unmute' : 'Mute'} ${channelInfo.label} for ${getProjectName(pref.projectId)}`}
                         checked={!pref.muted}
                         onCheckedChange={() => onToggleMute?.(pref)}
                       />

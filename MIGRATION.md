@@ -4,6 +4,61 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.54.0 — AppSidebar removed
+
+**Breaking.** The config-driven `AppSidebar` shell component is removed. It was a
+convenience wrapper over the `Sidebar` primitives; those **primitives are
+unchanged** (`@devalok/shilp-sutra/ui/sidebar`). Only the wrapper — and its config
+types and subpath export — are gone.
+
+**Removed**
+
+| Symbol | Was at |
+| --- | --- |
+| `AppSidebar`, `AppSidebarProps` | `@devalok/shilp-sutra/shell/sidebar` + the `/shell` barrel |
+| `NavGroup`, `NavItem`, `NavSubItem`, `SidebarUser`, `SidebarPromo`, `SidebarFooterConfig` | `@devalok/shilp-sutra/shell/sidebar` (AppSidebar config types) |
+| `@devalok/shilp-sutra/shell/sidebar` (subpath export) | — |
+
+**Migrate — option A (fastest): install the `sidebar-app` preset.** It reproduces
+AppSidebar's shape (logo, grouped nav, collapsible sub-items, badges, group `+`
+action, user footer) as source you own and edit.
+
+Register the registry once in `components.json`:
+
+```json
+{ "registries": { "@devalok": "https://shilp-sutra.devalok.in/r/{name}.json" } }
+```
+
+Then:
+
+```bash
+npx shadcn@latest add @devalok/sidebar-app
+```
+
+Replace the wrapper with the pasted component, wiring your router:
+
+```tsx
+// Before
+import { AppSidebar } from '@devalok/shilp-sutra/shell/sidebar'
+<AppSidebar navGroups={groups} user={user} currentPath={pathname} />
+
+// After — you own SidebarApp; edit the markup directly
+import { SidebarApp } from '@/components/devalok/sidebar-app/sidebar-app'
+<SidebarApp />
+// In SidebarApp: swap <a> for next/link and CURRENT_PATH for usePathname().
+```
+
+Other shapes: `@devalok/sidebar-projects`, `@devalok/sidebar-client`,
+`@devalok/sidebar-minimal`. Gallery: <https://shilp-sutra.devalok.in/presets>.
+
+**Migrate — option B: compose the primitives directly** from
+`@devalok/shilp-sutra/ui/sidebar` (`Sidebar`, `SidebarProvider`, `SidebarMenu`,
+`SidebarMenuButton`, `SidebarMenuSub*`, `SidebarMenuBadge`, `SidebarGroupAction`,
+…). The preset in option A is itself a worked example of this.
+
+> Requires `@devalok/shilp-sutra` installed and its CSS imported
+> (`@import "@devalok/shilp-sutra/css";`). framer-motion ^12 is a required peer.
+
 ## v0.53.0 — additive (no migration required)
 
 Nothing breaks at the TypeScript level; this release is additive.

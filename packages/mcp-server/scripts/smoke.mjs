@@ -71,8 +71,8 @@ try {
   const list = await rpc('tools/list', {}, 2)
   const names = (list.result?.tools ?? []).map((t) => t.name).sort()
   check(
-    'tools/list has all 14',
-    JSON.stringify(names) === JSON.stringify(['check_slop', 'detect_framework', 'find_component', 'get_component', 'get_setup', 'get_tokens', 'how_to_use', 'preflight', 'report_issue', 'search_docs', 'submit_entry', 'upgrade', 'validate_snippet', 'verify_setup']),
+    'tools/list has all 17',
+    JSON.stringify(names) === JSON.stringify(['check_slop', 'detect_framework', 'find_component', 'get_component', 'get_preset', 'get_setup', 'get_tokens', 'how_to_use', 'list_presets', 'preflight', 'preview_preset', 'report_issue', 'search_docs', 'submit_entry', 'upgrade', 'validate_snippet', 'verify_setup']),
     names.join(',')
   )
 
@@ -158,6 +158,19 @@ try {
   const how = await call('how_to_use', {}, 19)
   const howText = how.result?.content?.[0]?.text ?? ''
   check('how_to_use lists check_slop + sequences', howText.includes('check_slop') && howText.includes('writing_a_component'), howText.slice(0, 120))
+  check('how_to_use lists preset tools + using_a_preset', howText.includes('list_presets') && howText.includes('using_a_preset'), howText.slice(0, 120))
+
+  // Preset Library tools: wired + graceful (fetch the live registry; in CI the
+  // endpoint may not be deployed yet, so we assert the banner/shape, not network).
+  const lp = await call('list_presets', {}, 25)
+  const lpText = lp.result?.content?.[0]?.text ?? ''
+  check('list_presets responds with Preset Library banner', lpText.includes('Preset Library'), lpText.slice(0, 160))
+  const gp = await call('get_preset', { name: 'sidebar-app' }, 26)
+  const gpText = gp.result?.content?.[0]?.text ?? ''
+  check('get_preset responds (banner + install or not-found)', gpText.includes('Preset Library') && (gpText.includes('shadcn') || gpText.includes('No preset')), gpText.slice(0, 160))
+  const pp = await call('preview_preset', { name: 'sidebar-app' }, 27)
+  const ppText = pp.result?.content?.[0]?.text ?? ''
+  check('preview_preset responds (banner)', ppText.includes('Preset Library'), ppText.slice(0, 160))
 
   // ── buildathon ────────────────────────────────────────────────────────────
   // Only FAILURE paths are exercised. A submit_entry call that passed every

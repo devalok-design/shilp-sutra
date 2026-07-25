@@ -46,6 +46,21 @@ const config: NextConfig = {
   experimental: {
     optimizePackageImports: ['@tabler/icons-react'],
   },
+  // The Preset Library registry lives as static files in public/r/ (generated
+  // by scripts/build-registry.mjs at prebuild). Open CORS so the shadcn CLI,
+  // the shilp-sutra MCP, and browser-based registry viewers can fetch it.
+  async headers() {
+    return [
+      {
+        source: '/r/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET, OPTIONS' },
+          { key: 'Cache-Control', value: 'public, s-maxage=300, stale-while-revalidate=86400' },
+        ],
+      },
+    ]
+  },
   // NOTE: /mcp is proxied by app/mcp/route.ts (runtime env read), NOT a
   // rewrite here — rewrites bake at build time and Docker builds don't see
   // Railway service variables unless declared as ARGs.

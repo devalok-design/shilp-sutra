@@ -53,6 +53,32 @@ describe('BulkActionBar', () => {
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument()
   })
 
+  it('roving focus + Enter activates the action (keyboard — P0 regression)', async () => {
+    const onArchive = vi.fn()
+    const onDelete = vi.fn()
+    const user = userEvent.setup()
+    render(
+      <BulkActionBar
+        show
+        count={3}
+        onClearSelection={vi.fn()}
+        actions={[
+          { label: 'Archive', onClick: onArchive },
+          { label: 'Delete', onClick: onDelete, color: 'error' },
+        ]}
+      />,
+    )
+    // Single tab stop → focus lands on the first real button (not a wrapper div).
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Archive' })).toHaveFocus()
+    // Roving with arrows, then activation with Enter.
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('button', { name: 'Delete' })).toHaveFocus()
+    await user.keyboard('{Enter}')
+    expect(onDelete).toHaveBeenCalledTimes(1)
+    expect(onArchive).not.toHaveBeenCalled()
+  })
+
   it('renders action buttons', () => {
     render(
       <BulkActionBar

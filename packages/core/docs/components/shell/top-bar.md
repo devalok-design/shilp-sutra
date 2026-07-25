@@ -120,7 +120,7 @@ UserMenuItem fields:
 - **NotificationCenter lives inside TopBar.Right** — it's a complete bell+popover component. Drop it in a TopBar.Section next to other icon buttons.
 - **UserMenu is composable:** `userMenuItems` inserts custom items between the built-in Profile and the color-mode toggle. Each item can navigate (href), run an action (onClick), or show a separator/badge/color decoration.
 - **Responsive hiding:** Actions that shouldn't appear on mobile use `className="hidden md:flex"` on the IconButton — the component doesn't enforce mobile hiding; that's layout responsibility.
-- **Pairs with AppSidebar** — desktop app shell is typically `<TopBar>` + `<AppSidebar>` + main content region.
+- **Pairs with Sidebar** — desktop app shell is typically `<TopBar>` + `<Sidebar>` + main content region.
 
 ## Gotchas
 - Without `TopBar.Center`, layout is flex (two-zone). With it, layout switches to CSS grid `1fr auto 1fr` for true centering.

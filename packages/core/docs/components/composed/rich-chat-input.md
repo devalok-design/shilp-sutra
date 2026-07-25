@@ -9,19 +9,24 @@ Compact rich text chat input for unified human+AI workspaces. Built on TipTap.
 ## Props
 
 ### RichChatInputProps
-    onSubmit: (html: string, plainText: string) => void (REQUIRED)
+    onSubmit: (message: RichChatInputMessage) => void (REQUIRED)
     placeholder: string (default: "Type a message...")
     disabled: boolean (default: false)
-    variant: 'compact' | 'expanded' | 'minimal' (default: 'compact')
-    maxRows: number
+    content: string — initial HTML (not reactive; use for message editing)
+    variant: 'compact' | 'expanded' | 'minimal' | 'inline' (default: 'compact')
     enterBehavior: 'send' | 'newline' (default: 'send')
     maxLength: number — enables character counter
+    charCountDisplay: 'always' | 'focus' | 'near-limit' | 'hidden' (default: 'near-limit')
     mentions: MentionItem[] — static list for @mention autocomplete
     onMentionSearch: (query: string) => Promise<MentionItem[]> — async search
     onMentionSelect: (item: MentionItem) => void
     onFileUpload: (file: File) => Promise<{ url: string; name: string; size: number }>
     onImageUpload: (file: File) => Promise<string>
     slashCommands: SlashCommandGroup[] — enables / command palette
+    onVoiceRecord: (audio: Blob, duration: number) => void
+    onTranscribe: (blob: Blob, duration: number) => Promise<string | null> — transcribe after recording; return null to attach as a voice note
+    maxDuration: number — max voice-recording seconds
+    replyTo: { id: string; author: string; preview: string; onDismiss: () => void } — reply banner above the input
     onTyping: (isTyping: boolean) => void — typing indicator callback
     onEmpty: (isEmpty: boolean) => void
     isStreaming: boolean (default: false) — shows stop button instead of send
@@ -29,9 +34,15 @@ Compact rich text chat input for unified human+AI workspaces. Built on TipTap.
     leadingSlot: ReactNode — rendered above the editor
     trailingSlot: ReactNode — rendered below the toolbar
     disclaimer: string — small text below the input
-    toolbar: boolean | ChatToolbarItem[] (default: true)
+    toolbar: boolean | ChatToolbarItem[] | ReactNode (default: true) — true = default toolbar, array = whitelist, ReactNode = custom, false = hidden
+    actionButton: ReactNode | false — custom left-side button (replaces the default attach button; false hides it)
+    emojiSet: 'native' | 'apple' | 'google' | 'twitter' | 'facebook' (default: 'native')
+    onSchedule: (message: RichChatInputMessage, scheduledAt: Date) => void — if set, a schedule button appears next to send
+    sendOptions: Array<{ label: string; icon?: ComponentType<{ className?: string }>; onSelect: () => void }> — split-send dropdown options
 
-ChatToolbarItem: 'bold' | 'italic' | 'underline' | 'strike' | 'highlight' | 'code' | 'bulletList' | 'orderedList' | 'mention' | 'emoji' | 'attach' | 'slash'
+RichChatInputMessage: { html: string; plainText: string; attachments?: Array<{ url: string; name: string; size: number; type: string }>; voiceNote?: { blob: Blob; duration: number } }
+
+ChatToolbarItem: 'bold' | 'italic' | 'underline' | 'strike' | 'highlight' | 'code' | 'bulletList' | 'orderedList' | 'blockquote' | 'link' | 'mention' | 'emoji' | 'slash'
 
 MentionItem: { id: string; label: string; avatar?: string }
 
@@ -43,11 +54,12 @@ SlashCommandGroup: { label: string; commands: SlashCommand[] }
 - `compact` (default) — 2-3 lines, inline toolbar
 - `expanded` — 5+ lines, always-visible toolbar, suited for AI prompts
 - `minimal` — single line, toolbar appears on focus
+- `inline` — 40px min-height, no toolbar; for tight inline composers
 
 ## Example
 ```jsx
 <RichChatInput
-  onSubmit={(html, text) => sendMessage(html)}
+  onSubmit={(message) => sendMessage(message.html)}
   mentions={teamMembers}
   onFileUpload={uploadFile}
   slashCommands={[{ label: 'Actions', commands: [...] }]}

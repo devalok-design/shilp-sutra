@@ -14,7 +14,9 @@
         "AGENTS.md",
         "MIGRATION.md",
         ".next/**",
-        "!.next/cache/**"
+        "!.next/cache/**",
+        "app/canvas-modes.css",
+        "public/r/**"
       ]
     },
     "typecheck": {

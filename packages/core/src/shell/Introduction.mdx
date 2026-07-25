@@ -9,7 +9,7 @@ Shilp Sutra provides **8 app shell components** for building complete applicatio
 Shell components are **singletons** -- you typically render one of each in your root layout.
 
 ```tsx
-import { AppSidebar, TopBar, BottomNavbar } from '@devalok/shilp-sutra/shell'
+import { TopBar, BottomNavbar } from '@devalok/shilp-sutra/shell'
 ```
 
 ---
@@ -20,7 +20,6 @@ import { AppSidebar, TopBar, BottomNavbar } from '@devalok/shilp-sutra/shell'
 
 | Component | Description |
 |-----------|-------------|
-| **AppSidebar** | Collapsible navigation sidebar with header, menu groups, footer, and expand/collapse toggle |
 | **TopBar** | Application header with logo, search, notifications, and user avatar |
 | **BottomNavbar** | Mobile-optimized bottom navigation bar with icon and label tabs |
 
@@ -29,7 +28,7 @@ import { AppSidebar, TopBar, BottomNavbar } from '@devalok/shilp-sutra/shell'
 | Component | Description |
 |-----------|-------------|
 | **AppCommandPalette** | App-level command palette triggered by Cmd+K / Ctrl+K |
-| **CommandRegistryProvider** | Programmatic command management (register, unregister, search) |
+| **CommandRegistryProvider** | Supplies the page/adminPage command registry consumed by AppCommandPalette; read it with `useCommandRegistry()` |
 
 ### Notifications
 
@@ -76,7 +75,7 @@ import NextLink from 'next/link'
 function RootLayout({ children }) {
   return (
     <LinkProvider component={NextLink}>
-      <AppSidebar />
+      <TopBar />
       <main>{children}</main>
     </LinkProvider>
   )

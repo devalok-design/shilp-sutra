@@ -22,12 +22,12 @@ Exports: DashboardSkeleton, ProjectListSkeleton, TaskDetailSkeleton
 ## Composability
 - **Full-page skeleton layouts** for route-level loading states. Each mimics a common page shape (dashboard tiles, project list with filters, task detail with sidebar).
 - **Server-safe** — use in Next.js app router `loading.tsx` files for instant route-transition feedback while data streams.
-- **Built on LoadingSkeleton + ui/Skeleton** — these just assemble the pre-built regional skeletons into page-shaped layouts.
+- **Assembled from `ui/Skeleton`** — these compose the base `Skeleton` primitive directly into page-shaped layouts (they do NOT wrap the `LoadingSkeleton` regional exports). Each root is a `role="status"` / `aria-busy` region with an sr-only label.
 - **When to use which skeleton tier:**
   - `<Skeleton>` (ui) — single shape for a single element
   - `<CardSkeleton>` / `<TableSkeleton>` (LoadingSkeleton) — individual region shape
   - `<DashboardSkeleton>` / etc. (PageSkeletons) — full page placeholder
-- **Fixed layout structure** — the className prop adjusts the outer container, but internal layout isn't customizable. For custom page skeletons, compose LoadingSkeleton pieces yourself.
+- **Fixed layout structure** — the className prop adjusts the outer container, but internal layout isn't customizable. For custom page skeletons, compose `ui/Skeleton` (or the `LoadingSkeleton` regional exports) yourself.
 
 ## Gotchas
 - Server-safe: can be imported directly in Next.js Server Components

@@ -1,0 +1,9 @@
+{
+  "slug": "sidebar-minimal",
+  "component": "SidebarMinimal",
+  "title": "Minimal icon rail",
+  "description": "A compact, label-free sidebar — each item is an icon with a tooltip. Good for tool-dense apps or a secondary rail. Rail width is a single CSS var.",
+  "categories": ["sidebar", "navigation", "shell"],
+  "uses": ["Sidebar", "Tabler icons"],
+  "brandNotes": "Icon-only with accessible tooltips + aria-labels; tinted active state."
+}

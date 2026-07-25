@@ -145,6 +145,25 @@ export const BeforeAfter: Story = {
             'P2: empty users renders nothing (was a focusable "0 team members"); max clamped ≥1; ring-offset follows borderColor (no seam on surface-base).',
           ]}
         />
+
+        {/* ── bulk-action-bar: ARIA toolbar keyboard model (P0) ── */}
+        <Row
+          name="BulkActionBar — ARIA toolbar keyboard model"
+          verdict="Audit P0: keyboard trap — roving tabindex sat on a wrapper div while the real Button was tabindex=-1, so actions were unreachable by keyboard. (Floating portal — see it live in the gallery; the win is behavioral.)"
+          after={
+            <Text variant="body-sm" className="text-surface-fg-muted">
+              Single tab stop → Arrow/Home/End rove across Select-all + actions + Clear, focus lands on the real buttons, Enter/Space activate. Locked by a new arrow-then-Enter test.
+            </Text>
+          }
+          changes={[
+            'P0 a11y: roving tabindex now on the actual <Button>s (was on wrapper divs) — arrow to an action, Enter activates it. Single tab stop across ALL controls (Select-all, actions, Clear), per the React-Aria Toolbar model.',
+            'P1 a11y: inline confirm is role="group" + aria-live="assertive"; focus moves to Confirm on open, restores to the action on Cancel/Escape.',
+            'P1 RTL: logical positioning (start-1/2) + Arrow Left/Right mirrored under dir="rtl".',
+            'P1 api: forwardRef + spreads HTMLAttributes; action color widened to the full Button union (was 2 of 6).',
+            'P2 state: per-action loading spinner; P2 motion: springs.smooth for the slide + reduced-motion guard (opacity-only under prefers-reduced-motion).',
+            'Docs corrected: prop table now matches source (icon = IconInput, full color union, +totalCount/onSelectAll/loading/confirm props).',
+          ]}
+        />
       </div>
     </div>
   ),

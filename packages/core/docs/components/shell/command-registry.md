@@ -13,7 +13,7 @@ Exports: CommandRegistryProvider, useCommandRegistry
     registry: CommandRegistry (REQUIRED)
 
 CommandRegistry: { pages: CommandPageItem[], adminPages: CommandPageItem[] }
-CommandPageItem: { id: string, label: string, icon: ReactNode, path: string, keywords?: string[] }
+CommandPageItem: { id: string, label: string, icon: IconInput, path: string, keywords?: string[] }
 
 ### useCommandRegistry hook
     Returns: CommandRegistry | null
@@ -41,7 +41,7 @@ CommandPageItem: { id: string, label: string, icon: ReactNode, path: string, key
 ## Composability
 - **Context provider for AppCommandPalette.** Registers page-level navigation items that the command palette surfaces as commands.
 - **Place at app root** — wrap both AppCommandPalette and the rest of the app inside `<CommandRegistryProvider>`. Positioning matters: any AppCommandPalette outside the provider gets `useCommandRegistry() === null` and falls back to minimal functionality.
-- **Separation of pages vs adminPages** — the palette filters based on user role / `isAdmin` flag. Keep admin-only routes in the adminPages array to avoid leaking them to regular users.
+- **Separation of pages vs adminPages** — this is an ORGANIZATIONAL split, not access control. The component does NOT enforce anything: YOU populate `adminPages` conditionally (e.g. only when the signed-in user is an admin). Anything you put in `adminPages` is still shipped to the client — do real authorization on the server, not here.
 - **useCommandRegistry()** is the consumer hook — returns the full registry or null. Use in your own command-aware components (e.g. a Spotlight-style keyboard-search embed elsewhere in the app).
 - **Works with LinkProvider** — CommandPaletteItems navigate via `onNavigate` prop on AppCommandPalette, which routes to your framework's Link component.
 

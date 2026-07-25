@@ -23,7 +23,7 @@ AppCommandPaletteUser: { name: string, role?: string }
 ## Example
 ```jsx
 <AppCommandPalette
-  user={{ name: 'John', role: 'admin' }}
+  user={{ name: 'John', role: 'Admin' }}
   isAdmin={true}
   onNavigate={(path) => router.push(path)}
   searchResults={results}
@@ -42,6 +42,7 @@ AppCommandPaletteUser: { name: string, role?: string }
 ## Gotchas
 - Uses CommandRegistry context for page navigation items (see CommandRegistryProvider)
 - `isAdmin` takes precedence over `user.role` for showing admin command groups
+- **Role detection is case-sensitive:** `user.role` only auto-enables admin groups when it is exactly `'Admin'` or `'SuperAdmin'`. `'admin'` (lowercase) silently shows nothing — pass `isAdmin` explicitly if your role strings differ.
 - Should be placed at the app root level, typically alongside TopBar
 
 ## Changes

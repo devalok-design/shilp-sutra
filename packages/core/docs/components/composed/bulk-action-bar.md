@@ -9,14 +9,20 @@
     count: number (number of selected items — displayed in badge)
     onClearSelection: () => void
     actions: BulkActionBarAction[]
+    totalCount: number (optional — total selectable items; enables "Select all")
+    onSelectAll: () => void (optional — called by the "Select all" control)
     className: string
+    ...div attributes (forwardRef to the toolbar div; HTMLAttributes spread)
 
 ### BulkActionBarAction
     label: string
-    icon: ComponentType<{ className?: string }> (optional icon component)
+    icon: IconInput (optional — any icon component or element)
     onClick: () => void
-    color: "default" | "error"
-    disabled: boolean
+    color: "accent" | "error" | "success" | "warning" | "info" | "neutral" (default: "accent")
+    disabled: boolean (optional)
+    loading: boolean (optional — pending spinner on the action)
+    requiresConfirmation: boolean (optional — inline confirm before executing)
+    confirmMessage: string (optional — default "Are you sure?")
 
 ## Defaults
     (no optional props with defaults)

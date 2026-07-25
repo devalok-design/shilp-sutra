@@ -10,13 +10,23 @@ MasterDetail (root), MasterDetail.List, MasterDetail.Detail, MasterDetail.ListIt
 ## Props
 
 ### MasterDetail (root)
-    selected: string | null (ID of currently selected item; null = show list on mobile)
+    selected: string | null (CONTROLLED selected item id; omit for uncontrolled)
+    defaultSelected: string | null (uncontrolled initial selection)
+    onSelect: (value: string) => void (called with a row's `value` when chosen)
+    label: string (accessible name for the listbox; default "Items")
     onBack: () => void (called when mobile back button is pressed)
     masterWidth: string (master panel width on desktop)
     breakpoint: "sm" | "md" | "lg" (below this, stacked mobile mode activates)
+    emptyState: ReactNode (shown in the detail pane when nothing is selected)
+    onNavigate: (direction: "up" | "down") => void
+
+Selection can be controlled (`selected`) or owned by the component
+(`defaultSelected` + `onSelect`). With `value` on each ListItem, `active` /
+`aria-selected` derive automatically — no need to hand-wire `active` + `onClick`.
 
 ### MasterDetail.ListItem
-    active: boolean (highlights the item)
+    value: string (row id — enables derived selection + auto-fires onSelect on activate)
+    active: boolean (explicit highlight; omit to derive from value === selected)
     (extends ButtonHTMLAttributes)
 
 ## Defaults

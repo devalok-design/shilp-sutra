@@ -5,6 +5,7 @@ import { ContentCard } from './composed/content-card'
 import { AvatarGroup, type AvatarUser } from './composed/avatar-group'
 import { TableSkeleton, ListSkeleton } from './composed/loading-skeleton'
 import { ErrorDisplay } from './composed/error-boundary'
+import { MasterDetail } from './composed/master-detail'
 import { Button } from './ui/button'
 import { Text } from './ui/text'
 
@@ -198,6 +199,35 @@ export const BeforeAfter: Story = {
             'api (P1): ErrorBoundary now has componentDidCatch → onError(error, info) for Sentry/logging; + an actions slot (secondary recovery action) replacing the hardcoded single "Try Again".',
             'api (P2): resetKeys — the boundary auto-recovers when a dependency changes (react-error-boundary parity); fallback now receives a guaranteed onReset.',
             'visual: dead border-card-strong → border-card; min-h-[60vh] gated behind a fullPage prop (inline boundaries no longer force viewport height).',
+          ]}
+        />
+
+        {/* ── master-detail: a11y naming/live + selection ownership ── */}
+        <Row
+          name="MasterDetail — a11y + selection ownership"
+          verdict="Audit P0: nameless listbox + detail swaps silently. P1: controlled-only, hand-wired active+onClick. Roving keyboard nav was already solid."
+          after={
+            <MasterDetail defaultSelected="karm" label="Projects" className="h-[240px] overflow-hidden rounded-control border border-surface-border">
+              <MasterDetail.List>
+                <MasterDetail.ListItem value="karm">Karm V2</MasterDetail.ListItem>
+                <MasterDetail.ListItem value="site">Website Redesign</MasterDetail.ListItem>
+                <MasterDetail.ListItem value="brand">Brand System</MasterDetail.ListItem>
+              </MasterDetail.List>
+              <MasterDetail.Detail>
+                <div className="p-ds-05">
+                  <Text variant="label-md" className="text-surface-fg">Detail pane</Text>
+                  <Text variant="body-sm" className="mt-ds-02 text-surface-fg-muted">Arrow/Home/End to rove, Enter to select. Focus a row.</Text>
+                </div>
+              </MasterDetail.Detail>
+            </MasterDetail>
+          }
+          changes={[
+            'a11y (P0): the listbox now has an accessible name (`label` prop → aria-label) — was a nameless listbox to screen readers.',
+            'a11y (P0): the detail pane is role="region" aria-live="polite" — AT users are told the detail changed on selection (was a silent swap).',
+            'api (P1): selection ownership — pass `value` per row + `onSelect`/`defaultSelected` on the root; active + aria-selected derive from context. No more hand-wiring `active={id===sel}` AND `onClick` on every row. Controlled `selected` still works.',
+            'motion (P2): the mobile detail slide is gated behind useReducedMotion (opacity-only / instant under prefers-reduced-motion).',
+            'RTL (P2): list divider border-r → border-e; the mobile back arrow mirrors under dir="rtl".',
+            'cleanup: removed the dead itemCount context; roving activeIndex derives from value or explicit active. (asChild/typeahead noted as follow-ups.)',
           ]}
         />
       </div>

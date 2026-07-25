@@ -1,14 +1,15 @@
 'use client'
 
-import { cva, type VariantProps } from 'class-variance-authority'
-import { AnimatePresence,motion } from 'framer-motion'
+import { type VariantProps } from 'class-variance-authority'
+import { motion, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
 
-import type { AvatarRing } from '../ui/avatar'
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  avatarVariants,
+  type AvatarRing,
 } from '../ui/avatar'
 import { springs } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
@@ -20,54 +21,57 @@ import {
 } from '../ui/tooltip'
 import { getInitials } from './lib/string-utils'
 
-// Ring classes applied at group level (not via Avatar's ring prop, which adds ring-offset-2 that gets clipped by overflow-hidden)
-const groupRingMap: Record<string, string> = {
-  lead: 'ring-2 ring-accent-7 ring-offset-1 ring-offset-surface-raised',
-  admin: 'ring-2 ring-warning-7 ring-offset-1 ring-offset-surface-raised',
-  client: 'ring-2 ring-info-7 ring-offset-1 ring-offset-surface-raised',
-}
+type Size = NonNullable<VariantProps<typeof avatarVariants>['size']>
 
-const avatarSizeVariants = cva(
-  'shrink-0 overflow-hidden rounded-pill border-2',
-  {
-    variants: {
-      size: {
-        xs: 'h-ds-xs w-ds-xs',
-        sm: 'h-ds-sm w-ds-sm',
-        md: 'h-ds-md w-ds-md',
-        lg: 'h-ds-lg w-ds-lg',
-        xl: 'h-ds-xl w-ds-xl',
-      },
-    },
-    defaultVariants: {
-      size: 'md',
-    },
-  },
-)
+// Group-level ring. Applied here (not via Avatar's `ring` prop) because that adds
+// a ring-offset that gets clipped by the group's overflow; the offset surface is
+// derived from `borderColor` so it never seams against a surface-base blend.
+const groupRingMap: Record<Exclude<AvatarRing, 'none'>, string> = {
+  lead: 'ring-2 ring-accent-7',
+  admin: 'ring-2 ring-warning-7',
+  client: 'ring-2 ring-info-7',
+}
 
 export interface AvatarUser {
   name: string
   image?: string | null
   ring?: AvatarRing
+  /** Small top-right marker. `lead` = accent dot, `admin` = warning dot, or any node. */
   indicator?: 'lead' | 'admin' | React.ReactNode
 }
 
-export interface AvatarGroupProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof avatarSizeVariants> {
+export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   users: AvatarUser[]
   max?: number
+  size?: Size
   showTooltip?: boolean
   /** Border color for the group avatars. @default 'surface-raised' */
   borderColor?: 'surface-base' | 'surface-raised'
-  /** Callback when the "+N" overflow badge is clicked */
+  /** Callback when the "+N" overflow badge is clicked (renders it as a button). */
   onOverflowClick?: () => void
-  /** Custom render function for each avatar */
+  /** Custom render function for each avatar (consumer owns the Avatar). */
   renderAvatar?: (user: AvatarUser, index: number) => React.ReactNode
-  /** Direction avatars expand on hover. @default 'right' */
+  /** Direction avatars expand on hover/focus. @default 'right' */
   expandDirection?: 'left' | 'right'
-  /** How much avatars spread apart on hover. @default 'default' */
+  /** How far avatars spread on hover/focus. @default 'default' */
   expandAmount?: 'compact' | 'default' | 'wide'
+  /** Accessible label for the group. @default `${count} team members` */
+  label?: string
+}
+
+// Overlap (negative margin) + spread distance, keyed off the same per-size scale.
+const overlapMap: Record<Size, string> = {
+  xs: '-ml-ds-02',
+  sm: '-ml-ds-02b',
+  md: '-ml-ds-03',
+  lg: '-ml-ds-04',
+  xl: '-ml-ds-05',
+}
+const spreadPxMap: Record<Size, number> = {
+  xs: 8, sm: 10, md: 12, lg: 16, xl: 20,
+}
+const indicatorDotMap: Record<Size, string> = {
+  xs: 'size-1', sm: 'size-1.5', md: 'size-2', lg: 'size-2.5', xl: 'size-3',
 }
 
 const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
@@ -75,170 +79,130 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     {
       users,
       max = 4,
-      size,
+      size = 'md',
       showTooltip = true,
       borderColor = 'surface-raised',
       onOverflowClick,
       renderAvatar,
       expandDirection = 'right',
       expandAmount = 'default',
+      label,
       className,
+      onMouseEnter,
+      onMouseLeave,
+      onFocus,
+      onBlur,
       ...props
     },
     ref,
   ) => {
-    const displayed = users.slice(0, max)
-    const overflow = users.length - max
+    const reduced = useReducedMotion()
+    const [active, setActive] = React.useState(false)
 
-    const overlapMap = {
-      xs: '-ml-ds-02',
-      sm: '-ml-ds-02b',
-      md: '-ml-ds-03',
-      lg: '-ml-ds-04',
-      xl: '-ml-ds-05',
-    }
-    const overlapClass = overlapMap[size ?? 'md']
+    // Empty group is not a focusable "0 members" target — render nothing.
+    if (users.length === 0) return null
 
-    // Match Avatar fallback font sizes so the "+N" badge text is consistent
-    const textSizeMap: Record<string, string> = {
-      xs: 'text-[9px]',
-      sm: 'text-body-xs',
-      md: 'text-body-sm',
-      lg: 'text-body-md',
-      xl: 'text-heading-xs',
-    }
-    const textSizeClass = textSizeMap[size ?? 'md']
+    const cap = Math.max(1, max)
+    const displayed = users.slice(0, cap)
+    const overflow = users.length - cap
+    const overlapClass = overlapMap[size]
+    const borderClass = borderColor === 'surface-base' ? 'border-surface-base' : 'border-surface-raised'
+    const ringOffsetClass = borderColor === 'surface-base'
+      ? 'ring-offset-1 ring-offset-surface-base'
+      : 'ring-offset-1 ring-offset-surface-raised'
 
-    // Indicator dot scales with avatar size (matches Avatar's statusDotSizeMap)
-    const indicatorDotSizeMap: Record<string, string> = {
-      xs: 'h-1 w-1',
-      sm: 'h-1.5 w-1.5',
-      md: 'h-2 w-2',
-      lg: 'h-2.5 w-2.5',
-      xl: 'h-3 w-3',
-    }
-    const indicatorDotClass = indicatorDotSizeMap[size ?? 'md']
-
-    const borderClass =
-      borderColor === 'surface-base'
-        ? 'border-surface-base'
-        : 'border-surface-raised'
-
-    const [isHovered, setIsHovered] = React.useState(false)
-
-    const overlapPxMap: Record<string, number> = {
-      xs: 8, sm: 10, md: 12, lg: 16, xl: 20,
-    }
-    const resolvedSize = size ?? 'md'
-    const overlapPx = overlapPxMap[resolvedSize]
-    const expandMultiplier = { compact: 0.5, default: 1, wide: 1.5 }[expandAmount]
+    const spreadPx = spreadPxMap[size]
+    const spreadMult = { compact: 0.5, default: 1, wide: 1.5 }[expandAmount]
     const totalVisible = displayed.length + (overflow > 0 ? 1 : 0)
 
-    function getExpandTransform(index: number): string {
-      if (!isHovered) return 'translateX(0)'
-      const shift = overlapPx * expandMultiplier
-      if (expandDirection === 'left') {
-        return `translateX(-${(totalVisible - 1 - index) * shift}px)`
-      }
-      return `translateX(${index * shift}px)`
+    // Spread offset per index. Zero under reduced-motion (no positional animation).
+    const xFor = (index: number): number => {
+      if (!active || reduced) return 0
+      const shift = spreadPx * spreadMult
+      return expandDirection === 'left' ? -(totalVisible - 1 - index) * shift : index * shift
     }
 
-    const spotlightClasses =
-      'transition-opacity duration-300 ease-out hover:z-50 group-hover:[&:not(:hover)]:opacity-85'
+    // framer governs the transition; reduced-motion collapses it to instant.
+    const spreadTransition = reduced ? { duration: 0 } : springs.snappy
+    // Gentle dim of non-focused peers; instant under reduced-motion.
+    const spotlight =
+      'transition-opacity duration-fast-02 ease-productive-standard motion-reduce:transition-none hover:z-30 focus-visible:z-30 group-hover:[&:not(:hover)]:opacity-80'
+
+    const onEnter = (e: React.MouseEvent<HTMLDivElement>) => { setActive(true); onMouseEnter?.(e) }
+    const onLeave = (e: React.MouseEvent<HTMLDivElement>) => { setActive(false); onMouseLeave?.(e) }
+    const onGroupFocus = (e: React.FocusEvent<HTMLDivElement>) => { setActive(true); onFocus?.(e) }
+    const onGroupBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+      if (!e.currentTarget.contains(e.relatedTarget)) setActive(false)
+      onBlur?.(e)
+    }
 
     return (
       <TooltipProvider>
         <div
           ref={ref}
           role="group"
-          aria-label={`${users.length} team members`}
-          tabIndex={0}
+          aria-label={label ?? `${users.length} team members`}
           className={cn('group flex items-center', className)}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onFocus={() => setIsHovered(true)}
-          onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setIsHovered(false) }}
+          onMouseEnter={onEnter}
+          onMouseLeave={onLeave}
+          onFocus={onGroupFocus}
+          onBlur={onGroupBlur}
           {...props}
         >
           {displayed.map((user, index) => {
-            const initials = getInitials(user.name)
-
             const key = `${user.name}-${index}`
+            const extraRing = user.ring && user.ring !== 'none'
+              ? cn(groupRingMap[user.ring], ringOffsetClass)
+              : undefined
 
-            if (renderAvatar) {
-              // When renderAvatar is provided, the consumer owns the Avatar entirely.
-              // Wrapper is positioning-only (overlap, z-index, spotlight) — no size/border/clip
-              // so the consumer's Avatar renders at its natural size without being clipped.
-              return (
-                <div
-                  key={key}
-                  className={cn(
-                    'shrink-0 rounded-pill',
-                    index > 0 && overlapClass,
-                    spotlightClasses,
-                    user.ring && user.ring !== 'none' && groupRingMap[user.ring],
-                  )}
-                  style={{ zIndex: displayed.length - index, transform: getExpandTransform(index) }}
-                >
-                  {renderAvatar(user, index)}
-                </div>
-              )
-            }
-
-            const avatarNode = (
-              <div
-                key={key}
-                className={cn(
-                  'relative shrink-0 rounded-pill',
-                  index > 0 && overlapClass,
-                  spotlightClasses,
-                  user.ring && user.ring !== 'none' && groupRingMap[user.ring],
-                )}
-                style={{ zIndex: displayed.length - index, transform: getExpandTransform(index) }}
-              >
-                <Avatar
-                  size={size}
-                  className={borderClass}
-                >
-                  {user.image && (
-                    <AvatarImage src={user.image} alt={user.name} />
-                  )}
-                  <AvatarFallback
-                    colorSeed={user.name}
+            const inner = renderAvatar ? (
+              renderAvatar(user, index)
+            ) : (
+              <Avatar size={size} className={borderClass}>
+                {user.image && <AvatarImage src={user.image} alt="" />}
+                <AvatarFallback colorSeed={user.name}>{getInitials(user.name)}</AvatarFallback>
+                {user.indicator && (
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'absolute top-0 right-0 rounded-pill ring-1 ring-surface-raised',
+                      indicatorDotMap[size],
+                      user.indicator === 'lead' ? 'bg-accent-9'
+                        : user.indicator === 'admin' ? 'bg-warning-9' : '',
+                    )}
                   >
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-                <AnimatePresence>
-                  {user.indicator && (
-                    <motion.span
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0, opacity: 0 }}
-                      transition={springs.snappy}
-                      className={cn(
-                        'absolute top-0 right-0 rounded-pill ring-1 ring-surface-raised',
-                        indicatorDotClass,
-                        user.indicator === 'lead' ? 'bg-accent-9' :
-                        user.indicator === 'admin' ? 'bg-accent-9' : '',
-                      )}
-                    >
-                      {typeof user.indicator !== 'string' && user.indicator}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </div>
+                    {typeof user.indicator !== 'string' && user.indicator}
+                  </span>
+                )}
+              </Avatar>
             )
 
-            if (!showTooltip) return avatarNode
+            // Each avatar is a focusable, labelled trigger so keyboard/AT users reach
+            // the member name (via the tooltip) and get a visible focus ring.
+            const node = (
+              <motion.button
+                type="button"
+                aria-label={user.name}
+                animate={{ x: xFor(index) }}
+                transition={spreadTransition}
+                style={{ zIndex: displayed.length - index }}
+                className={cn(
+                  'relative shrink-0 rounded-pill focus-ring',
+                  index > 0 && overlapClass,
+                  spotlight,
+                  extraRing,
+                )}
+              >
+                {inner}
+              </motion.button>
+            )
+
+            if (!showTooltip) return <React.Fragment key={key}>{node}</React.Fragment>
 
             return (
               <Tooltip key={key}>
-                <TooltipTrigger asChild>{avatarNode}</TooltipTrigger>
-                <TooltipContent
-                  className="border-surface-border-strong bg-surface-base text-surface-fg"
-                  sideOffset={6}
-                >
+                <TooltipTrigger asChild>{node}</TooltipTrigger>
+                <TooltipContent sideOffset={6}>
                   <p className="text-body-sm">{user.name}</p>
                 </TooltipContent>
               </Tooltip>
@@ -248,45 +212,30 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
           {overflow > 0 && (
             <Tooltip>
               <TooltipTrigger asChild>
-                {onOverflowClick ? (
-                  <button
-                    type="button"
-                    onClick={onOverflowClick}
-                    aria-label={`${overflow} more members`}
-                    className={cn(
-                      avatarSizeVariants({ size }),
-                      borderClass,
-                      overlapClass,
-                      `flex cursor-pointer items-center justify-center bg-accent-2 font-semibold text-accent-11 ${textSizeClass}`,
-                      'hover:bg-accent-3 transition-colors duration-300 ease-out',
-                    )}
-                    style={{ zIndex: 0, transform: getExpandTransform(displayed.length) }}
-                  >
-                    +{overflow}
-                  </button>
-                ) : (
-                  <div
-                    role="img"
-                    aria-label={`${overflow} more members`}
-                    className={cn(
-                      avatarSizeVariants({ size }),
-                      borderClass,
-                      overlapClass,
-                      `flex cursor-default items-center justify-center bg-accent-2 font-semibold text-accent-11 ${textSizeClass}`,
-                      'transition-[transform,opacity] duration-300 ease-out',
-                    )}
-                    style={{ zIndex: 0, transform: getExpandTransform(displayed.length) }}
-                  >
-                    +{overflow}
-                  </div>
-                )}
+                <motion.button
+                  type="button"
+                  onClick={onOverflowClick}
+                  aria-label={`${overflow} more ${overflow === 1 ? 'member' : 'members'}`}
+                  animate={{ x: xFor(displayed.length) }}
+                  transition={spreadTransition}
+                  style={{ zIndex: 0 }}
+                  className={cn(
+                    'relative shrink-0 rounded-pill focus-ring',
+                    overlapClass,
+                    spotlight,
+                    !onOverflowClick && 'cursor-default',
+                  )}
+                >
+                  <Avatar size={size} className={borderClass}>
+                    <AvatarFallback className="bg-accent-2 font-semibold text-accent-11">
+                      +{overflow}
+                    </AvatarFallback>
+                  </Avatar>
+                </motion.button>
               </TooltipTrigger>
-              <TooltipContent
-                className="border-surface-border-strong bg-surface-base text-surface-fg"
-                sideOffset={6}
-              >
+              <TooltipContent sideOffset={6}>
                 <div className="flex flex-col gap-ds-01">
-                  {users.slice(max).map((user, i) => (
+                  {users.slice(cap).map((user, i) => (
                     <p key={i} className="text-body-sm">{user.name}</p>
                   ))}
                 </div>

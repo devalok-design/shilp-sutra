@@ -116,7 +116,7 @@ Top of every page?
   → <TopBar> (shell)
 
 Side nav (product)?
-  → <AppSidebar> (shell) — collapsible, with sections, footer
+  → <Sidebar> primitives (ui) — or the sidebar-app preset (shilp-sutra.devalok.in/presets)
 
 Tabs within a page?
   → <Tabs>            — horizontal default
@@ -279,7 +279,7 @@ Code?
 | Pagination | `/ui/pagination` |
 | Stepper | `/ui/stepper` |
 | NavigationMenu | `/ui/navigation-menu` |
-| Sidebar (AppSidebar) | `/shell/sidebar` |
+| Sidebar | `/ui/sidebar` |
 | TopBar | `/shell/top-bar` |
 | BottomNavbar | `/shell/bottom-navbar` |
 

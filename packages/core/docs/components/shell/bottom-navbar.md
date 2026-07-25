@@ -36,11 +36,11 @@ BottomNavbarUser: { name: string, role?: string }
 ```
 
 ## Composability
-- **Mobile-only bottom nav** — fixed to bottom of viewport. Desktop should use AppSidebar instead.
-- **Responsive switch pattern:** Use `useIsMobile()` hook to conditionally render AppSidebar (desktop) or BottomNavbar (mobile). Example:
+- **Mobile-only bottom nav** — fixed to bottom of viewport. Desktop should use Sidebar instead.
+- **Responsive switch pattern:** Use `useIsMobile()` hook to conditionally render Sidebar (desktop) or BottomNavbar (mobile). Example:
   ```jsx
   const isMobile = useIsMobile()
-  return isMobile ? <BottomNavbar ... /> : <AppSidebar ... />
+  return isMobile ? <BottomNavbar ... /> : <Sidebar ... />
   ```
 - **Primary vs overflow:** `primaryItems` (max 4) for the always-visible slots; `moreItems` go into a "More" sheet that opens on tap. Don't exceed 4 primary — the bar becomes cramped.
 - **Router integration via LinkProvider:** Each nav item is rendered using the framework-specific Link component registered in LinkProvider. Without LinkProvider, you get full-page reloads on tap.
@@ -54,7 +54,7 @@ BottomNavbarUser: { name: string, role?: string }
 ## Gotchas
 - Designed for mobile viewports — fixed to bottom of screen
 - Max 4 `primaryItems` recommended; overflow goes in `moreItems` shown in a "More" sheet
-- Use with `useIsMobile()` hook to conditionally render instead of AppSidebar
+- Use with `useIsMobile()` hook to conditionally render instead of Sidebar
 - Requires LinkProvider for framework-specific link components (e.g., Next.js Link)
 
 ## Changes

@@ -23,13 +23,13 @@ Exports: LinkProvider, useLink
 import Link from 'next/link'
 
 <LinkProvider component={Link}>
-  <AppSidebar ... />
+  <Sidebar ... />
   <BottomNavbar ... />
 </LinkProvider>
 ```
 
 ## Composability
-- **The framework router bridge for all shell components.** Without LinkProvider, AppSidebar / BottomNavbar / TopBar.UserMenu / AppCommandPalette render plain `<a>` tags — that means full page reloads instead of client-side navigation.
+- **The framework router bridge for all shell components.** Without LinkProvider, Sidebar / BottomNavbar / TopBar.UserMenu / AppCommandPalette render plain `<a>` tags — that means full page reloads instead of client-side navigation.
 - **Required setup:**
   ```tsx
   // Next.js

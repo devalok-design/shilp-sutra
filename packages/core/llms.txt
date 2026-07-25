@@ -92,6 +92,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [select](docs/components/ui/select.md)
 - [separator](docs/components/ui/separator.md)
 - [sheet](docs/components/ui/sheet.md)
+- [sidebar](docs/components/ui/sidebar.md)
 - [skeleton](docs/components/ui/skeleton.md)
 - [slider](docs/components/ui/slider.md)
 - [spinner](docs/components/ui/spinner.md)
@@ -156,7 +157,6 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 - [link-context](docs/components/shell/link-context.md): Exports: LinkProvider, useLink
 - [notification-center](docs/components/shell/notification-center.md)
 - [notification-preferences](docs/components/shell/notification-preferences.md)
-- [sidebar](docs/components/shell/sidebar.md)
 - [top-bar](docs/components/shell/top-bar.md)
 
 ### ai

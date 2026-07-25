@@ -3,6 +3,7 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
 
 import { BrahmaBackdrop } from './brahma-backdrop'
+import { BuildathonStrip } from './buildathon-strip'
 import { CopyInstallButton } from './copy-install-button'
 import { TrackedLink } from './tracked-link'
 
@@ -40,8 +41,13 @@ export function Hero() {
               </Button>
             </TrackedLink>
           </div>
+          {/* Running buildathon — sits with the CTAs, and removes itself once
+              entries close (see buildathon-strip.tsx). */}
+          <div className="mt-ds-05 w-full hero-rise" style={{ ['--hero-delay' as string]: '7250ms' } as React.CSSProperties}>
+            <BuildathonStrip />
+          </div>
           {/* Trust chips — layman signals that matter for a DS; no slop. */}
-          <ul className="mt-ds-08 flex w-full flex-wrap items-center justify-center gap-x-ds-03 gap-y-ds-02 text-ds-base text-surface-fg-muted lg:justify-start hero-rise" style={{ ['--hero-delay' as string]: '7250ms' } as React.CSSProperties}>
+          <ul className="mt-ds-07 flex w-full flex-wrap items-center justify-center gap-x-ds-03 gap-y-ds-02 text-ds-base text-surface-fg-muted lg:justify-start hero-rise" style={{ ['--hero-delay' as string]: '7400ms' } as React.CSSProperties}>
             {['120+ components', 'WCAG-AA accessible', 'MIT · open source'].map(
               (chip, i) => (
                 <li key={chip} className="inline-flex items-center gap-ds-03 whitespace-nowrap">

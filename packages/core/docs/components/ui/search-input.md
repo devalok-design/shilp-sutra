@@ -5,7 +5,7 @@
 - Category: ui
 
 ## Props
-    size: "sm" | "md" | "lg"
+    size: "xs" | "sm" | "md" | "lg"
     loading: boolean (shows spinner instead of clear button)
     onClear: () => void (shows X button when value is non-empty)
     value: string
@@ -31,7 +31,7 @@
 - **`onClear` makes the X button appear** only when `value` is non-empty. Pair them so users can reset.
 - **`loading={true}` swaps the clear button for a spinner** with `aria-busy="true"` on the input — useful for debounced/async search.
 - Doesn't auto-consume FormField (no `state` prop) — wrap a regular Input inside FormField for validated search fields.
-- Keyboard: Escape auto-triggers `onClear` when wired (handled via `type="search"`'s native behavior on most browsers).
+- Keyboard: Escape is NOT wired to clear (the input is not `type="search"`). Reset via the X button, or handle Escape yourself and call your `value` setter.
 
 ## Gotchas
 - HTML native "size" attribute is excluded — use CSS width instead

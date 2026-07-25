@@ -24,7 +24,7 @@
 ## Composability
 - **One-liner Tooltip** — wraps TooltipProvider + Tooltip + TooltipTrigger + TooltipContent so consumers don't have to manually compose them for a simple label.
 - **When to use:** 90% of tooltip use cases (icon-only button labels, abbreviated text expansions, secondary info). Use the ui/Tooltip compound for advanced cases (controlled open, nested triggers, custom animations).
-- **Auto-provides its own TooltipProvider** — safe to drop anywhere. You can still wrap a broader TooltipProvider at layout level for shared `delayDuration`; SimpleTooltip respects it if present.
+- **Always mounts its own TooltipProvider** — safe to drop anywhere. Note it does NOT inherit an ancestor `TooltipProvider`'s `delayDuration`; its own `delayDuration` prop (default 300ms) always wins. Set it per-tooltip via the prop.
 - **Content must be inert** — same rule as ui/Tooltip. For interactive popped content, use Popover or HoverCard.
 - **Pairs with IconButton** — the canonical pattern for labeled icon buttons.
 

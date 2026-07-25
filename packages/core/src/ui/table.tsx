@@ -108,7 +108,7 @@ const TableRow = React.forwardRef<
       // `group/row` lets TableRowActions reveal on row hover/focus; the has-[]
       // rule draws a row-level focus ring when a TableRowLink inside is
       // keyboard-focused (the anchor itself suppresses its own ring).
-      "group/row border-b border-surface-border-subtle transition-colors hover:bg-surface-raised-hover data-[state=selected]:bg-accent-3 data-[state=selected]:hover:bg-accent-4",
+      "group/row border-b border-surface-border-subtle transition-colors hover:bg-surface-raised-hover data-[state=selected]:bg-accent-3 data-[state=selected]:hover:bg-accent-4 data-[state=selected]:forced-colors:outline data-[state=selected]:forced-colors:outline-1",
       "has-[[data-slot=row-link]:focus-visible]:outline-2 has-[[data-slot=row-link]:focus-visible]:outline-accent-9 has-[[data-slot=row-link]:focus-visible]:-outline-offset-2",
       className,
     )}

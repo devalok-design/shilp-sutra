@@ -1,7 +1,7 @@
 'use client'
 
 import * as SwitchPrimitives from "@primitives/react-switch"
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import * as React from "react"
 
 import { useFormField } from './form'
@@ -48,6 +48,11 @@ const Switch = React.forwardRef<
   // Track checked state internally to drive Framer Motion animation
   const [internalChecked, setInternalChecked] = React.useState(defaultChecked ?? false)
   const isChecked = checked !== undefined ? checked : internalChecked
+  const reduced = useReducedMotion()
+  // Thumb travels toward the inline-end — mirror it under RTL.
+  const isRtl =
+    typeof document !== 'undefined' &&
+    (document.dir === 'rtl' || document.documentElement.dir === 'rtl')
   const { track, thumb, travel } = sizeConfig[size]
 
   const handleCheckedChange = React.useCallback(
@@ -84,9 +89,9 @@ const Switch = React.forwardRef<
             "pointer-events-none flex items-center justify-center rounded-pill bg-accent-fg shadow-raised-hover ring-0",
             thumb
           )}
-          animate={{ x: isChecked ? travel : 0 }}
-          whileTap={{ scale: 0.85 }}
-          transition={springs.snappy}
+          animate={{ x: (isChecked ? travel : 0) * (isRtl ? -1 : 1) }}
+          whileTap={reduced ? undefined : { scale: 0.85 }}
+          transition={reduced ? { duration: 0 } : springs.snappy}
         >
           {thumbIcon}
         </motion.span>

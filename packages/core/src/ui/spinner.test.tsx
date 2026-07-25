@@ -77,4 +77,9 @@ describe('Spinner', () => {
     // At least 2 circles: track + animated arc
     expect(circles.length).toBeGreaterThanOrEqual(2)
   })
+
+  // Note: the reduced-motion onComplete contract (fires from the static success/error
+  // path) can't be unit-tested here — framer-motion resolves reduced-motion via a
+  // module-level matchMedia singleton cached at import, so a runtime matchMedia swap
+  // doesn't flip it. Verified by code review (spinner.tsx: onComplete effect).
 })

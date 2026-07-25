@@ -99,6 +99,16 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
       return () => clearTimeout(timer)
     }, [delay])
 
+    // Under reduced-motion the success/error paths render statically (no
+    // onAnimationComplete), so fire the documented onComplete contract here.
+    const onCompleteRef = React.useRef(onComplete)
+    React.useEffect(() => { onCompleteRef.current = onComplete })
+    React.useEffect(() => {
+      if (prefersReduced && (state === 'success' || state === 'error')) {
+        onCompleteRef.current?.()
+      }
+    }, [prefersReduced, state])
+
     if (!visible) return null
 
     const arcSw = arcStrokeWidths[size]

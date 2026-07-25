@@ -42,31 +42,26 @@ const VishwakarmaArt = dynamic(() => import('./vishwakarma-art').then((m) => m.V
 const LIME = '#D5EF72'
 const LIME_INK = '#131514'
 
-/** The poster gradient, verbatim: 28.9° axis, three stops. */
+/**
+ * The poster gradient, on its 28.9° axis with the stops at the authored offsets.
+ * The source art hardcodes #FFFFFF → #C6EBE6 → #FFFFFF; here the stops are TOKENS,
+ * so the canvas follows the active brand preset and the theme the same way the
+ * artwork does. #C6EBE6 is oklch L≈0.91 C≈0.03 H≈180, which is the accent ramp's
+ * step 4 on the shilp-sutra teal preset — so the default renders as the poster
+ * does, and picking another brand recolours the whole surface with it.
+ */
 const IDENTITY_GRADIENT =
-  'linear-gradient(118.9deg, #FFFFFF 0%, #C6EBE6 37.9%, #FFFFFF 100%)'
+  'linear-gradient(118.9deg, var(--color-surface-base) 0%, var(--color-accent-4) 37.9%, var(--color-surface-base) 100%)'
 
 export function BuildathonHero() {
   const reduce = useReducedMotion()
 
   return (
     <section className="relative isolate overflow-hidden">
-      {/* Atmosphere. Light mode carries the authored identity gradient; dark mode
-          drops to the page surface with an accent wash so the composition does
-          not sit on a white slab in a dark theme. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-surface-base dark:bg-surface-base"
-        style={{ background: IDENTITY_GRADIENT }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 hidden bg-surface-base dark:block"
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 hidden bg-linear-to-br from-transparent via-accent-3 to-transparent opacity-60 dark:block"
-      />
+      {/* Atmosphere — one layer. Both stops are tokens, so this reads correctly in
+          light and dark and recolours with the brand preset; it replaces the three
+          stacked overlays that were needed when the gradient was a fixed hex. */}
+      <div aria-hidden className="absolute inset-0 -z-10" style={{ background: IDENTITY_GRADIENT }} />
 
       {/* Vishwakarma. On the poster the 1723px figure sits at x=626 on a 1920×1080
           frame: it spans ~90% of the frame width, starts ~33% in, bleeds ~22% past
@@ -115,26 +110,14 @@ export function BuildathonHero() {
           composition — identity, letterforms, prize, and the way in — lands in one
           screen instead of pushing the entry CTA below the fold. */}
       <div className="relative mx-auto flex w-full max-w-[96rem] flex-col gap-ds-06 px-page-x pt-ds-11 pb-ds-09 md:pt-ds-12 lg:min-h-svh lg:justify-center lg:gap-ds-04 lg:pt-ds-11 lg:pb-ds-06">
-        {/* Top row: identity + date on the left, the short link on the right. */}
-        <div className="flex flex-wrap items-start justify-between gap-ds-05">
-          <div className="flex flex-col gap-ds-02">
-            <p className="font-display text-ds-2xl leading-none tracking-tight text-surface-fg md:text-ds-3xl">
-              Build with{' '}
-              <span className="font-semibold">Shilp Sutra</span>
-            </p>
-            <p className="text-ds-lg font-semibold text-surface-fg md:text-ds-xl">{DATES}</p>
-          </div>
-          <div className="flex flex-col items-start gap-ds-01 lg:items-end">
-            <Text variant="body-sm" className="text-surface-fg-muted">
-              Read more &amp; participate at
-            </Text>
-            <span
-              className="px-ds-03 py-ds-01 text-ds-lg font-semibold md:text-ds-2xl"
-              style={{ background: LIME, color: LIME_INK }}
-            >
-              dv.lk/ss-build26
-            </span>
-          </div>
+        {/* Identity + dates. The poster's "Read more & participate at dv.lk/ss-build26"
+            block is intentionally NOT here: that short link resolves to this page, so
+            on the page itself it would point at where the reader already is. */}
+        <div className="flex flex-col gap-ds-02">
+          <p className="font-display text-ds-2xl leading-none tracking-tight text-surface-fg md:text-ds-3xl">
+            Build with <span className="font-semibold">Shilp Sutra</span>
+          </p>
+          <p className="text-ds-lg font-semibold text-surface-fg md:text-ds-xl">{DATES}</p>
         </div>
 
         {/* The signature artifact. Sized by WIDTH with the artwork's own aspect

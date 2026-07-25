@@ -5,7 +5,7 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
 import { Icon } from './icon'
-import { durations,springs, tweens } from './lib/motion'
+import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 import { Spinner } from './spinner'
 
@@ -301,7 +301,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       >
         <motion.div
           role="button"
-          tabIndex={0}
+          tabIndex={disabled ? -1 : 0}
           aria-disabled={disabled || undefined}
           onClick={disabled ? undefined : openPicker}
           onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -313,11 +313,11 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           className={cn(
             'flex flex-col items-center justify-center gap-ds-03 rounded-surface',
             'border-2 border-dashed p-ds-08',
-            'cursor-pointer',
-            'border-surface-border-strong bg-surface-raised-hover',
-            isDragActive &&
-              'border-accent-7 bg-accent-2',
-            disabled && 'opacity-action-disabled cursor-not-allowed',
+            'focus-ring transition-colors duration-fast-02 ease-productive-standard',
+            // Rest on the canvas fill; reserve the hover token for actual hover.
+            'border-surface-border-strong bg-surface-base',
+            disabled ? 'cursor-not-allowed opacity-action-disabled' : 'cursor-pointer hover:bg-surface-raised-hover',
+            isDragActive && 'border-accent-7 bg-accent-2',
           )}
           animate={{
             scale: isDragActive ? 1.02 : 1,
@@ -371,8 +371,9 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 className="h-2 w-full overflow-hidden rounded-pill bg-surface-raised-hover"
               >
                 <motion.div
-                  className="h-full rounded-pill bg-accent-9"
-                  animate={{ width: `${progress}%` }}
+                  // scaleX (compositor-only) not width (layout) → smooth + honored by reduced-motion.
+                  className="h-full w-full origin-left rounded-pill bg-accent-9"
+                  animate={{ scaleX: Math.max(0, Math.min(100, progress)) / 100 }}
                   transition={springs.smooth}
                 />
               </div>
@@ -399,16 +400,16 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
           onFocus={handleInputFocus}
           tabIndex={-1}
         />
-        {/* Error message with shake animation */}
+        {/* Error message — a calm fade/slide in (no decorative shake). */}
         <AnimatePresence>
           {displayError && (
             <motion.p
               role="alert"
               className="mt-ds-02 text-body-xs text-error-11"
-              initial={{ opacity: 0, x: 0 }}
-              animate={{ opacity: 1, x: [0, -4, 4, -4, 4, 0] }}
+              initial={{ opacity: 0, y: -2 }}
+              animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ opacity: tweens.fade, x: { type: 'tween', duration: durations.slow01, ease: 'easeOut' } }}
+              transition={tweens.fade}
             >
               {displayError}
             </motion.p>

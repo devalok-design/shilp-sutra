@@ -6,6 +6,7 @@ import { AvatarGroup, type AvatarUser } from './composed/avatar-group'
 import { TableSkeleton, ListSkeleton } from './composed/loading-skeleton'
 import { ErrorDisplay } from './composed/error-boundary'
 import { MasterDetail } from './composed/master-detail'
+import { FileUpload } from './ui/file-upload'
 import { Button } from './ui/button'
 import { Text } from './ui/text'
 
@@ -228,6 +229,21 @@ export const BeforeAfter: Story = {
             'motion (P2): the mobile detail slide is gated behind useReducedMotion (opacity-only / instant under prefers-reduced-motion).',
             'RTL (P2): list divider border-r → border-e; the mobile back arrow mirrors under dir="rtl".',
             'cleanup: removed the dead itemCount context; roving activeIndex derives from value or explicit active. (asChild/typeahead noted as follow-ups.)',
+          ]}
+        />
+
+        {/* ── file-upload: focus-visible + motion hygiene ── */}
+        <Row
+          name="FileUpload — focus-visible + motion hygiene"
+          verdict="Audit P0: the keyboard-operable drop zone had no focus-visible ring. P1: progress animated width (layout, escaped reduced-motion) + a default error shake."
+          after={<FileUpload onFiles={() => {}} label="Drop files or click to upload" />}
+          changes={[
+            'a11y (P0): the role="button" drop zone now has the focus-ring util — tab to it and you get a visible ring (a div[role=button] gets no usable UA outline). WCAG 2.4.7.',
+            'a11y (P1): disabled drop zone is tabIndex=-1 (leaves the tab order) to match aria-disabled — was still focusable while disabled.',
+            'motion (P1): progress bar animates scaleX on a full-width child (transform-origin:left) instead of width — compositor-only + honored by prefers-reduced-motion (width slipped past MotionConfig).',
+            'motion (P1): removed the default 5-keyframe error shake — the alert fades/slides in calmly now.',
+            'visual (P2): the drop zone rests on bg-surface-base (canvas) and tints on hover — the hover token was being used at rest; adds real hover feedback.',
+            'Follow-up noted: compose the compact variant on <Button> (still re-rolls button chrome).',
           ]}
         />
       </div>

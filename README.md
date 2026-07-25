@@ -66,7 +66,7 @@ transpilePackages: ['@devalok/shilp-sutra'],
 import { Button, Dialog, Input } from '@devalok/shilp-sutra/ui'
 import { PageHeader } from '@devalok/shilp-sutra/composed'
 import { DatePicker } from '@devalok/shilp-sutra/composed/date-picker'
-import { AppSidebar, TopBar } from '@devalok/shilp-sutra/shell'
+import { TopBar } from '@devalok/shilp-sutra/shell'
 ```
 
 > **Upgrading from 0.36 or earlier?** Read [MIGRATION.md](./MIGRATION.md#v0370--tailwind-4-css-first-migration).

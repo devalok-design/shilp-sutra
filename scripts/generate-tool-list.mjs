@@ -34,7 +34,7 @@ const CATEGORY = {
   get_setup: 'Reference', upgrade: 'Reference', search_docs: 'Reference',
   detect_framework: 'Setup', preflight: 'Setup', validate_snippet: 'Setup', verify_setup: 'Setup',
   check_slop: 'Quality',
-  report_issue: 'Write',
+  report_issue: 'Write', submit_entry: 'Write',
 }
 const ORDER = ['Reference', 'Setup', 'Quality', 'Write', 'Other']
 

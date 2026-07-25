@@ -17,6 +17,7 @@ import { parse } from '@babel/parser'
 
 import { getDocs } from './registry.mjs'
 import * as github from './github.mjs'
+import * as buildathon from './buildathon.mjs'
 
 const FLOOR = '0.45.0'
 const MAX_CHARS = 20_000
@@ -35,7 +36,12 @@ function cmpSemver(a, b) {
 }
 
 function banner(version) {
-  return `Docs for @devalok/shilp-sutra@${version}. If the consumer app has a different version installed (check node_modules/@devalok/shilp-sutra/package.json), pass it as the \`version\` parameter — prop surfaces change between minors.\n\n`
+  // The buildathon line self-expires at the deadline (see buildathon.mjs), so
+  // this cannot end up advertising a finished competition.
+  return (
+    `Docs for @devalok/shilp-sutra@${version}. If the consumer app has a different version installed (check node_modules/@devalok/shilp-sutra/package.json), pass it as the \`version\` parameter — prop surfaces change between minors.\n\n` +
+    buildathon.bannerNotice()
+  )
 }
 
 function cap(text) {
@@ -755,12 +761,14 @@ export async function howToUse() {
         verify_setup: 'Post-setup gate: CSS order, transpilePackages, peer coverage.',
         check_slop: 'Pre-emit design-quality gate: anti-slop findings + strengths + DO-guidance.',
         report_issue: 'File a public GitHub issue (bug / docs gap / feature).',
+        ...(buildathon.isOpen() ? { submit_entry: 'Submit a Build with Shilp Sutra buildathon entry (see `buildathon` below).' } : null),
       },
       sequences: {
         setting_up: ['detect_framework(package.json)', 'get_setup(recipe)', 'preflight(framework, imports)', 'validate_snippet(code) BEFORE writing each file', 'verify_setup(...) after'],
         writing_a_component: ['check_slop(code) BEFORE emitting — fix P0/P1, keep the strengths, pull unmet guidance into the design', 'validate_snippet(code) for TW4 / prop correctness', 'then write the file'],
       },
       escape_hatch: '`// slop-allow: <id> <reason>` on the offending line (or the line above) silences a check_slop finding — for deliberate, justified deviations.',
+      buildathon: buildathon.howToUseNotice() ?? undefined,
       more: SLOP_GUIDANCE.ad,
     },
     null,

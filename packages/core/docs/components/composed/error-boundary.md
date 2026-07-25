@@ -5,11 +5,27 @@
 - Category: composed
 
 ## Props
+
+### ErrorDisplay (the rendered UI — forwardRef<HTMLDivElement>, spreads div attrs)
     error: unknown (REQUIRED — Error object, status object, or string)
-    onReset: () => void (optional retry button)
+    onReset: () => void (optional — renders a "Try Again" button)
+    actions: ReactNode (optional — custom recovery actions; replaces the default button)
+    fullPage: boolean (default: true — center in a min-h-[60vh] region; false = inline)
+    autoFocusReset: boolean (default: false — focus the recovery button on mount)
+
+Note: the raw `error.message` is shown ONLY in development. In production, ErrorDisplay
+shows the friendly status-mapped copy (404/403/500/default); the real message stays in
+the dev-only stack-trace block.
+
+### ErrorBoundary (class boundary — wrap a subtree)
+    children: ReactNode (REQUIRED)
+    onReset: () => void (optional — called after the boundary resets)
+    onError: (error: unknown, info: React.ErrorInfo) => void (optional — wire Sentry/logging)
+    resetKeys: unknown[] (optional — auto-reset when any value changes; react-error-boundary parity)
+    fallback: (props: { error: unknown; onReset: () => void }) => ReactNode (optional — defaults to ErrorDisplay)
 
 ## Defaults
-    None
+    fullPage: true
 
 ## Example
 ```jsx

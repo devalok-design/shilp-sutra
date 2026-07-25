@@ -20,25 +20,41 @@ describe('ErrorDisplay', () => {
     expect(getByText('Something went wrong')).toBeTruthy()
   })
 
-  it('displays the error message from an Error instance', () => {
-    const { getByText } = render(
-      <ErrorDisplay error={new Error('Connection lost')} />,
-    )
-    expect(getByText('Connection lost')).toBeTruthy()
+  // Raw extracted messages surface only in development (production shows the
+  // friendly, status-mapped copy — no internal-detail leak). These validate the
+  // extraction path, so they run in dev mode.
+  describe('raw message extraction (development)', () => {
+    const origProcess = globalThis.process
+    beforeEach(() => {
+      globalThis.process = { ...origProcess, env: { ...origProcess?.env, NODE_ENV: 'development' } } as typeof process
+    })
+    afterEach(() => {
+      globalThis.process = origProcess
+    })
+
+    it('displays the error message from an Error instance', () => {
+      const { getByText } = render(<ErrorDisplay error={new Error('Connection lost')} />)
+      expect(getByText('Connection lost')).toBeTruthy()
+    })
+
+    it('displays the error message from a string error', () => {
+      const { getByText } = render(<ErrorDisplay error="Network timeout" />)
+      expect(getByText('Network timeout')).toBeTruthy()
+    })
+
+    it('displays the error message from an object with data.message', () => {
+      const { getByText } = render(<ErrorDisplay error={{ data: { message: 'Rate limited' } }} />)
+      expect(getByText('Rate limited')).toBeTruthy()
+    })
   })
 
-  it('displays the error message from a string error', () => {
-    const { getByText } = render(
-      <ErrorDisplay error="Network timeout" />,
-    )
-    expect(getByText('Network timeout')).toBeTruthy()
-  })
-
-  it('displays the error message from an object with data.message', () => {
-    const { getByText } = render(
-      <ErrorDisplay error={{ data: { message: 'Rate limited' } }} />,
-    )
-    expect(getByText('Rate limited')).toBeTruthy()
+  it('hides the raw error message in production (shows friendly copy)', () => {
+    const origProcess = globalThis.process
+    globalThis.process = { ...origProcess, env: { ...origProcess?.env, NODE_ENV: 'production' } } as typeof process
+    const { queryByText, getByText } = render(<ErrorDisplay error={new Error('secret db dsn leaked')} />)
+    expect(queryByText('secret db dsn leaked')).toBeNull()
+    expect(getByText('An unexpected error occurred. Please try again or go back to the home page.')).toBeTruthy()
+    globalThis.process = origProcess
   })
 
   it('shows 404 title for status 404', () => {

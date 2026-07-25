@@ -1,5 +1,256 @@
 # @devalok/shilp-sutra
 
+## 0.54.0
+
+<!-- breaking-summary:start -->
+> ### ⚠️ Breaking in 0.54.0
+>
+> - remove(shell)!: `AppSidebar` removed — compose the `Sidebar` primitives or the `sidebar-app` preset
+>
+> See [`MIGRATION.md`](../../MIGRATION.md) and `docs/recipes/upgrading.md` before bumping.
+<!-- breaking-summary:end -->
+
+### Minor Changes
+
+- [#226](https://github.com/devalok-design/shilp-sutra/pull/226) [`461c9bf`](https://github.com/devalok-design/shilp-sutra/commit/461c9bf7adebfc864188444f5fe2aa6b164de93e) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix(avatar-group): a11y + motion polish (finish-bar-v2 audit)
+
+  Public API unchanged (one additive prop: `label`). Fixes the two P0s that pinned
+  the audit score plus P1/P2 cleanups.
+
+  - **a11y (P0):** each avatar is now a focusable `<button>` with the `focus-ring`
+    util + `aria-label`, so member names are reachable by keyboard/AT (they were on
+    non-focusable `<div>`s → hover-only). Empty `users` renders nothing instead of a
+    focusable "0 team members" group.
+  - **motion (P0):** the hover/focus spread + peer-dim are driven by framer
+    (`animate={{ x }}`) so `MotionConfig` / `prefers-reduced-motion` governs them —
+    no positional animation under reduced-motion.
+  - **motion (P1):** avatars and the `+N` badge animate the spread **together** on DS
+    spring/duration tokens (avatars used to snap while `+N` glided; off-token
+    `duration-300 ease-out` removed).
+  - **compose (P1):** the `+N` badge is an `<Avatar>` + `<AvatarFallback>` now,
+    deleting the duplicate `avatarSizeVariants` CVA + text-size map.
+  - **fix (P1):** the dead indicator ternary is resolved — `admin` dot is
+    `bg-warning-9` (matches the docs), `lead` stays accent.
+  - **P2:** `max` clamped ≥ 1; ring-offset follows `borderColor` (no seam on a
+    `surface-base` blend); `Record` maps tightened to the `AvatarSize`/`AvatarRing` unions.
+
+- [#227](https://github.com/devalok-design/shilp-sutra/pull/227) [`bbbb578`](https://github.com/devalok-design/shilp-sutra/commit/bbbb578e7a7db421e00c962217020d0cfd3e9477) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix(bulk-action-bar): ARIA toolbar keyboard model + a11y + composability (audit)
+
+  Non-breaking (additive props). Fixes the P0 keyboard trap + P1/P2 gaps.
+
+  - **a11y (P0):** roving `tabIndex` now sits on the real `<Button>`s, not a wrapper
+    `<div>`, so keyboard users can **activate** actions (Enter/Space), not just move
+    the ring past them. Single tab stop with Arrow/Home/End roving across ALL controls
+    (Select-all, actions, Clear) per the ARIA Toolbar model. Locked by a new
+    arrow-then-Enter regression test.
+  - **a11y (P1):** inline confirmation is `role="group"` + `aria-live="assertive"`;
+    focus moves to Confirm on open and restores to the action on Cancel/Escape.
+  - **RTL (P1):** logical positioning (`start-1/2`) + Arrow Left/Right mirrored under
+    `dir="rtl"`.
+  - **api (P1):** `forwardRef` + spreads `HTMLAttributes`; action `color` widened to
+    the full Button union (`accent | error | success | warning | info | neutral`) —
+    was 2 of 6. New additive `loading` per-action pending spinner.
+  - **motion (P2):** `springs.smooth` for the slide + `useReducedMotion` guard
+    (opacity-only under `prefers-reduced-motion`).
+  - **docs:** prop table corrected to match source (`icon = IconInput`, full color
+    union, `totalCount`/`onSelectAll`/`loading`/confirm props).
+
+- [#217](https://github.com/devalok-design/shilp-sutra/pull/217) [`3bdd137`](https://github.com/devalok-design/shilp-sutra/commit/3bdd137d7342c5ee08b42c1cc62415a2d2181e62) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix(combobox): trigger is now `div[role=combobox]`, not a `<button>` — fixes invalid nested buttons in multi-select
+
+  In multi-select mode the trigger rendered selected chips whose remove-`×` are
+  `<button>`s **inside** the trigger `<button>`. A button cannot legally contain a
+  button — the browser silently splits the DOM (mangling pill layout), the remove
+  click can be swallowed, and screen readers misreport what's actionable.
+
+  The trigger is now a `<div role="combobox" tabindex="0">` — the W3C
+  select-only-combobox pattern (the same structure MUI, eBay MIND, and React Aria
+  use). Chip remove-buttons are now legally nested, layout is stable, and the
+  remove affordance is reliably clickable. Single-select is visually and
+  behaviourally unchanged.
+
+  **Potentially breaking:**
+  - The forwarded `ref` type changes from `HTMLButtonElement` to `HTMLDivElement`.
+    A consumer typing the ref as `HTMLButtonElement` will need to update it to
+    `HTMLDivElement`. `.focus()` etc. are unaffected.
+  - Disabled state is now conveyed via `aria-disabled` + `tabindex="-1"` (a div has
+    no `:disabled`). A test asserting `toBeDisabled()` on the trigger should assert
+    `aria-disabled="true"` instead. Keyboard open (Enter / Space / ArrowDown) and
+    Radix's disabled-blocking are preserved.
+
+- [#229](https://github.com/devalok-design/shilp-sutra/pull/229) [`67c80cf`](https://github.com/devalok-design/shilp-sutra/commit/67c80cfff2233d10e136a9b9a368903f281cabbc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix(error-boundary): alert a11y + boundary contract parity (audit)
+
+  All additive (non-breaking).
+
+  - **a11y (P0):** the message region is `role="alert"` (assertive live region) — screen
+    readers announce the error when it appears (there was no live region; the axe tests
+    passed only because axe can't detect a _missing_ one). Focus moves to the recovery
+    button when `ErrorBoundary` swaps in (`autoFocusReset`).
+  - **security (P1):** the raw `error.message` is gated behind development — production
+    shows the friendly status-mapped copy (no internal-detail leak); the real message
+    stays in the dev-only stack block.
+  - **api (P1):** `ErrorBoundary` now implements `componentDidCatch` → `onError(error, info)`
+    (wire Sentry/logging), and `ErrorDisplay` gains an `actions` slot for a secondary
+    recovery action (default "Try Again" only when absent).
+  - **api (P2):** `resetKeys` — the boundary auto-recovers when a dependency changes
+    (react-error-boundary parity); the `fallback` render-prop now receives a guaranteed
+    `onReset`.
+  - **visual (P1/P2):** dead `border-card-strong` → `border-card`; `min-h-[60vh]` gated
+    behind a `fullPage` prop (default true) so inline boundaries don't force viewport height.
+  - **docs:** documented the full `ErrorBoundary` API + the new props.
+
+- [#230](https://github.com/devalok-design/shilp-sutra/pull/230) [`6efb64d`](https://github.com/devalok-design/shilp-sutra/commit/6efb64d7707a6bbc6c6016b0b961bc6249914123) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix(master-detail): a11y naming/live region + selection ownership (audit)
+
+  Additive (non-breaking — controlled `selected` + explicit `active` still work).
+
+  - **a11y (P0):** the `listbox` now has an accessible name via a `label` prop
+    (`aria-label`) — it was a nameless listbox to screen readers. The detail pane is a
+    `role="region"` `aria-live="polite"` region, so AT users are told the detail changed
+    when the selection swaps (was a silent swap).
+  - **api (P1):** selection ownership — put `value` on each `MasterDetail.ListItem` and
+    `onSelect` / `defaultSelected` on the root; `active` + `aria-selected` derive from
+    context automatically. No more hand-wiring `active={id === sel}` **and** `onClick` on
+    every row (the DS `value`/`onSelect` model). Controlled `selected` is unchanged.
+  - **motion (P2):** the mobile detail slide is gated behind `useReducedMotion`
+    (opacity-only / instant under `prefers-reduced-motion`).
+  - **RTL (P2):** list divider `border-r` → `border-e`; the mobile back arrow mirrors
+    under `dir="rtl"`.
+  - **cleanup:** removed the dead `itemCount` context; roving `activeIndex` derives from
+    `value` or an explicit `active`.
+
+  Follow-ups noted (not in this change): `asChild`/`href` rows, typeahead, per-item disabled.
+
+- [#221](https://github.com/devalok-design/shilp-sutra/pull/221) [`1596a6f`](https://github.com/devalok-design/shilp-sutra/commit/1596a6fb0edbd8d9db1413c90ec0d59e5d7e22c0) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - remove(shell)!: `AppSidebar` removed — compose the `Sidebar` primitives or the `sidebar-app` preset
+
+  **BREAKING (beta 0.x).** The config-driven `AppSidebar` shell wrapper is removed,
+  along with its config types (`AppSidebarProps`, `NavGroup`, `NavItem`,
+  `NavSubItem`, `SidebarUser`, `SidebarPromo`, `SidebarFooterConfig`) and the
+  `@devalok/shilp-sutra/shell/sidebar` subpath export.
+
+  **Why.** The `Sidebar` primitives (`@devalok/shilp-sutra/ui/sidebar`) are already
+  fully composable — logo, grouped nav, collapsible sub-items, badges, group
+  actions, user footer. The wrapper only re-expressed those primitives through a
+  data-shape config, and every new pattern meant a new config prop. We're moving to
+  the shadcn model: **compose the primitives, or copy a preset and own it.**
+
+  **Migration.**
+  - Fastest: `npx shadcn@latest add @devalok/sidebar-app`, then replace
+    `<AppSidebar navGroups={…} user={…} currentPath={…} />` with the pasted
+    `<SidebarApp/>` and wire your router `Link` + active path. Preset gallery:
+    https://shilp-sutra.devalok.in/presets (also `sidebar-projects`,
+    `sidebar-client`, `sidebar-minimal`).
+  - Or compose `@devalok/shilp-sutra/ui/sidebar` directly.
+
+  The `Sidebar` **primitives are unchanged** — only the wrapper on top of them is
+  gone. See BREAKING.json (0.54.0) + MIGRATION.md for the full symbol list.
+
+- [#228](https://github.com/devalok-design/shilp-sutra/pull/228) [`42b3b50`](https://github.com/devalok-design/shilp-sutra/commit/42b3b50acf08770b1d73833fe248c78e2d04ecbc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix(skeletons): unify shimmer (S6) + a11y status region (audit)
+
+  `loading-skeleton` (Card/Table/Board/List) + `page-skeletons` (Dashboard/ProjectList/
+  TaskDetail). Non-breaking (additive `label` prop).
+
+  - **shimmer unify (S6, P0):** dropped every `bg-surface-raised-hover` fill override —
+    all bars now inherit the base `Skeleton`'s `skeleton-base`, so the system shimmers
+    from ONE source and bars no longer disappear in forced-colors (Windows HCM).
+  - **a11y (P0):** each root is a `role="status"` + `aria-busy` region with an sr-only
+    label (loading was silent to AT — every child `Skeleton` is `aria-hidden`). New
+    optional `label` prop.
+  - **state (P1):** count props (`rows`/`columns`/`cardsPerColumn`) clamped with
+    `Math.max(0, floor(...))` — `rows={-1}` / `NaN` can't throw a `RangeError`.
+  - **motion (P1):** removed the inert `animationDelay` (it sat on non-animated wrapper
+    divs and never fired).
+  - **cohesion (P1):** shells use `border-card` + `rounded-surface` (Card's vocabulary)
+    rather than `border-card-strong` / `rounded-overlay-lg` (Dialog radius);
+    page-skeletons' misleading `shimmer` fill constant removed.
+  - **docs:** page-skeletons no longer falsely claims it's "Built on LoadingSkeleton".
+
+### Patch Changes
+
+- [#231](https://github.com/devalok-design/shilp-sutra/pull/231) [`5f054fd`](https://github.com/devalok-design/shilp-sutra/commit/5f054fd3adb6a0245d06cbff6e5df31f8106b4b2) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix(file-upload): focus-visible ring + motion hygiene (audit)
+
+  No API change — a11y + motion fixes.
+
+  - **a11y (P0):** the keyboard-operable `role="button"` drop zone now has the DS
+    `focus-ring` — a `div[role=button]` gets no usable UA focus outline, so keyboard
+    users had no visible focus (WCAG 2.4.7).
+  - **a11y (P1):** the disabled drop zone is `tabIndex={-1}` (leaves the tab order) to
+    match its `aria-disabled` — it was still focusable while disabled.
+  - **motion (P1):** the progress bar animates `scaleX` on a full-width child
+    (`transform-origin: left`) instead of `width` — compositor-only and honored by
+    `prefers-reduced-motion` (a `width` animation slips past `MotionConfig`).
+  - **motion (P1):** removed the default 5-keyframe error shake; the alert now fades/
+    slides in calmly.
+  - **visual (P2):** the drop zone rests on `bg-surface-base` and tints on hover — the
+    hover token was being used at rest; adds real hover feedback.
+
+  Follow-up (not in this change): compose the compact variant on `<Button>`.
+
+- [#223](https://github.com/devalok-design/shilp-sutra/pull/223) [`a0c4c73`](https://github.com/devalok-design/shilp-sutra/commit/a0c4c7306fe6124ba3a60a26dd91f5ec2d4a5b8a) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix(docs): correct doc↔source drift in 6 components (finish-bar-v2 audit S3)
+
+  Six shipped docs made claims the source contradicts — actively misleading AI
+  agents and consumers. Corrected against source (source is truth):
+
+  - **rich-chat-input** (P0): prop table was materially wrong — `onSubmit` is
+    `(message: RichChatInputMessage) => void` (not `(html, plainText)`); removed the
+    non-existent `maxRows`; added the `inline` variant + `charCountDisplay`,
+    `content`, `onVoiceRecord`, `onTranscribe`, `maxDuration`, `replyTo`,
+    `actionButton`, `emojiSet`, `onSchedule`, `sendOptions`; fixed `ChatToolbarItem`
+    (no `attach`; adds `blockquote`/`link`); documented `RichChatInputMessage`.
+  - **slider**: doc claimed Slider does NOT consume FormField — it does (a11y wiring:
+    aria-invalid/describedby/required); reworded to "consumes for a11y, no visual
+    validation treatment."
+  - **search-input**: removed the false "Escape auto-clears via type=search" claim
+    (never wired); added the shipped `xs` size (was `sm|md|lg`).
+  - **command-registry**: `icon` is `IconInput` (not `ReactNode`); the pages/adminPages
+    split is organizational, NOT access control — clarified the component enforces
+    nothing (authorize on the server). Fixed the shell Introduction table's phantom
+    "register/unregister/search" API to the real contract.
+  - **app-command-palette**: role detection is case-sensitive (`'Admin'`/`'SuperAdmin'`);
+    fixed the example's `role: 'admin'` and documented the footgun.
+  - **simple-tooltip**: it always mounts its own `TooltipProvider` and does NOT inherit
+    an ancestor's `delayDuration` (doc claimed it "respects it if present").
+
+  Docs-only; no runtime or type changes.
+
+- [#234](https://github.com/devalok-design/shilp-sutra/pull/234) [`670c275`](https://github.com/devalok-design/shilp-sutra/commit/670c275df9a8d5f274a0ad9e85c4b618bbba7977) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix: P2 audit sweep — notification-preferences a11y names + split-button doc accuracy
+
+  - **notification-preferences (P1 a11y):** the per-row mute `Switch` and min-tier
+    `Select` now have accessible names (`aria-label`) — every row's inline controls
+    announced their value with no "what" (WCAG 4.1.2). Names include the channel +
+    project (e.g. "Mute In-App for Karm V2").
+  - **split-button (docs):** corrected the Composability section — it falsely claimed
+    SplitButton _inherits_ Button's variant/color/size vocabulary and `ButtonGroup`
+    context (it re-implements styling locally and ignores group context). Dropped the
+    stale "arrow-key nav planned for 0.45.0" changelog line.
+
+  Deferred (bigger/riskier, noted for a future pass): derive split-button's half styling
+  from `buttonVariants` (layout-sensitive), and de-duplicate the context-menu/menubar
+  Radix-twin plumbing.
+
+- [#232](https://github.com/devalok-design/shilp-sutra/pull/232) [`03b32e4`](https://github.com/devalok-design/shilp-sutra/commit/03b32e443058c91024ee00f6afda00d92c5efbe9) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix: P2 audit sweep — spinner reduced-motion contract, icon-button touch target, separator stories
+
+  - **spinner (P1):** `onComplete` now fires under `prefers-reduced-motion`. The static
+    success/error paths render without an `onAnimationComplete`, so the documented
+    `onComplete` callback was silently dropped for reduced-motion users — a flow that
+    advances on the success tick would stall. It now fires from an effect when the final
+    state mounts, regardless of motion preference.
+  - **icon-button (P1):** `sm` (32px) and `md` (40px) icon buttons now carry the
+    `touch-target` util — an invisible ≥44px press region (visual size unchanged) so
+    keyboard/touch targets meet WCAG 2.5.5. `lg` (48px) already cleared it. JSDoc
+    taxonomy corrected (adds `soft`; real color axis).
+  - **separator:** dropped the dead `variant` radio control from Storybook (the prop is a
+    no-op since 0.45.0; the control advertised a feature that does nothing). The prop's
+    removal itself is a breaking change deferred to the next major.
+
+- [#233](https://github.com/devalok-design/shilp-sutra/pull/233) [`113695d`](https://github.com/devalok-design/shilp-sutra/commit/113695d5438ddf691e3d0728244f5d57c4f3c600) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix: P2 audit sweep — switch RTL + reduced-motion, table forced-colors selection
+
+  - **switch (P1):** the thumb now travels toward the inline-end — mirrored under
+    `dir="rtl"` (it previously slid the wrong way in RTL). The thumb spring +
+    press-scale are gated behind `useReducedMotion` (instant, no scale under
+    `prefers-reduced-motion`).
+  - **table (P1):** the selected-row tint (`accent-3`) gets a `forced-colors:outline`
+    fallback so selection survives Windows High-Contrast Mode (the tint collapses to
+    Canvas with no cue otherwise).
+
 ## 0.53.0
 
 ### Minor Changes

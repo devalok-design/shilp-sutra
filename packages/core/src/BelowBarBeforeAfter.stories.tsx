@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardAction, CardContent, CardFooter } from
 import { ContentCard } from './composed/content-card'
 import { AvatarGroup, type AvatarUser } from './composed/avatar-group'
 import { TableSkeleton, ListSkeleton } from './composed/loading-skeleton'
+import { ErrorDisplay } from './composed/error-boundary'
 import { Button } from './ui/button'
 import { Text } from './ui/text'
 
@@ -183,6 +184,20 @@ export const BeforeAfter: Story = {
             'motion (P1): removed the inert animationDelay (it sat on non-animated wrapper divs and never fired).',
             'cohesion (P1): shells use border-card + rounded-surface (Card’s vocabulary), not border-card-strong / rounded-overlay-lg (Dialog radius); page-skeletons’ misleading `shimmer` fill const deleted.',
             'docs: page-skeletons no longer falsely claims it’s "Built on LoadingSkeleton".',
+          ]}
+        />
+
+        {/* ── error-boundary: a11y alert + boundary contract (react-error-boundary parity) ── */}
+        <Row
+          name="ErrorBoundary / ErrorDisplay — alert a11y + boundary contract"
+          verdict="Audit P0: no live region (screen readers got nothing when the boundary swapped in). + boundary mechanics lagged react-error-boundary. All fixes additive."
+          after={<ErrorDisplay error={new Error('Failed to load dashboard')} onReset={() => {}} fullPage={false} />}
+          changes={[
+            'a11y (P0): the message region is now role="alert" (assertive live region) — AT announces the error on appearance; focus moves to the recovery button when the boundary swaps in (autoFocusReset).',
+            'security (P1): raw error.message is gated behind dev — production shows the friendly status-mapped copy (no internal-detail leak); the real message stays in the dev-only stack block.',
+            'api (P1): ErrorBoundary now has componentDidCatch → onError(error, info) for Sentry/logging; + an actions slot (secondary recovery action) replacing the hardcoded single "Try Again".',
+            'api (P2): resetKeys — the boundary auto-recovers when a dependency changes (react-error-boundary parity); fallback now receives a guaranteed onReset.',
+            'visual: dead border-card-strong → border-card; min-h-[60vh] gated behind a fullPage prop (inline boundaries no longer force viewport height).',
           ]}
         />
       </div>

@@ -27,7 +27,8 @@ type IconButtonSize = 'sm' | 'md' | 'lg'
  *
  * **Size:** `'sm'` | `'md'` (default) | `'lg'` — maps to `icon-sm/md/lg` sizes internally.
  *
- * **All `Button` variants** are supported: `solid`, `outline`, `ghost`, `link` x `default`, `error`.
+ * **All `Button` axes** flow through: variants `solid` | `soft` | `outline` | `ghost` | `link`,
+ * colors `accent` | `error` | `success` | `warning` | `info` | `neutral` (see `Button`).
  *
  * @example
  * // Ghost toolbar icon button:
@@ -70,7 +71,13 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       <Button
         ref={ref}
         size={sizeMap[size]}
-        className={cn(shape === 'circle' && 'rounded-pill', className)}
+        // sm (32px) / md (40px) are below the 44px touch target — expand the press
+        // region with an invisible ::before (visual size unchanged). lg is 48px.
+        className={cn(
+          shape === 'circle' && 'rounded-pill',
+          (size === 'sm' || size === 'md') && 'touch-target',
+          className,
+        )}
         loading={loading}
         loadingPosition="center"
         {...props}

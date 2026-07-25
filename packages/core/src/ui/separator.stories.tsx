@@ -11,10 +11,6 @@ const meta = preview.meta({
       options: ['horizontal', 'vertical'],
     },
     decorative: { control: 'boolean' },
-    variant: {
-      control: 'radio',
-      options: ['default', 'gradient', 'gradient-left', 'gradient-right'],
-    },
   },
 })
 export default meta

@@ -14,14 +14,18 @@ export interface LabelProps
 const Label = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   LabelProps
->(({ className, required, children, htmlFor, ...props }, ref) => {
+>(({ className, required, children, htmlFor, id, ...props }, ref) => {
   const fieldCtx = useFormField()
   // Explicit htmlFor wins; otherwise fall back to FormField's inputId.
   const resolvedHtmlFor = htmlFor ?? fieldCtx.inputId
+  // Adopt the field's labelId so non-labellable controls (Combobox div) can point
+  // aria-labelledby at this label. Explicit id wins.
+  const resolvedId = id ?? fieldCtx.labelId
   const resolvedRequired = required ?? fieldCtx.required
   return (
     <LabelPrimitive.Root
       ref={ref}
+      id={resolvedId}
       htmlFor={resolvedHtmlFor}
       className={cn(
         'font-sans text-body-md font-medium text-surface-fg leading-none transition-opacity duration-fast-01 ease-productive-standard peer-disabled:opacity-action-disabled',

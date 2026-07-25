@@ -437,15 +437,17 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
             role="combobox"
             tabIndex={disabled ? -1 : 0}
             data-disabled={disabled || undefined}
-            // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor> resolves.
-            id={externalId ?? fieldCtx.inputId}
+            id={externalId}
             aria-expanded={open}
             aria-controls={listboxId}
             aria-haspopup="listbox"
             aria-disabled={disabled || undefined}
-            // Explicit accessibleLabel wins. Inside a FormField, let the visible <Label>
-            // provide the name (via htmlFor); only fall back to placeholder when standalone.
-            aria-label={accessibleLabel ?? (fieldCtx.inputId ? undefined : placeholder)}
+            // The trigger is a div[role=combobox] — non-labellable, so `<Label htmlFor>`
+            // can't target it. Inside a FormField, adopt the label's id via
+            // aria-labelledby; explicit accessibleLabel wins; placeholder is the
+            // standalone fallback.
+            aria-labelledby={accessibleLabel ? undefined : fieldCtx.labelId}
+            aria-label={accessibleLabel ?? (fieldCtx.labelId ? undefined : placeholder)}
             aria-invalid={isError || undefined}
             aria-describedby={ariaDescribedBy}
             aria-required={ariaRequired || undefined}

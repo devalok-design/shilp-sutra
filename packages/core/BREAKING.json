@@ -347,7 +347,8 @@
       ],
       "notes": [
         "The Sidebar PRIMITIVES (@devalok/shilp-sutra/ui/sidebar — Sidebar, SidebarProvider, SidebarMenu, SidebarMenuSub*, SidebarMenuBadge, SidebarGroupAction, etc.) are unchanged. Only the config-driven AppSidebar wrapper on top of them is removed.",
-        "Fastest migration: `npx shadcn@latest add @devalok/sidebar-app`, then replace <AppSidebar navGroups={…} user={…} currentPath={…} /> with the pasted <SidebarApp/>, wiring your router Link + active path."
+        "Fastest migration: `npx shadcn@latest add @devalok/sidebar-app`, then replace <AppSidebar navGroups={…} user={…} currentPath={…} /> with the pasted <SidebarApp/>, wiring your router Link + active path. Composing @devalok/shilp-sutra/ui/sidebar directly is equally valid and needs no registry.",
+        "Deprecation cycle: no PUBLISHED version carried an @deprecated AppSidebar — 0.53.0 shipped it undeprecated, 0.54.0 removes it. The deprecation marker existed only within the unreleased 0.54.0 line. This is a deliberate call for a 0.x beta with a single coordinated consumer (breaking changes ship in 0.x minors); a post-1.0 removal would get a real deprecate→remove window."
       ]
     }
   }

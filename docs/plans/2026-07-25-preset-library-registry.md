@@ -144,3 +144,22 @@ coordinated migration. MCP-delivered preset makes it AI-automatable.
 7. **`target` form**: `components/devalok/<slug>/…` vs `@components/…` alias-token (spike decides).
 8. **`shadcn build` oracle in CI?** (rec yes, drift job only.)
 9. Every preset = brand output → `setu_check` + `check_slop` gate in Phase-1 "done".
+
+---
+
+## Release order + pin (0.x) — learned from the Karm migration (2026-07-25)
+
+- **Registry dep pin is BARE on 0.x** (`build-registry.mjs` `pinFor`). A caret is
+  broken in beta: `^0.53.0` EXCLUDES 0.54.0, so it fights a consumer upgrading to
+  the version that ships the preset; and the site deploys from `main` (which can
+  lead npm), so a version pin can demand an unpublished version → `shadcn add`
+  hard-fails (Phase-0 spike recorded exactly this). Bare = latest/keep-existing,
+  always resolvable. Switch to `^{major}.0.0` only at 1.0.
+- **Release order:** publish npm FIRST, then redeploy `apps/site`. With the bare pin
+  this is no longer a hard-fail (bare always resolves), but redeploying after the
+  publish keeps `meta.shilpSutraVersion` in the registry matched to the published
+  version instead of leading it.
+- **Deprecation cycle collapsed to zero published releases** for AppSidebar
+  (0.53.0 undeprecated → 0.54.0 removed). Deliberate for a 0.x beta with one
+  coordinated consumer; recorded in BREAKING.json 0.54.0 notes. Post-1.0 removals
+  get a real deprecate→remove window.

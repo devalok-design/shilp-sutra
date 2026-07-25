@@ -11,7 +11,14 @@
  * Hybrid model (validated with a real `shadcn add`): preset files import
  * primitives from the npm package @devalok/shilp-sutra, so registryDependencies
  * is empty and those imports pass through shadcn's @/-scoped rewrite untouched.
- * @devalok/shilp-sutra is pinned caret-to-minor (fixes flow, breaking major held).
+ *
+ * Dependency PIN (see pinFor):
+ *  - 0.x (beta): BARE specifier (no version). A caret is wrong here — `^0.53.0`
+ *    EXCLUDES 0.54.0 on 0.x, so it would fight a consumer upgrading to the version
+ *    that ships the preset; and the site deploys from `main`, which can lead npm,
+ *    so a version pin can demand an unpublished version → `shadcn add` hard-fails.
+ *    Bare installs latest / keeps the consumer's existing copy — always resolvable.
+ *  - >=1.x (stable): `^{major}.0.0` — patches + minors flow, breaking major held.
  */
 import { promises as fs } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -40,9 +47,15 @@ async function coreVersion() {
   return pkg.version
 }
 
-function caretMinor(version) {
-  const [maj, min] = version.split('.')
-  return `^${maj}.${min}.0`
+/**
+ * The version constraint to attach to @devalok/shilp-sutra in a preset's deps.
+ * Returns '' (bare, no constraint) on 0.x — see the file header for why a caret
+ * is broken there. On >=1.x, caret-major.
+ */
+function pinFor(version) {
+  const [maj] = version.split('.')
+  if (maj === '0') return '' // beta: bare specifier — always resolvable
+  return `^${maj}.0.0`
 }
 
 function packageOf(spec) {
@@ -95,7 +108,10 @@ async function main() {
     const { deps, core } = analyzeImports(content, `${slug}/preset.tsx`)
 
     const dependencies = []
-    if (core) dependencies.push(`@devalok/shilp-sutra@${caretMinor(version)}`)
+    if (core) {
+      const pin = pinFor(version)
+      dependencies.push(pin ? `@devalok/shilp-sutra@${pin}` : '@devalok/shilp-sutra')
+    }
     dependencies.push(...[...deps].sort())
 
     const item = {

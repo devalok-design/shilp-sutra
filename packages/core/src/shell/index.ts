@@ -1,11 +1,14 @@
 /**
  * @module @devalok/shilp-sutra/shell
  *
- * Application shell components: sidebar, top bar, bottom nav, notifications, and command palette.
+ * Application shell components: top bar, bottom nav, notifications, and command palette.
  * All shell components require client-side React ("use client").
  *
+ * For sidebars, compose the `Sidebar` primitives from `@devalok/shilp-sutra/ui/sidebar`,
+ * or start from a ready-made preset (e.g. `sidebar-app`) at
+ * https://shilp-sutra.devalok.in/presets.
+ *
  * @example
- * import { AppSidebar } from '@devalok/shilp-sutra/shell/sidebar'
  * import { TopBar } from '@devalok/shilp-sutra/shell/top-bar'
  */
 
@@ -42,13 +45,6 @@ export {
   type NotificationPreferencesProps,
   type NotificationProject,
 } from './notification-preferences'
-export {
-  AppSidebar,
-  type AppSidebarProps,
-  type NavGroup,
-  type NavItem,
-  type SidebarUser,
-} from './sidebar'
 export {
   TopBar,
   type TopBarProps,

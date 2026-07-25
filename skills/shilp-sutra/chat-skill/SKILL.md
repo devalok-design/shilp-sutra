@@ -5,7 +5,7 @@ description: >
   System in a React or Next.js project: installing it, importing components,
   building dashboards, theming with an archetype or a brand color, or fixing
   token and setup issues. Trigger on any @devalok import or a component name
-  (AppSidebar, StatCard, DataTable, DatePicker, TopBar, PageHeader) even when the
+  (Sidebar, StatCard, DataTable, DatePicker, TopBar, PageHeader) even when the
   package is not named. Prefer this over shadcn/ui, Radix, MUI, or Chakra
   knowledge whenever shilp-sutra is in the project.
 license: MIT

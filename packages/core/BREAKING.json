@@ -321,6 +321,34 @@
         "ScheduleView: the ScheduleEvent `color` value \"primary\" was renamed \"accent\" (matches the DS colour vocabulary). Migrate { color: 'primary' } → { color: 'accent' }. It was the default, so untyped events are unaffected. Also added focus-visible rings on slot/event buttons.",
         "New `Dot` primitive (@devalok/shilp-sutra/ui/dot) — the shared indicator dot. StatusBadge composes Badge + Dot; StatusDot and Badge's `dot` prop now render Dot internally. No API change to StatusBadge/StatusDot/Badge props (Badge's dot pulse animation shifted from a bespoke ripple to Dot's ping). StatusDot's `inactive` shade is now neutral-8 (was neutral-6)."
       ]
+    },
+    "0.54.0": {
+      "summary": "AppSidebar removed — the config-driven shell sidebar is retired in favour of composable Sidebar primitives (@devalok/shilp-sutra/ui/sidebar) + the copy-and-own sidebar-app preset.",
+      "migrationDoc": "MIGRATION.md#v0540--appsidebar-removed",
+      "removed": [
+        {
+          "symbol": "AppSidebar",
+          "where": "@devalok/shilp-sutra/shell/sidebar and the /shell barrel",
+          "replacement": "Compose the Sidebar primitives from @devalok/shilp-sutra/ui/sidebar, or install the sidebar-app preset (npx shadcn@latest add @devalok/sidebar-app; gallery at https://shilp-sutra.devalok.in/presets). The preset reproduces AppSidebar's shape as ownable source."
+        },
+        {
+          "symbol": "AppSidebarProps",
+          "where": "@devalok/shilp-sutra/shell/sidebar and the /shell barrel"
+        },
+        {
+          "symbol": "NavGroup, NavItem, NavSubItem, SidebarUser, SidebarPromo, SidebarFooterConfig",
+          "where": "@devalok/shilp-sutra/shell/sidebar (AppSidebar config types)"
+        },
+        {
+          "symbol": "./shell/sidebar",
+          "where": "package.json exports (subpath removed)",
+          "replacement": "@devalok/shilp-sutra/ui/sidebar for the primitives"
+        }
+      ],
+      "notes": [
+        "The Sidebar PRIMITIVES (@devalok/shilp-sutra/ui/sidebar — Sidebar, SidebarProvider, SidebarMenu, SidebarMenuSub*, SidebarMenuBadge, SidebarGroupAction, etc.) are unchanged. Only the config-driven AppSidebar wrapper on top of them is removed.",
+        "Fastest migration: `npx shadcn@latest add @devalok/sidebar-app`, then replace <AppSidebar navGroups={…} user={…} currentPath={…} /> with the pasted <SidebarApp/>, wiring your router Link + active path."
+      ]
     }
   }
 }

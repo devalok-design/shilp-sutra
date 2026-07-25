@@ -109,7 +109,7 @@ In dark mode the kit lightens surfaces with elevation (so `surface-overlay` is *
 </div>
 ```
 
-(In practice you wouldn't write the `bg-*` / `shadow-*` directly — `<Card>`, `<DialogContent>`, `<AppSidebar>` apply them. This is just the layer model.)
+(In practice you wouldn't write the `bg-*` / `shadow-*` directly — `<Card>`, `<DialogContent>`, `<Sidebar>` apply them. This is just the layer model.)
 
 ## Rules
 

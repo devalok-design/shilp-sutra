@@ -34,7 +34,7 @@ These are not preferences. Generated code that violates them is wrong.
 
 ## Workflow — before generating any screen
 
-1. **Identify the layout shell.** AppSidebar + TopBar for product pages. Container + Stack for marketing. Dialog/Sheet for modal flows.
+1. **Identify the layout shell.** Sidebar + TopBar for product pages. Container + Stack for marketing. Dialog/Sheet for modal flows.
 2. **Pick the surface for each region.** Read `foundations/surfaces.md`. Default page bg is `surface-base`; everything else stacks up from there.
 3. **Pick components from `components/overview.md`.** That file has decision trees for the common confusions (Button variant, Input vs Combobox vs Autocomplete, Dialog vs Sheet vs Popover).
 4. **Lay things out with `<Stack>` + `<Container>`.** Use `gap-ds-03/05/07`. Don't reach for arbitrary flex divs.

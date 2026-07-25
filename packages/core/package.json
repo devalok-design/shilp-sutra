@@ -710,11 +710,6 @@
       "import": "./dist/shell/notification-preferences.js",
       "default": "./dist/shell/notification-preferences.js"
     },
-    "./shell/sidebar": {
-      "types": "./dist/shell/sidebar.d.ts",
-      "import": "./dist/shell/sidebar.js",
-      "default": "./dist/shell/sidebar.js"
-    },
     "./shell/top-bar": {
       "types": "./dist/shell/top-bar.d.ts",
       "import": "./dist/shell/top-bar.js",

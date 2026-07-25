@@ -79,7 +79,7 @@ describe('AvatarGroup', () => {
       expect(dot!.tagName).toBe('SPAN')
     })
 
-    it('renders admin indicator with bg-accent-9', () => {
+    it('renders admin indicator with bg-warning-9', () => {
       const { container } = render(
         <AvatarGroup
           users={[{ name: 'Bob', indicator: 'admin' }]}
@@ -87,7 +87,7 @@ describe('AvatarGroup', () => {
           showTooltip={false}
         />,
       )
-      const dot = container.querySelector('.bg-accent-9')
+      const dot = container.querySelector('.bg-warning-9')
       expect(dot).toBeInTheDocument()
       expect(dot!.tagName).toBe('SPAN')
     })

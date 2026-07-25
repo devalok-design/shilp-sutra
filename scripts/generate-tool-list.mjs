@@ -35,7 +35,7 @@ const CATEGORY = {
   detect_framework: 'Setup', preflight: 'Setup', validate_snippet: 'Setup', verify_setup: 'Setup',
   check_slop: 'Quality',
   list_presets: 'Presets', get_preset: 'Presets', preview_preset: 'Presets',
-  report_issue: 'Write',
+  report_issue: 'Write', submit_entry: 'Write',
 }
 const ORDER = ['Reference', 'Setup', 'Quality', 'Presets', 'Write', 'Other']
 

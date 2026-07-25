@@ -71,8 +71,8 @@ try {
   const list = await rpc('tools/list', {}, 2)
   const names = (list.result?.tools ?? []).map((t) => t.name).sort()
   check(
-    'tools/list has all 16',
-    JSON.stringify(names) === JSON.stringify(['check_slop', 'detect_framework', 'find_component', 'get_component', 'get_preset', 'get_setup', 'get_tokens', 'how_to_use', 'list_presets', 'preflight', 'preview_preset', 'report_issue', 'search_docs', 'upgrade', 'validate_snippet', 'verify_setup']),
+    'tools/list has all 17',
+    JSON.stringify(names) === JSON.stringify(['check_slop', 'detect_framework', 'find_component', 'get_component', 'get_preset', 'get_setup', 'get_tokens', 'how_to_use', 'list_presets', 'preflight', 'preview_preset', 'report_issue', 'search_docs', 'submit_entry', 'upgrade', 'validate_snippet', 'verify_setup']),
     names.join(',')
   )
 
@@ -162,15 +162,54 @@ try {
 
   // Preset Library tools: wired + graceful (fetch the live registry; in CI the
   // endpoint may not be deployed yet, so we assert the banner/shape, not network).
-  const lp = await call('list_presets', {}, 21)
+  const lp = await call('list_presets', {}, 25)
   const lpText = lp.result?.content?.[0]?.text ?? ''
   check('list_presets responds with Preset Library banner', lpText.includes('Preset Library'), lpText.slice(0, 160))
-  const gp = await call('get_preset', { name: 'sidebar-app' }, 22)
+  const gp = await call('get_preset', { name: 'sidebar-app' }, 26)
   const gpText = gp.result?.content?.[0]?.text ?? ''
   check('get_preset responds (banner + install or not-found)', gpText.includes('Preset Library') && (gpText.includes('shadcn') || gpText.includes('No preset')), gpText.slice(0, 160))
-  const pp = await call('preview_preset', { name: 'sidebar-app' }, 23)
+  const pp = await call('preview_preset', { name: 'sidebar-app' }, 27)
   const ppText = pp.result?.content?.[0]?.text ?? ''
   check('preview_preset responds (banner)', ppText.includes('Preset Library'), ppText.slice(0, 160))
+
+  // ── buildathon ────────────────────────────────────────────────────────────
+  // Only FAILURE paths are exercised. A submit_entry call that passed every
+  // validation would POST a real row into the live response sheet, so no smoke
+  // check may ever supply a fully valid entry.
+  const buildathonOpen = Date.now() < Date.parse('2026-07-31T23:30:00Z')
+  check('how_to_use carries the buildathon block while open', howText.includes('buildathon') === buildathonOpen, howText.slice(0, 120))
+
+  const noConsent = await call('submit_entry', { fullName: 'A', email: 'a@b.co', phone: '1', mode: 'solo', projectTitle: 'P', oneLiner: 'x', repoUrl: 'https://github.com/a/b', videoUrl: 'https://x.co', liveUrl: 'https://x.co', humanConfirmed: false }, 21)
+  const noConsentText = noConsent.result?.content?.[0]?.text ?? ''
+  check(
+    'submit_entry refuses without humanConfirmed',
+    buildathonOpen ? noConsent.result?.isError === true && noConsentText.includes('humanConfirmed') : noConsentText.includes('closed'),
+    noConsentText.slice(0, 200)
+  )
+
+  // humanConfirmed is true here, but the repo host is wrong — validation must
+  // reject it BEFORE any network write happens.
+  const badRepo = await call('submit_entry', { fullName: 'A', email: 'a@b.co', phone: '1', mode: 'solo', projectTitle: 'P', oneLiner: 'x', repoUrl: 'https://gitlab.com/a/b', videoUrl: 'https://x.co', liveUrl: 'https://x.co', humanConfirmed: true }, 22)
+  const badRepoText = badRepo.result?.content?.[0]?.text ?? ''
+  check(
+    'submit_entry rejects a non-GitHub repo before writing',
+    buildathonOpen ? badRepo.result?.isError === true && badRepoText.includes('public GitHub repository') : badRepoText.includes('closed'),
+    badRepoText.slice(0, 200)
+  )
+
+  const teamGap = await call('submit_entry', { fullName: 'A', email: 'a@b.co', phone: '1', mode: 'team', projectTitle: 'P', oneLiner: 'x', repoUrl: 'https://github.com/a/b', videoUrl: 'https://x.co', liveUrl: 'https://x.co', humanConfirmed: true }, 23)
+  const teamGapText = teamGap.result?.content?.[0]?.text ?? ''
+  check(
+    'submit_entry requires team fields for a team entry',
+    buildathonOpen ? teamGap.result?.isError === true && teamGapText.includes('teamName') : teamGapText.includes('closed'),
+    teamGapText.slice(0, 200)
+  )
+
+  // The advert rides on the shared version banner, so it must show up on an
+  // ordinary doc response while the buildathon is open — and vanish after.
+  const bannerCheck = await call('find_component', { query: 'button' }, 24)
+  const bannerText = bannerCheck.result?.content?.[0]?.text ?? ''
+  check('banner carries the buildathon line while open', bannerText.includes('Build with Shilp Sutra') === buildathonOpen, bannerText.slice(0, 200))
 } finally {
   if (child) child.kill()
 }

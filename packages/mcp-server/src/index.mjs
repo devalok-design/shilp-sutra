@@ -16,6 +16,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 import { z } from 'zod'
 import * as tools from './tools.mjs'
+import * as buildathon from './buildathon.mjs'
 import * as analytics from './analytics.mjs'
 import { cacheStats } from './registry.mjs'
 
@@ -132,7 +133,8 @@ function buildServer(ctx = {}) {
         'SETTING UP in a project? Run this sequence instead of guessing: detect_framework(package.json) → get_setup(recipe) → preflight(framework, imports) to install peer deps → validate_snippet(code) BEFORE you write each file → verify_setup(...) after. This closes the four setup traps: peer-dep cliffs, TW4 dead classes (which fail silently), wrong-recipe, and mis-wired CSS/config. ' +
         'WRITING a component? call check_slop(code) BEFORE you emit it — deterministic design-quality gate returning anti-slop findings + strengths + DO-guidance; fix P0/P1, keep the strengths, pull unmet guidance in. ' +
         'NEED A WHOLE SCREEN (a sidebar, dashboard, auth flow)? call list_presets — the Preset Library ships pre-assembled, ownable screens built from shilp-sutra. get_preset(name) gives install steps; then `shadcn add @devalok/<name>` drops the source into the app. Don\'t hand-build what a preset already covers. ' +
-        'If you hit a bug, a broken recipe, a docs gap, or want to suggest a feature, call report_issue — it files a public GitHub issue for maintainer triage.',
+        'If you hit a bug, a broken recipe, a docs gap, or want to suggest a feature, call report_issue — it files a public GitHub issue for maintainer triage. ' +
+        buildathon.instructionsNotice(),
     }
   )
 
@@ -294,6 +296,33 @@ function buildServer(ctx = {}) {
       version: VERSION_PARAM,
     },
     instrument(ctx, 'report_issue', (args) => tools.reportIssue(args, ctx))
+  )
+
+  server.tool(
+    'submit_entry',
+    'Submit an entry to Build with Shilp Sutra, the online buildathon by Devalok. Open to everyone, solo or team; entries close 31 July 2026, 11:59 PM IST. ' +
+      'The winner receives $15,000 worth of brand identity, GTM strategy, and ongoing support from Devalok Design and Strategy Studio. ' +
+      'Judged on beauty, functionality, and Bharat-oriented problem solving. To enter: a public GitHub repository, a demo video, and a live demo URL, on a project that runs on shilp-sutra. ' +
+      'Already building at the Cursor India or Sarvam AI buildathons? The same project can be entered here too. ' +
+      'This writes a REAL competition entry carrying the person\'s name, email, and phone number into the official form. Read every field back to them, get an explicit yes, then pass humanConfirmed: true. Never guess a value. ' +
+      'Rules, prize, and the form for submitting by hand: https://shilp-sutra.devalok.in/buildathon',
+    {
+      fullName: z.string().describe('Full name of the person entering (the solo builder, or whoever is submitting for the team).'),
+      email: z.string().describe('Contact email. Ask for it — never reuse a git config address without asking.'),
+      phone: z.string().describe('Contact phone number, with country code. Ask for it.'),
+      mode: z.enum(['solo', 'team']).describe('Building alone or as a team.'),
+      teamName: z.string().optional().describe('Team name. Required when mode is "team".'),
+      teamMembers: z.string().optional().describe('Team member names, one per line, so everyone gets credited. Required when mode is "team".'),
+      projectTitle: z.string().describe('Project title.'),
+      oneLiner: z.string().describe('What it does, in one line.'),
+      repoUrl: z.string().describe('Public GitHub repository URL. Must be public and must be on github.com.'),
+      videoUrl: z.string().describe('Demo video URL (YouTube, Loom, Drive — any reachable link).'),
+      liveUrl: z.string().describe('Live demo URL where the running project can be used.'),
+      otherBuildathon: z.string().optional().describe('If this was also built at another buildathon: "Cursor India Buildathon", "Sarvam AI Buildathon", "No", or free text for anything else.'),
+      extraContext: z.string().optional().describe('Optional: anything that strengthens the entry against the judging criteria (beauty, functionality, Bharat-oriented problem solving).'),
+      humanConfirmed: z.boolean().describe('Set true ONLY after reading every field back to the person and getting an explicit yes. This files their real entry.'),
+    },
+    instrument(ctx, 'submit_entry', (args) => buildathon.submitEntry(args, ctx))
   )
 
   return server

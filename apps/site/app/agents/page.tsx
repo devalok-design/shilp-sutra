@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { IconBrandGithub, IconFileText, IconMessage, IconPlug, IconRobot, IconTerminal } from '@tabler/icons-react'
+import { IconArrowRight, IconBrandGithub, IconFileText, IconMessage, IconPlug, IconRobot, IconTerminal } from '@tabler/icons-react'
 import { Button } from '@devalok/shilp-sutra/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@devalok/shilp-sutra/ui/card'
 import { Text } from '@devalok/shilp-sutra/ui/text'
@@ -8,6 +8,7 @@ import { CodeBlock } from '@/components/code-block'
 import { PageHeader } from '@/components/page-header'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { CLOSES, PRIZE, isOpen as isBuildathonOpen } from '@/lib/buildathon'
 
 export const metadata: Metadata = {
   title: 'For AI editors',
@@ -245,6 +246,30 @@ export default function AgentsPage() {
               </div>
             </div>
           </section>
+
+          {/* Time-boxed: remove this section after the buildathon closes. */}
+          {isBuildathonOpen() && (
+            <section className="mt-ds-12 border-t border-surface-border-subtle pt-ds-09">
+              <Text variant="label-sm" className="mb-ds-02 text-surface-fg-subtle">
+                Running now
+              </Text>
+              <Text variant="heading-md" className="mb-ds-03 text-surface-fg">
+                Your agent can enter you into the buildathon.
+              </Text>
+              <Text variant="body-md" className="mb-ds-05 max-w-2xl text-pretty text-surface-fg-muted">
+                Build with Shilp Sutra is open to everyone, solo or team, until {CLOSES}. Build
+                anything that runs on Shilp Sutra and solves a problem with real cause. The winner
+                receives {PRIZE} worth of brand identity, GTM strategy, and ongoing support from
+                Devalok. Once the MCP is connected, tell your agent to submit and it will collect
+                your details, read them back, and file the entry after you confirm.
+              </Text>
+              <Link href="/buildathon">
+                <Button variant="soft" endIcon={<IconArrowRight size={16} />}>
+                  Rules, prize, and how to enter
+                </Button>
+              </Link>
+            </section>
+          )}
         </div>
       </main>
       <SiteFooter />

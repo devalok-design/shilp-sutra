@@ -4,6 +4,34 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.55.0 — additive; one optional step if you use the editors
+
+Nothing breaks. No existing import, prop value, or install stops working.
+
+### If you type-check declarations, upgrade for the fix
+
+0.54.0's published `.d.ts` were unusable with `skipLibCheck: false` — a barrel import produced 79 errors, and `moduleResolution: "node16" | "nodenext"` failed regardless. Both are fixed; no action beyond upgrading.
+
+### If you import `RichTextEditor` or `RichChatInput`, add two devDependencies
+
+These components expose TipTap's `Editor` type. TipTap's runtime is bundled — you are not installing it to run anything — but your type-checker needs to resolve the package to read the type:
+
+```bash
+pnpm add -D @tiptap/pm @tiptap/react
+```
+
+`@tiptap/pm` is required alongside `@tiptap/react` because TipTap's own declarations import from it. Both are **optional peers**: skip them and the components still run, you just lose the editor type.
+
+Previously these resolved to `error TS2307: Cannot find module '@tiptap/react'` with nothing telling you what to install, so this replaces a silent failure with a documented one-liner.
+
+### Three dependencies removed — nothing to do
+
+`diff`, `frimousse` and `@emoji-mart/data` are no longer declared. They were always bundled into `dist`, so they were installed for no reason. Diff, EmojiPicker and the editors are unaffected.
+
+### Bundle size improves on its own
+
+Vendored Radix primitives now ship as one chunk per primitive instead of a single 231 KB block. A single-component import drops from ~209 KB to ~90 KB of our code; a twelve-component app from ~252 KB to ~213 KB. No API change — rebuild and the improvement applies.
+
 ## v0.54.0 — AppSidebar removed
 
 **Breaking.** The config-driven `AppSidebar` shell component is removed. It was a

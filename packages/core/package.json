@@ -1,6 +1,6 @@
 {
   "name": "@devalok/shilp-sutra",
-  "version": "0.55.0",
+  "version": "0.55.1",
   "description": "Devalok Design System — accessible React components, OKLCH design tokens, and Tailwind 4 CSS-first setup. Ships with AI-agent setup recipes.",
   "license": "MIT",
   "author": "Devalok Design & Strategy Studios <shilp-sutra@devalok.in>",

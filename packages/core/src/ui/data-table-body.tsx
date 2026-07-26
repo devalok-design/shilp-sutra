@@ -91,6 +91,7 @@ function DataTableRow<TData>({
     onCellEdit,
     virtualRows,
     onRowClick,
+    rowClassName,
   } = useDataTableContext<TData>()
 
   const handleRowClick = useCallback(
@@ -112,6 +113,7 @@ function DataTableRow<TData>({
       className={cn(
         virtualRows ? 'absolute w-full flex' : undefined,
         onRowClick && 'cursor-pointer',
+        rowClassName?.(row.original),
       )}
       onClick={onRowClick ? handleRowClick : undefined}
     >
@@ -287,7 +289,7 @@ export function DataTableBody<TData>({
   virtualItems?: VirtualItem[]
   totalVirtualSize?: number
 }) {
-  const { table, allColumns, virtualRows } = useDataTableContext<TData>()
+  const { table, allColumns, virtualRows, expandable } = useDataTableContext<TData>()
   const rows = table.getRowModel().rows
 
   // Loading state: show skeleton rows
@@ -314,6 +316,17 @@ export function DataTableBody<TData>({
   }
 
   if (virtualRows && virtualItems) {
+    // DEV warning: virtualRows + expandable is supported but expanded rows use a
+    // fixed height equal to virtualRowHeight — the virtualizer cannot measure
+    // dynamic content. Pass a virtualRowHeight large enough to contain your
+    // renderExpanded content, or switch to non-virtual mode for expandable tables.
+    if (process.env.NODE_ENV !== 'production' && expandable) {
+      console.warn(
+        '[DataTable] virtualRows + expandable: expanded row content renders at a ' +
+        'fixed height (virtualRowHeight prop, default 48px). If your expanded content ' +
+        'is taller, increase virtualRowHeight to match or use non-virtual mode.',
+      )
+    }
     return (
       <TableBody
         style={{
@@ -324,18 +337,34 @@ export function DataTableBody<TData>({
         {virtualItems.map((virtualRow) => {
           const row = rows[virtualRow.index]
           return (
-            <DataTableRow
-              key={row.id}
-              row={row}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: `${virtualRow.size}px`,
-                transform: `translateY(${virtualRow.start}px)`,
-              }}
-            />
+            <React.Fragment key={row.id}>
+              <DataTableRow
+                row={row}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: `${virtualRow.size}px`,
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              />
+              {/* Expanded content renders immediately after the data row.
+                  It is absolutely positioned offset by the row's own height so it
+                  sits below rather than on top of the row. The virtualizer total
+                  size does not account for this extra height — keep renderExpanded
+                  content short or use non-virtual mode for tall expansions. */}
+              <DataTableExpandedRow
+                row={row}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  transform: `translateY(calc(${virtualRow.start}px + ${virtualRow.size}px))`,
+                }}
+              />
+            </React.Fragment>
           )
         })}
       </TableBody>

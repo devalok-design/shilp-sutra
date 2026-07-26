@@ -37,6 +37,8 @@ export interface DataTableContextValue<TData = unknown> {
   sortable: boolean
   /** Whether per-column filters are enabled */
   filterable: boolean
+  /** When set, only these column IDs get filter inputs (subset of filterable columns) */
+  filterableColumns?: string[]
   /** Whether inline editing is enabled */
   editable: boolean
   /** Whether row expansion is enabled */
@@ -57,6 +59,8 @@ export interface DataTableContextValue<TData = unknown> {
   renderExpanded?: (row: TData) => React.ReactNode
   /** Row click handler */
   onRowClick?: (row: TData) => void
+  /** Return a className for a given row — applied to the tr in table and card layouts */
+  rowClassName?: (row: TData) => string | undefined
 }
 
 const DataTableContext = React.createContext<DataTableContextValue | null>(null)

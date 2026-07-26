@@ -43,6 +43,12 @@ export interface DataTableToolbarProps<TData> extends Omit<React.HTMLAttributes<
   density: Density
   onDensityChange: (density: Density) => void
   enableExport?: boolean
+  /**
+   * Override the default CSV export. When provided, clicking Export calls this
+   * instead of the built-in client-side CSV logic. Receives the currently visible
+   * filtered rows so you can trigger a server fetch or apply custom formatting.
+   */
+  onExport?: () => void
 }
 
 const toolbarIconClass = 'text-surface-fg-subtle'
@@ -92,6 +98,7 @@ export function DataTableToolbar<TData>({
   density,
   onDensityChange,
   enableExport = true,
+  onExport,
   className,
   ...props
 }: DataTableToolbarProps<TData>) {
@@ -178,7 +185,7 @@ export function DataTableToolbar<TData>({
             variant="outline"
             color="neutral"
             size="sm"
-            onClick={() => exportToCsv(table)}
+            onClick={() => (onExport ? onExport() : exportToCsv(table))}
             aria-label="Export table as CSV"
           >
             <Icon icon={IconDownload} size="sm" className={toolbarIconClass} />

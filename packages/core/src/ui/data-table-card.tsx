@@ -25,7 +25,7 @@ export function DataTableCards<TData>({
   noResultsText?: string
   emptyState?: React.ReactNode
 }) {
-  const { table, selectable } = useDataTableContext<TData>()
+  const { table, selectable, filterable, filterableColumns, rowClassName } = useDataTableContext<TData>()
   const rows = table.getRowModel().rows
 
   // Loading skeleton
@@ -57,8 +57,46 @@ export function DataTableCards<TData>({
     )
   }
 
+  // Filterable columns that should show an input in card mode.
+  // Lives above the card list since there's no <thead> in card layout.
+  const filterableCols = filterable
+    ? table.getAllLeafColumns().filter((col) => {
+        if (col.id === '_select' || col.id === '_expand') return false
+        if (filterableColumns) return filterableColumns.includes(col.id)
+        return col.columnDef.enableColumnFilter !== false
+      })
+    : []
+
   return (
-    <div className="flex flex-col gap-ds-03" role="list">
+    <div className="flex flex-col gap-ds-03">
+      {/* Filter inputs — rendered above the card list, one per filterable column */}
+      {filterableCols.length > 0 && (
+        <div className="flex flex-col gap-ds-02">
+          {filterableCols.map((col) => {
+            const headerLabel =
+              typeof col.columnDef.header === 'string' ? col.columnDef.header : col.id
+            return (
+              <input
+                key={col.id}
+                type="text"
+                value={(col.getFilterValue() as string) ?? ''}
+                onChange={(e) => col.setFilterValue(e.target.value)}
+                placeholder={`Filter ${headerLabel}...`}
+                aria-label={`Filter ${headerLabel}`}
+                className={cn(
+                  'h-ds-xs-plus w-full rounded-control',
+                  'border border-card-strong bg-surface-raised-hover',
+                  'px-ds-02 text-body-sm',
+                  'text-surface-fg placeholder:text-surface-fg-subtle',
+                  'outline-hidden focus:border-accent-7',
+                )}
+              />
+            )
+          })}
+        </div>
+      )}
+
+      <div className="flex flex-col gap-ds-03" role="list">
       {rows.map((row) => {
         const cells = row.getVisibleCells()
         // Skip internal columns (_select, _expand) for card content
@@ -77,7 +115,7 @@ export function DataTableCards<TData>({
             // outline, not default — a phone screen of stacked shadow cards
             // accumulates lift (make-kit dense-list rule).
             variant="outline"
-            className={cn(isSelected && 'ring-2 ring-accent-9')}
+            className={cn(isSelected && 'ring-2 ring-accent-9', rowClassName?.(row.original))}
           >
             {/* Header row: primary field + optional selection checkbox */}
             <CardContent className="flex items-start justify-between gap-ds-03">
@@ -136,6 +174,7 @@ export function DataTableCards<TData>({
           </Card>
         )
       })}
+      </div>
     </div>
   )
 }

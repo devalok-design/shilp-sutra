@@ -320,7 +320,7 @@ export function DataTableBody<TData>({
     // fixed height equal to virtualRowHeight — the virtualizer cannot measure
     // dynamic content. Pass a virtualRowHeight large enough to contain your
     // renderExpanded content, or switch to non-virtual mode for expandable tables.
-    if (process.env.NODE_ENV !== 'production' && expandable) {
+    if (import.meta.env.DEV && expandable) {
       console.warn(
         '[DataTable] virtualRows + expandable: expanded row content renders at a ' +
         'fixed height (virtualRowHeight prop, default 48px). If your expanded content ' +

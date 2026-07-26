@@ -154,6 +154,21 @@ bg-surface-sunken        → Wells/insets that recede below the page
 
 **If docs slip past a publish** (happened with 0.36.0's llms.txt gap): publish a patch immediately. Don't wait.
 
+### HARD RULE: read the `pnpm-lock.yaml` diff before committing it (learned 2026-07-26, 0.56.0)
+
+`pnpm-lock.yaml` is generated, so it gets `git add`-ed on autopilot — and a lockfile is the one generated file where a single stray line breaks every consumer of the repo. 0.56.0's first CI run died on `ERR_PNPM_OUTDATED_LOCKFILE` because the `packages/core` importer had picked up
+
+```
+'==rich-chat-input?RCI:RTE':
+  specifier: link:==rich-chat-input?RCI:RTE
+```
+
+— a fragment of `c==='rich-chat-input'?RCI:RTE`, from a mangled inline `node -e` whose shell quoting broke and word-split into something that reached pnpm. Always `git diff pnpm-lock.yaml` before staging; for a dependency change the diff should be small and every line should be one you can explain.
+
+**Why nothing local caught it:** `pnpm install --frozen-lockfile` **short-circuits on an up-to-date `node_modules`** — it printed `Already up to date` and exited 0 against the poisoned lockfile. `--force` didn't defeat it. Deleting `node_modules/.modules.yaml` didn't defeat it. Only CI caught it, because CI starts from a fresh checkout with no `node_modules`.
+
+`pnpm check:lockfile` (`scripts/check-lockfile.mjs`) closes that gap and runs first in `pnpm verify`: it copies the workspace manifests + lockfile into a temp dir with **no `node_modules`** and runs `pnpm install --frozen-lockfile --lockfile-only` there, which is the only condition under which pnpm actually re-validates. Verified both ways — passes clean, exits 1 on the real bogus entry. Don't "simplify" it into an in-repo `pnpm install --frozen-lockfile`; that is precisely the check that lies. (Also: it invokes `cmd.exe` explicitly on Windows — a bare `spawnSync('pnpm.cmd')` fails `EINVAL`, and `shell:true` works but emits DEP0190 on every run.)
+
 ### HARD RULE: a type NARROWING is breaking — never label it "non-breaking" (learned 2026-05-27, 0.40.0)
 
 Before writing "non-breaking" / "type widening only" on any prop-type change, classify the direction **per prop**, against the prop's PREVIOUS type:

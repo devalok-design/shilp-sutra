@@ -43,14 +43,24 @@
 - `bg-gradient-to-*` is dead — use `bg-linear-to-*`
 - `theme(spacing.N)` inside arbitrary values is dead — use the literal value
 
-**Peer dependencies (0.37.0):**
+**Peer dependencies:**
 - `framer-motion ^12` — REQUIRED peer. Module-scoped React contexts (MotionConfig, AnimatePresence, LayoutGroup) must be single-copy; peer-declaration forces consumer dedupe.
 - `sonner ^2` — optional peer (only needed if consumer renders a `<Toaster />`).
-- `tailwindcss ^4.0.0` — tightened from `^3.4.0 || ^4.0.0`.
-- `use-sync-external-store` — moved to our `dependencies` (from optional peer). Auto-installed transitively.
+- `tailwindcss ^4.0.0` — tightened from `^3.4.0 || ^4.0.0` in 0.37.
+- `@tiptap/*` ×12 — optional peers, REQUIRED as of 0.56.0 for RichTextEditor / RichChatInput (see externalization rule below). `prosemirror-*` is never imported directly — route through `@tiptap/pm/state` so it rides the existing `@tiptap/pm` peer.
+
+**Runtime `dependencies` (0.56.0):** `class-variance-authority`, `clsx`, `tailwind-merge`, `tw-animate-css`. That's the whole list — keep it that way. `use-sync-external-store` was removed in 0.56.0: React 18+ has the hook built in (`primitives/_internal/react-use-is-hydrated.ts` calls it directly) and the dep existed only to feed the bundled tiptap chunk.
 
 **Build externalization** (vite.config.ts `rollupOptions.external`):
-- `use-sync-external-store`, `framer-motion`, `sonner` are externalized. Bundling them would split consumer contexts and bloat our dist.
+- `framer-motion`, `sonner` — bundling splits consumer React contexts.
+- `@tiptap/*`, `prosemirror-*` (0.56.0) — were declared as optional peers AND bundled (641 KB chunk). A consumer following our own peer instructions ran two ProseMirror copies; plugin keys are module-scoped, so the copies couldn't see each other's plugins.
+- `clsx`, `class-variance-authority`, `tailwind-merge` (0.56.0) — they leak into our published `.d.ts` (25 files reference `VariantProps`; cva's inferred return type embeds `class-variance-authority/types#ClassProp`; `utils.d.ts` imports `ClassValue`), so consumers must resolve them for `tsc` regardless. Bundling on top of declaring shipped the code twice and blocked dedupe.
+
+### HARD RULE: never declare a package as a peer AND bundle it
+
+Pick one. Declared-and-bundled is the bug that shipped twice (framer-motion/sonner in 0.37, tiptap through 0.55): the component works for consumers who ignore the peer instruction, and *breaks subtly* for the ones who follow it, because two copies of a module-scoped context / plugin registry can't see each other. If it leaks into our `.d.ts`, it must be **declared and external**. If it's an internal implementation detail, it must be **bundled and undeclared**. `derive-peer-map.mjs --check` (a release gate) enforces the recipe tables against the externalization set — but it can't catch "bundled AND declared", so that one is on you.
+
+**No install scripts (0.56.0).** `packages/core/package.json` has no `postinstall` and must not regain one. The old one printed a banner and wrote a project-scoped `.mcp.json` into the consumer's repo. Writing files outside our own directory on install — especially to point someone's agent at our server — is what npm's install-script blocking exists to stop, and it cost us trust publicly. MCP setup is an opt-in README command.
 
 **Never** re-introduce:
 - JS preset (`packages/core/src/tailwind/preset.ts` is a deprecated no-op stub, scheduled for removal in 0.38)

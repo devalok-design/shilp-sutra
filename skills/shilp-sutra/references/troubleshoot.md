@@ -214,11 +214,14 @@ If the trail leads back to `@devalok/shilp-sutra`, that's a bug: open an issue a
 
 **Why we changed it:** a consumer who *did* follow the peer instructions ended up running two ProseMirror copies. Plugin keys are module-scoped, so the two copies could not see each other's plugins and the editor misbehaved in ways that were near-impossible to debug. It also cut 641 KB from the package for everyone who never touches rich text.
 
-**Fix** — install the peers for the component you import (§2a of your framework's setup reference has the exact line):
+**Fix** — install the peers for the component you import (§2a of your framework's install recipe has the exact line):
 
 ```bash
 # RichTextEditor
-pnpm add @tiptap/core @tiptap/extension-highlight @tiptap/extension-image @tiptap/extension-list @tiptap/extension-mention @tiptap/extension-text-align @tiptap/extensions @tiptap/markdown @tiptap/pm @tiptap/react @tiptap/starter-kit @tiptap/suggestion
+pnpm add @tiptap/core @tiptap/extension-highlight @tiptap/extension-image \
+  @tiptap/extension-list @tiptap/extension-mention @tiptap/extension-text-align \
+  @tiptap/extensions @tiptap/markdown @tiptap/pm @tiptap/react \
+  @tiptap/starter-kit @tiptap/suggestion
 
 # RichChatInput — the same list plus date-fns
 pnpm add date-fns

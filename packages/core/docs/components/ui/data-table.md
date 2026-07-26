@@ -124,3 +124,14 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 
 ### v0.1.0
 - **Added** Initial release
+
+### v0.57.0
+- **Fixed** `onSelectionChange` no longer fires on mount with `[]` — first-render guard added. Root cause of the cascade reported in #213.
+- **Fixed** `virtualRows + expandable` was a silent no-op — `DataTableExpandedRow` now renders in the virtual path, offset below the data row. DEV `console.warn` added for fixed-height limitation.
+- **Fixed** `enableExport` was stranded on `DataTableToolbar` and never wired through `DataTableProps`. Now exposed with `onExport` override.
+- **Fixed** `filterable + mobileView="card"` rendered no filter inputs — filter inputs now render above the card list in `DataTableCards`.
+- **Added** `onSelectionChange` receives `selectedIds: Set<string>` as second argument — complement of `selectedIds` prop.
+- **Added** `filterableColumns?: string[]` — restrict filter inputs to specific column IDs.
+- **Added** `rowClassName?: (row: TData) => string | undefined` — conditional row classes in both table and card layouts.
+- **Added** `enableExport?: boolean` — control CSV export visibility from `DataTableProps` (defaults to `false` when server pagination is active).
+- **Added** `onExport?: (visibleRows: TData[]) => void` — override built-in CSV with custom export handler.

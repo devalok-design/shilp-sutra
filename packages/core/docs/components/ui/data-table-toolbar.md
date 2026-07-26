@@ -49,3 +49,6 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 
 ### v0.1.0
 - **Added** Initial release
+
+### v0.57.0
+- **Added** `onExport?: () => void` — when provided, replaces the built-in CSV logic.

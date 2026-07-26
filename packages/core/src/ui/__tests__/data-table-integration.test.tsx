@@ -866,3 +866,148 @@ describe('DataTable — bulkActions', () => {
     }, { timeout: 3000 })
   })
 })
+
+// ============================================================
+// Bug fix: mount echo (#213, #249)
+// ============================================================
+
+describe('DataTable — onSelectionChange mount-echo fix', () => {
+  it('does NOT fire onSelectionChange on mount', () => {
+    const onSelectionChange = vi.fn()
+    render(
+      <DataTable columns={columns} data={data} selectable onSelectionChange={onSelectionChange} />,
+    )
+    expect(onSelectionChange).not.toHaveBeenCalled()
+  })
+
+  it('does NOT fire on mount even when selectedIds is provided', () => {
+    const onSelectionChange = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        data={dataWithIds}
+        selectable
+        getRowId={(r) => r.id!}
+        selectedIds={new Set(['a1'])}
+        onSelectionChange={onSelectionChange}
+      />,
+    )
+    expect(onSelectionChange).not.toHaveBeenCalled()
+  })
+
+  it('DOES fire after genuine user interaction', async () => {
+    const onSelectionChange = vi.fn()
+    render(
+      <DataTable columns={columns} data={data} selectable onSelectionChange={onSelectionChange} />,
+    )
+    const user = userEvent.setup()
+    await user.click(screen.getAllByLabelText('Select row')[0])
+    expect(onSelectionChange).toHaveBeenCalledTimes(1)
+  })
+
+  it('passes selectedIds Set as second argument', async () => {
+    const onSelectionChange = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        data={dataWithIds}
+        selectable
+        getRowId={(r) => r.id!}
+        onSelectionChange={onSelectionChange}
+      />,
+    )
+    const user = userEvent.setup()
+    await user.click(screen.getAllByLabelText('Select row')[0])
+    const [rows, ids] = onSelectionChange.mock.calls[0]
+    expect(rows[0].name).toBe('Alice Smith')
+    expect(ids).toBeInstanceOf(Set)
+    expect(ids.has('a1')).toBe(true)
+  })
+})
+
+// ============================================================
+// Bug fix: enableExport wired through DataTableProps (#249)
+// ============================================================
+
+describe('DataTable — enableExport + onExport', () => {
+  it('Export button hidden when enableExport={false}', () => {
+    render(<DataTable columns={columns} data={data} toolbar enableExport={false} />)
+    expect(screen.queryByLabelText('Export table as CSV')).not.toBeInTheDocument()
+  })
+
+  it('Export button hidden by default when server pagination is active', () => {
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        toolbar
+        pagination={{ page: 1, pageSize: 2, total: 10, onPageChange: vi.fn() }}
+      />,
+    )
+    expect(screen.queryByLabelText('Export table as CSV')).not.toBeInTheDocument()
+  })
+
+  it('onExport called instead of built-in CSV when provided', async () => {
+    const onExport = vi.fn()
+    render(
+      <DataTable columns={columns} data={data} toolbar enableExport onExport={onExport} />,
+    )
+    const user = userEvent.setup()
+    await user.click(screen.getByLabelText('Export table as CSV'))
+    expect(onExport).toHaveBeenCalledTimes(1)
+    expect(onExport.mock.calls[0][0]).toHaveLength(4)
+  })
+})
+
+// ============================================================
+// Feature: filterableColumns (#250)
+// ============================================================
+
+describe('DataTable — filterableColumns', () => {
+  it('only listed columns get filter inputs', () => {
+    render(
+      <DataTable columns={columns} data={data} filterable filterableColumns={['name', 'email']} />,
+    )
+    expect(screen.getByLabelText('Filter Name...')).toBeInTheDocument()
+    expect(screen.getByLabelText('Filter Email...')).toBeInTheDocument()
+    expect(screen.queryByLabelText('Filter Role...')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Filter Age...')).not.toBeInTheDocument()
+  })
+
+  it('filtering works correctly with filterableColumns set', async () => {
+    render(
+      <DataTable columns={columns} data={data} filterable filterableColumns={['name']} />,
+    )
+    const user = userEvent.setup()
+    await user.type(screen.getByLabelText('Filter Name...'), 'Alice')
+    expect(screen.getByText('Alice Smith')).toBeInTheDocument()
+    expect(screen.queryByText('Bob Jones')).not.toBeInTheDocument()
+  })
+})
+
+// ============================================================
+// Feature: rowClassName (#250)
+// ============================================================
+
+describe('DataTable — rowClassName', () => {
+  it('applies returned className to matching rows', () => {
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        rowClassName={(row) => row.role === 'Engineer' ? 'bg-error-subtle' : undefined}
+      />,
+    )
+    const rows = screen.getAllByRole('row')
+    // row[0]=header, row[1]=Alice(Engineer), row[2]=Bob(Designer), row[4]=Dave(Engineer)
+    expect(rows[1]).toHaveClass('bg-error-subtle')
+    expect(rows[2]).not.toHaveClass('bg-error-subtle')
+    expect(rows[4]).toHaveClass('bg-error-subtle')
+  })
+
+  it('does not add class when rowClassName returns undefined', () => {
+    render(<DataTable columns={columns} data={data} rowClassName={() => undefined} />)
+    const rows = screen.getAllByRole('row')
+    expect(rows[1].className).not.toContain('undefined')
+  })
+})

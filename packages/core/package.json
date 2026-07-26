@@ -65,6 +65,7 @@
     },
     "./css": "./dist/tokens/shilp-sutra.css",
     "./tokens": "./dist/tokens/index.css",
+    "./package.json": "./package.json",
     "./BREAKING.json": "./BREAKING.json",
     "./BREAKING.schema.json": "./BREAKING.schema.json",
     "./ui": {

@@ -81,6 +81,10 @@ const Switch = React.forwardRef<
       aria-describedby={ariaDescribedBy}
       aria-required={ariaRequired || undefined}
       {...props}
+      // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor>
+      // resolves. Without this the label points at nothing and the switch has NO
+      // accessible name, despite the consumer wiring FormField + Label correctly.
+      id={props.id ?? fieldCtx.inputId}
       ref={ref}
     >
       <SwitchPrimitives.Thumb asChild>

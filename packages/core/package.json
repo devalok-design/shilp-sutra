@@ -732,6 +732,16 @@
       "import": "./dist/hooks/use-mobile.js",
       "default": "./dist/hooks/use-mobile.js"
     },
+    "./hooks/use-touch-device": {
+      "types": "./dist/hooks/use-touch-device.d.ts",
+      "import": "./dist/hooks/use-touch-device.js",
+      "default": "./dist/hooks/use-touch-device.js"
+    },
+    "./hooks/use-viewport-height": {
+      "types": "./dist/hooks/use-viewport-height.d.ts",
+      "import": "./dist/hooks/use-viewport-height.js",
+      "default": "./dist/hooks/use-viewport-height.js"
+    },
     "./utils": {
       "types": "./dist/ui/lib/utils.d.ts",
       "import": "./dist/ui/lib/utils.js",

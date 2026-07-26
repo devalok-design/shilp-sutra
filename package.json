@@ -66,6 +66,7 @@
     "@vitest/browser": "4.1.10",
     "@vitest/browser-playwright": "4.1.10",
     "autoprefixer": "^10.5.4",
+    "axe-core": "^4",
     "chromatic": "^18.1.0",
     "eslint": "^10.7.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",

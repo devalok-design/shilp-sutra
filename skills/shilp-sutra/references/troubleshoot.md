@@ -208,6 +208,27 @@ pnpm add use-sync-external-store
 
 And open an issue at <https://github.com/devalok-design/shilp-sutra/issues> with the resolution graph (`pnpm why use-sync-external-store`) so we can fix the root cause.
 
+## Symptom: `Cannot find package 'sonner'` when you only imported a hook (or `'react-markdown'` from the AI barrel)
+
+**Diagnosis:** you imported a *barrel* rather than the component itself, and the barrel re-exports something with an optional peer.
+
+- `@devalok/shilp-sutra/hooks` re-exports `toast`, which needs `sonner`.
+- `@devalok/shilp-sutra/ai` re-exports the block renderer, which needs `react-markdown`.
+
+A bundler tree-shakes the unused branch away, so this is invisible in a client build. It bites at **runtime in Node** — SSR, a route handler, a test — where the import is evaluated for real.
+
+Fix — import the specific module instead of the barrel:
+
+```ts
+// needs sonner installed, because the barrel also exports toast
+import { useIsMobile } from '@devalok/shilp-sutra/hooks'
+
+// no optional peers at all
+import { useIsMobile } from '@devalok/shilp-sutra/hooks/use-mobile'
+```
+
+Every hook has its own subpath: `use-mobile`, `use-color-mode`, `use-touch-device`, `use-viewport-height`. Same rule applies across the library — a deep import never costs you more than that component needs.
+
 ## Symptom: `error TS2305: Module '"react"' has no exported member 'ReactSVG'`
 
 **This is an upstream `@tabler/icons-react` bug, not a shilp-sutra one** — but you will hit it following our install instructions, so it is documented here.

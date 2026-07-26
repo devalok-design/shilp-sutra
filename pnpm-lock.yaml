@@ -108,6 +108,9 @@ importers:
       autoprefixer:
         specifier: ^10.5.4
         version: 10.5.4(postcss@8.5.22)
+      axe-core:
+        specifier: ^4
+        version: 4.12.1
       chromatic:
         specifier: ^18.1.0
         version: 18.1.0
@@ -297,6 +300,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@tiptap/pm':
+        specifier: ^3.28.0
+        version: 3.28.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

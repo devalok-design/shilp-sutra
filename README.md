@@ -301,7 +301,8 @@ Only install the packages you actually use:
 | Feature | Packages to install |
 |---------|---------------------|
 | **Charts** (`./ui/charts`) | `d3-array` `d3-axis` `d3-format` `d3-interpolate` `d3-scale` `d3-selection` `d3-shape` `d3-time-format` `d3-transition` |
-| **Rich Text Editor** (`./composed/rich-text-editor`) | `@tiptap/react` `@tiptap/starter-kit` `@tiptap/extension-placeholder` |
+| **Rich Text Editor** (`./composed/rich-text-editor`) | `@tiptap/core` `@tiptap/extension-highlight` `@tiptap/extension-image` `@tiptap/extension-list` `@tiptap/extension-mention` `@tiptap/extension-text-align` `@tiptap/extensions` `@tiptap/markdown` `@tiptap/pm` `@tiptap/react` `@tiptap/starter-kit` `@tiptap/suggestion` |
+| **Rich Chat Input** (`./composed/rich-chat-input`) | the Rich Text Editor list, plus `date-fns` |
 | **DataTable** (`./ui/data-table`) | `@tanstack/react-table` `@tanstack/react-virtual` |
 | **Icons** (various components) | `@tabler/icons-react` |
 | **Date components** (`./composed/date-picker`) | `date-fns` |

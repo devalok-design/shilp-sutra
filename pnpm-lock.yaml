@@ -300,9 +300,6 @@ importers:
 
   packages/core:
     dependencies:
-      '@tiptap/pm':
-        specifier: ^3.28.0
-        version: 3.28.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -315,15 +312,15 @@ importers:
       react-dom:
         specifier: ^18 || ^19
         version: 19.2.8(react@19.2.8)
+      tailwind-merge:
+        specifier: ^3.6.0
+        version: 3.6.0
       tailwindcss:
         specifier: ^4.0.0
         version: 4.3.3
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
-      use-sync-external-store:
-        specifier: ^1.6.0
-        version: 1.6.0(react@19.2.8)
     devDependencies:
       '@emoji-mart/data':
         specifier: ^1.2.1
@@ -370,6 +367,9 @@ importers:
       '@tiptap/markdown':
         specifier: ^3.28.0
         version: 3.28.0(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)
+      '@tiptap/pm':
+        specifier: ^3.28.0
+        version: 3.28.0
       '@tiptap/react':
         specifier: ^3.28.0
         version: 3.28.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.28.0(@tiptap/pm@3.28.0))(@tiptap/pm@3.28.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -430,9 +430,6 @@ importers:
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      prosemirror-state:
-        specifier: ^1.4.4
-        version: 1.4.4
       react-colorful:
         specifier: ^5.8.0
         version: 5.8.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -457,9 +454,6 @@ importers:
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      tailwind-merge:
-        specifier: ^3.6.0
-        version: 3.6.0
 
   packages/eslint-plugin:
     dependencies:

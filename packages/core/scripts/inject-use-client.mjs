@@ -35,8 +35,9 @@ const BUILD_ARTIFACT_SAFE = new Set([
   'tailwind/index',
   'tailwind/preset',
 
-  // vendor-utils chunk — pure functions (clsx, cva, tailwind-merge), no React
-  '_chunks/vendor-utils',
+  // NOTE: '_chunks/vendor-utils' was listed here until clsx / cva /
+  // tailwind-merge were externalized. With nothing left to group, the chunk is
+  // no longer emitted and the entry only produced a "not found in dist/" warning.
 ])
 
 // ── Scan source files for @server-safe annotation ──────────────────────────
@@ -269,6 +270,9 @@ try {
 // consumer's React installs pull it in natively. With no bundled CJS deps
 // calling require(), the rolldown runtime never emits a require shim, and this
 // patch has nothing to do. Dead code removed.
+//
+// Epilogue: externalizing tiptap removed the last importer of
+// `use-sync-external-store`, so it is no longer a dependency of ours at all.
 //
 // If a future dependency re-introduces CJS require into a client chunk, the
 // consumer smoke test (scripts/consumer-smoke-test.mjs) will catch it as

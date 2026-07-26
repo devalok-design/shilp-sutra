@@ -129,12 +129,29 @@ export default defineConfig({
         /^react-pdf($|\/)/,         // lazy-loaded by FilePreview, 3MB with DOMMatrix
         /^react-zoom-pan-pinch($|\/)/, // browser-only transforms, used by FilePreview
         /^react-syntax-highlighter($|\/)/, // used by MarkdownViewer code blocks
-        // Externalized in 0.37 to eliminate the rolldown CJS require() bridge.
-        // use-sync-external-store's shim calls `require("react")`, which forced
-        // us to inject `import { createRequire } from 'module'` into our
-        // rolldown-runtime chunk — breaking Turbopack consumers (Karm #30).
-        // Now declared in our `dependencies` so consumers get it transitively.
-        /^use-sync-external-store($|\/)/,
+        // Externalized because they leak into our PUBLIC type surface: 25
+        // `.d.ts` files reference `VariantProps`, cva's inferred return type
+        // embeds `import('class-variance-authority/types').ClassProp`, and
+        // `utils.d.ts` imports `ClassValue` from clsx. A dep that consumers
+        // must resolve for `tsc` to pass is a real dependency — bundling a
+        // second copy on top of that shipped the same code twice and left
+        // consumers' own copies (near-universal in shadcn-style projects)
+        // unable to dedupe with ours. Declared in `dependencies`; not bundled.
+        /^clsx($|\/)/,
+        /^class-variance-authority($|\/)/,
+        /^tailwind-merge($|\/)/,
+        // Externalized: @tiptap/* and prosemirror-* were declared as optional
+        // peerDependencies AND bundled (a 641 KB `_chunks/tiptap.js`). A
+        // consumer who followed our own peer instructions ended up running two
+        // ProseMirror instances — plugin keys are module-scoped, so the copies
+        // don't recognise each other's plugins and the editor misbehaves.
+        // Same failure class as the framer-motion/sonner note below.
+        // Dropping the bundle also drops `use-sync-external-store`, which
+        // NOTHING in our own source used — React 18+ has useSyncExternalStore
+        // built in (see primitives/_internal/react-use-is-hydrated.ts); the dep
+        // existed solely to feed the bundled tiptap copy.
+        /^@tiptap($|\/)/,
+        /^prosemirror-/,
         // Externalized in 0.37: framer-motion and sonner carry module-scoped
         // React contexts (MotionConfig, LayoutGroup, AnimatePresence, Toaster).
         // Bundling them into our dist while consumers also install their own
@@ -160,8 +177,6 @@ export default defineConfig({
         minifyInternalExports: false,
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('@tiptap/') || id.includes('prosemirror'))
-              return 'tiptap'
             // Emoji picker (frimousse) + dataset (@emoji-mart/data, ~450KB) —
             // bundled but lazy-loaded, so isolate into their own chunk that only
             // downloads when the emoji picker / `:` search is opened.
@@ -186,15 +201,11 @@ export default defineConfig({
             // Sonner — only loaded by Toaster/Toast, not needed by Popover/Dialog consumers
             if (id.includes('sonner'))
               return 'sonner'
-            // Pure utilities — ALLOWLIST, not catch-all.
-            // Unknown deps get their own isolated chunk (safe by default).
-            // The SSR smoke test catches module-scope browser API usage.
-            if (
-              id.includes('/clsx/') ||
-              id.includes('/class-variance-authority/') ||
-              id.includes('/tailwind-merge/')
-            )
-              return 'vendor-utils'
+            // NOTE: clsx / class-variance-authority / tailwind-merge used to be
+            // grouped here as `vendor-utils`. They are now externalized (see
+            // rollupOptions.external) so there is nothing left to group —
+            // unknown deps still get their own isolated chunk (safe by default),
+            // and the SSR smoke test catches module-scope browser API usage.
           }
           // Vendored Radix primitives: one chunk PER primitive, with the
           // shared internals kept together in a single chunk.

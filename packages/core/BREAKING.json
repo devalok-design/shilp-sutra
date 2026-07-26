@@ -350,6 +350,19 @@
         "Fastest migration: `npx shadcn@latest add @devalok/sidebar-app`, then replace <AppSidebar navGroups={…} user={…} currentPath={…} /> with the pasted <SidebarApp/>, wiring your router Link + active path. Composing @devalok/shilp-sutra/ui/sidebar directly is equally valid and needs no registry.",
         "Deprecation cycle: no PUBLISHED version carried an @deprecated AppSidebar — 0.53.0 shipped it undeprecated, 0.54.0 removes it. The deprecation marker existed only within the unreleased 0.54.0 line. This is a deliberate call for a 0.x beta with a single coordinated consumer (breaking changes ship in 0.x minors); a post-1.0 removal would get a real deprecate→remove window."
       ]
+    },
+    "0.56.0": {
+      "summary": "TipTap is no longer bundled — @tiptap/* and prosemirror-* are externalized, so RichTextEditor / RichChatInput now REQUIRE their peers to be installed. No symbol, prop, or export changed; this is an install-graph break only.",
+      "migrationDoc": "MIGRATION.md#v0560--tiptap-externalized--no-install-scripts",
+      "notes": [
+        "BREAKING: @tiptap/* and prosemirror-* were declared as optional peerDependencies AND bundled into a 641 KB _chunks/tiptap.js. RichTextEditor / RichChatInput therefore worked whether or not you installed the peers. They are now externalized and the peers are mandatory for those two components. Install command per framework: §2a of docs/recipes/install-*.md, or run the MCP's preflight tool.",
+        "WHY: a consumer who DID follow our peer instructions ran two ProseMirror copies. Plugin keys are module-scoped, so the copies could not see each other's plugins and the editors misbehaved un-attributably. Same failure class as the framer-motion/sonner externalization in 0.37.0. It also removes 641 KB from the package for every consumer who never touches rich text.",
+        "Twelve @tiptap/* packages are now declared as optional peers (previously four: core, pm, react, suggestion) — the full set we import must be resolvable by the consumer. Two internal `prosemirror-state` imports were rerouted to `@tiptap/pm/state` so they ride the existing @tiptap/pm peer instead of requiring a separate prosemirror-state install.",
+        "NOT breaking: every component outside RichTextEditor / RichChatInput is untouched. No exported symbol, prop type, or subpath export changed in this release — no widening and no narrowing.",
+        "use-sync-external-store is no longer a dependency. React 18+ has useSyncExternalStore built in and our own code always called it directly (primitives/_internal/react-use-is-hydrated.ts); the dep existed only to feed the bundled TipTap chunk. Runtime dependencies are now class-variance-authority, clsx, tailwind-merge, tw-animate-css.",
+        "clsx / class-variance-authority / tailwind-merge are now externalized rather than bundled. All three leak into our published .d.ts (25 files reference VariantProps, cva's return type embeds class-variance-authority/types#ClassProp, utils.d.ts imports ClassValue), so consumers already had to resolve them for tsc; bundling a second copy shipped the same code twice and blocked dedupe with the consumer's own copies. tailwind-merge moves devDependency -> dependency (it was already shipping, hidden inside our bundle). All auto-installed with us — no consumer action.",
+        "The postinstall script is REMOVED — this package now runs no lifecycle scripts at all on install. It previously printed a welcome banner and wrote a project-scoped .mcp.json into the consumer's repo pointing at our hosted docs MCP. Nothing is required when upgrading. To clean up after the old behaviour: remove the `shilp-sutra` entry from .mcp.json and delete the node_modules/.shilp-sutra-welcomed and .shilp-sutra-mcp-written sentinels. Add the MCP deliberately with `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp`."
+      ]
     }
   }
 }

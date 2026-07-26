@@ -53,7 +53,21 @@ claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp
 
 Six read-only tools: `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`. Every tool takes a `version` param — pass your installed version (from `node_modules/@devalok/shilp-sutra/package.json`) so answers match your prop surface exactly.
 
+Prefer a local skill over a network call? Copy the one we ship:
+
+```sh
+cp -r node_modules/@devalok/shilp-sutra/skill ~/.claude/skills/shilp-sutra
+```
+
 Without MCP: `llms.txt` (router) → `docs/components/<tier>/<name>.md` (per-component) → `mcp-manifest.json` (all props/tokens/composition as JSON). Full contract in `AGENTS.md`.
+
+### No install scripts
+
+This package has **no `postinstall` and no lifecycle scripts of any kind**. Installing it runs zero code on your machine and writes nothing outside its own directory.
+
+Up to 0.55.x we shipped a `postinstall` that printed a welcome banner and wrote a project-scoped `.mcp.json` pointing at the docs MCP above. Both are gone as of 0.56.0. The banner was noise; writing a config file into someone's repo — unasked, to wire their AI agent to our server — is exactly the behaviour npm's install-script blocking exists to stop, and it is not a thing a design system should do to earn a place in your dependency tree. Add the MCP yourself with the command above if you want it.
+
+> **Upgrading from ≤0.55.x?** Nothing to do. If you want the old auto-written config gone, delete the `shilp-sutra` entry from your `.mcp.json` (or the file, if we created it and you keep nothing else there) and remove the `node_modules/.shilp-sutra-welcomed` / `.shilp-sutra-mcp-written` sentinels.
 
 ## Peer Dependencies
 
@@ -74,7 +88,8 @@ Install only what you use:
 |---------|----------|
 | Toasts (`./ui/toaster`, `./ui/toast`) | `sonner` |
 | Charts (`./ui/charts`) | `d3-array`, `d3-axis`, `d3-format`, `d3-interpolate`, `d3-scale`, `d3-selection`, `d3-shape`, `d3-time-format`, `d3-transition` |
-| Rich Text Editor (`./composed/rich-text-editor`) | `@tiptap/react`, `@tiptap/starter-kit` |
+| Rich Text Editor (`./composed/rich-text-editor`) | `@tiptap/core`, `@tiptap/extension-highlight`, `@tiptap/extension-image`, `@tiptap/extension-list`, `@tiptap/extension-mention`, `@tiptap/extension-text-align`, `@tiptap/extensions`, `@tiptap/markdown`, `@tiptap/pm`, `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/suggestion` |
+| Rich Chat Input (`./composed/rich-chat-input`) | the Rich Text Editor list, plus `date-fns` |
 | DataTable (`./ui/data-table`) | `@tanstack/react-table`, `@tanstack/react-virtual` |
 | Icons | `@tabler/icons-react` |
 | Date components (`./composed/date-picker`) | `date-fns` |

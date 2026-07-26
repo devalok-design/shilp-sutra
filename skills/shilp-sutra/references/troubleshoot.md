@@ -196,17 +196,35 @@ In dev mode, calling `toast()` without a mounted `<Toaster />` logs a one-time c
 
 ## Symptom: Build error mentioning `use-sync-external-store`
 
-**Diagnosis:** Should not happen since v0.37.0 — `use-sync-external-store` was moved to runtime dependencies and is auto-installed transitively.
+**Diagnosis:** we no longer depend on it at all, as of v0.56.0. Nothing in our `dist` imports it.
 
-**Why this dependency exists at all** (it is a hook built into React 18+, so it looks redundant): we do not use the shim ourselves. It is a TipTap transitive. TipTap's code is bundled into our `dist`, and that bundled chunk imports `use-sync-external-store/shim`. We externalize the shim rather than bundling it, because bundling forced a `createRequire` bridge into our Rollup runtime chunk that broke every Turbopack consumer. Externalized code must be resolvable from the consumer's tree, hence the declaration.
+It was never ours: React 18+ has `useSyncExternalStore` built in and our own code calls it directly. The dependency existed purely because we *bundled* TipTap, and that bundled chunk imported the shim. TipTap is now externalized, so the shim went with it.
 
-If it still happens, install it explicitly:
+If you still see the error, something else in your tree wants it — find out what and install it there:
 
 ```bash
-pnpm add use-sync-external-store
+pnpm why use-sync-external-store
 ```
 
-And open an issue at <https://github.com/devalok-design/shilp-sutra/issues> with the resolution graph (`pnpm why use-sync-external-store`) so we can fix the root cause.
+If the trail leads back to `@devalok/shilp-sutra`, that's a bug: open an issue at <https://github.com/devalok-design/shilp-sutra/issues> with that output.
+
+## Symptom: `Cannot find module '@tiptap/core'` (or another `@tiptap/*`) after upgrading to 0.56.0
+
+**Diagnosis:** expected, and it is the one breaking change in 0.56.0. We used to bundle TipTap *and* list it as an optional peer — so `RichTextEditor` / `RichChatInput` worked whether or not you installed the peers. It is now externalized, so you must install them.
+
+**Why we changed it:** a consumer who *did* follow the peer instructions ended up running two ProseMirror copies. Plugin keys are module-scoped, so the two copies could not see each other's plugins and the editor misbehaved in ways that were near-impossible to debug. It also cut 641 KB from the package for everyone who never touches rich text.
+
+**Fix** — install the peers for the component you import (§2a of your framework's setup reference has the exact line):
+
+```bash
+# RichTextEditor
+pnpm add @tiptap/core @tiptap/extension-highlight @tiptap/extension-image @tiptap/extension-list @tiptap/extension-mention @tiptap/extension-text-align @tiptap/extensions @tiptap/markdown @tiptap/pm @tiptap/react @tiptap/starter-kit @tiptap/suggestion
+
+# RichChatInput — the same list plus date-fns
+pnpm add date-fns
+```
+
+Or ask the docs MCP: `preflight` reports exactly which peers your imports need.
 
 ## Symptom: `Cannot find package 'sonner'` when you only imported a hook (or `'react-markdown'` from the AI barrel)
 

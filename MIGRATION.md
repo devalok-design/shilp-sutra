@@ -4,6 +4,62 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.56.0 — TipTap externalized; no install scripts
+
+One breaking change, and it only affects `RichTextEditor` / `RichChatInput`. No exported symbol, prop type, or subpath export changed — nothing widened and nothing narrowed.
+
+### If you import `RichTextEditor` or `RichChatInput`, install the TipTap peers
+
+0.55.x declared `@tiptap/*` as optional peers **and** bundled TipTap into a 641 KB chunk, so these components worked whether or not you installed anything. TipTap is now externalized: the peers are required.
+
+```bash
+# RichTextEditor
+pnpm add @tiptap/core @tiptap/extension-highlight @tiptap/extension-image \
+  @tiptap/extension-list @tiptap/extension-mention @tiptap/extension-text-align \
+  @tiptap/extensions @tiptap/markdown @tiptap/pm @tiptap/react \
+  @tiptap/starter-kit @tiptap/suggestion
+
+# RichChatInput — the list above, plus:
+pnpm add date-fns
+```
+
+Note these are plain `pnpm add`, not `-D`. In 0.55.0 they were devDependencies for types only; now they are the runtime.
+
+§2a of your framework's install recipe carries the same list, and the docs MCP's `preflight` derives it from your actual imports.
+
+**Why the churn:** the old arrangement meant a consumer who *did* follow our peer instructions ran two ProseMirror copies. Plugin keys are module-scoped, so the copies could not recognise each other's plugins and the editors misbehaved in ways nobody could attribute to us. This is the same failure class as the framer-motion / sonner externalization in 0.37.0. It also removes 641 KB from the package for every consumer who never touches rich text.
+
+### If you don't use the editors — nothing to do
+
+Every other component is untouched, and the package gets smaller.
+
+### `use-sync-external-store` is gone — nothing to do
+
+It was never ours. React 18+ has `useSyncExternalStore` built in and our code always called it directly; the dependency existed only to feed the bundled TipTap chunk. Runtime dependencies are now `class-variance-authority`, `clsx`, `tailwind-merge`, `tw-animate-css`.
+
+### `clsx` / `class-variance-authority` / `tailwind-merge` externalized — nothing to do
+
+All three leak into our published `.d.ts`, so you already had to resolve them for `tsc`. We were also bundling copies, which shipped the same code twice and stopped your own copies from deduping with ours. `tailwind-merge` moves from our devDependencies to our dependencies — it was already shipping, just hidden inside the bundle. All three install with us automatically.
+
+### No more `postinstall` — nothing to do
+
+This package now runs **zero lifecycle scripts** on install. The old `postinstall` printed a welcome banner and wrote a project-scoped `.mcp.json` into your repo pointing at our hosted docs MCP.
+
+To clean up after the old behaviour if you want to:
+
+```bash
+# 1. drop the entry we added (or the whole file, if we created it and you keep nothing else there)
+#    .mcp.json → mcpServers → "shilp-sutra"
+# 2. remove the sentinels
+rm -f node_modules/.shilp-sutra-welcomed node_modules/.shilp-sutra-mcp-written
+```
+
+To add the MCP deliberately:
+
+```bash
+claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp
+```
+
 ## v0.55.0 — additive; one optional step if you use the editors
 
 Nothing breaks. No existing import, prop value, or install stops working.

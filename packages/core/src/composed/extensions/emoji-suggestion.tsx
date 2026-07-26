@@ -1,6 +1,6 @@
 import { Extension } from '@tiptap/core'
 import Suggestion, { type SuggestionKeyDownProps,type SuggestionProps } from '@tiptap/suggestion'
-import { PluginKey } from 'prosemirror-state'
+import { PluginKey } from '@tiptap/pm/state'
 import * as React from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 

@@ -29,7 +29,7 @@
  */
 
 import { readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
-import { join, basename, extname } from 'path'
+import { join, basename, dirname, extname } from 'path'
 import { fileURLToPath } from 'url'
 
 // import.meta.dirname (Node 20.11+) is undefined under some test runners; fall
@@ -49,10 +49,12 @@ const SKIP_DIRS = new Set(['lib', '__tests__', 'extensions', '_internal'])
 const WALK_SKIP_DIRS = new Set(['__tests__'])
 
 // Externalized-but-universal: part of the base install (react/-dom, next,
-// framer-motion, tailwindcss), a build/transitive concern (server-only,
-// use-sync-external-store), or globally noted rather than component-gated
-// (@tabler/icons-react — preflight already emits a standing Tabler note). These
-// are NOT reported per-component.
+// framer-motion, tailwindcss), a build concern (server-only), one of OUR OWN
+// `dependencies` (clsx, class-variance-authority, tailwind-merge — externalized
+// because they leak into our published `.d.ts`, but auto-installed with us, so
+// the consumer never acts on them), or globally noted rather than
+// component-gated (@tabler/icons-react — preflight already emits a standing
+// Tabler note). These are NOT reported per-component.
 const BASE_EXTERNALS = new Set([
   'react',
   'react-dom',
@@ -60,7 +62,9 @@ const BASE_EXTERNALS = new Set([
   'server-only',
   'tailwindcss',
   'framer-motion',
-  'use-sync-external-store',
+  'clsx',
+  'class-variance-authority',
+  'tailwind-merge',
   '@tabler/icons-react',
 ])
 
@@ -81,15 +85,19 @@ const BASE_EXTERNALS = new Set([
 //
 // Keep the declared peer range in package.json pinned to the major we bundle,
 // or a consumer's types describe a different API than the code that runs.
-const TYPES_ONLY_PEERS = new Set([
-  '@tiptap/core',
-  '@tiptap/react',
-  '@tiptap/suggestion',
-])
+// EMPTY since the tiptap externalization. `@tiptap/*` used to live here: we
+// bundled the runtime but still referenced its types, so consumers were told
+// "devDependency, types only". They are now genuinely externalized — the
+// consumer must provide the RUNTIME, not just the types — so rule 1
+// (isExternal) gates them and calling them types-only would understate the
+// requirement. Kept as a live mechanism for the next module that is bundled
+// yet type-referenced; do not delete.
+const TYPES_ONLY_PEERS = new Set([])
 
 /**
- * Type-peers OF a types-only peer — packages we never import, but which the
- * peer's own declarations require in order to type-check.
+ * Type-peers OF a peer — packages we never import, but which the peer's own
+ * declarations require in order to type-check. Applied to every derived peer,
+ * not only types-only ones (the loop below runs over the whole peer set).
  *
  * `@tiptap/core`'s .d.ts opens with `import … from '@tiptap/pm/state'`, and
  * TipTap declares `@tiptap/pm` as its own peer rather than depending on it. So
@@ -189,15 +197,78 @@ function isExcludedFile(filename) {
 }
 
 /** Collect all .ts/.tsx files under a component entry (file or directory). */
+/**
+ * Relative import specifiers in a file (the complement of {@link bareImportsOf}).
+ */
+function localImportsOf(file) {
+  const src = readFileSync(file, 'utf8').replace(/\r\n/g, '\n')
+  const specs = new Set()
+  const patterns = [
+    /(?:import|export)\s[^'"]*?from\s*['"](\.[^'"]+)['"]/g,
+    /import\s*['"](\.[^'"]+)['"]/g,
+    /import\(\s*['"](\.[^'"]+)['"]\s*\)/g,
+    /require\(\s*['"](\.[^'"]+)['"]\s*\)/g,
+  ]
+  for (const re of patterns) for (const m of src.matchAll(re)) specs.add(m[1])
+  return specs
+}
+
+/** Resolve a relative specifier to a real source file, or null. */
+function resolveLocal(fromFile, spec) {
+  const base = join(dirname(fromFile), spec).replace(/\.js$/, '')
+  for (const candidate of [
+    base,
+    `${base}.ts`,
+    `${base}.tsx`,
+    join(base, 'index.ts'),
+    join(base, 'index.tsx'),
+  ]) {
+    try {
+      if (statSync(candidate).isFile()) return candidate
+    } catch {
+      /* not this candidate */
+    }
+  }
+  return null
+}
+
+/**
+ * Every source file that ends up in a consumer's bundle when they import this
+ * entry — the entry itself PLUS its transitive local (relative) imports.
+ *
+ * Following the local graph is required, not a refinement. `composed/extensions/`
+ * is in SKIP_DIRS (it holds no component entries of its own), so scanning only
+ * the entry file missed the peers reachable through it: `rich-chat-input.tsx`
+ * pulls `@tiptap/core` and `@tiptap/suggestion` via `./extensions/*`, and the
+ * emitted `dist/composed/rich-chat-input.js` imports both directly. While tiptap
+ * was BUNDLED that under-report was harmless — nothing for the consumer to
+ * install. Once externalized it becomes a consumer crash: they follow the recipe,
+ * install what the table lists, and still hit `Cannot find module '@tiptap/core'`.
+ *
+ * Under-reporting breaks builds; over-reporting only over-installs. Follow the graph.
+ */
 function filesForEntry(categoryDir, entry) {
   const full = join(categoryDir, entry)
-  const out = []
+  const seeds = []
   if (statSync(full).isDirectory()) {
-    walk(full, out)
+    walk(full, seeds)
   } else if (!isExcludedFile(entry)) {
-    out.push(full)
+    seeds.push(full)
   }
-  return out
+
+  const seen = new Set(seeds)
+  const queue = [...seeds]
+  while (queue.length) {
+    const file = queue.shift()
+    for (const spec of localImportsOf(file)) {
+      const resolved = resolveLocal(file, spec)
+      if (!resolved || seen.has(resolved)) continue
+      if (isExcludedFile(basename(resolved)) && !/index\.tsx?$/.test(resolved)) continue
+      seen.add(resolved)
+      queue.push(resolved)
+    }
+  }
+  return [...seen]
 }
 
 function walk(dir, out) {

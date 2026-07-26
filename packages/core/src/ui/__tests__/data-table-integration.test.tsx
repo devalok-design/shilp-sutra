@@ -968,10 +968,10 @@ describe('DataTable — filterableColumns', () => {
     render(
       <DataTable columns={columns} data={data} filterable filterableColumns={['name', 'email']} />,
     )
-    expect(screen.getByLabelText('Filter Name...')).toBeInTheDocument()
-    expect(screen.getByLabelText('Filter Email...')).toBeInTheDocument()
-    expect(screen.queryByLabelText('Filter Role...')).not.toBeInTheDocument()
-    expect(screen.queryByLabelText('Filter Age...')).not.toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Filter Name...')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Filter Email...')).toBeInTheDocument()
+    expect(screen.queryByPlaceholderText('Filter Role...')).not.toBeInTheDocument()
+    expect(screen.queryByPlaceholderText('Filter Age...')).not.toBeInTheDocument()
   })
 
   it('filtering works correctly with filterableColumns set', async () => {

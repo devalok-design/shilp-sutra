@@ -40,6 +40,8 @@ Some components ship hard peers as optional. **Install BEFORE first import.** �
 | `@devalok/shilp-sutra/composed/date-picker` | `pnpm add date-fns` |
 | `@devalok/shilp-sutra/composed/file-preview` | `pnpm add react-pdf react-zoom-pan-pinch` |
 | `@devalok/shilp-sutra/composed/markdown-viewer` | `pnpm add react-markdown react-syntax-highlighter remark-gfm` |
+| `@devalok/shilp-sutra/composed/rich-chat-input` | `pnpm add -D @tiptap/pm @tiptap/react` *(types only — the runtime is bundled)* |
+| `@devalok/shilp-sutra/composed/rich-text-editor` | `pnpm add -D @tiptap/pm @tiptap/react` *(types only — the runtime is bundled)* |
 | `@devalok/shilp-sutra/composed/schedule-view` | `pnpm add date-fns` |
 | `@devalok/shilp-sutra/ui/charts` | `pnpm add d3-axis d3-scale d3-selection d3-shape` |
 | `@devalok/shilp-sutra/ui/data-table` | `pnpm add @tanstack/react-table @tanstack/react-virtual` |

@@ -303,6 +303,25 @@ gate('Published .d.ts are consumer-clean (audit-dts)', () => {
   }
 })
 
+// Gate: token pairings we render body text on must clear WCAG AA, computed
+// from primitives.css rather than asserted. `--color-surface-fg-subtle`
+// shipped at 4.472:1 while carrying the comment "darkened for WCAG AA 4.5:1" —
+// a previous fix that landed 0.028 short. The value looked right, the comment
+// claimed it was right, and nothing checked; it took an external audit of the
+// rendered app to catch. A comment cannot verify a ratio.
+gate('Token contrast pairings meet WCAG AA (audit-contrast)', () => {
+  try {
+    execFileSync('node', ['scripts/audit-contrast.mjs'], {
+      cwd: ROOT,
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'audit-contrast reported a pairing under AA'
+  }
+})
+
 // Gate: simulate every module-resolution mode a consumer can use (node10,
 // node16 from CJS and ESM, bundler) against the packed tarball.
 //

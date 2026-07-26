@@ -196,6 +196,8 @@ In dev mode, calling `toast()` without a mounted `<Toaster />` logs a one-time c
 
 **Diagnosis:** Should not happen since v0.37.0 — `use-sync-external-store` was moved to runtime dependencies and is auto-installed transitively.
 
+**Why this dependency exists at all** (it is a hook built into React 18+, so it looks redundant): we do not use the shim ourselves. It is a TipTap transitive. TipTap's code is bundled into our `dist`, and that bundled chunk imports `use-sync-external-store/shim`. We externalize the shim rather than bundling it, because bundling forced a `createRequire` bridge into our Rollup runtime chunk that broke every Turbopack consumer. Externalized code must be resolvable from the consumer's tree, hence the declaration.
+
 If it still happens, install it explicitly:
 
 ```bash
@@ -203,6 +205,36 @@ pnpm add use-sync-external-store
 ```
 
 And open an issue at <https://github.com/devalok-design/shilp-sutra/issues> with the resolution graph (`pnpm why use-sync-external-store`) so we can fix the root cause.
+
+## Symptom: `error TS2307: Cannot find module '@devalok/shilp-sutra/ui/button'` under `"moduleResolution": "node"`
+
+**Diagnosis:** You are on TypeScript's legacy resolution mode, which predates and ignores the `exports` field in `package.json`. Our files live under `dist/`, and every public path is mapped through `exports` — legacy resolution looks for a literal `node_modules/@devalok/shilp-sutra/ui/button.js` and finds nothing.
+
+**Supported resolution modes:**
+
+| `moduleResolution` | Supported | Notes |
+|---|---|---|
+| `bundler` | ✅ | Recommended. Vite, Next.js, and most modern setups default to this. |
+| `node16` / `nodenext` | ✅ | Fully supported since 0.55.0. |
+| `node` (legacy) | ❌ | Cannot read `exports`. No subpath resolves. |
+
+Fix — in your `tsconfig.json`:
+
+```jsonc
+{ "compilerOptions": { "moduleResolution": "bundler" } }
+```
+
+## Symptom: `require('@devalok/shilp-sutra')` fails in a CommonJS file
+
+**Diagnosis:** The package is ESM-only — we ship no CommonJS build. `require()` of an ES module throws `ERR_REQUIRE_ESM` on older Node, and bundlers report the entry as ESM-only.
+
+Use a dynamic import from CommonJS:
+
+```js
+const { Button } = await import('@devalok/shilp-sutra/ui/button')
+```
+
+Or move the consuming file to ESM (`"type": "module"`, or a `.mjs` extension). Every supported framework target — Next.js, Vite, Remix, Astro, TanStack Start — handles the ESM entry natively; this only affects hand-written CJS scripts.
 
 ## Symptom: Storybook MCP server `localhost:6006/mcp` returns 404
 

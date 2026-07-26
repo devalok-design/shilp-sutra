@@ -1,9 +1,22 @@
 /**
  * inject-use-client.mjs
  *
- * Post-build script that prepends `"use client";\n` to every .js and .d.ts
- * file in dist/, EXCEPT for files that are server-safe (pure markup / no hooks)
- * and files that already contain the directive.
+ * Post-build script that prepends `"use client";\n` to every .js file in dist/,
+ * EXCEPT for files that are server-safe (pure markup / no hooks) and files that
+ * already contain the directive.
+ *
+ * `.d.ts` files are deliberately NOT injected — and any pre-existing directive
+ * in one is stripped. A declaration file is an ambient context, so a directive
+ * prologue there is a statement and TypeScript rejects it outright:
+ *
+ *   dist/ui/button.d.ts(1,1): error TS1036:
+ *     Statements are not allowed in ambient contexts.
+ *
+ * Consumers only see this with `skipLibCheck: false`, which is why it survived
+ * to 0.54.0 (209 of 284 published .d.ts carried the directive; a single barrel
+ * import produced 78 errors). The directive is a bundler/RSC runtime concern —
+ * it is read off the .js module graph, and declarations are erased before
+ * anything runs, so putting it in a .d.ts buys nothing and only breaks people.
  *
  * Server-safe components are detected automatically from a `// @server-safe`
  * comment on the first line of their source file. Build artifacts that are
@@ -128,12 +141,23 @@ for (const key of SERVER_SAFE) {
 
 let injected = 0
 let skipped = 0
+let stripped = 0
+
+const DIRECTIVE_RE = /^\s*(["'])use client\1;?[ \t]*\r?\n/
 
 for (const filePath of allFiles) {
-  // Only process .js and .d.ts files
-  const isJS = filePath.endsWith('.js')
-  const isDTS = filePath.endsWith('.d.ts')
-  if (!isJS && !isDTS) {
+  // `.d.ts` is an ambient context — a directive prologue there is a statement
+  // (TS1036). Never inject, and strip one if a previous build left it behind.
+  if (filePath.endsWith('.d.ts')) {
+    const dtsContent = readFileSync(filePath, 'utf8')
+    if (DIRECTIVE_RE.test(dtsContent)) {
+      writeFileSync(filePath, dtsContent.replace(DIRECTIVE_RE, ''))
+      stripped++
+    }
+    continue
+  }
+
+  if (!filePath.endsWith('.js')) {
     continue
   }
 
@@ -252,5 +276,5 @@ try {
 // externalizing the offending dep over re-adding a CJS bridge.
 
 console.log(
-  `inject-use-client: ${injected} files updated, ${skipped} skipped`
+  `inject-use-client: ${injected} files updated, ${skipped} skipped, ${stripped} .d.ts directives stripped`
 )

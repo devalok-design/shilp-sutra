@@ -14,7 +14,7 @@
  * and that's where the last three release regressions slipped through.
  */
 
-import { existsSync, readdirSync, rmSync, statSync, unlinkSync } from 'fs'
+import { existsSync, readdirSync, rmSync, statSync, unlinkSync, writeFileSync } from 'fs'
 import { readFileSync } from 'fs'
 import { execFileSync, spawnSync } from 'child_process'
 import { join, resolve, dirname } from 'path'
@@ -191,7 +191,98 @@ if (hits.length > 0) {
   process.exit(1)
 }
 
-// If next build succeeded and no red flags hit: pass
 pass(`next build (${VARIANT_LABEL}) completed without errors or known regressions`)
+
+// ── Step 5: type-resolution matrix ─────────────────────────────────────
+//
+// `next build` type-checks with the consumer's own tsconfig, which sets
+// `skipLibCheck: true` — the setting that suppresses every error originating
+// INSIDE a dependency's .d.ts. That blind spot let 0.54.0 ship 209 declaration
+// files carrying a `"use client"` prologue (TS1036), 8 with undeclared type
+// imports (TS2307), and 234 extensionless relative specifiers (TS2834/2835).
+// A consumer barrel import produced 78 errors; every gate we had stayed green.
+//
+// So type-check the SAME installed consumer across the axes that actually
+// change the answer: module resolution (`bundler` vs `nodenext`) × whether
+// declaration files are checked at all. Only `skipLibCheck: false` can see our
+// .d.ts, and only `nodenext` enforces explicit extensions.
+//
+// Errors are filtered to our own package plus the consumer's source — an
+// unrelated dependency shipping bad types is not our release blocker.
+
+step('Type-resolution matrix (bundler|nodenext × skipLibCheck on|off)')
+
+const MATRIX = [
+  { moduleResolution: 'bundler', module: 'ESNext', skipLibCheck: true },
+  { moduleResolution: 'bundler', module: 'ESNext', skipLibCheck: false },
+  { moduleResolution: 'nodenext', module: 'NodeNext', skipLibCheck: true },
+  { moduleResolution: 'nodenext', module: 'NodeNext', skipLibCheck: false },
+]
+
+const matrixFailures = []
+
+for (const cfg of MATRIX) {
+  const label = `${cfg.moduleResolution} + skipLibCheck:${cfg.skipLibCheck}`
+  const tsconfigPath = join(CONSUMER, `tsconfig.matrix.json`)
+  writeFileSync(
+    tsconfigPath,
+    JSON.stringify(
+      {
+        compilerOptions: {
+          target: 'ES2022',
+          lib: ['ES2022', 'DOM', 'DOM.Iterable'],
+          module: cfg.module,
+          moduleResolution: cfg.moduleResolution,
+          jsx: 'react-jsx',
+          strict: true,
+          skipLibCheck: cfg.skipLibCheck,
+          noEmit: true,
+          esModuleInterop: true,
+          allowSyntheticDefaultImports: true,
+        },
+        include: ['app/**/*.ts', 'app/**/*.tsx'],
+      },
+      null,
+      2
+    )
+  )
+
+  // Invoke the consumer's own tsc entry directly. Going through `npx` would
+  // need shell:true on Windows, which concatenates argv unescaped (DEP0190).
+  const tscBin = join(CONSUMER, 'node_modules', 'typescript', 'bin', 'tsc')
+  const tsc = run('node', [tscBin, '-p', 'tsconfig.matrix.json'], {
+    cwd: CONSUMER,
+    shell: false,
+  })
+  const out = (tsc.stdout || '') + '\n' + (tsc.stderr || '')
+  const ours = out
+    .split('\n')
+    .filter((l) => /error TS\d+/.test(l))
+    .filter((l) => l.includes('@devalok/shilp-sutra') || l.startsWith('app'))
+
+  if (ours.length) {
+    matrixFailures.push({ label, errors: ours })
+    console.error(`  ${RED}✗ ${label} — ${ours.length} error(s)${RESET}`)
+  } else {
+    console.log(`  ${GREEN}✓${RESET} ${label}`)
+  }
+  if (existsSync(tsconfigPath)) unlinkSync(tsconfigPath)
+}
+
+if (matrixFailures.length) {
+  console.error(`\n${RED}${BOLD}✗ Type-resolution matrix failed${RESET}\n`)
+  for (const f of matrixFailures) {
+    console.error(`  ${RED}• ${f.label}${RESET}`)
+    for (const e of f.errors.slice(0, 8)) console.error(`      ${e.slice(0, 220)}`)
+    if (f.errors.length > 8) console.error(`      … and ${f.errors.length - 8} more`)
+  }
+  console.error(
+    `\nThese are errors a consumer sees from OUR declaration files.\n` +
+      `Run \`node scripts/audit-dts.mjs\` for a precise breakdown.`
+  )
+  process.exit(1)
+}
+pass('Type-resolution matrix clean across all four configurations')
+
 console.log(`\n${GREEN}${BOLD}✓ Consumer smoke test passed${RESET}`)
 console.log(`   Full build log: ${logPath}`)

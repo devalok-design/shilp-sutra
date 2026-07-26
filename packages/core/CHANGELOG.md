@@ -1,5 +1,31 @@
 # @devalok/shilp-sutra
 
+## 0.55.1
+
+### Patch Changes
+
+- [#245](https://github.com/devalok-design/shilp-sutra/pull/245) [`3bed2d8`](https://github.com/devalok-design/shilp-sutra/commit/3bed2d85b918db60526b323d35583645ebdb9bc2) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Fix Checkbox, Switch and Slider having **no accessible name** inside the documented `FormField` + `Label` pattern — a screen reader announced them unnamed.
+
+  All three read `useFormField()` and wired `state`, `aria-describedby` and `aria-required`, so they looked integrated. None of them adopted `fieldCtx.inputId`, so `<Label htmlFor>` resolved to an element that did not exist. The label rendered, was visible, and was associated with nothing.
+
+  Checkbox and Switch now adopt the field `inputId` (explicit `id` still wins), matching Input, Textarea, Select, Combobox, Autocomplete, NumberInput and ColorInput.
+
+  Slider needed a different mechanism. Radix renders `Slider.Root` as a `<span>` — not a labellable element — and puts `role="slider"` on the **thumb**, so `htmlFor` can never reach it. The thumb now takes `aria-labelledby` from the field label instead. An explicit `aria-label` still wins, and a range slider deliberately does _not_ borrow the field label, because one label cannot disambiguate two thumbs — name each thumb yourself there.
+
+  Found by reading the browser's accessibility tree for every labellable control in three states (no label / placeholder only / `FormField` + `Label`), rather than trusting the DOM or a scanner's summary. The three broken controls turned out to be exactly the three that `form-field-label-association.test.tsx` did not cover — the 0.49.x round fixed the text-like controls and stopped there. Every labellable control including Radio is now asserted, and the new cases assert the accessible **name** via role rather than only label association, because that is what a screen-reader user actually receives. Verified to fail without the fix and pass with it.
+
+  No API change; no consumer action required beyond upgrading.
+
+- [#242](https://github.com/devalok-design/shilp-sutra/pull/242) [`263a81b`](https://github.com/devalok-design/shilp-sutra/commit/263a81b5c2b5bdfa384cf943d8eb5d54219650dd) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Fix `--color-surface-fg-subtle` failing WCAG AA in the light theme, and add a gate so a contrast claim has to be computed rather than asserted.
+
+  The token measured **4.472:1** on the light `surface-base` against AA's required 4.5 for normal text — a 0.028 miss. It is used for secondary text in 87 component files (descriptions, placeholders, captions, metadata), so every one of those was non-compliant to any audit tool a consumer runs. Dark theme was already fine at 5.816:1 and is unchanged.
+
+  `--neutral-9` (light) goes `oklch(0.54 …)` from `0.55`, giving **4.664:1**. The two are visually near-indistinguishable — the fix costs nothing to look at and moves the token from failing to passing.
+
+  The intermediate `0.545` also clears, at 4.567, and was rejected: 0.067 of headroom means a later tweak to `surface-base` would silently push it back under. That is not hypothetical — the token already carried the comment `/* darkened for WCAG AA 4.5:1 */`, so a previous adjustment had been made with exactly this intent and landed short. The value looked right, the comment claimed it was right, and nothing verified it. It reached npm and was found by an external accessibility audit of rendered output.
+
+  So the durable part of this change is the new gate. `scripts/audit-contrast.mjs` computes OKLCH → sRGB → WCAG relative luminance straight from `primitives.css` and fails the release if a listed body-text pairing drops under AA. It runs in `pre-publish-audit`, and is verified in both directions: it reports the exact `4.472 / −0.028` on the old value and passes on the new one. Four pairings are covered today (`surface-fg-subtle` and `surface-fg-muted`, each on `surface-base`, in both themes).
+
 ## 0.55.0
 
 ### Minor Changes

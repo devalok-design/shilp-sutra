@@ -55,8 +55,20 @@ const LICENSE_DST = join(skillRoot, 'LICENSE')
 
 const checkMode = process.argv.includes('--check')
 
+/**
+ * Hash CONTENT, not line endings.
+ *
+ * With git's `core.autocrlf=true` (the Windows default) a checkout writes CRLF
+ * to disk while this script generates LF, so a byte-exact hash reports drift on
+ * files that are character-for-character identical — `git diff` shows nothing,
+ * yet the gate fails. That made the drift gate unusable on Windows and cost a
+ * chunk of a release check chasing a file with no real change.
+ *
+ * Normalising here keeps the gate honest on every platform: it fires on content
+ * drift and stays quiet on checkout conventions.
+ */
 function digest(content) {
-  return createHash('sha256').update(content).digest('hex')
+  return createHash('sha256').update(content.replace(/\r\n/g, '\n')).digest('hex')
 }
 
 function read(file) {

@@ -99,6 +99,13 @@ jobs:
         if: steps.affected.outputs.core == 'true'
         run: node scripts/consumer-smoke-test.mjs
 
+      # pnpm isolated layout + every subpath. The smoke consumer above
+      # installs npm-style (hoisted, peers auto-installed), which hides
+      # undeclared deps and forgotten peers. This one cannot.
+      - name: Consumer strict install (pnpm isolated, all subpaths)
+        if: steps.affected.outputs.core == 'true'
+        run: node scripts/consumer-strict-install.mjs --no-build
+
       - name: Compiled-CSS coverage (Turbopack)
         if: steps.affected.outputs.core == 'true'
         run: node scripts/audit-compiled-css.mjs

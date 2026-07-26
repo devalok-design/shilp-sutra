@@ -9,8 +9,10 @@
  * 2. copy-root-docs     — Copy CHANGELOG/MIGRATION/README to dist/
  * 3. copy-skill         — Copy skills/shilp-sutra/ to packages/core/skill/
  * 4. fix-dts-primitives — Rewrite @primitives/ import paths in .d.ts files
- * 5. inject-use-client  — Add "use client" directives + SSR safety patches
- * 6. build-docs         — Generate per-component documentation
+ * 5. fix-dts-extensions — Give .d.ts relative imports explicit .js extensions
+ * 6. fix-empty-modules  — Give 0-byte emitted modules an explicit ESM body
+ * 7. inject-use-client  — Add "use client" directives + SSR safety patches
+ * 8. build-docs         — Generate per-component documentation
  */
 
 import { execFileSync } from 'child_process'
@@ -25,6 +27,8 @@ const steps = [
   { name: 'copy-root-docs', script: 'copy-root-docs.mjs' },
   { name: 'copy-skill', script: 'copy-skill.mjs' },
   { name: 'fix-dts-primitives', script: 'fix-dts-primitives.mjs' },
+  { name: 'fix-dts-extensions', script: 'fix-dts-extensions.mjs' },
+  { name: 'fix-empty-modules', script: 'fix-empty-modules.mjs' },
   { name: 'inject-use-client', script: 'inject-use-client.mjs' },
   { name: 'build-docs', script: 'build-component-docs.mjs' },
   { name: 'build-mcp-manifest', script: 'build-mcp-manifest.mjs' },

@@ -196,7 +196,35 @@ export default defineConfig({
             )
               return 'vendor-utils'
           }
-          if (id.includes('primitives/')) return 'primitives'
+          // Vendored Radix primitives: one chunk PER primitive, with the
+          // shared internals kept together in a single chunk.
+          //
+          // History, because both extremes are wrong and the middle is not
+          // obvious:
+          //
+          //   `return 'primitives'` (before 0.55.0) put all 25 primitives in
+          //   one 231 KB chunk. A consumer importing only <Button> — which
+          //   needs nothing but `Slot`/`Slottable` from react-slot (~3 KB) —
+          //   still shipped Select, Dialog, Menu, Tooltip and Slider. Measured:
+          //   209 KB of our code for the FIRST component, ~43 KB for the next
+          //   eleven. A fixed floor everyone paid.
+          //
+          //   Removing the rule entirely (letting Rollup chunk freely) fixed
+          //   the floor — Button fell to 56 KB — but Rollup then DUPLICATED
+          //   the shared internals into every primitive chunk, and a realistic
+          //   12-component app went 252 KB → 586 KB. Strictly worse for the
+          //   common case.
+          //
+          // Splitting per primitive while pinning `_internal/` to one shared
+          // chunk gets both: a primitive is only pulled in by components that
+          // reference it, and the internals every primitive depends on
+          // (compose-refs, context, presence, portal, dismissable-layer, …)
+          // exist exactly once.
+          if (id.includes('primitives/')) {
+            if (id.includes('primitives/_internal/')) return 'primitives-internal'
+            const m = id.replace(/\\/g, '/').match(/primitives\/([^/]+?)\.[jt]sx?$/)
+            return m ? `primitives/${m[1]}` : 'primitives'
+          }
         },
       },
     },

@@ -7,7 +7,7 @@
   "homepage": "https://devalok-design.github.io/shilp-sutra/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/devalok-design/shilp-sutra",
+    "url": "git+https://github.com/devalok-design/shilp-sutra.git",
     "directory": "packages/brand"
   },
   "bugs": {

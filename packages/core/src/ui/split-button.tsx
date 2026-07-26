@@ -1,6 +1,5 @@
 'use client'
 
-import { type Placement } from '@floating-ui/dom'
 import { type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 
@@ -9,6 +8,24 @@ import { cn } from './lib/utils'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 // ── Types ───────────────────────────────────────────────────────
+
+/**
+ * Placement of the dropdown panel, in floating-ui's vocabulary.
+ *
+ * Declared here rather than imported from `@floating-ui/dom`: that package is
+ * bundled into dist at runtime but is NOT a consumer dependency, so a type
+ * import leaks an unresolvable specifier into the published .d.ts —
+ * `error TS2307: Cannot find module '@floating-ui/dom'` for anyone type-checking
+ * declarations. The union is stable and two lines; borrowing it is not worth an
+ * install. (This component no longer calls floating-ui at all — see the Radix
+ * Popover mapping below.)
+ */
+export type SplitButtonPlacement =
+  | 'top' | 'right' | 'bottom' | 'left'
+  | 'top-start' | 'top-end'
+  | 'right-start' | 'right-end'
+  | 'bottom-start' | 'bottom-end'
+  | 'left-start' | 'left-end'
 
 type SplitButtonVariant = 'solid' | 'soft' | 'outline'
 type SplitButtonColor = NonNullable<VariantProps<typeof buttonVariants>['color']>
@@ -42,7 +59,7 @@ export interface SplitButtonProps {
   /** Which side the dropdown trigger sits on. @default 'right' */
   triggerSide?: 'left' | 'right'
   /** Preferred placement for the dropdown panel. @default 'top-end' */
-  placement?: Placement
+  placement?: SplitButtonPlacement
   /** Width of the trigger (chevron) half. @default 'auto' */
   triggerWidth?: number | string
   className?: string

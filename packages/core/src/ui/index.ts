@@ -32,7 +32,7 @@ export { Input, type InputProps, type InputState, inputWrapperVariants } from '.
 export { Label, type LabelProps } from './label'
 export { type FieldState } from './lib/field-state'
 export { Separator, type SeparatorProps } from './separator'
-export { SplitButton, type SplitButtonProps } from './split-button'
+export { SplitButton, type SplitButtonPlacement,type SplitButtonProps } from './split-button'
 export { VisuallyHidden, type VisuallyHiddenProps } from './visually-hidden'
 
 // Autocomplete

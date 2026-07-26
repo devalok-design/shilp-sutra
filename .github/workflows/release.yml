@@ -230,6 +230,18 @@ jobs:
         if: steps.affected.outputs.core == 'true'
         run: node scripts/consumer-smoke-test.mjs
 
+      # Strict-install consumer — pnpm with hoisting disabled and
+      # auto-install-peers off, importing EVERY subpath export. The smoke
+      # consumer above installs npm-style: deps get hoisted flat and peers
+      # are auto-installed, so an undeclared package still resolves and a
+      # forgotten peer still appears. pnpm's isolated layout does neither.
+      # Found two faults that every npm-based gate passed — a missing
+      # @tiptap/pm peer, and 0-byte emitted modules throwing
+      # ERR_REQUIRE_CYCLE_MODULE on import (both shipped in 0.54.0).
+      - name: Consumer strict install (pnpm isolated, all subpaths)
+        if: steps.affected.outputs.core == 'true'
+        run: node scripts/consumer-strict-install.mjs --no-build
+
       # Compiled-CSS coverage audit — verifies every DS utility class
       # referenced in source actually emits a rule in the consumer's
       # compiled CSS. Catches the exact failure mode that shipped

@@ -64,6 +64,53 @@ const BASE_EXTERNALS = new Set([
   '@tabler/icons-react',
 ])
 
+// ── Types-only peers ────────────────────────────────────────────────────────
+//
+// Modules we BUNDLE at runtime but still reference from our published `.d.ts`.
+// The externalization rule above cannot see these: rollup inlines their JS into
+// dist, so they are not external — but TypeScript's declaration emitter does
+// NOT bundle third-party types, it leaves `import { Editor } from '@tiptap/react'`
+// as a bare specifier. Undeclared, that is `error TS2307: Cannot find module`
+// for any consumer type-checking declarations (0.54.0 shipped 7 such files).
+//
+// They are declared as OPTIONAL peers so the specifier resolves, and listed
+// here so every downstream surface (MCP manifest, preflight, recipe tables)
+// can say "install as a devDependency, for types only" rather than implying the
+// package is needed at runtime — the "phantom install instruction" the
+// 2026-07-10 dogfood rightly objected to.
+//
+// Keep the declared peer range in package.json pinned to the major we bundle,
+// or a consumer's types describe a different API than the code that runs.
+const TYPES_ONLY_PEERS = new Set([
+  '@tiptap/core',
+  '@tiptap/react',
+  '@tiptap/suggestion',
+])
+
+/**
+ * Type-peers OF a types-only peer — packages we never import, but which the
+ * peer's own declarations require in order to type-check.
+ *
+ * `@tiptap/core`'s .d.ts opens with `import … from '@tiptap/pm/state'`, and
+ * TipTap declares `@tiptap/pm` as its own peer rather than depending on it. So
+ * a consumer told to `pnpm add -D @tiptap/react` still gets six TS2307 errors
+ * from inside TipTap's declarations until `@tiptap/pm` is present too.
+ *
+ * This is invisible under npm — hoisting plus auto-install-peers pulls it in
+ * silently — and only shows up under pnpm's strict layout. Caught by the
+ * pnpm-strict harness, not by any npm-based test.
+ *
+ * Cannot be derived: the requirement lives in the peer's declarations, not in
+ * our imports, so it has to be stated.
+ */
+const TYPES_ONLY_COMPANIONS = {
+  '@tiptap/core': ['@tiptap/pm'],
+  '@tiptap/react': ['@tiptap/pm'],
+  '@tiptap/suggestion': ['@tiptap/pm'],
+}
+
+export { TYPES_ONLY_PEERS, TYPES_ONLY_COMPANIONS }
+
 /** Bare-module root: '@scope/pkg/sub' → '@scope/pkg', 'pkg/sub' → 'pkg'. */
 function moduleRoot(spec) {
   const parts = spec.split('/')
@@ -193,7 +240,10 @@ function bareImportsOf(file) {
 export function derivePeerMap({ categories = MANIFEST_CATEGORIES, exportedOnly = true } = {}) {
   const externals = loadExternalMatchers()
   const isExternal = (root) => externals.some((re) => re.test(root))
-  const isGated = (root) => isExternal(root) && !BASE_EXTERNALS.has(root)
+  // A gated peer is either externalized (consumer must provide the runtime) or
+  // types-only (we bundle the runtime, but our .d.ts still names the package).
+  const isGated = (root) =>
+    (isExternal(root) || TYPES_ONLY_PEERS.has(root)) && !BASE_EXTERNALS.has(root)
   const exported = exportedOnly ? loadExportedComponents() : null
 
   const map = {}
@@ -222,11 +272,19 @@ export function derivePeerMap({ categories = MANIFEST_CATEGORIES, exportedOnly =
           }
         }
       }
+      // Pull in the type-peers of any types-only peer (see TYPES_ONLY_COMPANIONS).
+      for (const p of [...peers]) {
+        for (const companion of TYPES_ONLY_COMPANIONS[p] || []) {
+          peers.add(companion)
+          gatedUniverse.add(companion)
+        }
+      }
+
       const key = kebab(name)
       if (peers.size && (!exported || exported.has(key))) map[key] = [...peers].sort()
     }
   }
-  return { map, gatedUniverse, externals }
+  return { map, gatedUniverse, externals, typesOnly: TYPES_ONLY_PEERS }
 }
 
 // ── Gate: diff derived map against the recipe §2a tables ──────────────────────

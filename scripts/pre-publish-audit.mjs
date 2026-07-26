@@ -12,7 +12,7 @@
  * execSync is safe here — no shell injection risk.
  */
 
-import { execSync } from 'child_process'
+import { execSync, execFileSync } from 'child_process'
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
 import { join, resolve, basename } from 'path'
 import { globSync } from 'node:fs'
@@ -285,6 +285,58 @@ gate('Recipe peer tables match source (derive-peer-map --check)', () => {
     return true
   } catch (e) {
     return e.stdout?.trim() || e.stderr?.trim() || 'derive-peer-map --check reported drift'
+  }
+})
+
+// Gate: the declaration files we are about to publish must be usable by a
+// consumer who actually type-checks them. Asserts no directive prologue in a
+// .d.ts (TS1036), no undeclared bare specifier (TS2307), and no extensionless
+// relative specifier (TS2834/2835). 0.54.0 shipped all three — 209 + 8 + 234
+// occurrences — and every existing gate stayed green, because our own smoke
+// consumer sets `skipLibCheck: true`, the setting that hides this entire class.
+gate('Published .d.ts are consumer-clean (audit-dts)', () => {
+  try {
+    execFileSync('node', ['scripts/audit-dts.mjs'], { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' })
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'audit-dts reported violations'
+  }
+})
+
+// Gate: simulate every module-resolution mode a consumer can use (node10,
+// node16 from CJS and ESM, bundler) against the packed tarball.
+//
+// Two rules are ignored because they are deliberate, not defects:
+//   • cjs-resolves-to-esm — we ship ESM only; CJS consumers use dynamic import.
+//   • no-resolution       — node10 (pre-`exports`) cannot see our subpaths, and
+//                           attw models JS/TS only, so it also reports our
+//                           CSS-only `./css` and `./tokens` entries as failures
+//                           when both in fact resolve.
+// `internal-resolution-error` is deliberately NOT ignored — that is the rule
+// that catches broken relative specifiers inside our own declarations, and the
+// one that would have blocked 0.54.0 (301 occurrences).
+// attw is a PINNED devDependency invoked through its JS entry, not `npx
+// @latest`: a release gate must not reach the network, and a newly published
+// attw rule must not fail a release out of nowhere. Node also refuses to spawn
+// a Windows `.cmd` shim without a shell (EINVAL, post-CVE-2024-27980), so
+// `npx.cmd` is not an option here either.
+gate('Type resolution across consumer configs (attw)', () => {
+  try {
+    execFileSync(
+      process.execPath,
+      [
+        join(ROOT, 'node_modules', '@arethetypeswrong', 'cli', 'dist', 'index.js'),
+        '--pack',
+        'packages/core',
+        '--ignore-rules',
+        'cjs-resolves-to-esm',
+        'no-resolution',
+      ],
+      { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' }
+    )
+    return true
+  } catch (e) {
+    return e.stdout?.trim() || e.stderr?.trim() || 'attw reported type-resolution problems'
   }
 })
 

@@ -196,6 +196,8 @@ In dev mode, calling `toast()` without a mounted `<Toaster />` logs a one-time c
 
 **Diagnosis:** Should not happen since v0.37.0 — `use-sync-external-store` was moved to runtime dependencies and is auto-installed transitively.
 
+**Why this dependency exists at all** (it is a hook built into React 18+, so it looks redundant): we do not use the shim ourselves. It is a TipTap transitive. TipTap's code is bundled into our `dist`, and that bundled chunk imports `use-sync-external-store/shim`. We externalize the shim rather than bundling it, because bundling forced a `createRequire` bridge into our Rollup runtime chunk that broke every Turbopack consumer. Externalized code must be resolvable from the consumer's tree, hence the declaration.
+
 If it still happens, install it explicitly:
 
 ```bash
@@ -203,6 +205,84 @@ pnpm add use-sync-external-store
 ```
 
 And open an issue at <https://github.com/devalok-design/shilp-sutra/issues> with the resolution graph (`pnpm why use-sync-external-store`) so we can fix the root cause.
+
+## Symptom: `Cannot find package 'sonner'` when you only imported a hook (or `'react-markdown'` from the AI barrel)
+
+**Diagnosis:** you imported a *barrel* rather than the component itself, and the barrel re-exports something with an optional peer.
+
+- `@devalok/shilp-sutra/hooks` re-exports `toast`, which needs `sonner`.
+- `@devalok/shilp-sutra/ai` re-exports the block renderer, which needs `react-markdown`.
+
+A bundler tree-shakes the unused branch away, so this is invisible in a client build. It bites at **runtime in Node** — SSR, a route handler, a test — where the import is evaluated for real.
+
+Fix — import the specific module instead of the barrel:
+
+```ts
+// needs sonner installed, because the barrel also exports toast
+import { useIsMobile } from '@devalok/shilp-sutra/hooks'
+
+// no optional peers at all
+import { useIsMobile } from '@devalok/shilp-sutra/hooks/use-mobile'
+```
+
+Every hook has its own subpath: `use-mobile`, `use-color-mode`, `use-touch-device`, `use-viewport-height`. Same rule applies across the library — a deep import never costs you more than that component needs.
+
+## Symptom: `error TS2305: Module '"react"' has no exported member 'ReactSVG'`
+
+**This is an upstream `@tabler/icons-react` bug, not a shilp-sutra one** — but you will hit it following our install instructions, so it is documented here.
+
+`@tabler/icons-react` (through 3.45.0, the current release) opens its type declarations with:
+
+```ts
+import { ReactSVG, … } from 'react'
+```
+
+React 18's types exported `ReactSVG`; React 19's removed it, keeping only `ReactSVGElement`. So on React 19 the icon package's own `.d.ts` fails to compile.
+
+You only see it with **all three**: React 19, `skipLibCheck: false`, and a direct `@tabler/icons-react` import in your own code. React 18 is unaffected, and the default `skipLibCheck: true` suppresses it.
+
+Workarounds, in order of preference:
+
+1. Leave `skipLibCheck: true` (the default in every framework scaffold). It suppresses errors inside dependency declarations — including this one.
+2. Import icons through our re-export instead of directly, so the broken declaration is never loaded into your program.
+3. Pin `@types/react` to 18 if your app is still on React 18.
+
+There is nothing to fix on our side: we neither wrap nor re-declare Tabler's types. Track it upstream at <https://github.com/tabler/tabler-icons/issues>.
+
+## Symptom: `error TS2307: Cannot find module '@devalok/shilp-sutra/ui/button'` under `"moduleResolution": "node"`
+
+**Diagnosis:** You are on TypeScript's legacy resolution mode, which predates and ignores the `exports` field in `package.json`. Our files live under `dist/`, and every public path is mapped through `exports` — legacy resolution looks for a literal `node_modules/@devalok/shilp-sutra/ui/button.js` and finds nothing.
+
+**Supported resolution modes:**
+
+| `moduleResolution` | Supported | Notes |
+|---|---|---|
+| `bundler` | ✅ | Recommended. Vite, Next.js, and most modern setups default to this. |
+| `node16` / `nodenext` | ✅ | Fully supported since 0.55.0. |
+| `node` (legacy) | ❌ | Cannot read `exports`. No subpath resolves. |
+
+Fix — in your `tsconfig.json`:
+
+```jsonc
+{ "compilerOptions": { "moduleResolution": "bundler" } }
+```
+
+## Symptom: `require('@devalok/shilp-sutra')` throws `ERR_REQUIRE_ESM`
+
+**Diagnosis:** The package is ESM-only — we ship no CommonJS build. Whether `require()` works depends on your Node version:
+
+| Node | `require('@devalok/shilp-sutra/ui/button')` |
+|---|---|
+| 22.12+ / 23+ | ✅ Works — `require(esm)` is supported and unflagged. Verified against every entry point, including the full `./ui` barrel. |
+| < 22.12 | ❌ `ERR_REQUIRE_ESM` |
+
+On older Node, use a dynamic import:
+
+```js
+const { Button } = await import('@devalok/shilp-sutra/ui/button')
+```
+
+Or move the consuming file to ESM (`"type": "module"`, or a `.mjs` extension). Every supported framework target — Next.js, Vite, Remix, Astro, TanStack Start — handles the ESM entry natively; this only affects hand-written CJS scripts.
 
 ## Symptom: Storybook MCP server `localhost:6006/mcp` returns 404
 

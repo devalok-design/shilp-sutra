@@ -1,4 +1,6 @@
 'use client'
+// Bundlers (Vite, Next.js, webpack) define process.env.NODE_ENV; guard for raw ESM.
+declare const process: { env: { NODE_ENV?: string } } | undefined
 
 import { flexRender,type Row } from '@tanstack/react-table'
 import { type VirtualItem } from '@tanstack/react-virtual'
@@ -320,7 +322,7 @@ export function DataTableBody<TData>({
     // fixed height equal to virtualRowHeight — the virtualizer cannot measure
     // dynamic content. Pass a virtualRowHeight large enough to contain your
     // renderExpanded content, or switch to non-virtual mode for expandable tables.
-    if (import.meta.env.DEV && expandable) {
+    if (typeof process !== "undefined" && process?.env.NODE_ENV !== "production" && expandable) {
       console.warn(
         '[DataTable] virtualRows + expandable: expanded row content renders at a ' +
         'fixed height (virtualRowHeight prop, default 48px). If your expanded content ' +

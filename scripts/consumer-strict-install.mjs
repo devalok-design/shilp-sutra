@@ -134,7 +134,6 @@ writeFileSync(
         'react-dom': '^19.0.0',
       },
       devDependencies: {
-        typescript: '^5.9.0',
         '@types/react': '^19.0.0',
         '@types/react-dom': '^19.0.0',
         ...peerRanges,
@@ -179,21 +178,43 @@ const inst = run('pnpm', ['install', '--ignore-workspace'], { cwd: WORK })
 if (inst.status !== 0) fail('pnpm install failed', inst.stderr || inst.stdout)
 pass(`Installed; ${subpaths.length} subpaths to verify`)
 
-// ── Types ───────────────────────────────────────────────────────────────
-step('Type-checking every subpath (skipLibCheck: false)')
-const tscBin = join(WORK, 'node_modules', 'typescript', 'bin', 'tsc')
-const tsc = run('node', [tscBin, '--noEmit'], { cwd: WORK, shell: false })
-const tscErrors = ((tsc.stdout || '') + (tsc.stderr || ''))
-  .split('\n')
-  .filter((l) => /error TS\d+/.test(l))
-if (tscErrors.length) {
-  fail(
-    `${tscErrors.length} type error(s) with every declared peer installed`,
-    tscErrors.slice(0, 30).join('\n') +
-      '\n\nEach one is something a pnpm consumer hits. If it names a package, that package is missing from peerDependencies (see TYPES_ONLY_COMPANIONS in derive-peer-map.mjs for the types-of-a-type-peer case).'
-  )
+// ── Types, on every TypeScript major we claim to support ────────────────
+//
+// Checking only the older major means we would catch nothing that is specific
+// to the CURRENT compiler — which is the direction problems actually arrive
+// from. Issue #237 was reported on TypeScript 7.0.2; this gate was pinned to
+// 5.9, and the fix only happened to be verified on 7 because two throwaway
+// fixtures resolved `typescript@latest` by chance. Luck is not a gate.
+//
+// 5.x stays covered because plenty of shipped apps are still on it.
+const TS_VERSIONS = ['5.9', 'latest']
+
+for (const version of TS_VERSIONS) {
+  const addTs = run('pnpm', ['add', '-D', '--ignore-workspace', `typescript@${version}`], {
+    cwd: WORK,
+  })
+  if (addTs.status !== 0) {
+    fail(`installing typescript@${version} failed`, addTs.stderr || addTs.stdout)
+  }
+  const tscBin = join(WORK, 'node_modules', 'typescript', 'bin', 'tsc')
+  const actual = JSON.parse(
+    readFileSync(join(WORK, 'node_modules', 'typescript', 'package.json'), 'utf8')
+  ).version
+
+  step(`Type-checking every subpath — TypeScript ${actual} (skipLibCheck: false)`)
+  const tsc = run('node', [tscBin, '--noEmit'], { cwd: WORK, shell: false })
+  const tscErrors = ((tsc.stdout || '') + (tsc.stderr || ''))
+    .split('\n')
+    .filter((l) => /error TS\d+/.test(l))
+  if (tscErrors.length) {
+    fail(
+      `${tscErrors.length} type error(s) on TypeScript ${actual} with every declared peer installed`,
+      tscErrors.slice(0, 30).join('\n') +
+        '\n\nEach one is something a pnpm consumer hits. If it names a package, that package is missing from peerDependencies (see TYPES_ONLY_COMPANIONS in derive-peer-map.mjs for the types-of-a-type-peer case).'
+    )
+  }
+  pass(`${subpaths.length} subpaths type-check clean on TypeScript ${actual}`)
 }
-pass(`${subpaths.length} subpaths type-check clean`)
 
 // ── Runtime ─────────────────────────────────────────────────────────────
 step('SSR-importing every subpath in Node')

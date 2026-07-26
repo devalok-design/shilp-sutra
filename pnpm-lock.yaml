@@ -300,9 +300,6 @@ importers:
 
   packages/core:
     dependencies:
-      '==rich-chat-input?RCI:RTE':
-        specifier: link:==rich-chat-input?RCI:RTE
-        version: link:==rich-chat-input?RCI:RTE
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

@@ -107,6 +107,17 @@ const Slider = React.forwardRef<
         <SliderPrimitive.Thumb
           key={i}
           aria-label={thumbCount === 1 ? (ariaLabel as string | undefined) : undefined}
+          // `role="slider"` lives on the THUMB, and Radix renders Root as a
+          // <span> — not a labellable element — so `<Label htmlFor>` cannot name
+          // this control the way it names Input/Select. Without an explicit
+          // aria-label the thumb had NO accessible name even inside
+          // FormField + Label. Point it at the field's label instead.
+          //
+          // Single-thumb only: with a range, one label cannot disambiguate the
+          // two thumbs, so the consumer must name each (`aria-label` per thumb).
+          aria-labelledby={
+            thumbCount === 1 && !ariaLabel ? fieldCtx.labelId : undefined
+          }
           className={sliderThumbVariants({ size, color })}
         />
       ))}

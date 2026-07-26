@@ -113,6 +113,11 @@ const Checkbox = React.forwardRef<
       aria-describedby={ariaDescribedBy}
       aria-required={ariaRequired || undefined}
       {...props}
+      // Explicit id wins; otherwise adopt FormField's inputId so <Label htmlFor>
+      // resolves. Without this the label renders, points at nothing, and the
+      // control has NO accessible name — a screen reader announces an unnamed
+      // checkbox even though the consumer wrote FormField + Label correctly.
+      id={props.id ?? fieldCtx.inputId}
     >
       <AnimatePresence>
         {isActive && (

@@ -2,7 +2,7 @@
   "name": "shilp-sutra-smoke-consumer",
   "version": "0.0.0",
   "private": true,
-  "description": "Consumer-side smoke test for @devalok/shilp-sutra. Simulates what Karm (and any TW4 Next.js consumer) does — pnpm packs core, installs the tarball, imports a representative surface of components, runs next build with Turbopack. Any dist-side bug (Node-only imports, TW3 class leftovers, theme() calls, etc.) that a real consumer would hit surfaces here.",
+  "description": "Consumer-side smoke test for @devalok/shilp-sutra. Simulates what Karm (and any TW4 Next.js consumer) does — pnpm packs core, installs the tarball, imports a representative surface of components, runs next build with Turbopack. Any dist-side bug (Node-only imports, TW3 class leftovers, theme() calls, etc.) that a real consumer would hit surfaces here. The @tiptap/* block mirrors §2a of the install recipes verbatim: as of 0.56.0 TipTap is externalized, so these are RUNTIME deps (they were devDependencies for types only while we bundled it). If the recipe list changes, change it here too — this fixture is the only thing that proves the documented install command is sufficient.",
   "scripts": {
     "build": "next build --turbopack",
     "dev": "next dev --turbopack"
@@ -17,12 +17,22 @@
     "@emoji-mart/react": "^1.0.0",
     "date-fns": "^4.0.0",
     "framer-motion": "^12.0.0",
-    "sonner": "^2.0.0"
+    "sonner": "^2.0.0",
+    "@tiptap/core": "^3.28.0",
+    "@tiptap/extension-highlight": "^3.28.0",
+    "@tiptap/extension-image": "^3.28.0",
+    "@tiptap/extension-list": "^3.28.0",
+    "@tiptap/extension-mention": "^3.28.0",
+    "@tiptap/extension-text-align": "^3.28.0",
+    "@tiptap/extensions": "^3.28.0",
+    "@tiptap/markdown": "^3.28.0",
+    "@tiptap/pm": "^3.28.0",
+    "@tiptap/react": "^3.28.0",
+    "@tiptap/starter-kit": "^3.28.0",
+    "@tiptap/suggestion": "^3.28.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.0",
-    "@tiptap/core": "^3.28.0",
-    "@tiptap/react": "^3.28.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

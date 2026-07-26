@@ -315,27 +315,24 @@ gate('Published .d.ts are consumer-clean (audit-dts)', () => {
 // `internal-resolution-error` is deliberately NOT ignored — that is the rule
 // that catches broken relative specifiers inside our own declarations, and the
 // one that would have blocked 0.54.0 (301 occurrences).
+// attw is a PINNED devDependency invoked through its JS entry, not `npx
+// @latest`: a release gate must not reach the network, and a newly published
+// attw rule must not fail a release out of nowhere. Node also refuses to spawn
+// a Windows `.cmd` shim without a shell (EINVAL, post-CVE-2024-27980), so
+// `npx.cmd` is not an option here either.
 gate('Type resolution across consumer configs (attw)', () => {
   try {
     execFileSync(
-      process.platform === 'win32' ? 'npx.cmd' : 'npx',
+      process.execPath,
       [
-        '--yes',
-        '@arethetypeswrong/cli@latest',
+        join(ROOT, 'node_modules', '@arethetypeswrong', 'cli', 'dist', 'index.js'),
         '--pack',
         'packages/core',
         '--ignore-rules',
         'cjs-resolves-to-esm',
         'no-resolution',
       ],
-      {
-        cwd: ROOT,
-        encoding: 'utf-8',
-        stdio: 'pipe',
-        // Name the .cmd shim directly rather than passing shell:true — with a
-        // shell, Node concatenates argv without escaping (DEP0190).
-        ...(process.platform === 'win32' ? { shell: false } : {}),
-      }
+      { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' }
     )
     return true
   } catch (e) {

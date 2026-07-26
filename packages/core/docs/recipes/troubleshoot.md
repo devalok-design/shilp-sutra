@@ -224,11 +224,16 @@ Fix — in your `tsconfig.json`:
 { "compilerOptions": { "moduleResolution": "bundler" } }
 ```
 
-## Symptom: `require('@devalok/shilp-sutra')` fails in a CommonJS file
+## Symptom: `require('@devalok/shilp-sutra')` throws `ERR_REQUIRE_ESM`
 
-**Diagnosis:** The package is ESM-only — we ship no CommonJS build. `require()` of an ES module throws `ERR_REQUIRE_ESM` on older Node, and bundlers report the entry as ESM-only.
+**Diagnosis:** The package is ESM-only — we ship no CommonJS build. Whether `require()` works depends on your Node version:
 
-Use a dynamic import from CommonJS:
+| Node | `require('@devalok/shilp-sutra/ui/button')` |
+|---|---|
+| 22.12+ / 23+ | ✅ Works — `require(esm)` is supported and unflagged. Verified against every entry point, including the full `./ui` barrel. |
+| < 22.12 | ❌ `ERR_REQUIRE_ESM` |
+
+On older Node, use a dynamic import:
 
 ```js
 const { Button } = await import('@devalok/shilp-sutra/ui/button')

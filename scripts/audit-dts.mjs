@@ -2,8 +2,8 @@
 /**
  * audit-dts.mjs
  *
- * Publish gate for the CONSUMER-FACING correctness of our emitted declaration
- * files. Three assertions over packages/core/dist/**\/*.d.ts:
+ * Publish gate for the CONSUMER-FACING correctness of what we emit. Four
+ * assertions over packages/core/dist:
  *
  *   1. NO DIRECTIVE PROLOGUE — a `.d.ts` is an ambient context, so a leading
  *      `"use client"` is a statement and every consumer with
@@ -21,15 +21,21 @@
  *      "node16" | "nodenext"` an ECMAScript import needs an explicit
  *      extension, or the consumer gets TS2834/TS2835.
  *
+ *   4. NO 0-BYTE EMITTED MODULE — an empty .js has no syntax for Node's
+ *      module-type detection, and under pnpm's symlinked node_modules that
+ *      ambiguity throws ERR_REQUIRE_CYCLE_MODULE on import. Works under npm's
+ *      flat layout, fails under pnpm.
+ *
  * WHY THIS GATE EXISTS
  * --------------------
- * 0.54.0 shipped all three faults at once — 209 .d.ts with a directive
+ * 0.54.0 shipped the first three faults at once — 209 .d.ts with a directive
  * prologue, 8 with undeclared type imports (@tiptap/*, @floating-ui/dom), and
  * 234 extensionless specifiers. A single barrel import produced 78 errors.
  * None of the 45 existing gates saw it, because our own consumer smoke test
  * had `skipLibCheck: true` — the setting that suppresses exactly this class.
+ * The fourth predates it and shipped too.
  *
- * All three are invisible on the most common consumer config (`bundler` +
+ * Every one is invisible on the most common consumer setup (npm + `bundler` +
  * `skipLibCheck: true`), which is why they must be asserted mechanically
  * rather than noticed.
  *
@@ -97,8 +103,22 @@ function walk(dir, acc = []) {
   return acc
 }
 
+// A 0-byte .js is ambiguous between ESM and CJS (no syntax to detect). Under
+// pnpm's symlinked node_modules that ambiguity surfaces as
+// ERR_REQUIRE_CYCLE_MODULE on import — so an exported types-only entry point
+// throws for pnpm consumers while working under npm's flat layout.
+function walkJs(dir, acc = []) {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry)
+    const st = statSync(full)
+    if (st.isDirectory()) walkJs(full, acc)
+    else if (full.endsWith('.js') && st.size === 0) acc.push(full.slice(distRoot.length + 1))
+  }
+  return acc
+}
+
 const files = walk(distRoot)
-const findings = { directive: [], undeclared: [], extensionless: [] }
+const findings = { directive: [], undeclared: [], extensionless: [], empty: walkJs(distRoot) }
 
 for (const file of files) {
   const rel = file.slice(distRoot.length + 1).split('\\').join('/')
@@ -120,7 +140,10 @@ for (const file of files) {
 }
 
 const total =
-  findings.directive.length + findings.undeclared.length + findings.extensionless.length
+  findings.directive.length +
+  findings.undeclared.length +
+  findings.extensionless.length +
+  findings.empty.length
 
 if (asJson) {
   console.log(JSON.stringify({ scanned: files.length, total, findings }, null, 2))
@@ -154,6 +177,11 @@ report(
   'No extensionless relative specifiers',
   findings.extensionless,
   'Fix: fix-dts-extensions.mjs must run in post-build (TS2834/TS2835 under node16/nodenext).'
+)
+report(
+  'No 0-byte emitted modules',
+  findings.empty,
+  'Fix: fix-empty-modules.mjs must run in post-build (ERR_REQUIRE_CYCLE_MODULE for pnpm consumers).'
 )
 
 if (total) {

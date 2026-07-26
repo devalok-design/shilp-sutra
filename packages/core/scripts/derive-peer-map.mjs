@@ -87,7 +87,29 @@ const TYPES_ONLY_PEERS = new Set([
   '@tiptap/suggestion',
 ])
 
-export { TYPES_ONLY_PEERS }
+/**
+ * Type-peers OF a types-only peer — packages we never import, but which the
+ * peer's own declarations require in order to type-check.
+ *
+ * `@tiptap/core`'s .d.ts opens with `import … from '@tiptap/pm/state'`, and
+ * TipTap declares `@tiptap/pm` as its own peer rather than depending on it. So
+ * a consumer told to `pnpm add -D @tiptap/react` still gets six TS2307 errors
+ * from inside TipTap's declarations until `@tiptap/pm` is present too.
+ *
+ * This is invisible under npm — hoisting plus auto-install-peers pulls it in
+ * silently — and only shows up under pnpm's strict layout. Caught by the
+ * pnpm-strict harness, not by any npm-based test.
+ *
+ * Cannot be derived: the requirement lives in the peer's declarations, not in
+ * our imports, so it has to be stated.
+ */
+const TYPES_ONLY_COMPANIONS = {
+  '@tiptap/core': ['@tiptap/pm'],
+  '@tiptap/react': ['@tiptap/pm'],
+  '@tiptap/suggestion': ['@tiptap/pm'],
+}
+
+export { TYPES_ONLY_PEERS, TYPES_ONLY_COMPANIONS }
 
 /** Bare-module root: '@scope/pkg/sub' → '@scope/pkg', 'pkg/sub' → 'pkg'. */
 function moduleRoot(spec) {
@@ -250,6 +272,14 @@ export function derivePeerMap({ categories = MANIFEST_CATEGORIES, exportedOnly =
           }
         }
       }
+      // Pull in the type-peers of any types-only peer (see TYPES_ONLY_COMPANIONS).
+      for (const p of [...peers]) {
+        for (const companion of TYPES_ONLY_COMPANIONS[p] || []) {
+          peers.add(companion)
+          gatedUniverse.add(companion)
+        }
+      }
+
       const key = kebab(name)
       if (peers.size && (!exported || exported.has(key))) map[key] = [...peers].sort()
     }

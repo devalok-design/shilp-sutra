@@ -863,6 +863,7 @@
     "@tanstack/react-table": "^8.0.0",
     "@tanstack/react-virtual": "^3.0.0",
     "@tiptap/core": "^3.28.0",
+    "@tiptap/pm": "^3.28.0",
     "@tiptap/react": "^3.28.0",
     "@tiptap/suggestion": "^3.28.0",
     "d3-array": "^3.0.0",
@@ -895,6 +896,9 @@
       "optional": true
     },
     "@tiptap/core": {
+      "optional": true
+    },
+    "@tiptap/pm": {
       "optional": true
     },
     "@tiptap/react": {

@@ -79,11 +79,27 @@ let rewritten = 0
 let filesTouched = 0
 const unresolved = []
 
+/**
+ * Byte offsets of every comment, so import-looking text inside a JSDoc
+ * `@example` is left alone. Without this the script tries to resolve
+ * documentation (`* import { normalizeIcon } from './lib/normalize-icon'`)
+ * against the emit and warns about it on every build.
+ */
+function commentRanges(src) {
+  const ranges = []
+  for (const m of src.matchAll(/\/\*[\s\S]*?\*\//g)) ranges.push([m.index, m.index + m[0].length])
+  for (const m of src.matchAll(/(^|[^:])\/\/.*$/gm)) ranges.push([m.index, m.index + m[0].length])
+  return ranges
+}
+
 for (const file of files) {
   const src = readFileSync(file, 'utf8')
   let changed = false
+  const comments = commentRanges(src)
+  const inComment = (i) => comments.some(([a, b]) => i >= a && i < b)
 
-  const out = src.replace(SPECIFIER_RE, (match, lead, quote, spec) => {
+  const out = src.replace(SPECIFIER_RE, (match, lead, quote, spec, offset) => {
+    if (inComment(offset)) return match // documentation, not an import
     if (!spec.startsWith('.')) return match // bare / package specifier
     if (HAS_EXTENSION.test(spec)) return match // already explicit
 

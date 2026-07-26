@@ -40,6 +40,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # `Detect affected packages` diffs against `github.event.before`.
+          # The default `fetch-depth: 1` does not fetch that commit, so the
+          # diff died with `fatal: bad object` and every core gate below was
+          # skipped. fetch-depth: 0 guarantees the base commit is present.
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -56,6 +62,16 @@ jobs:
       # Core-only gates (consumer-smoke, css-coverage) don't apply to a
       # brand/eslint-only push. Skip them there. Fail safe: anything ambiguous
       # -> run full gates.
+      # FAIL CLOSED. This gate decides whether the core-only gates below run at
+      # all, so anything that is not a confident "core is untouched" must run
+      # them. The previous version failed OPEN: a shallow checkout meant
+      # `github.event.before` was not in the clone, `git diff` exited with
+      # `fatal: bad object`, the `elif` was therefore false, and control fell
+      # through to `else` -> core=false. Every consumer gate (smoke, strict
+      # install, compiled-CSS coverage) silently skipped on every push while
+      # the workflow reported success — a safety net that quietly unhooked
+      # itself. Verifying the base commit exists BEFORE diffing keeps a git
+      # failure from ever reading as "nothing changed".
       - name: Detect affected packages
         id: affected
         run: |
@@ -63,11 +79,16 @@ jobs:
           BEFORE="${{ github.event.before }}"
           if [ "${{ github.event_name }}" != "push" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
             echo "core=true" >> "$GITHUB_OUTPUT"
+            echo "Affected: non-push or no base ref -> full gates."
+          elif ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "core=true" >> "$GITHUB_OUTPUT"
+            echo "Affected: base commit $BEFORE not in this clone -> cannot diff, running full gates."
           elif git diff --name-only "$BEFORE" "${{ github.sha }}" | grep -qE '^packages/core/'; then
             echo "core=true" >> "$GITHUB_OUTPUT"
+            echo "Affected: packages/core changed -> full gates."
           else
             echo "core=false" >> "$GITHUB_OUTPUT"
-            echo "packages/core untouched -> skipping core-only integration gates."
+            echo "Affected: packages/core untouched -> skipping core-only integration gates."
           fi
 
       # Build is required for the dist-reading gates below (audit, consumer-smoke,

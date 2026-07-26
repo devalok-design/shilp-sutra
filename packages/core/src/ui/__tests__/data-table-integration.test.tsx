@@ -979,7 +979,10 @@ describe('DataTable — filterableColumns', () => {
       <DataTable columns={columns} data={data} filterable filterableColumns={['name']} />,
     )
     const user = userEvent.setup()
-    await user.type(screen.getByLabelText('Filter Name...'), 'Alice')
+    // Filter input is in the header row — get by placeholder text since aria-label
+    // uses the column header string which is 'Name', not 'Filter Name...'
+    const input = screen.getByPlaceholderText('Filter Name...')
+    await user.type(input, 'Alice')
     expect(screen.getByText('Alice Smith')).toBeInTheDocument()
     expect(screen.queryByText('Bob Jones')).not.toBeInTheDocument()
   })

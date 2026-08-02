@@ -13,10 +13,10 @@ export const FORM_URL =
 export const MCP_URL = 'https://shilp-sutra.devalok.in/mcp'
 export const CONTACT_EMAIL = 'hello@devalok.in'
 
-export const DATES = '25-31 July, 2026'
-export const CLOSES = '31 July, 11:59 PM IST'
+export const DATES = '25 July - 4 August, 2026'
+export const CLOSES = '4 August, 11:59 PM IST'
 /** Short form, for places where the time of day is noise (e.g. a hero plate). */
-export const CLOSES_SHORT = '31 July'
+export const CLOSES_SHORT = '4 August'
 export const PRIZE = '$15,000'
 
 /**
@@ -24,7 +24,7 @@ export const PRIZE = '$15,000'
  * few hours later so a timezone slip does not cost anyone their entry; that
  * slack is deliberately not surfaced here.
  */
-export const CLOSES_AT = Date.parse('2026-07-31T18:29:00Z') // 31 Jul 23:59 +05:30
+export const CLOSES_AT = Date.parse('2026-08-04T18:29:00Z') // 4 Aug 23:59 +05:30
 
 export function isOpen(now = Date.now()) {
   return now < CLOSES_AT

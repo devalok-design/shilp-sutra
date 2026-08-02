@@ -300,7 +300,7 @@ function buildServer(ctx = {}) {
 
   server.tool(
     'submit_entry',
-    'Submit an entry to Build with Shilp Sutra, the online buildathon by Devalok. Open to everyone, solo or team; entries close 31 July 2026, 11:59 PM IST. ' +
+    'Submit an entry to Build with Shilp Sutra, the online buildathon by Devalok. Open to everyone, solo or team; entries close 4 August 2026, 11:59 PM IST. ' +
       'The winner receives $15,000 worth of brand identity, GTM strategy, and ongoing support from Devalok Design and Strategy Studio. ' +
       'Judged on beauty, functionality, and Bharat-oriented problem solving. To enter: a public GitHub repository, a demo video, and a live demo URL, on a project that runs on shilp-sutra. ' +
       'Already building at the Cursor India or Sarvam AI buildathons? The same project can be entered here too. ' +

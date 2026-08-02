@@ -23,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/showcase`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE_URL}/theming`, lastModified: now, changeFrequency: 'monthly', priority: 0.95 },
     { url: `${SITE_URL}/agents`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    // Time-boxed: drop this entry after the buildathon closes (31 Jul 2026).
+    // Time-boxed: drop this entry after the buildathon closes (4 Aug 2026).
     { url: `${SITE_URL}/buildathon`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/docs`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE_URL}/aurora`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },

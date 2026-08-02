@@ -30,14 +30,14 @@ const FORM_ACTION = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`
 
 export const PAGE_URL = 'https://shilp-sutra.devalok.in/buildathon'
 
-// Announced close is 31 July 2026, 11:59 PM IST. The real cutoff sits at 05:00
+// Announced close is 4 August 2026, 11:59 PM IST. The real cutoff sits at 05:00
 // IST the next morning so a timezone slip does not cost someone their entry.
 // The slack is intentionally NOT advertised anywhere public.
 const DEADLINE_MS = process.env.BUILDATHON_DEADLINE
   ? Date.parse(process.env.BUILDATHON_DEADLINE)
-  : Date.parse('2026-07-31T23:30:00Z') // 2026-08-01 05:00 +05:30
+  : Date.parse('2026-08-04T23:30:00Z') // 2026-08-05 05:00 +05:30
 
-export const ANNOUNCED_CLOSE = '31 July 2026, 11:59 PM IST'
+export const ANNOUNCED_CLOSE = '4 August 2026, 11:59 PM IST'
 
 export function isOpen(now = Date.now()) {
   return now < DEADLINE_MS

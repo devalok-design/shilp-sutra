@@ -176,7 +176,7 @@ try {
   // Only FAILURE paths are exercised. A submit_entry call that passed every
   // validation would POST a real row into the live response sheet, so no smoke
   // check may ever supply a fully valid entry.
-  const buildathonOpen = Date.now() < Date.parse('2026-07-31T23:30:00Z')
+  const buildathonOpen = Date.now() < Date.parse('2026-08-04T23:30:00Z')
   check('how_to_use carries the buildathon block while open', howText.includes('buildathon') === buildathonOpen, howText.slice(0, 120))
 
   const noConsent = await call('submit_entry', { fullName: 'A', email: 'a@b.co', phone: '1', mode: 'solo', projectTitle: 'P', oneLiner: 'x', repoUrl: 'https://github.com/a/b', videoUrl: 'https://x.co', liveUrl: 'https://x.co', humanConfirmed: false }, 21)

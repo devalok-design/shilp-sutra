@@ -1,0 +1,85 @@
+{
+  "$comment": [
+    "Lighthouse CI budget gate for apps/site. Runnable locally: `pnpm -F site",
+    "build` then `pnpm -F site lighthouse` (it starts its own production server).",
+    "Wired into .github/workflows/ci.yml as steps on the existing `ci` job,",
+    "path-gated on apps/site/**.",
+    "",
+    "WINDOWS: `lhci autorun` exits 1 on Windows inside chrome-launcher's temp-dir",
+    "cleanup (EPERM removing %TEMP%\\lighthouse.*). That happens AFTER the report",
+    "is written, so the reports are valid — it is an upstream chrome-launcher bug,",
+    "not a gate failure. CI is ubuntu-latest and unaffected. To measure on Windows,",
+    "run the lighthouse CLI yourself into .lighthouseci/lhr-<digits>.json (ignoring",
+    "its exit code) and then `npx lhci assert`.",
+    "",
+    "Design notes, because the failure mode to avoid here is a flaky check people",
+    "learn to click past:",
+    "  - Runs against a LOCAL production build (next start), never the deployed",
+    "    site. CI must not depend on Railway being up, and must grade the PR's",
+    "    code rather than whatever happens to be live.",
+    "  - numberOfRuns 3 + aggregationMethod median. Lighthouse scores are noisy;",
+    "    the median of three is what gets asserted. LHCI's DEFAULT is",
+    "    `optimistic` — the BEST run — which would hide real regressions.",
+    "  - Category floors are set below what the code currently measures, not at",
+    "    the aspirational targets, so the gate is green on the commit that adds it",
+    "    and only fires on an actual slide. Measured on this branch (median of 3,",
+    "    desktop preset, localhost): performance 98, accessibility 89, seo 100,",
+    "    best-practices 100.",
+    "  - ACCESSIBILITY IS NOT AT ITS TARGET. Issue #255 wants 94; the code scores",
+    "    89.4 and four weighted audits are still failing on `/`:",
+    "    aria-progressbar-name (w7 — that is issue #255's OTHER item, a",
+    "    packages/core Progress fix), color-contrast (w7), target-size (w7),",
+    "    heading-order (w3). Applicable weight is 226, of which 202 passes. Fixing",
+    "    any one of the w7 audits moves the category to ~92.5; all four reach 100.",
+    "    The floor here is deliberately 0.88 so the gate is honest and blocking",
+    "    today — RAISE IT as those audits get fixed.",
+    "  - The specific audits from #255 are asserted individually. They are binary",
+    "    pass/fail, not scored heuristics, so they do not drift and there is no",
+    "    noise argument for softening them.",
+    "  - non-composited-animations is asserted with maxLength (item count), NOT",
+    "    minScore. In Lighthouse 12 that audit reports scoreDisplayMode",
+    "    'informative' with score hard-set to 1 even when it lists offenders, so a",
+    "    minScore assertion passes while the page is full of them. maxLength reads",
+    "    details.items.length, which is the real signal. Verified: it was 29",
+    "    before the hero-stroke rewrite and is 0 after.",
+    "  - total-byte-weight is the guard for the <audio preload> class of",
+    "    regression. Measured 1.45MB; budget 2.5MB. Re-adding a ~4.7MB hot-linked",
+    "    media fetch blows straight through it. (uses-rel-preconnect was NOT used:",
+    "    it audits preconnect hints to critical origins, which has nothing to do",
+    "    with over-fetching bytes.)",
+    "  - Only `/` is measured. That is where all four #255 regressions live, and",
+    "    each extra URL costs 3 more Lighthouse runs. Add URLs to collect.url when",
+    "    a specific page earns the runtime."
+  ],
+  "ci": {
+    "collect": {
+      "startServerCommand": "pnpm start --port 4321",
+      "startServerReadyPattern": "Ready in",
+      "startServerReadyTimeout": 120000,
+      "url": ["http://localhost:4321/"],
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop",
+        "chromeFlags": "--no-sandbox --disable-dev-shm-usage"
+      }
+    },
+    "assert": {
+      "aggregationMethod": "median",
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.9 }],
+        "categories:accessibility": ["error", { "minScore": 0.88 }],
+        "categories:seo": ["error", { "minScore": 0.95 }],
+        "categories:best-practices": ["error", { "minScore": 0.9 }],
+
+        "aria-hidden-focus": ["error", { "minScore": 1 }],
+        "link-text": ["error", { "minScore": 1 }],
+        "non-composited-animations": ["error", { "maxLength": 0 }],
+        "total-byte-weight": ["error", { "maxNumericValue": 2500000 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}

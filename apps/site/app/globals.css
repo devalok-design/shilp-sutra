@@ -20,37 +20,63 @@ html {
   overflow-x: clip;
 }
 
-/* Hero backdrop hairline — the source #EAEAEA in light; a faint white in dark so
-   the construction grid + circles recede instead of glaring bright-white.
-   --hero-line-trace is the darker/brighter colour a line draws IN with, before
-   it settles to --hero-line. Both are theme-aware, so the trace works in dark
-   and a live theme toggle re-resolves correctly. */
+/* Hero backdrop hairline — a whisper-faint construction line that the grid and
+   circles settle to; --hero-line-trace is the darker/brighter colour they draw
+   IN with first. Both are theme-aware, so a live theme toggle re-resolves.
+
+   INVARIANT (do not break): --hero-line MUST equal --hero-line-trace composited
+   at --hero-line-rest alpha. The settle animation gets from trace to hairline by
+   fading ELEMENT OPACITY down to --hero-line-rest (see @keyframes below), which
+   only lands on the right colour if that identity holds. Dark is exact by
+   construction (0.09 / 0.55 = 0.1636 of the same white). Light is exact too, now
+   that --hero-line is expressed as the trace colour at 5.7% instead of the
+   literal #EAEAEA it used to be — 5.7% of #334155 over the page background
+   composites to ≈#EAEBEC, i.e. within 2/255 on one channel of the old value. */
 :root {
-  --hero-line: #eaeaea;
   --hero-line-trace: #334155;
+  --hero-line-rest: 0.057;
+  --hero-line: color-mix(in srgb, var(--hero-line-trace) 5.7%, transparent);
 }
 .dark {
-  --hero-line: color-mix(in oklch, white 9%, transparent);
   --hero-line-trace: color-mix(in oklch, white 55%, transparent);
+  --hero-line-rest: 0.1636; /* 9% / 55% */
+  --hero-line: color-mix(in oklch, white 9%, transparent);
 }
 
 /* A line draws in at the DARK trace colour, holds most of the way, then settles
-   to the faint hairline. Endpoints are theme vars so the resting colour tracks
-   the theme even after the animation finishes. Applied as a class (not inline)
-   so framer's inline styles don't clobber the animation. Per-line timing comes
-   from --sdelay / --sdur set inline (custom props survive framer's merge). */
-@keyframes hero-stroke {
+   to the faint hairline. Applied as a class (not inline) so framer's inline
+   styles don't clobber the animation. Per-line timing comes from --sdelay /
+   --sdur set inline (custom props survive framer's merge).
+
+   PERF: this used to animate `stroke` from trace to hairline. `stroke` is a
+   paint property the compositor cannot run, so all 29 grid lines + circles were
+   reported by Lighthouse's `non-composited-animations` audit and cost real TBT.
+   It now animates `opacity` — which IS compositable — from 1 down to
+   --hero-line-rest, over a stroke that is painted in the trace colour from the
+   start. Same two visual endpoints (see the INVARIANT above), zero main-thread
+   style work per frame. Elements carrying this class must therefore be stroked
+   with var(--hero-line-trace), NOT var(--hero-line), and must not have their
+   opacity animated by anything else (framer included) — a CSS animation wins the
+   cascade over inline styles, so the two would silently fight.
+
+   The whole thing lives behind prefers-reduced-motion: no-preference; it is pure
+   decoration, so a reduced-motion user gets the resting state with no animation
+   at all (brahma-backdrop also strokes with --hero-line and skips the class in
+   that branch, so the resting colour is identical either way). */
+@keyframes hero-line-settle {
   0%,
   72% {
-    stroke: var(--hero-line-trace);
+    opacity: 1;
   }
   100% {
-    stroke: var(--hero-line);
+    opacity: var(--hero-line-rest);
   }
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-line-anim {
-    animation: hero-stroke var(--sdur, 2s) cubic-bezier(0.618, 0, 0.382, 1) var(--sdelay, 0ms) both;
+    will-change: opacity;
+    animation: hero-line-settle var(--sdur, 2s) cubic-bezier(0.618, 0, 0.382, 1)
+      var(--sdelay, 0ms) both;
   }
 }
 

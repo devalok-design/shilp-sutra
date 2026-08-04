@@ -35,7 +35,11 @@ const RADII_CELLS = [3.4, 4.9, 6.6]
 
 // Golden-ratio easing curve: control points at φ⁻¹ (0.618) and φ⁻² (0.382).
 const EASE_OUT = [0.618, 0, 0.382, 1] as const
+// Resting hairline colour. Used directly only on the reduced-motion path — the
+// animated path strokes in TRACE and fades element opacity down to
+// --hero-line-rest, which composites to exactly this (see globals.css INVARIANT).
 const HAIRLINE = 'var(--hero-line)'
+const TRACE = 'var(--hero-line-trace)'
 
 // Exact identity palette (fixed specimens). Accent-bound swatches use tokens.
 const C = {
@@ -129,7 +133,16 @@ export function BrahmaBackdrop() {
   const ox = ready ? gx0 + ORIGIN_COL * CELL : 0
   const oy = ORIGIN_ROW * CELL
 
-  const strokeInitial = reduce ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }
+  // Stroked geometry (grid lines + circles). On the ANIMATED path framer owns
+  // pathLength only — the .hero-line-anim CSS animation owns opacity, and a CSS
+  // animation beats an inline style, so letting framer animate opacity too would
+  // just be dead work that silently loses. pathLength 0 keeps the element
+  // invisible until its draw-on starts, which is what the old opacity 0 → 1 was
+  // there for anyway. On the REDUCED path there is no class, so framer supplies
+  // the final resting values itself.
+  const strokeColor = reduce ? HAIRLINE : TRACE
+  const strokeInitial = reduce ? { pathLength: 1, opacity: 1 } : { pathLength: 0 }
+  const strokeAnimate = reduce ? { pathLength: 1, opacity: 1 } : { pathLength: 1 }
   const chipVariants: Variants = {
     hidden: reduce ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.92 },
     shown: { opacity: 1, scale: 1 },
@@ -176,13 +189,13 @@ export function BrahmaBackdrop() {
                 y1={0}
                 x2={x}
                 y2={size.h}
-                stroke={HAIRLINE}
+                stroke={strokeColor}
                 strokeWidth={1}
                 className={reduce ? undefined : 'hero-line-anim'}
                 style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: '2.0s' } as React.CSSProperties)}
                 initial={strokeInitial}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={reduce ? { duration: 0 } : { pathLength: { duration: 1.1, delay, ease: EASE_OUT }, opacity: { duration: 0.2, delay } }}
+                animate={strokeAnimate}
+                transition={reduce ? { duration: 0 } : { pathLength: { duration: 1.1, delay, ease: EASE_OUT } }}
               />
             )
           })}
@@ -196,13 +209,13 @@ export function BrahmaBackdrop() {
                 y1={y}
                 x2={size.w}
                 y2={y}
-                stroke={HAIRLINE}
+                stroke={strokeColor}
                 strokeWidth={1}
                 className={reduce ? undefined : 'hero-line-anim'}
                 style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: '2.0s' } as React.CSSProperties)}
                 initial={strokeInitial}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={reduce ? { duration: 0 } : { pathLength: { duration: 1.1, delay, ease: EASE_OUT }, opacity: { duration: 0.2, delay } }}
+                animate={strokeAnimate}
+                transition={reduce ? { duration: 0 } : { pathLength: { duration: 1.1, delay, ease: EASE_OUT } }}
               />
             )
           })}
@@ -233,16 +246,16 @@ export function BrahmaBackdrop() {
                   cx={ox + r}
                   cy={oy}
                   r={r}
-                  stroke={HAIRLINE}
+                  stroke={strokeColor}
                   strokeWidth={1.25}
                   className={reduce ? undefined : 'hero-line-anim'}
                   style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay}s`, ['--sdur' as string]: `${dur + 0.9}s` } as React.CSSProperties)}
                   initial={strokeInitial}
-                  animate={{ pathLength: 1, opacity: 1 }}
+                  animate={strokeAnimate}
                   transition={
                     reduce
                       ? { duration: 0 }
-                      : { pathLength: { duration: dur, delay, ease: EASE_OUT }, opacity: { duration: 0.25, delay } }
+                      : { pathLength: { duration: dur, delay, ease: EASE_OUT } }
                   }
                 />
                 {/* opening left (center to the left of origin) */}
@@ -250,16 +263,16 @@ export function BrahmaBackdrop() {
                   cx={ox - r}
                   cy={oy}
                   r={r}
-                  stroke={HAIRLINE}
+                  stroke={strokeColor}
                   strokeWidth={1.25}
                   className={reduce ? undefined : 'hero-line-anim'}
                   style={reduce ? undefined : ({ ['--sdelay' as string]: `${delay + 0.1}s`, ['--sdur' as string]: `${dur + 0.9}s` } as React.CSSProperties)}
                   initial={strokeInitial}
-                  animate={{ pathLength: 1, opacity: 1 }}
+                  animate={strokeAnimate}
                   transition={
                     reduce
                       ? { duration: 0 }
-                      : { pathLength: { duration: dur, delay: delay + 0.1, ease: EASE_OUT }, opacity: { duration: 0.25, delay: delay + 0.1 } }
+                      : { pathLength: { duration: dur, delay: delay + 0.1, ease: EASE_OUT } }
                   }
                 />
               </g>

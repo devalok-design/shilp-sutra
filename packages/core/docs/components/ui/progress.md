@@ -66,6 +66,7 @@ common cases, or the compound parts (`Progress.Root` / `Track` / `Indicator` /
 - Omit `value` (or pass `null`) for indeterminate.
 - Pass an explicit `color` to override `autoColor`.
 - Compound `Progress.Track` needs a name — an `aria-label`, or a `Progress.Label` whose `id` the Track's `aria-labelledby` points to. A Track with neither is an unnamed progressbar (axe will flag it).
+- **`<Progress value={72} />` with no name warns in DEV.** `aria-valuenow` already carries the number, so an unnamed bar announces as "progressbar, 72%" — the reader learns the value but not *what* is progressing. Pass `label` (renders visible text and wires `aria-labelledby`) or `aria-label` when the bar must stay visually unlabelled. The component deliberately does **not** invent a default like "Progress: 72%": that would silence the audit while leaving the announcement equally uninformative, and only you know what the bar measures. Warns once per session, not per render.
 - `Progress.Indicator` / `Segment` / `Value` throw if rendered outside `Progress.Root`.
 
 ## Changes

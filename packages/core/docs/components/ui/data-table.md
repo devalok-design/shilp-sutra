@@ -5,20 +5,23 @@
 - Category: ui
 
 ## Props
-    columns: ColumnDef<TData>[] (TanStack column definitions)
+    columns: ColumnDef<TData, TValue>[] (TanStack column definitions)
     data: TData[]
+    className: string — class name for the wrapper div
     sortable: boolean — enable column sorting
-    onSort: (key: string, dir: 'asc' | 'desc' | false) => void — server-side sort callback (enables manualSorting)
+    onSort: (key: string, direction: 'asc' | 'desc' | false) => void — server-side sort callback (enables manualSorting)
     filterable: boolean — enable per-column filters
+    filterableColumns: string[] — restrict filter inputs to these column IDs (only with filterable; omit for all filterable columns)
     globalFilter: boolean — enable global search
     paginated: boolean — enable client-side pagination
     pagination: { page: number, pageSize: number, total: number, onPageChange: (page: number) => void } — server-side pagination (1-based page)
     pageSize: number (default 10)
+    pageSizeOptions: number[] — page-size selector options (default [10, 20, 50, 100])
     selectable: boolean — enable row selection with checkboxes
     selectedIds: Set<string> — controlled selection state
     selectableFilter: (row: TData) => boolean — disable selection on certain rows
     getRowId: (row: TData) => string — custom row ID accessor
-    onSelectionChange: (selectedRows: TData[]) => void
+    onSelectionChange: (selectedRows: TData[], selectedIds: Set<string>) => void — does NOT fire on mount
     expandable: boolean — enable row expansion
     renderExpanded: (row: TData) => ReactNode — expanded row content
     singleExpand: boolean — only one row expanded at a time
@@ -27,15 +30,22 @@
     noResultsText: string (default "No results.")
     stickyHeader: boolean — sticky table header
     onRowClick: (row: TData) => void — row click handler (excludes interactive element clicks)
+    rowClassName: (row: TData) => string | undefined — conditional per-row class (the <tr> in table mode, the Card in card mode)
     bulkActions: BulkAction<TData>[] — floating action bar on selection — { label, onClick, color?: 'default'|'error', disabled? }
     toolbar: boolean — show DataTableToolbar (column visibility, density, CSV export)
+    enableExport: boolean — show the toolbar's Export CSV button (default true)
+    onExport: (visibleRows: TData[]) => void — replace the built-in CSV export
     editable: boolean — enable double-click cell editing
+    onCellEdit: (rowIndex: number, columnId: string, value: unknown) => void — fired on cell edit commit
     virtualRows: boolean — virtualize rows for large datasets
+    virtualRowHeight: number — ESTIMATED row height in px (default 48); real heights are measured after mount
+    maxHeight: number — max height of the virtual scroll container in px (default 600)
+    mobileView: 'card' | 'table' — stacked cards below the sm breakpoint (default 'table')
     columnPinning: { left?: string[], right?: string[] }
     density: 'compact' | 'standard' | 'comfortable'
 
 ## Defaults
-    pageSize=10, noResultsText="No results."
+    pageSize=10, noResultsText="No results.", enableExport=true, mobileView='table', virtualRowHeight=48, maxHeight=600, density='standard'
 
 ## Example
 ```jsx
@@ -75,7 +85,11 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 **Row click model:**
 - `onRowClick` fires on row-level click BUT excludes clicks on checkboxes, buttons, links, and inputs automatically. No manual `stopPropagation` needed for standard interactive elements.
 
-**Virtualization:** `virtualRows={true}` enables row virtualization via `@tanstack/react-virtual`. Turn it on for 1000+ row datasets; the scroll container must have a bounded height.
+**Virtualization:** `virtualRows={true}` enables row virtualization via `@tanstack/react-virtual`. Turn it on for 1000+ row datasets; the scroll container must have a bounded height. Rows stay in normal table flow (each windowed row is its own `<tbody>` measured by the virtualizer, with spacer row groups reserving the un-rendered remainder), so column widths keep tracking `<thead>` and `virtualRowHeight` is only the pre-measurement estimate.
+
+**Virtualization + expansion:** `virtualRows` and `expandable` compose. Because each row group is measured, an expanded detail panel of any height contributes to the total scroll size and pushes the rows below it down. The reveal is instant in virtual mode (no height animation) — an animating height would fire a resize on every frame.
+
+**Toolbar export:** the Export button renders whenever `toolbar` is on. The built-in CSV export walks `getFilteredRowModel()`, which under server-side `pagination` is only the current page — pass `onExport` to fetch the full set yourself, or `enableExport={false}` to drop the button.
 
 **Density integration:** density is forwarded to `Table`'s `density` prop, which sets `--table-py` (compact 4 / standard 8 / comfortable 12px → rows ≈ 29 / 37 / 45px; header tracks it). DataTableToolbar's density switcher updates this at runtime; the prop sets the initial state only.
 
@@ -88,8 +102,23 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - onRowClick does NOT fire when clicking checkboxes, buttons, links, or inputs
 - Use density="compact" for Karm-style h-9 rows
 - `virtualRows={true}` requires a bounded scroll container — unbounded height silently disables virtualization
+- `onSelectionChange` does NOT fire on mount, and does NOT fire when selection is synced from the `selectedIds` prop — only on genuine selection changes
+- `filterableColumns` is ignored unless `filterable` is also set
+- `rowClassName` returns are passed through `cn()` verbatim — a class that does not exist in the token set silently does nothing (use the real scale steps, e.g. `bg-error-3`, not invented names like `bg-error-subtle`)
 
 ## Changes
+### v0.57.0
+- **Fixed** `onSelectionChange` no longer fires on mount with `[]` — first-render guard added. Root cause of the cascade reported in #213.
+- **Fixed** `virtualRows + expandable` was a silent no-op — the expanded row was only rendered on the non-virtual path. Virtual rows now render one measured `<tbody>` per windowed row (with spacer row groups for the remainder) so the expanded panel renders, contributes its real height to `getTotalSize()`, and cannot overlap the row below.
+- **Changed** Virtual rows are no longer absolutely positioned with a forced `virtualRowHeight`; they sit in normal table flow at their measured height, so column widths track `<thead>`. `virtualRowHeight` is now the pre-measurement ESTIMATE.
+- **Fixed** `enableExport` was stranded on `DataTableToolbar` and never wired through `DataTableProps`. Now exposed with an `onExport` override. Default is unchanged (`true`) — the Export button still renders whenever `toolbar` is on.
+- **Fixed** `filterable + mobileView="card"` rendered no filter inputs — they now render above the card list in `DataTableCards` (card mode renders no `<thead>` for them to live in).
+- **Added** `onSelectionChange` receives `selectedIds: Set<string>` as second argument — complement of the `selectedIds` prop.
+- **Added** `filterableColumns?: string[]` — restrict filter inputs to specific column IDs.
+- **Added** `rowClassName?: (row: TData) => string | undefined` — conditional row classes in table and card layouts.
+- **Added** `enableExport?: boolean` — hide the toolbar's Export CSV button from `DataTableProps`.
+- **Added** `onExport?: (visibleRows: TData[]) => void` — override built-in CSV with a custom export handler.
+
 ### v0.45.0
 - **Fixed** Expander a11y per the expando-row spec: `aria-expanded` on the toggle button, visually-hidden "Expand rows" column header; chevron rotation uses `duration-fast-02 ease-productive-standard`.
 - **Added** Expanded-row content animates open/closed (height + opacity via framer, `springs.smooth`), self-guarded with `useReducedMotion` — instant swap for reduced-motion users. Virtualized tables keep the instant reveal (a height animation would fight the virtualizer's measurements).
@@ -124,14 +153,3 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 
 ### v0.1.0
 - **Added** Initial release
-
-### v0.57.0
-- **Fixed** `onSelectionChange` no longer fires on mount with `[]` — first-render guard added. Root cause of the cascade reported in #213.
-- **Fixed** `virtualRows + expandable` was a silent no-op — `DataTableExpandedRow` now renders in the virtual path, offset below the data row. DEV `console.warn` added for fixed-height limitation.
-- **Fixed** `enableExport` was stranded on `DataTableToolbar` and never wired through `DataTableProps`. Now exposed with `onExport` override.
-- **Fixed** `filterable + mobileView="card"` rendered no filter inputs — filter inputs now render above the card list in `DataTableCards`.
-- **Added** `onSelectionChange` receives `selectedIds: Set<string>` as second argument — complement of `selectedIds` prop.
-- **Added** `filterableColumns?: string[]` — restrict filter inputs to specific column IDs.
-- **Added** `rowClassName?: (row: TData) => string | undefined` — conditional row classes in both table and card layouts.
-- **Added** `enableExport?: boolean` — control CSV export visibility from `DataTableProps` (defaults to `false` when server pagination is active).
-- **Added** `onExport?: (visibleRows: TData[]) => void` — override built-in CSV with custom export handler.

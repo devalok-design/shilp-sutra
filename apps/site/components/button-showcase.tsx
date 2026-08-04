@@ -271,9 +271,23 @@ function SceneEmail() {
 /* Music player — Jai Bhairav Deva. Real audio hot-linked from archive.org.
    The Spotify-styled chrome IS the player: Play toggles real playback,
    the progress strip reflects audio.currentTime, the audio element itself
-   is hidden (no duplicate native controls). */
+   is hidden (no duplicate native controls).
+
+   PERF: the <audio> element is NOT rendered until the first Play click, and
+   even then it carries preload="none". archive.org ignores Range requests, so
+   preload="metadata" made the browser pull the WHOLE ~4.7MB mp3 on page load
+   (5x under Lighthouse, once per brand variant = 23.6MB before any
+   interaction). Both halves are load-bearing: preload="none" alone still
+   creates the element, and some browsers still probe the resource for it.
+   Consequence of lazy mounting: the total-duration readout stays 0:00 until
+   the first play, because there is no element to read metadata from. */
 function SceneMusic() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  // `armed` gates the <audio> element into the tree. Flipped by the first
+  // Play click and never flipped back — pausing keeps the element (and its
+  // buffered data) so a second Play resumes instantly.
+  const [armed, setArmed] = useState(false)
+  const autoPlayOnMountRef = useRef(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0) // 0..1
   const [time, setTime] = useState<{ current: number; duration: number }>({
@@ -281,6 +295,8 @@ function SceneMusic() {
     duration: 0,
   })
 
+  // Re-runs when `armed` flips, which is the render that first puts the
+  // element in the DOM — that is the earliest point audioRef.current exists.
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -299,6 +315,14 @@ function SceneMusic() {
     audio.addEventListener('ended', onEnded)
     audio.addEventListener('timeupdate', onTime)
     audio.addEventListener('loadedmetadata', onLoaded)
+    // The click that armed the player was also a request to play. Honour it
+    // here (still inside the user-gesture-initiated task chain).
+    if (autoPlayOnMountRef.current) {
+      autoPlayOnMountRef.current = false
+      void audio.play().catch(() => {
+        /* autoplay/network errors swallowed; the UI keeps showing Play */
+      })
+    }
     return () => {
       audio.removeEventListener('play', onPlay)
       audio.removeEventListener('pause', onPause)
@@ -306,9 +330,14 @@ function SceneMusic() {
       audio.removeEventListener('timeupdate', onTime)
       audio.removeEventListener('loadedmetadata', onLoaded)
     }
-  }, [])
+  }, [armed])
 
   const toggle = () => {
+    if (!armed) {
+      autoPlayOnMountRef.current = true
+      setArmed(true)
+      return
+    }
     const audio = audioRef.current
     if (!audio) return
     if (audio.paused) {
@@ -410,14 +439,16 @@ function SceneMusic() {
           </span>
         </div>
 
-        <audio
-          ref={audioRef}
-          preload="metadata"
-          src="https://archive.org/download/24SriBhairavarKavasam/27%20Jai%20Bhairav%20Deva.mp3"
-          className="hidden"
-        >
-          Your browser does not support audio playback.
-        </audio>
+        {armed && (
+          <audio
+            ref={audioRef}
+            preload="none"
+            src="https://archive.org/download/24SriBhairavarKavasam/27%20Jai%20Bhairav%20Deva.mp3"
+            className="hidden"
+          >
+            Your browser does not support audio playback.
+          </audio>
+        )}
       </div>
     </Scene>
   )

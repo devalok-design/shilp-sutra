@@ -16,7 +16,16 @@ import { Switch } from '@devalok/shilp-sutra/ui/switch'
  *      randomised cadence (not a metronome).
  *   3. A centred "120+ / components" plate.
  *
- * Decorative: aria-hidden, non-interactive. Reduced motion freezes everything.
+ * Decorative: aria-hidden + inert + pointer-events-none, non-interactive.
+ * Reduced motion freezes everything.
+ *
+ * `inert` is not optional here. The orbit renders real DS `Switch` components,
+ * which are native focusable controls; `aria-hidden` alone hides them from the
+ * accessibility tree while leaving them focusable, which is an ARIA failure
+ * (axe `aria-hidden-focus`) and the reason Lighthouse's Agentic Browsing check
+ * scored 1/2 — an agent walking the focus order lands inside a subtree it was
+ * told is not there. `inert` removes focusability and AT visibility in one
+ * atomic step. Same pairing as BrahmaBackdrop / BuildathonHero.
  */
 
 type TablerIcon = ComponentType<{ size?: number | string; stroke?: number | string; className?: string }>
@@ -105,7 +114,11 @@ export function BrandOrbit() {
   }, [reduce])
 
   return (
-    <div aria-hidden className="pointer-events-none relative isolate select-none overflow-hidden py-ds-06">
+    <div
+      aria-hidden
+      inert
+      className="pointer-events-none relative isolate select-none overflow-hidden py-ds-06"
+    >
       {/* Layer 1 — conveyor. overflow-hidden on BOTH this root and the row
           container so the w-max belts never widen the page (mobile h-scroll). */}
       <div className="absolute inset-0 flex flex-col justify-center gap-ds-05 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_14%,black_86%,transparent)]">
@@ -186,7 +199,23 @@ function ConveyorRow({
 
 function renderItem(item: OrbitItem, checked: boolean) {
   if (item.kind === 'switch') {
-    return <Switch size="lg" checked={checked} onCheckedChange={() => {}} tabIndex={-1} className={item.tint} />
+    // `transition-none` overrides Switch's own `transition-colors`. The flip
+    // cadence below fires that transition every few seconds forever, and
+    // border-*-color cannot be run on the compositor — it was the last entry in
+    // Lighthouse's `non-composited-animations` report after the hero-stroke
+    // rewrite, and the CI gate asserts that report is empty. Cost: the track
+    // tint snaps instead of easing. On a 55%-opacity decorative orbit behind a
+    // scrolling conveyor that is not perceptible; the thumb still slides,
+    // because that is a framer transform.
+    return (
+      <Switch
+        size="lg"
+        checked={checked}
+        onCheckedChange={() => {}}
+        tabIndex={-1}
+        className={`${item.tint} transition-none`}
+      />
+    )
   }
   if (item.kind === 'avatar') {
     return (

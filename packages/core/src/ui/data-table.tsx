@@ -161,7 +161,11 @@ export interface DataTableProps<TData, TValue> {
   // --- Virtualization ---
   /** Enable row virtualization for large datasets */
   virtualRows?: boolean
-  /** Height of each virtual row in pixels (default 48) */
+  /**
+   * Estimated height of each virtual row in pixels (default 48). Real heights are
+   * measured after mount, so this only has to be close — it decides the initial
+   * scroll extent and how many rows render before the first measurement pass.
+   */
   virtualRowHeight?: number
   /** Maximum height of the scrollable container in pixels (default 600) */
   maxHeight?: number
@@ -217,16 +221,17 @@ export interface DataTableProps<TData, TValue> {
 
   // --- Toolbar export ---
   /**
-   * Whether to show the Export CSV button in the toolbar. Defaults to `true` for
-   * client-side tables and `false` when `pagination` (server-side) is active —
-   * because the toolbar can only export the current page's rows in that case.
-   * Pass `true` to force-show it, or use `onExport` to supply all rows yourself.
+   * Whether to show the Export CSV button in the toolbar. Defaults to `true`
+   * (the button has always rendered whenever `toolbar` is on). Pass `false` to
+   * hide it — worth doing with server-side `pagination`, where the built-in CSV
+   * export can only see the current page's rows; `onExport` is the other answer
+   * there, since it lets you fetch the full set yourself.
    */
   enableExport?: boolean
   /**
    * Override the default client-side CSV export. Receives the currently visible
-   * rows so you can trigger a server-side full export or apply custom formatting.
-   * When provided, the built-in CSV logic is skipped entirely.
+   * (filtered) rows so you can trigger a server-side full export or apply custom
+   * formatting. When provided, the built-in CSV logic is skipped entirely.
    */
   onExport?: (visibleRows: TData[]) => void
 
@@ -245,11 +250,14 @@ export interface DataTableProps<TData, TValue> {
 
   // --- Conditional row styling ---
   /**
-   * Return a className string for a given row. Applied to the `<tr>` element
-   * in both table and card (`mobileView="card"`) layouts.
+   * Return a className string for a given row — applied to the `<tr>` in table
+   * layout and to the `Card` in `mobileView="card"` layout.
+   *
+   * The return value is passed through `cn()` verbatim, so an invented class
+   * silently does nothing. Use real token steps (`bg-error-3`, `bg-warning-3`).
    *
    * @example
-   * rowClassName={(row) => row.status === 'overdue' ? 'bg-error-subtle' : undefined}
+   * rowClassName={(row) => row.status === 'overdue' ? 'bg-error-3' : undefined}
    */
   rowClassName?: (row: TData) => string | undefined
 }
@@ -584,8 +592,13 @@ export function DataTable<TData, TValue>({
 
   const rows = table.getRowModel().rows
 
-  // Virtualizer — always called but only active when virtualRows is true
-  const virtualizer = useVirtualizer({
+  // Virtualizer — always called but only active when virtualRows is true.
+  // `virtualRowHeight` is only the ESTIMATE: each rendered row group carries
+  // `virtualizer.measureElement` as its ref, so real heights (including an
+  // expanded row's detail panel) are measured and folded into `getTotalSize()`.
+  // Without that, an expanded panel and the row after it resolve to the same
+  // offset and paint on top of each other.
+  const virtualizer = useVirtualizer<HTMLDivElement, HTMLTableSectionElement>({
     count: virtualRows ? rows.length : 0,
     getScrollElement: () => scrollContainerRef.current,
     estimateSize: () => virtualRowHeight,
@@ -660,6 +673,7 @@ export function DataTable<TData, TValue>({
   // Virtual items for body
   const virtualItems = virtualRows ? virtualizer.getVirtualItems() : undefined
   const totalVirtualSize = virtualRows ? virtualizer.getTotalSize() : undefined
+  const measureRow = virtualizer.measureElement
 
   // Determine if we need a scroll wrapper for virtualization
   const tableContent = (
@@ -672,6 +686,7 @@ export function DataTable<TData, TValue>({
         emptyState={emptyState}
         virtualItems={virtualItems}
         totalVirtualSize={totalVirtualSize}
+        measureRow={measureRow}
       />
     </Table>
   )
@@ -688,20 +703,12 @@ export function DataTable<TData, TValue>({
             onGlobalFilterChange={setGlobalFilterValue}
             density={density}
             onDensityChange={setDensity}
-            // Default to false when server pagination is active — the toolbar can
-            // only see the current page's rows, so a silent partial export is worse
-            // than no export. Pass enableExport={true} or onExport to override.
-            enableExport={enableExport ?? !useServerPagination}
-            onExport={
-              onExport
-                ? () => {
-                    const visibleRows = table.getFilteredRowModel().rows.map(
-                      (r) => r.original,
-                    )
-                    onExport(visibleRows)
-                  }
-                : undefined
-            }
+            // Defaults to true — the Export button has shipped unconditionally
+            // since the toolbar existed, so defaulting it off (even only for
+            // server pagination) would silently delete a live affordance from
+            // every consumer on upgrade. Opt out with enableExport={false}.
+            enableExport={enableExport ?? true}
+            onExport={onExport}
           />
         )}
 

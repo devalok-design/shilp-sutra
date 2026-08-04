@@ -1,6 +1,4 @@
 'use client'
-// Bundlers (Vite, Next.js, webpack) define process.env.NODE_ENV; guard for raw ESM.
-declare const process: { env: { NODE_ENV?: string } } | undefined
 
 import { flexRender,type Row } from '@tanstack/react-table'
 import { type VirtualItem } from '@tanstack/react-virtual'
@@ -77,13 +75,7 @@ function CellEditInput({
 // ── DataRow ─────────────────────────────────────────────────────
 
 /** Render a single data row (shared between virtual and non-virtual paths) */
-function DataTableRow<TData>({
-  row,
-  style,
-}: {
-  row: Row<TData>
-  style?: React.CSSProperties
-}) {
+function DataTableRow<TData>({ row }: { row: Row<TData> }) {
   const {
     table,
     columnPinningState,
@@ -91,7 +83,6 @@ function DataTableRow<TData>({
     editingCell,
     setEditingCell,
     onCellEdit,
-    virtualRows,
     onRowClick,
     rowClassName,
   } = useDataTableContext<TData>()
@@ -111,9 +102,7 @@ function DataTableRow<TData>({
   return (
     <TableRow
       data-state={row.getIsSelected() && 'selected'}
-      style={style}
       className={cn(
-        virtualRows ? 'absolute w-full flex' : undefined,
         onRowClick && 'cursor-pointer',
         rowClassName?.(row.original),
       )}
@@ -130,7 +119,6 @@ function DataTableRow<TData>({
             key={cell.id}
             className={cn(
               pinned.className,
-              virtualRows && 'flex-1',
               getColumnMetaClasses(
                 cell.column.columnDef.meta as Record<string, unknown>,
               ),
@@ -167,13 +155,7 @@ function DataTableRow<TData>({
 // ── ExpandedRow ─────────────────────────────────────────────────
 
 /** Render expanded content row below the data row */
-function DataTableExpandedRow<TData>({
-  row,
-  style,
-}: {
-  row: Row<TData>
-  style?: React.CSSProperties
-}) {
+function DataTableExpandedRow<TData>({ row }: { row: Row<TData> }) {
   const { allColumns, expandable, renderExpanded, virtualRows } =
     useDataTableContext<TData>()
   // Self-guarded (StatFlash pattern) — reveal collapses to an instant swap
@@ -184,16 +166,14 @@ function DataTableExpandedRow<TData>({
 
   const expanded = row.getIsExpanded()
 
-  // Virtual rows are absolutely positioned with measured heights — a height
-  // animation would fight the virtualizer, so the reveal is instant there.
+  // In virtual mode the reveal is instant: the row group's height is watched by
+  // the virtualizer's ResizeObserver, and an animating height would fire a
+  // resize on every frame of the spring.
   if (virtualRows) {
     if (!expanded) return null
     return (
-      <TableRow style={style} className="absolute w-full flex">
-        <TableCell
-          colSpan={allColumns.length}
-          className="bg-surface-base p-ds-05 flex-1"
-        >
+      <TableRow>
+        <TableCell colSpan={allColumns.length} className="bg-surface-base p-ds-05">
           {renderExpanded(row.original)}
         </TableCell>
       </TableRow>
@@ -203,7 +183,7 @@ function DataTableExpandedRow<TData>({
   return (
     <AnimatePresence initial={false}>
       {expanded && (
-        <TableRow style={style}>
+        <TableRow>
           <TableCell
             colSpan={allColumns.length}
             // A recess, not a raised layer — surface-raised would vanish on a
@@ -283,6 +263,7 @@ export function DataTableBody<TData>({
   emptyState,
   virtualItems,
   totalVirtualSize,
+  measureRow,
 }: {
   loading?: boolean
   skeletonRowCount: number
@@ -290,8 +271,10 @@ export function DataTableBody<TData>({
   emptyState?: React.ReactNode
   virtualItems?: VirtualItem[]
   totalVirtualSize?: number
+  /** `virtualizer.measureElement` — attached to each virtual row group */
+  measureRow?: (node: HTMLTableSectionElement | null) => void
 }) {
-  const { table, allColumns, virtualRows, expandable } = useDataTableContext<TData>()
+  const { table, allColumns, virtualRows } = useDataTableContext<TData>()
   const rows = table.getRowModel().rows
 
   // Loading state: show skeleton rows
@@ -318,58 +301,48 @@ export function DataTableBody<TData>({
   }
 
   if (virtualRows && virtualItems) {
-    // DEV warning: virtualRows + expandable is supported but expanded rows use a
-    // fixed height equal to virtualRowHeight — the virtualizer cannot measure
-    // dynamic content. Pass a virtualRowHeight large enough to contain your
-    // renderExpanded content, or switch to non-virtual mode for expandable tables.
-    if (typeof process !== "undefined" && process?.env.NODE_ENV !== "production" && expandable) {
-      console.warn(
-        '[DataTable] virtualRows + expandable: expanded row content renders at a ' +
-        'fixed height (virtualRowHeight prop, default 48px). If your expanded content ' +
-        'is taller, increase virtualRowHeight to match or use non-virtual mode.',
-      )
-    }
+    // Each windowed row gets its OWN <tbody> (valid HTML — a table may hold any
+    // number of row groups) carrying `data-index` + the virtualizer's
+    // `measureElement` ref. That group is what gets measured, so a row's height
+    // INCLUDES its expanded detail row and `getTotalSize()` stays truthful.
+    //
+    // Rows stay in normal table flow; the window is positioned by spacer row
+    // groups above and below instead of absolute offsets. Two consequences worth
+    // knowing: an expanded panel can never paint on top of the next row (flow
+    // layout forbids it), and column widths keep tracking <thead> because the
+    // cells are still real table cells.
+    const firstItem = virtualItems[0]
+    const lastItem = virtualItems[virtualItems.length - 1]
+    const padTop = firstItem ? firstItem.start : 0
+    const padBottom = lastItem ? Math.max(0, (totalVirtualSize ?? 0) - lastItem.end) : 0
+    const spacerCell = (height: number) => (
+      <tbody aria-hidden="true">
+        <tr>
+          <td colSpan={allColumns.length} style={{ height, padding: 0, border: 0 }} />
+        </tr>
+      </tbody>
+    )
+
     return (
-      <TableBody
-        style={{
-          height: `${totalVirtualSize}px`,
-          position: 'relative',
-        }}
-      >
+      <>
+        {padTop > 0 && spacerCell(padTop)}
         {virtualItems.map((virtualRow) => {
           const row = rows[virtualRow.index]
+          const isLastRow = virtualRow.index === rows.length - 1
           return (
-            <React.Fragment key={row.id}>
-              <DataTableRow
-                row={row}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: `${virtualRow.size}px`,
-                  transform: `translateY(${virtualRow.start}px)`,
-                }}
-              />
-              {/* Expanded content renders immediately after the data row.
-                  It is absolutely positioned offset by the row's own height so it
-                  sits below rather than on top of the row. The virtualizer total
-                  size does not account for this extra height — keep renderExpanded
-                  content short or use non-virtual mode for tall expansions. */}
-              <DataTableExpandedRow
-                row={row}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  transform: `translateY(calc(${virtualRow.start}px + ${virtualRow.size}px))`,
-                }}
-              />
-            </React.Fragment>
+            <tbody
+              key={row.id}
+              ref={measureRow}
+              data-index={virtualRow.index}
+              className={cn(isLastRow && '[&_tr:last-child]:border-0')}
+            >
+              <DataTableRow row={row} />
+              <DataTableExpandedRow row={row} />
+            </tbody>
           )
         })}
-      </TableBody>
+        {padBottom > 0 && spacerCell(padBottom)}
+      </>
     )
   }
 

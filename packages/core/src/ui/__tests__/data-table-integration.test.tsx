@@ -1,7 +1,7 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { render, screen, waitFor,within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach,beforeEach, describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 
 import { DataTable } from '../data-table'
@@ -935,12 +935,31 @@ describe('DataTable — enableExport + onExport', () => {
     expect(screen.queryByLabelText('Export table as CSV')).not.toBeInTheDocument()
   })
 
-  it('Export button hidden by default when server pagination is active', () => {
+  it('Export button still shows by default, including with server pagination', () => {
+    // The button has rendered unconditionally since the toolbar existed. Hiding
+    // it by default — even only under server pagination — would silently delete
+    // a live affordance from every consumer on upgrade.
+    const { rerender } = render(<DataTable columns={columns} data={data} toolbar />)
+    expect(screen.getByLabelText('Export table as CSV')).toBeInTheDocument()
+
+    rerender(
+      <DataTable
+        columns={columns}
+        data={data}
+        toolbar
+        pagination={{ page: 1, pageSize: 2, total: 10, onPageChange: vi.fn() }}
+      />,
+    )
+    expect(screen.getByLabelText('Export table as CSV')).toBeInTheDocument()
+  })
+
+  it('Export button hidden with server pagination when opted out explicitly', () => {
     render(
       <DataTable
         columns={columns}
         data={data}
         toolbar
+        enableExport={false}
         pagination={{ page: 1, pageSize: 2, total: 10, onPageChange: vi.fn() }}
       />,
     )
@@ -998,19 +1017,339 @@ describe('DataTable — rowClassName', () => {
       <DataTable
         columns={columns}
         data={data}
-        rowClassName={(row) => row.role === 'Engineer' ? 'bg-error-subtle' : undefined}
+        rowClassName={(row) => row.role === 'Engineer' ? 'bg-error-3' : undefined}
       />,
     )
     const rows = screen.getAllByRole('row')
     // row[0]=header, row[1]=Alice(Engineer), row[2]=Bob(Designer), row[4]=Dave(Engineer)
-    expect(rows[1]).toHaveClass('bg-error-subtle')
-    expect(rows[2]).not.toHaveClass('bg-error-subtle')
-    expect(rows[4]).toHaveClass('bg-error-subtle')
+    expect(rows[1]).toHaveClass('bg-error-3')
+    expect(rows[2]).not.toHaveClass('bg-error-3')
+    expect(rows[4]).toHaveClass('bg-error-3')
   })
 
   it('does not add class when rowClassName returns undefined', () => {
     render(<DataTable columns={columns} data={data} rowClassName={() => undefined} />)
     const rows = screen.getAllByRole('row')
     expect(rows[1].className).not.toContain('undefined')
+  })
+})
+
+// ============================================================
+// Feature: mobileView="card" (#212)
+// ============================================================
+
+/**
+ * Force the below-sm media query DataTable reads for card mode. The global
+ * test-setup mock answers `matches: false` to everything, which is desktop —
+ * card mode would never activate. Follows the `use-mobile.test.ts` pattern:
+ * a hand-rolled MediaQueryList stub installed on `window.matchMedia`.
+ */
+function mockBelowSmViewport(matches: boolean) {
+  const original = window.matchMedia
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    configurable: true,
+    value: (query: string) => ({
+      matches: query.includes('639px') ? matches : false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }),
+  })
+  return () => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: original,
+    })
+  }
+}
+
+describe('DataTable — mobileView="card"', () => {
+  it('renders cards instead of a table below sm', () => {
+    const restore = mockBelowSmViewport(true)
+    try {
+      render(<DataTable columns={columns} data={data} mobileView="card" />)
+      expect(screen.queryByRole('table')).not.toBeInTheDocument()
+      expect(screen.getAllByRole('listitem')).toHaveLength(4)
+    } finally {
+      restore()
+    }
+  })
+
+  it('keeps the table above sm even with mobileView="card"', () => {
+    const restore = mockBelowSmViewport(false)
+    try {
+      render(<DataTable columns={columns} data={data} mobileView="card" />)
+      expect(screen.getByRole('table')).toBeInTheDocument()
+      expect(screen.queryByRole('listitem')).not.toBeInTheDocument()
+    } finally {
+      restore()
+    }
+  })
+
+  it('renders filter inputs ABOVE the card list when filterable', () => {
+    const restore = mockBelowSmViewport(true)
+    try {
+      const { container } = render(
+        <DataTable columns={columns} data={data} mobileView="card" filterable />,
+      )
+      const nameFilter = screen.getByPlaceholderText('Filter Name...')
+      expect(nameFilter).toBeInTheDocument()
+      expect(screen.getByPlaceholderText('Filter Email...')).toBeInTheDocument()
+
+      // Document order: the filter input precedes the first card.
+      const firstCard = screen.getAllByRole('listitem')[0]
+      expect(
+        nameFilter.compareDocumentPosition(firstCard) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy()
+      // ...and it is not inside a card either.
+      expect(container.querySelector('[role="listitem"] input')).toBeNull()
+    } finally {
+      restore()
+    }
+  })
+
+  it('card filter inputs actually filter the card list', async () => {
+    const restore = mockBelowSmViewport(true)
+    try {
+      render(<DataTable columns={columns} data={data} mobileView="card" filterable />)
+      const user = userEvent.setup()
+      await user.type(screen.getByPlaceholderText('Filter Name...'), 'Alice')
+      expect(screen.getByText('Alice Smith')).toBeInTheDocument()
+      expect(screen.queryByText('Bob Jones')).not.toBeInTheDocument()
+      expect(screen.getAllByRole('listitem')).toHaveLength(1)
+    } finally {
+      restore()
+    }
+  })
+
+  it('respects filterableColumns in card mode', () => {
+    const restore = mockBelowSmViewport(true)
+    try {
+      render(
+        <DataTable
+          columns={columns}
+          data={data}
+          mobileView="card"
+          filterable
+          filterableColumns={['name']}
+        />,
+      )
+      expect(screen.getByPlaceholderText('Filter Name...')).toBeInTheDocument()
+      expect(screen.queryByPlaceholderText('Filter Email...')).not.toBeInTheDocument()
+    } finally {
+      restore()
+    }
+  })
+
+  it('applies rowClassName to cards', () => {
+    const restore = mockBelowSmViewport(true)
+    try {
+      render(
+        <DataTable
+          columns={columns}
+          data={data}
+          mobileView="card"
+          rowClassName={(row) => (row.role === 'Engineer' ? 'bg-error-3' : undefined)}
+        />,
+      )
+      const cards = screen.getAllByRole('listitem')
+      // data order: Alice(Engineer), Bob(Designer), Carol(Manager), Dave(Engineer)
+      expect(cards[0]).toHaveClass('bg-error-3')
+      expect(cards[1]).not.toHaveClass('bg-error-3')
+      expect(cards[3]).toHaveClass('bg-error-3')
+    } finally {
+      restore()
+    }
+  })
+
+  it('has no a11y violations in card mode with filters', async () => {
+    const restore = mockBelowSmViewport(true)
+    try {
+      const { container } = render(
+        <DataTable columns={columns} data={data} mobileView="card" filterable selectable />,
+      )
+      const results = await axe(container)
+      expect(results).toHaveNoViolations()
+    } finally {
+      restore()
+    }
+  })
+})
+
+// ============================================================
+// Bug fix: virtualRows + expandable (#249 bug 2)
+// ============================================================
+
+/**
+ * `@tanstack/react-virtual` reads `offsetHeight` (never getBoundingClientRect) for
+ * both the scroll viewport and each measured item, and bails out entirely when the
+ * viewport measures 0 — which is every element in jsdom. Without this stub a
+ * virtualized table renders a `<thead>` and nothing else, so no virtual assertion
+ * is possible at all.
+ *
+ * `TBODY` is the measured row group; the `overflow-y: auto` div is DataTable's
+ * scroll container.
+ */
+function mockVirtualLayout({ viewport = 500, rowGroup = 48 } = {}) {
+  const original = Object.getOwnPropertyDescriptor(
+    HTMLElement.prototype,
+    'offsetHeight',
+  )
+  Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+    configurable: true,
+    get(this: HTMLElement) {
+      if (this.tagName === 'TBODY') return rowGroup
+      if (this.style?.overflowY === 'auto') return viewport
+      return 0
+    },
+  })
+  return () => {
+    if (original) {
+      Object.defineProperty(HTMLElement.prototype, 'offsetHeight', original)
+    } else {
+      delete (HTMLElement.prototype as unknown as Record<string, unknown>).offsetHeight
+    }
+  }
+}
+
+const manyRows: Person[] = Array.from({ length: 100 }, (_, i) => ({
+  id: `row-${i}`,
+  name: `Person ${i}`,
+  email: `person${i}@example.com`,
+  role: i % 2 === 0 ? 'Engineer' : 'Designer',
+  age: 20 + (i % 40),
+}))
+
+describe('DataTable — virtualRows', () => {
+  let restoreLayout: () => void
+
+  beforeEach(() => {
+    restoreLayout = mockVirtualLayout()
+  })
+  afterEach(() => {
+    restoreLayout()
+  })
+
+  it('renders rows in virtual mode', () => {
+    render(<DataTable columns={columns} data={data} virtualRows maxHeight={400} />)
+    expect(screen.getByText('Alice Smith')).toBeInTheDocument()
+    expect(screen.getByText('Dave Brown')).toBeInTheDocument()
+  })
+
+  it('windows a large dataset and pads the un-rendered remainder', () => {
+    const { container } = render(
+      <DataTable columns={columns} data={manyRows} virtualRows maxHeight={500} />,
+    )
+    const groups = container.querySelectorAll('tbody[data-index]')
+    // Far fewer than 100 rows in the DOM — that is the whole point.
+    expect(groups.length).toBeGreaterThan(0)
+    expect(groups.length).toBeLessThan(manyRows.length)
+
+    // The un-rendered tail is reserved by an aria-hidden spacer row group so the
+    // scroll extent stays honest.
+    const spacer = container.querySelector('tbody[aria-hidden="true"]')
+    expect(spacer).not.toBeNull()
+    const spacerCell = spacer!.querySelector('td')!
+    expect(parseFloat(spacerCell.style.height)).toBeGreaterThan(0)
+    expect(spacerCell.getAttribute('colspan')).toBe(String(columns.length))
+  })
+
+  it('renders expanded content in the DOM when a virtual row is expanded', async () => {
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        virtualRows
+        maxHeight={400}
+        expandable
+        renderExpanded={(row) => <div>Detail for {row.name}</div>}
+      />,
+    )
+    const user = userEvent.setup()
+    expect(screen.queryByText('Detail for Alice Smith')).not.toBeInTheDocument()
+
+    await user.click(screen.getAllByLabelText('Expand row')[0])
+    expect(screen.getByText('Detail for Alice Smith')).toBeInTheDocument()
+
+    await user.click(screen.getByLabelText('Collapse row'))
+    expect(screen.queryByText('Detail for Alice Smith')).not.toBeInTheDocument()
+  })
+
+  it('measures each row group so expanded height is accounted for (no overlap)', async () => {
+    const { container } = render(
+      <DataTable
+        columns={columns}
+        data={data}
+        virtualRows
+        maxHeight={400}
+        expandable
+        renderExpanded={(row) => <div>Detail for {row.name}</div>}
+      />,
+    )
+    // One <tbody> per windowed row, each tagged with the index the virtualizer
+    // measures it under. This is what makes getTotalSize() include the expanded
+    // panel — without it the panel and the next row share an offset.
+    const groups = container.querySelectorAll('tbody[data-index]')
+    expect(groups.length).toBe(4)
+    expect(Array.from(groups).map((g) => g.getAttribute('data-index'))).toEqual([
+      '0',
+      '1',
+      '2',
+      '3',
+    ])
+
+    // No absolute positioning: rows stay in table flow, so an expanded panel
+    // cannot paint on top of the row after it.
+    const user = userEvent.setup()
+    await user.click(screen.getAllByLabelText('Expand row')[0])
+    const expandedRow = screen.getByText('Detail for Alice Smith').closest('tr')!
+    expect(expandedRow.style.position).toBe('')
+    expect(expandedRow.style.transform).toBe('')
+    // The expanded row is a sibling INSIDE the measured group, not a stray row.
+    expect(expandedRow.parentElement).toBe(groups[0])
+    expect(groups[0].querySelectorAll('tr')).toHaveLength(2)
+  })
+
+  it('does not warn on virtualRows + expandable', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        virtualRows
+        maxHeight={400}
+        expandable
+        renderExpanded={(row) => <div>Detail for {row.name}</div>}
+      />,
+    )
+    const dataTableWarnings = warn.mock.calls.filter((c) =>
+      String(c[0]).includes('[DataTable]'),
+    )
+    expect(dataTableWarnings).toEqual([])
+    warn.mockRestore()
+  })
+
+  it('has no a11y violations in virtual mode with an expanded row', async () => {
+    const { container } = render(
+      <DataTable
+        columns={columns}
+        data={data}
+        virtualRows
+        maxHeight={400}
+        expandable
+        renderExpanded={(row) => <div>Detail for {row.name}</div>}
+      />,
+    )
+    const user = userEvent.setup()
+    await user.click(screen.getAllByLabelText('Expand row')[0])
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
   })
 })

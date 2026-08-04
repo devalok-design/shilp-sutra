@@ -53,7 +53,13 @@ const LIME_INK = '#131514'
 const IDENTITY_GRADIENT =
   'linear-gradient(118.9deg, var(--color-surface-base) 0%, var(--color-accent-4) 37.9%, var(--color-surface-base) 100%)'
 
-export function BuildathonHero() {
+/**
+ * `open` is passed in from the page rather than read from `isOpen()` here: this
+ * is a client component, so calling it locally would evaluate at prerender time
+ * on the server and again at hydration on the client, and those two answers
+ * differ across the deadline. The page owns the decision and revalidates.
+ */
+export function BuildathonHero({ open }: { open: boolean }) {
   const reduce = useReducedMotion()
 
   return (
@@ -152,20 +158,36 @@ export function BuildathonHero() {
             </Text>
           </div>
 
+          {/* After the close the entry affordance goes entirely — the form is shut
+              and the MCP tool refuses, so a button here would be a dead end. The
+              slot keeps its height with the sentence that replaces it. */}
           <div className="flex flex-col items-start gap-ds-03">
-            <TrackedLink
-              href={FORM_URL}
-              className="w-full sm:w-auto"
-              event="cta_click"
-              eventProps={{ cta: 'buildathon-enter', location: 'buildathon-hero' }}
-            >
-              <Button size="lg" className="w-full sm:w-auto">
-                Enter the buildathon
-              </Button>
-            </TrackedLink>
-            <Text variant="body-sm" className="text-surface-fg-muted">
-              Or tell your coding agent to submit it. Entries close {CLOSES}.
-            </Text>
+            {open ? (
+              <>
+                <TrackedLink
+                  href={FORM_URL}
+                  className="w-full sm:w-auto"
+                  event="cta_click"
+                  eventProps={{ cta: 'buildathon-enter', location: 'buildathon-hero' }}
+                >
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Enter the buildathon
+                  </Button>
+                </TrackedLink>
+                <Text variant="body-sm" className="text-surface-fg-muted">
+                  Or tell your coding agent to submit it. Entries close {CLOSES}.
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text variant="heading-md" as="p" className="text-surface-fg">
+                  Entries are closed.
+                </Text>
+                <Text variant="body-sm" className="text-surface-fg-muted">
+                  Submissions closed {CLOSES}. Judging is under way.
+                </Text>
+              </>
+            )}
           </div>
         </div>
       </div>

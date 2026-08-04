@@ -30,6 +30,26 @@ export function isOpen(now = Date.now()) {
   return now < CLOSES_AT
 }
 
+/**
+ * HARD RULE: every route that reads `isOpen()` must declare
+ *
+ *   export const revalidate = 900
+ *
+ * Without it the route is prerendered once and served from the CDN with
+ * `s-maxage=31536000`, so `isOpen()` is frozen at whatever it evaluated to at
+ * BUILD time. The page then keeps advertising an open buildathon forever while
+ * the MCP server — which checks the deadline per request — has already started
+ * refusing entries. That is exactly what happened on 4 August 2026: the
+ * announced close passed and /buildathon still read "Entries close 4 August".
+ *
+ * 900s (15 minutes) is the window we are willing to be wrong for.
+ *
+ * It has to be written as a literal in each route, NOT imported from here:
+ * Next statically analyses the segment config and rejects an identifier with
+ * `Unknown identifier "…" at "revalidate"`. Routes currently declaring it:
+ * app/buildathon/page.tsx, app/agents/page.tsx, app/sitemap.ts.
+ */
+
 export const JUDGING = [
   {
     title: 'Beauty',

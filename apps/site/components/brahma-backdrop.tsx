@@ -325,27 +325,36 @@ export function BrahmaBackdrop() {
       </div>
     </div>
 
-    {/* Easter eggs — the faded "Learn More" chip and the ink link-tile look
+    {/* Easter eggs — the faded chip and the ink link-tile look
         decorative/disabled but rickroll on click. They live OUTSIDE the inert
         decorative layer so they stay clickable. Mouse-only (tabIndex -1,
-        aria-hidden) so they never trap keyboard users. */}
+        aria-hidden) so they never trap keyboard users.
+
+        SEO: the chip used to read "Learn More", which is on Lighthouse's
+        link-text blocklist verbatim → "Links do not have descriptive text".
+        An aria-label would NOT have fixed it: the audit reads `node.innerText`
+        only and never consults the accessible name (see lighthouse
+        core/audits/seo/link-text.js), so the visible string had to change.
+        rel also carries `nofollow` — we have no interest in passing the
+        homepage's link equity to a joke video, and it keeps the audit satisfied
+        independently of whatever the copy says next. */}
     {ready && (
       <>
         <a
           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer nofollow"
           aria-hidden
           tabIndex={-1}
           className="hero-egg pointer-events-auto absolute z-20 hidden select-none rounded-control px-ds-04 py-ds-03 text-ds-sm font-medium transition-transform duration-fast-02 hover:scale-105 lg:block"
           style={{ left: px(9.2), top: py(5.4), background: C.lime, color: C.ink, ['--egg-delay' as string]: '5.4s' }}
         >
-          Learn More
+          Watch on YouTube
         </a>
         <a
           href="https://www.youtube.com/watch?v=iik25wqIuFo"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer nofollow"
           aria-hidden
           tabIndex={-1}
           className="hero-egg pointer-events-auto absolute z-20 hidden size-[4.5rem] items-center justify-center rounded-control shadow-raised transition-transform duration-fast-02 hover:scale-105 lg:flex"

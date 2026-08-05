@@ -58,6 +58,18 @@ jobs:
           else
             echo "mcp_changed=false" >> "$GITHUB_OUTPUT"
           fi
+          # site_changed: gates the Lighthouse budget check (≈3 min: 3 runs over a
+          # local production server). The site consumes packages/core, so a core
+          # change can regress it too — but core PRs are the common case and
+          # paying 3 min on every one of them is how a gate becomes something
+          # people route around. Scoped to apps/site/** plus the gate's own
+          # config; integration.yml is NOT in play here (see workflow comment).
+          if echo "$CHANGED" | grep -qE '^apps/site/'; then
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
+            echo "apps/site change — Lighthouse budget gate will run."
+          else
+            echo "site_changed=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -124,6 +136,36 @@ jobs:
             echo "::error::Runtime bundle size $((TOTAL / 1024))KB exceeds budget of $((MAX / 1024))KB"
             exit 1
           fi
+
+      # Blocking perf/a11y/SEO budget gate for the marketing site. Nothing was
+      # watching apps/site, which is why four Lighthouse regressions (23MB audio
+      # preload, aria-hidden over focusable Switches, 29 non-composited stroke
+      # animations, non-descriptive link text — issue #255) all landed unnoticed.
+      #
+      # Runs against a LOCAL production build, not shilp-sutra.devalok.in: CI must
+      # not depend on Railway being up, and must grade this PR's code rather than
+      # whatever is deployed. `pnpm build` above already produced apps/site/.next
+      # (turbo builds the whole workspace), so lhci only needs to boot the server,
+      # which its own startServerCommand handles.
+      #
+      # Thresholds, aggregation (median of 3) and the reasoning behind every
+      # assertion live in apps/site/lighthouserc.json — read that before touching
+      # a number here.
+      - name: Lighthouse budget gate (apps/site)
+        if: steps.scope.outputs.mcp_only != 'true' && steps.scope.outputs.site_changed == 'true'
+        working-directory: apps/site
+        run: pnpm lighthouse
+
+      # Reports for the run above, so a failure is diagnosable without a local
+      # repro. `always()` because the interesting case is the failing one.
+      - name: Upload Lighthouse reports
+        if: always() && steps.scope.outputs.mcp_only != 'true' && steps.scope.outputs.site_changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: apps/site/.lighthouseci/
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Install Playwright
         if: steps.scope.outputs.mcp_only != 'true'

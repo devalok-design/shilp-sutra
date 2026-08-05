@@ -16,3 +16,6 @@ public/r/
 screenshots/
 test-results/
 playwright-report/
+
+# Lighthouse CI report output (`pnpm -F site lighthouse`)
+.lighthouseci/

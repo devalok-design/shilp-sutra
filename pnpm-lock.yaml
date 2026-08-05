@@ -27,6 +27,9 @@ importers:
       '@changesets/cli':
         specifier: ^2.31.1
         version: 2.31.1(@types/node@26.1.1)
+      '@devalok/eslint-plugin-shilp-sutra':
+        specifier: workspace:*
+        version: link:packages/eslint-plugin
       '@storybook/addon-a11y':
         specifier: ^10.5.3
         version: 10.5.3(storybook@10.5.3(@types/react@19.2.17)(prettier@3.9.6)(react@19.2.8))

@@ -3,6 +3,9 @@ import tseslint from 'typescript-eslint'
 import reactHooks from 'eslint-plugin-react-hooks'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
+// Our own published plugin, applied to our own source. Resolved from
+// packages/eslint-plugin/dist, so `lint` dependsOn its build in turbo.json.
+import shilpSutra from '@devalok/eslint-plugin-shilp-sutra'
 
 export default tseslint.config(
   // ── Global ignores ──────────────────────────────────────────────────
@@ -129,5 +132,42 @@ export default tseslint.config(
     },
   },
 
-
+  // ── Our own plugin, applied to our own source ───────────────────────
+  //
+  // We publish @devalok/eslint-plugin-shilp-sutra to catch exactly the class of
+  // mistake that CLAUDE.md says rots silently here — and until now we did not
+  // run it on ourselves. The four rules below mirror release-ONLY gates in
+  // pre-publish-audit.mjs, which never execute on a PR. That gap cost a release
+  // cycle twice: 0.52.0 (radius tokens) and 0.53.0 (`bg-surface-2` in the
+  // schedule-view rebuild) both sailed through PR CI and failed post-merge.
+  // Running them here moves the failure to the PR, where it is cheap.
+  //
+  // Deliberately NOT the `flat/recommended` preset. That preset is written for
+  // CONSUMERS and several of its rules are wrong for this repo:
+  //   - prefer-per-component-import targets consumer barrel imports of
+  //     peer-cliff symbols; our source imports relatively.
+  //   - no-deprecated-button-variant / no-deprecated-chip / use-toast-deprecated
+  //     / no-iconbutton-children flag deprecated USAGE — we DEFINE those APIs,
+  //     so our source legitimately references them.
+  //   - no-tailwind-config-preset is about a consumer's tailwind config.
+  //   - require-mutation-annotation is a taste rule, not a correctness gate.
+  // Only the token/TW4-hygiene rules are true for both sides of the boundary.
+  //
+  // Note `**/*.stories.tsx` is globally ignored above, which matches the audit
+  // gate's own story exclusion — so this does not tighten coverage beyond it.
+  {
+    files: ['packages/*/src/**/*.{ts,tsx}'],
+    plugins: { 'shilp-sutra': shilpSutra },
+    rules: {
+      // Numbered surface aliases don't invert for dark mode; the named tiers do.
+      'shilp-sutra/no-deprecated-surface-token': 'error',
+      'shilp-sutra/no-deprecated-shadow-token': 'error',
+      // Bare `shadow` renders nothing in TW4.
+      'shilp-sutra/no-bare-shadow': 'error',
+      // `bg-gradient-to-*` is dead in TW4 — `bg-linear-to-*` replaced it.
+      'shilp-sutra/no-bg-gradient-to': 'error',
+      // `w-[--var]` is dead in TW4 — the shorthand is `w-(--var)`.
+      'shilp-sutra/no-css-var-bracket': 'error',
+    },
+  },
 )

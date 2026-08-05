@@ -24,6 +24,7 @@
     "check:recipes": "node scripts/check-recipe-currency.mjs",
     "check:sizing": "node packages/core/scripts/check-arbitrary-sizing.mjs --check",
     "check:lockfile": "node scripts/check-lockfile.mjs",
+    "analytics:report": "node scripts/posthog-report.mjs",
     "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,css}\"",
     "test": "turbo run test",

@@ -8,6 +8,9 @@ import * as React from 'react'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
+// Bundlers (Vite, Next.js, webpack) define process.env.NODE_ENV; guard for raw ESM.
+declare const process: { env: { NODE_ENV?: string } } | undefined
+
 /* ---------------------------------------------------------------------------
  * Progress — a linear progress bar.
  *
@@ -283,6 +286,33 @@ export interface ProgressProps
   indicatorClassName?: string
 }
 
+/**
+ * `role="progressbar"` with no accessible name announces as just "progressbar,
+ * 72%" — the value is already carried by `aria-valuenow`, so what a screen
+ * reader is missing is WHAT is progressing.
+ *
+ * This warns rather than auto-generating a name on purpose. A generated default
+ * ("Progress", or "Progress: 72%") would silence the Lighthouse audit while
+ * leaving the announcement just as uninformative, which is worse than the
+ * current state: the bar looks labelled and nobody fixes it. Only the consumer
+ * knows what the bar measures.
+ *
+ * Latched at module scope so a bar that re-renders on every value tick logs
+ * once, not once per frame — same pattern as Card's unwrapped-text warning.
+ */
+let warnedMissingProgressName = false
+
+function warnOnMissingAccessibleName(): void {
+  if (warnedMissingProgressName) return
+  if (typeof process === 'undefined' || process?.env?.NODE_ENV === 'production') return
+  warnedMissingProgressName = true
+  console.warn(
+    '[shilp-sutra] <Progress> has no accessible name, so it announces as just "progressbar" with a percentage. ' +
+      'Pass `label` (renders visible text and wires aria-labelledby) or `aria-label` if the bar must stay unlabelled visually. ' +
+      'Example: <Progress value={72} label="Storage used" /> or <Progress value={72} aria-label="Upload progress" />.',
+  )
+}
+
 const ProgressBase = React.forwardRef<HTMLDivElement, ProgressProps>(
   (
     {
@@ -294,6 +324,7 @@ const ProgressBase = React.forwardRef<HTMLDivElement, ProgressProps>(
   ) => {
     const labelId = React.useId()
     const hasLabel = label != null
+    if (!hasLabel && !ariaLabel && !ariaLabelledby) warnOnMissingAccessibleName()
     return (
       <ProgressRoot ref={ref} value={value} max={max} size={size ?? 'md'} className={className} {...props}>
         {hasLabel && <ProgressLabel id={labelId}>{label}</ProgressLabel>}

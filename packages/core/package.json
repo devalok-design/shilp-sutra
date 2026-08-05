@@ -1005,7 +1005,6 @@
   },
   "devDependencies": {
     "@emoji-mart/data": "^1.2.1",
-    "@emoji-mart/react": "^1.1.1",
     "@floating-ui/dom": "^1.8.0",
     "@floating-ui/react-dom": "^2.1.9",
     "@tabler/icons-react": "^3.45.0",
@@ -1036,7 +1035,6 @@
     "d3-transition": "^3.0.1",
     "date-fns": "^4.4.0",
     "diff": "^9.0.0",
-    "esbuild": "^0.28.1",
     "framer-motion": "^12.42.2",
     "frimousse": "^0.3.0",
     "input-otp": "^1.4.2",

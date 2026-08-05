@@ -115,7 +115,10 @@
       "esbuild@<0.28.1": "^0.28.1",
       "@hono/node-server@<2.0.5": "^2.0.5",
       "sharp@<0.35.0": "^0.35.0",
-      "postcss@<8.5.12": "^8.5.12"
+      "postcss@<8.5.12": "^8.5.12",
+      "undici@<7.29.0": "^7.29.0",
+      "hono@<4.12.34": "^4.12.34",
+      "ip-address@<10.2.2": "^10.2.2"
     },
     "peerDependencyRules": {
       "allowedVersions": {

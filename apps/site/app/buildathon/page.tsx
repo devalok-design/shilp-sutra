@@ -92,10 +92,13 @@ export default function BuildathonPage() {
                 </>
               ) : (
                 <>
+                  {/* No em dash: banned in studio and web copy (long-form founder
+                      notes are the only exception). Mirrors the open version's
+                      two-sentence rhythm instead. */}
                   <Text variant="body-lg" className="text-pretty text-surface-fg">
                     We asked builders to put it to work and show us what it looks like in their
-                    hands — anything from a full product to a small useful tool, as long as it ran
-                    on Shilp Sutra and solved a problem with real cause.
+                    hands. Anything from a full product to a small useful tool, as long as it ran on
+                    Shilp Sutra and solved a problem with real cause.
                   </Text>
                   <Text variant="body-lg" className="text-pretty text-surface-fg">
                     It was open to everyone, solo or as a team.

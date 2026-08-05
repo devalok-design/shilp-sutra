@@ -16,29 +16,51 @@ import {
   MCP_URL,
   PRIZE,
   REQUIREMENTS,
+  isOpen,
 } from '@/lib/buildathon'
 
-export const metadata: Metadata = {
-  title: 'Build with Shilp Sutra',
-  description: `An online buildathon by Devalok, ${DATES}. Open to everyone, solo or team. Build anything that runs on Shilp Sutra and solves a problem with real cause. The winner receives ${PRIZE} worth of brand identity, GTM strategy, and ongoing support from Devalok. Entries close ${CLOSES}.`,
-  alternates: { canonical: 'https://shilp-sutra.devalok.in/buildathon' },
+/**
+ * This page's copy depends on the deadline, so it must NOT be prerendered once
+ * and frozen behind the CDN's year-long `s-maxage`. Literal, not an imported
+ * constant — Next rejects an identifier here. See the HARD RULE in
+ * lib/buildathon.ts for why 900.
+ */
+export const revalidate = 900
+
+/**
+ * `generateMetadata` rather than a static `metadata` object for the same reason
+ * the body is gated: a frozen description keeps inviting entries in search
+ * results and link previews after the form has stopped accepting them.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const open = isOpen()
+
+  return {
+    title: 'Build with Shilp Sutra',
+    description: open
+      ? `An online buildathon by Devalok, ${DATES}. Open to everyone, solo or team. Build anything that runs on Shilp Sutra and solves a problem with real cause. The winner receives ${PRIZE} worth of brand identity, GTM strategy, and ongoing support from Devalok. Entries close ${CLOSES}.`
+      : `An online buildathon by Devalok, ${DATES}. Entries closed ${CLOSES} and judging is under way. The winner receives ${PRIZE} worth of brand identity, GTM strategy, and ongoing support from Devalok.`,
+    alternates: { canonical: 'https://shilp-sutra.devalok.in/buildathon' },
+  }
 }
 
 /**
  * The lime plate from the poster, reused as this page's single emphasis device.
  * A flat identity colour rather than a token, so it holds in both themes — ink on
- * it measures 14.34:1 (setu_check, 2026-07-25). Used exactly twice below the
+ * it measures 14.34:1 (setu_check, 2026-07-25). Used exactly once below the
  * hero: on the deadline, and nowhere else. It stops meaning anything if it spreads.
  */
 const LIME = '#D5EF72'
 const LIME_INK = '#131514'
 
 export default function BuildathonPage() {
+  const open = isOpen()
+
   return (
     <>
       <SiteHeader />
       <main id="main" className="flex-1">
-        <BuildathonHero />
+        <BuildathonHero open={open} />
 
         {/* ── The invitation ───────────────────────────────────────────────────
             Editorial opening: one wide lead, then the detail dropping into a
@@ -56,29 +78,50 @@ export default function BuildathonPage() {
 
           <div className="mt-ds-08 grid gap-ds-08 lg:grid-cols-12 lg:gap-ds-09">
             <div className="flex flex-col gap-ds-05 lg:col-span-7">
-              <Text variant="body-lg" className="text-pretty text-surface-fg">
-                This week we are inviting builders to put it to work and show us what it looks like
-                in your hands. Build anything you like, from a full product to a small useful tool,
-                as long as it runs on Shilp Sutra and solves a problem with real cause.
-              </Text>
-              <Text variant="body-lg" className="text-pretty text-surface-fg">
-                Open to everyone, solo or as a team.
-              </Text>
+              {open ? (
+                <>
+                  <Text variant="body-lg" className="text-pretty text-surface-fg">
+                    This week we are inviting builders to put it to work and show us what it looks
+                    like in your hands. Build anything you like, from a full product to a small
+                    useful tool, as long as it runs on Shilp Sutra and solves a problem with real
+                    cause.
+                  </Text>
+                  <Text variant="body-lg" className="text-pretty text-surface-fg">
+                    Open to everyone, solo or as a team.
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Text variant="body-lg" className="text-pretty text-surface-fg">
+                    We asked builders to put it to work and show us what it looks like in their
+                    hands — anything from a full product to a small useful tool, as long as it ran
+                    on Shilp Sutra and solved a problem with real cause.
+                  </Text>
+                  <Text variant="body-lg" className="text-pretty text-surface-fg">
+                    It was open to everyone, solo or as a team.
+                  </Text>
+                </>
+              )}
             </div>
 
-            <aside className="border-t border-surface-border-subtle pt-ds-04 lg:col-span-4 lg:col-start-9">
-              <Text variant="body-md" className="text-pretty text-surface-fg-muted">
-                Already building at the Cursor India or Sarvam AI hackathons this week? Run your
-                project here in parallel too. It counts.
-              </Text>
-            </aside>
+            {/* Only meaningful while entries are open — it tells people already at
+                another hackathon that they can run the same project here too. */}
+            {open && (
+              <aside className="border-t border-surface-border-subtle pt-ds-04 lg:col-span-4 lg:col-start-9">
+                <Text variant="body-md" className="text-pretty text-surface-fg-muted">
+                  Already building at the Cursor India or Sarvam AI hackathons this week? Run your
+                  project here in parallel too. It counts.
+                </Text>
+              </aside>
+            )}
           </div>
         </section>
 
         {/* ── Judging ──────────────────────────────────────────────────────────
             The substance of the page, so it gets the boldest type in the body:
             each criterion at heading scale in its own column with the definition
-            hanging beside it. Space separates the rows — no rules, no cards. */}
+            hanging beside it. Space separates the rows — no rules, no cards.
+            Stays after the close: judging is what happens next. */}
         <section className="mx-auto w-full max-w-[88rem] px-page-x pt-ds-10 pb-ds-06">
           <Text variant="label-sm" as="h2" className="mb-ds-07 text-surface-fg-subtle">
             What we are judging on
@@ -105,34 +148,39 @@ export default function BuildathonPage() {
         {/* ── Requirements ─────────────────────────────────────────────────────
             Three short strings, so this reads as a compact spec strip across the
             width — deliberately the opposite rhythm to the tall judging rows
-            above it. Hairlines divide the columns; nothing is boxed. */}
+            above it. Hairlines divide the columns; nothing is boxed.
+            Entry mechanics, so it goes when entries do. */}
         <section className="mx-auto w-full max-w-[88rem] px-page-x pt-ds-04 pb-ds-10">
-          <div className="border-y border-surface-border-subtle py-ds-07">
-            <Text variant="label-sm" as="h2" className="mb-ds-06 text-surface-fg-subtle">
-              To enter, you need
-            </Text>
-            <ul className="grid gap-ds-06 sm:grid-cols-3 sm:gap-0">
-              {REQUIREMENTS.map((r, i) => (
-                <li
-                  key={r}
-                  className={[
-                    'sm:px-ds-06 sm:first:pl-0 sm:last:pr-0',
-                    i > 0 ? 'sm:border-l sm:border-surface-border-subtle' : '',
-                  ].join(' ')}
-                >
-                  <Text variant="heading-sm" as="span" className="text-surface-fg">
-                    {r}
-                  </Text>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {open && (
+            <div className="border-y border-surface-border-subtle py-ds-07">
+              <Text variant="label-sm" as="h2" className="mb-ds-06 text-surface-fg-subtle">
+                To enter, you need
+              </Text>
+              <ul className="grid gap-ds-06 sm:grid-cols-3 sm:gap-0">
+                {REQUIREMENTS.map((r, i) => (
+                  <li
+                    key={r}
+                    className={[
+                      'sm:px-ds-06 sm:first:pl-0 sm:last:pr-0',
+                      i > 0 ? 'sm:border-l sm:border-surface-border-subtle' : '',
+                    ].join(' ')}
+                  >
+                    <Text variant="heading-sm" as="span" className="text-surface-fg">
+                      {r}
+                    </Text>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
+          {/* Evergreen either way: check_slop is a standing part of the DS, and
+              "how considered it looks" is still one of the three criteria. */}
           <Text
             variant="body-md"
             className="mt-ds-06 max-w-[42rem] text-pretty text-surface-fg-muted"
           >
-            Judging includes how considered it looks. Before you ship the interface, run{' '}
+            Judging includes how considered it looks. Before you ship any interface, run{' '}
             <Text variant="code" as="code" className="text-surface-fg">
               check_slop
             </Text>{' '}
@@ -141,68 +189,108 @@ export default function BuildathonPage() {
           </Text>
         </section>
 
-        {/* ── Two ways in ──────────────────────────────────────────────────────
-            The functional core, so the two paths sit side by side at real widths
-            rather than stacked: the agent path is wider because it carries the
-            snippet, and a single hairline separates them. One Button in the
-            section — the agent path's affordance is the snippet's own copy
-            control, which keeps this off the stock filled-plus-outline pairing. */}
-        <section className="mx-auto w-full max-w-[88rem] px-page-x pt-ds-11 pb-ds-11">
-          <div className="max-w-[46rem]">
-            <Text variant="heading-xl" className="text-balance text-surface-fg">
-              Two ways to submit
-            </Text>
-            <Text variant="body-lg" className="mt-ds-04 text-pretty text-surface-fg-muted">
-              Shilp Sutra ships with a hosted MCP server, so the coding agent you are already
-              building with can file your entry for you. The form is open either way. Both land in
-              the same place.
-            </Text>
-          </div>
+        {open ? (
+          /* ── Two ways in ────────────────────────────────────────────────────
+             The functional core, so the two paths sit side by side at real widths
+             rather than stacked: the agent path is wider because it carries the
+             snippet, and a single hairline separates them. One Button in the
+             section — the agent path's affordance is the snippet's own copy
+             control, which keeps this off the stock filled-plus-outline pairing. */
+          <section className="mx-auto w-full max-w-[88rem] px-page-x pt-ds-11 pb-ds-11">
+            <div className="max-w-[46rem]">
+              <Text variant="heading-xl" className="text-balance text-surface-fg">
+                Two ways to submit
+              </Text>
+              <Text variant="body-lg" className="mt-ds-04 text-pretty text-surface-fg-muted">
+                Shilp Sutra ships with a hosted MCP server, so the coding agent you are already
+                building with can file your entry for you. The form is open either way. Both land in
+                the same place.
+              </Text>
+            </div>
 
-          <div className="mt-ds-09 grid gap-ds-09 lg:grid-cols-12 lg:gap-0">
-            <div className="flex flex-col lg:col-span-7 lg:pr-ds-09">
-              <Text variant="label-sm" as="h3" className="mb-ds-03 text-surface-fg-subtle">
-                Through your agent
+            <div className="mt-ds-09 grid gap-ds-09 lg:grid-cols-12 lg:gap-0">
+              <div className="flex flex-col lg:col-span-7 lg:pr-ds-09">
+                <Text variant="label-sm" as="h3" className="mb-ds-03 text-surface-fg-subtle">
+                  Through your agent
+                </Text>
+                <Text variant="body-md" className="mb-ds-05 text-pretty text-surface-fg">
+                  Connect the MCP once, then say it in plain words. Your agent will ask for your
+                  details, read every field back to you, and submit only after you confirm.
+                </Text>
+                <CodeBlock
+                  language="text"
+                  code={`Submit my project to the Shilp Sutra buildathon.`}
+                />
+                <Text variant="body-sm" className="mt-ds-04 text-surface-fg-muted">
+                  Not connected yet? Point your editor at{' '}
+                  <Text variant="code" as="code" className="text-surface-fg">
+                    {MCP_URL}
+                  </Text>{' '}
+                  and see the{' '}
+                  <Link href="/agents" className="text-accent-11 underline underline-offset-4">
+                    setup for AI editors
+                  </Link>
+                  .
+                </Text>
+              </div>
+
+              <div className="flex flex-col border-surface-border-subtle lg:col-span-5 lg:border-l lg:pl-ds-09">
+                <Text variant="label-sm" as="h3" className="mb-ds-03 text-surface-fg-subtle">
+                  By hand
+                </Text>
+                <Text variant="body-md" className="text-pretty text-surface-fg">
+                  Fill in the form yourself. Same questions, same sheet, and you get a copy of your
+                  responses.
+                </Text>
+                {/* mt-auto anchors the action to the bottom of the column so it does
+                    not float at a different height to the snippet beside it. */}
+                <TrackedLink
+                  href={FORM_URL}
+                  className="mt-ds-06 self-start lg:mt-auto"
+                  event="cta_click"
+                  eventProps={{ cta: 'buildathon-form', location: 'buildathon-submit' }}
+                >
+                  <Button>Open the entry form</Button>
+                </TrackedLink>
+              </div>
+            </div>
+          </section>
+        ) : (
+          /* ── After the close ────────────────────────────────────────────────
+             Takes the same slot the two submission paths held, at the same
+             width, so the page keeps its rhythm instead of collapsing. No entry
+             affordance anywhere: the form is shut and the MCP tool refuses, so
+             offering either would send someone somewhere that cannot help them.
+             The one action left points at the design system itself, which is
+             what a reader arriving late is actually here for. */
+          <section className="mx-auto w-full max-w-[88rem] px-page-x pt-ds-11 pb-ds-11">
+            <div className="max-w-[46rem]">
+              <Text variant="heading-xl" className="text-balance text-surface-fg">
+                Entries are closed
               </Text>
-              <Text variant="body-md" className="mb-ds-05 text-pretty text-surface-fg">
-                Connect the MCP once, then say it in plain words. Your agent will ask for your
-                details, read every field back to you, and submit only after you confirm.
+              <Text variant="body-lg" className="mt-ds-04 text-pretty text-surface-fg-muted">
+                Submissions closed {CLOSES}. We are reading what came in against the three criteria
+                above, and we will write to every team that entered.
               </Text>
-              <CodeBlock language="text" code={`Submit my project to the Shilp Sutra buildathon.`} />
-              <Text variant="body-sm" className="mt-ds-04 text-surface-fg-muted">
-                Not connected yet? Point your editor at{' '}
-                <Text variant="code" as="code" className="text-surface-fg">
-                  {MCP_URL}
-                </Text>{' '}
-                and see the{' '}
-                <Link href="/agents" className="text-accent-11 underline underline-offset-4">
-                  setup for AI editors
+              <Text variant="body-lg" className="mt-ds-04 text-pretty text-surface-fg-muted">
+                Shilp Sutra itself carries on. The design system and its hosted MCP server are open
+                and free to use, buildathon or not.
+              </Text>
+              <div className="mt-ds-07 flex flex-col items-start gap-ds-03 sm:flex-row sm:items-center">
+                <Link href="/docs">
+                  <Button variant="soft">Start with Shilp Sutra</Button>
                 </Link>
-                .
-              </Text>
+                <Text variant="body-sm" className="text-surface-fg-muted">
+                  Or wire it into your editor from the{' '}
+                  <Link href="/agents" className="text-accent-11 underline underline-offset-4">
+                    setup for AI editors
+                  </Link>
+                  .
+                </Text>
+              </div>
             </div>
-
-            <div className="flex flex-col border-surface-border-subtle lg:col-span-5 lg:border-l lg:pl-ds-09">
-              <Text variant="label-sm" as="h3" className="mb-ds-03 text-surface-fg-subtle">
-                By hand
-              </Text>
-              <Text variant="body-md" className="text-pretty text-surface-fg">
-                Fill in the form yourself. Same questions, same sheet, and you get a copy of your
-                responses.
-              </Text>
-              {/* mt-auto anchors the action to the bottom of the column so it does
-                  not float at a different height to the snippet beside it. */}
-              <TrackedLink
-                href={FORM_URL}
-                className="mt-ds-06 self-start lg:mt-auto"
-                event="cta_click"
-                eventProps={{ cta: 'buildathon-form', location: 'buildathon-submit' }}
-              >
-                <Button>Open the entry form</Button>
-              </TrackedLink>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ── The floor ────────────────────────────────────────────────────────
             The page's one deliberate surface break, which is what a closing band
@@ -239,11 +327,13 @@ export default function BuildathonPage() {
 
             {/* Deadline + contact, on the band's baseline. The lime plate returns
                 here — its second and last use on the page — because the date is
-                the one fact a reader must not miss. */}
+                the one fact a reader must not miss. After the close the same
+                plate carries the same date in the past tense; it is still the
+                fact that matters most on the page. */}
             <div className="mt-ds-12 flex flex-col gap-ds-06 border-t border-surface-border-subtle pt-ds-07 md:flex-row md:items-end md:justify-between">
               <div className="flex flex-col items-start gap-ds-02">
                 <Text variant="label-sm" as="p" className="text-surface-fg-subtle">
-                  Submissions close
+                  {open ? 'Submissions close' : 'Submissions closed'}
                 </Text>
                 <span
                   className="px-ds-03 py-ds-01 text-ds-xl font-semibold md:text-ds-2xl"

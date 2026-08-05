@@ -10,6 +10,14 @@ import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { CLOSES, PRIZE, isOpen as isBuildathonOpen } from '@/lib/buildathon'
 
+/**
+ * This page gates a section on the buildathon deadline, so it cannot be a
+ * build-time prerender frozen behind the CDN's year-long `s-maxage`. Literal,
+ * not an imported constant — Next rejects an identifier here. See the HARD RULE
+ * in lib/buildathon.ts.
+ */
+export const revalidate = 900
+
 export const metadata: Metadata = {
   title: 'For AI editors',
   description:
@@ -247,7 +255,9 @@ export default function AgentsPage() {
             </div>
           </section>
 
-          {/* Time-boxed: remove this section after the buildathon closes. */}
+          {/* Self-gating on the deadline — no manual removal needed. The page's
+              `revalidate` is what makes this fire; without it the gate would be
+              frozen at whatever it evaluated to at build time. */}
           {isBuildathonOpen() && (
             <section className="mt-ds-12 border-t border-surface-border-subtle pt-ds-09">
               <Text variant="label-sm" className="mb-ds-02 text-surface-fg-subtle">

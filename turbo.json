@@ -22,7 +22,9 @@
     "typecheck": {
       "dependsOn": ["^build"]
     },
-    "lint": {},
+    "lint": {
+      "dependsOn": ["@devalok/eslint-plugin-shilp-sutra#build"]
+    },
     "test": {
       "dependsOn": ["^build"]
     }

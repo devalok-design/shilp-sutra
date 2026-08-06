@@ -11,10 +11,11 @@
     onGlobalFilterChange: (value: string) => void
     density: 'compact' | 'standard' | 'comfortable'
     onDensityChange: (density: Density) => void
-    enableExport: boolean
+    enableExport: boolean — show the Export CSV button (default true)
+    onExport: (visibleRows: TData[]) => void — replaces the built-in CSV logic; receives the currently visible filtered rows
 
 ## Defaults
-    none
+    enableExport=true, globalFilter=false
 
 ## Example
 ```jsx
@@ -44,11 +45,11 @@ import { DataTableToolbar } from '@devalok/shilp-sutra/ui/data-table-toolbar'
 - Prefer DataTable's `toolbar={true}` prop over rendering this directly
 
 ## Changes
+### v0.57.0
+- **Added** `onExport?: (visibleRows: TData[]) => void` — when provided, replaces the built-in CSV logic. Same signature as `DataTable`'s `onExport`, so the prop forwards straight through.
+
 ### v0.5.0
 - **Changed** (BREAKING) Removed from `@devalok/shilp-sutra/ui` barrel export — must use `@devalok/shilp-sutra/ui/data-table-toolbar`
 
 ### v0.1.0
 - **Added** Initial release
-
-### v0.57.0
-- **Added** `onExport?: () => void` — when provided, replaces the built-in CSV logic.

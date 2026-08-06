@@ -370,6 +370,55 @@ export const VirtualizedLargeDataset: Story = {
   ),
 }
 
+/**
+ * `virtualRows` + `expandable`. Each windowed row is its own measured row group,
+ * so an expanded panel of any height pushes the rows below it instead of painting
+ * over them — `virtualRowHeight` is only the pre-measurement estimate.
+ */
+export const VirtualizedExpandable: Story = {
+  render: () => (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-surface-fg-muted">
+        10,000 virtualized rows with expandable detail panels. Expand a row, then
+        scroll — the rows below shift down by the panel&apos;s real height.
+      </p>
+      <DataTable
+        columns={plainColumns}
+        data={hugeData}
+        virtualRows
+        virtualRowHeight={48}
+        maxHeight={600}
+        expandable
+        renderExpanded={(row) => (
+          <div className="space-y-ds-02 text-ds-sm">
+            <p className="font-semibold text-surface-fg">{row.title}</p>
+            <p className="text-surface-fg-muted">
+              Deliberately tall content so the height difference is visible: this
+              panel is several lines of prose plus a metadata list, none of which
+              would fit inside a 48px row.
+            </p>
+            <dl className="grid grid-cols-[auto_1fr] gap-x-ds-04 gap-y-ds-01">
+              <dt className="font-medium text-surface-fg-muted">ID</dt>
+              <dd className="text-surface-fg">{row.id}</dd>
+              <dt className="font-medium text-surface-fg-muted">Status</dt>
+              <dd className="text-surface-fg">{row.status}</dd>
+              <dt className="font-medium text-surface-fg-muted">Priority</dt>
+              <dd className="text-surface-fg">{row.priority}</dd>
+            </dl>
+          </div>
+        )}
+      />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getAllByLabelText('Expand row')[0])
+    await waitFor(() =>
+      expect(canvas.getByText('TASK-00001', { selector: 'dd' })).toBeVisible(),
+    )
+  },
+}
+
 // --- Full Featured ---
 
 function FullFeaturedDemo() {
@@ -738,6 +787,141 @@ export const OnRowClick: Story = {
         data={filterData}
         getRowId={(row) => row.id}
         onRowClick={(row) => alert(`Clicked: ${row.title}`)}
+      />
+    </div>
+  ),
+}
+
+// --- Per-column filter control ---
+
+/**
+ * `filterableColumns` narrows which columns get a filter input without touching
+ * `enableColumnFilter` on every `ColumnDef`.
+ */
+export const FilterableColumns: Story = {
+  render: () => (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-surface-fg-muted">
+        Only Title and Status get filter inputs — ID and Priority are filterable in
+        the model but have no input.
+      </p>
+      <DataTable
+        columns={columns}
+        data={filterData}
+        filterable
+        filterableColumns={['title', 'status']}
+      />
+    </div>
+  ),
+}
+
+// --- Conditional row styling ---
+
+/**
+ * `rowClassName` returns a class per row. Use the real error/warning scale steps
+ * (`bg-error-3`, `bg-warning-3`) — a step-3 tint stays legible under the row hover
+ * and selected states.
+ */
+export const ConditionalRowStyling: Story = {
+  render: () => (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-surface-fg-muted">
+        High-priority rows are tinted with <code>bg-error-3</code>, in-progress rows
+        with <code>bg-warning-3</code>.
+      </p>
+      <DataTable
+        columns={columns}
+        data={filterData}
+        rowClassName={(row) => {
+          if (row.priority === 'high') return 'bg-error-3'
+          if (row.status === 'in-progress') return 'bg-warning-3'
+          return undefined
+        }}
+      />
+    </div>
+  ),
+}
+
+// --- Export control ---
+
+/**
+ * The toolbar's Export button renders whenever `toolbar` is on. `enableExport={false}`
+ * hides it; `onExport` replaces the built-in CSV with your own handler and hands you
+ * the currently visible (filtered) rows.
+ */
+function ExportControlDemo() {
+  const [lastExport, setLastExport] = useState<string>('')
+
+  return (
+    <div className="space-y-ds-05">
+      <div className="space-y-ds-03">
+        <p className="text-ds-sm text-surface-fg-muted">
+          Custom <code>onExport</code> — receives the visible filtered rows instead
+          of downloading a CSV. Filter first, then export.
+        </p>
+        {lastExport && (
+          <p className="text-ds-sm font-medium text-accent-11">{lastExport}</p>
+        )}
+        <DataTable
+          columns={columns}
+          data={filterData}
+          toolbar
+          globalFilter
+          onExport={(rows) =>
+            setLastExport(
+              `Exported ${rows.length} row(s): ${rows.map((r) => r.id).join(', ')}`,
+            )
+          }
+        />
+      </div>
+
+      <div className="space-y-ds-03">
+        <p className="text-ds-sm text-surface-fg-muted">
+          <code>enableExport={'{false}'}</code> — no Export button. Worth doing with
+          server-side pagination, where the built-in CSV can only see one page.
+        </p>
+        <DataTable columns={columns} data={filterData} toolbar enableExport={false} />
+      </div>
+    </div>
+  )
+}
+
+export const ExportControl: Story = {
+  render: () => <ExportControlDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Only the first table has an Export button.
+    const exportButtons = canvas.getAllByLabelText('Export table as CSV')
+    expect(exportButtons).toHaveLength(1)
+    await userEvent.click(exportButtons[0])
+    await waitFor(() => expect(canvas.getByText(/Exported 10 row\(s\)/)).toBeVisible())
+  },
+}
+
+// --- Mobile card view ---
+
+/**
+ * `mobileView="card"` swaps the table for stacked cards below the `sm` breakpoint.
+ * With `filterable`, the per-column filter inputs move above the card list — card
+ * mode renders no `<thead>` for them to live in.
+ */
+export const MobileCardView: Story = {
+  globals: { viewport: 'mobile' },
+  render: () => (
+    <div className="space-y-ds-04">
+      <p className="text-ds-sm text-surface-fg-muted">
+        Below <code>sm</code> (640px) rows render as cards. Filter inputs sit above
+        the list.
+      </p>
+      <DataTable
+        columns={columns}
+        data={filterData}
+        mobileView="card"
+        filterable
+        filterableColumns={['title', 'status']}
+        selectable
+        getRowId={(row) => row.id}
+        rowClassName={(row) => (row.priority === 'high' ? 'bg-error-3' : undefined)}
       />
     </div>
   ),

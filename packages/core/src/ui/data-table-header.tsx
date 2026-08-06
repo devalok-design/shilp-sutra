@@ -24,7 +24,7 @@ import { TableHead, TableHeader, TableRow } from './table'
  * and optional per-column filter inputs. Internal — not exported to consumers.
  */
 function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
-  const { table, sortable, filterable, columnPinningState } =
+  const { table, sortable, filterable, filterableColumns, columnPinningState } =
     useDataTableContext()
 
   return (
@@ -146,31 +146,37 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
       {filterable &&
         table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={`${headerGroup.id}-filters`}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={`${header.id}-filter`} className="py-ds-01">
-                {header.isPlaceholder ||
-                header.column.columnDef.enableColumnFilter === false ? null : (
-                  <input
-                    type="text"
-                    value={
-                      (header.column.getFilterValue() as string) ?? ''
-                    }
-                    onChange={(e) =>
-                      header.column.setFilterValue(e.target.value)
-                    }
-                    placeholder={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : ''}...`}
-                    aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
-                    className={cn(
-                      'h-ds-xs-plus w-full rounded-control',
-                      'border border-card-strong bg-surface-raised-hover',
-                      'px-ds-02 text-body-sm',
-                      'text-surface-fg placeholder:text-surface-fg-subtle',
-                      'outline-hidden focus:border-accent-7',
-                    )}
-                  />
-                )}
-              </TableHead>
-            ))}
+            {headerGroup.headers.map((header) => {
+              // When filterableColumns is set, only render inputs for listed IDs.
+              // Falls back to the existing enableColumnFilter: false column-level opt-out.
+              const isFiltered = filterableColumns
+                ? filterableColumns.includes(header.column.id)
+                : header.column.columnDef.enableColumnFilter !== false
+              return (
+                <TableHead key={`${header.id}-filter`} className="py-ds-01">
+                  {header.isPlaceholder || !isFiltered ? null : (
+                    <input
+                      type="text"
+                      value={
+                        (header.column.getFilterValue() as string) ?? ''
+                      }
+                      onChange={(e) =>
+                        header.column.setFilterValue(e.target.value)
+                      }
+                      placeholder={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : ''}...`}
+                      aria-label={`Filter ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
+                      className={cn(
+                        'h-ds-xs-plus w-full rounded-control',
+                        'border border-card-strong bg-surface-raised-hover',
+                        'px-ds-02 text-body-sm',
+                        'text-surface-fg placeholder:text-surface-fg-subtle',
+                        'outline-hidden focus:border-accent-7',
+                      )}
+                    />
+                  )}
+                </TableHead>
+              )
+            })}
           </TableRow>
         ))}
     </TableHeader>

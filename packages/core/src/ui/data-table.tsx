@@ -132,8 +132,13 @@ export interface DataTableProps<TData, TValue> {
   pageSizeOptions?: number[]
   /** Enable row selection with checkboxes */
   selectable?: boolean
-  /** Callback when row selection changes */
-  onSelectionChange?: (selectedRows: TData[]) => void
+  /**
+   * Callback when row selection changes.
+   * Second argument `selectedIds` is the set of selected row IDs — the natural
+   * complement of the `selectedIds` controlled prop, so you never have to
+   * re-derive them yourself.
+   */
+  onSelectionChange?: (selectedRows: TData[], selectedIds: Set<string>) => void
   /** Show toolbar above the table with column visibility, density, and export controls */
   toolbar?: boolean
   /** Row density — controls cell vertical padding */
@@ -156,7 +161,11 @@ export interface DataTableProps<TData, TValue> {
   // --- Virtualization ---
   /** Enable row virtualization for large datasets */
   virtualRows?: boolean
-  /** Height of each virtual row in pixels (default 48) */
+  /**
+   * Estimated height of each virtual row in pixels (default 48). Real heights are
+   * measured after mount, so this only has to be close — it decides the initial
+   * scroll extent and how many rows render before the first measurement pass.
+   */
   virtualRowHeight?: number
   /** Maximum height of the scrollable container in pixels (default 600) */
   maxHeight?: number
@@ -209,6 +218,48 @@ export interface DataTableProps<TData, TValue> {
   // --- Mobile view ---
   /** Render rows as stacked cards on small screens (below sm breakpoint). Default 'table'. */
   mobileView?: 'card' | 'table'
+
+  // --- Toolbar export ---
+  /**
+   * Whether to show the Export CSV button in the toolbar. Defaults to `true`
+   * (the button has always rendered whenever `toolbar` is on). Pass `false` to
+   * hide it — worth doing with server-side `pagination`, where the built-in CSV
+   * export can only see the current page's rows; `onExport` is the other answer
+   * there, since it lets you fetch the full set yourself.
+   */
+  enableExport?: boolean
+  /**
+   * Override the default client-side CSV export. Receives the currently visible
+   * (filtered) rows so you can trigger a server-side full export or apply custom
+   * formatting. When provided, the built-in CSV logic is skipped entirely.
+   */
+  onExport?: (visibleRows: TData[]) => void
+
+  // --- Per-column filter control ---
+  /**
+   * Restrict filter inputs to specific column IDs. Only effective when
+   * `filterable` is true. When omitted, all columns without
+   * `enableColumnFilter: false` in their `ColumnDef` get a filter input
+   * (existing behaviour). When provided, only the listed columns get inputs.
+   *
+   * @example
+   * // Show filter inputs only for name and email columns
+   * <DataTable filterable filterableColumns={['name', 'email']} />
+   */
+  filterableColumns?: string[]
+
+  // --- Conditional row styling ---
+  /**
+   * Return a className string for a given row — applied to the `<tr>` in table
+   * layout and to the `Card` in `mobileView="card"` layout.
+   *
+   * The return value is passed through `cn()` verbatim, so an invented class
+   * silently does nothing. Use real token steps (`bg-error-3`, `bg-warning-3`).
+   *
+   * @example
+   * rowClassName={(row) => row.status === 'overdue' ? 'bg-error-3' : undefined}
+   */
+  rowClassName?: (row: TData) => string | undefined
 }
 
 export function DataTable<TData, TValue>({
@@ -246,6 +297,10 @@ export function DataTable<TData, TValue>({
   onRowClick,
   bulkActions,
   mobileView = 'table',
+  enableExport,
+  onExport,
+  filterableColumns,
+  rowClassName,
 }: DataTableProps<TData, TValue>) {
   // Detect below-sm viewport (640px) for card mode — separate from useIsMobile (768px)
   const [isBelowSm, setIsBelowSm] = useState(false)
@@ -282,6 +337,8 @@ export function DataTable<TData, TValue>({
 
   // Guard to prevent onSelectionChange firing when syncing from selectedIds prop
   const isSyncingFromPropRef = useRef(false)
+  // Guard to prevent onSelectionChange firing on mount (initial empty selection)
+  const isFirstRenderRef = useRef(true)
 
   // Sync controlled selectedIds to internal rowSelection
   useEffect(() => {
@@ -509,8 +566,15 @@ export function DataTable<TData, TValue>({
     getRowIdRef.current = getRowIdProp
   }, [onSelectionChange, getRowIdProp])
 
-  // Fire selection callback when row selection changes (skip when syncing from prop)
+  // Fire selection callback when row selection changes (skip on mount and when syncing from prop)
   useEffect(() => {
+    // Skip the very first render — rowSelection starts as {} and firing here
+    // would send an empty array to every handler on mount, causing spurious
+    // refetches, query invalidations, and route refreshes in real apps.
+    if (isFirstRenderRef.current) {
+      isFirstRenderRef.current = false
+      return
+    }
     if (isSyncingFromPropRef.current) {
       isSyncingFromPropRef.current = false
       return
@@ -521,13 +585,20 @@ export function DataTable<TData, TValue>({
       const id = getRowIdRef.current ? getRowIdRef.current(data[i]) : String(i)
       return selectedRowIds.includes(id)
     })
-    onSelectionChangeRef.current(selected)
+    // Pass selected IDs as second arg — the natural complement of the `selectedIds`
+    // controlled prop so consumers never have to re-derive them.
+    onSelectionChangeRef.current(selected, new Set(selectedRowIds))
   }, [rowSelection, data])
 
   const rows = table.getRowModel().rows
 
-  // Virtualizer — always called but only active when virtualRows is true
-  const virtualizer = useVirtualizer({
+  // Virtualizer — always called but only active when virtualRows is true.
+  // `virtualRowHeight` is only the ESTIMATE: each rendered row group carries
+  // `virtualizer.measureElement` as its ref, so real heights (including an
+  // expanded row's detail panel) are measured and folded into `getTotalSize()`.
+  // Without that, an expanded panel and the row after it resolve to the same
+  // offset and paint on top of each other.
+  const virtualizer = useVirtualizer<HTMLDivElement, HTMLTableSectionElement>({
     count: virtualRows ? rows.length : 0,
     getScrollElement: () => scrollContainerRef.current,
     estimateSize: () => virtualRowHeight,
@@ -565,6 +636,7 @@ export function DataTable<TData, TValue>({
       columnPinningState,
       sortable,
       filterable,
+      filterableColumns,
       editable,
       expandable,
       virtualRows,
@@ -575,6 +647,7 @@ export function DataTable<TData, TValue>({
       onCellEdit,
       renderExpanded,
       onRowClick,
+      rowClassName,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -583,6 +656,7 @@ export function DataTable<TData, TValue>({
       columnPinningState,
       sortable,
       filterable,
+      filterableColumns,
       editable,
       expandable,
       virtualRows,
@@ -592,12 +666,14 @@ export function DataTable<TData, TValue>({
       onCellEdit,
       renderExpanded,
       onRowClick,
+      rowClassName,
     ],
   )
 
   // Virtual items for body
   const virtualItems = virtualRows ? virtualizer.getVirtualItems() : undefined
   const totalVirtualSize = virtualRows ? virtualizer.getTotalSize() : undefined
+  const measureRow = virtualizer.measureElement
 
   // Determine if we need a scroll wrapper for virtualization
   const tableContent = (
@@ -610,6 +686,7 @@ export function DataTable<TData, TValue>({
         emptyState={emptyState}
         virtualItems={virtualItems}
         totalVirtualSize={totalVirtualSize}
+        measureRow={measureRow}
       />
     </Table>
   )
@@ -626,6 +703,12 @@ export function DataTable<TData, TValue>({
             onGlobalFilterChange={setGlobalFilterValue}
             density={density}
             onDensityChange={setDensity}
+            // Defaults to true — the Export button has shipped unconditionally
+            // since the toolbar existed, so defaulting it off (even only for
+            // server pagination) would silently delete a live affordance from
+            // every consumer on upgrade. Opt out with enableExport={false}.
+            enableExport={enableExport ?? true}
+            onExport={onExport}
           />
         )}
 

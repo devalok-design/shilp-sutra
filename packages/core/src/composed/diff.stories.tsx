@@ -100,6 +100,37 @@ export const Fields: Story = {
   args: { before: jsonBefore, after: jsonAfter, mode: 'fields' },
 }
 
+export const SyntaxHighlighted: Story = {
+  name: 'Syntax highlighted (language)',
+  args: { before: configBefore, after: configAfter, mode: 'split', language: 'yaml' },
+}
+
+export const FieldsParseErrors: Story = {
+  name: 'Fields — invalid JSON (default + custom slots)',
+  render: () => (
+    <div style={{ maxWidth: 640, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <div>
+        <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-surface-fg-subtle)', marginBottom: 8 }}>
+          Default fallback message
+        </div>
+        <Diff before="not valid json" after={jsonAfter} mode="fields" />
+      </div>
+      <div>
+        <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-surface-fg-subtle)', marginBottom: 8 }}>
+          Custom beforeParseError / afterParseError
+        </div>
+        <Diff
+          before="not valid json"
+          after="also not valid"
+          mode="fields"
+          beforeParseError={(raw) => <span>Committed value isn&rsquo;t JSON: {raw}</span>}
+          afterParseError={(raw) => <span>Pending value isn&rsquo;t JSON: {raw}</span>}
+        />
+      </div>
+    </div>
+  ),
+}
+
 export const SplitWordHighlight: Story = {
   name: 'Split + intra-line words',
   args: { before: proseBefore, after: proseAfter, mode: 'split', granularity: 'line' },

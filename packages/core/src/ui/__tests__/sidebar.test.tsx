@@ -1,5 +1,5 @@
 import { fireEvent,render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import {
   Sidebar,
@@ -12,9 +12,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
   useSidebar,
 } from '../sidebar'
+
+const mockUseIsMobile = vi.fn(() => false)
+vi.mock('../../hooks/use-mobile', () => ({
+  useIsMobile: () => mockUseIsMobile(),
+}))
 
 // Helper: wrap components that require SidebarProvider context
 function renderWithProvider(ui: React.ReactNode, props?: { defaultOpen?: boolean }) {
@@ -117,5 +123,143 @@ describe('useSidebar', () => {
     expect(() => render(<Bomb />)).toThrow(
       'useSidebar must be used within a SidebarProvider.',
     )
+  })
+})
+
+function StateReadout() {
+  const { state, toggleSidebar } = useSidebar()
+  return (
+    <>
+      <span data-testid="state">{state}</span>
+      <button type="button" onClick={toggleSidebar}>toggle</button>
+    </>
+  )
+}
+
+describe('collapsed state toggling', () => {
+  it('toggleSidebar flips state between expanded and collapsed', () => {
+    render(
+      <SidebarProvider defaultOpen={true}>
+        <StateReadout />
+      </SidebarProvider>,
+    )
+    expect(screen.getByTestId('state')).toHaveTextContent('expanded')
+    fireEvent.click(screen.getByRole('button', { name: 'toggle' }))
+    expect(screen.getByTestId('state')).toHaveTextContent('collapsed')
+    fireEvent.click(screen.getByRole('button', { name: 'toggle' }))
+    expect(screen.getByTestId('state')).toHaveTextContent('expanded')
+  })
+
+  it('reflects state via data-state on the Sidebar wrapper', () => {
+    const { container } = render(
+      <SidebarProvider defaultOpen={true}>
+        <Sidebar collapsible="icon">
+          <div>Nav</div>
+        </Sidebar>
+        <StateReadout />
+      </SidebarProvider>,
+    )
+    const wrapper = container.querySelector('[data-state]')
+    expect(wrapper).toHaveAttribute('data-state', 'expanded')
+    fireEvent.click(screen.getByRole('button', { name: 'toggle' }))
+    expect(wrapper).toHaveAttribute('data-state', 'collapsed')
+  })
+
+  it('SidebarTrigger click toggles state', () => {
+    render(
+      <SidebarProvider defaultOpen={true}>
+        <SidebarTrigger />
+        <StateReadout />
+      </SidebarProvider>,
+    )
+    expect(screen.getByTestId('state')).toHaveTextContent('expanded')
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle Sidebar' }))
+    expect(screen.getByTestId('state')).toHaveTextContent('collapsed')
+  })
+})
+
+describe('keyboard shortcut', () => {
+  it('Cmd/Ctrl+B toggles the sidebar', () => {
+    render(
+      <SidebarProvider defaultOpen={true}>
+        <StateReadout />
+      </SidebarProvider>,
+    )
+    expect(screen.getByTestId('state')).toHaveTextContent('expanded')
+    fireEvent.keyDown(window, { key: 'b', metaKey: true })
+    expect(screen.getByTestId('state')).toHaveTextContent('collapsed')
+    fireEvent.keyDown(window, { key: 'b', ctrlKey: true })
+    expect(screen.getByTestId('state')).toHaveTextContent('expanded')
+  })
+
+  it('ignores the "b" key without a modifier', () => {
+    render(
+      <SidebarProvider defaultOpen={true}>
+        <StateReadout />
+      </SidebarProvider>,
+    )
+    fireEvent.keyDown(window, { key: 'b' })
+    expect(screen.getByTestId('state')).toHaveTextContent('expanded')
+  })
+})
+
+describe('SidebarRail', () => {
+  it('clicking the rail toggles the sidebar', () => {
+    render(
+      <SidebarProvider defaultOpen={true}>
+        <Sidebar collapsible="icon">
+          <div>Nav</div>
+        </Sidebar>
+        <SidebarRail />
+        <StateReadout />
+      </SidebarProvider>,
+    )
+    expect(screen.getByTestId('state')).toHaveTextContent('expanded')
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle Sidebar' }))
+    expect(screen.getByTestId('state')).toHaveTextContent('collapsed')
+  })
+
+  it('renders with data-sidebar="rail"', () => {
+    render(
+      <SidebarProvider>
+        <SidebarRail />
+      </SidebarProvider>,
+    )
+    expect(screen.getByRole('button', { name: 'Toggle Sidebar' })).toHaveAttribute(
+      'data-sidebar',
+      'rail',
+    )
+  })
+})
+
+describe('mobile Sheet variant', () => {
+  it('renders a Sheet instead of the fixed sidebar markup when isMobile', () => {
+    mockUseIsMobile.mockReturnValue(true)
+    render(
+      <SidebarProvider defaultOpen={true}>
+        <SidebarTrigger />
+        <Sidebar collapsible="offcanvas">
+          <div>Mobile nav</div>
+        </Sidebar>
+      </SidebarProvider>,
+    )
+    // The mobile Sheet starts closed (openMobile defaults to false) — open it first.
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle Sidebar' }))
+    expect(screen.getByText('Mobile nav')).toBeInTheDocument()
+    const sheetContent = document.querySelector('[data-sidebar="sidebar"][data-mobile="true"]')
+    expect(sheetContent).toBeInTheDocument()
+    mockUseIsMobile.mockReturnValue(false)
+  })
+
+  it('does not render the mobile Sheet markup on desktop', () => {
+    mockUseIsMobile.mockReturnValue(false)
+    render(
+      <SidebarProvider defaultOpen={true}>
+        <Sidebar collapsible="offcanvas">
+          <div>Desktop nav</div>
+        </Sidebar>
+      </SidebarProvider>,
+    )
+    expect(document.querySelector('[data-mobile="true"]')).not.toBeInTheDocument()
   })
 })

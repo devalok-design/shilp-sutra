@@ -155,13 +155,16 @@ Horizontal rule with a formatted date label.
 
 ### Props
     date: Date | string (REQUIRED)
-    format: (date: Date) => string — custom date formatter
+    format: (date: Date) => string — custom date formatter (overrides locale/timeZone)
+    locale: string — BCP 47 locale for the default label's month name (default 'en-US')
+    timeZone: string — IANA time zone for the "Today"/"Yesterday" day-boundary comparison and formatting (default: browser's local time zone)
     className: string
 
 ### Example
 ```jsx
 <DateSeparator date={new Date()} />
 <DateSeparator date="2026-03-25" format={(d) => d.toLocaleDateString()} />
+<DateSeparator date={new Date()} locale="fr-FR" timeZone="Europe/Paris" />
 ```
 
 ---
@@ -219,5 +222,8 @@ Animated bouncing dots with a text description of who is typing.
 - DateSeparator's default formatter shows "Today", "Yesterday", or "Mon DD" / "Mon DD, YYYY"
 
 ## Changes
+### Unreleased
+- **Added** `DateSeparator` gained `locale?: string` and `timeZone?: string` props — the default label previously always used `en-US` month names and the browser's local time zone.
+
 ### v0.29.0
 - **Added** Initial release — 7 chat primitives (MessageList, Message, SystemMessage, MessageInput, DateSeparator, UnreadSeparator, TypingIndicator)

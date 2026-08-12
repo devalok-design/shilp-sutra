@@ -26,7 +26,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Checkbox } from './checkbox'
 import { DataTableBody } from './data-table-body'
-import { type BulkAction,DataTableBulkActions } from './data-table-bulk-actions'
+import { type BulkAction,type BulkActionsPosition, DataTableBulkActions } from './data-table-bulk-actions'
 import { DataTableCards } from './data-table-card'
 import {
   DataTableProvider,
@@ -214,6 +214,8 @@ export interface DataTableProps<TData, TValue> {
   // --- Bulk actions ---
   /** Actions shown in a floating bar when rows are selected */
   bulkActions?: BulkAction<TData>[]
+  /** Where the bulk-actions bar renders. @default 'bottom' */
+  bulkActionsPosition?: BulkActionsPosition
 
   // --- Mobile view ---
   /** Render rows as stacked cards on small screens (below sm breakpoint). Default 'table'. */
@@ -296,6 +298,7 @@ export function DataTable<TData, TValue>({
   stickyHeader = false,
   onRowClick,
   bulkActions,
+  bulkActionsPosition = 'bottom',
   mobileView = 'table',
   enableExport,
   onExport,
@@ -766,6 +769,7 @@ export function DataTable<TData, TValue>({
             table={table}
             selectedRows={selectedRows}
             bulkActions={bulkActions}
+            position={bulkActionsPosition}
           />
         )}
       </div>

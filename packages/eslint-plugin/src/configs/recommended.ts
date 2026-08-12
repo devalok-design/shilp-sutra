@@ -27,6 +27,7 @@ const config = {
     // Recommended (warn / advisory)
     'shilp-sutra/no-bare-shadow': 'warn',
     'shilp-sutra/require-mutation-annotation': 'warn',
+    'shilp-sutra/require-progress-label': 'warn',
     'shilp-sutra/toast-object-syntax': 'warn',
   },
 }

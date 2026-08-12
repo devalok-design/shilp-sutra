@@ -976,6 +976,57 @@ describe('DataTable — enableExport + onExport', () => {
     expect(onExport).toHaveBeenCalledTimes(1)
     expect(onExport.mock.calls[0][0]).toHaveLength(4)
   })
+
+  // #268 — onExport must receive the currently visible (filtered) rows, not
+  // the full original `data` array, per its own JSDoc ("Receives the
+  // currently visible (filtered) rows...").
+  it('onExport receives only the currently filtered (visible) rows, not all rows', async () => {
+    const onExport = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        toolbar
+        filterable
+        enableExport
+        onExport={onExport}
+      />,
+    )
+    const user = userEvent.setup()
+
+    // Filter down to just Alice — Bob/Carol/Dave should drop out of view.
+    await user.type(screen.getByPlaceholderText('Filter Name...'), 'Alice')
+    expect(screen.getByText('Alice Smith')).toBeInTheDocument()
+    expect(screen.queryByText('Bob Jones')).not.toBeInTheDocument()
+    expect(screen.queryByText('Carol White')).not.toBeInTheDocument()
+    expect(screen.queryByText('Dave Brown')).not.toBeInTheDocument()
+
+    await user.click(screen.getByLabelText('Export table as CSV'))
+
+    expect(onExport).toHaveBeenCalledTimes(1)
+    // Exactly the visible subset — not the full 4-row `data` array.
+    expect(onExport.mock.calls[0][0]).toEqual([data[0]])
+  })
+
+  it('onExport receives all rows when no filter is applied (sanity check)', async () => {
+    const onExport = vi.fn()
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        toolbar
+        filterable
+        enableExport
+        onExport={onExport}
+      />,
+    )
+    const user = userEvent.setup()
+
+    await user.click(screen.getByLabelText('Export table as CSV'))
+
+    expect(onExport).toHaveBeenCalledTimes(1)
+    expect(onExport.mock.calls[0][0]).toEqual(data)
+  })
 })
 
 // ============================================================

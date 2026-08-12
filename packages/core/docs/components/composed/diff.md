@@ -17,6 +17,9 @@
     afterLabel: string (new-side column label, split mode)
     onAcceptHunk: (hunk) => void (adds per-change Accept control)
     onRejectHunk: (hunk) => void (adds per-change Reject control)
+    language: string (syntax-highlight full lines as this language — inline/split, "line" granularity only; lazy-loads react-syntax-highlighter, one-dark theme, same pattern as MarkdownViewer)
+    beforeParseError: (raw: string) => ReactNode (custom render when `before` fails to parse as JSON in fields mode; default is a plain message)
+    afterParseError: (raw: string) => ReactNode (custom render when `after` fails to parse as JSON in fields mode; default is a plain message)
 
 ## Defaults
     mode="inline", granularity="line", collapseUnchanged={true}, collapseThreshold={6}, contextLines={3}, showSummary={true}, beforeLabel="Committed", afterLabel="Pending"
@@ -44,7 +47,12 @@
 - **Semantic colour:** additions use the `success` scale, removals the `error` scale — flips correctly in dark.
 
 ## Gotchas
-- `fields` mode requires valid JSON on both sides; it reports a clear message otherwise. For YAML, parse to an object and `JSON.stringify` before passing.
-- `granularity="word"` is for prose; it renders a flowing word-level diff, not line gutters.
+- `fields` mode requires valid JSON on both sides; it reports a clear message per side otherwise (override with `beforeParseError`/`afterParseError`). For YAML, parse to an object and `JSON.stringify` before passing.
+- `granularity="word"` is for prose; it renders a flowing word-level diff, not line gutters. `language` has no effect in word granularity or `fields` mode.
 - Accept/Reject controls only appear when the matching handler is provided — the Diff itself doesn't mutate content; the consumer applies the decision.
 - Hunk = a contiguous run of added/removed lines; `onAcceptHunk`/`onRejectHunk` receive `{ index, before, after }`.
+
+## Changes
+### Unreleased
+- **Added** `language?: string` — syntax-highlight full lines (inline/split, line granularity) via lazy-loaded `react-syntax-highlighter`.
+- **Added** `beforeParseError?: (raw: string) => ReactNode` / `afterParseError?: (raw: string) => ReactNode` — customize the fallback shown per side when `fields` mode JSON parsing fails (previously one fixed message covered both sides).

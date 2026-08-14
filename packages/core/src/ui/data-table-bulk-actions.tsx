@@ -6,14 +6,26 @@ import React from 'react'
 
 import { Button } from './button'
 import { Icon } from './icon'
+import type { IconInput } from './lib/icon-input'
 import { cn } from './lib/utils'
+
+/** Where the floating bulk-action bar renders. @default 'bottom' */
+export type BulkActionsPosition = 'bottom' | 'top' | 'inline'
 
 /** Bulk action definition for the floating action bar */
 export interface BulkAction<TData> {
   label: string
   onClick: (selectedRows: TData[]) => void
+  /** Icon rendered before the label — useful for compact/mobile bars. */
+  icon?: IconInput
   color?: 'accent' | 'error'
   disabled?: boolean
+}
+
+const POSITION_CLASSES: Record<BulkActionsPosition, string> = {
+  bottom: 'fixed bottom-6 left-1/2 -translate-x-1/2 z-sticky animate-in slide-in-from-bottom-2',
+  top: 'fixed top-6 left-1/2 -translate-x-1/2 z-sticky animate-in slide-in-from-top-2',
+  inline: 'relative animate-in fade-in',
 }
 
 /**
@@ -24,18 +36,19 @@ export function DataTableBulkActions<TData>({
   table,
   selectedRows,
   bulkActions,
+  position = 'bottom',
 }: {
   table: Table<TData>
   selectedRows: TData[]
   bulkActions: BulkAction<TData>[]
+  position?: BulkActionsPosition
 }) {
   return (
     <div
       className={cn(
-        'fixed bottom-6 left-1/2 -translate-x-1/2 z-sticky',
+        POSITION_CLASSES[position],
         'flex items-center gap-ds-04 px-ds-05 py-ds-03',
         'rounded-overlay bg-surface-overlay shadow-floating',
-        'animate-in slide-in-from-bottom-2',
       )}
       role="toolbar"
       aria-label="Bulk actions"
@@ -51,6 +64,7 @@ export function DataTableBulkActions<TData>({
           variant={action.color === 'error' ? 'solid' : 'outline'}
           color={action.color === 'error' ? 'error' : undefined}
           disabled={action.disabled}
+          startIcon={action.icon}
           onClick={() => action.onClick(selectedRows)}
         >
           {action.label}

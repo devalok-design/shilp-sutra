@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { format } from 'date-fns'
 import { describe, expect, it, vi } from 'vitest'
@@ -151,6 +151,14 @@ describe('DatePicker', () => {
     const { container } = render(<DatePicker />)
     expect(await axe(container)).toHaveNoViolations()
   })
+
+  it('clearing the value (controlled) reverts to the placeholder', () => {
+    const { rerender } = render(<DatePicker value={new Date(2026, 2, 15)} placeholder="Pick a date" />)
+    expect(screen.getByText('Mar 15, 2026')).toBeInTheDocument()
+    rerender(<DatePicker value={null} placeholder="Pick a date" />)
+    expect(screen.getByText('Pick a date')).toBeInTheDocument()
+    expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Pick a date')
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -227,6 +235,40 @@ describe('DateRangePicker', () => {
   it('has no accessibility violations in closed state', async () => {
     const { container } = render(<DateRangePicker />)
     expect(await axe(container)).toHaveNoViolations()
+  })
+
+  it('disables dates outside minDate/maxDate', async () => {
+    const user = userEvent.setup()
+    render(
+      <DateRangePicker
+        startDate={new Date(2026, 2, 1)}
+        minDate={new Date(2026, 2, 5)}
+        maxDate={new Date(2026, 2, 25)}
+      />,
+    )
+    await user.click(screen.getByRole('button'))
+    expect(
+      screen.getByRole('gridcell', { name: 'Wednesday, March 4, 2026' }),
+    ).toHaveAttribute('aria-disabled', 'true')
+    expect(
+      screen.getByRole('gridcell', { name: 'Thursday, March 26, 2026' }),
+    ).toHaveAttribute('aria-disabled', 'true')
+    expect(
+      screen.getByRole('gridcell', { name: 'Sunday, March 15, 2026' }),
+    ).not.toHaveAttribute('aria-disabled')
+  })
+
+  it('clearing the range (controlled) reverts to the placeholder', () => {
+    const { rerender } = render(
+      <DateRangePicker
+        startDate={new Date(2026, 2, 1)}
+        endDate={new Date(2026, 2, 15)}
+        placeholder="Pick a date range"
+      />,
+    )
+    expect(screen.getByText('Mar 1, 2026 - Mar 15, 2026')).toBeInTheDocument()
+    rerender(<DateRangePicker startDate={null} endDate={null} placeholder="Pick a date range" />)
+    expect(screen.getByText('Pick a date range')).toBeInTheDocument()
   })
 })
 
@@ -391,6 +433,33 @@ describe('DateTimePicker', () => {
     const { container } = render(<DateTimePicker />)
     expect(await axe(container)).toHaveNoViolations()
   })
+
+  it('disables dates outside minDate/maxDate', async () => {
+    const user = userEvent.setup()
+    render(
+      <DateTimePicker
+        value={new Date(2026, 2, 15, 10, 0)}
+        minDate={new Date(2026, 2, 5)}
+        maxDate={new Date(2026, 2, 25)}
+      />,
+    )
+    await user.click(screen.getByRole('button'))
+    expect(
+      screen.getByRole('gridcell', { name: 'Wednesday, March 4, 2026' }),
+    ).toHaveAttribute('aria-disabled', 'true')
+    expect(
+      screen.getByRole('gridcell', { name: 'Thursday, March 26, 2026' }),
+    ).toHaveAttribute('aria-disabled', 'true')
+  })
+
+  it('clearing the value (controlled) reverts to the placeholder', () => {
+    const { rerender } = render(
+      <DateTimePicker value={new Date(2026, 2, 15, 14, 30)} placeholder="Pick date & time" />,
+    )
+    expect(screen.getByText('Mar 15, 2026 2:30 PM')).toBeInTheDocument()
+    rerender(<DateTimePicker value={null} placeholder="Pick date & time" />)
+    expect(screen.getByText('Pick date & time')).toBeInTheDocument()
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -504,6 +573,84 @@ describe('CalendarGrid', () => {
     expect(onMonthChange).toHaveBeenCalledOnce()
     const newMonth: Date = onMonthChange.mock.calls[0][0]
     expect(newMonth.getMonth()).toBe(3) // April
+  })
+
+  it('moves focus one day right on ArrowRight', async () => {
+    const user = userEvent.setup()
+    render(<CalendarGrid {...baseProps} />)
+    const day10 = screen.getByRole('gridcell', { name: 'Tuesday, March 10, 2026' })
+    day10.focus()
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('gridcell', { name: 'Wednesday, March 11, 2026' })).toHaveFocus()
+  })
+
+  it('moves focus one day left on ArrowLeft', async () => {
+    const user = userEvent.setup()
+    render(<CalendarGrid {...baseProps} />)
+    const day10 = screen.getByRole('gridcell', { name: 'Tuesday, March 10, 2026' })
+    day10.focus()
+    await user.keyboard('{ArrowLeft}')
+    expect(screen.getByRole('gridcell', { name: 'Monday, March 9, 2026' })).toHaveFocus()
+  })
+
+  it('moves focus one week down on ArrowDown and up on ArrowUp', async () => {
+    const user = userEvent.setup()
+    render(<CalendarGrid {...baseProps} />)
+    const day10 = screen.getByRole('gridcell', { name: 'Tuesday, March 10, 2026' })
+    day10.focus()
+    await user.keyboard('{ArrowDown}')
+    expect(screen.getByRole('gridcell', { name: 'Tuesday, March 17, 2026' })).toHaveFocus()
+    await user.keyboard('{ArrowUp}')
+    expect(screen.getByRole('gridcell', { name: 'Tuesday, March 10, 2026' })).toHaveFocus()
+  })
+
+  it('Home moves focus to the first day of the month, End to the last', async () => {
+    const user = userEvent.setup()
+    render(<CalendarGrid {...baseProps} />)
+    const day10 = screen.getByRole('gridcell', { name: 'Tuesday, March 10, 2026' })
+    day10.focus()
+    await user.keyboard('{Home}')
+    expect(screen.getByRole('gridcell', { name: 'Sunday, March 1, 2026' })).toHaveFocus()
+    await user.keyboard('{End}')
+    expect(screen.getByRole('gridcell', { name: 'Tuesday, March 31, 2026' })).toHaveFocus()
+  })
+
+  it('Enter selects the focused day', async () => {
+    const user = userEvent.setup()
+    const onSelect = vi.fn()
+    render(<CalendarGrid {...baseProps} onSelect={onSelect} />)
+    const day10 = screen.getByRole('gridcell', { name: 'Tuesday, March 10, 2026' })
+    day10.focus()
+    await user.keyboard('{Enter}')
+    expect(onSelect).toHaveBeenCalledOnce()
+    expect(onSelect.mock.calls[0][0].getDate()).toBe(10)
+  })
+
+  it('Space selects the focused day', async () => {
+    const user = userEvent.setup()
+    const onSelect = vi.fn()
+    render(<CalendarGrid {...baseProps} onSelect={onSelect} />)
+    const day10 = screen.getByRole('gridcell', { name: 'Tuesday, March 10, 2026' })
+    day10.focus()
+    await user.keyboard(' ')
+    expect(onSelect).toHaveBeenCalledOnce()
+    expect(onSelect.mock.calls[0][0].getDate()).toBe(10)
+  })
+
+  it('does not select a disabled day on Enter', () => {
+    const onSelect = vi.fn()
+    render(
+      <CalendarGrid
+        {...baseProps}
+        onSelect={onSelect}
+        minDate={new Date(2026, 2, 5)}
+      />,
+    )
+    // Day 4 is disabled (before minDate) — dispatch Enter directly on it,
+    // since a native `disabled` button can't receive real keyboard focus.
+    const day4 = screen.getByRole('gridcell', { name: 'Wednesday, March 4, 2026' })
+    fireEvent.keyDown(day4, { key: 'Enter' })
+    expect(onSelect).not.toHaveBeenCalled()
   })
 
   it('hides prev/next nav when told to', () => {

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { within, userEvent, expect, waitFor } from 'storybook/test'
 import { useState } from 'react'
+import { IconArchive } from '@tabler/icons-react'
 import { DataTable } from './data-table'
 import type { ColumnDef } from '@tanstack/react-table'
 import { Badge } from './badge'
@@ -729,8 +730,25 @@ export const BulkActions: Story = {
       selectable
       getRowId={(row) => row.id}
       bulkActions={[
-        { label: 'Archive', onClick: (rows) => alert(`Archive ${rows.length} rows`) },
+        { label: 'Archive', onClick: (rows) => alert(`Archive ${rows.length} rows`), icon: IconArchive },
         { label: 'Add Label', onClick: (rows) => alert(`Label ${rows.length} rows`) },
+        { label: 'Delete', onClick: (rows) => alert(`Delete ${rows.length} rows`), color: 'error' },
+      ]}
+    />
+  ),
+}
+
+export const BulkActionsInline: Story = {
+  name: 'Bulk actions — inline position',
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={filterData}
+      selectable
+      getRowId={(row) => row.id}
+      bulkActionsPosition="inline"
+      bulkActions={[
+        { label: 'Archive', onClick: (rows) => alert(`Archive ${rows.length} rows`), icon: IconArchive },
         { label: 'Delete', onClick: (rows) => alert(`Delete ${rows.length} rows`), color: 'error' },
       ]}
     />

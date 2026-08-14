@@ -9,6 +9,52 @@ import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { cn } from '../ui/lib/utils'
 
+// Shared lazy-loaded module cache — same lazy-load + one-dark theme pattern as
+// MarkdownViewer's CodeBlock, so multiple highlighted lines only fetch once.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let highlighterPromise: Promise<{ Highlighter: any; style: any }> | null = null
+function loadHighlighter() {
+  if (!highlighterPromise) {
+    highlighterPromise = Promise.all([
+      import('react-syntax-highlighter'),
+      import('react-syntax-highlighter/dist/esm/styles/prism/one-dark'),
+    ]).then(([hlMod, styleMod]) => ({
+      Highlighter: hlMod.Prism ?? hlMod.default,
+      style: styleMod.default,
+    }))
+  }
+  return highlighterPromise
+}
+
+/** A single syntax-highlighted line. Falls back to plain text until the highlighter loads. */
+function CodeText({ language, text }: { language?: string; text: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [modules, setModules] = React.useState<{ Highlighter: any; style: any } | null>(null)
+
+  React.useEffect(() => {
+    if (!language) return
+    let cancelled = false
+    loadHighlighter().then((m) => { if (!cancelled) setModules(m) }).catch(() => { /* fallback to plain text */ })
+    return () => { cancelled = true }
+  }, [language])
+
+  if (!language || !modules) return <>{text || ' '}</>
+
+  const { Highlighter, style } = modules
+  return (
+    <Highlighter
+      language={language}
+      style={style}
+      PreTag="span"
+      CodeTag="span"
+      customStyle={{ margin: 0, padding: 0, background: 'transparent', display: 'inline' }}
+      codeTagProps={{ style: { background: 'transparent' } }}
+    >
+      {text || ' '}
+    </Highlighter>
+  )
+}
+
 /** Animates newly-revealed unchanged rows open (height + fade). Instant under reduced-motion. */
 function Reveal({ children }: { children: React.ReactNode }) {
   const reduce = useReducedMotion()
@@ -78,6 +124,24 @@ export interface DiffProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   onAcceptHunk?: (hunk: DiffHunk) => void
   /** When provided, each hunk shows a Reject control. */
   onRejectHunk?: (hunk: DiffHunk) => void
+  /**
+   * Syntax-highlight full (non-word-diff) lines as this language. Lazy-loads
+   * `react-syntax-highlighter` with the same one-dark theme as `MarkdownViewer`,
+   * falling back to plain text until it resolves. Only affects `line`
+   * granularity in `inline`/`split` modes — ignored for `word` granularity
+   * (already word-highlighted) and `fields` mode (structured, not code).
+   */
+  language?: string
+  /**
+   * Custom render for a `before` value that fails to parse as JSON in
+   * `fields` mode. Receives the raw string. @default a plain error message
+   */
+  beforeParseError?: (raw: string) => React.ReactNode
+  /**
+   * Custom render for an `after` value that fails to parse as JSON in
+   * `fields` mode. Receives the raw string. @default a plain error message
+   */
+  afterParseError?: (raw: string) => React.ReactNode
 }
 
 // ------------------------------- row model ---------------------------------
@@ -214,6 +278,7 @@ function InlineRows({
   onExpand,
   onAcceptHunk,
   onRejectHunk,
+  language,
 }: {
   segs: RenderItem[]
   collapsibles: Map<number, Row[]>
@@ -221,6 +286,7 @@ function InlineRows({
   onExpand: (i: number) => void
   onAcceptHunk?: (h: DiffHunk) => void
   onRejectHunk?: (h: DiffHunk) => void
+  language?: string
 }) {
   const hasReview = !!onAcceptHunk || !!onRejectHunk
   return (
@@ -231,7 +297,7 @@ function InlineRows({
           if (expanded.has(item.key)) {
             return (
               <Reveal key={`reveal-${item.key}`}>
-                {hidden.map((r) => <CtxLine key={`${item.key}-${r.oldNo}`} row={r} split={false} />)}
+                {hidden.map((r) => <CtxLine key={`${item.key}-${r.oldNo}`} row={r} split={false} language={language} />)}
               </Reveal>
             )
           }
@@ -247,7 +313,7 @@ function InlineRows({
             </button>
           )
         }
-        if (item.t === 'ctx') return <CtxLine key={`c-${i}`} row={item.row} split={false} />
+        if (item.t === 'ctx') return <CtxLine key={`c-${i}`} row={item.row} split={false} language={language} />
         // change block
         return (
           <div key={`h-${i}`} className="group relative">
@@ -256,7 +322,7 @@ function InlineRows({
                 <span className={cn(GUTTER, 'min-w-[3.5ch]')}>{r.oldNo}</span>
                 <span className={cn(GUTTER, 'min-w-[3.5ch] text-error-11/60')} />
                 <span className={cn(SIGN, 'text-error-11')}>&minus;</span>
-                <span className={cn(CELL, 'flex-1 text-error-11')}>{r.text || ' '}</span>
+                <span className={cn(CELL, 'flex-1 text-error-11')}>{language ? <CodeText language={language} text={r.text} /> : (r.text || ' ')}</span>
               </div>
             ))}
             {item.adds.map((r, j) => (
@@ -264,7 +330,7 @@ function InlineRows({
                 <span className={cn(GUTTER, 'min-w-[3.5ch] text-success-11/60')} />
                 <span className={cn(GUTTER, 'min-w-[3.5ch]')}>{r.newNo}</span>
                 <span className={cn(SIGN, 'text-success-11')}>+</span>
-                <span className={cn(CELL, 'flex-1 text-success-11')}>{r.text || ' '}</span>
+                <span className={cn(CELL, 'flex-1 text-success-11')}>{language ? <CodeText language={language} text={r.text} /> : (r.text || ' ')}</span>
               </div>
             ))}
             {hasReview && (
@@ -279,13 +345,15 @@ function InlineRows({
   )
 }
 
-function CtxLine({ row, split }: { row: Row; split: boolean }) {
+function CtxLine({ row, split, language }: { row: Row; split: boolean; language?: string }) {
   return (
     <div className="flex bg-surface-raised">
       <span className={cn(GUTTER, 'min-w-[3.5ch]')}>{row.oldNo}</span>
       {!split && <span className={cn(GUTTER, 'min-w-[3.5ch]')}>{row.newNo}</span>}
       <span className={cn(SIGN, 'text-surface-fg-subtle')}>&nbsp;</span>
-      <span className={cn(CELL, 'flex-1 text-surface-fg-muted')}>{row.text || ' '}</span>
+      <span className={cn(CELL, 'flex-1 text-surface-fg-muted')}>
+        {language ? <CodeText language={language} text={row.text} /> : (row.text || ' ')}
+      </span>
     </div>
   )
 }
@@ -297,6 +365,7 @@ function SplitRows({
   onExpand,
   onAcceptHunk,
   onRejectHunk,
+  language,
 }: {
   segs: RenderItem[]
   collapsibles: Map<number, Row[]>
@@ -304,6 +373,7 @@ function SplitRows({
   onExpand: (i: number) => void
   onAcceptHunk?: (h: DiffHunk) => void
   onRejectHunk?: (h: DiffHunk) => void
+  language?: string
 }) {
   const hasReview = !!onAcceptHunk || !!onRejectHunk
   const sideCell = (no: number | undefined, node: React.ReactNode, tone: string, sign: string) => (
@@ -323,8 +393,8 @@ function SplitRows({
               <Reveal key={`reveal-${item.key}`}>
                 {hidden.map((r) => (
                   <div key={`${item.key}-${r.oldNo}`} className="flex divide-x divide-surface-border-subtle/30">
-                    {sideCell(r.oldNo, r.text || ' ', 'bg-surface-raised text-surface-fg-muted', ' ')}
-                    {sideCell(r.newNo, r.text || ' ', 'bg-surface-raised text-surface-fg-muted', ' ')}
+                    {sideCell(r.oldNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-raised text-surface-fg-muted', ' ')}
+                    {sideCell(r.newNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-raised text-surface-fg-muted', ' ')}
                   </div>
                 ))}
               </Reveal>
@@ -346,8 +416,8 @@ function SplitRows({
           const r = item.row
           return (
             <div key={`c-${i}`} className="flex divide-x divide-surface-border-subtle/30">
-              {sideCell(r.oldNo, r.text || ' ', 'bg-surface-raised text-surface-fg-muted', ' ')}
-              {sideCell(r.newNo, r.text || ' ', 'bg-surface-raised text-surface-fg-muted', ' ')}
+              {sideCell(r.oldNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-raised text-surface-fg-muted', ' ')}
+              {sideCell(r.newNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-raised text-surface-fg-muted', ' ')}
             </div>
           )
         }
@@ -358,8 +428,8 @@ function SplitRows({
             {Array.from({ length: n }, (_, k) => {
               const d = item.dels[k]
               const a = item.adds[k]
-              let leftNode: React.ReactNode = d ? d.text || ' ' : ''
-              let rightNode: React.ReactNode = a ? a.text || ' ' : ''
+              let leftNode: React.ReactNode = d ? (language ? <CodeText language={language} text={d.text} /> : (d.text || ' ')) : ''
+              let rightNode: React.ReactNode = a ? (language ? <CodeText language={language} text={a.text} /> : (a.text || ' ')) : ''
               if (d && a) {
                 const w = inlineWords(d.text, a.text)
                 leftNode = w.left
@@ -477,14 +547,26 @@ function flatten(obj: unknown, prefix = '', out: Record<string, string> = {}): R
   return out
 }
 
-function fieldChanges(before: string, after: string): { changes: FieldChange[]; error: string | null } {
+function fieldChanges(
+  before: string,
+  after: string,
+): { changes: FieldChange[]; beforeError: boolean; afterError: boolean } {
   let a: unknown
   let b: unknown
+  let beforeError = false
+  let afterError = false
   try {
     a = JSON.parse(before)
+  } catch {
+    beforeError = true
+  }
+  try {
     b = JSON.parse(after)
   } catch {
-    return { changes: [], error: 'Fields mode needs valid JSON on both sides.' }
+    afterError = true
+  }
+  if (beforeError || afterError) {
+    return { changes: [], beforeError, afterError }
   }
   const fa = flatten(a)
   const fb = flatten(b)
@@ -497,7 +579,7 @@ function fieldChanges(before: string, after: string): { changes: FieldChange[]; 
     else if (!inA && inB) changes.push({ path, kind: 'added', after: fb[path] })
     else if (fa[path] !== fb[path]) changes.push({ path, kind: 'changed', before: fa[path], after: fb[path] })
   }
-  return { changes, error: null }
+  return { changes, beforeError: false, afterError: false }
 }
 
 function FieldsDiff({
@@ -505,16 +587,25 @@ function FieldsDiff({
   after,
   onAcceptHunk,
   onRejectHunk,
+  beforeParseError,
+  afterParseError,
 }: {
   before: string
   after: string
   onAcceptHunk?: (h: DiffHunk) => void
   onRejectHunk?: (h: DiffHunk) => void
+  beforeParseError?: (raw: string) => React.ReactNode
+  afterParseError?: (raw: string) => React.ReactNode
 }) {
-  const { changes, error } = React.useMemo(() => fieldChanges(before, after), [before, after])
+  const { changes, beforeError, afterError } = React.useMemo(() => fieldChanges(before, after), [before, after])
   const hasReview = !!onAcceptHunk || !!onRejectHunk
-  if (error) {
-    return <div className="bg-surface-raised px-ds-04 py-ds-03 text-body-sm text-error-11">{error}</div>
+  if (beforeError || afterError) {
+    return (
+      <div className="flex flex-col gap-ds-02 bg-surface-raised px-ds-04 py-ds-03 text-body-sm text-error-11">
+        {beforeError && (beforeParseError ? beforeParseError(before) : <span>Fields mode needs valid before JSON.</span>)}
+        {afterError && (afterParseError ? afterParseError(after) : <span>Fields mode needs valid after JSON.</span>)}
+      </div>
+    )
   }
   if (changes.length === 0) {
     return <div className="bg-surface-raised px-ds-04 py-ds-03 text-body-sm text-surface-fg-subtle">No field changes.</div>
@@ -577,6 +668,9 @@ interface DiffModel {
   onExpand: (k: number) => void
   onAcceptHunk?: (h: DiffHunk) => void
   onRejectHunk?: (h: DiffHunk) => void
+  language?: string
+  beforeParseError?: (raw: string) => React.ReactNode
+  afterParseError?: (raw: string) => React.ReactNode
 }
 
 const DiffContext = React.createContext<DiffModel | null>(null)
@@ -602,6 +696,9 @@ export interface DiffRootProps
     | 'afterLabel'
     | 'onAcceptHunk'
     | 'onRejectHunk'
+    | 'language'
+    | 'beforeParseError'
+    | 'afterParseError'
   > {
   children: React.ReactNode
 }
@@ -622,6 +719,9 @@ function DiffRoot({
   afterLabel = 'Pending',
   onAcceptHunk,
   onRejectHunk,
+  language,
+  beforeParseError,
+  afterParseError,
   children,
 }: DiffRootProps) {
   const [expanded, setExpanded] = React.useState<Set<number>>(() => new Set())
@@ -687,6 +787,9 @@ function DiffRoot({
     onExpand,
     onAcceptHunk,
     onRejectHunk,
+    language,
+    beforeParseError,
+    afterParseError,
   }
 
   return <DiffContext.Provider value={model}>{children}</DiffContext.Provider>
@@ -716,13 +819,20 @@ function DiffBody({ className }: { className?: string }) {
   return (
     <div className={cn('overflow-x-auto', className)}>
       {m.mode === 'fields' ? (
-        <FieldsDiff before={m.before} after={m.after} onAcceptHunk={m.onAcceptHunk} onRejectHunk={m.onRejectHunk} />
+        <FieldsDiff
+          before={m.before}
+          after={m.after}
+          onAcceptHunk={m.onAcceptHunk}
+          onRejectHunk={m.onRejectHunk}
+          beforeParseError={m.beforeParseError}
+          afterParseError={m.afterParseError}
+        />
       ) : m.isWord ? (
         <WordDiff before={m.before} after={m.after} />
       ) : m.mode === 'split' ? (
-        <SplitRows segs={m.items} collapsibles={m.collapsibles} expanded={m.expanded} onExpand={m.onExpand} onAcceptHunk={m.onAcceptHunk} onRejectHunk={m.onRejectHunk} />
+        <SplitRows segs={m.items} collapsibles={m.collapsibles} expanded={m.expanded} onExpand={m.onExpand} onAcceptHunk={m.onAcceptHunk} onRejectHunk={m.onRejectHunk} language={m.language} />
       ) : (
-        <InlineRows segs={m.items} collapsibles={m.collapsibles} expanded={m.expanded} onExpand={m.onExpand} onAcceptHunk={m.onAcceptHunk} onRejectHunk={m.onRejectHunk} />
+        <InlineRows segs={m.items} collapsibles={m.collapsibles} expanded={m.expanded} onExpand={m.onExpand} onAcceptHunk={m.onAcceptHunk} onRejectHunk={m.onRejectHunk} language={m.language} />
       )}
     </div>
   )
@@ -744,6 +854,9 @@ const Diff = React.forwardRef<HTMLDivElement, DiffProps>(function Diff(
     afterLabel = 'Pending',
     onAcceptHunk,
     onRejectHunk,
+    language,
+    beforeParseError,
+    afterParseError,
     className,
     ...props
   },
@@ -767,6 +880,9 @@ const Diff = React.forwardRef<HTMLDivElement, DiffProps>(function Diff(
         afterLabel={afterLabel}
         onAcceptHunk={onAcceptHunk}
         onRejectHunk={onRejectHunk}
+        language={language}
+        beforeParseError={beforeParseError}
+        afterParseError={afterParseError}
       >
         {(showSummary || mode === 'split') && (
           <div className="flex items-center justify-between gap-ds-03 border-b border-surface-border-subtle/30 bg-surface-raised px-ds-04 py-ds-02">

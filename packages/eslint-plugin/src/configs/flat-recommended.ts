@@ -27,6 +27,7 @@ const config = {
     'shilp-sutra/no-iconbutton-children': 'error',
     'shilp-sutra/no-bare-shadow': 'warn',
     'shilp-sutra/require-mutation-annotation': 'warn',
+    'shilp-sutra/require-progress-label': 'warn',
     'shilp-sutra/toast-object-syntax': 'warn',
   } as const,
 }

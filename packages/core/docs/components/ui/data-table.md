@@ -31,7 +31,8 @@
     stickyHeader: boolean — sticky table header
     onRowClick: (row: TData) => void — row click handler (excludes interactive element clicks)
     rowClassName: (row: TData) => string | undefined — conditional per-row class (the <tr> in table mode, the Card in card mode)
-    bulkActions: BulkAction<TData>[] — floating action bar on selection — { label, onClick, color?: 'default'|'error', disabled? }
+    bulkActions: BulkAction<TData>[] — floating action bar on selection — { label, onClick, icon?: IconInput, color?: 'accent'|'error', disabled? }
+    bulkActionsPosition: 'bottom' | 'top' | 'inline' — where the bulk-actions bar renders (default 'bottom')
     toolbar: boolean — show DataTableToolbar (column visibility, density, CSV export)
     enableExport: boolean — show the toolbar's Export CSV button (default true)
     onExport: (visibleRows: TData[]) => void — replace the built-in CSV export
@@ -107,6 +108,10 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - `rowClassName` returns are passed through `cn()` verbatim — a class that does not exist in the token set silently does nothing (use the real scale steps, e.g. `bg-error-3`, not invented names like `bg-error-subtle`)
 
 ## Changes
+### Unreleased
+- **Added** `bulkActions[].icon?: IconInput` — icon rendered before the label in a bulk-action button.
+- **Added** `bulkActionsPosition?: 'bottom' | 'top' | 'inline'` — where the bulk-actions bar renders (default `'bottom'`, matching prior behavior).
+
 ### v0.57.0
 - **Fixed** `onSelectionChange` no longer fires on mount with `[]` — first-render guard added. Root cause of the cascade reported in #213.
 - **Fixed** `virtualRows + expandable` was a silent no-op — the expanded row was only rendered on the non-virtual path. Virtual rows now render one measured `<tbody>` per windowed row (with spacer row groups for the remainder) so the expanded panel renders, contributes its real height to `getTotalSize()`, and cannot overlap the row below.

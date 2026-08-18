@@ -23,6 +23,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   version:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       # contents: write + pull-requests: write let changesets/action open and
       # update the Version Packages PR. NO id-token here — this job cannot and

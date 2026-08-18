@@ -14,6 +14,7 @@ jobs:
   ack:
     if: contains(github.event.issue.labels.*.name, 'ai-agent-feedback')
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       issues: write
     steps:

@@ -4,9 +4,16 @@ on:
   pull_request:
     branches: [main]
 
+# Two pushes to a PR in quick succession ran the whole suite twice and kept both results.
+# GitHub bills every JOB rounded up to a whole minute, so a superseded run is not free.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     # Turborepo remote cache (self-hosted on Railway). PR CI reads+writes the
     # shared cache so unchanged packages restore instead of rebuild. Degrades

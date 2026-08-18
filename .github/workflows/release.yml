@@ -25,6 +25,7 @@ jobs:
   # we fail the run BEFORE publishing.
   guard:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     outputs:
       prerelease: ${{ steps.check.outputs.prerelease }}
     steps:
@@ -62,6 +63,7 @@ jobs:
   release:
     needs: guard
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     # OIDC trusted publishing: `id-token: write` lets npm verify the publish
     # came from this workflow without a long-lived NPM_TOKEN. `contents: write`
     # lets changesets/action open the Version Packages PR and push tags.

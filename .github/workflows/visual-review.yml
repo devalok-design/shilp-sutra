@@ -23,10 +23,19 @@ on:
         type: boolean
         default: false
 
+# Superseded Chromatic runs still consume SNAPSHOT QUOTA, which is metered on Chromatic's plan,
+# not GitHub's. This repo is public so its Actions minutes are free - the saving here is not
+# GitHub's bill, it is Chromatic's.
+# GitHub bills every JOB rounded up to a whole minute, so a superseded run is not free.
+concurrency:
+  group: visual-review-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   chromatic:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'visual-review')
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -84,7 +84,7 @@ This applies to: Button, SplitButton, and anywhere else `variant="outline" | "so
 - [`docs/plans/2026-08-18-figma-build-playbook.md`](./docs/plans/2026-08-18-figma-build-playbook.md) — API traps, layout tricks, per-component audit, verification protocol
 - [`docs/plans/2026-08-18-figma-foundations-spec.md`](./docs/plans/2026-08-18-figma-foundations-spec.md) — every collection, mode and variable as built
 - [`docs/plans/2026-08-18-figma-port-retrospective.md`](./docs/plans/2026-08-18-figma-port-retrospective.md) — how the work went, the full bug ledger, and what caught what
-- [`docs/plans/2026-08-19-figma-components-build.md`](./docs/plans/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 11 sets, 535 variants, the mode-chain architecture, and 10 findings in the DS itself
+- [`docs/plans/2026-08-19-figma-components-build.md`](./docs/plans/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 30 sets, 759 variants, the mode-chain architecture, native slots, the shells, and 10 findings in the DS itself
 
 Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (owned, editable, 4,962 icons bound to `component/fg`). The April 2026 plan and its Figma file are superseded.
 

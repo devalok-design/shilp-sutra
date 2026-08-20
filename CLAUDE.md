@@ -88,7 +88,9 @@ This applies to: Button, SplitButton, and anywhere else `variant="outline" | "so
 
 Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (owned, editable, 4,962 icons bound to `component/fg`). The April 2026 plan and its Figma file are superseded.
 
-**Built and PUBLISHED (2026-08-19): 25 sets, 741 variants.** Button 330, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2. 29 collections, ~740 variables, 20 text styles, 13 effect styles. **Publishing is a human step — republish after any change.**
+**Built and PUBLISHED: 30 sets, 759 variants.** Button 330, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2, Bottom navbar 1. 31 collections, 20 text styles, 13 effect styles, **11 native slot properties** (Card, Dialog, Sheet, Tabs, Segmented control, Sidebar, Top bar, Bottom navbar). **Publishing is a human step — republish after any change.**
+
+**Every set's `defaultVariant` now matches its code default.** It is READ-ONLY and derived from geometry (top-left-most variant), so a tidy ascending grid silently hands consumers the smallest size — 18 of 25 sets did. Assert `set.defaultVariant.name` after any re-layout.
 
 **`Accessibility review` page** carries three measured contrast failures that are CODE bugs this library reproduces faithfully, with proposed fixes and live-bound specimens: Alert dismiss on solid (**1.01:1**), Badge category solid in dark (3.28–3.70:1), Input/Textarea placeholder in light (4.14:1). Decide these before the next release.
 

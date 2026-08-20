@@ -278,15 +278,71 @@ The settings screen was rebuilt on real Card instances with the whole form livin
 
 | | |
 |---|---|
-| Component sets | **25** |
-| Variants | **741** |
+| Component sets | **30** |
+| Variants | **759** |
 | Variable collections | **29** |
 | Text styles | 20 |
 | Effect styles | 13 |
 | Pages | Cover, Getting Started, Foundations, Icons, Components, Accessibility review, Examples, Utilities |
-| Slot properties | 7, across Card, Dialog, Sheet, Tabs, Segmented control |
+| Slot properties | 11, across Card, Dialog, Sheet, Tabs, Segmented control, Sidebar, Top bar, Bottom navbar |
 | Published | Yes, republish needed after the post-publish fixes |
 
 Structurally clean: every set complete against its axes, no duplicate variant names, every set described with its SOURCE path, zero unbound strokes, radii or font sizes, zero broken aliases, zero unset modes, zero em dashes.
 
 The only unbound values left are DS values with no token behind them: `gap-2.5` on Button lg, `px-2.5` on Badge md, `py-[3px]` and `py-[5px]` on compact buttons, and the two Button compositing overlays, which are deliberately raw.
+
+---
+
+## 13. Shells (2026-08-20)
+
+The app chrome, built on native slots from the start:
+
+| Set | Variants | Slots |
+|---|---:|---|
+| Sidebar | 4 (State x Side) | Header, Content, Footer |
+| Sidebar item | 9 (Size x State) | |
+| Top bar | 2 (Layout) | Start, Center, End |
+| Bottom navbar | 1 | Items |
+| Bottom nav item | 2 (State) | |
+
+**30 sets, 759 variants.**
+
+Sidebar is 256 expanded and 48 collapsed, matching `SIDEBAR_WIDTH` and
+`SIDEBAR_WIDTH_ICON`. The collapsed variant seeds 32px icon squares rather than
+Sidebar item instances, because the source shrinks its buttons to squares in icon
+mode and a 232-wide row would not fit.
+
+Top bar has two layouts because the source genuinely switches structure: a flex
+two-region header by default, and a `grid-cols-[1fr_auto_1fr]` three-column grid when
+a centre region exists, so the centre stays optically centred rather than following the
+start region.
+
+Both shells were assembled into full screens on the **Examples** page: a 1440x900
+desktop shell (sidebar + centred top bar + page header + tabs + card grid) and a
+390x844 mobile shell (split top bar + content + bottom navbar). Every part is a
+published instance.
+
+### The trap the shells exposed
+
+**Setting an INSTANCE_SWAP property discards sub-node overrides, exactly like
+`swapComponent`.** The sidebar rows were built by passing an icon through the swap
+property, which threw away the stroke colour and weight bound on the variant. The
+result was a pink folder icon on the active row and stroke weights varying between
+2 and 1.33 across rows, none of it erroring.
+
+Patching the overrides back would have re-broken on the next swap. The fix that holds:
+**set Ghost as the explicit `Component/Style` mode on the Sidebar item variants**, so
+`component/fg` resolves to `surface-fg-muted` at rest and `surface-fg` on hover, which
+is exactly the sidebar palette, then bind the glyph to that same variable. A swapped-in
+icon already binds `component/fg` in its own main, so the colour is correct without any
+override at all. Verified: 83,78,80 at rest and 53,50,51 on hover and active, stroke
+1.33 throughout.
+
+Bottom nav item keeps explicit overrides, because no existing style mode produces its
+palette (subtle at rest, accent 11 active).
+
+### Also worth noting
+
+Third wrong icon key in this project. `home` was actually the `plus` glyph, so every
+sidebar row and nav tab shipped a plus sign until it was caught at 3x zoom. The
+thumbnail looked fine. **Read keys from the library, never from a hand-kept map.**

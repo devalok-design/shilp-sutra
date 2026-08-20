@@ -273,11 +273,46 @@ describe('BRAND_PALETTES', () => {
   })
 
   it('pink has correct config', () => {
-    expect(BRAND_PALETTES.pink).toEqual({ hue: 360, peakChroma: 0.19 })
+    expect(BRAND_PALETTES.pink).toEqual({
+      hue: 360,
+      peakChroma: 0.19,
+      correction: { dark9: -0.09, dark10: -0.09 },
+    })
   })
 
   it('neutral is flagged as isNeutral', () => {
     expect(BRAND_PALETTES.neutral.isNeutral).toBe(true)
+  })
+
+  // Steps 9 and 10 are the solid fills that carry text. The generic curve does
+  // not clear WCAG for every hue, so the ramps backing semantic intents darken
+  // them. Without these the generator cannot reproduce primitives.css, and
+  // regenerating a ramp silently reverts the contrast fix.
+  it('only the intent-backing ramps carry contrast corrections', () => {
+    const corrected = Object.entries(BRAND_PALETTES)
+      .filter(([, cfg]) => 'correction' in cfg)
+      .map(([name]) => name)
+      .sort()
+    expect(corrected).toEqual(['blue', 'green', 'neutral', 'pink', 'red'])
+  })
+
+  it('applies the correction to steps 9 and 10 only', () => {
+    const base = generateScale({ hue: 360, peakChroma: 0.19 })
+    const fixed = generateScale({
+      hue: 360,
+      peakChroma: 0.19,
+      correction: { dark9: -0.09, dark10: -0.09 },
+    })
+
+    // Untouched steps stay identical
+    for (const i of [0, 1, 2, 3, 4, 5, 6, 7, 10, 11]) {
+      expect(fixed.dark[i].value, `dark step ${i + 1}`).toBe(base.dark[i].value)
+    }
+    // 9 and 10 shift by exactly the correction
+    expect(fixed.dark[8].value).toBe(base.dark[8].value.replace('0.63', '0.54'))
+    expect(fixed.dark[9].value).toBe(base.dark[9].value.replace('0.58', '0.49'))
+    // Light mode is untouched when only dark corrections are given
+    expect(fixed.light.map((s) => s.value)).toEqual(base.light.map((s) => s.value))
   })
 
   it('each palette generates a valid scale', () => {

@@ -264,6 +264,13 @@
   /* ───────────────────────────────────────────────────────────
      CATEGORY COLORS (Sapta Varna — step subsets)
      ─────────────────────────────────────────────────────────── */
+  /* Foreground for solid category fills. Category step 9 LIGHTENS in dark mode,
+     the opposite of the intent ramps, so a fixed white fails AA there. neutral-1
+     inverts with the theme: near-white in light, near-black in dark.
+     Measured: light 4.59-4.97 on all seven, dark 5.55-6.24. Badge labels are 10px,
+     so AA body (4.5) is the bar, not large text. */
+  --color-category-fg:         var(--neutral-0);
+
   --color-category-teal-3:     var(--teal-3);
   --color-category-teal-7:     var(--teal-7);
   --color-category-teal-9:     var(--teal-9);
@@ -591,6 +598,9 @@
   --color-error-fg:     var(--neutral-0);
   --color-success-fg:   var(--neutral-0);
   --color-info-fg:      var(--neutral-0);
+
+  /* Category fills lighten in dark, so their label goes near-black, not white */
+  --color-category-fg:  var(--neutral-1);
 
   /* Warning: amber-bright dark ramp */
   --color-warning-2:  var(--amber-bright-2);

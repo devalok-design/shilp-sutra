@@ -159,7 +159,15 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+                className={cn(
+                  'shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner transition-colors duration-fast-01 ease-productive-standard active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
+                  // On solid the fill is a saturated step 9, where a mid grey
+                  // measures as low as 1.01:1. Inherit the alert's own foreground,
+                  // exactly as the title and body already do.
+                  variant === 'solid'
+                    ? 'text-current opacity-80 hover:opacity-100'
+                    : 'text-surface-fg-subtle hover:text-surface-fg-muted hover:bg-surface-raised-hover',
+                )}
                 aria-label="Dismiss"
               >
                 <Icon icon={IconX} size={dismissIconSize} />

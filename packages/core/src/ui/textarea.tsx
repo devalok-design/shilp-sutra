@@ -14,7 +14,7 @@ const textareaVariants = cva(
     'flex w-full font-sans resize-y',
     'bg-surface-raised-hover text-surface-fg',
     'border border-surface-border-strong rounded-control',
-    'placeholder:text-surface-fg-subtle',
+    'placeholder:text-surface-fg-muted',
     'hover:bg-surface-raised-active',
     'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',

@@ -22,13 +22,13 @@ const colorMap = {
   warning: { bg: 'bg-warning-3', fg: 'text-warning-11', border: 'border-warning-7', solid: 'bg-warning-9', solidFg: 'text-warning-fg' },
   info:    { bg: 'bg-info-3',    fg: 'text-info-11',    border: 'border-info-7',    solid: 'bg-info-9',    solidFg: 'text-info-fg' },
   neutral: { bg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
-  teal:    { bg: 'bg-category-teal-3',    fg: 'text-category-teal-11',    border: 'border-category-teal-7',    solid: 'bg-category-teal-9',    solidFg: 'text-white' },
-  amber:   { bg: 'bg-category-amber-3',   fg: 'text-category-amber-11',   border: 'border-category-amber-7',   solid: 'bg-category-amber-9',   solidFg: 'text-white' },
-  slate:   { bg: 'bg-category-slate-3',   fg: 'text-category-slate-11',   border: 'border-category-slate-7',   solid: 'bg-category-slate-9',   solidFg: 'text-white' },
-  indigo:  { bg: 'bg-category-indigo-3',  fg: 'text-category-indigo-11',  border: 'border-category-indigo-7',  solid: 'bg-category-indigo-9',  solidFg: 'text-white' },
-  cyan:    { bg: 'bg-category-cyan-3',    fg: 'text-category-cyan-11',    border: 'border-category-cyan-7',    solid: 'bg-category-cyan-9',    solidFg: 'text-white' },
-  orange:  { bg: 'bg-category-orange-3',  fg: 'text-category-orange-11',  border: 'border-category-orange-7',  solid: 'bg-category-orange-9',  solidFg: 'text-white' },
-  emerald: { bg: 'bg-category-emerald-3', fg: 'text-category-emerald-11', border: 'border-category-emerald-7', solid: 'bg-category-emerald-9', solidFg: 'text-white' },
+  teal:    { bg: 'bg-category-teal-3',    fg: 'text-category-teal-11',    border: 'border-category-teal-7',    solid: 'bg-category-teal-9',    solidFg: 'text-category-fg' },
+  amber:   { bg: 'bg-category-amber-3',   fg: 'text-category-amber-11',   border: 'border-category-amber-7',   solid: 'bg-category-amber-9',   solidFg: 'text-category-fg' },
+  slate:   { bg: 'bg-category-slate-3',   fg: 'text-category-slate-11',   border: 'border-category-slate-7',   solid: 'bg-category-slate-9',   solidFg: 'text-category-fg' },
+  indigo:  { bg: 'bg-category-indigo-3',  fg: 'text-category-indigo-11',  border: 'border-category-indigo-7',  solid: 'bg-category-indigo-9',  solidFg: 'text-category-fg' },
+  cyan:    { bg: 'bg-category-cyan-3',    fg: 'text-category-cyan-11',    border: 'border-category-cyan-7',    solid: 'bg-category-cyan-9',    solidFg: 'text-category-fg' },
+  orange:  { bg: 'bg-category-orange-3',  fg: 'text-category-orange-11',  border: 'border-category-orange-7',  solid: 'bg-category-orange-9',  solidFg: 'text-category-fg' },
+  emerald: { bg: 'bg-category-emerald-3', fg: 'text-category-emerald-11', border: 'border-category-emerald-7', solid: 'bg-category-emerald-9', solidFg: 'text-category-fg' },
 } as const
 
 type BadgeColor = keyof typeof colorMap | 'custom'

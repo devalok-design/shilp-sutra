@@ -199,7 +199,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           className={cn(
             'flex-1 min-w-0 h-full bg-transparent outline-hidden font-sans',
-            'placeholder:text-surface-fg-subtle',
+            'placeholder:text-surface-fg-muted',
             'disabled:cursor-not-allowed',
             'read-only:cursor-default',
             inputPadding[size],

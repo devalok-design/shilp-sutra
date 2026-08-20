@@ -40,7 +40,7 @@ const SelectGroup = SelectPrimitive.Group
 const SelectValue = SelectPrimitive.Value
 
 export const selectTriggerVariants = cva(
-  'flex w-full items-center justify-between whitespace-nowrap rounded-control placeholder:text-surface-fg-subtle focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled [&>span]:line-clamp-1 [&>span]:min-w-0',
+  'flex w-full items-center justify-between whitespace-nowrap rounded-control placeholder:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled [&>span]:line-clamp-1 [&>span]:min-w-0',
   {
     variants: {
       variant: {

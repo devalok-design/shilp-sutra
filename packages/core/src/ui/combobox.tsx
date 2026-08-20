@@ -495,7 +495,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                     <input
                       ref={searchInputRef}
                       type="text"
-                      className="flex-1 bg-transparent py-ds-03 text-body-md outline-hidden placeholder:text-surface-fg-subtle"
+                      className="flex-1 bg-transparent py-ds-03 text-body-md outline-hidden placeholder:text-surface-fg-muted"
                       placeholder={searchPlaceholder}
                       value={search}
                       onChange={(e) => {

@@ -46,6 +46,9 @@
   }
   .err { color: #d33; }
   .ok { color: #1a8f4c; }
+  .check { display: flex; align-items: center; gap: 6px; margin: 10px 0 4px; font-weight: 400; }
+  .check input { margin: 0; }
+  .warn { color: #a05a00; }
 </style>
 </head>
 <body>
@@ -68,6 +71,8 @@
       <select id="dark"></select>
     </div>
   </div>
+
+  <label class="check"><input type="checkbox" id="allowCreate"> Allow creating new variables in this collection</label>
 
   <button id="go" disabled>Generate ramps</button>
   <button id="export" class="secondary">Export tokens as JSON</button>
@@ -131,8 +136,19 @@
     }
 
     if (msg.type === 'done') {
-      log('Done.\n' + msg.ramps + ' ramps · ' + msg.written + ' values written · '
-          + msg.created + ' variables created\n\n' + msg.report.join('\n'), 'ok');
+      var skipped = msg.skipped || [];
+      var summary = 'Done.\n' + msg.ramps + ' ramps written from seed, '
+          + msg.written + ' values written, ' + msg.created + ' variables created';
+      if (skipped.length) {
+        summary += '\n\nSkipped ' + skipped.length + ' aliased value(s). That collection'
+          + ' points at primitive steps rather than holding raw colour, and an alias is'
+          + ' never overwritten:\n' + skipped.slice(0, 24).join(', ')
+          + (skipped.length > 24 ? ', ...' : '');
+      }
+      if (msg.checkpoint && msg.checkpoint !== 'saved') {
+        summary += '\n\nVersion checkpoint ' + msg.checkpoint + '.';
+      }
+      log(summary + '\n\n' + msg.report.join('\n'), skipped.length ? 'warn' : 'ok');
       $('go').disabled = false;
       $('go').textContent = 'Generate ramps';
     }
@@ -184,6 +200,7 @@
       targetCollectionId: $('target').value,
       lightModeId: $('light').value,
       darkModeId: $('dark').value || null,
+      allowCreate: $('allowCreate').checked,
     }}, '*');
   };
 

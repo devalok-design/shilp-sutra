@@ -87,8 +87,8 @@ function generateRamp(hue, peakChroma, isDark, isNeutral, corr) {
     // (L to 3 dp, C to 4 dp). Converting unrounded floats lands a channel one
     // unit off on a handful of steps — enough to fail a byte-comparison.
     var l = Math.round((L[i] + adj) * 1000) / 1000
-    var c = Math.round(peak * W[i] * 10000) / 10000
-    out.push(oklchToRgb(l, c, hue))
+    var ch = Math.round(peak * W[i] * 10000) / 10000
+    out.push(oklchToRgb(l, ch, hue))
   }
   return out
 }
@@ -120,6 +120,20 @@ function readSeeds(vars, collectionId) {
 
 function firstModeValue(v, collection) {
   return v.valuesByMode[collection.defaultModeId]
+}
+
+/**
+ * Is this variable currently an alias in the given mode?
+ *
+ * The target picker accepts ANY collection. Semantic/Color and Brand hold
+ * aliases pointing at primitive steps; writing a raw colour over one destroys
+ * the indirection with no error and no record of which step it pointed at.
+ * Measured on the live file: 208 aliased values in Semantic/Color and 102 in
+ * Brand were reachable this way.
+ */
+function isAliased(variable, modeId) {
+  var v = variable.valuesByMode[modeId]
+  return !!(v && v.type === 'VARIABLE_ALIAS')
 }
 
 // ── Test seam ───────────────────────────────────────────────────────────────
@@ -172,9 +186,46 @@ figma.ui.onmessage = async function (msg) {
       var byName = {}
       for (var i = 0; i < vars.length; i++) byName[vars[i].variableCollectionId + '|' + vars[i].name] = vars[i]
 
+      // Pre-flight. Picking the wrong target collection is the easy mistake,
+      // and it does not announce itself: new variables are created with
+      // scopes:[] so they never appear in a picker afterwards. Measured on the
+      // live file, targeting Semantic/Color would have quietly added 192 junk
+      // variables and Brand 204. Creating is therefore opt-in, which still
+      // leaves a genuine first run on an empty collection possible.
+      var willCreate = 0
+      var willUpdate = 0
+      for (var ps = 0; ps < seeds.length; ps++) {
+        for (var pstep = 1; pstep <= 12; pstep++) {
+          if (byName[targetColl.id + '|' + seeds[ps].name + '/' + pstep]) willUpdate++
+          else willCreate++
+        }
+      }
+      if (willCreate > 0 && !msg.allowCreate) {
+        throw new Error(
+          'That would create ' + willCreate + ' new variables in "' + targetColl.name +
+          '" and update only ' + willUpdate + '. If this is the collection you meant, ' +
+          'tick "Allow creating new variables" and run again.')
+      }
+
+      // A restore point before touching hundreds of values. Cheap, and the
+      // difference between a mis-targeted run being an undo and being an
+      // unrecoverable flattening.
+      //
+      // Not fatal if the host refuses it — but never silent either. Losing the
+      // checkpoint changes the risk of everything below, so it is reported
+      // rather than swallowed.
+      var checkpoint
+      try {
+        await figma.saveVersionHistoryAsync('Before OKLCH ramp generation')
+        checkpoint = 'saved'
+      } catch (e) {
+        checkpoint = 'UNAVAILABLE (' + String((e && e.message) || e) + ') — no restore point'
+      }
+
       var written = 0
       var created = 0
       var report = []
+      var skippedAliases = []
 
       for (var s = 0; s < seeds.length; s++) {
         var seed = seeds[s]
@@ -204,6 +255,11 @@ figma.ui.onmessage = async function (msg) {
             byName[key] = variable
             created++
           }
+          // Never flatten an alias — skip it and say so.
+          if (isAliased(variable, lightMode) || (dark && isAliased(variable, darkMode))) {
+            skippedAliases.push(name)
+            continue
+          }
           variable.setValueForMode(lightMode, light[step - 1])
           if (dark) variable.setValueForMode(darkMode, dark[step - 1])
           written++
@@ -216,6 +272,8 @@ figma.ui.onmessage = async function (msg) {
         ramps: seeds.length,
         written: written,
         created: created,
+        skipped: skippedAliases,
+        checkpoint: checkpoint,
         report: report,
       })
     } catch (e) {

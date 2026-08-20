@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    font: 11px/1.5 Inter, -apple-system, system-ui, sans-serif;
+    margin: 0; padding: 14px;
+    background: #fff; color: #1b1b1b;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #2c2c2c; color: #e8e8e8; }
+    select { background: #383838; color: #e8e8e8; border-color: #555; }
+    .log { background: #242424; border-color: #444; }
+  }
+  h1 { font-size: 12px; margin: 0 0 2px; letter-spacing: -0.01em; }
+  p.sub { margin: 0 0 14px; opacity: 0.65; }
+  label { display: block; margin: 10px 0 4px; font-weight: 600; }
+  select {
+    width: 100%; padding: 6px 8px; font: inherit;
+    border: 1px solid #ccc; border-radius: 5px; background: #fff;
+  }
+  .row { display: flex; gap: 8px; }
+  .row > div { flex: 1; min-width: 0; }
+  button {
+    width: 100%; margin-top: 14px; padding: 9px;
+    font: inherit; font-weight: 600;
+    border: 0; border-radius: 6px; cursor: pointer;
+    background: #0d99ff; color: #fff;
+  }
+  button:disabled { opacity: 0.45; cursor: default; }
+  button.secondary { margin-top: 8px; background: transparent; color: #0d99ff; border: 1px solid currentColor; }
+  @media (prefers-color-scheme: dark) { button.secondary { color: #6cc0ff; } }
+  textarea {
+    width: 100%; margin-top: 10px; height: 120px; padding: 8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px;
+    border: 1px solid #e3e3e3; border-radius: 5px; resize: vertical;
+  }
+  .log {
+    margin-top: 12px; padding: 8px; max-height: 150px; overflow: auto;
+    background: #f5f5f5; border: 1px solid #e3e3e3; border-radius: 5px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .err { color: #d33; }
+  .ok { color: #1a8f4c; }
+</style>
+</head>
+<body>
+  <h1>OKLCH Ramp Generator</h1>
+  <p class="sub">Builds 12-step ramps from a hue and a chroma. Seeds are read from variables named <code>&lt;ramp&gt;/hue</code> and <code>&lt;ramp&gt;/chroma</code>.</p>
+
+  <label for="seed">Seed collection</label>
+  <select id="seed"></select>
+
+  <label for="target">Write ramps to</label>
+  <select id="target"></select>
+
+  <div class="row">
+    <div>
+      <label for="light">Light mode</label>
+      <select id="light"></select>
+    </div>
+    <div>
+      <label for="dark">Dark mode</label>
+      <select id="dark"></select>
+    </div>
+  </div>
+
+  <button id="go" disabled>Generate ramps</button>
+  <button id="export" class="secondary">Export tokens as JSON</button>
+  <div class="log" id="log">Loading…</div>
+
+<script>
+  var state = { collections: [] };
+  var $ = function (id) { return document.getElementById(id); };
+
+  var log = function (text, cls) {
+    $('log').textContent = text;
+    $('log').className = 'log' + (cls ? ' ' + cls : '');
+  };
+
+  function clear(el) {
+    while (el.firstChild) el.removeChild(el.firstChild);
+  }
+
+  function fillSelect(el, items, valueKey, labelFn) {
+    clear(el);
+    items.forEach(function (it) {
+      var o = document.createElement('option');
+      o.value = it[valueKey];
+      o.textContent = labelFn(it);
+      el.appendChild(o);
+    });
+  }
+
+  function refreshModes() {
+    var t = state.collections.filter(function (c) { return c.id === $('target').value; })[0];
+    if (!t) return;
+    fillSelect($('light'), t.modes, 'id', function (m) { return m.name; });
+    var none = [{ id: '', name: '— none —' }].concat(t.modes);
+    fillSelect($('dark'), none, 'id', function (m) { return m.name; });
+    // Guess sensible defaults from the mode names
+    t.modes.forEach(function (m) {
+      if (/light/i.test(m.name)) $('light').value = m.id;
+      if (/dark/i.test(m.name)) $('dark').value = m.id;
+    });
+  }
+
+  onmessage = function (e) {
+    var msg = e.data.pluginMessage;
+    if (!msg) return;
+
+    if (msg.type === 'state') {
+      state.collections = msg.collections;
+      var withSeeds = msg.collections.filter(function (c) { return c.seedCount > 0; });
+      var seedList = withSeeds.length ? withSeeds : msg.collections;
+      fillSelect($('seed'), seedList, 'id', function (c) {
+        return c.name + (c.seedCount ? '  (' + c.seedCount + ' ramps)' : '');
+      });
+      fillSelect($('target'), msg.collections, 'id', function (c) {
+        return c.name + '  (' + c.variableCount + ')';
+      });
+      refreshModes();
+      $('go').disabled = seedList.length === 0;
+      log(withSeeds.length
+        ? 'Found ' + withSeeds[0].seedCount + ' ramp seeds in "' + withSeeds[0].name + '".'
+        : 'No seed pairs detected. Expected variables named "<ramp>/hue" and "<ramp>/chroma".');
+    }
+
+    if (msg.type === 'done') {
+      log('Done.\n' + msg.ramps + ' ramps · ' + msg.written + ' values written · '
+          + msg.created + ' variables created\n\n' + msg.report.join('\n'), 'ok');
+      $('go').disabled = false;
+      $('go').textContent = 'Generate ramps';
+    }
+
+    if (msg.type === 'exported') {
+      var box = document.getElementById('out');
+      if (!box) {
+        box = document.createElement('textarea');
+        box.id = 'out';
+        box.readOnly = true;
+        document.body.appendChild(box);
+      }
+      box.value = msg.payload;
+      box.focus();
+      box.select();
+      var counts = JSON.parse(msg.payload).counts;
+      log('Exported ' + counts.ramps + ' ramps and ' + counts.semantic + ' semantic tokens.\n'
+        + 'Selected below — copy it, save as tokens-export.json, then run:\n'
+        + 'node packages/core/scripts/figma-pull-tokens.mjs tokens-export.json', 'ok');
+      $('export').disabled = false;
+      $('export').textContent = 'Export tokens as JSON';
+    }
+
+    if (msg.type === 'error') {
+      log('Error: ' + msg.message, 'err');
+      $('go').disabled = false;
+      $('go').textContent = 'Generate ramps';
+      $('export').disabled = false;
+      $('export').textContent = 'Export tokens as JSON';
+    }
+  };
+
+  $('export').onclick = function () {
+    $('export').disabled = true;
+    $('export').textContent = 'Exporting…';
+    log('Reading variables…');
+    parent.postMessage({ pluginMessage: { type: 'export' } }, '*');
+  };
+
+  $('target').onchange = refreshModes;
+
+  $('go').onclick = function () {
+    $('go').disabled = true;
+    $('go').textContent = 'Generating…';
+    log('Working…');
+    parent.postMessage({ pluginMessage: {
+      type: 'generate',
+      seedCollectionId: $('seed').value,
+      targetCollectionId: $('target').value,
+      lightModeId: $('light').value,
+      darkModeId: $('dark').value || null,
+    }}, '*');
+  };
+
+  parent.postMessage({ pluginMessage: { type: 'init' } }, '*');
+</script>
+</body>
+</html>

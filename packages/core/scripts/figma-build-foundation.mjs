@@ -88,17 +88,49 @@ function parseRem(value) {
 // Scope rules — the centerpiece of this rebuild
 // ───────────────────────────────────────────────────────────────────
 
+/**
+ * Colour scopes.
+ *
+ * TWO HARD FIGMA RULES, both verified against the API on 2026-08-18:
+ *
+ *  1. `ALL_FILLS` is EXCLUSIVE. Combining it with any other fill scope throws
+ *     "in set_scopes: If ALL_FILLS is set, other fill scopes cannot be set".
+ *     The previous version of this function emitted `['ALL_FILLS','TEXT_FILL',...]`
+ *     for all 179 primitives and `['TEXT_FILL','ALL_FILLS']` for 15 semantics —
+ *     194 variables that would have thrown mid-build. `use_figma` is atomic, so
+ *     the entire Phase 1 script would have failed.
+ *
+ *  2. Primitives take `[]` — empty, hidden from every picker. They are raw values
+ *     that designers should never reach for directly; the semantic layer is the
+ *     public API. This is Figma's own guidance and what SDS ships.
+ *
+ * Step roles follow the 12-step scale documented in src/tokens/generate-scale.ts:
+ *   1–2 app/subtle bg · 3–5 component bg · 6–8 borders · 9–10 solid · 11–12 text
+ */
+const FILL_SCOPES = ['FRAME_FILL', 'SHAPE_FILL']
+
 function colorScopesFor(semanticName) {
-  // Primitives get permissive scoping — they're raw values, can appear anywhere
-  if (!semanticName) return ['ALL_FILLS', 'TEXT_FILL', 'STROKE_COLOR', 'EFFECT_COLOR']
-  // Semantic scoping by role
+  // Primitives: hidden from all pickers — the semantic layer is the public surface
+  if (!semanticName) return []
+
+  // Explicit roles first
   if (/\/(fg|fg-muted|fg-subtle|fg-disabled|inverted-fg)$/.test(semanticName)) return ['TEXT_FILL']
-  if (/\/(border|border-strong|border-subtle)$/.test(semanticName)) return ['STROKE_COLOR']
-  if (/^backdrop$/.test(semanticName)) return ['ALL_FILLS']
-  if (/^skeleton\//.test(semanticName)) return ['ALL_FILLS']
-  if (/\/fg$/.test(semanticName)) return ['TEXT_FILL']
-  if (/\/(11|12)$/.test(semanticName)) return ['TEXT_FILL', 'ALL_FILLS']
-  return ['ALL_FILLS']
+  if (/\/(border|border-strong|border-subtle|border-card)$/.test(semanticName)) return ['STROKE_COLOR']
+  if (/^backdrop$|^overlay$/.test(semanticName)) return FILL_SCOPES
+  if (/^skeleton\//.test(semanticName)) return FILL_SCOPES
+  if (/^shadow\//.test(semanticName)) return ['EFFECT_COLOR']
+
+  // Numbered steps, by their documented purpose
+  const step = semanticName.match(/\/(\d{1,2})$/)
+  if (step) {
+    const n = Number(step[1])
+    if (n >= 11) return ['TEXT_FILL']              // 11–12 low/high-contrast text
+    if (n >= 9) return FILL_SCOPES                 // 9–10 solid / solid hover
+    if (n >= 6) return ['STROKE_COLOR']            // 6–8 borders
+    return FILL_SCOPES                             // 1–5 backgrounds
+  }
+
+  return FILL_SCOPES
 }
 
 function floatScopesFor(varName) {

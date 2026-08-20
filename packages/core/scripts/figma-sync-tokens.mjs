@@ -33,24 +33,37 @@ const readCss = (name) => readFileSync(join(TOKENS_DIR, name), 'utf8')
 
 /** Extract every `--name: value;` under a given selector block in a CSS string. */
 function extractVarsUnderSelector(css, selector) {
-  // Crude: find "<selector> {" and read until matching "}". Token files are well-formed.
-  const idx = css.indexOf(selector)
-  if (idx === -1) return {}
-  const start = css.indexOf('{', idx)
-  let depth = 1
-  let i = start + 1
-  while (i < css.length && depth > 0) {
-    if (css[i] === '{') depth++
-    else if (css[i] === '}') depth--
-    if (depth === 0) break
-    i++
-  }
-  const body = css.slice(start + 1, i)
+  // Find "<selector> {" at the start of a line and read until the matching "}".
+  //
+  // Anchored deliberately. A bare `css.indexOf(selector)` matched `.dark` inside
+  // a COMMENT on line 34 of semantic.css ("The `.dark { }` block below…"), then
+  // read the comment's own braces — so all 50 dark-mode overrides silently
+  // vanished from the emitted JSON and `darkOverrides` came back empty.
+  // Found 2026-08-18 while building the Figma foundations.
+  // A selector can appear MORE THAN ONCE. semantic.css has four `:root` blocks;
+  // reading only the first dropped 25 real tokens, including --border-width-*
+  // and --border-focus-*, which then never reached Figma. Merge every block.
+  // Found 2026-08-18 alongside the `.dark`-inside-a-comment bug.
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const out = {}
-  for (const line of body.split('\n')) {
-    const m = line.match(/^\s*(--[a-z0-9-]+):\s*([^;]+?);?\s*(?:\/\*.*\*\/)?\s*$/i)
-    if (m) out[m[1]] = m[2].trim()
+  let found = false
+  for (const match of css.matchAll(new RegExp(`^[ \\t]*${escaped}[ \\t]*\\{`, 'gm'))) {
+    found = true
+    const start = css.indexOf('{', match.index)
+    let depth = 1
+    let i = start + 1
+    while (i < css.length && depth > 0) {
+      if (css[i] === '{') depth++
+      else if (css[i] === '}') depth--
+      if (depth === 0) break
+      i++
+    }
+    for (const line of css.slice(start + 1, i).split('\n')) {
+      const m = line.match(/^\s*(--[a-z0-9-]+):\s*([^;]+?);?\s*(?:\/\*.*\*\/)?\s*$/i)
+      if (m) out[m[1]] = m[2].trim()
+    }
   }
+  if (!found) return {}
   return out
 }
 
@@ -144,9 +157,17 @@ function main() {
   // Dark overrides — semantic.css .dark block
   const semDark = extractVarsUnderSelector(semantic, '.dark')
 
+  // Tokens declared in :root rather than @theme. Deliberate: they are consumed
+  // through manual preset mappings (w-ds-/h-ds-) instead of generating
+  // utilities, so Tailwind must not see them. They are still real tokens.
+  // Emitting only @theme dropped 25 of them, including every --border-width-*
+  // and --border-focus-*, which meant they never reached Figma either.
+  const rootVars = extractVarsUnderSelector(semantic, ':root')
+  const allSemanticVars = { ...rootVars, ...themeVars }
+
   // Semantic tokens by category
   const semantic_tokens = {}
-  for (const [k, v] of Object.entries(themeVars)) {
+  for (const [k, v] of Object.entries(allSemanticVars)) {
     const alias = parseAlias(v)
     const px = parsePx(v), rem = parseRem(v)
     const entry = {

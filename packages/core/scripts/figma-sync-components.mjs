@@ -149,25 +149,65 @@ function parseDefaultVariants(src) {
   return entries
 }
 
-/** Extract DS token references from a Tailwind className string. */
+const EMPTY_TOKENS = () => ({
+  bg: [], text: [], border: [], padding: [], radius: [], gap: [], height: [], shadow: [], opacity: [],
+})
+
+/** Classify one unprefixed Tailwind class into a token bucket. */
+function classify(c, into) {
+  let m
+  if ((m = c.match(/^bg-([a-z0-9-]+)$/)))               into.bg.push(m[1])
+  else if ((m = c.match(/^text-([a-z0-9-]+)$/)))        into.text.push(m[1])
+  else if ((m = c.match(/^border-([a-z0-9-]+)$/)))      into.border.push(m[1])
+  else if ((m = c.match(/^p[xy]?-ds-([a-z0-9]+)$/)))    into.padding.push(m[1])
+  // Radius is ROLE-based in this system (rounded-control, rounded-pill,
+  // rounded-surface). Matching only `rounded-ds-*` missed every component's
+  // radius silently, because Button uses rounded-control. Both forms now match.
+  else if ((m = c.match(/^rounded-ds-([a-z0-9]+)$/)))   into.radius.push('ds-' + m[1])
+  else if ((m = c.match(/^rounded-([a-z][a-z0-9-]*)$/))) into.radius.push(m[1])
+  else if ((m = c.match(/^gap-ds-([a-z0-9]+)$/)))       into.gap.push(m[1])
+  else if ((m = c.match(/^h-ds-([a-z0-9-]+)$/)))        into.height.push(m[1])
+  else if ((m = c.match(/^w-ds-([a-z0-9-]+)$/)))        into.height.push(m[1])
+  else if ((m = c.match(/^shadow-([a-z-]+)$/)))         into.shadow.push(m[1])
+  else if ((m = c.match(/^opacity-([a-z0-9-]+)$/)))     into.opacity.push(m[1])
+}
+
+/**
+ * Extract DS token references from a Tailwind className string, split by state.
+ *
+ * Interactive state lives in pseudo-class PREFIXES (`hover:bg-accent-10`), not
+ * in the CVA axes. Ignoring them, as this did previously, meant the emitted spec
+ * described only the resting appearance. A Figma State variant built from it
+ * would have had no hover or pressed colours to bind to, and the omission is
+ * invisible unless you diff against the source.
+ *
+ * Returns the resting tokens under `tokens` (unchanged shape, so existing
+ * consumers keep working) and adds `states` alongside.
+ */
 function extractTokenRefs(classes) {
   if (!classes) return {}
-  const tokens = {
-    bg: [], text: [], border: [], padding: [], radius: [], gap: [], height: [], shadow: [],
+  const base = EMPTY_TOKENS()
+  const states = { hover: EMPTY_TOKENS(), active: EMPTY_TOKENS(), disabled: EMPTY_TOKENS(), focus: EMPTY_TOKENS() }
+
+  for (const raw of classes.split(/\s+/)) {
+    if (!raw) continue
+    const m = raw.match(/^(hover|active|disabled|focus-visible|focus):(.+)$/)
+    if (m) {
+      const key = m[1] === 'focus-visible' ? 'focus' : m[1]
+      classify(m[2], states[key])
+    } else {
+      classify(raw, base)
+    }
   }
-  const tw = classes.split(/\s+/)
-  for (const c of tw) {
-    let m
-    if ((m = c.match(/^bg-([a-z0-9-]+)$/)))          tokens.bg.push(m[1])
-    else if ((m = c.match(/^text-([a-z0-9-]+)$/)))   tokens.text.push(m[1])
-    else if ((m = c.match(/^border-([a-z0-9-]+)$/))) tokens.border.push(m[1])
-    else if ((m = c.match(/^p[xy]?-ds-([a-z0-9]+)$/))) tokens.padding.push(m[1])
-    else if ((m = c.match(/^rounded-ds-([a-z0-9]+)$/))) tokens.radius.push(m[1])
-    else if ((m = c.match(/^gap-ds-([a-z0-9]+)$/)))     tokens.gap.push(m[1])
-    else if ((m = c.match(/^h-ds-([a-z0-9-]+)$/)))      tokens.height.push(m[1])
-    else if ((m = c.match(/^shadow-([a-z-]+)$/)))       tokens.shadow.push(m[1])
+
+  // Drop states that contributed nothing, so the output shows at a glance which
+  // states a variant actually defines.
+  const used = {}
+  for (const [k, v] of Object.entries(states)) {
+    if (Object.values(v).some((arr) => arr.length)) used[k] = v
   }
-  return tokens
+
+  return Object.assign(base, Object.keys(used).length ? { states: used } : {})
 }
 
 function main() {

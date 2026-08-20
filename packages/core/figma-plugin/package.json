@@ -1,0 +1,9 @@
+{
+  "name": "@devalok/figma-plugin-oklch-ramps",
+  "private": true,
+  "type": "commonjs",
+  "description": "Scopes this directory to CommonJS. packages/core is type:module, which would otherwise make code.js an ES module and break both the Figma plugin runtime expectations and verify-parity.mjs requiring it. Figma reads manifest.json, not this file.",
+  "scripts": {
+    "verify": "node verify-parity.mjs"
+  }
+}

@@ -77,9 +77,36 @@ Pick one. Declared-and-bundled is the bug that shipped twice (framer-motion/sonn
 
 This applies to: Button, SplitButton, and anywhere else `variant="outline" | "soft"` is a choice. It does NOT override explicit design decisions already in existing components.
 
-## Figma Component Generation (MANDATORY checklist)
+## Figma Library (2026-08-18 rebuild)
 
-Before claiming any Figma component generated from a CVA source is "done", verify every item. The Button went through four rebuilds on 2026-04-20 because we skipped these:
+**Read these before touching the Figma file — they supersede the checklist below:**
+- [`docs/plans/2026-08-18-figma-library-build-plan.md`](./docs/plans/2026-08-18-figma-library-build-plan.md) — architecture and decisions (D1–D23)
+- [`docs/plans/2026-08-18-figma-build-playbook.md`](./docs/plans/2026-08-18-figma-build-playbook.md) — API traps, layout tricks, per-component audit, verification protocol
+- [`docs/plans/2026-08-18-figma-foundations-spec.md`](./docs/plans/2026-08-18-figma-foundations-spec.md) — every collection, mode and variable as built
+- [`docs/plans/2026-08-18-figma-port-retrospective.md`](./docs/plans/2026-08-18-figma-port-retrospective.md) — how the work went, the full bug ledger, and what caught what
+- [`docs/plans/2026-08-19-figma-components-build.md`](./docs/plans/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 11 sets, 535 variants, the mode-chain architecture, and 10 findings in the DS itself
+
+Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (owned, editable, 4,962 icons bound to `component/fg`). The April 2026 plan and its Figma file are superseded.
+
+**Built and PUBLISHED (2026-08-19): 25 sets, 741 variants.** Button 330, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2. 29 collections, ~740 variables, 20 text styles, 13 effect styles. **Publishing is a human step — republish after any change.**
+
+**`Accessibility review` page** carries three measured contrast failures that are CODE bugs this library reproduces faithfully, with proposed fixes and live-bound specimens: Alert dismiss on solid (**1.01:1**), Badge category solid in dark (3.28–3.70:1), Input/Textarea placeholder in light (4.14:1). Decide these before the next release.
+
+Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
+
+Five rules that cost the most time when broken:
+1. **The collection a variable lives in is the OUTERMOST selector of its resolution chain.** A value that varies by state *and* style must live in the state collection and alias into the style one. Get it backwards and the value is unreachable. This is what lets one `component/fg` serve 4,962 icons across every state.
+2. **Regenerate the component spec before every build** (`figma-sync-components.mjs <name>`) and read the component *body* for prop interactions — the CVA describes appearance, not which prop overrides which. It reports **0 compound rules for Badge and Card**, whose colours live in a plain object, not the CVA.
+3. **Test with real scenarios and varied copy, not a variant grid.** A grid hides layout bugs because every label is the same length.
+4. **Measure, don't eyeball** — but also read the numbers you get back. Four of ten bugs in the Button spike were silent, and a later one sat unnoticed inside a verification output I had already looked at. A returned `0` is a finding.
+5. **Never write `.visible` on a variable-bound node** — it silently clears the binding. An audit that reveals hidden nodes to inspect them will destroy what it inspects (it cost 264 spinner bindings).
+> **Before building any Figma component, load the `figma-component-authoring` skill** (user-level, alongside `figma-use`). It carries the mechanism decision table (variant vs boolean vs instance-swap vs slot vs variable mode), the verified build order, and every silent failure this project paid for. It exists because we shipped a whole library before discovering native slots.
+
+6. **Assume a Figma limitation is your ignorance until three distinct mechanisms have failed.** This has now been wrong four times. The latest: "instances can't hold content" after trying exactly one approach — Figma has **native slots** (`component.createSlot()`). Card, Dialog, Sheet, Tabs and Segmented control now use them (7 slot properties). **Slots must be created BEFORE `combineAsVariants` or they don't merge** — one property per variant, and dropped content dies on every variant switch.
+
+### Legacy checklist (2026-04-20)
+
+Still broadly valid for component completeness; ignore its Code Connect item. Original note: the Button went through four rebuilds on 2026-04-20 because we skipped these:
 
 **Component properties (right-panel UX):**
 - TEXT property for any visible string (label/heading/body) — never hardcode "Button"

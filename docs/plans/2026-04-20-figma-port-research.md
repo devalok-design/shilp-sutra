@@ -1,5 +1,12 @@
 # Figma Port — Research Notes
 
+> **Partially superseded 2026-08-18** by [`2026-08-18-figma-library-build-plan.md`](./2026-08-18-figma-library-build-plan.md).
+> The Plugin API deep-dive (Stream 4) and the tooling verdict (Stream 3) still stand.
+> **Decisions D4, D7, D8 and D10 are replaced** — six state values became four, sizes split into a
+> Type axis, Code Connect is blocked by plan tier rather than deferred, and style moved to a
+> variable mode instead of being a variant axis.
+
+
 **Started**: 2026-04-20
 **Status**: research-complete
 **Purpose**: Capture learnings about how design-system Figma libraries are actually built, before rebuilding shilp-sutra's Figma library. Earlier attempts (4 Button rebuilds in one session) were reactive — this doc forces us to understand patterns before execution.

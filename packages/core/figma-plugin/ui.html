@@ -3,24 +3,33 @@
 <head>
 <meta charset="utf-8" />
 <style>
-  :root { color-scheme: light dark; }
+  /* Figma injects --figma-color-* into the plugin iframe when showUI is called
+     with themeColors: true, and puts a figma-light / figma-dark class on <html>.
+     Follow those, never prefers-color-scheme: that reports the OS theme, and
+     Figma's editor theme is set independently of it, so the two disagree
+     routinely and the panel renders a white card inside a dark editor.
+     There is no font variable in the set; Inter is Figma's own UI face.
+     Fallbacks are the light values, so a host that skips the injection still
+     renders the panel it used to. */
+  html.figma-light { color-scheme: light; }
+  html.figma-dark  { color-scheme: dark; }
+
   * { box-sizing: border-box; }
   body {
     font: 11px/1.5 Inter, -apple-system, system-ui, sans-serif;
     margin: 0; padding: 14px;
-    background: #fff; color: #1b1b1b;
-  }
-  @media (prefers-color-scheme: dark) {
-    body { background: #2c2c2c; color: #e8e8e8; }
-    select { background: #383838; color: #e8e8e8; border-color: #555; }
-    .log { background: #242424; border-color: #444; }
+    background: var(--figma-color-bg, #ffffff);
+    color: var(--figma-color-text, #1b1b1b);
   }
   h1 { font-size: 12px; margin: 0 0 2px; letter-spacing: -0.01em; }
-  p.sub { margin: 0 0 14px; opacity: 0.65; }
+  p.sub { margin: 0 0 14px; color: var(--figma-color-text-secondary, #5c5c5c); }
   label { display: block; margin: 10px 0 4px; font-weight: 600; }
   select {
     width: 100%; padding: 6px 8px; font: inherit;
-    border: 1px solid #ccc; border-radius: 5px; background: #fff;
+    border: 1px solid var(--figma-color-border, #cdcdcd);
+    border-radius: 5px;
+    background: var(--figma-color-bg-secondary, #f5f5f5);
+    color: var(--figma-color-text, #1b1b1b);
   }
   .row { display: flex; gap: 8px; }
   .row > div { flex: 1; min-width: 0; }
@@ -28,27 +37,50 @@
     width: 100%; margin-top: 14px; padding: 9px;
     font: inherit; font-weight: 600;
     border: 0; border-radius: 6px; cursor: pointer;
-    background: #0d99ff; color: #fff;
+    background: var(--figma-color-bg-brand, #0d99ff);
+    color: var(--figma-color-text-onbrand, #ffffff);
   }
-  button:disabled { opacity: 0.45; cursor: default; }
-  button.secondary { margin-top: 8px; background: transparent; color: #0d99ff; border: 1px solid currentColor; }
-  @media (prefers-color-scheme: dark) { button.secondary { color: #6cc0ff; } }
+  button:hover:not(:disabled)  { background: var(--figma-color-bg-brand-hover, #007be5); }
+  button:active:not(:disabled) { background: var(--figma-color-bg-brand-pressed, #0d99ff); }
+  button:disabled {
+    cursor: default;
+    background: var(--figma-color-bg-disabled, #e6e6e6);
+    color: var(--figma-color-text-disabled, #b3b3b3);
+  }
+  button.secondary {
+    margin-top: 8px; background: transparent;
+    color: var(--figma-color-text-brand, #007be5);
+    border: 1px solid var(--figma-color-border-brand, #0d99ff);
+  }
+  button.secondary:hover:not(:disabled) { background: var(--figma-color-bg-brand-tertiary, #e5f4ff); }
+  button.secondary:disabled { background: transparent; border-color: var(--figma-color-border, #cdcdcd); }
+  select:focus-visible, textarea:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--figma-color-border-selected, #0d99ff);
+    outline-offset: 1px;
+  }
   textarea {
     width: 100%; margin-top: 10px; height: 120px; padding: 8px;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px;
-    border: 1px solid #e3e3e3; border-radius: 5px; resize: vertical;
+    border: 1px solid var(--figma-color-border, #cdcdcd);
+    border-radius: 5px; resize: vertical;
+    background: var(--figma-color-bg-secondary, #f5f5f5);
+    color: var(--figma-color-text, #1b1b1b);
   }
   .log {
     margin-top: 12px; padding: 8px; max-height: 150px; overflow: auto;
-    background: #f5f5f5; border: 1px solid #e3e3e3; border-radius: 5px;
+    background: var(--figma-color-bg-secondary, #f5f5f5);
+    border: 1px solid var(--figma-color-border, #cdcdcd);
+    border-radius: 5px;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px;
     white-space: pre-wrap; word-break: break-word;
+    color: var(--figma-color-text-secondary, #5c5c5c);
   }
-  .err { color: #d33; }
-  .ok { color: #1a8f4c; }
+  /* After .log, so a status class wins on equal specificity. */
+  .err  { color: var(--figma-color-text-danger,  #dc3412); }
+  .ok   { color: var(--figma-color-text-success, #009951); }
+  .warn { color: var(--figma-color-text-warning, #a83e00); }
   .check { display: flex; align-items: center; gap: 6px; margin: 10px 0 4px; font-weight: 400; }
-  .check input { margin: 0; }
-  .warn { color: #a05a00; }
+  .check input { margin: 0; accent-color: var(--figma-color-bg-brand, #0d99ff); }
 </style>
 </head>
 <body>

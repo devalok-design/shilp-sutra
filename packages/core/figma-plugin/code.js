@@ -148,7 +148,10 @@ if (typeof module !== 'undefined' && module.exports) {
 
 if (typeof figma !== 'undefined') {
 
-figma.showUI(__html__, { width: 340, height: 460 })
+// themeColors injects the --figma-color-* variables and puts
+// figma-light / figma-dark on <html>. Without it the panel has no way to know
+// the editor theme, and guessing from prefers-color-scheme reads the OS instead.
+figma.showUI(__html__, { width: 340, height: 460, themeColors: true })
 
 async function sendState() {
   var collections = await figma.variables.getLocalVariableCollectionsAsync()

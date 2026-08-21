@@ -84,11 +84,11 @@ This applies to: Button, SplitButton, and anywhere else `variant="outline" | "so
 - [`docs/plans/2026-08-18-figma-build-playbook.md`](./docs/plans/2026-08-18-figma-build-playbook.md) — API traps, layout tricks, per-component audit, verification protocol
 - [`docs/plans/2026-08-18-figma-foundations-spec.md`](./docs/plans/2026-08-18-figma-foundations-spec.md) — every collection, mode and variable as built
 - [`docs/plans/2026-08-18-figma-port-retrospective.md`](./docs/plans/2026-08-18-figma-port-retrospective.md) — how the work went, the full bug ledger, and what caught what
-- [`docs/plans/2026-08-19-figma-components-build.md`](./docs/plans/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 30 sets, 759 variants, the mode-chain architecture, native slots, the shells, and 10 findings in the DS itself
+- [`docs/plans/2026-08-19-figma-components-build.md`](./docs/plans/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 29 sets, 758 variants, the mode-chain architecture, native slots, the shells, and 10 findings in the DS itself
 
 Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (owned, editable, 4,962 icons bound to `component/fg`). The April 2026 plan and its Figma file are superseded.
 
-**Built and PUBLISHED: 30 sets, 759 variants.** Button 330, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2, Bottom navbar 1. 31 collections, 20 text styles, 13 effect styles, **11 native slot properties** (Card, Dialog, Sheet, Tabs, Segmented control, Sidebar, Top bar, Bottom navbar). **Publishing is a human step — republish after any change.**
+**Built and PUBLISHED: 29 sets, 758 variants.** Button 330, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2. 31 collections, 20 text styles, 13 effect styles, **15 native slot properties** across 8 sets (Card 3, Sidebar 3, Top bar 3, Dialog 2, Alert 1, Sheet 1, Tabs 1, Segmented control 1). A `Bottom navbar` set existed at port time and no longer does. **Publishing is a human step — republish after any change.**
 
 **Every set's `defaultVariant` now matches its code default.** It is READ-ONLY and derived from geometry (top-left-most variant), so a tidy ascending grid silently hands consumers the smallest size — 18 of 25 sets did. Assert `set.defaultVariant.name` after any re-layout.
 
@@ -104,7 +104,23 @@ Five rules that cost the most time when broken:
 5. **Never write `.visible` on a variable-bound node** — it silently clears the binding. An audit that reveals hidden nodes to inspect them will destroy what it inspects (it cost 264 spinner bindings).
 > **Before building any Figma component, load the `figma-component-authoring` skill** (user-level, alongside `figma-use`). It carries the mechanism decision table (variant vs boolean vs instance-swap vs slot vs variable mode), the verified build order, and every silent failure this project paid for. It exists because we shipped a whole library before discovering native slots.
 
-6. **Assume a Figma limitation is your ignorance until three distinct mechanisms have failed.** This has now been wrong four times. The latest: "instances can't hold content" after trying exactly one approach — Figma has **native slots** (`component.createSlot()`). Card, Dialog, Sheet, Tabs and Segmented control now use them (7 slot properties). **Slots must be created BEFORE `combineAsVariants` or they don't merge** — one property per variant, and dropped content dies on every variant switch.
+6. **Assume a Figma limitation is your ignorance until three distinct mechanisms have failed.** This has now been wrong five times. Two examples: "instances can't hold content" after trying exactly one approach (Figma has **native slots**, `component.createSlot()`); and the rule below, which we believed for the whole port and which is only half true.
+
+   **A slot CAN be added to an already-combined set** (measured 2026-08-21). The naive path does fail: calling `createSlot()` per variant *after* `combineAsVariants` gives one property **per variant** (`Action#274:0` AND `Action#274:3`), so dropped content dies on every variant switch. But this works:
+
+   ```js
+   const key = set.addComponentProperty('Action', 'SLOT', '')   // merged, set-level
+   for (const v of set.children) {
+     const s = v.createSlot()
+     const orphan = s.componentPropertyReferences.slotContentId  // auto-made, per-variant
+     s.componentPropertyReferences = { slotContentId: key, visible: boolKey }
+     set.deleteComponentProperty(orphan)
+   }
+   ```
+
+   `slotContentId` is the reference field. `addComponentProperty` alone creates an **orphan** property and no nodes; `createSlot` alone creates per-variant properties. Only the pair merges. Note the typings document `addComponentProperty` as `BOOLEAN | TEXT | INSTANCE_SWAP | VARIANT` — `'SLOT'` is undocumented and works.
+
+   Two traps when doing this: `createSlot()` gives the node a **white SOLID fill** (set `fills = []`, or you ship a white band), and a SLOT node is **not auto-layout by default** — set `layoutMode` before any `HUG`/`FILL` sizing or it throws.
 
 ### Legacy checklist (2026-04-20)
 

@@ -76,6 +76,6 @@ describe('ErrorBlock', () => {
       />,
     )
     const alert = container.querySelector('[role="alert"]') as HTMLElement
-    expect(alert.className).toContain('bg-error-3')
+    expect(alert.className).toContain('bg-error-2')
   })
 })

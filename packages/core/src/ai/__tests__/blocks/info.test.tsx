@@ -21,6 +21,6 @@ describe('InfoBlock', () => {
       <InfoBlock data={{ message: 'Info note' }} />,
     )
     const alert = container.querySelector('[role="status"]') as HTMLElement
-    expect(alert.className).toContain('bg-info-3')
+    expect(alert.className).toContain('bg-info-2')
   })
 })

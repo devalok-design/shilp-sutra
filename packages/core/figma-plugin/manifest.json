@@ -1,0 +1,13 @@
+{
+  "name": "OKLCH Ramp Generator",
+  "id": "oklch-ramp-generator",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"],
+    "reasoning": "Runs entirely offline. Reads and writes Figma variables only."
+  }
+}

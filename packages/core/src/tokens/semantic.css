@@ -271,37 +271,51 @@
      so AA body (4.5) is the bar, not large text. */
   --color-category-fg:         var(--neutral-0);
 
+  --color-category-teal-2:     var(--teal-2);
   --color-category-teal-3:     var(--teal-3);
+  --color-category-teal-4:     var(--teal-4);
   --color-category-teal-7:     var(--teal-7);
   --color-category-teal-9:     var(--teal-9);
   --color-category-teal-11:    var(--teal-11);
 
+  --color-category-amber-2:    var(--amber-2);
   --color-category-amber-3:    var(--amber-3);
+  --color-category-amber-4:    var(--amber-4);
   --color-category-amber-7:    var(--amber-7);
   --color-category-amber-9:    var(--amber-9);
   --color-category-amber-11:   var(--amber-11);
 
+  --color-category-slate-2:    var(--slate-2);
   --color-category-slate-3:    var(--slate-3);
+  --color-category-slate-4:    var(--slate-4);
   --color-category-slate-7:    var(--slate-7);
   --color-category-slate-9:    var(--slate-9);
   --color-category-slate-11:   var(--slate-11);
 
+  --color-category-indigo-2:   var(--indigo-2);
   --color-category-indigo-3:   var(--indigo-3);
+  --color-category-indigo-4:   var(--indigo-4);
   --color-category-indigo-7:   var(--indigo-7);
   --color-category-indigo-9:   var(--indigo-9);
   --color-category-indigo-11:  var(--indigo-11);
 
+  --color-category-cyan-2:     var(--cyan-2);
   --color-category-cyan-3:     var(--cyan-3);
+  --color-category-cyan-4:     var(--cyan-4);
   --color-category-cyan-7:     var(--cyan-7);
   --color-category-cyan-9:     var(--cyan-9);
   --color-category-cyan-11:    var(--cyan-11);
 
+  --color-category-orange-2:   var(--orange-2);
   --color-category-orange-3:   var(--orange-3);
+  --color-category-orange-4:   var(--orange-4);
   --color-category-orange-7:   var(--orange-7);
   --color-category-orange-9:   var(--orange-9);
   --color-category-orange-11:  var(--orange-11);
 
+  --color-category-emerald-2:  var(--emerald-2);
   --color-category-emerald-3:  var(--emerald-3);
+  --color-category-emerald-4:  var(--emerald-4);
   --color-category-emerald-7:  var(--emerald-7);
   --color-category-emerald-9:  var(--emerald-9);
   --color-category-emerald-11: var(--emerald-11);

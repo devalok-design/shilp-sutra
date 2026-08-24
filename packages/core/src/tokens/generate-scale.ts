@@ -17,6 +17,29 @@ export interface ScaleOptions {
   peakChroma: number
   /** When true, keeps chroma very low across all steps */
   isNeutral?: boolean
+  /**
+   * Per-ramp lightness corrections for the solid steps, in OKLCH L units.
+   *
+   * Steps 9 and 10 are the solid fills that carry text. The generic curve does
+   * not clear WCAG for every hue — green and blue at the default dark L of 0.63
+   * are too light under white text — so the ramps used as semantic intents carry
+   * a hand-verified correction.
+   *
+   * Discovered 2026-08-18: without these, `generateScale` could not reproduce the
+   * palette in `primitives.css`. Regenerating a ramp silently reverted the
+   * contrast fix on pink, red, green, blue and neutral.
+   *
+   * Decorative ramps (purple, teal, amber, slate, indigo, cyan, orange, emerald)
+   * need no correction — they never sit under text.
+   */
+  correction?: {
+    /** Added to step 9's light-mode L */
+    light9?: number
+    /** Added to step 9's dark-mode L */
+    dark9?: number
+    /** Added to step 10's dark-mode L */
+    dark10?: number
+  }
 }
 
 export interface ScaleStep {
@@ -135,7 +158,8 @@ function formatOklch(l: number, c: number, h: number): string {
 // ---------------------------------------------------------------------------
 
 export function generateScale(options: ScaleOptions): Scale {
-  const { hue, peakChroma, isNeutral } = options
+  const { hue, peakChroma, isNeutral, correction } = options
+  const corr = { light9: 0, dark9: 0, dark10: 0, ...correction }
 
   if (peakChroma < 0 || peakChroma > 0.4) {
     throw new RangeError(
@@ -156,18 +180,21 @@ export function generateScale(options: ScaleOptions): Scale {
 
     // Light mode — chroma is always relative to peakChroma
     const lightC = peakChroma * LIGHT_CHROMA_WEIGHTS[i]
+    const lightL = LIGHT_L[i] + (step === 9 ? corr.light9 : 0)
     light.push({
       step,
-      value: formatOklch(LIGHT_L[i], lightC, hue),
+      value: formatOklch(lightL, lightC, hue),
     })
 
     // Dark mode — neutral scales skip the 1.1x boost
     const darkC = isNeutral
       ? peakChroma * DARK_CHROMA_WEIGHTS[i]
       : darkPeak * DARK_CHROMA_WEIGHTS[i]
+    const darkL =
+      DARK_L[i] + (step === 9 ? corr.dark9 : step === 10 ? corr.dark10 : 0)
     dark.push({
       step,
-      value: formatOklch(DARK_L[i], darkC, hue),
+      value: formatOklch(darkL, darkC, hue),
     })
   }
 
@@ -178,14 +205,20 @@ export function generateScale(options: ScaleOptions): Scale {
 // Brand palettes
 // ---------------------------------------------------------------------------
 
+/**
+ * Ramp seeds. The five ramps that back semantic intents carry `correction`
+ * values on steps 9/10 — the solid fills that sit under text. Verified against
+ * `primitives.css` by `figma-plugin/verify-parity.mjs`; without them the
+ * generator does not reproduce the shipped palette.
+ */
 export const BRAND_PALETTES = {
-  pink: { hue: 360, peakChroma: 0.19 },
+  pink: { hue: 360, peakChroma: 0.19, correction: { dark9: -0.09, dark10: -0.09 } },
   purple: { hue: 300, peakChroma: 0.12 },
-  neutral: { hue: 350, peakChroma: 0.01, isNeutral: true },
-  red: { hue: 25, peakChroma: 0.18 },
-  green: { hue: 145, peakChroma: 0.14 },
+  neutral: { hue: 350, peakChroma: 0.01, isNeutral: true, correction: { light9: -0.01 } },
+  red: { hue: 25, peakChroma: 0.18, correction: { dark9: -0.09, dark10: -0.09 } },
+  green: { hue: 145, peakChroma: 0.14, correction: { light9: -0.03, dark9: -0.09, dark10: -0.09 } },
   yellow: { hue: 85, peakChroma: 0.14 },
-  blue: { hue: 240, peakChroma: 0.12 },
+  blue: { hue: 240, peakChroma: 0.12, correction: { dark9: -0.09, dark10: -0.09 } },
   teal: { hue: 175, peakChroma: 0.10 },
   amber: { hue: 70, peakChroma: 0.12 },
   slate: { hue: 260, peakChroma: 0.04 },

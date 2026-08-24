@@ -158,6 +158,50 @@ follows the element's own radius automatically and stays correct by construction
 This is a Figma-representation concern only.
 ---
 
+## Figma ahead of code — pending a fix
+
+Not deliberate departures. Bugs found while porting, where the Figma component was
+built correct and the code has not caught up yet. Each should be closed by fixing
+the code, not by changing Figma back.
+
+### `MENU-ITEM-HOVER` — menu hover is invisible in light mode
+
+**The bug.** Every menu item uses `hover:bg-surface-raised`, and every menu
+container uses `bg-surface-overlay`. In light mode both resolve to `neutral-1`:
+
+```
+--color-surface-raised:  var(--neutral-1);   /* #fcfcfc */
+--color-surface-overlay: var(--neutral-1);   /* #fcfcfc */
+```
+
+So hovering a menu item changes nothing at all. Dark mode is unaffected —
+`surface-overlay` is `oklch(0.13 …)` there and `surface-raised` is `neutral-2`, so
+the two differ.
+
+**Affects** `DropdownMenuItem`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioItem`,
+`DropdownMenuSubTrigger` and `SelectItem` — and `ContextMenu` / `Menubar`, which
+follow the same Radix pattern. Every menu in the system, in the default theme.
+
+**Figma is built correct**: `Menu item` uses `surface-raised-hover` (`neutral-3`,
+`#e9e7e8`) for hover and `surface-raised-active` (`neutral-4`) for pressed, both
+clearly distinct from the `#fcfcfc` menu ground.
+
+**The code fix**, per file:
+
+```
+hover:bg-surface-raised        →  hover:bg-surface-raised-hover
+focus:bg-surface-raised        →  focus:bg-surface-raised-hover
+active:bg-surface-raised-hover →  active:bg-surface-raised-active
+data-[state=open]:bg-surface-raised → data-[state=open]:bg-surface-raised-hover
+```
+
+**Why it was never noticed:** the tokens are correct in isolation and the class
+names read sensibly. It only fails once the two are composed, and only in one
+theme. No test asserts a rendered colour difference between a container and its
+child.
+
+---
+
 ## Related, but not deviations
 
 - **Waybill `brand/error` and `brand/info`** carry `#ff00ff` placeholders in the

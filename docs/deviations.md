@@ -28,7 +28,7 @@ any gate that needs to skip a known case.
 | `BADGE-OUTLINE-BORDER` | Badge `outline` border step | 1.26:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-24 |
 | `BADGE-SUBTLE-BORDER` | Badge `subtle` border step | 1.26:1 | — (refinement only) | 2026-08-24 |
 | `SURFACE-BASE-GROUND` | Light canvas `#f5f5f5` | n/a | Setu `grounds`, tier 1 | open |
-| `AVATAR-RING-RADIUS` | Figma ring corner radius | raw `10` | bind every radius to a token | 2026-08-24 |
+| `AVATAR-RING-RADIUS` | Figma ring corner radius | `scale/lg` = 10 | derive from `role/control` + 4 | 2026-08-24 |
 
 ---
 
@@ -118,28 +118,27 @@ app dashboard is arguable.
 
 ---
 
-### `AVATAR-RING-RADIUS` — ring corner radius is a raw 10 in Figma
+### `AVATAR-RING-RADIUS` — ring radius is hand-derived, not computed
 
-**What.** The rounded Avatar's ring rectangle carries `cornerRadius: 10` as a raw
-value rather than a bound variable, breaking the "bind every radius to a role
-token" rule.
+**Resolved from a raw value to a bound token (2026-08-24), but the coupling
+remains.**
 
-**Why the value is right.** It is derived, not arbitrary. The rounded avatar uses
-`rounded-control` (`--radius-ds-md`, 6px), and the code draws the ring with
-`ring-2 ring-offset-2`, so it sits 4px outside the box. Outer radius = 6 + 4 = 10.
+**What.** The Avatar ring sits 4px outside the media box (`ring-2 ring-offset-2`
+in code). Its outer radius must therefore be the media radius plus 4. On the
+Rounded shape that is `role/control` (6) + 4 = **10**.
 
-**Why it is not bound.** Figma variables hold values, not expressions — there is no
-way to express `radius-control + 4` as a binding. The options are a raw value or a
-dedicated `--radius-avatar-ring` token that duplicates the arithmetic by hand.
+Figma now expresses this with a dedicated `avatar/ring-radius` variable in
+`Component/Avatar Shape`, aliased per mode: Circle → `role/pill`,
+Square → `scale/none`, Rounded → `scale/lg` (10). No raw numbers remain.
 
-**The risk this accepts.** If `--radius-control` ever changes, the ring radius will
-not follow, and the ring will visibly mismatch the avatar's corner. Nothing catches
-that today.
+**What still deviates.** `scale/lg` equals 10 by coincidence, not by derivation.
+Figma variables hold values, not expressions, so `role/control + 4` cannot be
+bound. If `role/control` ever moves off 6, the ring radius will not follow and
+the ring will visibly mismatch the avatar corner. Nothing detects that today.
 
-**Figma-only.** In code the ring is a Tailwind `ring-*` utility, which follows the
-element's own radius automatically. This deviation exists purely in the Figma
-representation.
-
+**Code is unaffected.** There the ring is a Tailwind `ring-*` utility, which
+follows the element's own radius automatically and stays correct by construction.
+This is a Figma-representation concern only.
 ---
 
 ## Related, but not deviations

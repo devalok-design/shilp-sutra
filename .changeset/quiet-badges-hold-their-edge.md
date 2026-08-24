@@ -4,9 +4,15 @@
 
 quieten the Badge fill and border, and open up the category ramps to match
 
-Badge's twelve colour rows move their fill from step 3 to step 2 and their border
-from step 7 to step 4. From design work by Yogin and Goutham, tested against a
+Badge's twelve colour rows move their `subtle` fill from step 3 to step 2, and
+their border from step 7 to step 4. From design work by Yogin and Goutham, tested against a
 real dashboard rather than a variant grid.
+
+**`soft` is deliberately excluded.** `subtle` and `soft` previously shared one
+`bg` key, so moving it would have changed both. The design note said "Soft: no
+changes", and the Figma variables hold the two independently, so the code now
+does too: `colorMap` gains a `softBg` key that keeps step 3 while `bg` goes to
+step 2. `StatusBadge` renders `variant="soft"` and is therefore unchanged.
 
 **The fill change is a straight improvement.** Label contrast is measured on
 step-11 text against its own fill, worst case across the ten ramps that use

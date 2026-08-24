@@ -15,20 +15,20 @@ import { cn } from './lib/utils'
 
 // ── Color map — single source of truth for all badge color × variant combos ──
 const colorMap = {
-  default: { bg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
-  accent:  { bg: 'bg-accent-2',  fg: 'text-accent-11',  border: 'border-accent-4',  solid: 'bg-accent-9',  solidFg: 'text-accent-fg' },
-  error:   { bg: 'bg-error-2',   fg: 'text-error-11',   border: 'border-error-4',   solid: 'bg-error-9',   solidFg: 'text-error-fg' },
-  success: { bg: 'bg-success-2', fg: 'text-success-11', border: 'border-success-4', solid: 'bg-success-9', solidFg: 'text-success-fg' },
-  warning: { bg: 'bg-warning-2', fg: 'text-warning-11', border: 'border-warning-4', solid: 'bg-warning-9', solidFg: 'text-warning-fg' },
-  info:    { bg: 'bg-info-2',    fg: 'text-info-11',    border: 'border-info-4',    solid: 'bg-info-9',    solidFg: 'text-info-fg' },
-  neutral: { bg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
-  teal:    { bg: 'bg-category-teal-2',    fg: 'text-category-teal-11',    border: 'border-category-teal-4',    solid: 'bg-category-teal-9',    solidFg: 'text-category-fg' },
-  amber:   { bg: 'bg-category-amber-2',   fg: 'text-category-amber-11',   border: 'border-category-amber-4',   solid: 'bg-category-amber-9',   solidFg: 'text-category-fg' },
-  slate:   { bg: 'bg-category-slate-2',   fg: 'text-category-slate-11',   border: 'border-category-slate-4',   solid: 'bg-category-slate-9',   solidFg: 'text-category-fg' },
-  indigo:  { bg: 'bg-category-indigo-2',  fg: 'text-category-indigo-11',  border: 'border-category-indigo-4',  solid: 'bg-category-indigo-9',  solidFg: 'text-category-fg' },
-  cyan:    { bg: 'bg-category-cyan-2',    fg: 'text-category-cyan-11',    border: 'border-category-cyan-4',    solid: 'bg-category-cyan-9',    solidFg: 'text-category-fg' },
-  orange:  { bg: 'bg-category-orange-2',  fg: 'text-category-orange-11',  border: 'border-category-orange-4',  solid: 'bg-category-orange-9',  solidFg: 'text-category-fg' },
-  emerald: { bg: 'bg-category-emerald-2', fg: 'text-category-emerald-11', border: 'border-category-emerald-4', solid: 'bg-category-emerald-9', solidFg: 'text-category-fg' },
+  default: { bg: 'bg-surface-raised-hover', softBg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
+  accent:  { bg: 'bg-accent-2', softBg: 'bg-accent-3',  fg: 'text-accent-11',  border: 'border-accent-4',  solid: 'bg-accent-9',  solidFg: 'text-accent-fg' },
+  error:   { bg: 'bg-error-2', softBg: 'bg-error-3',   fg: 'text-error-11',   border: 'border-error-4',   solid: 'bg-error-9',   solidFg: 'text-error-fg' },
+  success: { bg: 'bg-success-2', softBg: 'bg-success-3', fg: 'text-success-11', border: 'border-success-4', solid: 'bg-success-9', solidFg: 'text-success-fg' },
+  warning: { bg: 'bg-warning-2', softBg: 'bg-warning-3', fg: 'text-warning-11', border: 'border-warning-4', solid: 'bg-warning-9', solidFg: 'text-warning-fg' },
+  info:    { bg: 'bg-info-2', softBg: 'bg-info-3',    fg: 'text-info-11',    border: 'border-info-4',    solid: 'bg-info-9',    solidFg: 'text-info-fg' },
+  neutral: { bg: 'bg-surface-raised-hover', softBg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
+  teal:    { bg: 'bg-category-teal-2', softBg: 'bg-category-teal-3',    fg: 'text-category-teal-11',    border: 'border-category-teal-4',    solid: 'bg-category-teal-9',    solidFg: 'text-category-fg' },
+  amber:   { bg: 'bg-category-amber-2', softBg: 'bg-category-amber-3',   fg: 'text-category-amber-11',   border: 'border-category-amber-4',   solid: 'bg-category-amber-9',   solidFg: 'text-category-fg' },
+  slate:   { bg: 'bg-category-slate-2', softBg: 'bg-category-slate-3',   fg: 'text-category-slate-11',   border: 'border-category-slate-4',   solid: 'bg-category-slate-9',   solidFg: 'text-category-fg' },
+  indigo:  { bg: 'bg-category-indigo-2', softBg: 'bg-category-indigo-3',  fg: 'text-category-indigo-11',  border: 'border-category-indigo-4',  solid: 'bg-category-indigo-9',  solidFg: 'text-category-fg' },
+  cyan:    { bg: 'bg-category-cyan-2', softBg: 'bg-category-cyan-3',    fg: 'text-category-cyan-11',    border: 'border-category-cyan-4',    solid: 'bg-category-cyan-9',    solidFg: 'text-category-fg' },
+  orange:  { bg: 'bg-category-orange-2', softBg: 'bg-category-orange-3',  fg: 'text-category-orange-11',  border: 'border-category-orange-4',  solid: 'bg-category-orange-9',  solidFg: 'text-category-fg' },
+  emerald: { bg: 'bg-category-emerald-2', softBg: 'bg-category-emerald-3', fg: 'text-category-emerald-11', border: 'border-category-emerald-4', solid: 'bg-category-emerald-9', solidFg: 'text-category-fg' },
 } as const
 
 type BadgeColor = keyof typeof colorMap | 'custom'
@@ -41,7 +41,9 @@ function getColorClasses(variant: 'subtle' | 'solid' | 'outline' | 'soft', color
     case 'subtle':  return cn(c.bg, c.fg, c.border)
     case 'solid':   return cn(c.solid, c.solidFg, 'border-transparent')
     case 'outline': return cn('bg-transparent', c.fg, c.border)
-    case 'soft':    return cn(c.bg, c.fg, 'border-transparent')
+    // soft keeps the original step-3 fill. subtle moved to step 2; soft did not,
+    // so the two cannot share one key (design call, Yogin/Goutham 2026-08-24).
+    case 'soft':    return cn(c.softBg, c.fg, 'border-transparent')
   }
 }
 

@@ -27,6 +27,7 @@ any gate that needs to skip a known case.
 |---|---|---|---|---|
 | `BADGE-OUTLINE-BORDER` | Badge `outline` border step | 1.26:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-24 |
 | `BADGE-SUBTLE-BORDER` | Badge `subtle` border step | 1.26:1 | — (refinement only) | 2026-08-24 |
+| `ALERT-SUBTLE-BORDER` | Alert `subtle` border step | 1.26:1 | — (refinement only) | 2026-08-24 |
 | `SURFACE-BASE-GROUND` | Light canvas `#f5f5f5` | n/a | Setu `grounds`, tier 1 | open |
 | `AVATAR-RING-RADIUS` | Figma ring corner radius | `scale/lg` = 10 | derive from `role/control` + 4 | 2026-08-24 |
 
@@ -84,6 +85,22 @@ decorative inner hairline.
 worst-case label contrast rises from 6.36 to 7.13 in light and 7.50 to 8.41 in
 dark. That part is not a deviation.
 
+---
+
+### `ALERT-SUBTLE-BORDER` — subtle border at step 4
+
+Same call as `BADGE-SUBTLE-BORDER`, applied to Alert's four numbered colours
+(info, success, warning, error) on 2026-08-24. Fill moves step 3 → 2 and border
+step 7 → 4; the rationale, the measurement and the conditions that would change
+the answer are all identical, so they are not repeated here.
+
+**Alert's `outline` variant is NOT affected.** Unlike Badge, Alert uses compound
+variants, so `subtle` and `outline` hold separate class strings. `outline` keeps
+border step 7. That leaves Alert outline and Badge outline on different steps —
+a real inconsistency between two components, flagged rather than resolved
+unilaterally.
+
+`neutral` is unchanged; it uses `surface-raised` and `surface-border-strong`.
 ---
 
 ### `SURFACE-BASE-GROUND` — light canvas is `#f5f5f5`

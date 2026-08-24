@@ -33,10 +33,10 @@ const alertVariants = cva(
     },
     compoundVariants: [
       // subtle (surface bg) — default, matches previous behavior
-      { variant: 'subtle', color: 'info', className: 'bg-info-3 border-info-7 text-info-11' },
-      { variant: 'subtle', color: 'success', className: 'bg-success-3 border-success-7 text-success-11' },
-      { variant: 'subtle', color: 'warning', className: 'bg-warning-3 border-warning-7 text-warning-11' },
-      { variant: 'subtle', color: 'error', className: 'bg-error-3 border-error-7 text-error-11' },
+      { variant: 'subtle', color: 'info', className: 'bg-info-2 border-info-4 text-info-11' },
+      { variant: 'subtle', color: 'success', className: 'bg-success-2 border-success-4 text-success-11' },
+      { variant: 'subtle', color: 'warning', className: 'bg-warning-2 border-warning-4 text-warning-11' },
+      { variant: 'subtle', color: 'error', className: 'bg-error-2 border-error-4 text-error-11' },
       { variant: 'subtle', color: 'neutral', className: 'bg-surface-raised border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
       // solid (solid bg, contrasting text) — canonical name
       { variant: 'solid', color: 'info', className: 'bg-info-9 text-info-fg border-transparent [&>svg]:text-info-fg' },

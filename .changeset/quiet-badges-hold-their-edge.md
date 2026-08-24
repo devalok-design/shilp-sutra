@@ -14,6 +14,13 @@ changes", and the Figma variables hold the two independently, so the code now
 does too: `colorMap` gains a `softBg` key that keeps step 3 while `bg` goes to
 step 2. `StatusBadge` renders `variant="soft"` and is therefore unchanged.
 
+**Alert gets the same treatment.** Its four numbered colours (info, success,
+warning, error) move `subtle` fill 3 → 2 and border 7 → 4, from the same design
+pass. Alert uses compound variants rather than a shared colour map, so its
+`outline` keeps border step 7 — which leaves Alert outline and Badge outline on
+different steps. Flagged in `docs/deviations.md`, not resolved here. `neutral` is
+unchanged on both.
+
 **The fill change is a straight improvement.** Label contrast is measured on
 step-11 text against its own fill, worst case across the ten ramps that use
 numbered steps: light rises from 6.36 to 7.13, dark from 7.50 to 8.41. Both

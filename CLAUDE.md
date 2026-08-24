@@ -154,6 +154,21 @@ Still broadly valid for component completeness; ignore its Code Connect item. Or
 
 Skipping any of the above is NOT a time-saver. The cost of rebuild is 3-5× the cost of doing it right first time.
 
+## Deviations register
+
+[`docs/deviations.md`](./docs/deviations.md) records deliberate departures from a
+measurable standard — a value knowingly shipped that fails a stated threshold,
+with the number it misses and why it was chosen anyway.
+
+A measured threshold is one input, not the verdict: a 1px hairline can read
+clearly to the eye at a contrast ratio the formula calls invisible. Those calls
+are legitimate. Losing them is not — an unrecorded deviation gets rediscovered as
+a bug and "fixed" by someone who never knew it was chosen.
+
+**If you knowingly ship a value that fails a stated threshold, add an entry.**
+Fixing one means deleting its entry, not editing the number. Entries carry stable
+IDs so code can cite them (`// deviation: <ID>`) and a gate can skip known cases.
+
 ## Surface Layering (MANDATORY)
 
 Every component MUST use the correct surface level. This is a hard rule, enforced by `pre-publish-audit.mjs`.

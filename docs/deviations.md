@@ -30,6 +30,7 @@ any gate that needs to skip a known case.
 | `ALERT-SUBTLE-BORDER` | Alert `subtle` border step | 1.26:1 | — (refinement only) | 2026-08-24 |
 | `SURFACE-BASE-GROUND` | Light canvas `#f5f5f5` | n/a | Setu `grounds`, tier 1 | open |
 | `AVATAR-RING-RADIUS` | Figma ring corner radius | `scale/lg` = 10 | derive from `role/control` + 4 | 2026-08-24 |
+| `WARNING-RAMP-CHROMA` | `warning/background` saturation | chroma 74.2 | siblings at 21.9–33.5 | 2026-08-26 |
 
 ---
 
@@ -103,6 +104,39 @@ unilaterally.
 `neutral` is unchanged; it uses `surface-raised` and `surface-border-strong`.
 ---
 
+### `WARNING-RAMP-CHROMA` — warning is louder than its siblings
+
+**What.** `warning/background` carries two to three times the chroma of the other
+three status backgrounds. Measured in OKLCh (×1000):
+
+| | light | dark |
+|---|---:|---:|
+| `info/background` | 21.9 | 25.2 |
+| `success/background` | 25.6 | 30.6 |
+| `error/background` | 33.5 | 37.9 |
+| **`warning/background`** | **74.2** | **44.3** |
+
+**Why it stands.** Deliberate, decided 2026-08-26. Amber means attention, and a
+warning that reads as loud as an error or as quiet as an info is arguably the
+worse outcome. In a UI showing mixed statuses, "Review" is meant to catch the eye.
+
+**Not an accessibility issue.** Text contrast on all four backgrounds is
+comfortable — 6.4–7.0 in light, 7.6–9.0 in dark. This is a consistency
+departure only.
+
+**Pre-existing.** Nothing in the 2026-08-26 surface work created this. It became
+visible when the shell specimens were bound to the real status tokens instead of
+the hand-picked pastels they had been drawn with; before that, nobody was looking
+at the four chips side by side.
+
+**What would change the answer.** If warning ever needs to sit inside a dense
+run of chips where every status appears at once, the shouting stops being useful
+and starts being noise. A de-saturated version was built and rejected — it is on
+the Figma showcase page under `DECISIONS` (`#efe0cb` light, `#2d1e0f` dark, at
+chroma 32.0 / 35.0) if the question reopens.
+
+---
+
 ### `SURFACE-BASE-GROUND` — light canvas is `#f5f5f5`
 
 **Status: open.** Recorded here because it is a known, deliberate hold rather than
@@ -156,6 +190,50 @@ the ring will visibly mismatch the avatar corner. Nothing detects that today.
 **Code is unaffected.** There the ring is a Tailwind `ring-*` utility, which
 follows the element's own radius automatically and stays correct by construction.
 This is a Figma-representation concern only.
+---
+
+## Figma ahead of code — pending a fix
+
+Not deliberate departures. Bugs found while porting, where the Figma component was
+built correct and the code has not caught up yet. Each should be closed by fixing
+the code, not by changing Figma back.
+
+### `MENU-ITEM-HOVER` — menu hover is invisible in light mode
+
+**The bug.** Every menu item uses `hover:bg-surface-raised`, and every menu
+container uses `bg-surface-overlay`. In light mode both resolve to `neutral-1`:
+
+```
+--color-surface-raised:  var(--neutral-1);   /* #fcfcfc */
+--color-surface-overlay: var(--neutral-1);   /* #fcfcfc */
+```
+
+So hovering a menu item changes nothing at all. Dark mode is unaffected —
+`surface-overlay` is `oklch(0.13 …)` there and `surface-raised` is `neutral-2`, so
+the two differ.
+
+**Affects** `DropdownMenuItem`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioItem`,
+`DropdownMenuSubTrigger` and `SelectItem` — and `ContextMenu` / `Menubar`, which
+follow the same Radix pattern. Every menu in the system, in the default theme.
+
+**Figma is built correct**: `Menu item` uses `surface-raised-hover` (`neutral-3`,
+`#e9e7e8`) for hover and `surface-raised-active` (`neutral-4`) for pressed, both
+clearly distinct from the `#fcfcfc` menu ground.
+
+**The code fix**, per file:
+
+```
+hover:bg-surface-raised        →  hover:bg-surface-raised-hover
+focus:bg-surface-raised        →  focus:bg-surface-raised-hover
+active:bg-surface-raised-hover →  active:bg-surface-raised-active
+data-[state=open]:bg-surface-raised → data-[state=open]:bg-surface-raised-hover
+```
+
+**Why it was never noticed:** the tokens are correct in isolation and the class
+names read sensibly. It only fails once the two are composed, and only in one
+theme. No test asserts a rendered colour difference between a container and its
+child.
+
 ---
 
 ## Related, but not deviations

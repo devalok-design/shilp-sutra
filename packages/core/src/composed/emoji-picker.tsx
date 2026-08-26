@@ -78,7 +78,7 @@ function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
       <div className="p-ds-03">
         <Frimousse.Search
           placeholder="Search emoji…"
-          className="w-full rounded-control bg-surface-panel px-ds-03 py-ds-02b text-body-sm text-surface-fg placeholder:text-surface-fg-subtle focus-ring"
+          className="w-full rounded-control bg-surface-panel-hover px-ds-03 py-ds-02b text-body-sm text-surface-fg placeholder:text-surface-fg-subtle focus-ring"
         />
       </div>
       <Frimousse.Viewport className="relative flex-1 overflow-y-auto">
@@ -112,7 +112,7 @@ function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
                 className={cn(
                   'flex aspect-square w-[calc(100%/var(--frimousse-list-columns))] items-center justify-center rounded-control text-[1.375rem] leading-none',
                   'hover:bg-surface-panel-hover',
-                  emoji.isActive && 'bg-surface-panel',
+                  emoji.isActive && 'bg-surface-panel-hover',
                 )}
                 {...props}
               >

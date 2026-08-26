@@ -74,7 +74,7 @@ const InputOTPSlot = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        'relative flex items-center justify-center border-y border-r border-surface-border-strong transition-[box-shadow,border-color] first:rounded-l-control first:border-l last:rounded-r-control',
+        'relative flex items-center justify-center border-y border-r border-surface-border-interactive transition-[box-shadow,border-color] first:rounded-l-control first:border-l last:rounded-r-control',
         slotSizeClasses[size],
         'group-[.is-error]/otp:border-error-7',
         isActive && 'z-raised ring-2 ring-accent-9',

@@ -55,7 +55,7 @@ Event colors: "accent" | "success" | "warning" | "error" | "info" | "neutral"
 ## Changes
 ### v0.53.0
 - **Changed** Read-only schedules no longer flood the tab order — slots are interactive only when `onSlotClick` is set; otherwise inert grid lines. Interactive slots use roving tabindex + Arrow/Home/End keyboard navigation (RTL-aware).
-- **Changed** Overlapping events now lay out in side-by-side columns instead of stacking illegibly. The now-line ticks live (per-minute) and scrolls into view; shell uses the `surface-2` card tier (fixed the prior `surface-raised` + dead-`border-card-strong` regression); layout uses logical (RTL-safe) properties; magic-number sizes tokenized.
+- **Changed** Overlapping events now lay out in side-by-side columns instead of stacking illegibly. The now-line ticks live (per-minute) and scrolls into view; shell uses the `surface-2` card tier (fixed the prior `surface-panel` + dead-`border-card-strong` regression); layout uses logical (RTL-safe) properties; magic-number sizes tokenized.
 - **Added** `selectedEventId`, `renderEvent`, `header`, `emptyState`, and `height` props.
 
 ### v0.49.0

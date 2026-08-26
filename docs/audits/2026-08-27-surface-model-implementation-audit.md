@@ -1,7 +1,10 @@
 # Surface model — implementation audit
 
-**Completed 2026-08-27**, on `feat/surface-model` (5 commits, 285 files,
-+1918 / −658 against `main`).
+**Completed 2026-08-27**, on `feat/surface-model`.
+
+> The verification table below is the CORRECTED one. An earlier version of this
+> document cited "1,329 tests, 103 files" — roughly half the suite, because the
+> run covered `src/ui/__tests__/` and not `src/ui/*.test.tsx`. See finding 11.
 
 Audits the *execution* of the plan, not the design. The design is in
 [`2026-08-26-surface-model-rebuild.md`](../plans/2026-08-26-surface-model-rebuild.md);
@@ -17,7 +20,7 @@ Every gate run, nothing assumed.
 | | result |
 |---|---|
 | `pre-publish-audit` (45 gates) | **all passed**, 2 advisory warnings |
-| Core tests | **1,329 passed**, 103 files |
+| Core tests | **2,513 passed**, 182 files |
 | eslint-plugin tests | **139 passed**, 16 files |
 | Typecheck | clean |
 | Lint, all packages | **0 errors** (241 warnings, all pre-existing) |
@@ -136,6 +139,87 @@ Both from #269, already on `main`, both release-blocking:
   normalizes; allowlisted with the same reasoning as its `composed/` sibling.
 
 ---
+
+## What an independent review caught afterwards
+
+A separate reviewer was given the branch and told to distrust this document.
+That was worth doing: it found three things, and chasing the first turned up
+three more I had introduced.
+
+### 9. Three components paint the keyboard-selected row with their own container's colour
+
+`emoji-suggestion.tsx:64`, `mention-suggestion.tsx:54`, `emoji-picker.tsx:115` —
+each sets the selected item to `bg-surface-panel` inside a container on
+`bg-surface-overlay`. Those two tokens are **identical in both themes**, so
+arrow-keying through an emoji or mention list moved a selection nobody could see.
+A fourth site the reviewer missed: `emoji-picker.tsx:81`, the search field itself.
+
+This is the exact defect this whole rebuild exists to close, and **it slipped
+past everything**: the codemod, the lint rule, the full audit, and my own "zero
+references" sweep.
+
+Why: the state is a **JavaScript conditional between two plain strings** —
+`index === selectedIndex ? 'bg-surface-panel' : …` — not a Tailwind state
+modifier. No rule that inspects class-name modifiers can see it, and it is
+outside the 37-retarget count by construction. `slash-command.tsx`, a near-identical
+sibling, got it right, which is what makes it an oversight rather than a choice.
+
+**In light these were already broken before this work** (old `raised` and
+`overlay` were both `neutral-1` — the original `MENU-ITEM-HOVER`). The change
+extended the failure to dark, where the two previously differed.
+
+### 10. Chasing that found two regressions I had introduced
+
+Sweeping for the general form — any file with an overlay container *and* a bare
+panel fill — surfaced two more, neither of which the reviewer flagged:
+
+- **`Surface`'s `raised` elevation became byte-identical to `flat`.** I removed
+  its `shadow-raised` as part of scoping shadows to floating things. But
+  `Surface elevation="raised"` is an explicit opt-in — the same reasoning that
+  kept `Card variant="elevated"`. Restored.
+- **`Tabs` `variant="contained"` became invisible on a page in light.** Its track
+  used `bg-surface-panel`, which before this work differed from the page and now
+  does not. Moved to `bg-segment-track`, the alpha token that exists precisely so
+  a groove reads on any parent.
+
+### 11. Seventy-eight test files were never run
+
+The verification in this document originally cited "1,329 tests passed". That
+covered `src/ui/__tests__/` but **not `src/ui/*.test.tsx`** — 78 files and the
+majority of the UI suite. The real figure is 106 files and 1,507 tests in
+`src/ui` alone.
+
+Running them surfaced two stale assertions in `select.test.tsx` expecting the
+old border tier, and would have caught the `Surface` regression immediately.
+A partial suite reported as a full one is worse than no number at all.
+
+### 12. The border heuristic misread a segmented control
+
+`input-otp.tsx:77` draws each digit box with `border-y border-r`, and my
+"directional borders are dividers" rule skipped it — so the one text-entry
+control in the library kept a now-translucent decorative edge. The heuristic got
+17 of 18 right; the exception was a control built *out of* directional borders
+rather than divided by them. The other 11 skips were re-checked by hand and are
+genuine dividers.
+
+### 13. "Zero references remaining" was scoped to `.ts` / `.tsx`
+
+48 references survived in markdown that ships to consumers: `make-kit/` (which
+exists to be pasted into Figma Make and read by AI agents generating new code),
+the per-component docs, and the site content. Also `CLAUDE.md`'s mandatory
+surface-layering section and the shipped agent `SKILL.md`, both of which
+described the old model as current.
+
+Historical documents — dated audits, the v0.23 migration guide, old MIGRATION
+entries — were deliberately left as written.
+
+## Deferred
+
+The plan's step 6 (delete nine now-unused tokens: `surface-1..4`,
+`surface-disabled`, `surface-fg-disabled`, `surface-border-card`,
+`surface-overlay-light/-dark`) is **not done**. All nine are confirmed unused in
+source, but they are consumer-facing deprecated aliases and removing them in the
+same release as the rename doubles the breakage for no benefit. Separate change.
 
 ## Not done
 

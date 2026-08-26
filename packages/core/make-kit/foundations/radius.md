@@ -36,7 +36,7 @@ In components: never — they apply the right role automatically.
 In your own elements (rare):
 
 ```tsx
-<div className="bg-surface-raised rounded-(--radius-surface) p-ds-05">…</div>
+<div className="bg-surface-panel rounded-(--radius-surface) p-ds-05">…</div>
 ```
 
 TW4 shorthand `rounded-(--radius-surface)` is the right way. **Do not** use `rounded-ds-lg` directly — it's not a semantic role, and the pre-publish audit rejects it in `src/ui/`.

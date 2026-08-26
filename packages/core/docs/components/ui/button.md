@@ -44,7 +44,7 @@
 - **Prefer `variant="soft"` over `variant="outline"` for secondary actions** (see Gotchas for details). This is a design-system-wide convention.
 
 ## Gotchas
-- **Prefer `variant="soft"` over `variant="outline"` for secondary actions.** Soft (tinted step-3 bg, step-11 text) is the Devalok-recommended default — it feels warmer and brand-consistent. Use `outline` only when soft's tint would disappear (on colored/surface-raised bg), in toolbar/icon-dense contexts, or when you need outline's stronger hierarchy next to a primary action.
+- **Prefer `variant="soft"` over `variant="outline"` for secondary actions.** Soft (tinted step-3 bg, step-11 text) is the Devalok-recommended default — it feels warmer and brand-consistent. Use `outline` only when soft's tint would disappear (on colored/surface-panel bg), in toolbar/icon-dense contexts, or when you need outline's stronger hierarchy next to a primary action.
 - DO NOT use variant="destructive" — use variant="solid" color="error"
 - DO NOT use variant="secondary" — use variant="soft" (preferred) or variant="ghost"
 - DO NOT use size="default" — use size="md"

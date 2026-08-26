@@ -67,8 +67,15 @@ which is why our card edges were darker than every peer system's.
 
 **Shadows are scoped to floating things.** Cards, panels and the inset canvas
 lose theirs; menus, dialogs, popovers, tooltips and control thumbs keep them.
-Interactive cards now change surface on hover instead of lifting.
-`--shadow-strength` remains as the consumer dial.
+Interactive cards now change surface on hover rather than gaining a shadow —
+they keep their small motion lift. `Surface elevation="raised"` and `Card
+variant="elevated"` keep their shadows: those are explicit opt-ins, not panels
+that happen to sit on a page. `--shadow-strength` remains as the consumer dial.
+
+**A second new lint rule**, `shilp-sutra/no-subtle-text-on-sunken`, flags
+`text-surface-fg-subtle` on `bg-surface-sunken` — 4.38:1, under AA. Not
+autofixable: swapping to `fg-muted` changes the text's visual weight, which is
+the author's call.
 
 **A new tint dial** — `Neutral` / `Subtle` / `Medium` / `Strong` — washes the
 page, canvas and chrome toward the brand's own accent hue while cards, overlays

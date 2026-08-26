@@ -49,7 +49,7 @@ sized, optionally pulsing, filled or ring.
 - **`pulse` = "live".** Off by default (static status). Turn it on for active/attention states (recording, live, connecting) — a pulsing dot reads as "happening now", so leave it off for settled statuses.
 - **Powers the higher-level pieces.** `StatusBadge` composes `<Badge>` + `<Dot>`; use `Dot` directly anywhere you need a coloured indicator without a pill.
 - **Three treatments:** `filled` (active), `ring` (hollow outline), `off` (faint same-tone fill + light border — present but inactive/disabled).
-- **`withBorder`** adds a contrast ring (`ring-2 ring-surface-raised`) so the dot reads on avatars, images, or coloured fills — the pattern Avatar's status dot uses.
+- **`withBorder`** adds a contrast ring (`ring-2 ring-surface-panel`) so the dot reads on avatars, images, or coloured fills — the pattern Avatar's status dot uses.
 - **`pulseSpeed`** (slow/normal/fast) tunes the pulse tempo — fast for urgent (recording), slow for ambient (syncing).
 
 ## Gotchas

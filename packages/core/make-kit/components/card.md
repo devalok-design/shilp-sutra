@@ -20,18 +20,18 @@ import {
 
 - Any rectangular region that reads as a discrete unit on the page: dashboards widgets, list items, marketing feature blocks.
 - Header / actions / footer are built in as slots (`CardHeader`, `CardAction`, `CardFooter`) — don't reach for a wrapper. (`<ContentCard>` is deprecated; use Card slots.)
-- Need just a tinted region with no card affordance? Use a `<div className="bg-surface-raised">` (rare; usually Card is right).
+- Need just a tinted region with no card affordance? Use a `<div className="bg-surface-panel">` (rare; usually Card is right).
 
-Card renders on `surface-raised`. The `default` variant is tonal — a surface-tone shift plus a whisper hairline (`border-card`), no shadow. **Never** override its background or border.
+Card renders on `surface-panel`. The `default` variant is tonal — a surface-tone shift plus a whisper hairline (`border-card`), no shadow. **Never** override its background or border.
 
 ## Variants
 
 | Variant | Use |
 |---|---|
-| `default` (default) | `surface-raised` + tonal `border-card` hairline, no shadow. Standard card — depth from tone, not a drop shadow. |
+| `default` (default) | `surface-panel` + tonal `border-card` hairline, no shadow. Standard card — depth from tone, not a drop shadow. |
 | `elevated` | `shadow-raised-hover`, no border. Use when a card must visibly pop (hero, dragged tile, spotlight panel). |
-| `outline` | `surface-raised` + strong border-only (no shadow). Dense lists where stacked shadowed cards would feel too lifted. |
-| `flat` | `surface-raised` + no shadow, no border. For cards inside an already-elevated container. |
+| `outline` | `surface-panel` + strong border-only (no shadow). Dense lists where stacked shadowed cards would feel too lifted. |
+| `flat` | `surface-panel` + no shadow, no border. For cards inside an already-elevated container. |
 
 ## Colors
 
@@ -186,7 +186,7 @@ wrap the text column in `<CardSection>`, which re-establishes py + gap from the 
 
 ## Rules
 
-- **Never** `bg-surface-base` on a Card — cards sit on `surface-raised`. The pre-publish audit rejects this.
+- **Never** `bg-surface-base` on a Card — cards sit on `surface-panel`. The pre-publish audit rejects this.
 - **Never** combine `border-*` + `shadow-*` on a Card. Pick one (Card already does — don't override).
 - **Use `interactive` + `onClick` + `aria-label`** for clickable cards. Don't wrap a Card in a `<button>` — broken nesting.
 - **`size` on Card** drives all spacing via `--card-spacing`. Never set `p-*` on Card or a slot — override the variable if a one-off is truly needed.

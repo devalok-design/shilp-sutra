@@ -152,7 +152,7 @@ describe('Select', () => {
       renderSelect()
       const trigger = screen.getByRole('combobox')
       expect(trigger.className).toMatch(/bg-surface-panel-hover/)
-      expect(trigger.className).toMatch(/border-surface-border-strong/)
+      expect(trigger.className).toMatch(/border-surface-border-interactive/)
     })
 
     it('applies outline variant classes', () => {
@@ -168,7 +168,7 @@ describe('Select', () => {
       )
       const trigger = screen.getByRole('combobox')
       expect(trigger.className).toMatch(/bg-transparent/)
-      expect(trigger.className).toMatch(/border-surface-border-strong/)
+      expect(trigger.className).toMatch(/border-surface-border-interactive/)
     })
 
     it('applies ghost variant classes', () => {

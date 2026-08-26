@@ -17,7 +17,10 @@ const surfaceVariants = cva('', {
     // way to produce an un-tokened surface.
     elevation: {
       flat: 'bg-surface-panel',
-      raised: 'bg-surface-panel',
+      // opt-in elevation: the consumer explicitly asked for a lift, the same way
+      // Card's `elevated` variant does. Panels that merely sit on the page get
+      // `flat` and are defined by their edge.
+      raised: 'bg-surface-panel shadow-raised',
       floating: 'bg-surface-overlay shadow-floating',
       overlay: 'bg-surface-overlay shadow-overlay',
     },

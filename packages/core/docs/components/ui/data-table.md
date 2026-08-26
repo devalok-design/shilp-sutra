@@ -128,7 +128,7 @@ import { DataTable } from '@devalok/shilp-sutra/ui/data-table'
 - **Fixed** Expander a11y per the expando-row spec: `aria-expanded` on the toggle button, visually-hidden "Expand rows" column header; chevron rotation uses `duration-fast-02 ease-productive-standard`.
 - **Added** Expanded-row content animates open/closed (height + opacity via framer, `springs.smooth`), self-guarded with `useReducedMotion` — instant swap for reduced-motion users. Virtualized tables keep the instant reveal (a height animation would fight the virtualizer's measurements).
 - **Changed** Density now drives Table's `--table-py` variable (rows ≈ 29 / 37 / 45px; was 29 / 53 / 85). Per-cell `cellPadding` threading removed from context.
-- **Fixed** Hover/selected states visible on cards: row/sort-button/expander hover use `surface-raised-hover` (was the invisible `surface-raised`); expanded row is a `surface-base` recess; sticky header bg is `surface-raised`; empty state uses `py-ds-07` (was raw `h-24`).
+- **Fixed** Hover/selected states visible on cards: row/sort-button/expander hover use `surface-panel-hover` (was the invisible `surface-panel`); expanded row is a `surface-base` recess; sticky header bg is `surface-panel`; empty state uses `py-ds-07` (was raw `h-24`).
 - **Changed** Mobile card view composes `<Card size="sm" variant="outline">` (was a hand-rolled 12px bordered box).
 
 ### v0.29.0

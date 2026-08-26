@@ -39,7 +39,7 @@ function ThemeToggle() {
 
 ## What you have to do per-component
 
-Nothing. Semantic tokens flip automatically. As long as you use `bg-surface-raised` not `bg-white`, dark mode works.
+Nothing. Semantic tokens flip automatically. As long as you use `bg-surface-panel` not `bg-white`, dark mode works.
 
 The only exception: **images, illustrations, decorative SVGs**. These don't flip. Author them as theme-aware:
 

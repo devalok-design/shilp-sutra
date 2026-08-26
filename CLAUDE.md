@@ -71,7 +71,7 @@ Pick one. Declared-and-bundled is the bug that shipped twice (framer-motion/sonn
 ## Design Preferences (default to these)
 
 **Prefer `variant="soft"` over `variant="outline"` for non-primary Button actions.** Soft (tinted step-3 bg, step-11 text, no visible border) feels warmer, brand-consistent, and reads better in data-dense UIs than outline's bordered-transparent look. When generating examples, docs, stories, or writing new screens, default to soft for secondary actions and use outline only when:
-- The button sits on a colored or surface-raised background where soft's tint would disappear
+- The button sits on a colored or surface-panel background where soft's tint would disappear
 - A toolbar/icon-dense context where soft would feel visually heavy
 - Paired adjacent to a primary action where you want a clear hierarchy that outline provides
 
@@ -177,21 +177,46 @@ Every component MUST use the correct surface level. This is a hard rule, enforce
 
 ```
 bg-surface-base    → Page background (the canvas everything sits on)
+bg-surface-panel   → Cards, widgets, panels, editor containers — anything ON the page
 bg-surface-overlay → Overlays: Dialog, Sheet, Popover, DropdownMenu, Select,
-                     Combobox, Toast, HoverCard, sticky headers, input controls,
-                     floating toolbars
-bg-surface-chrome  → shell chrome: TopBar, Sidebar, BottomNavbar. Its OWN tier so
-                     chrome's surface is an explicit, independently tunable decision
-                     (Carbon/Atlassian/Ant model), not coupled to the card surface.
-                     Currently equals `raised` — chrome reads slightly elevated in
-                     dark — but can diverge without touching cards.
-bg-surface-raised        → Cards, widgets, panels, editor containers — anything ON the page
-bg-surface-raised-hover  → Hover on raised elements, skeleton shimmers, track fills
-bg-surface-raised-active → Active/pressed states, hover on raised-hover elements
+                     Combobox, Toast, HoverCard, floating toolbars
+bg-surface-panel-hover   → Hover on panels, skeleton shimmers, track fills
+bg-surface-panel-active  → Active/pressed states, hover on panel-hover elements
 bg-surface-sunken        → Wells/insets that recede below the page
+bg-surface-sunken-hover  → Hover on a well
 ```
 
-**The rule:** If a component renders as a card/widget/panel on the page, its background is `bg-surface-raised`, NOT `bg-surface-base`. `bg-surface-base` is the page canvas + overlay backdrops only. When unsure which tier, grep a sibling component for its `bg-surface-*` usage and match — never reach for a numbered class.
+**`surface-raised` was renamed `surface-panel` in 0.57.0**, because in light it is
+not raised — it is the same white as the page. Old names still resolve as
+deprecated aliases; `pnpm eslint . --fix` rewrites them. **`surface-chrome` is
+gone** — chrome is an arrangement decision, not a theme value, and comes from
+`AppShell` (`variant` + `chrome`) or `surface-base`.
+
+**The rule:** if a component renders as a card/widget/panel on the page, its
+background is `bg-surface-panel`, NOT `bg-surface-base`. When unsure which tier,
+grep a sibling component and match — never reach for a numbered class.
+
+### The trap this model creates
+
+**In LIGHT, `base`, `panel` and `overlay` are all `#ffffff`.** That is deliberate
+— an edge is what makes a card a card, not a fill. Two consequences:
+
+1. **Never paint an interaction state with a container value.** `hover:bg-surface-panel`
+   on anything sitting on base/panel/overlay is invisible. Use
+   `-panel-hover` / `-panel-active`. `shilp-sutra/no-renamed-surface-token`
+   catches the Tailwind-modifier form, but **it cannot see a JS conditional** —
+   `isActive ? 'bg-surface-panel' : …` compiles to a plain string and slipped
+   past both the codemod and a full audit. Three components shipped that way.
+2. **You cannot verify "is this the right surface?" by sampling a colour.** It
+   has to be read from intent. Any audit that compares pixels will report false
+   agreement.
+
+**Borders split into two families.** `surface-border-subtle` / `-border` /
+`-border-strong` are *decorative*, translucent, and mark objects. `surface-border-interactive`
+/ `-interactive-strong` are *control* edges, solid, and carry WCAG 1.4.11. A form
+control on a decorative tier loses required contrast.
+
+Full model: [`docs/plans/2026-08-26-surface-model-rebuild.md`](./docs/plans/2026-08-26-surface-model-rebuild.md).
 
 ## Publishing
 

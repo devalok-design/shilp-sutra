@@ -23,7 +23,7 @@
 ## Composability
 - **Server-safe, decorative-only primitive.** Accepts any valid CSS color string — hex, rgb, oklch, hsl, named. Pure presentation, no context.
 - **Usage patterns:** Inline color marker next to a label, preview dot in lists, color-indicator in a category chip, legend swatch for charts.
-- **`ring={true}`** adds a subtle outline — essential for white/very-light colors that would otherwise disappear on surface-raised backgrounds.
+- **`ring={true}`** adds a subtle outline — essential for white/very-light colors that would otherwise disappear on surface-panel backgrounds.
 - **Interactive color picking:** Use ColorInput (which opens a full picker). ColorSwatch is display-only.
 - No IconProvider cascade, no FormField consumption — composes freely with anything.
 

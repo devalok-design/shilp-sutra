@@ -106,12 +106,12 @@ See the `RichCells` story for all of these live.
 - **Added** `TableRowLink` (ui/table-row-link) — real-anchor whole-row navigation with pseudo-element stretch (Safari-safe: anchored to the cell, clipped by the table's `overflow-x-clip`), row-level focus ring, `stretch={false}` title-only mode.
 - **Added** `TableRowActions` — hover/focus-revealed action cluster (opacity reveal, permanently tabbable, `:focus-within` + touch fallbacks, `persist` mode).
 - **Added** `numeric` prop on TableCell/TableHead — right-align + tabular figures.
-- **Fixed** TableFooter background was `color-mix(surface-raised 50%)` — invisible on cards (same mis-mapped shadcn `muted/50` family as the row hover). Now a `surface-base` band with a top hairline.
+- **Fixed** TableFooter background was `color-mix(surface-panel 50%)` — invisible on cards (same mis-mapped shadcn `muted/50` family as the row hover). Now a `surface-base` band with a top hairline.
 - **Fixed** Selected+hover tie: selected rows get an explicit `hover:bg-accent-4` step (hover and selected previously tied on specificity).
 - **Added** Cell recipes section (user cell, tag overflow, money, empty-dash) + density→avatar mapping; `RichCells` / `SelectedRows` stories.
 - **Added** `density` prop (`compact | standard | comfortable`) via `--table-py`; header height tracks density instead of a fixed 40px
 - **Added** `striped` prop — opt-in zebra
-- **Changed** Rows regain their hairline separator (`border-b border-surface-border-subtle` — lost in the original port) and hover becomes visible on cards (`hover:bg-surface-raised-hover`, was the invisible `surface-raised`)
+- **Changed** Rows regain their hairline separator (`border-b border-surface-border-subtle` — lost in the original port) and hover becomes visible on cards (`hover:bg-surface-panel-hover`, was the invisible `surface-panel`)
 - **Changed** Cells: `px-ds-04` interior, first/last cells read `--table-edge` (= `--card-spacing` inside a Card); header drops to `text-ds-sm` muted
 - **Changed** Default vertical rhythm tightens: standard rows ~53px → ~37px
 

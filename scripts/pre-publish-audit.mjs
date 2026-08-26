@@ -949,6 +949,7 @@ gate('Icon-prop components import normalize-icon', () => {
     'src/ui/toast.tsx',                  // sonner pass-through; internal config, not consumer prop
     'src/ui/icon.tsx',                   // the Icon component itself
     'src/ui/icon-button.tsx',            // routes through Button's normalize
+    'src/ui/data-table-bulk-actions.tsx', // forwards action.icon to Button.startIcon which does normalize (same shape as composed/bulk-action-bar)
     'src/ui/tree-view/use-tree.ts',      // type-only TreeNode export, no render here
     'src/composed/extensions/slash-command.tsx',  // tiptap extension, internal
     'src/composed/error-boundary.tsx',   // internal Tabler refs in config

@@ -85,7 +85,7 @@ export function DataTableCards<TData>({
                 aria-label={`Filter ${headerLabel}`}
                 className={cn(
                   'h-ds-xs-plus w-full rounded-control',
-                  'border border-card-strong bg-surface-raised-hover',
+                  'border border-card-strong bg-surface-panel-hover',
                   'px-ds-02 text-body-sm',
                   'text-surface-fg placeholder:text-surface-fg-subtle',
                   'outline-hidden focus:border-accent-7',

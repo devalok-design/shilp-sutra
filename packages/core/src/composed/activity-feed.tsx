@@ -181,7 +181,7 @@ function ActivityEntry({
             {item.detail ? (
               <button
                 type="button"
-                className="rounded-control text-surface-fg-muted hover:underline hover:bg-surface-raised focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+                className="rounded-control text-surface-fg-muted hover:underline hover:bg-surface-panel-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
                 onClick={handleActionClick}
                 aria-expanded={expandedDetail}
                 aria-controls={detailId}

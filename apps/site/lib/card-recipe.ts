@@ -13,7 +13,7 @@
 
 /** Resting state — no interaction affordance. Use for non-clickable cards (FeatureGrid articles). */
 export const CARD_RESTING =
-  'rounded-ds-lg bg-surface-raised px-ds-05b py-ds-05 border border-transparent shadow-raised'
+  'rounded-ds-lg bg-surface-panel px-ds-05b py-ds-05 border border-transparent shadow-raised'
 
 /**
  * Interactive — clickable card or Link. Gets hover lift + shadow swap +
@@ -21,7 +21,7 @@ export const CARD_RESTING =
  */
 export const CARD_INTERACTIVE = [
   'group',
-  'rounded-ds-lg bg-surface-raised px-ds-05b py-ds-05',
+  'rounded-ds-lg bg-surface-panel px-ds-05b py-ds-05',
   'border border-transparent shadow-raised',
   'transition-[box-shadow,border-color,translate] duration-fast-02 ease-productive-standard',
   'cursor-pointer select-none',

@@ -16,9 +16,9 @@ const toggleVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-transparent hover:bg-surface-raised-hover text-surface-fg-muted',
+          'bg-transparent hover:bg-surface-panel-hover text-surface-fg-muted',
         outline:
-          'border border-surface-border-strong bg-transparent hover:bg-surface-raised-hover hover:border-surface-border-strong',
+          'border border-surface-border-interactive bg-transparent hover:bg-surface-panel-hover hover:border-surface-border-interactive',
       },
       size: {
         sm: 'h-ds-sm px-ds-03 text-body-sm',
@@ -29,7 +29,7 @@ const toggleVariants = cva(
         accent: 'data-[state=on]:bg-accent-2 data-[state=on]:text-accent-11',
         error: 'data-[state=on]:bg-error-2 data-[state=on]:text-error-11',
         success: 'data-[state=on]:bg-success-2 data-[state=on]:text-success-11',
-        neutral: 'data-[state=on]:bg-surface-raised-hover data-[state=on]:text-surface-fg',
+        neutral: 'data-[state=on]:bg-surface-panel-hover data-[state=on]:text-surface-fg',
       },
     },
     defaultVariants: {

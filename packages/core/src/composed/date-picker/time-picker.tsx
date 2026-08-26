@@ -169,7 +169,7 @@ const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(
   const itemSelected =
     'bg-accent-9 text-accent-fg'
   const itemDefault =
-    'text-surface-fg hover:bg-surface-raised-hover'
+    'text-surface-fg hover:bg-surface-panel-hover'
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

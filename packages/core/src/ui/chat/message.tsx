@@ -109,7 +109,7 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
                 'max-w-[85%] rounded-bubble px-ds-04 py-ds-03',
                 placement === 'end'
                   ? 'bg-accent-3 text-surface-fg'
-                  : 'bg-surface-raised text-surface-fg',
+                  : 'bg-surface-panel text-surface-fg',
               )}
             >
               {children}
@@ -186,7 +186,7 @@ function MessageAvatar({
         className={cn(
           sizeClass,
           size === 'sm' ? 'h-5' : 'h-6',
-          'shrink-0 flex items-center justify-center rounded-pill bg-surface-raised-hover',
+          'shrink-0 flex items-center justify-center rounded-pill bg-surface-panel-hover',
         )}
       >
         <IconProvider size={size === 'sm' ? 'xs' : 'sm'}>{normalizeIcon(icon)}</IconProvider>
@@ -352,7 +352,7 @@ function MessageEditableBody({
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
           // compact inline-edit overrides on top of the Textarea base
-          className="resize-none rounded-control-inner bg-surface-raised-hover px-ds-02 py-ds-01 text-body-md leading-relaxed"
+          className="resize-none rounded-control-inner bg-surface-panel-hover px-ds-02 py-ds-01 text-body-md leading-relaxed"
           rows={2}
         />
         <div className="mt-ds-01 text-caption text-surface-fg-subtle/50">
@@ -366,7 +366,7 @@ function MessageEditableBody({
     <div
       className={cn(
         'text-body-md leading-relaxed text-surface-fg whitespace-pre-wrap',
-        canEdit && 'cursor-pointer hover:bg-surface-raised-hover rounded-control-inner transition-colors',
+        canEdit && 'cursor-pointer hover:bg-surface-panel-hover rounded-control-inner transition-colors',
       )}
       onClick={handleStartEdit}
       role={canEdit ? 'button' : undefined}
@@ -410,7 +410,7 @@ function MessageReactions({ reactions, onReact }: MessageReactionsProps) {
             'inline-flex items-center gap-ds-01 rounded-pill px-ds-02 py-ds-01 text-body-xs transition-colors',
             r.reacted
               ? 'bg-accent-3 ring-1 ring-accent-6'
-              : 'bg-surface-raised-hover hover:bg-surface-raised-active',
+              : 'bg-surface-panel-hover hover:bg-surface-panel-active',
           )}
         >
           <span>{r.emoji}</span>
@@ -434,7 +434,7 @@ function MessageActions({ children, delay = 100 }: MessageActionsProps) {
     <div
       className={cn(
         'absolute -top-2 right-0 z-10',
-        'flex items-center gap-ds-01 rounded-control bg-surface-raised px-ds-01 py-ds-01 shadow-raised',
+        'flex items-center gap-ds-01 rounded-control bg-surface-panel px-ds-01 py-ds-01 shadow-raised',
         'opacity-0 group-hover/message:opacity-100 group-focus-within/message:opacity-100 transition-opacity duration-150',
       )}
       style={{ transitionDelay: `${delay}ms` }}
@@ -470,9 +470,9 @@ function MessageAction({
           className={cn(
             'p-ds-02 rounded-control-inner transition-colors',
             variant === 'default' &&
-              'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-raised-hover',
+              'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-panel-hover',
             variant === 'danger' &&
-              'text-surface-fg-subtle hover:text-error-11 hover:bg-surface-raised-hover',
+              'text-surface-fg-subtle hover:text-error-11 hover:bg-surface-panel-hover',
           )}
         >
           <IconProvider size="xs">{normalizeIcon(icon)}</IconProvider>

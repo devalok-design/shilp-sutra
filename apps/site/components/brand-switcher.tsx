@@ -219,7 +219,7 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
                   value={hex}
                   placeholder="#008c84"
                   onChange={(e) => pickHex(e.target.value)}
-                  className="w-full rounded-control-inner border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 font-mono text-ds-sm text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8"
+                  className="w-full rounded-control-inner border border-surface-border-subtle bg-surface-panel px-ds-03 py-ds-02 font-mono text-ds-sm text-surface-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8"
                 />
               </div>
             </div>
@@ -228,7 +228,7 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
           <Link
             href="/theming"
             onClick={() => setOpen(false)}
-            className="flex items-center justify-between border-t border-surface-border-subtle px-ds-05 py-ds-04 text-ds-sm text-surface-fg transition-colors duration-fast-01 hover:bg-surface-raised-hover"
+            className="flex items-center justify-between border-t border-surface-border-subtle px-ds-05 py-ds-04 text-ds-sm text-surface-fg transition-colors duration-fast-01 hover:bg-surface-panel-hover"
           >
             <span>Open theming editor</span>
             <span className="text-surface-fg-subtle">→</span>

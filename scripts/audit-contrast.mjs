@@ -39,11 +39,26 @@ const PRIMITIVES = join(ROOT, 'packages', 'core', 'src', 'tokens', 'primitives.c
  * Each entry: a foreground scale step rendered on a background scale step, per
  * theme, at normal text size. `min` is the WCAG level that pairing must clear.
  */
+// Step indices track the semantic mapping in semantic.css. The 2026-08 surface
+// rebuild moved light `surface-base` from neutral-2 to neutral-0, which left
+// this table asserting a pairing the system no longer has — it passed while
+// checking the wrong thing. Keep these in step with semantic.css.
 const PAIRINGS = [
-  { theme: 'light', fg: 9, bg: 2, min: 4.5, as: '--color-surface-fg-subtle on --color-surface-base' },
+  // page
+  { theme: 'light', fg: 9, bg: 0, min: 4.5, as: '--color-surface-fg-subtle on --color-surface-base' },
   { theme: 'dark', fg: 9, bg: 1, min: 4.5, as: '--color-surface-fg-subtle on --color-surface-base' },
-  { theme: 'light', fg: 11, bg: 2, min: 4.5, as: '--color-surface-fg-muted on --color-surface-base' },
+  { theme: 'light', fg: 11, bg: 0, min: 4.5, as: '--color-surface-fg-muted on --color-surface-base' },
   { theme: 'dark', fg: 11, bg: 1, min: 4.5, as: '--color-surface-fg-muted on --color-surface-base' },
+  // panel — the same white as the page in light, a genuine lift in dark
+  { theme: 'dark', fg: 9, bg: 2, min: 4.5, as: '--color-surface-fg-subtle on --color-surface-panel' },
+  { theme: 'dark', fg: 11, bg: 2, min: 4.5, as: '--color-surface-fg-muted on --color-surface-panel' },
+  // hover — text sits on it whenever a row is hovered
+  { theme: 'light', fg: 9, bg: 2, min: 4.5, as: '--color-surface-fg-subtle on --color-surface-panel-hover' },
+  { theme: 'dark', fg: 9, bg: 3, min: 4.5, as: '--color-surface-fg-subtle on --color-surface-panel-hover' },
+  // Sunken wells take fg-muted, NOT fg-subtle — that pairing measures 4.38:1
+  // (audit finding A3) and is enforced by shilp-sutra/no-subtle-text-on-sunken.
+  { theme: 'light', fg: 11, bg: 'sunken', min: 4.5, as: '--color-surface-fg-muted on --color-surface-sunken' },
+  { theme: 'dark', fg: 11, bg: 'sunken', min: 4.5, as: '--color-surface-fg-muted on --color-surface-sunken' },
 ]
 
 // ── OKLCH → sRGB → WCAG relative luminance ─────────────────────────────────
@@ -90,7 +105,14 @@ if (darkIdx === -1) {
 }
 const blocks = { light: src.slice(0, darkIdx), dark: src.slice(darkIdx) }
 
+/** `n` is a scale index, or a named step such as `sunken`. */
 function step(theme, n) {
+  // neutral-0 is a plain hex, not an oklch triple.
+  const hex = blocks[theme].match(new RegExp(`--neutral-${n}:\\s*#([0-9a-fA-F]{6})`))
+  if (hex) {
+    const h = hex[1]
+    return { srgb: [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255) }
+  }
   const m = blocks[theme].match(
     new RegExp(`--neutral-${n}:\\s*oklch\\(\\s*([0-9.]+)\\s+([0-9.]+)\\s+([0-9.]+)\\s*\\)`)
   )
@@ -101,12 +123,17 @@ function step(theme, n) {
   return [parseFloat(m[1]), parseFloat(m[2]), parseFloat(m[3])]
 }
 
+/** A step is either an oklch triple to convert, or an already-resolved sRGB. */
+function toSrgb(v) {
+  return Array.isArray(v) ? oklchToSrgb(...v) : v.srgb
+}
+
 console.log('# audit-contrast\n')
 let failures = 0
 
 for (const p of PAIRINGS) {
-  const fg = oklchToSrgb(...step(p.theme, p.fg))
-  const bg = oklchToSrgb(...step(p.theme, p.bg))
+  const fg = toSrgb(step(p.theme, p.fg))
+  const bg = toSrgb(step(p.theme, p.bg))
   const r = contrast(fg, bg)
   const ok = r >= p.min
   if (!ok) failures++

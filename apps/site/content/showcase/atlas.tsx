@@ -476,7 +476,7 @@ export function AtlasShowcase() {
                             </Avatar>
                             <Dot
                               {...presenceToDot[m.presence]}
-                              className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-raised"
+                              className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-panel"
                             />
                           </div>
                           <div className="flex flex-col min-w-0 flex-1">
@@ -526,7 +526,7 @@ export function AtlasShowcase() {
                   {team.map((m) => (
                     <li
                       key={m.name}
-                      className="flex items-center gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-control hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard"
+                      className="flex items-center gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-control hover:bg-surface-panel-hover transition-colors duration-fast-02 ease-productive-standard"
                     >
                       <div className="relative">
                         <Avatar size="sm">
@@ -534,7 +534,7 @@ export function AtlasShowcase() {
                         </Avatar>
                         <Dot
                           {...presenceToDot[m.presence]}
-                          className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-raised"
+                          className="absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-panel"
                         />
                       </div>
                       <div className="flex flex-col min-w-0 flex-1">
@@ -587,7 +587,7 @@ export function AtlasShowcase() {
                           onClick={() => setActiveChannel(c.name)}
                           aria-pressed={isActive}
                           className={`w-full flex items-center gap-ds-02 px-ds-02 -mx-ds-02 py-ds-02 rounded-control transition-colors duration-fast-02 ease-productive-standard text-left ${
-                            isActive ? 'bg-accent-3 text-accent-11' : 'hover:bg-surface-raised-hover text-surface-fg'
+                            isActive ? 'bg-accent-3 text-accent-11' : 'hover:bg-surface-panel-hover text-surface-fg'
                           }`}
                         >
                           <IconHash
@@ -691,7 +691,7 @@ function CalendarItem({
       onClick={onSelect}
       aria-pressed={active}
       className={`flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-control transition-colors duration-fast-02 ease-productive-standard text-left w-full ${
-        active ? 'bg-surface-raised-hover' : 'hover:bg-surface-raised-hover'
+        active ? 'bg-surface-panel-hover' : 'hover:bg-surface-panel-hover'
       }`}
     >
       <span className="w-8 h-8 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">

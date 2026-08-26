@@ -111,8 +111,8 @@ describe('AvatarGroup', () => {
           showTooltip={false}
         />,
       )
-      const dots = container.querySelectorAll('.ring-surface-raised')
-      // The indicator span has ring-1 ring-surface-raised; no such element should exist
+      const dots = container.querySelectorAll('.ring-surface-panel')
+      // The indicator span has ring-1 ring-surface-panel; no such element should exist
       // when indicator is undefined
       const indicatorSpans = Array.from(dots).filter(
         (el) => el.tagName === 'SPAN' && el.classList.contains('rounded-pill') && el.classList.contains('h-2'),
@@ -134,13 +134,13 @@ describe('AvatarGroup', () => {
   })
 
   describe('border', () => {
-    it('renders border-surface-raised by default', () => {
+    it('renders border-surface-panel by default', () => {
       const { container } = render(
         <AvatarGroup users={users.slice(0, 2)} showTooltip={false} />,
       )
       const avatars = container.querySelectorAll('[data-slot="avatar-fallback"]')
       const avatarWrapper = avatars[0].closest('span')!.parentElement!
-      expect(avatarWrapper.className).toContain('border-surface-raised')
+      expect(avatarWrapper.className).toContain('border-surface-panel')
     })
 
     it('renders border-surface-base when borderColor="surface-base"', () => {

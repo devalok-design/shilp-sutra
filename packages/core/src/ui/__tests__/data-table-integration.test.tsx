@@ -653,7 +653,7 @@ describe('DataTable — stickyHeader', () => {
     expect(thead).toHaveClass('top-0')
     expect(thead).toHaveClass('z-10')
     // raised, not base — the sticky bar must match the card surface the table lives on
-    expect(thead).toHaveClass('bg-surface-raised')
+    expect(thead).toHaveClass('bg-surface-panel')
   })
 
   it('does not add sticky classes when stickyHeader is false', () => {

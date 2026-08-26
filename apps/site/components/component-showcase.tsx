@@ -72,7 +72,7 @@ function DemoCard({
   children: React.ReactNode
 }) {
   return (
-    <article className="flex flex-col gap-ds-05 p-ds-06 rounded-surface border border-transparent bg-surface-raised shadow-raised">
+    <article className="flex flex-col gap-ds-05 p-ds-06 rounded-surface border border-transparent bg-surface-panel shadow-raised">
       <header className="flex flex-col">
         <span className="text-ds-xs text-surface-fg-subtle">{eyebrow}</span>
         <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>

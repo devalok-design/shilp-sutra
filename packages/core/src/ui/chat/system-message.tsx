@@ -51,7 +51,7 @@ const SystemMessage = React.forwardRef<HTMLDivElement, SystemMessageProps>(
       <div
         ref={ref}
         className={cn(
-          'flex items-center gap-ds-02 rounded-control-inner bg-surface-raised-hover/30 px-ds-02 py-ds-01 -mx-ds-02 text-body-sm text-surface-fg-subtle/60',
+          'flex items-center gap-ds-02 rounded-control-inner bg-surface-panel-hover/30 px-ds-02 py-ds-01 -mx-ds-02 text-body-sm text-surface-fg-subtle/60',
           className,
         )}
         {...props}

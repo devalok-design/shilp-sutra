@@ -385,7 +385,7 @@ export function VaidyaShowcase() {
                     return (
                       <li
                         key={m.name}
-                        className="flex items-start gap-ds-04 px-ds-03 -mx-ds-03 py-ds-03 rounded-control border-b border-surface-border-subtle last:border-b-0 hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard"
+                        className="flex items-start gap-ds-04 px-ds-03 -mx-ds-03 py-ds-03 rounded-control border-b border-surface-border-subtle last:border-b-0 hover:bg-surface-panel-hover transition-colors duration-fast-02 ease-productive-standard"
                       >
                         <span className="w-9 h-9 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">
                           <IconPill size={16} />
@@ -584,7 +584,7 @@ export function VaidyaShowcase() {
                   <span
                     aria-label={c.active ? 'Active now' : 'Offline'}
                     className={[
-                      'absolute -right-0.5 -bottom-0.5 w-2.5 h-2.5 rounded-pill ring-2 ring-surface-raised',
+                      'absolute -right-0.5 -bottom-0.5 w-2.5 h-2.5 rounded-pill ring-2 ring-surface-panel',
                       c.active ? 'bg-success-9' : 'bg-surface-fg-subtle',
                     ].join(' ')}
                   />

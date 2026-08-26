@@ -213,7 +213,7 @@ const MasterDetailListItem = React.forwardRef<HTMLButtonElement, MasterDetailLis
         className={cn(
           'flex w-full items-center px-ds-04 py-ds-03 text-left text-body-md font-sans text-surface-fg',
           'transition-colors duration-fast-01 ease-productive-standard',
-          'hover:bg-surface-raised-hover',
+          'hover:bg-surface-panel-hover',
           'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-7 focus-visible:ring-inset',
           isActive && 'bg-accent-2 text-accent-11 font-medium',
           className,

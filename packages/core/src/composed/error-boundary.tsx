@@ -89,7 +89,7 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
         {/* role=alert → assertive live region: AT announces the error on appearance. */}
         <div
           role="alert"
-          className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-overlay-lg bg-surface-raised p-ds-07 text-center shadow-raised"
+          className="flex w-full max-w-lg flex-col items-center gap-ds-06 rounded-overlay-lg bg-surface-panel p-ds-07 text-center"
         >
           <div className={cn('flex h-ds-lg w-ds-lg items-center justify-center rounded-bubble', errorConfig.bgClass)}>
             <Icon icon={ErrorIcon} size="2xl" className={errorConfig.iconClass} />
@@ -112,7 +112,7 @@ const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
           )}
 
           {isDev && stack && (
-            <div className="w-full overflow-auto rounded-surface border border-card bg-surface-raised p-ds-05 text-left">
+            <div className="w-full overflow-auto rounded-surface border border-card bg-surface-panel p-ds-05 text-left">
               <p className="text-body-sm mb-ds-03 font-semibold text-surface-fg">Stack Trace (development only)</p>
               <pre className="whitespace-pre-wrap text-body-sm text-surface-fg-subtle">{stack}</pre>
             </div>

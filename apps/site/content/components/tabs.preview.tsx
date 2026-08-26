@@ -39,7 +39,7 @@ export function TabsHero() {
 export function TabsVariants() {
   return (
     <div className="flex flex-col gap-ds-06">
-      <div className="p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised">
+      <div className="p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-panel">
         <span className="text-ds-xs font-mono text-surface-fg-subtle">vertical orientation</span>
         <Tabs defaultValue="profile" orientation="vertical" className="mt-ds-03 flex gap-ds-04">
           <TabsList className="flex-col">

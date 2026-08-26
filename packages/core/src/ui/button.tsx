@@ -71,7 +71,7 @@ export const buttonVariants = cva(
       { variant: 'soft', color: 'success', className: 'bg-success-3 text-success-11 hover:bg-success-4 active:bg-success-5' },
       { variant: 'soft', color: 'warning', className: 'bg-warning-3 text-warning-11 hover:bg-warning-4 active:bg-warning-5' },
       { variant: 'soft', color: 'info',    className: 'bg-info-3 text-info-11 hover:bg-info-4 active:bg-info-5' },
-      { variant: 'soft', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg-muted hover:bg-surface-raised-active active:bg-neutral-5' },
+      { variant: 'soft', color: 'neutral', className: 'bg-surface-panel-hover text-surface-fg-muted hover:bg-surface-panel-active active:bg-neutral-5' },
 
       // ============ OUTLINE ============
       { variant: 'outline', color: 'accent',  className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-3 active:bg-accent-4' },
@@ -79,16 +79,16 @@ export const buttonVariants = cva(
       { variant: 'outline', color: 'success', className: 'bg-transparent text-success-11 border-success-7 hover:bg-success-3 active:bg-success-4' },
       { variant: 'outline', color: 'warning', className: 'bg-transparent text-warning-11 border-warning-7 hover:bg-warning-3 active:bg-warning-4' },
       { variant: 'outline', color: 'info',    className: 'bg-transparent text-info-11 border-info-7 hover:bg-info-3 active:bg-info-4' },
-      { variant: 'outline', color: 'neutral', className: 'bg-transparent text-surface-fg border-surface-border-strong hover:bg-surface-raised-hover active:bg-surface-raised-active' },
+      { variant: 'outline', color: 'neutral', className: 'bg-transparent text-surface-fg border-surface-border-interactive hover:bg-surface-panel-hover active:bg-surface-panel-active' },
 
       // ============ GHOST ============
       // ghost+accent uses neutral look for backward compat (most common ghost is toolbar/icon ghost)
-      { variant: 'ghost', color: 'accent',  className: 'bg-transparent text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg active:bg-surface-raised-active' },
+      { variant: 'ghost', color: 'accent',  className: 'bg-transparent text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg active:bg-surface-panel-active' },
       { variant: 'ghost', color: 'error',   className: 'bg-transparent text-error-11 hover:bg-error-3 active:bg-error-4' },
       { variant: 'ghost', color: 'success', className: 'bg-transparent text-success-11 hover:bg-success-3 active:bg-success-4' },
       { variant: 'ghost', color: 'warning', className: 'bg-transparent text-warning-11 hover:bg-warning-3 active:bg-warning-4' },
       { variant: 'ghost', color: 'info',    className: 'bg-transparent text-info-11 hover:bg-info-3 active:bg-info-4' },
-      { variant: 'ghost', color: 'neutral', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg active:bg-surface-raised-active' },
+      { variant: 'ghost', color: 'neutral', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg active:bg-surface-panel-active' },
 
       // ============ LINK ============
       { variant: 'link', color: 'accent',  className: 'text-accent-11' },

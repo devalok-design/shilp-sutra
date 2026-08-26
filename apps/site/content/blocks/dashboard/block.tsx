@@ -64,7 +64,7 @@ export function DashboardBlock() {
                 'flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-ds-sm text-ds-sm text-left transition-colors duration-fast-01',
                 item.active
                   ? 'bg-accent-3 text-accent-11 font-medium'
-                  : 'text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg',
+                  : 'text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg',
               ].join(' ')}
             >
               <item.icon size={16} />
@@ -72,7 +72,7 @@ export function DashboardBlock() {
             </button>
           ))}
         </nav>
-        <div className="mt-auto rounded-ds-sm border border-surface-border-subtle bg-surface-raised p-ds-03 flex items-center gap-ds-03">
+        <div className="mt-auto rounded-ds-sm border border-surface-border-subtle bg-surface-panel p-ds-03 flex items-center gap-ds-03">
           <Avatar size="sm">
             <AvatarFallback>ML</AvatarFallback>
           </Avatar>

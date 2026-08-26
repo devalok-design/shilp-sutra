@@ -55,8 +55,8 @@ const PROSE_CLASSES = [
   '[&_p]:mb-ds-02b [&_p]:text-surface-fg-muted',
   '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
   '[&_li]:text-surface-fg-muted',
-  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-body-md [&_code]:text-accent-11',
-  '[&_pre]:rounded-surface [&_pre]:bg-surface-raised [&_pre]:p-ds-04',
+  '[&_code]:rounded [&_code]:bg-surface-panel [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-body-md [&_code]:text-accent-11',
+  '[&_pre]:rounded-surface [&_pre]:bg-surface-panel [&_pre]:p-ds-04',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   // slop-allow: side-stripe — blockquote left-rule is standard typography, not a card accent-rail
   '[&_blockquote]:border-l-[3px] [&_blockquote]:border-accent-6 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-surface-fg-subtle',
@@ -93,10 +93,10 @@ function ToolbarButton({
       aria-pressed={isActive}
       className={cn(
         'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control transition-colors duration-fast-01 ease-productive-standard',
-        'hover:bg-surface-raised-hover',
+        'hover:bg-surface-panel-hover',
         'disabled:pointer-events-none disabled:opacity-action-disabled',
         isActive
-          ? 'bg-surface-raised-hover text-accent-11'
+          ? 'bg-surface-panel-hover text-accent-11'
           : 'text-surface-fg-subtle',
       )}
     >
@@ -807,7 +807,7 @@ function RichTextEditorContentSlot() {
             onChange={(e) => onSourceChange(e.target.value)}
             spellCheck={false}
             aria-label="Markdown source"
-            className="block min-h-[120px] w-full resize-y bg-surface-raised px-ds-04 py-ds-04 font-mono text-body-sm leading-ds-relaxed text-surface-fg focus:outline-hidden"
+            className="block min-h-[120px] w-full resize-y bg-surface-panel px-ds-04 py-ds-04 font-mono text-body-sm leading-ds-relaxed text-surface-fg focus:outline-hidden"
           />
         </motion.div>
       ) : (
@@ -868,7 +868,7 @@ const RichTextEditorBase = React.forwardRef<HTMLDivElement, RichTextEditorProps>
       <RichTextEditorProvider ref={ref} {...props}>
         <div
           className={cn(
-            'overflow-hidden rounded-surface border border-surface-border-strong bg-surface-raised',
+            'overflow-hidden rounded-surface border border-surface-border-strong bg-surface-panel',
             'transition-colors ease-productive-standard focus-within:border-surface-border-strong',
           )}
         >

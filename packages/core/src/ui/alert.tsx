@@ -37,13 +37,13 @@ const alertVariants = cva(
       { variant: 'subtle', color: 'success', className: 'bg-success-2 border-success-4 text-success-11' },
       { variant: 'subtle', color: 'warning', className: 'bg-warning-2 border-warning-4 text-warning-11' },
       { variant: 'subtle', color: 'error', className: 'bg-error-2 border-error-4 text-error-11' },
-      { variant: 'subtle', color: 'neutral', className: 'bg-surface-raised border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
+      { variant: 'subtle', color: 'neutral', className: 'bg-surface-panel border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
       // solid (solid bg, contrasting text) — canonical name
       { variant: 'solid', color: 'info', className: 'bg-info-9 text-info-fg border-transparent [&>svg]:text-info-fg' },
       { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg border-transparent [&>svg]:text-success-fg' },
       { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg border-transparent [&>svg]:text-warning-fg' },
       { variant: 'solid', color: 'error', className: 'bg-error-9 text-error-fg border-transparent [&>svg]:text-error-fg' },
-      { variant: 'solid', color: 'neutral', className: 'bg-surface-raised-hover text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
+      { variant: 'solid', color: 'neutral', className: 'bg-surface-panel-hover text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
       // outline (transparent bg, colored border)
       { variant: 'outline', color: 'info', className: 'bg-transparent border-info-7 text-info-11' },
       { variant: 'outline', color: 'success', className: 'bg-transparent border-success-7 text-success-11' },
@@ -166,7 +166,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
                   // exactly as the title and body already do.
                   variant === 'solid'
                     ? 'text-current opacity-80 hover:opacity-100'
-                    : 'text-surface-fg-subtle hover:text-surface-fg-muted hover:bg-surface-raised-hover',
+                    : 'text-surface-fg-subtle hover:text-surface-fg-muted hover:bg-surface-panel-hover',
                 )}
                 aria-label="Dismiss"
               >

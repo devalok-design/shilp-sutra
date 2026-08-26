@@ -89,7 +89,7 @@ export const MonthPicker = React.forwardRef<HTMLDivElement, MonthPickerProps>(
                       'bg-accent-9 text-accent-fg',
                     !isSelected &&
                       !isDisabled &&
-                      'hover:bg-surface-raised-hover text-surface-fg',
+                      'hover:bg-surface-panel-hover text-surface-fg',
                   )}
                 >
                   {label}

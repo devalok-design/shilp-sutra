@@ -17,8 +17,9 @@ The model itself is recorded in
 | | count |
 |---|---:|
 | `bg-surface-raised` references | **352** |
-| — of those, `hover:` / `focus:` / `data-[…]:` | **141** |
-| — of those, plain fills (a true rename) | 211 |
+| — of those, a true **retarget** (state + container value) | **37** |
+| — of those, a plain **rename** | 281 |
+| `surface-chrome` (caught by the rule) | 5 |
 | `border-surface-border*` references | **246** |
 | shadow references | **128** |
 | `surface-chrome` references | **8** |
@@ -26,9 +27,15 @@ The model itself is recorded in
 
 ---
 
-## A1 — 141 hover states become invisible. **High.**
+## A1 — 37 hover states become invisible. **High.**
 
-`hover:bg-surface-raised` appears **141 times across ~70 files**. Under the new
+> **Corrected 2026-08-27.** This finding originally said 141. That was wrong: my
+> grep used `bg-surface-raised`, and `` matches before a hyphen, so it swept
+> in 105 uses of `hover:bg-surface-raised-hover` — which already point at the
+> right token and need only a rename. The real count, measured by the rule
+> itself, is **37**. The finding holds; the scale was overstated fourfold.
+
+A state modifier on a *container* surface appears **37 times**. Under the new
 model `surface-base`, `surface-panel` and `surface-overlay` are all `#ffffff` in
 light, so a hover painted with the panel value is invisible on every one of them.
 
@@ -162,9 +169,10 @@ review scale.
 The rebuild plan assumed the surface migration was "351 scriptable, 178 by hand".
 That was wrong in both directions:
 
-- **141 of the "scriptable" ones are not a rename at all.** They are a retarget,
-  and running a blind rename over them would ship 141 invisible hover states —
-  worse than today, because today only the menus are broken.
+- **37 of the "scriptable" ones are not a rename at all.** They are a retarget,
+  and running a blind rename over them would ship 37 invisible hover states —
+  worse than today, because today only the menus are broken. (Originally counted
+  as 141; see the correction under A1.)
 - The border count is **246**, not 178.
 
 The codemod must distinguish prefixed from bare utilities before it touches

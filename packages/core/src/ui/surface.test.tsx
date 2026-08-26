@@ -12,13 +12,13 @@ describe('Surface', () => {
   it('defaults to raised elevation (bg + shadow) with surface radius', () => {
     const { container } = render(<Surface>hi</Surface>)
     const el = container.firstChild as HTMLElement
-    expect(el).toHaveClass('bg-surface-raised', 'shadow-raised', 'rounded-surface')
+    expect(el).toHaveClass('bg-surface-panel', 'shadow-raised', 'rounded-surface')
   })
 
   it('flat elevation keeps the bg but drops the shadow', () => {
     const { container } = render(<Surface elevation="flat">hi</Surface>)
     const el = container.firstChild as HTMLElement
-    expect(el).toHaveClass('bg-surface-raised')
+    expect(el).toHaveClass('bg-surface-panel')
     expect(el).not.toHaveClass('shadow-raised')
   })
 
@@ -53,7 +53,7 @@ describe('Surface', () => {
       </Surface>,
     )
     const link = screen.getByRole('link', { name: 'link' })
-    expect(link).toHaveClass('bg-surface-raised', 'shadow-raised')
+    expect(link).toHaveClass('bg-surface-panel', 'shadow-raised')
   })
 
   it('dev-warns when bordered is combined with a shadowed elevation (double-edge)', () => {

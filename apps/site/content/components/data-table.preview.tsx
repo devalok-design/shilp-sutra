@@ -79,7 +79,7 @@ export function DataTableVariants() {
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-ds-03 rounded-control border border-surface-border-subtle bg-surface-raised p-ds-05">
+    <div className="flex flex-col gap-ds-03 rounded-control border border-surface-border-subtle bg-surface-panel p-ds-05">
       <span className="font-mono text-ds-xs text-surface-fg-subtle">{title}</span>
       {children}
     </div>

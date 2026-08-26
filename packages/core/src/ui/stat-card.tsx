@@ -400,7 +400,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
 
     // accentStyle="tint" → a subtle accent gradient wash over Card's surface.
     const tintClass =
-      accentStyle === 'tint' ? 'bg-linear-to-t from-accent-2 to-surface-raised' : undefined
+      accentStyle === 'tint' ? 'bg-linear-to-t from-accent-2 to-surface-panel' : undefined
     // Footer sits outside CardContent behind a full-width divider (both are direct
     // children of Card, so the rule spans edge-to-edge — no inset border-t).
     const body = (

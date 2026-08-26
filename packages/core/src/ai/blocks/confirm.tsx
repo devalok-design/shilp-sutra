@@ -56,7 +56,7 @@ const ConfirmBlock = React.memo(function ConfirmBlock({
             </button>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <p className="text-body-sm text-surface-fg-muted mt-2 p-3 bg-surface-raised rounded-surface">
+            <p className="text-body-sm text-surface-fg-muted mt-2 p-3 bg-surface-panel rounded-surface">
               {data.rationale}
             </p>
           </CollapsibleContent>

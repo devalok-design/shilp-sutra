@@ -169,7 +169,7 @@ const BlockTable = React.memo(function BlockTable({
             return (
               <RowWrapper
                 key={rowKey}
-                className="hover:bg-surface-raised-hover transition-colors"
+                className="hover:bg-surface-panel-hover transition-colors"
                 {...motionProps}
               >
                 {columns.map((col) => (

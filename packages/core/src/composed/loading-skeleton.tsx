@@ -30,7 +30,7 @@ const CardSkeleton = React.forwardRef<HTMLDivElement, CardSkeletonProps>(
         ref={ref}
         {...statusProps(label)}
         {...props}
-        className={cn('rounded-surface border border-card bg-surface-raised p-ds-05b', className)}
+        className={cn('rounded-surface border border-card bg-surface-panel p-ds-05b', className)}
       >
         <SrLabel label={label} />
         <div className="flex items-center justify-between pb-ds-05">
@@ -70,7 +70,7 @@ const TableSkeleton = React.forwardRef<HTMLDivElement, TableSkeletonProps>(
       >
         <SrLabel label={label} />
         {/* Header */}
-        <div className="flex items-center gap-ds-05 border-b border-surface-border-strong bg-surface-raised px-ds-05 py-ds-04">
+        <div className="flex items-center gap-ds-05 border-b border-surface-border-strong bg-surface-panel px-ds-05 py-ds-04">
           {Array.from({ length: c }).map((_, i) => (
             <Skeleton key={`head-${i}`} className={cn('h-ds-04', i === 0 ? 'w-ds-13' : 'flex-1')} />
           ))}
@@ -125,7 +125,7 @@ const BoardSkeleton = React.forwardRef<HTMLDivElement, BoardSkeletonProps>(
             {Array.from({ length: cards }).map((_, cardIndex) => (
               <div
                 key={`card-${colIndex}-${cardIndex}`}
-                className="rounded-surface border border-card bg-surface-raised p-ds-04"
+                className="rounded-surface border border-card bg-surface-panel p-ds-04"
               >
                 <div className="space-y-ds-03">
                   <Skeleton className="h-ds-04 w-4/5" />

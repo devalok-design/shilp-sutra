@@ -14,7 +14,7 @@ const TextBlock = React.memo(function TextBlock({
   return (
     <BlockShell
       confidence={confidence}
-      className="prose prose-sm text-surface-fg prose-headings:text-surface-fg prose-a:text-accent-11 prose-a:underline prose-code:text-accent-11 prose-code:bg-surface-raised prose-code:rounded prose-code:px-1 prose-strong:text-surface-fg"
+      className="prose prose-sm text-surface-fg prose-headings:text-surface-fg prose-a:text-accent-11 prose-a:underline prose-code:text-accent-11 prose-code:bg-surface-panel prose-code:rounded prose-code:px-1 prose-strong:text-surface-fg"
     >
       <Markdown remarkPlugins={[remarkGfm]}>{data.content}</Markdown>
     </BlockShell>

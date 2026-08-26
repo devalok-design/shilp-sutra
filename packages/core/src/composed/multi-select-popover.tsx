@@ -212,10 +212,10 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
           onClick={() => toggle(item.id)}
           className={cn(
             'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01 ease-productive-standard',
-            'hover:bg-surface-raised-hover',
+            'hover:bg-surface-panel-hover',
             'disabled:opacity-action-disabled disabled:cursor-not-allowed',
             isSelected && 'bg-accent-2 text-accent-11',
-            isFocused && 'bg-surface-raised-hover',
+            isFocused && 'bg-surface-panel-hover',
           )}
         >
           {renderItem ? (

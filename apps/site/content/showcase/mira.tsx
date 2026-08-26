@@ -662,19 +662,19 @@ export function MiraShowcase() {
                 recycled-card box. Tracked, signed, and carbon-offset on the courier leg.
               </Text>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-ds-03 text-ds-sm">
-                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-panel shadow-raised">
                   <div className="text-surface-fg font-semibold">India</div>
                   <div className="text-surface-fg-muted tabular-nums">3 working days · free over ₹2,500</div>
                 </li>
-                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-panel shadow-raised">
                   <div className="text-surface-fg font-semibold">USA · UK · EU</div>
                   <div className="text-surface-fg-muted tabular-nums">7-9 working days · flat $14 · DDP</div>
                 </li>
-                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-panel shadow-raised">
                   <div className="text-surface-fg font-semibold">Singapore · Australia</div>
                   <div className="text-surface-fg-muted tabular-nums">5-7 working days · flat $14</div>
                 </li>
-                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised shadow-raised">
+                <li className="p-ds-03 rounded-surface border border-surface-border-subtle bg-surface-panel shadow-raised">
                   <div className="text-surface-fg font-semibold">Rest of world</div>
                   <div className="text-surface-fg-muted tabular-nums">10-14 working days · flat $22</div>
                 </li>

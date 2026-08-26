@@ -149,7 +149,7 @@ const Dot = React.forwardRef<HTMLSpanElement, DotProps>(
       variant === 'filled' && FILL[color],
       variant === 'ring' && cn('border-[1.5px] bg-transparent', RING[color]),
       variant === 'off' && cn('border', OFF[color]),
-      withBorder && 'ring-2 ring-surface-raised',
+      withBorder && 'ring-2 ring-surface-panel',
     )
 
     const labelEl =

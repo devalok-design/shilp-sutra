@@ -244,8 +244,8 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             className={cn(
               'inline-flex items-center gap-ds-02 rounded-control px-ds-03 py-ds-02',
               'text-body-sm font-medium',
-              'border border-surface-border-strong',
-              'bg-surface-raised-hover text-surface-fg-muted',
+              'border border-surface-border-interactive',
+              'bg-surface-panel-hover text-surface-fg-muted',
               'hover:bg-accent-2',
               'disabled:opacity-action-disabled disabled:cursor-not-allowed',
               'transition-colors',
@@ -315,8 +315,8 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             'border-2 border-dashed p-ds-08',
             'focus-ring transition-colors duration-fast-02 ease-productive-standard',
             // Rest on the canvas fill; reserve the hover token for actual hover.
-            'border-surface-border-strong bg-surface-base',
-            disabled ? 'cursor-not-allowed opacity-action-disabled' : 'cursor-pointer hover:bg-surface-raised-hover',
+            'border-surface-border-interactive bg-surface-base',
+            disabled ? 'cursor-not-allowed opacity-action-disabled' : 'cursor-pointer hover:bg-surface-panel-hover',
             isDragActive && 'border-accent-7 bg-accent-2',
           )}
           animate={{
@@ -368,7 +368,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                className="h-2 w-full overflow-hidden rounded-pill bg-surface-raised-hover"
+                className="h-2 w-full overflow-hidden rounded-pill bg-surface-panel-hover"
               >
                 <motion.div
                   // scaleX (compositor-only) not width (layout) → smooth + honored by reduced-motion.

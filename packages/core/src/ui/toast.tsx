@@ -256,7 +256,7 @@ function ToastContent({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="text-body-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-raised-hover rounded-control-inner px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
+                  className="text-body-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-panel-hover rounded-control-inner px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
                 >
                   {action.label}
                 </button>

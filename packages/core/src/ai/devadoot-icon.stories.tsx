@@ -154,7 +154,7 @@ export const Interactive: Story = {
                   background:
                     state === s
                       ? 'var(--color-accent-3)'
-                      : 'var(--color-surface-raised)',
+                      : 'var(--color-surface-panel)',
                   color: 'var(--color-surface-fg)',
                   fontSize: 13,
                   cursor: 'pointer',

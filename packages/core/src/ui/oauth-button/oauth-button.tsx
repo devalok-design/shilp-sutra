@@ -518,7 +518,7 @@ const OAuthConnectionRow = React.forwardRef<HTMLDivElement, OAuthConnectionRowPr
       <div
         ref={ref}
         className={cn(
-          'flex items-center justify-between gap-ds-04 py-ds-04 px-ds-04 rounded-surface border border-surface-border bg-surface-raised',
+          'flex items-center justify-between gap-ds-04 py-ds-04 px-ds-04 rounded-surface border border-surface-border bg-surface-panel',
           className,
         )}
         data-provider={provider}

@@ -16,13 +16,13 @@ type Story = StoryObj<typeof SplitButton>
 const sampleDropdown = (
   <div className="p-ds-02 min-w-[180px]">
     <p className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">Options</p>
-    <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors">
+    <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-panel-hover transition-colors">
       Option A
     </button>
-    <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors">
+    <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-panel-hover transition-colors">
       Option B
     </button>
-    <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors">
+    <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-panel-hover transition-colors">
       Option C
     </button>
   </div>
@@ -191,13 +191,13 @@ export const SendSchedule: Story = {
       dropdownContent={
         <div className="p-ds-02 min-w-[240px]">
           <p className="px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">Schedule send</p>
-          <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors">
+          <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-panel-hover transition-colors">
             Tomorrow morning · 9:00 AM
           </button>
-          <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors">
+          <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-panel-hover transition-colors">
             Tomorrow afternoon · 1:00 PM
           </button>
-          <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-raised-hover transition-colors">
+          <button className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02b text-ds-sm text-surface-fg hover:bg-surface-panel-hover transition-colors">
             Next Monday · 9:00 AM
           </button>
         </div>

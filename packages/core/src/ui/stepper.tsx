@@ -159,7 +159,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
             'transition-[background-color,border-color,color] duration-moderate-01 ease-productive-standard',
             state === 'completed' && 'bg-accent-9 text-accent-fg',
             state === 'active' && 'bg-accent-9 text-accent-fg',
-            state === 'pending' && 'bg-surface-raised text-surface-fg-subtle border border-surface-border-strong',
+            state === 'pending' && 'bg-surface-panel text-surface-fg-subtle border border-surface-border-strong',
           )}
         >
           {icon ? <IconProvider size="sm">{normalizeIcon(icon)}</IconProvider> : (state === 'completed' ? (
@@ -220,7 +220,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
               'flex items-center gap-ds-03 cursor-pointer select-none',
               'rounded-control px-ds-02 py-ds-01 -mx-ds-02 -my-ds-01',
               'bg-transparent border-0',
-              'hover:bg-surface-raised-hover active:bg-surface-raised-active',
+              'hover:bg-surface-panel-hover active:bg-surface-panel-active',
               'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2',
               'transition-colors duration-fast-01 ease-productive-standard',
             )}

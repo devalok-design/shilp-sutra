@@ -62,7 +62,7 @@ function CellEditInput({
       }}
       className={cn(
         'h-ds-xs-plus w-full rounded-control',
-        'border border-accent-7 bg-surface-raised-hover',
+        'border border-accent-7 bg-surface-panel-hover',
         'px-ds-02 text-body-sm',
         'text-surface-fg placeholder:text-surface-fg-subtle',
         'outline-hidden focus:border-accent-7',
@@ -186,7 +186,7 @@ function DataTableExpandedRow<TData>({ row }: { row: Row<TData> }) {
         <TableRow>
           <TableCell
             colSpan={allColumns.length}
-            // A recess, not a raised layer — surface-raised would vanish on a
+            // A recess, not a raised layer — surface-panel would vanish on a
             // card. Padding moves to the inner div so the collapsed state has
             // zero height.
             className="bg-surface-base p-0"

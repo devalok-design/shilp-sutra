@@ -47,7 +47,7 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <section className="flex flex-col gap-ds-03 rounded-surface border border-surface-border bg-surface-raised p-ds-05">
+    <section className="flex flex-col gap-ds-03 rounded-surface border border-surface-border bg-surface-panel p-ds-05">
       <div className="flex flex-col gap-ds-01">
         <Text variant="label-md" className="text-surface-fg">{title}</Text>
         <Text variant="body-sm" className="text-surface-fg-muted">{note}</Text>

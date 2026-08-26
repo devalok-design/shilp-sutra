@@ -14,7 +14,7 @@ import { cn } from './lib/utils'
 export type NumberInputState = FieldState
 
 const numberInputWrapperVariants = cva(
-  'flex items-center justify-between rounded-control border border-surface-border-strong',
+  'flex items-center justify-between rounded-control border border-surface-border-interactive',
   {
     variants: {
       size: {
@@ -179,7 +179,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           aria-label="Decrease value"
           title="Decrease"
           className={cn(
-            'flex items-center justify-center border-0 rounded-control-inner text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,background-color,transform] duration-fast-01 ease-productive-standard disabled:opacity-action-disabled disabled:pointer-events-none',
+            'flex items-center justify-center border-0 rounded-control-inner text-surface-fg-subtle hover:bg-surface-panel-hover hover:text-surface-fg-muted active:scale-90 transition-[color,background-color,transform] duration-fast-01 ease-productive-standard disabled:opacity-action-disabled disabled:pointer-events-none',
             resolvedButtonSize,
           )}
         >
@@ -214,7 +214,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           aria-label="Increase value"
           title="Increase"
           className={cn(
-            'flex items-center justify-center border-0 rounded-control-inner text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg-muted active:scale-90 transition-[color,background-color,transform] duration-fast-01 ease-productive-standard disabled:opacity-action-disabled disabled:pointer-events-none',
+            'flex items-center justify-center border-0 rounded-control-inner text-surface-fg-subtle hover:bg-surface-panel-hover hover:text-surface-fg-muted active:scale-90 transition-[color,background-color,transform] duration-fast-01 ease-productive-standard disabled:opacity-action-disabled disabled:pointer-events-none',
             resolvedButtonSize,
           )}
         >

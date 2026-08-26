@@ -51,7 +51,7 @@ export function SidebarMinimal() {
   return (
     // Narrow rail: override the sidebar width var.
     <SidebarProvider className="min-h-0" style={{ '--sidebar-width': '3.75rem' } as CSSProperties}>
-      <Sidebar collapsible="none" className="border-r border-surface-border-subtle bg-surface-raised">
+      <Sidebar collapsible="none" className="border-r border-surface-border-subtle bg-surface-panel">
         <SidebarContent className="items-center pt-ds-04">
           <SidebarGroup className="w-full">
             <SidebarGroupContent>

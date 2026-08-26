@@ -99,7 +99,7 @@ const components: Components = {
       <table className="w-full text-ds-sm" {...props} />
     </div>
   ),
-  thead: (props) => <thead className="bg-surface-raised" {...props} />,
+  thead: (props) => <thead className="bg-surface-panel" {...props} />,
   th: (props) => <th className="px-ds-04 py-ds-03 text-left font-medium text-surface-fg border-b border-surface-border" {...props} />,
   td: (props) => <td className="px-ds-04 py-ds-03 text-surface-fg-muted border-b border-surface-border-subtle" {...props} />,
 }

@@ -30,14 +30,14 @@ const cardVariants = cva(
         // surface's own colour (`border-card`), NO shadow — the DS-wide anti-slop edge
         // (Setu tonal-elevation). The `color` prop overrides the hairline colour to paint
         // a deliberate accent/status edge.
-        default: 'bg-surface-raised border border-card shadow-none',
+        default: 'bg-surface-panel border border-card shadow-none',
         // Elevation-led: the shadow's own ring is the edge (make-kit rule #6 — no
         // border+shadow double-edge). Reach for it when a card should visibly pop
         // (a dragged tile, a spotlight panel). border-transparent keeps `color` paintable.
-        elevated: 'bg-surface-raised border border-transparent shadow-raised-hover',
+        elevated: 'bg-surface-panel border border-transparent shadow-raised-hover',
         // Border-led, strong: a firmly visible edge, no shadow.
         outline: 'bg-transparent border border-surface-border-strong shadow-none',
-        flat: 'bg-surface-raised border-none shadow-none',
+        flat: 'bg-surface-panel border-none shadow-none',
       },
       color: {
         default: '',
@@ -145,7 +145,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     }
     const classes = cn(
       cardVariants({ variant, color, size, orientation }),
-      interactive && 'hover:shadow-raised-hover cursor-pointer transition-shadow duration-fast-02 ease-productive-standard',
+      interactive && 'hover:bg-surface-panel-hover cursor-pointer transition-colors duration-fast-02 ease-productive-standard',
       className,
     )
 

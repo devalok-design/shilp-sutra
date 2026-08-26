@@ -35,7 +35,7 @@ export function FeatureGrid() {
           {pillars.map((f) => (
             <div
               key={f.title}
-              className="flex flex-col gap-ds-04 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-06"
+              className="flex flex-col gap-ds-04 rounded-surface border border-surface-border-subtle bg-surface-panel p-ds-06"
             >
               <span className="flex size-10 items-center justify-center rounded-control bg-accent-3 text-accent-11">
                 <f.icon size={20} />

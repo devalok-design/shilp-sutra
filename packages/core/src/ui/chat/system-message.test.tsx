@@ -9,7 +9,7 @@ describe('SystemMessage', () => {
       <SystemMessage>User joined the channel</SystemMessage>,
     )
     const root = container.firstChild as HTMLElement
-    expect(root.className).toContain('bg-surface-raised-hover/30')
+    expect(root.className).toContain('bg-surface-panel-hover/30')
     expect(screen.getByText('User joined the channel')).toBeInTheDocument()
   })
 
@@ -63,7 +63,7 @@ describe('SystemMessage', () => {
     )
     const root = container.firstChild as HTMLElement
     // Should have event variant classes, not alert classes
-    expect(root.className).toContain('bg-surface-raised-hover/30')
+    expect(root.className).toContain('bg-surface-panel-hover/30')
     expect(root).not.toHaveClass('justify-center')
   })
 })

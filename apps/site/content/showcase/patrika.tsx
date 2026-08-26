@@ -568,7 +568,7 @@ export function PatrikaShowcase() {
                 <a
                   key={r.title}
                   href="#"
-                  className="group flex flex-col gap-ds-03 rounded-surface bg-surface-raised border border-surface-border shadow-raised hover:shadow-raised-hover hover:border-surface-border-strong transition-shadow duration-fast-02 ease-productive-standard overflow-hidden focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+                  className="group flex flex-col gap-ds-03 rounded-surface bg-surface-panel border border-surface-border shadow-raised hover:shadow-raised-hover hover:border-surface-border-strong transition-shadow duration-fast-02 ease-productive-standard overflow-hidden focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden border-b border-surface-border-subtle">
                     <img
@@ -657,7 +657,7 @@ export function PatrikaShowcase() {
                           'flex items-start gap-ds-03 px-ds-03 -mx-ds-03 py-ds-03 rounded-control border-l-2 transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                           isActive
                             ? 'bg-accent-3 border-accent-9 text-accent-11'
-                            : 'border-transparent hover:bg-surface-raised-hover text-surface-fg',
+                            : 'border-transparent hover:bg-surface-panel-hover text-surface-fg',
                         ].join(' ')}
                       >
                         <span

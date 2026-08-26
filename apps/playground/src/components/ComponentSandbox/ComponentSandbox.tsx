@@ -61,7 +61,7 @@ export function ComponentSandbox({
         <select
           value={selectedComponent || ''}
           onChange={(e) => onSelectComponent(e.target.value)}
-          className="w-full rounded border border-surface-border bg-surface-raised-hover px-3 py-2 text-sm"
+          className="w-full rounded border border-surface-border bg-surface-panel-hover px-3 py-2 text-sm"
         >
           <option value="" disabled>Select a component...</option>
           {COMPONENT_REGISTRY.map((c) => (
@@ -95,7 +95,7 @@ export function ComponentSandbox({
               Copy
             </button>
           </div>
-          <pre className="rounded-md bg-surface-raised p-3 text-xs font-mono text-surface-fg overflow-x-auto">
+          <pre className="rounded-md bg-surface-panel p-3 text-xs font-mono text-surface-fg overflow-x-auto">
             {codeString}
           </pre>
         </div>

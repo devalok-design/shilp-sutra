@@ -249,7 +249,7 @@ export const SlotComposition: EditorStory = {
   render: () => (
     <div style={{ width: 600, maxWidth: '100%' }}>
       <RichTextEditor.Provider content="<p>The toolbar is composed <strong>below</strong> the content here.</p>">
-        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 12, border: '1px solid var(--color-surface-border-strong)', background: 'var(--color-surface-raised)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 12, border: '1px solid var(--color-surface-border-strong)', background: 'var(--color-surface-panel)' }}>
           <RichTextEditor.Content />
           <div style={{ borderTop: '1px solid var(--color-surface-border-strong)' }}>
             <RichTextEditor.Toolbar />

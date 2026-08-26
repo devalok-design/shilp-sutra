@@ -19,7 +19,7 @@ const ROWS = [
 
 export function TableRowLinkHero() {
   return (
-    <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-raised">
+    <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-panel">
       <Table>
         <TableHeader>
           <TableRow>
@@ -50,7 +50,7 @@ export function TableRowLinkVariants() {
   return (
     <div className="grid grid-cols-1 gap-ds-06">
       <Block title="stretch (default — whole row is the click target)">
-        <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-raised">
+        <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-panel">
           <Table>
             <TableBody>
               {ROWS.map((row) => (
@@ -67,7 +67,7 @@ export function TableRowLinkVariants() {
       </Block>
 
       <Block title="stretch={false} (title-only, text stays selectable)">
-        <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-raised">
+        <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-panel">
           <Table>
             <TableBody>
               {ROWS.map((row) => (
@@ -90,7 +90,7 @@ export function TableRowLinkVariants() {
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-raised">
+    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-panel">
       <span className="text-ds-xs font-mono text-surface-fg-subtle">{title}</span>
       <div className="flex flex-col">{children}</div>
     </div>

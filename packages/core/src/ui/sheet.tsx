@@ -242,7 +242,7 @@ const SheetContent = React.forwardRef<
                   <div className="h-1 w-8 rounded-pill bg-surface-border" />
                 </div>
               )}
-              <SheetPrimitive.Close title="Close" className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-raised-hover active:scale-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
+              <SheetPrimitive.Close title="Close" className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-panel-hover active:scale-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
                 <Icon icon={IconX} size="sm" />
                 <span className="sr-only">Close</span>
               </SheetPrimitive.Close>

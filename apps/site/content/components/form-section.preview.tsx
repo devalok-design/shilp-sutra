@@ -37,11 +37,11 @@ export function FormSectionVariants() {
         </FormField>
       </FormSection>
       <FormSection title="Notifications" description="How and when we reach you.">
-        <label className="flex items-center justify-between gap-ds-03 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-04 py-ds-03">
+        <label className="flex items-center justify-between gap-ds-03 rounded-control border border-surface-border-subtle bg-surface-panel px-ds-04 py-ds-03">
           <span className="text-ds-sm text-surface-fg">Product updates</span>
           <Switch defaultChecked size="sm" />
         </label>
-        <label className="flex items-center justify-between gap-ds-03 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-04 py-ds-03">
+        <label className="flex items-center justify-between gap-ds-03 rounded-control border border-surface-border-subtle bg-surface-panel px-ds-04 py-ds-03">
           <span className="text-ds-sm text-surface-fg">Weekly digest</span>
           <Switch size="sm" />
         </label>

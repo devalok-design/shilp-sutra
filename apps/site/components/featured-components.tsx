@@ -63,7 +63,7 @@ function FeatureCard({
   children: React.ReactNode
 }) {
   return (
-    <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-surface bg-surface-raised shadow-raised">
+    <article className="group flex flex-col gap-ds-04 p-ds-05b rounded-surface bg-surface-panel shadow-raised">
       <header className="flex flex-col">
         <span className="text-ds-xs text-surface-fg-subtle">{slug}</span>
         <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>

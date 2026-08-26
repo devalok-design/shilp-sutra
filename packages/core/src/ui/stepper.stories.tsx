@@ -127,7 +127,7 @@ function InteractiveDemo() {
           type="button"
           disabled={activeStep === 0}
           onClick={() => setActiveStep((s) => s - 1)}
-          className="rounded-control border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised transition-colors disabled:opacity-action-disabled disabled:cursor-not-allowed"
+          className="rounded-control border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-panel-hover transition-colors disabled:opacity-action-disabled disabled:cursor-not-allowed"
         >
           Back
         </button>
@@ -143,7 +143,7 @@ function InteractiveDemo() {
           <button
             type="button"
             onClick={() => setActiveStep(0)}
-            className="rounded-control border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-raised transition-colors"
+            className="rounded-control border border-surface-border-strong px-ds-04 py-ds-02 text-ds-sm text-surface-fg hover:bg-surface-panel-hover transition-colors"
           >
             Reset
           </button>

@@ -127,9 +127,9 @@ const semanticGroups = [
     name: 'Surface',
     tokens: [
       '--color-surface-base',
-      '--color-surface-raised',
-      '--color-surface-raised-hover',
-      '--color-surface-raised-active',
+      '--color-surface-panel',
+      '--color-surface-panel-hover',
+      '--color-surface-panel-active',
       '--color-surface-fg',
       '--color-surface-fg-muted',
       '--color-surface-fg-subtle',
@@ -251,8 +251,8 @@ function TypographySamples() {
 
       <h3 style={subheadingStyle}>Semantic Type Scale</h3>
       <p style={{ fontSize: '0.75rem', color: 'var(--color-surface-fg-subtle)', marginBottom: '0.75rem' }}>
-        Use <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-raised-hover)', padding: '0.15em 0.4em', borderRadius: '4px' }}>&lt;Text variant="..."&gt;</code> for
-        all typography. Sizes driven by <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-raised-hover)', padding: '0.15em 0.4em', borderRadius: '4px' }}>--typo-*</code> CSS tokens.
+        Use <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-panel-hover)', padding: '0.15em 0.4em', borderRadius: '4px' }}>&lt;Text variant="..."&gt;</code> for
+        all typography. Sizes driven by <code style={{ fontSize: '0.6875rem', background: 'var(--color-surface-panel-hover)', padding: '0.15em 0.4em', borderRadius: '4px' }}>--typo-*</code> CSS tokens.
       </p>
       {semanticTypeScale.map((t) => (
         <div key={t.variant} style={rowStyle}>
@@ -359,7 +359,7 @@ function BorderRadiusScale() {
                 width: '4rem',
                 height: '4rem',
                 borderRadius: `var(${r.token})`,
-                backgroundColor: 'var(--color-surface-raised)',
+                backgroundColor: 'var(--color-surface-panel)',
                 border: '2px solid var(--color-accent-9)',
               }}
             />
@@ -380,7 +380,7 @@ function BorderRadiusScale() {
                 width: '4rem',
                 height: '4rem',
                 borderRadius: `var(${r.token})`,
-                backgroundColor: 'var(--color-surface-raised)',
+                backgroundColor: 'var(--color-surface-panel)',
                 border: '2px solid var(--color-accent-9)',
               }}
             />

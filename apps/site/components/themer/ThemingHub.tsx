@@ -211,7 +211,7 @@ export function ThemingHub() {
   return (
     <div className="flex flex-col gap-ds-09">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-ds-08 items-start">
-        <section className="flex flex-col gap-ds-05 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-06 lg:sticky lg:top-24">
+        <section className="flex flex-col gap-ds-05 rounded-surface border border-surface-border-subtle bg-surface-panel p-ds-06 lg:sticky lg:top-24">
             <StepLabel n={1} title="Pick your colour" />
             <div role="tablist" aria-label="Theming mode" className="flex items-center gap-ds-05 border-b border-surface-border-subtle">
               {(
@@ -255,7 +255,7 @@ export function ThemingHub() {
                         value={hex}
                         onChange={(e) => setHex(e.target.value)}
                         onBlur={(e) => applyHex(e.target.value)}
-                        className="flex-1 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-ds-md font-mono text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+                        className="flex-1 rounded-control border border-surface-border-subtle bg-surface-panel px-ds-03 py-ds-02 text-ds-md font-mono text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
                         placeholder="#d946a6"
                       />
                       <input
@@ -275,7 +275,7 @@ export function ThemingHub() {
                     <div className="flex items-center gap-ds-03">
                       <span
                         aria-hidden
-                        className="h-ds-md w-ds-md shrink-0 border-2 border-surface-fg bg-surface-raised"
+                        className="h-ds-md w-ds-md shrink-0 border-2 border-surface-fg bg-surface-panel"
                         style={{ borderRadius: `${state.customRadius ?? 8}px` }}
                       />
                       <input
@@ -289,7 +289,7 @@ export function ThemingHub() {
                           setState((s) => ({ ...s, customRadius: v }))
                         }}
                         placeholder="Auto"
-                        className="flex-1 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02 text-ds-md font-mono text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+                        className="flex-1 rounded-control border border-surface-border-subtle bg-surface-panel px-ds-03 py-ds-02 text-ds-md font-mono text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
                       />
                     </div>
                   </div>
@@ -336,7 +336,7 @@ export function ThemingHub() {
                             'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control border text-ds-xs transition-colors duration-fast-01',
                             isActive
                               ? 'border-accent-9 bg-accent-3 text-accent-11'
-                              : 'border-surface-border-subtle bg-surface-raised text-surface-fg-muted hover:border-surface-border',
+                              : 'border-surface-border-subtle bg-surface-panel text-surface-fg-muted hover:border-surface-border',
                           ].join(' ')}
                         >
                           <span
@@ -372,13 +372,13 @@ export function ThemingHub() {
                       className={[
                         'flex items-center gap-ds-07 px-ds-06 py-ds-05 rounded-control border text-left transition-colors duration-fast-01',
                         isActive
-                          ? 'border-surface-border bg-surface-raised shadow-raised'
-                          : 'border-surface-border-subtle bg-transparent hover:bg-surface-raised/60',
+                          ? 'border-surface-border bg-surface-panel shadow-raised'
+                          : 'border-surface-border-subtle bg-transparent hover:bg-surface-panel-hover/60',
                       ].join(' ')}
                     >
                       <span
                         aria-hidden
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-surface-raised border border-surface-border-subtle text-surface-fg"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-surface-panel border border-surface-border-subtle text-surface-fg"
                       >
                         <IconFingerprint size={16} />
                       </span>
@@ -418,7 +418,7 @@ export function ThemingHub() {
       {/* STEP 3 — ship it: CSS or AI-prompt, one paste */}
       <section
         ref={exportRef}
-        className="flex scroll-mt-24 flex-col gap-ds-05 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-06"
+        className="flex scroll-mt-24 flex-col gap-ds-05 rounded-surface border border-surface-border-subtle bg-surface-panel p-ds-06"
       >
         <StepLabel n={3} title="Ship it" />
         <p className="text-ds-sm text-surface-fg-muted">
@@ -458,7 +458,7 @@ export function ThemingHub() {
           <button
             type="button"
             onClick={outputTab === 'css' ? copyRampCss : copyPrompt}
-            className="absolute right-ds-03 top-ds-03 z-10 inline-flex items-center gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-muted transition-colors duration-fast-01 hover:text-surface-fg"
+            className="absolute right-ds-03 top-ds-03 z-10 inline-flex items-center gap-ds-02 rounded-control border border-surface-border-subtle bg-surface-panel px-ds-03 py-ds-01 text-ds-xs font-medium text-surface-fg-muted transition-colors duration-fast-01 hover:text-surface-fg"
           >
             {(outputTab === 'css' ? copiedCss : copiedPrompt) ? (
               <IconCheck size={13} />

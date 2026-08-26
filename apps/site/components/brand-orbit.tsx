@@ -187,7 +187,7 @@ function ConveyorRow({
         {doubled.map((name, i) => (
           <span
             key={`${name}-${i}`}
-            className="whitespace-nowrap rounded-pill border border-surface-border-subtle bg-surface-raised px-ds-04 py-ds-02 text-ds-xs text-surface-fg-subtle"
+            className="whitespace-nowrap rounded-pill border border-surface-border-subtle bg-surface-panel px-ds-04 py-ds-02 text-ds-xs text-surface-fg-subtle"
           >
             {name}
           </span>

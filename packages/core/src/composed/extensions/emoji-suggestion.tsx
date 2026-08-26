@@ -61,7 +61,7 @@ const EmojiList = React.forwardRef<EmojiListRef, EmojiListProps>(
             onClick={() => command(item)}
             className={cn(
               'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left text-body-sm',
-              index === selectedIndex ? 'bg-surface-raised text-surface-fg' : 'text-surface-fg-muted hover:bg-surface-raised',
+              index === selectedIndex ? 'bg-surface-panel text-surface-fg' : 'text-surface-fg-muted hover:bg-surface-panel-hover',
             )}
           >
             <EmojiImage emoji={item} size="1.25em" />

@@ -153,7 +153,7 @@ function FormatInput({
           onBlur={onBlur}
           maxLength={maxLength}
           className={cn(
-            'h-ds-xs-plus w-full rounded-control-inner border border-surface-border bg-surface-overlay px-ds-02 font-mono text-body-sm text-surface-fg transition-colors',
+            'h-ds-xs-plus w-full rounded-control-inner border border-surface-border-interactive bg-surface-overlay px-ds-02 font-mono text-body-sm text-surface-fg transition-colors',
             'focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
             disabled && 'cursor-not-allowed opacity-50',
           )}
@@ -335,7 +335,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                 type="button"
                 disabled={disabled}
                 className={cn(
-                  'group relative flex items-center overflow-hidden rounded-control border border-surface-border-strong',
+                  'group relative flex items-center overflow-hidden rounded-control border border-surface-border-interactive',
                   'hover:border-accent-7 focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
                   disabled && 'cursor-not-allowed opacity-50',
                 )}
@@ -503,7 +503,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                             'h-6 w-6 rounded-control-inner border',
                             isSelected
                               ? 'border-accent-7 ring-2 ring-accent-9/30'
-                              : 'border-surface-border hover:border-surface-border-strong',
+                              : 'border-surface-border-interactive hover:border-surface-border-interactive-strong',
                             disabled && 'cursor-not-allowed opacity-50',
                           )}
                           style={{ backgroundColor: preset.hex }}

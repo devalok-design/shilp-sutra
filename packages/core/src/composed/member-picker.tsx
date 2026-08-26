@@ -71,7 +71,7 @@ const MemberPicker = React.forwardRef<HTMLDivElement, MemberPickerProps>(
           <div className="flex items-center gap-ds-03">
             <Avatar className="h-ico-md w-ico-md">
               {item.image && <AvatarImage src={item.image} alt={item.label} />}
-              <AvatarFallback className="bg-surface-raised-hover text-body-xs font-semibold text-surface-fg">
+              <AvatarFallback className="bg-surface-panel-hover text-body-xs font-semibold text-surface-fg">
                 {getInitials(item.label)}
               </AvatarFallback>
             </Avatar>

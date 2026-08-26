@@ -38,7 +38,7 @@ export function DataTablePagination<TData>({
             aria-label="Rows per page"
             className={cn(
               'h-ds-sm rounded-control',
-              'border border-card-strong bg-surface-raised-hover',
+              'border border-card-strong bg-surface-panel-hover',
               'px-ds-03 text-body-sm',
               'text-surface-fg',
             )}
@@ -60,7 +60,7 @@ export function DataTablePagination<TData>({
           className={cn(
             'h-ds-sm w-ds-sm flex items-center justify-center',
             'rounded-control border border-surface-border-strong',
-            'enabled:hover:bg-surface-raised',
+            'enabled:hover:bg-surface-panel-hover',
             'disabled:opacity-action-disabled disabled:cursor-not-allowed',
             'transition-colors',
           )}
@@ -83,7 +83,7 @@ export function DataTablePagination<TData>({
           className={cn(
             'h-ds-sm w-ds-sm flex items-center justify-center',
             'rounded-control border border-surface-border-strong',
-            'enabled:hover:bg-surface-raised',
+            'enabled:hover:bg-surface-panel-hover',
             'disabled:opacity-action-disabled disabled:cursor-not-allowed',
             'transition-colors',
           )}

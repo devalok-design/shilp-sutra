@@ -45,11 +45,11 @@ export const selectTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          'border border-surface-border-strong bg-surface-raised-hover focus-visible:border-accent-7',
+          'border border-surface-border-interactive bg-surface-panel-hover focus-visible:border-accent-7',
         outline:
-          'border border-surface-border-strong bg-transparent focus-visible:border-accent-7',
+          'border border-surface-border-interactive bg-transparent focus-visible:border-accent-7',
         ghost:
-          'border border-transparent bg-transparent hover:bg-surface-raised-hover focus-visible:border-accent-7',
+          'border border-transparent bg-transparent hover:bg-surface-panel-hover focus-visible:border-accent-7',
       },
       state: {
         default: '',
@@ -203,7 +203,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-control py-ds-02b pl-ds-03 pr-ds-07 text-body-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised focus:bg-surface-raised focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
+      'relative flex w-full cursor-default select-none items-center rounded-control py-ds-02b pl-ds-03 pr-ds-07 text-body-md outline-hidden transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-panel-hover focus:bg-surface-panel-hover focus:text-surface-fg data-[disabled]:pointer-events-none data-[disabled]:opacity-action-disabled',
       className,
     )}
     {...props}

@@ -128,7 +128,7 @@ export default function AgentsPage() {
               {tools.map((t) => (
                 <li
                   key={t.name}
-                  className="flex flex-col gap-ds-01 p-ds-04 rounded-control border border-surface-border-subtle bg-surface-raised"
+                  className="flex flex-col gap-ds-01 p-ds-04 rounded-control border border-surface-border-subtle bg-surface-panel"
                 >
                   <Text variant="body-sm" className="text-surface-fg">
                     {t.name}

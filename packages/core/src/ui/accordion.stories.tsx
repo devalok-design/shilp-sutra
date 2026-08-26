@@ -29,7 +29,7 @@ export const Single: Story = {
       <AccordionItem value="item-2">
         <AccordionTrigger>How do I install it?</AccordionTrigger>
         <AccordionContent>
-          Run <code className="text-ds-xs bg-surface-raised-hover px-ds-01 py-0.5 rounded-control">pnpm add @devalok/shilp-sutra</code> in your project directory.
+          Run <code className="text-ds-xs bg-surface-panel-hover px-ds-01 py-0.5 rounded-control">pnpm add @devalok/shilp-sutra</code> in your project directory.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">

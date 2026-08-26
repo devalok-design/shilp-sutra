@@ -123,7 +123,7 @@ function getHalfClasses(variant: SplitButtonVariant, color: string): string {
       success: 'bg-success-3 text-success-11 hover:bg-success-4 active:bg-success-5',
       warning: 'bg-warning-3 text-warning-11 hover:bg-warning-4 active:bg-warning-5',
       info: 'bg-info-3 text-info-11 hover:bg-info-4 active:bg-info-5',
-      neutral: 'bg-surface-raised-hover text-surface-fg-muted hover:bg-surface-raised-active active:bg-neutral-5',
+      neutral: 'bg-surface-panel-hover text-surface-fg-muted hover:bg-surface-panel-active active:bg-neutral-5',
     },
     outline: {
       accent: 'bg-transparent text-accent-11 hover:bg-accent-3 active:bg-accent-4',
@@ -131,7 +131,7 @@ function getHalfClasses(variant: SplitButtonVariant, color: string): string {
       success: 'bg-transparent text-success-11 hover:bg-success-3 active:bg-success-4',
       warning: 'bg-transparent text-warning-11 hover:bg-warning-3 active:bg-warning-4',
       info: 'bg-transparent text-info-11 hover:bg-info-3 active:bg-info-4',
-      neutral: 'bg-transparent text-surface-fg hover:bg-surface-raised-hover active:bg-surface-raised-active',
+      neutral: 'bg-transparent text-surface-fg hover:bg-surface-panel-hover active:bg-surface-panel-active',
     },
   }
   return map[variant][color] ?? map[variant].accent
@@ -140,7 +140,7 @@ function getHalfClasses(variant: SplitButtonVariant, color: string): string {
 function getOutlineBorderColor(color: string): string {
   const map: Record<string, string> = {
     accent: 'border-accent-7', error: 'border-error-7', success: 'border-success-7',
-    warning: 'border-warning-7', info: 'border-info-7', neutral: 'border-surface-border-strong',
+    warning: 'border-warning-7', info: 'border-info-7', neutral: 'border-surface-border-interactive',
   }
   return map[color] ?? map.accent
 }

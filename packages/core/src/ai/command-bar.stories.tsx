@@ -182,7 +182,7 @@ export const HeroIdle: Story = {
     placeholder: 'What would you like to do?',
   },
   render: (args) => (
-    <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
+    <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
       <div className="w-full max-w-2xl">
         <CommandBar {...args} />
       </div>
@@ -205,7 +205,7 @@ export const HeroProcessing: Story = {
     placeholder: 'What would you like to do?',
   },
   render: (args) => (
-    <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
+    <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
       <div className="w-full max-w-2xl">
         <CommandBar {...args} />
       </div>
@@ -226,7 +226,7 @@ export const HeroResponded: Story = {
     placeholder: 'What would you like to do?',
   },
   render: (args) => (
-    <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
+    <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
       <div className="w-full max-w-2xl">
         <AICommandProvider agent={{ name: 'Devadoot' }}>
           <CommandBar {...args}>
@@ -284,7 +284,7 @@ export const HeroInteractive: Story = {
     }, [])
 
     return (
-      <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
+      <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
         <div className="w-full max-w-2xl">
           <AICommandProvider agent={{ name: 'Devadoot' }}>
             <CommandBar
@@ -323,7 +323,7 @@ export const HeroWithCommandGroups: Story = {
     }
 
     return (
-      <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
+      <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
         <div className="w-full max-w-2xl">
           <CommandBar
             variant="hero"
@@ -357,7 +357,7 @@ export const HeroPlaceholderRotation: Story = {
     placeholderInterval: 3000,
   },
   render: (args) => (
-    <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
+    <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
       <div className="w-full max-w-2xl">
         <CommandBar {...args} />
       </div>
@@ -376,8 +376,8 @@ export const InlineDefault: Story = {
     placeholder: 'Ask Devadoot...',
   },
   render: (args) => (
-    <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
-      <div className="w-full max-w-md rounded-surface bg-surface-raised p-ds-05">
+    <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
+      <div className="w-full max-w-md rounded-surface bg-surface-panel p-ds-05">
         <CommandBar {...args} />
       </div>
     </div>
@@ -391,8 +391,8 @@ export const InlineDefault: Story = {
 export const InlineInCard: Story = {
   name: 'Inline / In Card',
   render: () => (
-    <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
-      <div className="w-full max-w-md overflow-hidden rounded-overlay-lg bg-surface-raised shadow-raised">
+    <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
+      <div className="w-full max-w-md overflow-hidden rounded-overlay-lg bg-surface-panel shadow-raised">
         <div className="border-b border-surface-border-strong px-ds-05 py-ds-04">
           <div className="flex items-center gap-ds-02b">
             <IconRobot className="h-ico-sm w-ico-sm text-accent-9" />
@@ -427,7 +427,7 @@ export const FloatingDefault: Story = {
     const [open, setOpen] = React.useState(false)
 
     return (
-      <div className="flex min-h-screen flex-col items-center gap-ds-05 bg-surface-1 p-ds-09">
+      <div className="flex min-h-screen flex-col items-center gap-ds-05 bg-surface-base p-ds-09">
         <CommandBar
           variant="floating"
           open={open}
@@ -442,7 +442,7 @@ export const FloatingDefault: Story = {
           </p>
           <p className="text-ds-sm text-surface-fg-muted">
             Press{' '}
-            <kbd className="rounded-control border border-surface-border-strong bg-surface-raised px-ds-02b py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">
+            <kbd className="rounded-control border border-surface-border-strong bg-surface-panel px-ds-02b py-ds-01 text-ds-xs font-medium text-surface-fg-subtle">
               Ctrl+J
             </kbd>{' '}
             or click the button below.
@@ -450,7 +450,7 @@ export const FloatingDefault: Story = {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="rounded-surface border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-sm font-medium text-surface-fg transition-colors hover:bg-surface-raised-hover"
+            className="rounded-surface border border-surface-border-strong bg-surface-panel px-ds-05 py-ds-03 text-ds-sm font-medium text-surface-fg transition-colors hover:bg-surface-panel-hover"
           >
             Open CommandBar
           </button>
@@ -471,7 +471,7 @@ export const FloatingWithCommands: Story = {
     const [open, setOpen] = React.useState(false)
 
     return (
-      <div className="flex min-h-screen flex-col items-center gap-ds-05 bg-surface-1 p-ds-09">
+      <div className="flex min-h-screen flex-col items-center gap-ds-05 bg-surface-base p-ds-09">
         <CommandBar
           variant="floating"
           open={open}
@@ -492,7 +492,7 @@ export const FloatingWithCommands: Story = {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="rounded-surface border border-surface-border-strong bg-surface-raised px-ds-05 py-ds-03 text-ds-sm font-medium text-surface-fg transition-colors hover:bg-surface-raised-hover"
+            className="rounded-surface border border-surface-border-strong bg-surface-panel px-ds-05 py-ds-03 text-ds-sm font-medium text-surface-fg transition-colors hover:bg-surface-panel-hover"
           >
             Open CommandBar
           </button>
@@ -515,7 +515,7 @@ export const Disabled: Story = {
     placeholder: 'CommandBar is disabled',
   },
   render: (args) => (
-    <div className="flex min-h-screen items-start justify-center bg-surface-1 p-ds-09">
+    <div className="flex min-h-screen items-start justify-center bg-surface-base p-ds-09">
       <div className="w-full max-w-2xl">
         <CommandBar {...args} />
       </div>
@@ -718,7 +718,7 @@ export const FullDashboard: Story = {
     )
 
     return (
-      <div className="min-h-screen bg-surface-1 p-ds-07">
+      <div className="min-h-screen bg-surface-base p-ds-07">
         <div className="mx-auto flex max-w-2xl flex-col gap-ds-07">
           {/* CommandBar */}
           <AICommandProvider
@@ -749,7 +749,7 @@ export const FullDashboard: Story = {
 
             {/* Conversation */}
             {messages.length > 0 && (
-              <div className="rounded-overlay-lg bg-surface-raised p-ds-07 shadow-raised">
+              <div className="rounded-overlay-lg bg-surface-panel p-ds-07 shadow-raised">
                 <AIConversation
                   messages={messages}
                   isProcessing={isConversationProcessing}

@@ -24,7 +24,7 @@ const ToggleButton = ({ on, onClick, label }: { on: boolean; onClick: () => void
   <button
     type="button"
     onClick={onClick}
-    className="rounded-control bg-surface-raised px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-raised-hover transition-colors"
+    className="rounded-control bg-surface-panel px-ds-04 py-ds-02 text-ds-sm font-medium text-surface-fg hover:bg-surface-panel-hover transition-colors"
   >
     {label ?? (on ? 'Hide' : 'Show')}
   </button>
@@ -121,7 +121,7 @@ function SlideDemo() {
               className={`rounded-control-inner px-ds-03 py-ds-01 text-ds-xs font-medium transition-colors ${
                 direction === dir
                   ? 'bg-accent-9 text-accent-fg'
-                  : 'bg-surface-raised text-surface-fg hover:bg-surface-raised-hover'
+                  : 'bg-surface-panel text-surface-fg hover:bg-surface-panel-hover'
               }`}
             >
               {dir}
@@ -178,7 +178,7 @@ function StaggerDemo() {
       <MotionStagger key={key} className="flex flex-col gap-ds-03" style={{ maxWidth: 300 }}>
         {items.map((item, i) => (
           <MotionStaggerItem key={i}>
-            <div className="rounded-control bg-surface-raised p-ds-04 text-ds-sm text-surface-fg">
+            <div className="rounded-control bg-surface-panel p-ds-04 text-ds-sm text-surface-fg">
               {i + 1}. {item}
             </div>
           </MotionStaggerItem>

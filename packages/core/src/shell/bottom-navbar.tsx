@@ -256,7 +256,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         ref={ref}
         aria-label="Mobile navigation"
         className={cn(
-          'fixed bottom-0 start-0 end-0 z-sticky flex w-full flex-row items-stretch justify-between border-t border-surface-border-strong bg-surface-chrome px-ds-05 pb-safe pt-0 md:hidden',
+          'fixed bottom-0 start-0 end-0 z-sticky flex w-full flex-row items-stretch justify-between border-t border-surface-border-strong bg-surface-base px-ds-05 pb-safe pt-0 md:hidden',
           className,
         )}
       >
@@ -320,8 +320,8 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                       className={cn(
                         'flex min-w-0 flex-col items-center gap-ds-02b rounded-overlay-lg p-ds-04 text-body-sm transition-colors ease-productive-standard',
                         active
-                          ? 'bg-surface-raised-hover text-accent-11'
-                          : 'text-surface-fg-subtle hover:bg-surface-raised-hover',
+                          ? 'bg-surface-panel-hover text-accent-11'
+                          : 'text-surface-fg-subtle hover:bg-surface-panel-hover',
                       )}
                     >
                       <span className="[&>svg]:h-ico-md [&>svg]:w-ico-md" aria-hidden="true">

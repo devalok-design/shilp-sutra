@@ -126,7 +126,7 @@ const tabsListVariants = cva('inline-flex items-center', {
     variant: {
       line: 'border-b border-surface-border-strong w-full gap-0',
       contained:
-        'bg-surface-raised p-ds-02 rounded-surface gap-ds-02',
+        'bg-surface-panel p-ds-02 rounded-surface gap-ds-02',
     },
     size: {
       sm: 'h-8',

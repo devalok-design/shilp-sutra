@@ -122,7 +122,7 @@ export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' 
         style={rampInlineStyle(active.hue, active.chroma)}
       >
         {/* Chrome */}
-        <div className="flex items-center justify-between gap-ds-02 px-ds-03 sm:px-ds-05 py-ds-03 bg-surface-raised border-b border-surface-border-subtle">
+        <div className="flex items-center justify-between gap-ds-02 px-ds-03 sm:px-ds-05 py-ds-03 bg-surface-panel border-b border-surface-border-subtle">
           <div className="flex items-center gap-ds-03 min-w-0">
             <span
               aria-hidden
@@ -179,11 +179,11 @@ export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' 
         </div>
 
         {/* Tab strip — adapts: compact pills < md, full cards md+ */}
-        <div className="flex items-stretch border-b border-surface-border-subtle bg-surface-raised">
+        <div className="flex items-stretch border-b border-surface-border-subtle bg-surface-panel">
           <button
             type="button"
             onClick={() => goTo(activeIdx - 1)}
-            className="px-ds-02 sm:px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 shrink-0"
+            className="px-ds-02 sm:px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-panel-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 shrink-0"
             aria-label="Previous industry"
           >
             <IconChevronLeft size={16} />
@@ -208,7 +208,7 @@ export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' 
                       'group/tab relative flex flex-col items-start gap-ds-01 px-ds-03 md:px-ds-04 py-ds-03',
                       'min-w-[5.5rem] md:min-w-[8.5rem] text-left transition-colors duration-fast-02 ease-productive-standard shrink-0 snap-start',
                       'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
-                      isActive ? 'text-surface-fg bg-surface-base' : 'text-surface-fg-muted hover:bg-surface-raised-hover',
+                      isActive ? 'text-surface-fg bg-surface-base' : 'text-surface-fg-muted hover:bg-surface-panel-hover',
                     ].join(' ')}
                   >
                     {isActive && (
@@ -249,7 +249,7 @@ export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' 
           <button
             type="button"
             onClick={() => goTo(activeIdx + 1)}
-            className="px-ds-02 sm:px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 shrink-0"
+            className="px-ds-02 sm:px-ds-03 text-surface-fg-muted hover:text-surface-fg hover:bg-surface-panel-hover transition-colors duration-fast-02 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 shrink-0"
             aria-label="Next industry"
           >
             <IconChevronRight size={16} />
@@ -275,7 +275,7 @@ export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' 
         {/* In-canvas mobile footer: open-standalone link surfaces on small screens */}
         <Link
           href={`/showcase/${active.slug}`}
-          className="md:hidden flex items-center justify-between gap-ds-02 px-ds-04 py-ds-03 text-ds-sm text-surface-fg-muted hover:text-surface-fg border-t border-surface-border-subtle bg-surface-raised transition-colors duration-fast-02 ease-productive-standard"
+          className="md:hidden flex items-center justify-between gap-ds-02 px-ds-04 py-ds-03 text-ds-sm text-surface-fg-muted hover:text-surface-fg border-t border-surface-border-subtle bg-surface-panel transition-colors duration-fast-02 ease-productive-standard"
         >
           <span>Open {active.product} standalone</span>
           <IconArrowUpRight size={14} />

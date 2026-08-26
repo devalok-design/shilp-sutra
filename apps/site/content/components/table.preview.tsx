@@ -18,7 +18,7 @@ const ROWS = [
 
 export function TableHero() {
   return (
-    <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-raised">
+    <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-panel">
       <Table>
         <TableHeader>
           <TableRow>
@@ -73,7 +73,7 @@ function DemoTable({
   striped?: boolean
 }) {
   return (
-    <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-raised">
+    <div className="w-full rounded-surface border border-surface-border-subtle bg-surface-panel">
       <Table density={density} striped={striped}>
         <TableHeader>
           <TableRow>
@@ -98,7 +98,7 @@ function DemoTable({
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-raised">
+    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-panel">
       <span className="text-ds-xs font-mono text-surface-fg-subtle">{title}</span>
       <div className="flex flex-col">{children}</div>
     </div>

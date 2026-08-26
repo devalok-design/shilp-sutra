@@ -89,7 +89,7 @@ describe('Table', () => {
       </Table>,
     )
     const row = screen.getAllByRole('row')[0]
-    expect(row).toHaveClass('border-b', 'border-surface-border-subtle', 'hover:bg-surface-raised-hover')
+    expect(row).toHaveClass('border-b', 'border-surface-border-subtle', 'hover:bg-surface-panel-hover')
   })
 
   it('selected rows have an explicit selected+hover step (accent-4)', () => {

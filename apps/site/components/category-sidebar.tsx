@@ -72,7 +72,7 @@ export function CategorySidebar({
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 isDesktop
                   ? 'cursor-default'
-                  : 'cursor-pointer hover:bg-surface-raised-hover',
+                  : 'cursor-pointer hover:bg-surface-panel-hover',
               ].join(' ')}
             >
               <Text variant="label-sm" className="text-surface-fg-subtle">
@@ -104,7 +104,7 @@ export function CategorySidebar({
                           'block px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
                           isActive
                             ? 'bg-accent-3 text-accent-11 font-medium'
-                            : 'text-surface-fg-muted hover:bg-surface-raised-hover hover:text-surface-fg',
+                            : 'text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg',
                         ].join(' ')}
                       >
                         {doc.title}

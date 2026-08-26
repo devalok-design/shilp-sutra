@@ -170,7 +170,7 @@ export const WithCenterZone: Story = {
       <TopBar.Center>
         <button
           type="button"
-          className="flex h-ds-sm w-[320px] items-center gap-ds-03 rounded-surface border border-surface-border bg-surface-raised-hover px-ds-04 text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-raised-active"
+          className="flex h-ds-sm w-[320px] items-center gap-ds-03 rounded-surface border border-surface-border bg-surface-panel-hover px-ds-04 text-ds-md text-surface-fg-subtle transition-colors hover:bg-surface-panel-active"
           onClick={fn()}
         >
           <IconSearch className="h-ico-sm w-ico-sm" />

@@ -63,7 +63,7 @@ export function ComponentGrid({
           onChange={(e) => setQuery(e.target.value)}
           placeholder={`Search ${items.length} components…`}
           aria-label="Search components"
-          className="w-full h-ds-md pl-[2.5rem] pr-ds-04 rounded-surface border border-surface-border bg-surface-raised text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
+          className="w-full h-ds-md pl-[2.5rem] pr-ds-04 rounded-surface border border-surface-border bg-surface-panel text-ds-md text-surface-fg placeholder:text-surface-fg-subtle focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:border-accent-9 transition-colors duration-fast-01"
         />
       </div>
 

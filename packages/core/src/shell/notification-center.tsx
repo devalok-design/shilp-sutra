@@ -175,7 +175,7 @@ function NotificationItem({
       onKeyDown={handleKeyDown}
       className={cn(
         'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard',
-        'hover:bg-surface-raised',
+        'hover:bg-surface-panel-hover',
         !notification.isRead && 'bg-accent-1',
       )}
     >
@@ -254,7 +254,7 @@ function NotificationItem({
             onDismiss(notification.id)
           }}
           onKeyDown={(e) => e.stopPropagation()}
-          className="absolute right-ds-03 top-ds-03 hidden rounded-control-inner p-ds-01 text-surface-fg-subtle transition-[color,background-color,opacity] duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
+          className="absolute right-ds-03 top-ds-03 hidden rounded-control-inner p-ds-01 text-surface-fg-subtle transition-[color,background-color,opacity] duration-fast-01 ease-productive-standard hover:bg-surface-panel-hover hover:text-surface-fg-muted group-hover:flex group-focus-within:flex"
         >
           <Icon icon={IconX} size="sm" />
         </button>
@@ -378,7 +378,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         {notifications.length === 0 ? (
           emptyState || (
             <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
-              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-pill bg-surface-raised">
+              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-pill bg-surface-panel">
                 <Icon icon={IconInbox} size="lg" className="text-surface-fg-subtle" />
               </div>
               <p className="mt-ds-04 text-body-md text-surface-fg-subtle">
@@ -442,7 +442,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
       ref={ref}
       aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
       className={cn(
-        'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-card-strong bg-surface-raised text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-raised-hover',
+        'relative flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-card-strong bg-surface-panel text-surface-fg-muted transition-colors ease-productive-standard hover:bg-surface-panel-hover',
         className,
       )}
     >

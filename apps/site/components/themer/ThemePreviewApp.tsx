@@ -25,7 +25,7 @@ export function ThemePreviewApp({ style }: { style: React.CSSProperties }) {
       className="overflow-hidden rounded-surface border border-surface-border bg-surface-base shadow-raised"
     >
       {/* App chrome */}
-      <div className="flex items-center justify-between gap-ds-03 border-b border-surface-border-subtle bg-surface-raised px-ds-04 py-ds-03">
+      <div className="flex items-center justify-between gap-ds-03 border-b border-surface-border-subtle bg-surface-panel px-ds-04 py-ds-03">
         <div className="flex items-center gap-ds-02 min-w-0">
           <span className="flex size-6 shrink-0 items-center justify-center rounded-control bg-accent-9 text-ds-xs font-bold text-accent-fg">
             A
@@ -52,7 +52,7 @@ export function ThemePreviewApp({ style }: { style: React.CSSProperties }) {
       {/* Body */}
       <div className="grid gap-ds-04 p-ds-05 sm:grid-cols-2">
         {/* Pricing card */}
-        <div className="flex flex-col gap-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-05">
+        <div className="flex flex-col gap-ds-03 rounded-surface border border-surface-border-subtle bg-surface-panel p-ds-05">
           <div className="flex items-center justify-between">
             <span className="text-ds-sm font-semibold text-surface-fg">Growth</span>
             <Badge variant="soft" color="accent" size="sm">
@@ -98,7 +98,7 @@ export function ThemePreviewApp({ style }: { style: React.CSSProperties }) {
             <Progress value={68} />
           </div>
 
-          <label className="flex items-center justify-between gap-ds-03 rounded-control border border-surface-border-subtle bg-surface-raised px-ds-03 py-ds-02">
+          <label className="flex items-center justify-between gap-ds-03 rounded-control border border-surface-border-subtle bg-surface-panel px-ds-03 py-ds-02">
             <span className="text-ds-sm text-surface-fg">Email notifications</span>
             <Switch defaultChecked size="sm" />
           </label>

@@ -43,7 +43,7 @@ export function PreviewCodeTabs({
           <div
             role="tablist"
             aria-label="View"
-            className="relative inline-flex items-center gap-ds-01 p-ds-01 rounded-control bg-surface-raised border border-surface-border-subtle"
+            className="relative inline-flex items-center gap-ds-01 p-ds-01 rounded-control bg-surface-panel border border-surface-border-subtle"
           >
             {(['preview', 'code'] as const).map((id) => {
               const active = tab === id

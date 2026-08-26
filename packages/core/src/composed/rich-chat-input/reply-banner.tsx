@@ -42,7 +42,7 @@ export function ReplyBanner({ author, preview, onDismiss }: ReplyBannerProps) {
           onClick={onDismiss}
           className={cn(
             'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target',
-            'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-raised-hover',
+            'text-surface-fg-subtle hover:text-surface-fg hover:bg-surface-panel-hover',
             'transition-colors duration-fast-01 ease-productive-standard',
             'active:scale-95',
           )}

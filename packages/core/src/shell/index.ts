@@ -33,6 +33,16 @@ export {
   type CommandRegistryProviderProps,
   useCommandRegistry,
 } from './command-registry'
+export {
+  AppShell,
+  AppShellBar,
+  type AppShellBarProps,
+  AppShellBody,
+  AppShellCanvas,
+  type AppShellProps,
+  AppShellSidebar,
+  type AppShellSidebarProps,
+} from './app-shell'
 export { LinkProvider, type LinkProviderProps,useLink } from './link-context'
 export {
   type Notification,

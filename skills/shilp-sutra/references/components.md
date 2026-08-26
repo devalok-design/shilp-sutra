@@ -154,6 +154,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 
 ### shell
 - [app-command-palette](docs/components/shell/app-command-palette.md)
+- [app-shell](docs/components/shell/app-shell.md)
 - [bottom-navbar](docs/components/shell/bottom-navbar.md)
 - [command-registry](docs/components/shell/command-registry.md): Exports: CommandRegistryProvider, useCommandRegistry
 - [link-context](docs/components/shell/link-context.md): Exports: LinkProvider, useLink

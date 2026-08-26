@@ -29,17 +29,24 @@ the `Sidebar` primitives in the sidebar slot — AppShell does not replace eithe
 ## Props
 
 ### AppShell
-    variant?: 'flat' | 'inset'    // default 'flat'
-    chrome?: 'dim' | 'bright'     // default 'dim'; only applies when inset
+    variant?: 'flat' | 'inset'
+    chrome?: 'dim' | 'bright'
     className?: string
+
+Defaults: `variant` is `flat`, `chrome` is `dim`. `chrome` only applies when
+`variant="inset"`.
 
 ### AppShellBar
-    bordered?: boolean   // default: true when flat, false when inset
+    bordered?: boolean
     className?: string
 
+Defaults: `bordered` is `true` when the shell is flat and `false` when inset.
+
 ### AppShellSidebar
-    collapsed?: boolean  // default false — 3rem instead of 16rem
+    collapsed?: boolean
     className?: string
+
+Defaults: `collapsed` is `false` — 16rem expanded, 3rem collapsed.
 
 ### AppShellBody / AppShellCanvas
     className?: string

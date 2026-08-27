@@ -50,16 +50,17 @@ describe('StatusBadge', () => {
 
   it('renders in-progress status with accent-3 background', () => {
     const { container } = render(<StatusBadge status="in-progress" />)
-    const badge = container.querySelector('[class*="bg-accent-3"]')
+    // Badge's colour is a palette now; the soft fill is a role.
+    const badge = container.querySelector('[data-palette="accent"]')
     expect(badge).toBeInTheDocument()
-    expect(badge).toHaveClass('text-accent-11')
+    expect(badge).toHaveClass('bg-palette-soft', 'text-palette-text')
   })
 
   it('renders review status with info-3 background', () => {
     const { container } = render(<StatusBadge status="review" />)
-    const badge = container.querySelector('[class*="bg-info-3"]')
+    const badge = container.querySelector('[data-palette="info"]')
     expect(badge).toBeInTheDocument()
-    expect(badge).toHaveClass('text-info-11')
+    expect(badge).toHaveClass('bg-palette-soft', 'text-palette-text')
   })
 
   it('renders as button when onClick provided', async () => {
@@ -97,16 +98,16 @@ describe('StatusBadge', () => {
 
   it('backward compat: active status renders success classes unchanged', () => {
     const { container } = render(<StatusBadge status="active" />)
-    const badge = container.querySelector('[class*="bg-success-3"]')
+    const badge = container.querySelector('[data-palette="success"]')
     expect(badge).toBeInTheDocument()
-    expect(badge).toHaveClass('text-success-11')
+    expect(badge).toHaveClass('bg-palette-soft', 'text-palette-text')
     // Should render as span, not button
     expect(badge!.tagName).toBe('SPAN')
   })
 
   it('renders as span without chevron when onClick not provided', () => {
     const { container } = render(<StatusBadge status="pending" />)
-    const badge = container.querySelector('[class*="bg-warning-3"]')
+    const badge = container.querySelector('[data-palette="warning"]')
     expect(badge).toBeInTheDocument()
     expect(badge!.tagName).toBe('SPAN')
     // Should not have chevron icon
@@ -137,6 +138,6 @@ describe('StatusBadge', () => {
     // StatusBadge composes <Badge variant="soft"> inside a motion wrapper; the
     // soft-error pill carries bg-error-3 (the Dot carries bg-error-9).
     const { container } = render(<StatusBadge status="active" color="error" />)
-    expect(container.querySelector('[class*="bg-error-3"]')).toBeInTheDocument()
+    expect(container.querySelector('[data-palette="error"]')).toBeInTheDocument()
   })
 })

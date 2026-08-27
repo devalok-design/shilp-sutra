@@ -18,6 +18,7 @@
  */
 @import './primitives.css';
 @import './semantic.css';
+@import './palettes.css';
 @import './typography.css';
 @import './typography-semantic.css';
 @import './base.css';

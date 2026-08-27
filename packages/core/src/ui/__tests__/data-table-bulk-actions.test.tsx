@@ -47,8 +47,9 @@ describe('DataTableBulkActions', () => {
     render(<DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />)
 
     const deleteButton = screen.getByRole('button', { name: 'Delete' })
-    // variant="solid" + color="error" resolves to the solid/error CVA slice
-    expect(deleteButton).toHaveClass('bg-error-9')
+    // variant="solid" gives the solid role classes; color="error" rides on data-palette
+    expect(deleteButton).toHaveAttribute('data-palette', 'error')
+    expect(deleteButton).toHaveClass('bg-palette-solid')
   })
 
   it('renders a non-error action as an outline Button', () => {
@@ -57,9 +58,13 @@ describe('DataTableBulkActions', () => {
     render(<DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />)
 
     const archiveButton = screen.getByRole('button', { name: 'Archive' })
-    // variant="outline" (color undefined -> default accent) resolves to the outline/accent CVA slice
-    expect(archiveButton).toHaveClass('border-accent-7')
-    expect(archiveButton).not.toHaveClass('bg-error-9')
+    // variant="outline" gives the outline role classes.
+    expect(archiveButton).toHaveClass('border-palette-border')
+    expect(archiveButton).not.toHaveClass('bg-palette-solid')
+    // No `color` means NO data-palette, deliberately: the button then inherits
+    // whatever palette an ancestor sets, and falls back to accent when none
+    // does. Stamping 'accent' here would defeat that inheritance.
+    expect(archiveButton).not.toHaveAttribute('data-palette')
   })
 
   it('disables an action button when disabled is true', () => {

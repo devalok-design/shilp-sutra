@@ -13,15 +13,16 @@ const bannerVariants = cva(
   'flex flex-wrap items-center gap-ds-04 px-ds-06 py-ds-04 text-body-md font-medium border-b',
   {
     variants: {
+      // A banner is a full-bleed strip, so it takes the `soft` fill (step 3)
+      // rather than the fainter `subtle` a Card uses — the two are separate
+      // roles precisely so that difference survives.
       color: {
-        info:
-          'bg-info-3 border-info-7 text-info-11',
-        success:
-          'bg-success-3 border-success-7 text-success-11',
-        warning:
-          'bg-warning-3 border-warning-7 text-warning-11',
-        error:
-          'bg-error-3 border-error-7 text-error-11',
+        info: 'bg-palette-soft border-palette-border text-palette-text',
+        success: 'bg-palette-soft border-palette-border text-palette-text',
+        warning: 'bg-palette-soft border-palette-border text-palette-text',
+        error: 'bg-palette-soft border-palette-border text-palette-text',
+        // Neutral is a plain strip, not a grey coloured one: surface ground,
+        // full-contrast label, icon stepped back.
         neutral:
           'bg-surface-panel border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted',
       },
@@ -95,6 +96,7 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
             initial={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={springs.snappy}
+            data-palette={color}
             className={cn(bannerVariants({ color }), 'overflow-hidden', className)}
             role="alert"
             {...motionProps(props)}

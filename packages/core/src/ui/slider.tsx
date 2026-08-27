@@ -30,23 +30,24 @@ const sliderThumbVariants = cva(
         md: 'h-6 w-6 border-2',
         lg: 'h-8 w-8 border-[3px]',
       },
+      // NOTE: the thumb's edge follows the `border` role, which moved to step 4
+      // with the rest of the system. A thumb is a draggable affordance rather
+      // than a container edge, so this is the place where the lighter edge is
+      // felt most — the thumb is defined mostly by its fill against the track.
+      // Reversing just this one is a single-line change if it reads too faint.
       color: {
-        accent: 'border-accent-7 focus-visible:ring-accent-9',
-        success: 'border-success-7 focus-visible:ring-success-9',
-        warning: 'border-warning-7 focus-visible:ring-warning-9',
-        error: 'border-error-7 focus-visible:ring-error-9',
+        accent: 'border-palette-border focus-visible:ring-palette-solid',
+        success: 'border-palette-border focus-visible:ring-palette-solid',
+        warning: 'border-palette-border focus-visible:ring-palette-solid',
+        error: 'border-palette-border focus-visible:ring-palette-solid',
       },
     },
     defaultVariants: { size: 'md', color: 'accent' },
   },
 )
 
-const sliderRangeColorMap: Record<string, string> = {
-  accent: 'bg-accent-9',
-  success: 'bg-success-9',
-  warning: 'bg-warning-9',
-  error: 'bg-error-9',
-}
+/** The filled portion of the track — one role for every colour. */
+const SLIDER_RANGE_FILL = 'bg-palette-solid'
 
 export type SliderSize = NonNullable<VariantProps<typeof sliderTrackVariants>['size']>
 export type SliderColor = NonNullable<VariantProps<typeof sliderThumbVariants>['color']>
@@ -89,6 +90,9 @@ const Slider = React.forwardRef<
   return (
     <SliderPrimitive.Root
       ref={ref}
+      // One palette for the whole control, so the track fill and the thumb
+      // edge can never disagree.
+      data-palette={color}
       value={value}
       defaultValue={defaultValue}
       aria-invalid={isError || undefined}
@@ -101,7 +105,7 @@ const Slider = React.forwardRef<
       {...props}
     >
       <SliderPrimitive.Track className={sliderTrackVariants({ size })}>
-        <SliderPrimitive.Range className={cn('absolute h-full', sliderRangeColorMap[color])} />
+        <SliderPrimitive.Range className={cn('absolute h-full', SLIDER_RANGE_FILL)} />
       </SliderPrimitive.Track>
       {Array.from({ length: thumbCount }, (_, i) => (
         <SliderPrimitive.Thumb

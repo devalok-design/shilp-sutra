@@ -66,7 +66,8 @@ describe('ButtonGroup', () => {
       </ButtonGroup>,
     )
     const btn = screen.getByRole('button', { name: 'Delete' })
-    expect(btn.className).toContain('bg-error-9')
+    expect(btn).toHaveAttribute('data-palette', 'error')
+    expect(btn.className).toContain('bg-palette-solid')
   })
 
 })

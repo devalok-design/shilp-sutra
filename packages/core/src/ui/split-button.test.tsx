@@ -101,7 +101,9 @@ describe('SplitButton', () => {
       </SplitButton>,
     )
     const primary = screen.getByRole('button', { name: 'Save' })
-    expect(primary.className).toContain('bg-accent-9')
+    // Colour rides on data-palette at the group; the fill itself is a role.
+    expect(primary.className).toContain('bg-palette-solid')
+    expect(primary.closest('[role="group"]')).toHaveAttribute('data-palette', 'accent')
   })
 
   it('variant="soft" with color="error" applies soft error classes', () => {
@@ -111,8 +113,9 @@ describe('SplitButton', () => {
       </SplitButton>,
     )
     const primary = screen.getByRole('button', { name: 'Delete' })
-    expect(primary.className).toContain('bg-error-3')
-    expect(primary.className).toContain('text-error-11')
+    expect(primary.className).toContain('bg-palette-soft')
+    expect(primary.className).toContain('text-palette-text')
+    expect(primary.closest('[role="group"]')).toHaveAttribute('data-palette', 'error')
   })
 
   it('variant="outline" with color="neutral" applies outline neutral classes', () => {

@@ -39,13 +39,16 @@ const cardVariants = cva(
         outline: 'bg-transparent border border-surface-border-strong shadow-none',
         flat: 'bg-surface-panel border-none shadow-none',
       },
+      // A coloured card is its edge. That edge is now the `border` role, so a
+      // palette registered in CSS colours a Card without touching this file.
+      // `default` and `neutral` keep the surface edge from the variant above.
       color: {
         default: '',
-        accent: 'border-accent-7',
-        error: 'border-error-7',
-        success: 'border-success-7',
-        warning: 'border-warning-7',
-        info: 'border-info-7',
+        accent: 'border-palette-border',
+        error: 'border-palette-border',
+        success: 'border-palette-border',
+        warning: 'border-palette-border',
+        info: 'border-palette-border',
         neutral: '',
       },
       // size only assigns the two variables; the orientation axis decides where
@@ -156,6 +159,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.98 }}
           transition={springs.snappy}
+          data-palette={color ?? undefined}
           className={classes}
           {...motionProps(props)}
         >
@@ -165,7 +169,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     }
 
     return (
-      <div ref={ref} className={classes} {...props}>
+      <div ref={ref} data-palette={color ?? undefined} className={classes} {...props}>
         {children}
       </div>
     )

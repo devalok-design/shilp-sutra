@@ -16,7 +16,19 @@ describeConformance('Button', (props) => <Button {...props}>Click me</Button>, {
 describe('Button', () => {
   it('applies info color (solid) classes', () => {
     render(<Button color="info">Info</Button>)
-    expect(screen.getByRole('button').className).toContain('bg-info-9')
+    const btn = screen.getByRole('button')
+    // Colour is the palette on the element; the fill is a role, not a hue.
+    expect(btn).toHaveAttribute('data-palette', 'info')
+    expect(btn.className).toContain('bg-palette-solid')
+    expect(btn.className).toContain('text-palette-fg')
+  })
+
+  it('accepts a palette the CVA never enumerated', () => {
+    render(<Button color="teal">Teal</Button>)
+    const btn = screen.getByRole('button')
+    expect(btn).toHaveAttribute('data-palette', 'teal')
+    // Same role classes — only the palette differs, which is the whole point.
+    expect(btn.className).toContain('bg-palette-solid')
   })
 
   it('renders children', () => {

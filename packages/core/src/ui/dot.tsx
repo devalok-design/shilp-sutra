@@ -24,46 +24,36 @@ export type DotColor = 'accent' | 'success' | 'warning' | 'error' | 'info' | 'ne
 export type DotSize = 'xs' | 'sm' | 'md' | 'lg'
 export type DotVariant = 'filled' | 'ring' | 'off'
 
-const FILL: Record<DotColor, string> = {
-  accent: 'bg-accent-9',
-  success: 'bg-success-9',
-  warning: 'bg-warning-9',
-  error: 'bg-error-9',
-  info: 'bg-info-9',
-  neutral: 'bg-neutral-8',
-  current: 'bg-current',
-}
+/**
+ * Colour per variant. Twenty-eight hand-written lines become four functions,
+ * because the hue comes from `data-palette` — with two genuine exceptions.
+ *
+ * `current` is not a palette at all: it means "inherit whatever colour the
+ * surrounding text is", which no token can express.
+ *
+ * `neutral` sits at step 8, darker than the palette's `solid` (neutral-5). That
+ * value exists because a filled *button* needs it; an 8px dot needs the extra
+ * weight to register at all, and neutral-5 would nearly vanish on a panel.
+ */
+const isCurrent = (c: DotColor) => c === 'current'
+const isNeutral = (c: DotColor) => c === 'neutral'
 
-const RING: Record<DotColor, string> = {
-  accent: 'border-accent-9',
-  success: 'border-success-9',
-  warning: 'border-warning-9',
-  error: 'border-error-9',
-  info: 'border-info-9',
-  neutral: 'border-neutral-8',
-  current: 'border-current',
-}
+const fillFor = (c: DotColor) =>
+  isCurrent(c) ? 'bg-current' : isNeutral(c) ? 'bg-neutral-8' : 'bg-palette-solid'
 
-// Off — "exists but inactive": faint same-tone fill + a light border.
-const OFF: Record<DotColor, string> = {
-  accent: 'border-accent-9/40 bg-accent-9/10',
-  success: 'border-success-9/40 bg-success-9/10',
-  warning: 'border-warning-9/40 bg-warning-9/10',
-  error: 'border-error-9/40 bg-error-9/10',
-  info: 'border-info-9/40 bg-info-9/10',
-  neutral: 'border-neutral-8/40 bg-neutral-8/10',
-  current: 'border-current/40 bg-current/10',
-}
+const ringFor = (c: DotColor) =>
+  isCurrent(c) ? 'border-current' : isNeutral(c) ? 'border-neutral-8' : 'border-palette-solid'
 
-const TEXT: Record<DotColor, string> = {
-  accent: 'text-accent-11',
-  success: 'text-success-11',
-  warning: 'text-warning-11',
-  error: 'text-error-11',
-  info: 'text-info-11',
-  neutral: 'text-surface-fg-muted',
-  current: '',
-}
+/** Off — "exists but inactive": faint same-tone fill + a light border. */
+const offFor = (c: DotColor) =>
+  isCurrent(c)
+    ? 'border-current/40 bg-current/10'
+    : isNeutral(c)
+      ? 'border-neutral-8/40 bg-neutral-8/10'
+      : 'border-palette-solid/40 bg-palette-solid/10'
+
+/** Label text. `neutral` needs no exception — the role already resolves muted. */
+const textFor = (c: DotColor) => (isCurrent(c) ? '' : 'text-palette-text')
 
 const PULSE_SPEED: Record<'slow' | 'normal' | 'fast', string> = {
   slow: '2s',
@@ -146,15 +136,15 @@ const Dot = React.forwardRef<HTMLSpanElement, DotProps>(
 
     const disc = cn(
       dotVariants({ size: resolvedSize }),
-      variant === 'filled' && FILL[color],
-      variant === 'ring' && cn('border-[1.5px] bg-transparent', RING[color]),
-      variant === 'off' && cn('border', OFF[color]),
+      variant === 'filled' && fillFor(color),
+      variant === 'ring' && cn('border-[1.5px] bg-transparent', ringFor(color)),
+      variant === 'off' && cn('border', offFor(color)),
       withBorder && 'ring-2 ring-surface-panel',
     )
 
     const labelEl =
       label != null ? (
-        <span className={cn(labelTextSize[resolvedSize], TEXT[color], 'font-sans', labelClassName)}>{label}</span>
+        <span className={cn(labelTextSize[resolvedSize], textFor(color), 'font-sans', labelClassName)}>{label}</span>
       ) : null
 
     return (
@@ -163,6 +153,9 @@ const Dot = React.forwardRef<HTMLSpanElement, DotProps>(
         role={isAnnounced ? 'status' : undefined}
         aria-hidden={isAnnounced ? undefined : true}
         aria-label={ariaLabel}
+        // `current` deliberately sets no palette: it inherits the surrounding
+        // text colour, which is the whole point of that value.
+        data-palette={color === 'current' ? undefined : color}
         className={cn('inline-flex items-center gap-ds-02', className)}
         {...props}
       >

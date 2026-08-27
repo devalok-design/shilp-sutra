@@ -44,8 +44,14 @@ export interface SplitButtonProps {
   onOpenChange?: (open: boolean) => void
   /** @default 'solid' */
   variant?: SplitButtonVariant
-  /** @default 'accent' */
-  color?: SplitButtonColor
+  /**
+   * Palette name. The six built-ins are unchanged; any palette registered in
+   * CSS (`[data-palette='…']`) now works too. Widened from a closed union, so
+   * every existing value still type-checks.
+   *
+   * @default 'accent'
+   */
+  color?: SplitButtonColor | (string & {})
   /** @default 'md' */
   size?: SplitButtonSize
   /** Disable both halves. */
@@ -67,19 +73,21 @@ export interface SplitButtonProps {
 
 // ── Styling maps ────────────────────────────────────────────────
 
-const dividerColor: Record<SplitButtonVariant, Record<string, string>> = {
-  solid: {
-    accent: 'bg-accent-11/20', error: 'bg-error-11/20', success: 'bg-success-11/20',
-    warning: 'bg-warning-11/20', info: 'bg-info-11/20', neutral: 'bg-neutral-8/30',
-  },
-  soft: {
-    accent: 'bg-accent-6', error: 'bg-error-6', success: 'bg-success-6',
-    warning: 'bg-warning-6', info: 'bg-info-6', neutral: 'bg-surface-border',
-  },
-  outline: {
-    accent: 'bg-accent-7', error: 'bg-error-7', success: 'bg-success-7',
-    warning: 'bg-warning-7', info: 'bg-info-7', neutral: 'bg-surface-border-strong',
-  },
+// The hairline between the two halves. One line per variant instead of one
+// per variant × colour — the hue arrives via `data-palette` on the group.
+const dividerColor: Record<SplitButtonVariant, string> = {
+  solid: 'bg-palette-solid-active/20',
+  soft: 'bg-palette-border-subtle',
+  outline: 'bg-palette-border',
+}
+
+// `neutral` diverges from the roles here, and both cases predate this work:
+// its solid divider is 30% rather than 20% (a flat grey needs more presence
+// than a saturated one to read at 1px), and its soft divider sits on
+// `surface-border` rather than the subtle tier the role resolves to.
+const neutralDivider: Partial<Record<SplitButtonVariant, string>> = {
+  solid: 'bg-neutral-8/30',
+  soft: 'bg-surface-border',
 }
 
 const heightClass: Record<SplitButtonSize, string> = {
@@ -107,42 +115,27 @@ const radiusClass: Record<SplitButtonSize, string> = {
   'icon-xs': 'rounded-control', 'icon-sm': 'rounded-control', 'icon-md': 'rounded-control',
 }
 
+// Three lines, not eighteen. Colour comes from `data-palette`.
+const halfClasses: Record<SplitButtonVariant, string> = {
+  solid:
+    'bg-palette-solid text-palette-fg hover:bg-palette-solid-hover active:bg-palette-solid-active',
+  soft: 'bg-palette-soft text-palette-text hover:bg-palette-soft-hover active:bg-palette-soft-active',
+  outline:
+    'bg-transparent text-palette-text hover:bg-palette-soft active:bg-palette-soft-hover',
+}
+
 function getHalfClasses(variant: SplitButtonVariant, color: string): string {
-  const map: Record<SplitButtonVariant, Record<string, string>> = {
-    solid: {
-      accent: 'bg-accent-9 text-accent-fg hover:bg-accent-10 active:bg-accent-11',
-      error: 'bg-error-9 text-error-fg hover:bg-error-10 active:bg-error-11',
-      success: 'bg-success-9 text-success-fg hover:bg-success-10 active:bg-success-11',
-      warning: 'bg-warning-9 text-warning-fg hover:bg-warning-10 active:bg-warning-11',
-      info: 'bg-info-9 text-info-fg hover:bg-info-10 active:bg-info-11',
-      neutral: 'bg-neutral-5 text-surface-fg hover:bg-neutral-7 active:bg-neutral-8',
-    },
-    soft: {
-      accent: 'bg-accent-3 text-accent-11 hover:bg-accent-4 active:bg-accent-5',
-      error: 'bg-error-3 text-error-11 hover:bg-error-4 active:bg-error-5',
-      success: 'bg-success-3 text-success-11 hover:bg-success-4 active:bg-success-5',
-      warning: 'bg-warning-3 text-warning-11 hover:bg-warning-4 active:bg-warning-5',
-      info: 'bg-info-3 text-info-11 hover:bg-info-4 active:bg-info-5',
-      neutral: 'bg-surface-panel-hover text-surface-fg-muted hover:bg-surface-panel-active active:bg-neutral-5',
-    },
-    outline: {
-      accent: 'bg-transparent text-accent-11 hover:bg-accent-3 active:bg-accent-4',
-      error: 'bg-transparent text-error-11 hover:bg-error-3 active:bg-error-4',
-      success: 'bg-transparent text-success-11 hover:bg-success-3 active:bg-success-4',
-      warning: 'bg-transparent text-warning-11 hover:bg-warning-3 active:bg-warning-4',
-      info: 'bg-transparent text-info-11 hover:bg-info-3 active:bg-info-4',
-      neutral: 'bg-transparent text-surface-fg hover:bg-surface-panel-hover active:bg-surface-panel-active',
-    },
-  }
-  return map[variant][color] ?? map[variant].accent
+  // Same exception Button carries: on neutral, an outlined control's label
+  // wants full contrast rather than the muted text role.
+  const neutralOutline = variant === 'outline' && color === 'neutral' ? ' text-surface-fg' : ''
+  return halfClasses[variant] + neutralOutline
 }
 
 function getOutlineBorderColor(color: string): string {
-  const map: Record<string, string> = {
-    accent: 'border-accent-7', error: 'border-error-7', success: 'border-success-7',
-    warning: 'border-warning-7', info: 'border-info-7', neutral: 'border-surface-border-interactive',
-  }
-  return map[color] ?? map.accent
+  // An outlined control's edge owes WCAG 1.4.11, so neutral takes the
+  // interactive border tier rather than the decorative one the role resolves
+  // to. The chromatic palettes already satisfy it from their own ramp.
+  return color === 'neutral' ? 'border-surface-border-interactive' : 'border-palette-border'
 }
 
 // ── Chevron SVG ─────────────────────────────────────────────────
@@ -193,8 +186,9 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
       ]
     }, [placementProp])
 
-    const halfClasses = getHalfClasses(variant, color)
-    const divider = dividerColor[variant][color] ?? dividerColor[variant].accent
+    const halfClassNames = getHalfClasses(variant, color)
+    const divider =
+      (color === 'neutral' ? neutralDivider[variant] : undefined) ?? dividerColor[variant]
 
     const triggerStyle = triggerWidth != null
       ? { width: typeof triggerWidth === 'number' ? `${triggerWidth}px` : triggerWidth }
@@ -213,7 +207,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
             'transition-colors duration-fast-01 ease-productive-standard',
             'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
             'disabled:pointer-events-none disabled:opacity-action-disabled',
-            halfClasses,
+            halfClassNames,
             heightClass[size],
             triggerPadding[size],
           )}
@@ -231,6 +225,9 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
           ref={ref}
           role="group"
           aria-label={ariaLabel ?? undefined}
+          // One palette for the whole group: both halves and the hairline
+          // between them inherit it, so they can never disagree.
+          data-palette={color}
           className={cn('relative inline-flex', className)}
         >
           <div
@@ -260,7 +257,7 @@ const SplitButton = React.forwardRef<HTMLDivElement, SplitButtonProps>(
                 'active:scale-[0.97]',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-inset',
                 'disabled:pointer-events-none disabled:opacity-action-disabled',
-                halfClasses,
+                halfClassNames,
                 heightClass[size],
                 textClass[size],
                 primaryPadding[size],

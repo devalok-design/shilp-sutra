@@ -192,6 +192,72 @@ follows the element's own radius automatically and stays correct by construction
 This is a Figma-representation concern only.
 ---
 
+### `PALETTE-EDGE-WHISPER` — coloured container edges sit at step 4
+
+**The call.** The palette's `border` role resolves to ramp **step 4**, not step 7.
+Every coloured container edge in the system — Card, Alert, Banner, Slider, Badge,
+and Button's outline variant — is therefore a whisper rather than a line.
+
+**The numbers**, against white:
+
+| ramp | step 4 (shipped) | step 7 (previous) |
+|---|---|---|
+| error | **1.42:1** | 2.83:1 |
+| success | **1.37:1** | 2.57:1 |
+| info | **1.38:1** | 2.64:1 |
+| warning | **1.49:1** | 2.31:1 |
+| accent | **1.42:1** | 2.86:1 |
+
+The plain, uncoloured decorative edge already shipped is **1.23:1**. So a coloured
+edge at step 4 lands within roughly 0.2 of an uncoloured one: the hue is present,
+but carries very little information at a glance.
+
+**Why anyway.** Chosen deliberately after seeing these figures. The lighter edge is
+the intended look — containers that read as tinted regions rather than as boxes
+with outlines. The system already disagreed with itself here before the palette
+work (Badge used 4 while Card, Banner, Slider and Alert used 7); this resolves the
+disagreement toward the lighter end rather than leaving both in place.
+
+**What it costs.** An error Card and a plain Card are nearly indistinguishable by
+edge alone. Anything relying on the edge to signal intent needs a second cue —
+fill, icon or text.
+
+**Related:** `PALETTE-CONTROL-EDGE-BELOW-AA`, which this makes worse but did not
+cause.
+
+---
+
+### `PALETTE-CONTROL-EDGE-BELOW-AA` — outlined controls miss WCAG 1.4.11
+
+**The threshold.** WCAG 2.2 SC 1.4.11 (Non-text Contrast) requires **3:1** for the
+visual boundary of a user-interface component. An outlined Button's edge is that
+boundary.
+
+**What we ship.** Below it on every colour — and below it before the palette work
+too:
+
+| | contrast vs white |
+|---|---|
+| step 7 — the previous value | 2.31 – 2.86:1 |
+| step 4 — the current value | 1.37 – 1.49:1 |
+| `surface-border-interactive` (neutral controls) | **2.00:1** |
+
+Note the third row. The token *named* for interactive edges — used by Button
+outline on neutral, and by the field controls — is itself 2.00:1. That predates
+the palette work entirely and was not introduced by it.
+
+**Why it is not a blocker today.** Our outlined controls are not edge-only: they
+carry a text label at full contrast, and focus is a 2px accent ring that passes
+comfortably. The failing boundary is decorative reinforcement rather than the sole
+affordance. That is an argument for tolerating it, not for it being correct.
+
+**What would close it.** A dedicated control-edge role at a step that clears 3:1 —
+roughly step 8 on the chromatic ramps, and a darker neutral — applied to outlined
+Button, inputs, checkbox, radio and switch. Deliberately out of scope of the
+colour-role work: it is an accessibility change that needs its own visual review.
+
+---
+
 ## Related, but not deviations
 
 - **Waybill `brand/error` and `brand/info`** carry `#ff00ff` placeholders in the

@@ -31,19 +31,31 @@ const colorMap = {
   emerald: { bg: 'bg-category-emerald-2', softBg: 'bg-category-emerald-3', fg: 'text-category-emerald-11', border: 'border-category-emerald-4', solid: 'bg-category-emerald-9', solidFg: 'text-category-fg' },
 } as const
 
-type BadgeColor = keyof typeof colorMap | 'custom'
+/**
+ * A palette name. These fourteen ship with the design system; any palette
+ * registered in CSS (`[data-palette='…']`) works too, which is why the type
+ * stays open. `custom` is the older escape hatch — it drives colour through
+ * inline styles from a `--badge-color` variable and is superseded by
+ * registering a palette, but still works.
+ */
+type BadgeColor = keyof typeof colorMap | 'custom' | (string & {})
 
-/** Derive color classes for a given variant + color pair */
+/**
+ * Colour classes per variant. Four lines instead of a 14 × 6 map — the hue
+ * arrives via `data-palette` on the element.
+ *
+ * `subtle` and `soft` map to two different roles on purpose. subtle moved to
+ * step 2 and soft stayed at step 3 (design call, Yogin/Goutham 2026-08-24), and
+ * the palette contract keeps them as separate roles precisely so that decision
+ * survives rather than being averaged away.
+ */
 function getColorClasses(variant: 'subtle' | 'solid' | 'outline' | 'soft', color: BadgeColor): string {
   if (color === 'custom') return ''
-  const c = colorMap[color]
   switch (variant) {
-    case 'subtle':  return cn(c.bg, c.fg, c.border)
-    case 'solid':   return cn(c.solid, c.solidFg, 'border-transparent')
-    case 'outline': return cn('bg-transparent', c.fg, c.border)
-    // soft keeps the original step-3 fill. subtle moved to step 2; soft did not,
-    // so the two cannot share one key (design call, Yogin/Goutham 2026-08-24).
-    case 'soft':    return cn(c.softBg, c.fg, 'border-transparent')
+    case 'subtle':  return 'bg-palette-subtle text-palette-text border-palette-border'
+    case 'solid':   return 'bg-palette-solid text-palette-fg border-transparent'
+    case 'outline': return 'bg-transparent text-palette-text border-palette-border'
+    case 'soft':    return 'bg-palette-soft text-palette-text border-transparent'
   }
 }
 
@@ -225,6 +237,9 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
     return (
       <Comp
         ref={ref as React.Ref<never>}
+        // `custom` keeps driving colour through inline styles from
+        // `--badge-color`; every other value is a palette name.
+        data-palette={resolvedColor === 'custom' ? undefined : resolvedColor}
         className={cn(
           badgeVariants({ variant: resolvedVariant, size: resolvedSize }),
           getColorClasses(resolvedVariant, resolvedColor),

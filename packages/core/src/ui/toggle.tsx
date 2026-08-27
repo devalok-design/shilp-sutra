@@ -25,11 +25,14 @@ const toggleVariants = cva(
         md: 'h-ds-md px-ds-04 text-body-md',
         lg: 'h-ds-lg px-ds-05 text-body-lg',
       },
+      // Pressed state only — an unpressed toggle carries no colour at all.
       color: {
-        accent: 'data-[state=on]:bg-accent-2 data-[state=on]:text-accent-11',
-        error: 'data-[state=on]:bg-error-2 data-[state=on]:text-error-11',
-        success: 'data-[state=on]:bg-success-2 data-[state=on]:text-success-11',
-        neutral: 'data-[state=on]:bg-surface-panel-hover data-[state=on]:text-surface-fg',
+        accent: 'data-[state=on]:bg-palette-subtle data-[state=on]:text-palette-text',
+        error: 'data-[state=on]:bg-palette-subtle data-[state=on]:text-palette-text',
+        success: 'data-[state=on]:bg-palette-subtle data-[state=on]:text-palette-text',
+        // Neutral takes full-contrast text rather than the muted `text` role,
+        // because a pressed neutral toggle has no hue to carry the emphasis.
+        neutral: 'data-[state=on]:bg-palette-subtle data-[state=on]:text-surface-fg',
       },
     },
     defaultVariants: {
@@ -49,6 +52,7 @@ const Toggle = React.forwardRef<
     ref={ref}
     whileTap={{ scale: 0.95 }}
     transition={springs.snappy}
+    data-palette={color ?? undefined}
     className={cn(toggleVariants({ variant, size, color }), className)}
     {...motionProps(props)}
   />

@@ -97,20 +97,21 @@ export interface ButtonGroupProps extends Omit<React.HTMLAttributes<HTMLDivEleme
 
 // ── Divider colors (for non-outline variants that lack visible borders) ──
 
+// One line per variant instead of one per variant × colour. The hue comes from
+// `data-palette` on the divider, which mirrors the group's own colour.
+//
+// `neutral` diverges in both cases, and both predate this work: its solid
+// divider is 30% rather than 20% (a flat grey needs more presence than a
+// saturated one to read at 1px), and its soft divider sits one step lighter
+// than the role gives. SplitButton carries the same two, which is a sign the
+// divergence belongs to neutral rather than to either component.
 function getDividerColor(variant?: string, color?: string): string {
+  const isNeutral = color === 'neutral'
   if (variant === 'solid') {
-    const map: Record<string, string> = {
-      accent: 'bg-accent-11/20', error: 'bg-error-11/20', success: 'bg-success-11/20',
-      warning: 'bg-warning-11/20', info: 'bg-info-11/20', neutral: 'bg-neutral-8/30',
-    }
-    return map[color ?? 'accent'] ?? map.accent
+    return isNeutral ? 'bg-neutral-8/30' : 'bg-palette-solid-active/20'
   }
   if (variant === 'soft') {
-    const map: Record<string, string> = {
-      accent: 'bg-accent-5', error: 'bg-error-5', success: 'bg-success-5',
-      warning: 'bg-warning-5', info: 'bg-info-5', neutral: 'bg-neutral-4',
-    }
-    return map[color ?? 'accent'] ?? map.accent
+    return isNeutral ? 'bg-neutral-4' : 'bg-palette-soft-active'
   }
   // ghost, link, etc.
   return 'bg-surface-border'
@@ -161,6 +162,7 @@ const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
                     {needsDivider && (
                       <div
                         aria-hidden
+                        data-palette={color ?? undefined}
                         className={cn(
                           'shrink-0 self-stretch',
                           orientation === 'horizontal' ? 'w-px' : 'h-px',

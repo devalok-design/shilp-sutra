@@ -76,6 +76,8 @@ describe('ErrorBlock', () => {
       />,
     )
     const alert = container.querySelector('[role="alert"]') as HTMLElement
-    expect(alert.className).toContain('bg-error-2')
+    // Alert's colour is a palette now; the tinted ground is a role.
+    expect(alert).toHaveAttribute('data-palette', 'error')
+    expect(alert.className).toContain('bg-palette-subtle')
   })
 })

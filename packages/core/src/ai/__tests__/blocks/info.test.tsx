@@ -21,6 +21,8 @@ describe('InfoBlock', () => {
       <InfoBlock data={{ message: 'Info note' }} />,
     )
     const alert = container.querySelector('[role="status"]') as HTMLElement
-    expect(alert.className).toContain('bg-info-2')
+    // Alert's colour is a palette now; the tinted ground is a role.
+    expect(alert).toHaveAttribute('data-palette', 'info')
+    expect(alert.className).toContain('bg-palette-subtle')
   })
 })

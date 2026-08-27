@@ -36,15 +36,20 @@ export const progressTrackVariants = cva(
   },
 )
 
+/**
+ * The fill is one role for every colour — `bg-palette-solid` lives in the base
+ * below, and the hue arrives via `data-palette` on the element. The axis is
+ * kept (with empty values) so the `color` prop and its type survive unchanged.
+ */
 const COLOR_FILL: Record<ProgressColor, string> = {
-  accent: 'bg-accent-9',
-  success: 'bg-success-9',
-  warning: 'bg-warning-9',
-  error: 'bg-error-9',
+  accent: '',
+  success: '',
+  warning: '',
+  error: '',
 }
 
 export const progressIndicatorVariants = cva(
-  'h-full transition-[width] duration-moderate-02 ease-expressive-standard',
+  'h-full bg-palette-solid transition-[width] duration-moderate-02 ease-expressive-standard',
   {
     variants: { color: COLOR_FILL },
     defaultVariants: { color: 'accent' },
@@ -163,6 +168,7 @@ const ProgressIndicator = React.forwardRef<HTMLDivElement, ProgressIndicatorProp
       return (
         <div
           ref={ref}
+          data-palette={resolved}
           className={cn(
             progressIndicatorVariants({ color: resolved }),
             'w-2/5 animate-progress-indeterminate motion-reduce:animate-none',
@@ -175,6 +181,7 @@ const ProgressIndicator = React.forwardRef<HTMLDivElement, ProgressIndicatorProp
     return (
       <motion.div
         ref={ref}
+        data-palette={resolved}
         className={cn(progressIndicatorVariants({ color: resolved }), 'transition-colors', className)}
         initial={false}
         animate={{ width: `${clampPct(value ?? 0, max)}%` }}
@@ -204,7 +211,11 @@ const ProgressSegment = React.forwardRef<HTMLDivElement, ProgressSegmentProps>(
       <div
         ref={ref}
         aria-hidden="true"
-        className={cn('h-full first:rounded-l-pill last:rounded-r-pill', COLOR_FILL[color], className)}
+        data-palette={color}
+        className={cn(
+          'h-full first:rounded-l-pill last:rounded-r-pill bg-palette-solid',
+          className,
+        )}
         style={{ width: `${clampPct(value, max)}%`, ...style }}
         {...props}
       />

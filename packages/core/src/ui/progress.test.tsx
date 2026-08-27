@@ -46,24 +46,22 @@ describe('Progress', () => {
   })
 
   it('applies autoColor based on value', () => {
+    // The fill is one role for every colour; autoColor picks the palette, so
+    // that is what the threshold behaviour is asserted against.
     const { container, rerender } = render(<Progress value={40} autoColor />)
     // 0-59 = default (accent)
-    let indicator = container.querySelector('[class*="accent"]')
-    expect(indicator).toBeInTheDocument()
+    expect(container.querySelector('[data-palette="accent"]')).toBeInTheDocument()
 
     // 60-84 = warning
     rerender(<Progress value={70} autoColor />)
-    indicator = container.querySelector('[class*="warning"]')
-    expect(indicator).toBeInTheDocument()
+    expect(container.querySelector('[data-palette="warning"]')).toBeInTheDocument()
 
     // 85-100 = success
     rerender(<Progress value={90} autoColor />)
-    indicator = container.querySelector('[class*="success"]')
-    expect(indicator).toBeInTheDocument()
+    expect(container.querySelector('[data-palette="success"]')).toBeInTheDocument()
 
     // >100 = error
     rerender(<Progress value={110} autoColor />)
-    indicator = container.querySelector('[class*="error"]')
-    expect(indicator).toBeInTheDocument()
+    expect(container.querySelector('[data-palette="error"]')).toBeInTheDocument()
   })
 })

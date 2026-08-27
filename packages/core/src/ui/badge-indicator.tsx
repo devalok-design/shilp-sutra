@@ -13,19 +13,18 @@ const PLACEMENT_CLASSES = {
   'bottom-left': '-bottom-1 -left-1',
 } as const
 
-const COLOR_CLASSES = {
-  error: 'bg-error-9 text-error-fg',
-  success: 'bg-success-9 text-success-fg',
-  warning: 'bg-warning-9 text-warning-fg',
-  accent: 'bg-accent-9 text-accent-fg',
-  info: 'bg-info-9 text-info-fg',
-} as const
+/** The five palettes this indicator offers. Colour itself is a role. */
+const COLOR_NAMES = ['error', 'success', 'warning', 'accent', 'info'] as const
+
+/** One line for every palette — the hue comes from `data-palette`. */
+const COLOR_CLASSES = 'bg-palette-solid text-palette-fg'
 
 export interface BadgeIndicatorProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'> {
   count?: number
   max?: number
   dot?: boolean
-  color?: keyof typeof COLOR_CLASSES
+  /** Palette name. Any registered palette works, not just these five. */
+  color?: (typeof COLOR_NAMES)[number] | (string & {})
   invisible?: boolean
   showZero?: boolean
   placement?: keyof typeof PLACEMENT_CLASSES
@@ -63,9 +62,10 @@ export const BadgeIndicator = React.forwardRef<HTMLSpanElement, BadgeIndicatorPr
             animate={prefersReduced ? { opacity: 1 } : { scale: 1, opacity: 1 }}
             exit={prefersReduced ? { opacity: 0 } : { scale: 0, opacity: 0 }}
             transition={springs.smooth}
+            data-palette={color}
             className={cn(
               'absolute flex items-center justify-center rounded-pill font-sans font-semibold ring-2 ring-surface-panel',
-              COLOR_CLASSES[color],
+              COLOR_CLASSES,
               PLACEMENT_CLASSES[placement],
               dot
                 ? 'h-2.5 w-2.5'

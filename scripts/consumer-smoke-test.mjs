@@ -240,7 +240,12 @@ for (const cfg of MATRIX) {
           esModuleInterop: true,
           allowSyntheticDefaultImports: true,
         },
-        include: ['app/**/*.ts', 'app/**/*.tsx'],
+        // next-env.d.ts carries Next's ambient declarations, including
+        // `declare module '*.css'`. Without it TS 6 rejects the side-effect
+        // import of globals.css with TS2882 — an error about the fixture, not
+        // about our types. TS 5.x tolerated it, which is why this surfaced
+        // only when Next 16 forced the TypeScript bump.
+        include: ['next-env.d.ts', 'app/**/*.ts', 'app/**/*.tsx'],
       },
       null,
       2

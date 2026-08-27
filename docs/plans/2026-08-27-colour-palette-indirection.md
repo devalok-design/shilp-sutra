@@ -407,10 +407,41 @@ cannot diverge from its label by construction. This is Figma-only — the mirror
 **Why it survived a full port and audit:** it only shows on a non-accent button
 that has an icon. Every example screen uses accent buttons.
 
-**Fix** (needs confirming inside the icon library `Vst4WnV0LYfRZdC1dc7qv6`, then a
-republish of both files): the 4,962 icons should bind to the *local*
-`component/fg` in `Component/Style`, or `SPIKE Style` should be replaced by the
-real collection. The name alone says it was never meant to ship.
+**Root cause, confirmed inside the icon library.** Not a dead library — the
+icons bind to `component/fg` **by published key**, and that key resolves to a
+*snapshot* of the collection taken when it was still named `SPIKE Style` with 4
+modes. The DS file's Button sets modes on the **local** collection
+(`Component/Style`, 5 modes). Same key, two objects, two mode contexts.
+
+A published variable and its local original are distinct, and **republishing the
+DS does not refresh the subscriber** — the icon library holds its own snapshot.
+Only re-importing by key *inside that file* pulls the current definition:
+
+```js
+const fresh = await figma.variables.importVariableByKeyAsync(KEY)
+// fresh → Component/Style, 5 modes.  The stored binding → SPIKE Style, 4 modes.
+paint = figma.variables.setBoundVariableForPaint(paint, 'color', fresh)
+```
+
+**FIXED 2026-08-27.** Every paint in the icon library rebound:
+
+| | |
+|---|---:|
+| stroke icons rebound | 4,629 |
+| filled icons rebound | 332 |
+| icons **never bound at all** (raw `#000000`) | **100** |
+| final state | **5,062 paints · 0 stale · 0 unbound** |
+
+The 100 were a second, separate defect found on the way — `-filled` variants
+including `brand-google-filled` and `brand-apple-filled` carried hard black fills
+with no variable, so they would render black-on-black in dark mode. All bound.
+
+The DS file's own components were scanned and are clean: 114 distinct bound
+variables, none remote, none `SPIKE Style`.
+
+**Two human steps remain**: publish the icon library, then accept the library
+update in the DS file and republish it. Until both happen the bug is still
+visible to consumers.
 
 This is independent of the palette work — it is broken today — but it must be
 fixed before Button's colour moves to a mode, because that change makes

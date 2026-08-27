@@ -1,0 +1,267 @@
+/* ═══════════════════════════════════════════════════════════════════
+   PALETTE — one indirection so a component references *a* colour role
+   rather than *a* colour.
+
+   A component styles itself once:
+
+     bg-palette-solid  text-palette-fg  hover:bg-palette-solid-hover
+
+   and the palette is chosen by an ancestor or by the element itself:
+
+     <button data-palette="error" class="bg-palette-solid …">
+
+   This replaces the variants × colours cross-product. Adding a colour is
+   one block here, not N rows in every component. See
+   docs/plans/2026-08-27-colour-palette-indirection.md.
+
+   WHY NAMED ROLES AND NOT palette-1..12
+   -------------------------------------
+   `neutral` does not follow the chromatic mapping: its solid is step 5
+   (step 9 is a mid grey that reads as disabled), its on-solid text is
+   `surface-fg`, and half its roles resolve from the *surface* family
+   rather than a ramp. Under numeric naming it would have to claim
+   `--color-palette-9: var(--color-neutral-5)`, which is a lie in the
+   token name. Roles let each palette resolve from wherever is correct.
+
+   THEME
+   -----
+   Nothing here is duplicated per theme. Every source token — the
+   `--color-*` semantics and the private primitives alike — is already
+   redefined under `.dark`, so a palette inherits dark mode for free.
+
+   CASCADE
+   -------
+   `[data-palette]` inherits, so a palette set on a container themes
+   everything inside it. An explicit `data-palette` on a descendant wins,
+   because it is the nearer rule. Radix Themes and Chakra both behave this
+   way. Unlayered rules beat `@layer theme`, so these always override the
+   defaults below regardless of import order.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* The contract. Ten roles. Defaults are `accent`, matching the current
+   default of every component that has a `color` prop. */
+@theme {
+  --color-palette-subtle:        var(--color-accent-2);   /* faintest tinted ground */
+  --color-palette-soft:          var(--color-accent-3);   /* soft fill */
+  --color-palette-soft-hover:    var(--color-accent-4);   /* soft fill, hovered */
+  --color-palette-soft-active:   var(--color-accent-5);   /* soft fill, pressed */
+  --color-palette-border-subtle: var(--color-accent-6);   /* divider inside a coloured thing */
+  --color-palette-border:        var(--color-accent-7);   /* the object's edge */
+  --color-palette-solid:         var(--color-accent-9);   /* filled control */
+  --color-palette-solid-hover:   var(--color-accent-10);  /* filled control, hovered */
+  --color-palette-text:          var(--color-accent-11);  /* coloured text on a light ground */
+  --color-palette-fg:            var(--color-accent-fg);  /* text ON the solid fill */
+}
+
+/* Derived on-solid text, for palettes we do not ship.
+
+   Declared BEFORE the built-ins deliberately: every block below has the
+   same specificity (0,1,0), so source order decides and each built-in
+   overwrites this with its measured value. Only a consumer-registered
+   palette that omits `--color-palette-fg` keeps it.
+
+   Black or white by the solid's lightness. Readable, but blunt on
+   mid-tone brand colours — supply the value explicitly and you get
+   exactly what you chose. `contrast-color()` would be the purpose-built
+   answer; it is Safari 26+ only, so not yet. */
+@supports (color: oklch(from white l c h)) {
+  [data-palette] {
+    --color-palette-fg: oklch(from var(--color-palette-solid)
+                              clamp(0, (0.62 - l) * 1000, 1) 0 0);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Brand-following palettes — resolve from the SEMANTIC layer, so a
+   consumer who overrides `--color-accent-*` to rebrand gets it here too.
+   ─────────────────────────────────────────────────────────────────── */
+
+[data-palette='accent'] {
+  --color-palette-subtle:        var(--color-accent-2);
+  --color-palette-soft:          var(--color-accent-3);
+  --color-palette-soft-hover:    var(--color-accent-4);
+  --color-palette-soft-active:   var(--color-accent-5);
+  --color-palette-border-subtle: var(--color-accent-6);
+  --color-palette-border:        var(--color-accent-7);
+  --color-palette-solid:         var(--color-accent-9);
+  --color-palette-solid-hover:   var(--color-accent-10);
+  --color-palette-text:          var(--color-accent-11);
+  --color-palette-fg:            var(--color-accent-fg);
+}
+
+[data-palette='secondary'] {
+  --color-palette-subtle:        var(--color-secondary-2);
+  --color-palette-soft:          var(--color-secondary-3);
+  --color-palette-soft-hover:    var(--color-secondary-4);
+  --color-palette-soft-active:   var(--color-secondary-5);
+  --color-palette-border-subtle: var(--color-secondary-6);
+  --color-palette-border:        var(--color-secondary-7);
+  --color-palette-solid:         var(--color-secondary-9);
+  --color-palette-solid-hover:   var(--color-secondary-10);
+  --color-palette-text:          var(--color-secondary-11);
+  --color-palette-fg:            var(--color-secondary-fg);
+}
+
+[data-palette='error'] {
+  --color-palette-subtle:        var(--color-error-2);
+  --color-palette-soft:          var(--color-error-3);
+  --color-palette-soft-hover:    var(--color-error-4);
+  --color-palette-soft-active:   var(--color-error-5);
+  --color-palette-border-subtle: var(--color-error-6);
+  --color-palette-border:        var(--color-error-7);
+  --color-palette-solid:         var(--color-error-9);
+  --color-palette-solid-hover:   var(--color-error-10);
+  --color-palette-text:          var(--color-error-11);
+  --color-palette-fg:            var(--color-error-fg);
+}
+
+[data-palette='success'] {
+  --color-palette-subtle:        var(--color-success-2);
+  --color-palette-soft:          var(--color-success-3);
+  --color-palette-soft-hover:    var(--color-success-4);
+  --color-palette-soft-active:   var(--color-success-5);
+  --color-palette-border-subtle: var(--color-success-6);
+  --color-palette-border:        var(--color-success-7);
+  --color-palette-solid:         var(--color-success-9);
+  --color-palette-solid-hover:   var(--color-success-10);
+  --color-palette-text:          var(--color-success-11);
+  --color-palette-fg:            var(--color-success-fg);
+}
+
+[data-palette='warning'] {
+  --color-palette-subtle:        var(--color-warning-2);
+  --color-palette-soft:          var(--color-warning-3);
+  --color-palette-soft-hover:    var(--color-warning-4);
+  --color-palette-soft-active:   var(--color-warning-5);
+  --color-palette-border-subtle: var(--color-warning-6);
+  --color-palette-border:        var(--color-warning-7);
+  --color-palette-solid:         var(--color-warning-9);
+  --color-palette-solid-hover:   var(--color-warning-10);
+  --color-palette-text:          var(--color-warning-11);
+  --color-palette-fg:            var(--color-warning-fg);
+}
+
+[data-palette='info'] {
+  --color-palette-subtle:        var(--color-info-2);
+  --color-palette-soft:          var(--color-info-3);
+  --color-palette-soft-hover:    var(--color-info-4);
+  --color-palette-soft-active:   var(--color-info-5);
+  --color-palette-border-subtle: var(--color-info-6);
+  --color-palette-border:        var(--color-info-7);
+  --color-palette-solid:         var(--color-info-9);
+  --color-palette-solid-hover:   var(--color-info-10);
+  --color-palette-text:          var(--color-info-11);
+  --color-palette-fg:            var(--color-info-fg);
+}
+
+/* `neutral` is the reason this file uses roles rather than step numbers.
+   Its solid is step 5 — step 9 is a mid grey that reads as a disabled
+   control, not a filled one — and more than half its roles resolve from
+   the SURFACE family, which is a different token tree entirely. This
+   mirrors what `Component/Intent` already does in the Figma library. */
+[data-palette='neutral'] {
+  --color-palette-subtle:        var(--color-surface-panel-hover);
+  --color-palette-soft:          var(--color-surface-panel-hover);
+  --color-palette-soft-hover:    var(--color-surface-panel-active);
+  --color-palette-soft-active:   var(--color-neutral-5);
+  --color-palette-border-subtle: var(--color-surface-border-subtle);
+  --color-palette-border:        var(--color-surface-border-strong);
+  --color-palette-solid:         var(--color-neutral-5);
+  --color-palette-solid-hover:   var(--color-neutral-7);
+  --color-palette-text:          var(--color-surface-fg-muted);
+  --color-palette-fg:            var(--color-surface-fg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Category palettes — a fixed, non-rebrandable set for labelling things
+   that are different rather than better or worse (teams, tags, projects).
+
+   These resolve from the PRIVATE PRIMITIVES rather than the semantic
+   layer, because the semantic layer exposes only six steps for them
+   (2, 3, 4, 7, 9, 11) while the roles need ten. Exposing the missing
+   four semantically would add 84 declarations and generate a utility
+   surface (`bg-category-teal-5`, …) nobody asked for. The primitives are
+   already complete and already theme-aware.
+
+   On-solid text uses `--color-category-fg`, which inverts with the theme
+   — category step 9 lightens in dark, the opposite of the intent ramps.
+   That token exists because a hardcoded white failed AA in dark; see the
+   0.57.0 changelog.
+   ─────────────────────────────────────────────────────────────────── */
+
+[data-palette='teal'] {
+  --color-palette-subtle: var(--teal-2);       --color-palette-soft: var(--teal-3);
+  --color-palette-soft-hover: var(--teal-4);   --color-palette-soft-active: var(--teal-5);
+  --color-palette-border-subtle: var(--teal-6);--color-palette-border: var(--teal-7);
+  --color-palette-solid: var(--teal-9);        --color-palette-solid-hover: var(--teal-10);
+  --color-palette-text: var(--teal-11);        --color-palette-fg: var(--color-category-fg);
+}
+
+[data-palette='amber'] {
+  --color-palette-subtle: var(--amber-2);       --color-palette-soft: var(--amber-3);
+  --color-palette-soft-hover: var(--amber-4);   --color-palette-soft-active: var(--amber-5);
+  --color-palette-border-subtle: var(--amber-6);--color-palette-border: var(--amber-7);
+  --color-palette-solid: var(--amber-9);        --color-palette-solid-hover: var(--amber-10);
+  --color-palette-text: var(--amber-11);        --color-palette-fg: var(--color-category-fg);
+}
+
+[data-palette='slate'] {
+  --color-palette-subtle: var(--slate-2);       --color-palette-soft: var(--slate-3);
+  --color-palette-soft-hover: var(--slate-4);   --color-palette-soft-active: var(--slate-5);
+  --color-palette-border-subtle: var(--slate-6);--color-palette-border: var(--slate-7);
+  --color-palette-solid: var(--slate-9);        --color-palette-solid-hover: var(--slate-10);
+  --color-palette-text: var(--slate-11);        --color-palette-fg: var(--color-category-fg);
+}
+
+[data-palette='indigo'] {
+  --color-palette-subtle: var(--indigo-2);       --color-palette-soft: var(--indigo-3);
+  --color-palette-soft-hover: var(--indigo-4);   --color-palette-soft-active: var(--indigo-5);
+  --color-palette-border-subtle: var(--indigo-6);--color-palette-border: var(--indigo-7);
+  --color-palette-solid: var(--indigo-9);        --color-palette-solid-hover: var(--indigo-10);
+  --color-palette-text: var(--indigo-11);        --color-palette-fg: var(--color-category-fg);
+}
+
+[data-palette='cyan'] {
+  --color-palette-subtle: var(--cyan-2);       --color-palette-soft: var(--cyan-3);
+  --color-palette-soft-hover: var(--cyan-4);   --color-palette-soft-active: var(--cyan-5);
+  --color-palette-border-subtle: var(--cyan-6);--color-palette-border: var(--cyan-7);
+  --color-palette-solid: var(--cyan-9);        --color-palette-solid-hover: var(--cyan-10);
+  --color-palette-text: var(--cyan-11);        --color-palette-fg: var(--color-category-fg);
+}
+
+[data-palette='orange'] {
+  --color-palette-subtle: var(--orange-2);       --color-palette-soft: var(--orange-3);
+  --color-palette-soft-hover: var(--orange-4);   --color-palette-soft-active: var(--orange-5);
+  --color-palette-border-subtle: var(--orange-6);--color-palette-border: var(--orange-7);
+  --color-palette-solid: var(--orange-9);        --color-palette-solid-hover: var(--orange-10);
+  --color-palette-text: var(--orange-11);        --color-palette-fg: var(--color-category-fg);
+}
+
+[data-palette='emerald'] {
+  --color-palette-subtle: var(--emerald-2);       --color-palette-soft: var(--emerald-3);
+  --color-palette-soft-hover: var(--emerald-4);   --color-palette-soft-active: var(--emerald-5);
+  --color-palette-border-subtle: var(--emerald-6);--color-palette-border: var(--emerald-7);
+  --color-palette-solid: var(--emerald-9);        --color-palette-solid-hover: var(--emerald-10);
+  --color-palette-text: var(--emerald-11);        --color-palette-fg: var(--color-category-fg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Registering your own palette
+
+     [data-palette='brand-purple'] {
+       --color-palette-solid:       #6d28d9;
+       --color-palette-solid-hover: #5b21b6;
+       --color-palette-fg:          #ffffff;   ← supply this
+       …
+     }
+
+   Supply `--color-palette-fg` explicitly. If you omit it, the derivation
+   near the top of this file gives you black-or-white from the solid's
+   lightness — readable, but blunt on a mid-tone brand colour, and outside
+   the contrast guarantee we measure for the built-in palettes.
+
+   That derivation is declared once, before the built-in blocks, so every
+   built-in overwrites it and only an unrecognised palette keeps it. See
+   the note there for why source order rather than specificity does the
+   work.
+   ─────────────────────────────────────────────────────────────────── */

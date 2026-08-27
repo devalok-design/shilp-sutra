@@ -108,6 +108,10 @@ const MUST_EMIT = [
   /\btext-palette-[a-z0-9-]+/g,
   /\bborder-palette-[a-z0-9-]+/g,
   /\bring-palette-[a-z0-9-]+/g,
+  // Segmented control / Tabs share these. Same silent-failure shape as the
+  // palette roles: if the rule is missing the thumb just inherits its track and
+  // the selected segment looks unselected, which no test asserts on.
+  /\bbg-segment-[a-z0-9-]+/g,
   /\brounded-ds-[a-z0-9]+/g,
   /\btext-ds-[a-z0-9]+/g,
   /\bleading-ds-[a-z]+/g,

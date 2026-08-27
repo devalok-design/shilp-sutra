@@ -1,5 +1,5 @@
 ---
-"@devalok/shilp-sutra": major
+"@devalok/shilp-sutra": minor
 "@devalok/eslint-plugin-shilp-sutra": minor
 ---
 
@@ -30,6 +30,13 @@ major, so nothing breaks the moment you upgrade.
 **`surface-chrome` is removed.** Chrome is an arrangement decision, not a theme
 value — a shell's chrome is decided by which shell you picked. Use
 `surface-base`.
+
+**Shipped as a minor, and this is the one thing in it that can actually break
+you.** Everything else in this release is aliased. `surface-chrome` is not — if
+you reference it, the class stops resolving on upgrade. Pre-1.0 we bump minor
+for breaking changes rather than reserving major for a stability promise the
+system is not ready to make, so read this section rather than trusting the
+version number. `shilp-sutra/no-renamed-surface-token` flags every use.
 
 **Run the codemod, do not find-and-replace.** A new eslint rule,
 `shilp-sutra/no-renamed-surface-token`, ships an autofix:

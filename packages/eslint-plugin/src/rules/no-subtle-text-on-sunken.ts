@@ -44,7 +44,7 @@ export default createRule<[], MessageIds>({
     docs: {
       description:
         'Subtle foreground text on a sunken surface measures 4.38:1, under WCAG AA. Wells take surface-fg-muted.',
-      category: 'accessibility',
+      category: 'recommended',
       recommended: 'error',
       appliesFrom: '0.57.0',
     },

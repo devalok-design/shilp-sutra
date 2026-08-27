@@ -118,6 +118,7 @@ function classify(token: string): MessageIds | null {
   )
   if (!match) return null
   const base = match[1]
+  if (!base) return null
   if (base === 'chrome') return 'chrome'
 
   let state: 'none' | 'hover' | 'active' = 'none'

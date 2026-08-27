@@ -100,6 +100,14 @@ const MUST_EMIT = [
   /\bborder-neutral-[0-9]+/g,
   /\bbg-category-(teal|amber|slate|indigo|cyan|orange|emerald)-[0-9]+/g,
   /\btext-category-(teal|amber|slate|indigo|cyan|orange|emerald)-[0-9]+/g,
+  // Palette roles (0.58). These resolve through `[data-palette]`, so a missing
+  // rule is invisible at runtime — the element just inherits whatever the
+  // theme default is and looks plausibly correct in accent. Exactly the silent
+  // failure this audit exists for.
+  /\bbg-palette-[a-z0-9-]+/g,
+  /\btext-palette-[a-z0-9-]+/g,
+  /\bborder-palette-[a-z0-9-]+/g,
+  /\bring-palette-[a-z0-9-]+/g,
   /\brounded-ds-[a-z0-9]+/g,
   /\btext-ds-[a-z0-9]+/g,
   /\bleading-ds-[a-z]+/g,

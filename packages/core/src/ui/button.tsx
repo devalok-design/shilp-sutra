@@ -22,12 +22,19 @@ export const buttonVariants = cva(
   'relative inline-flex items-center justify-center whitespace-nowrap font-sans select-none overflow-hidden isolate focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled disabled:cursor-not-allowed disabled:saturate-[0.3] [&>span:not([data-grain])]:relative [&>span:not([data-grain])]:z-[2]',
   {
     variants: {
+      // Colour comes from the palette roles, not from the colour name. The
+      // actual hue is chosen by `data-palette` on the element (set from the
+      // `color` prop below), so these five lines replace what used to be a
+      // 5 × 6 grid of hand-written compoundVariants.
       variant: {
-        solid: '',
-        soft: '',
-        outline: 'border',
-        ghost: '',
-        link: 'underline-offset-4 hover:underline active:opacity-80',
+        solid:
+          'bg-palette-solid text-palette-fg hover:bg-palette-solid-hover shadow-raised',
+        soft: 'bg-palette-soft text-palette-text hover:bg-palette-soft-hover active:bg-palette-soft-active',
+        outline:
+          'border bg-transparent text-palette-text border-palette-border hover:bg-palette-soft active:bg-palette-soft-hover',
+        ghost:
+          'bg-transparent text-palette-text hover:bg-palette-soft active:bg-palette-soft-hover',
+        link: 'text-palette-text underline-offset-4 hover:underline active:opacity-80',
       },
       color: {
         accent: '',
@@ -56,47 +63,34 @@ export const buttonVariants = cva(
         'icon-lg': 'h-ds-lg w-ds-lg rounded-control',
       },
     },
+    // Three exceptions, not thirty-one. Each is a real product decision that
+    // the palette roles cannot express, and each is deliberately loud about
+    // why — a mechanical grid hides these; three named cases do not.
     compoundVariants: [
-      // ============ SOLID ============ (tonal raised shadow; fill deepens on hover — no coloured bloom)
-      { variant: 'solid', color: 'accent',  className: 'bg-accent-9 text-accent-fg hover:bg-accent-10 shadow-raised' },
-      { variant: 'solid', color: 'error',   className: 'bg-error-9 text-error-fg hover:bg-error-10 shadow-raised' },
-      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg hover:bg-success-10 shadow-raised' },
-      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg hover:bg-warning-10 shadow-raised' },
-      { variant: 'solid', color: 'info',    className: 'bg-info-9 text-info-fg hover:bg-info-10 shadow-raised' },
-      { variant: 'solid', color: 'neutral', className: 'bg-neutral-5 text-surface-fg hover:bg-neutral-7 shadow-raised' },
+      // An outlined button is a CONTROL, so its edge owes WCAG 1.4.11 contrast
+      // and belongs on the interactive border tier, not the decorative one the
+      // `border` role carries for cards and alerts. Its label also wants full
+      // contrast rather than the muted text role. Only `neutral` differs: the
+      // chromatic palettes already satisfy both through their own ramp.
+      {
+        variant: 'outline',
+        color: 'neutral',
+        className: 'text-surface-fg border-surface-border-interactive',
+      },
 
-      // ============ SOFT ============
-      { variant: 'soft', color: 'accent',  className: 'bg-accent-3 text-accent-11 hover:bg-accent-4 active:bg-accent-5' },
-      { variant: 'soft', color: 'error',   className: 'bg-error-3 text-error-11 hover:bg-error-4 active:bg-error-5' },
-      { variant: 'soft', color: 'success', className: 'bg-success-3 text-success-11 hover:bg-success-4 active:bg-success-5' },
-      { variant: 'soft', color: 'warning', className: 'bg-warning-3 text-warning-11 hover:bg-warning-4 active:bg-warning-5' },
-      { variant: 'soft', color: 'info',    className: 'bg-info-3 text-info-11 hover:bg-info-4 active:bg-info-5' },
-      { variant: 'soft', color: 'neutral', className: 'bg-surface-panel-hover text-surface-fg-muted hover:bg-surface-panel-active active:bg-neutral-5' },
+      // Ghost deliberately reads neutral on `accent`, because the overwhelmingly
+      // common ghost is a toolbar or icon button where a pink label would shout.
+      // Predates the palette work and is kept on purpose.
+      {
+        variant: 'ghost',
+        color: 'accent',
+        className:
+          'text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg active:bg-surface-panel-active',
+      },
 
-      // ============ OUTLINE ============
-      { variant: 'outline', color: 'accent',  className: 'bg-transparent text-accent-11 border-accent-7 hover:bg-accent-3 active:bg-accent-4' },
-      { variant: 'outline', color: 'error',   className: 'bg-transparent text-error-11 border-error-7 hover:bg-error-3 active:bg-error-4' },
-      { variant: 'outline', color: 'success', className: 'bg-transparent text-success-11 border-success-7 hover:bg-success-3 active:bg-success-4' },
-      { variant: 'outline', color: 'warning', className: 'bg-transparent text-warning-11 border-warning-7 hover:bg-warning-3 active:bg-warning-4' },
-      { variant: 'outline', color: 'info',    className: 'bg-transparent text-info-11 border-info-7 hover:bg-info-3 active:bg-info-4' },
-      { variant: 'outline', color: 'neutral', className: 'bg-transparent text-surface-fg border-surface-border-interactive hover:bg-surface-panel-hover active:bg-surface-panel-active' },
-
-      // ============ GHOST ============
-      // ghost+accent uses neutral look for backward compat (most common ghost is toolbar/icon ghost)
-      { variant: 'ghost', color: 'accent',  className: 'bg-transparent text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg active:bg-surface-panel-active' },
-      { variant: 'ghost', color: 'error',   className: 'bg-transparent text-error-11 hover:bg-error-3 active:bg-error-4' },
-      { variant: 'ghost', color: 'success', className: 'bg-transparent text-success-11 hover:bg-success-3 active:bg-success-4' },
-      { variant: 'ghost', color: 'warning', className: 'bg-transparent text-warning-11 hover:bg-warning-3 active:bg-warning-4' },
-      { variant: 'ghost', color: 'info',    className: 'bg-transparent text-info-11 hover:bg-info-3 active:bg-info-4' },
-      { variant: 'ghost', color: 'neutral', className: 'bg-transparent text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg active:bg-surface-panel-active' },
-
-      // ============ LINK ============
-      { variant: 'link', color: 'accent',  className: 'text-accent-11' },
-      { variant: 'link', color: 'error',   className: 'text-error-11' },
-      { variant: 'link', color: 'success', className: 'text-success-11' },
-      { variant: 'link', color: 'warning', className: 'text-warning-11' },
-      { variant: 'link', color: 'info',    className: 'text-info-11' },
-      { variant: 'link', color: 'neutral', className: 'text-surface-fg-muted' },
+      // Ghost on neutral darkens its label on hover — the palette has no
+      // "text, hovered" role because this is the only place that wants one.
+      { variant: 'ghost', color: 'neutral', className: 'hover:text-surface-fg' },
     ],
     defaultVariants: {
       variant: 'solid',
@@ -211,7 +205,16 @@ const BUTTON_TO_ICON_SIZE: Record<string, IconSize> = {
  */
 export interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
-    VariantProps<typeof buttonVariants> {
+    Omit<VariantProps<typeof buttonVariants>, 'color'> {
+  /**
+   * Palette name. The six built-ins keep their exact previous appearance; any
+   * other palette registered in CSS (`[data-palette='…']`) now works too, which
+   * it could not before.
+   *
+   * Widened from a closed union to `union | (string & {})`, so every existing
+   * value still type-checks — a widening, not a narrowing.
+   */
+  color?: NonNullable<VariantProps<typeof buttonVariants>['color']> | (string & {})
   asChild?: boolean
   /** Button shape — 'pill' applies rounded-pill for chip/tag-like buttons */
   shape?: 'default' | 'pill'
@@ -287,6 +290,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const resolvedSize = size ?? group.size ?? 'md'
     // ButtonGroup can propagate disabled to all children
     const resolvedDisabled = disabled ?? group.disabled
+
+    // `color` is the palette name and rides on `data-palette`, which the CSS
+    // resolves. The CVA still receives it, but only so the three
+    // compoundVariant exceptions can match — an unrecognised palette simply
+    // matches none of them and gets pure role styling, which is correct.
+    const paletteColor = resolvedColor as VariantProps<typeof buttonVariants>['color']
+    const paletteAttr = resolvedColor ?? undefined
 
     // When inside an attached ButtonGroup, adjust border-radius based on position
     const groupRadiusStyle = groupItem && group.attached !== false
@@ -366,7 +376,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       // which excludes button-specific attrs like `disabled`.
       const slotProps = {
         className: cn(
-          buttonVariants({ variant: resolvedVariant, color: resolvedColor, weight: resolvedWeight, size: resolvedSize }),
+          buttonVariants({ variant: resolvedVariant, color: paletteColor, weight: resolvedWeight, size: resolvedSize }),
           resolvedShape === 'pill' && 'rounded-pill',
           resolvedShape === 'pill' && pillPaddingClass[resolvedSize],
           (fullWidth || groupStretch) && 'w-full',
@@ -375,6 +385,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref,
         disabled: resolvedDisabled || loading,
         'aria-busy': loading || undefined,
+        'data-palette': paletteAttr,
         ...props,
       } as React.ComponentPropsWithRef<typeof Slot>
       return (
@@ -480,7 +491,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           buttonVariants({
             // When processing (and not showing async feedback), force soft variant so ants pop
             variant: isProcessing && !isAsyncFeedback && resolvedVariant !== 'ghost' && resolvedVariant !== 'outline' && resolvedVariant !== 'link' ? 'soft' : resolvedVariant,
-            color: resolvedColor,
+            color: paletteColor,
             weight: resolvedWeight,
             size: resolvedSize,
           }),
@@ -501,6 +512,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           if (typeof ref === 'function') ref(el)
           else if (ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = el
         }}
+        data-palette={paletteAttr}
         disabled={resolvedDisabled || (loading && !isProcessing)}
         aria-busy={loading || isProcessing || undefined}
         aria-disabled={isProcessing && processingDisabled || undefined}

@@ -51,14 +51,15 @@ describe('ConfirmBlock', () => {
       <ConfirmBlock data={{ ...baseData, destructive: true }} />,
     )
     const confirmBtn = screen.getByRole('button', { name: 'Delete' })
-    // error variant applies bg-error-9
-    expect(confirmBtn.className).toContain('bg-error-9')
+    // Button's colour now rides on data-palette; the fill class is a role.
+    expect(confirmBtn).toHaveAttribute('data-palette', 'error')
+    expect(confirmBtn.className).toContain('bg-palette-solid')
   })
 
   it('does not use error color when not destructive', () => {
     render(<ConfirmBlock data={baseData} />)
     const confirmBtn = screen.getByRole('button', { name: 'Delete' })
-    expect(confirmBtn.className).not.toContain('bg-error-9')
+    expect(confirmBtn).not.toHaveAttribute('data-palette', 'error')
   })
 
   it('renders expandable rationale when provided', async () => {

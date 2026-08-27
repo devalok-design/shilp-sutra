@@ -13,10 +13,14 @@ const alertVariants = cva(
   'relative flex rounded-surface border',
   {
     variants: {
+      // Colour is a role; the hue arrives via `data-palette` on the element.
+      // Alert's subtle edge was already step 4, which is what the `border` role
+      // now resolves to, so it is an exact match rather than a compromise.
       variant: {
-        subtle: '',
-        solid: '',
-        outline: '',
+        subtle: 'bg-palette-subtle border-palette-border text-palette-text',
+        solid:
+          'bg-palette-solid text-palette-fg border-transparent [&>svg]:text-palette-fg',
+        outline: 'bg-transparent border-palette-border text-palette-text',
       },
       color: {
         info: '',
@@ -31,25 +35,26 @@ const alertVariants = cva(
         lg: 'gap-ds-05 p-ds-07',
       },
     },
+    // Fifteen compounds become three, all of them `neutral`. A neutral alert is
+    // not a grey version of a coloured one — it is a plain panel, so its ground
+    // and its text come from the surface family rather than a ramp, and its icon
+    // steps back to muted instead of matching the label.
     compoundVariants: [
-      // subtle (surface bg) — default, matches previous behavior
-      { variant: 'subtle', color: 'info', className: 'bg-info-2 border-info-4 text-info-11' },
-      { variant: 'subtle', color: 'success', className: 'bg-success-2 border-success-4 text-success-11' },
-      { variant: 'subtle', color: 'warning', className: 'bg-warning-2 border-warning-4 text-warning-11' },
-      { variant: 'subtle', color: 'error', className: 'bg-error-2 border-error-4 text-error-11' },
-      { variant: 'subtle', color: 'neutral', className: 'bg-surface-panel border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
-      // solid (solid bg, contrasting text) — canonical name
-      { variant: 'solid', color: 'info', className: 'bg-info-9 text-info-fg border-transparent [&>svg]:text-info-fg' },
-      { variant: 'solid', color: 'success', className: 'bg-success-9 text-success-fg border-transparent [&>svg]:text-success-fg' },
-      { variant: 'solid', color: 'warning', className: 'bg-warning-9 text-warning-fg border-transparent [&>svg]:text-warning-fg' },
-      { variant: 'solid', color: 'error', className: 'bg-error-9 text-error-fg border-transparent [&>svg]:text-error-fg' },
-      { variant: 'solid', color: 'neutral', className: 'bg-surface-panel-hover text-surface-fg border-transparent [&>svg]:text-surface-fg-muted' },
-      // outline (transparent bg, colored border)
-      { variant: 'outline', color: 'info', className: 'bg-transparent border-info-7 text-info-11' },
-      { variant: 'outline', color: 'success', className: 'bg-transparent border-success-7 text-success-11' },
-      { variant: 'outline', color: 'warning', className: 'bg-transparent border-warning-7 text-warning-11' },
-      { variant: 'outline', color: 'error', className: 'bg-transparent border-error-7 text-error-11' },
-      { variant: 'outline', color: 'neutral', className: 'bg-transparent border-surface-border-strong text-surface-fg [&>svg]:text-surface-fg-muted' },
+      {
+        variant: 'subtle',
+        color: 'neutral',
+        className: 'bg-surface-panel text-surface-fg [&>svg]:text-surface-fg-muted',
+      },
+      {
+        variant: 'solid',
+        color: 'neutral',
+        className: 'bg-surface-panel-hover text-surface-fg [&>svg]:text-surface-fg-muted',
+      },
+      {
+        variant: 'outline',
+        color: 'neutral',
+        className: 'text-surface-fg [&>svg]:text-surface-fg-muted',
+      },
     ],
     defaultVariants: { variant: 'subtle', color: 'info', size: 'md' },
   },
@@ -135,6 +140,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={springs.snappy}
+            data-palette={color}
             className={cn(alertVariants({ variant, color, size }), className)}
             role="alert"
             {...motionProps(props)}

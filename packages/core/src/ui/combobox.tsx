@@ -411,7 +411,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
       }
 
       return (
-        <span className="min-w-0 flex-1 truncate text-left text-surface-fg-subtle">
+        <span className="min-w-0 flex-1 truncate text-left text-surface-fg-muted">
           {placeholder}
         </span>
       )

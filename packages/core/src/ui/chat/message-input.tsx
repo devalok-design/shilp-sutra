@@ -100,7 +100,7 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
             aria-label={placeholder || 'Type a message'}
             disabled={disabled}
             rows={1}
-            className="flex-1 resize-none bg-transparent px-ds-02 py-ds-01 text-body-sm text-surface-fg placeholder:text-surface-fg-subtle/50 focus:outline-hidden disabled:opacity-50"
+            className="flex-1 resize-none bg-transparent px-ds-02 py-ds-01 text-body-sm text-surface-fg placeholder:text-surface-fg-muted focus:outline-hidden disabled:opacity-50"
             style={{ maxHeight: 160 }}
           />
           {isStreaming ? (
@@ -127,7 +127,7 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
           {trailingSlot}
         </div>
         {disclaimer && (
-          <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle/50">
+          <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle">
             {disclaimer}
           </p>
         )}

@@ -54,7 +54,7 @@ function DateSeparator({ date, format, className, locale = 'en-US', timeZone }: 
   return (
     <div className={cn('flex items-center gap-ds-03 py-ds-03', className)}>
       <div className="flex-1 border-t border-surface-border-subtle" />
-      <span className="text-label-xs font-medium text-surface-fg-subtle/50 uppercase tracking-wider">
+      <span className="text-label-xs font-medium text-surface-fg-subtle uppercase tracking-wider">
         {label}
       </span>
       <div className="flex-1 border-t border-surface-border-subtle" />

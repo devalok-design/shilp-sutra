@@ -1107,7 +1107,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
         {/* Disclaimer */}
         {disclaimer && (
-          <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle/50">
+          <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle">
             {disclaimer}
           </p>
         )}

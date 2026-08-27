@@ -74,7 +74,7 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
           className={cn(
-            'flex items-center gap-ds-02 py-ds-02 text-caption text-surface-fg-subtle/50 italic',
+            'flex items-center gap-ds-02 py-ds-02 text-caption text-surface-fg-subtle italic',
             className,
           )}
           {...motionProps(props)}
@@ -253,7 +253,7 @@ function MessageAuthor({
       <span className="font-semibold text-body-md text-surface-fg">{name}</span>
       {badge}
       {timeStr && (
-        <span className="text-body-sm text-surface-fg-subtle/50">{timeStr}</span>
+        <span className="text-body-sm text-surface-fg-subtle">{timeStr}</span>
       )}
     </div>
   )
@@ -355,7 +355,7 @@ function MessageEditableBody({
           className="resize-none rounded-control-inner bg-surface-panel-hover px-ds-02 py-ds-01 text-body-md leading-relaxed"
           rows={2}
         />
-        <div className="mt-ds-01 text-caption text-surface-fg-subtle/50">
+        <div className="mt-ds-01 text-caption text-surface-fg-subtle">
           Enter to save · Escape to cancel
         </div>
       </div>

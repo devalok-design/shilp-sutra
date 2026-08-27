@@ -115,7 +115,7 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
 
-Five rules that cost the most time when broken:
+Nine rules that cost the most time when broken:
 1. **The collection a variable lives in is the OUTERMOST selector of its resolution chain.** A value that varies by state *and* style must live in the state collection and alias into the style one. Get it backwards and the value is unreachable. This is what lets one `component/fg` serve 4,962 icons across every state.
 2. **Regenerate the component spec before every build** (`figma-sync-components.mjs <name>`) and read the component *body* for prop interactions — the CVA describes appearance, not which prop overrides which. It reports **0 compound rules for Badge and Card**, whose colours live in a plain object, not the CVA.
 3. **Test with real scenarios and varied copy, not a variant grid.** A grid hides layout bugs because every label is the same length.
@@ -156,6 +156,34 @@ Five rules that cost the most time when broken:
    `slotContentId` is the reference field. `addComponentProperty` alone creates an **orphan** property and no nodes; `createSlot` alone creates per-variant properties. Only the pair merges. Note the typings document `addComponentProperty` as `BOOLEAN | TEXT | INSTANCE_SWAP | VARIANT` — `'SLOT'` is undocumented and works.
 
    Two traps when doing this: `createSlot()` gives the node a **white SOLID fill** (set `fills = []`, or you ship a white band), and a SLOT node is **not auto-layout by default** — set `layoutMode` before any `HUG`/`FILL` sizing or it throws.
+
+7. **Deleting variants leaves ZOMBIE instances that still render.** Collapsing Button 330 -> 55 orphaned 18 instances across the example screens. They kept pointing at the deleted main components (`Button/md/neutral/Default`, old `#115:*` property ids) and looked completely fine, so no visual check would find them. They are frozen: no Size/State switch, and they track nothing the library does next.
+
+   The obvious probes all return a clean bill of health. `detachedInfo` is null, and **`getMainComponentAsync()` returns a real node** — Figma keeps the deleted main alive off-page to service the instance. The only tell is that the main has no page:
+
+   ```js
+   const pageOf = n => { let p=n; while(p&&p.type!=='PAGE'&&p.type!=='DOCUMENT') p=p.parent
+                         return p&&p.type==='PAGE' ? p.name : null }
+   const mc = await inst.getMainComponentAsync()
+   const zombie = mc && !mc.remote && !pageOf(mc)   // `remote` matters — see below
+   ```
+
+   **Exclude `mc.remote` or you get a 100% false-positive rate.** Icons from the published Tabler library legitimately have no page in this document; a naive check called all 92 of them orphans.
+
+   `swapComponent(liveVariant)` repairs one cleanly and carries Label, icon booleans, size and child index across by matching property NAME — including for instances sitting inside a SLOT. Sweep by re-querying the page each pass rather than reusing cached nested ids (`I535:2031;235:597;535:2178`-style paths do not survive their host being mutated).
+
+8. **`swapComponent` silently drops `explicitVariableModes`.** The instance keeps its properties and loses its modes. Now that colour is a variable mode this means **a swap resets the colour**, with no error. Read the modes first, swap, then set them back:
+
+   ```js
+   const keep = { ...inst.explicitVariableModes }        // BEFORE the swap
+   inst.swapComponent(variant)
+   for (const [cid, mid] of Object.entries(keep))
+     inst.setExplicitVariableModeForCollection(await figma.variables.getVariableCollectionByIdAsync(cid), mid)
+   ```
+
+9. **Never blanket a variable mode on a container frame.** Each example screen set `Component/Style = Ghost` and `Component/Intent = Neutral` on the screen frame, so the whole subtree inherited it — every Button on all 10 screens rendered transparent with grey text, including "Start free", "New task" and "Save changes". The screens had no visual hierarchy at all and had looked plausible for weeks, because a ghost button is still perfectly legible on its own.
+
+   A blanket is worse than a wrong value: it is invisible at the point of use, and anything dropped onto that frame later silently inherits it. **Set the mode on the instance that means it.** A container should only carry a mode when the mode is genuinely a property of the container (theme: `Semantic/Color = Dark` on a dark screen is correct).
 
 ### Legacy checklist (2026-04-20)
 

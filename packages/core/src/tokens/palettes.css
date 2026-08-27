@@ -38,8 +38,13 @@
    defaults below regardless of import order.
    ═══════════════════════════════════════════════════════════════════ */
 
-/* The contract. Ten roles. Defaults are `accent`, matching the current
-   default of every component that has a `color` prop. */
+/* The contract. Eleven roles. Defaults are `accent`, matching the current
+   default of every component that has a `color` prop.
+
+   `solid-active` and `text` resolve to the same step on every chromatic
+   palette, which looks redundant until you reach `neutral`, where one is
+   `neutral-8` and the other is `surface-fg-muted`. Two roles, one value, is
+   exactly what a role contract is for. */
 @theme {
   --color-palette-subtle:        var(--color-accent-2);   /* faintest tinted ground */
   --color-palette-soft:          var(--color-accent-3);   /* soft fill */
@@ -49,6 +54,7 @@
   --color-palette-border:        var(--color-accent-7);   /* the object's edge */
   --color-palette-solid:         var(--color-accent-9);   /* filled control */
   --color-palette-solid-hover:   var(--color-accent-10);  /* filled control, hovered */
+  --color-palette-solid-active:  var(--color-accent-11);  /* filled control, pressed */
   --color-palette-text:          var(--color-accent-11);  /* coloured text on a light ground */
   --color-palette-fg:            var(--color-accent-fg);  /* text ON the solid fill */
 }
@@ -85,6 +91,7 @@
   --color-palette-border:        var(--color-accent-7);
   --color-palette-solid:         var(--color-accent-9);
   --color-palette-solid-hover:   var(--color-accent-10);
+  --color-palette-solid-active:  var(--color-accent-11);
   --color-palette-text:          var(--color-accent-11);
   --color-palette-fg:            var(--color-accent-fg);
 }
@@ -98,6 +105,7 @@
   --color-palette-border:        var(--color-secondary-7);
   --color-palette-solid:         var(--color-secondary-9);
   --color-palette-solid-hover:   var(--color-secondary-10);
+  --color-palette-solid-active:  var(--color-secondary-11);
   --color-palette-text:          var(--color-secondary-11);
   --color-palette-fg:            var(--color-secondary-fg);
 }
@@ -111,6 +119,7 @@
   --color-palette-border:        var(--color-error-7);
   --color-palette-solid:         var(--color-error-9);
   --color-palette-solid-hover:   var(--color-error-10);
+  --color-palette-solid-active:  var(--color-error-11);
   --color-palette-text:          var(--color-error-11);
   --color-palette-fg:            var(--color-error-fg);
 }
@@ -124,6 +133,7 @@
   --color-palette-border:        var(--color-success-7);
   --color-palette-solid:         var(--color-success-9);
   --color-palette-solid-hover:   var(--color-success-10);
+  --color-palette-solid-active:  var(--color-success-11);
   --color-palette-text:          var(--color-success-11);
   --color-palette-fg:            var(--color-success-fg);
 }
@@ -137,6 +147,7 @@
   --color-palette-border:        var(--color-warning-7);
   --color-palette-solid:         var(--color-warning-9);
   --color-palette-solid-hover:   var(--color-warning-10);
+  --color-palette-solid-active:  var(--color-warning-11);
   --color-palette-text:          var(--color-warning-11);
   --color-palette-fg:            var(--color-warning-fg);
 }
@@ -150,6 +161,7 @@
   --color-palette-border:        var(--color-info-7);
   --color-palette-solid:         var(--color-info-9);
   --color-palette-solid-hover:   var(--color-info-10);
+  --color-palette-solid-active:  var(--color-info-11);
   --color-palette-text:          var(--color-info-11);
   --color-palette-fg:            var(--color-info-fg);
 }
@@ -168,6 +180,7 @@
   --color-palette-border:        var(--color-surface-border-strong);
   --color-palette-solid:         var(--color-neutral-5);
   --color-palette-solid-hover:   var(--color-neutral-7);
+  --color-palette-solid-active:  var(--color-neutral-8);
   --color-palette-text:          var(--color-surface-fg-muted);
   --color-palette-fg:            var(--color-surface-fg);
 }
@@ -194,6 +207,7 @@
   --color-palette-soft-hover: var(--teal-4);   --color-palette-soft-active: var(--teal-5);
   --color-palette-border-subtle: var(--teal-6);--color-palette-border: var(--teal-7);
   --color-palette-solid: var(--teal-9);        --color-palette-solid-hover: var(--teal-10);
+  --color-palette-solid-active: var(--teal-11);
   --color-palette-text: var(--teal-11);        --color-palette-fg: var(--color-category-fg);
 }
 
@@ -202,6 +216,7 @@
   --color-palette-soft-hover: var(--amber-4);   --color-palette-soft-active: var(--amber-5);
   --color-palette-border-subtle: var(--amber-6);--color-palette-border: var(--amber-7);
   --color-palette-solid: var(--amber-9);        --color-palette-solid-hover: var(--amber-10);
+  --color-palette-solid-active: var(--amber-11);
   --color-palette-text: var(--amber-11);        --color-palette-fg: var(--color-category-fg);
 }
 
@@ -210,6 +225,7 @@
   --color-palette-soft-hover: var(--slate-4);   --color-palette-soft-active: var(--slate-5);
   --color-palette-border-subtle: var(--slate-6);--color-palette-border: var(--slate-7);
   --color-palette-solid: var(--slate-9);        --color-palette-solid-hover: var(--slate-10);
+  --color-palette-solid-active: var(--slate-11);
   --color-palette-text: var(--slate-11);        --color-palette-fg: var(--color-category-fg);
 }
 
@@ -218,6 +234,7 @@
   --color-palette-soft-hover: var(--indigo-4);   --color-palette-soft-active: var(--indigo-5);
   --color-palette-border-subtle: var(--indigo-6);--color-palette-border: var(--indigo-7);
   --color-palette-solid: var(--indigo-9);        --color-palette-solid-hover: var(--indigo-10);
+  --color-palette-solid-active: var(--indigo-11);
   --color-palette-text: var(--indigo-11);        --color-palette-fg: var(--color-category-fg);
 }
 
@@ -226,6 +243,7 @@
   --color-palette-soft-hover: var(--cyan-4);   --color-palette-soft-active: var(--cyan-5);
   --color-palette-border-subtle: var(--cyan-6);--color-palette-border: var(--cyan-7);
   --color-palette-solid: var(--cyan-9);        --color-palette-solid-hover: var(--cyan-10);
+  --color-palette-solid-active: var(--cyan-11);
   --color-palette-text: var(--cyan-11);        --color-palette-fg: var(--color-category-fg);
 }
 
@@ -234,6 +252,7 @@
   --color-palette-soft-hover: var(--orange-4);   --color-palette-soft-active: var(--orange-5);
   --color-palette-border-subtle: var(--orange-6);--color-palette-border: var(--orange-7);
   --color-palette-solid: var(--orange-9);        --color-palette-solid-hover: var(--orange-10);
+  --color-palette-solid-active: var(--orange-11);
   --color-palette-text: var(--orange-11);        --color-palette-fg: var(--color-category-fg);
 }
 
@@ -242,6 +261,7 @@
   --color-palette-soft-hover: var(--emerald-4);   --color-palette-soft-active: var(--emerald-5);
   --color-palette-border-subtle: var(--emerald-6);--color-palette-border: var(--emerald-7);
   --color-palette-solid: var(--emerald-9);        --color-palette-solid-hover: var(--emerald-10);
+  --color-palette-solid-active: var(--emerald-11);
   --color-palette-text: var(--emerald-11);        --color-palette-fg: var(--color-category-fg);
 }
 

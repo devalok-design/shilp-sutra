@@ -456,6 +456,48 @@ This is independent of the palette work — it is broken today — but it must b
 fixed before Button's colour moves to a mode, because that change makes
 non-accent buttons far easier to reach.
 
+## 8b. What converting three components revealed
+
+Button and SplitButton are done and verified pixel-identical (30/30 and 42/42
+parity). Badge is where the approach stopped being clean, and the reason
+generalises.
+
+**Components disagree about which step means what.** Measured across the
+colour-bearing set:
+
+| | tinted fill | edge |
+|---|---|---|
+| Badge | **2** (subtle) and **3** (soft) | **4** |
+| Alert | **2** | **4** and **7** |
+| Card | **2** | **7** |
+| Banner | **3** | **7** |
+| Slider | — | **7** |
+
+Badge carrying both 2 and 3 is deliberate and documented (a design call, Yogin
+and Goutham, 2026-08-24). The rest is drift: Card and Banner disagree about a
+tinted panel's fill, and Badge and Card disagree about a tinted container's edge
+by three whole steps.
+
+The role contract cannot express both. `border` resolves to step 7, so Badge's
+step-4 edge has to become `border-palette-soft-hover` — value-correct, name
+nonsense — or gain a twelfth role that exists for one component.
+
+**This is the contract working, not failing.** It is surfacing inconsistency
+that the per-colour maps hid, exactly as intended. But it forces a choice that
+is a design decision, not a refactor:
+
+- **Preserve every pixel.** Keep converting with value-correct-but-oddly-named
+  roles and a growing exception list. Button needed 3 exceptions, SplitButton 4
+  and an eleventh role, Badge would need a twelfth. Each is defensible alone;
+  together they erode the point of having a contract.
+- **Harmonise.** Pick one step per role and let the outliers move. Small, real
+  visual changes to Badge's edge and one of Card/Banner's fill — needs Chromatic
+  and a changeset, and is no longer a pure refactor.
+
+Everything already landed is the first kind. The remaining fourteen components
+should not proceed until this is decided, because the answer changes what
+"converted" means for each of them.
+
 ## 9. Proposed sequence
 
 Mirrors the surface-model rebuild, which caught things a straight implementation

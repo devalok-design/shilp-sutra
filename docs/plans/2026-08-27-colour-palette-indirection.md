@@ -498,6 +498,60 @@ Everything already landed is the first kind. The remaining fourteen components
 should not proceed until this is decided, because the answer changes what
 "converted" means for each of them.
 
+## 8c. As built — 2026-08-27
+
+**Twelve of seventeen converted.** The other five are deliberately not.
+
+| component | before | after |
+|---|---|---|
+| Button | 30 compounds | 3 |
+| SplitButton | 27 ramp lines | 6 |
+| Badge | **84 map values** | 4 lines |
+| Alert | 15 compounds | 3 + 3 neutral |
+| Dot | 28 lines | 4 functions |
+| Card | 5 border lines | 1 role |
+| Banner | 4 × 3 classes | 1 role line |
+| Slider | thumb + range maps | 1 palette on the root |
+| Toggle | 4 pressed-state lines | 1 role |
+| BadgeIndicator | 5 lines | 1 |
+| Progress | 4 lines | base class |
+| ButtonGroup | 2 × 6 divider map | 1 line per variant |
+
+Button and SplitButton were verified pixel-identical by resolving old and new
+through `palettes.css` and comparing: **30/30** and **42/42**.
+
+### Deliberately not converted
+
+`stat-flash`, `avatar`, `toast`, `activity-feed` and `schedule-view` map an
+internal state to a colour rather than offering a choice. ErrorBoundary is red
+because it is an error; the colour *is* the meaning. Indirection there adds a
+layer and buys nothing.
+
+### The eleventh role, and what the exceptions taught us
+
+`solid-active` was added for SplitButton's pressed fill. Everything else fits
+ten.
+
+Every remaining exception is `neutral`, and that is the finding. Neutral is not
+a grey version of a coloured palette — over half its roles resolve from the
+*surface* family, its solid is step 5 because step 9 reads as disabled, and its
+dot wants step 8 because a small mark needs more weight than a large fill. Two
+components independently grew the same two divider exceptions, which says the
+divergence belongs to neutral rather than to any author.
+
+That is the argument for named roles over `palette-1..12`, made by evidence
+rather than taste, and it is why the contract survived contact with twelve
+components.
+
+### Shipped visual change
+
+Coloured edges moved from step 7 to step 4 — chosen deliberately with the
+measurements in hand. Recorded as `PALETTE-EDGE-WHISPER`, alongside
+`PALETTE-CONTROL-EDGE-BELOW-AA` for the pre-existing WCAG 1.4.11 shortfall the
+change deepens. One spot flagged in the source for a possible reversal: the
+slider thumb, where a draggable affordance rather than a container edge is
+carrying the lighter value.
+
 ## 9. Proposed sequence
 
 Mirrors the surface-model rebuild, which caught things a straight implementation

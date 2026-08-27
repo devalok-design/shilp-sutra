@@ -75,9 +75,19 @@ the WCAG 1.4.11 3:1 boundary requirement — before this change as well as after
 
 If you relied on a coloured container's edge to signal intent, add a second cue.
 
-## Converted so far
+## Converted
 
-Button and SplitButton, both verified against their previous output rather than
-by eye: every one of the 30 Button pairs and 42 SplitButton pairs resolves to
-identical classes. The remaining colour-bearing components still use their own
-maps and are unaffected.
+Twelve components: **Button, SplitButton, Badge, Alert, Card, Banner, Slider,
+Toggle, Dot, BadgeIndicator, Progress and ButtonGroup**.
+
+Button and SplitButton were verified against their previous output rather than
+by eye — every one of the 30 Button pairs and 42 SplitButton pairs resolves to
+identical classes.
+
+Five are deliberately left alone: `StatFlash`, `Avatar`, `Toast`,
+`ActivityFeed` and `ScheduleView` map an internal state to a colour rather than
+offering a choice, so the colour *is* the meaning and indirection would only add
+a layer.
+
+`Badge` is the clearest illustration of the payoff: an 84-value map becomes four
+lines, and `color="teal"` on a Button — impossible before — now works.

@@ -439,9 +439,18 @@ with no variable, so they would render black-on-black in dark mode. All bound.
 The DS file's own components were scanned and are clean: 114 distinct bound
 variables, none remote, none `SPIKE Style`.
 
-**Two human steps remain**: publish the icon library, then accept the library
-update in the DS file and republish it. Until both happen the bug is still
-visible to consumers.
+**VERIFIED SHIPPED 2026-08-27.** Icon library published, update accepted in the
+DS file, DS republished. Re-measured on the live Button afterwards:
+
+| | |
+|---|---:|
+| combinations checked (6 intents × 5 styles) | **30** |
+| icon colour ≠ label colour | **0** |
+| icon's resolved collection | `Component/Style`, **5 modes** (was `SPIKE Style`, 4) |
+
+Confirmed visually as well as numerically: Link-row icons are visible again
+(were white on white), Soft/Outline Info render blue (were accent pink), and
+Ghost icons track their intent (were uniformly grey).
 
 This is independent of the palette work — it is broken today — but it must be
 fixed before Button's colour moves to a mode, because that change makes

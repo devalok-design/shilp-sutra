@@ -19,7 +19,7 @@ const textareaVariants = cva(
     'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
     'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-    'read-only:bg-surface-panel read-only:cursor-default',
+    'read-only:bg-surface-sunken read-only:cursor-default',
   ],
   {
     variants: {

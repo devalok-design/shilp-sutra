@@ -381,7 +381,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         {notifications.length === 0 ? (
           emptyState || (
             <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
-              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-pill bg-surface-panel">
+              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-pill bg-surface-panel-hover">
                 <Icon icon={IconInbox} size="lg" className="text-surface-fg-subtle" />
               </div>
               <p className="mt-ds-04 text-body-md text-surface-fg-subtle">

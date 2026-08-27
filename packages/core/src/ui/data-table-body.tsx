@@ -173,7 +173,7 @@ function DataTableExpandedRow<TData>({ row }: { row: Row<TData> }) {
     if (!expanded) return null
     return (
       <TableRow>
-        <TableCell colSpan={allColumns.length} className="bg-surface-base p-ds-05">
+        <TableCell colSpan={allColumns.length} className="bg-surface-sunken p-ds-05">
           {renderExpanded(row.original)}
         </TableCell>
       </TableRow>
@@ -189,7 +189,7 @@ function DataTableExpandedRow<TData>({ row }: { row: Row<TData> }) {
             // A recess, not a raised layer — surface-panel would vanish on a
             // card. Padding moves to the inner div so the collapsed state has
             // zero height.
-            className="bg-surface-base p-0"
+            className="bg-surface-sunken p-0"
           >
             <motion.div
               className="overflow-hidden"

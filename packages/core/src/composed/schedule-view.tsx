@@ -75,7 +75,7 @@ const eventColorMap: Record<NonNullable<ScheduleEvent['color']>, string> = {
   warning: 'bg-warning-3 text-warning-11',
   error: 'bg-error-3 text-error-11',
   info: 'bg-info-3 text-info-11',
-  neutral: 'bg-surface-panel text-surface-fg-muted',
+  neutral: 'bg-surface-panel-hover text-surface-fg-muted',
 }
 
 const eventDotMap: Record<NonNullable<ScheduleEvent['color']>, string> = {

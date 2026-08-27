@@ -46,7 +46,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
           // without creating a horizontal scrollbar (the wrapper owns scrolling).
           "w-full caption-bottom text-body-md overflow-x-clip [--table-edge:var(--card-spacing,var(--spacing-ds-04))]",
           densityClasses[density],
-          striped && "[&_tbody_tr:nth-child(even)]:bg-surface-base",
+          striped && "[&_tbody_tr:nth-child(even)]:bg-surface-panel-hover",
           className,
         )}
         {...props}
@@ -86,7 +86,7 @@ const TableFooter = React.forwardRef<
       // surface-base band, not raised@50% — the footer must read against the
       // card surface the table lives on (same mis-mapped shadcn muted/50 family
       // as the row-hover bug).
-      "border-t border-surface-border-subtle bg-surface-base font-medium [&>tr]:last:border-b-0",
+      "border-t border-surface-border-subtle bg-surface-panel-hover font-medium [&>tr]:last:border-b-0",
       className
     )}
     {...props}

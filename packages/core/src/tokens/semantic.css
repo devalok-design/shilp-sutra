@@ -678,9 +678,14 @@
   --color-backdrop:              oklch(0 0 0 / 0.6);
 
   /* Segmented control — inverted elevation in dark: track is a faint LIGHTER
-     fill (can't go darker than a near-black page), thumb steps lighter still. */
+     fill (can't go darker than a near-black page), thumb steps lighter still.
+     The model is right; the value was one step short. neutral-3 (#262626) is
+     DARKER than the track composited over a panel (#282828), so the selected
+     segment read as a dent — 1.028:1, inverted. neutral-5 clears the track on
+     both grounds a segmented control actually sits on: 1.46:1 over a panel,
+     1.69:1 over the page. */
   --color-segment-track: color-mix(in oklch, oklch(1 0 0) 7%, transparent);
-  --color-segment-thumb: var(--neutral-3);
+  --color-segment-thumb: var(--neutral-5);
 
   /* Overlay */
   --color-overlay: oklch(0 0 0 / 0.70);
@@ -706,6 +711,12 @@
      ground, so anything using them as its only edge has none. 0.07 keeps a
      raised card quieter than a floating overlay while still reading. */
   --shadow-edge-ring-subtle: 0 0 0 1px oklch(1 0 0 / 0.07);
+  /* The segmented thumb is documented as deliberately ring-less, the shadow
+     being its whole edge. That works in light and cannot work in dark, where
+     the shadow is near-black on a near-black ground — so the fallback failed in
+     the same theme as the fill it was meant to rescue. In dark it takes a ring
+     like everything else. */
+  --shadow-segment: 0 0 0 1px oklch(1 0 0 / 0.07), 0 1px 2px -0.5px oklch(0 0 0 / 0.40), 0 3px 8px -2px oklch(0 0 0 / 0.30);
   --shadow-brand:    0 2px 8px color-mix(in oklch, var(--color-accent-9) 30%, transparent), 0 6px 20px color-mix(in oklch, var(--color-accent-9) 20%, transparent);
   --shadow-glow:     0 0 0 1.5px color-mix(in oklch, var(--color-accent-9) 35%, transparent), 0 0 10px color-mix(in oklch, var(--color-accent-9) 20%, transparent);
   --shadow-ring:     0 0 0 2px color-mix(in oklch, var(--color-accent-9) 45%, transparent);

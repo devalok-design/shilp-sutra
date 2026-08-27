@@ -26,13 +26,20 @@ const toggleVariants = cva(
         lg: 'h-ds-lg px-ds-05 text-body-lg',
       },
       // Pressed state only — an unpressed toggle carries no colour at all.
+      //
+      // `soft-hover`, not `subtle`: both variants hover to `surface-panel-hover`,
+      // and `palette-subtle` resolves to exactly that for neutral — so a pressed
+      // neutral toggle was the identical colour to a hovered unpressed one
+      // (1.00:1). On accent the two were 1.01:1 apart in light, and in dark the
+      // unpressed-hovered toggle was the MORE prominent of the two. `soft-hover`
+      // clears the hover fill in both themes for every palette.
       color: {
-        accent: 'data-[state=on]:bg-palette-subtle data-[state=on]:text-palette-text',
-        error: 'data-[state=on]:bg-palette-subtle data-[state=on]:text-palette-text',
-        success: 'data-[state=on]:bg-palette-subtle data-[state=on]:text-palette-text',
+        accent: 'data-[state=on]:bg-palette-soft-hover data-[state=on]:text-palette-text',
+        error: 'data-[state=on]:bg-palette-soft-hover data-[state=on]:text-palette-text',
+        success: 'data-[state=on]:bg-palette-soft-hover data-[state=on]:text-palette-text',
         // Neutral takes full-contrast text rather than the muted `text` role,
         // because a pressed neutral toggle has no hue to carry the emphasis.
-        neutral: 'data-[state=on]:bg-palette-subtle data-[state=on]:text-surface-fg',
+        neutral: 'data-[state=on]:bg-palette-soft-hover data-[state=on]:text-surface-fg',
       },
     },
     defaultVariants: {

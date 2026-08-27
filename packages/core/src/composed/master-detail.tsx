@@ -215,7 +215,11 @@ const MasterDetailListItem = React.forwardRef<HTMLButtonElement, MasterDetailLis
           'transition-colors duration-fast-01 ease-productive-standard',
           'hover:bg-surface-panel-hover',
           'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-7 focus-visible:ring-inset',
-          isActive && 'bg-accent-2 text-accent-11 font-medium',
+          // accent-4, not accent-2: in dark the pale steps sit BELOW the panel
+          // while the grey hover sits above it, so a merely hovered row read
+          // stronger than the selected one (1.03:1 vs 1.30:1) and in the
+          // opposite direction.
+          isActive && 'bg-accent-4 text-accent-11 font-medium',
           className,
         )}
         {...props}

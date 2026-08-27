@@ -246,7 +246,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               'text-body-sm font-medium',
               'border border-surface-border-interactive',
               'bg-surface-panel-hover text-surface-fg-muted',
-              'hover:bg-accent-2',
+              'hover:bg-accent-3',
               'disabled:opacity-action-disabled disabled:cursor-not-allowed',
               'transition-colors',
             )}

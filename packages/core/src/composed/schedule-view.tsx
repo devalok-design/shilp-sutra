@@ -258,7 +258,7 @@ function DayColumn({
         <div
           className={cn(
             'border-b border-surface-border-strong py-ds-02 text-center text-body-sm font-semibold',
-            todayInView ? 'bg-accent-2 text-accent-11' : 'bg-surface-panel text-surface-fg',
+            todayInView ? 'bg-accent-4 text-accent-11' : 'bg-surface-panel text-surface-fg',
           )}
         >
           {format(date, 'EEE d')}

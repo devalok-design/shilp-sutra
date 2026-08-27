@@ -541,7 +541,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                               'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-control px-ds-04 py-ds-03 text-body-md outline-hidden',
                               'transition-colors duration-fast-01 ease-productive-standard',
                               highlightedIndex === index &&
-                                'bg-accent-2',
+                                'bg-accent-4',
                               selected && 'text-accent-11',
                               option.disabled &&
                                 'pointer-events-none opacity-action-disabled',

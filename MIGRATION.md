@@ -4,6 +4,113 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.57.0 — one token removed, one renamed, and a colour change you will see
+
+The surface model was rebuilt. Almost all of it is aliased, so `tsc` and your
+build stay green — but **one token is removed with no alias**, and the neutral
+ramp itself changed, so the release looks different even where nothing errors.
+
+Shipped as a minor. Pre-1.0 we bump minor for breaking changes rather than
+reserving major for a stability promise the system is not ready to make, so read
+this section rather than trusting the version number.
+
+### REMOVED, no alias: `surface-chrome`
+
+The one thing here that can actually break you. Every other renamed token still
+resolves through a deprecated alias. `--color-surface-chrome` does not, so
+`bg-surface-chrome` — and the `text-` / `border-` / `ring-` forms — stops
+emitting CSS entirely. The element renders with no background.
+
+Chrome is an arrangement decision, not a theme value: which shell you picked
+decides it. Use `surface-base`, or the new `AppShell` with `variant`
+(`flat` | `inset`) and `chrome` (`dim` | `bright`).
+
+```diff
+- <header className="bg-surface-chrome">
++ <header className="bg-surface-base">
+```
+
+### RENAMED, aliased: `surface-raised` → `surface-panel`
+
+`-hover` and `-active` follow. In light it was never raised — it is the same
+white as the page — so the name was a lie. The old names still resolve as
+deprecated aliases and are removed next major, so nothing breaks on upgrade day.
+
+### Run the codemod. Do not find-and-replace.
+
+```bash
+pnpm add -D @devalok/eslint-plugin-shilp-sutra@latest
+pnpm eslint . --fix
+```
+
+`shilp-sutra/no-renamed-surface-token` ships the autofix. **This is not a
+rename — 37 of the references in our own codebase were a retarget**, and a blind
+search-and-replace ships that many invisible hover states.
+
+The reason: in light, `surface-base`, `surface-panel` and `surface-overlay` are
+now all `#ffffff`. An edge is what makes a card a card, not a fill. So any
+interaction state painted with a *container* value is invisible:
+
+```diff
+- hover:bg-surface-raised          /* container value → invisible on a panel */
++ hover:bg-surface-panel-hover
+
+- bg-surface-raised                /* genuine container → plain rename */
++ bg-surface-panel
+```
+
+The rule tells those two apart, and knows `dark:` and `md:` are not interaction
+states. It **reports template literals without fixing them** — a
+`TemplateElement`'s range covers its delimiters, so rewriting one destroys the
+literal. Those need a human.
+
+**The rule cannot see a JavaScript conditional.** `isActive ? 'bg-surface-panel' : …`
+compiles to a plain string; three of our own components shipped that way and were
+caught by eye, not by tooling. Grep your codebase for `surface-panel` inside
+ternaries and check each one is a container, not a state.
+
+### Visual: the neutral ramp is de-warmed and dark is lifted
+
+This changes the actual colour of **all text and every border**, not only
+surfaces. Every neutral step is now pure grey (chroma 0), and dark lightness
+rises by 0.037 so surfaces have somewhere to stack. Dark page is `#0a0a0a`, a
+dark panel `#171717`.
+
+If you sampled our colours into your own tokens, re-sample them.
+
+### Borders split into two families
+
+Decorative edges are now translucent and no longer carry control contrast:
+
+- `surface-border-subtle` / `-border` / `-border-strong` — **objects**. Black at
+  5/9/14% in light, white at 6/10/16% in dark. On white the default computes to
+  `#e8e8e8`.
+- `surface-border-interactive` / `-interactive-strong` — **controls**. Solid, and
+  carry the WCAG 1.4.11 contrast inputs, checkboxes and switches need.
+
+A form control left on a decorative tier loses required contrast. If you built a
+custom input against `surface-border`, move it to `-border-interactive`.
+
+### Shadows are scoped to things that float
+
+Cards, panels and the inset canvas lose theirs; menus, dialogs, popovers,
+tooltips and control thumbs keep them. Interactive cards now change surface on
+hover instead of gaining a shadow. `Surface elevation="raised"` and
+`Card variant="elevated"` keep their shadows — those are explicit opt-ins.
+`--shadow-strength` is unchanged as the consumer dial.
+
+### Also worth knowing
+
+- **`bg-surface-1` … `bg-surface-4` are still deprecated** and still resolve.
+  They do not invert for dark mode. The named tokens do. `--fix` rewrites them.
+- **A second new rule**, `shilp-sutra/no-subtle-text-on-sunken`, flags
+  `text-surface-fg-subtle` on `bg-surface-sunken` (4.38:1, under AA). Not
+  autofixable — swapping to `fg-muted` changes the text's visual weight, which is
+  your call.
+- **`AvatarGroup`'s `borderColor`** accepts `'surface-panel'`; `'surface-raised'`
+  still works. A widening, not a break.
+
+
 ## v0.56.0 — TipTap externalized; no install scripts
 
 One breaking change, and it only affects `RichTextEditor` / `RichChatInput`. No exported symbol, prop type, or subpath export changed — nothing widened and nothing narrowed.

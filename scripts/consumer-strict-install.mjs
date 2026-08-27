@@ -48,16 +48,48 @@ const SKIP_BUILD = process.argv.includes('--no-build')
 const RED = '\x1b[31m'
 const GREEN = '\x1b[32m'
 const CYAN = '\x1b[36m'
+const YELLOW = '\x1b[33m'
 const BOLD = '\x1b[1m'
 const RESET = '\x1b[0m'
 
 const step = (m) => console.log(`\n${CYAN}▶ ${m}${RESET}`)
 const pass = (m) => console.log(`${GREEN}✓${RESET} ${m}`)
+const warn = (m) => console.log(`${YELLOW}!${RESET} ${m}`)
 const fail = (m, extra) => {
   console.error(`\n${RED}${BOLD}✗ ${m}${RESET}`)
   if (extra) console.error(String(extra).slice(0, 4000))
   process.exit(1)
 }
+
+/**
+ * Type errors from a DEPENDENCY's own declaration files that we cannot fix and
+ * that do not indicate a fault in our package.
+ *
+ * This gate deliberately does not filter third-party paths in general: a
+ * missing peer classically shows up as an error *inside* the third party's
+ * .d.ts, which is exactly how the absent `@tiptap/pm` was caught (see the
+ * header). So each waiver is matched by exact signature, never by path alone.
+ *
+ * An entry that matches NOTHING fails the run. That is deliberate — it is what
+ * forces the waiver to be deleted the moment upstream ships a fix, instead of
+ * quietly widening the hole forever.
+ */
+const UPSTREAM_DTS_ALLOWLIST = [
+  {
+    id: 'TIPTAP-REACT-EDITOR-NAMESPACE',
+    reason:
+      "@tiptap/react >=3.30.3 emits `index_d_exports.Editor` in its bundled .d.ts, but " +
+      'that namespace only re-exports the React-side symbols — `Editor` lives in ' +
+      '@tiptap/core. Clean in 3.28.0–3.30.2, broken in 3.30.3–3.30.5 (verified by ' +
+      'unpacking each). Types-only: the runtime is unaffected, and consumers on the ' +
+      'create-next-app default of skipLibCheck:true never see it.',
+    match: (line) =>
+      line.includes('@tiptap/react') &&
+      line.includes('error TS2694') &&
+      line.includes('index_d_exports') &&
+      line.includes("'Editor'"),
+  },
+]
 
 function run(cmd, args, opts = {}) {
   const res = spawnSync(cmd, args, {
@@ -203,9 +235,36 @@ for (const version of TS_VERSIONS) {
 
   step(`Type-checking every subpath — TypeScript ${actual} (skipLibCheck: false)`)
   const tsc = run('node', [tscBin, '--noEmit'], { cwd: WORK, shell: false })
-  const tscErrors = ((tsc.stdout || '') + (tsc.stderr || ''))
+  const allErrors = ((tsc.stdout || '') + (tsc.stderr || ''))
     .split('\n')
     .filter((l) => /error TS\d+/.test(l))
+
+  // Partition: a dependency shipping a broken .d.ts is not our bug and cannot
+  // be fixed here, but it must not silently disable the gate either. Each entry
+  // is matched by exact signature, and an entry that matches NOTHING is a hard
+  // failure — that is what forces it to be deleted once upstream ships a fix.
+  const matchCounts = new Map(UPSTREAM_DTS_ALLOWLIST.map((e) => [e.id, 0]))
+  const tscErrors = allErrors.filter((line) => {
+    const hit = UPSTREAM_DTS_ALLOWLIST.find((e) => e.match(line))
+    if (!hit) return true
+    matchCounts.set(hit.id, matchCounts.get(hit.id) + 1)
+    return false
+  })
+
+  const stale = UPSTREAM_DTS_ALLOWLIST.filter((e) => matchCounts.get(e.id) === 0)
+  if (stale.length) {
+    fail(
+      `${stale.length} upstream-.d.ts allowlist entr${stale.length === 1 ? 'y is' : 'ies are'} no longer needed`,
+      stale.map((e) => `  ${e.id} — ${e.reason}`).join('\n') +
+        '\n\nThe upstream bug this waived appears to be fixed. Delete the entry from ' +
+        'UPSTREAM_DTS_ALLOWLIST so the gate goes back to full strictness.'
+    )
+  }
+  for (const e of UPSTREAM_DTS_ALLOWLIST) {
+    const n = matchCounts.get(e.id)
+    if (n > 0) warn(`waived ${n} upstream error(s): ${e.id} — ${e.reason}`)
+  }
+
   if (tscErrors.length) {
     fail(
       `${tscErrors.length} type error(s) on TypeScript ${actual} with every declared peer installed`,

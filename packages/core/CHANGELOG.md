@@ -1,13 +1,274 @@
 # @devalok/shilp-sutra
 
+## 0.57.0
+
+### Minor Changes
+
+- [#276](https://github.com/devalok-design/shilp-sutra/pull/276) [`7fec786`](https://github.com/devalok-design/shilp-sutra/commit/7fec78603639c3e48ddc819562a7a1976b6930f3) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - add AppShell — the frame that lets a bar span above both the sidebar and the content
+
+  `SidebarProvider` renders a single flex row, so a bar could only ever live
+  _inside_ the content pane. That is why every shadcn example puts its `<header>`
+  inside `SidebarInset`, and it is why two of the shell arrangements we designed
+  had no code equivalent. `AppShell` is the other shape: the bar is a sibling
+  above the row, the way Carbon's `Header` sits above its `SideNav`.
+
+  It is layout and surfaces only — put `TopBar` in the bar slot and compose the
+  `Sidebar` primitives in the sidebar slot. It replaces neither.
+
+  ```tsx
+  <AppShell variant="inset" chrome="dim">
+    <AppShellBar><TopBar … /></AppShellBar>
+    <AppShellBody>
+      <AppShellSidebar><Nav /></AppShellSidebar>
+      <AppShellCanvas>{children}</AppShellCanvas>
+    </AppShellBody>
+  </AppShell>
+  ```
+
+  **Three arrangements.** `flat` shares one surface and separates with a hairline.
+  `inset` puts the content in a rounded panel, and `chrome` then decides which
+  plane the frame takes:
+
+  |          | light chrome | light canvas | dark chrome                                                              | dark canvas                                                              |
+  | -------- | ------------ | ------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+  | `dim`    | `#eeeeee`    | `#ffffff`    | `#0a0a0a`                                                                | `[#171717](https://github.com/devalok-design/shilp-sutra/issues/171717)` |
+  | `bright` | `#ffffff`    | `#eeeeee`    | `[#171717](https://github.com/devalok-design/shilp-sutra/issues/171717)` | `#0a0a0a`                                                                |
+
+  Both are the same two tokens — `surface-sunken` and `surface-panel` — swapped.
+  No third tier, no per-theme special case. The real difference is which part
+  carries a brand tint: with `dim` the wash lands on the frame and the work area
+  stays neutral; with `bright` it is the reverse.
+
+  The bar height is a **minimum**, not a fixed value, so `TopBar` still sizes to
+  its content. The inset canvas is flush to the bar and sidebar and floats only
+  off the bottom-right, and carries no shadow — it is a frame, not a floating
+  thing.
+
+- [#251](https://github.com/devalok-design/shilp-sutra/pull/251) [`705ce2b`](https://github.com/devalok-design/shilp-sutra/commit/705ce2bd0bedcb0f35aaf1087f0b1947fcc82cc3) Thanks [@bastitva0-blip](https://github.com/bastitva0-blip)! - **DataTable:** fix mount echo, virtualRows+expandable overlap, enableExport wiring, filterable+card gap — and add filterableColumns, rowClassName, onSelectionChange IDs
+
+  **Bug fixes (closes [#212](https://github.com/devalok-design/shilp-sutra/issues/212), [#213](https://github.com/devalok-design/shilp-sutra/issues/213), [#249](https://github.com/devalok-design/shilp-sutra/issues/249)):**
+
+  - `onSelectionChange` no longer fires on mount with `[]`. A first-render guard (`isFirstRenderRef`) was added alongside the existing `isSyncingFromPropRef`. Any handler that called `router.refresh()`, triggered a refetch, or wrote to external state would cascade from this single spurious call.
+
+  - `virtualRows + expandable` was a silent no-op: `DataTableExpandedRow` was only rendered in the non-virtual path. The expand toggle fired, `row.getIsExpanded()` returned `true`, zero content appeared. Fixed completely rather than partially: each windowed row now renders as its own `<tbody>` carrying `data-index` and the virtualizer's `measureElement` ref, with `aria-hidden` spacer row groups reserving the un-rendered remainder. Because the measured group holds both the data row and its expanded detail row, the panel's real height lands in `getTotalSize()` — it can no longer resolve to the same offset as the row below it and paint on top of it.
+
+  - `filterable + mobileView="card"`: filter inputs now render above the card list in `DataTableCards`. Previously lived inside `<thead>` which card mode never renders.
+
+  **Changed (virtual rendering — visual):**
+
+  - Virtual rows are no longer absolutely positioned with a forced `height: virtualRowHeight` and `display: flex` cells. They sit in normal table flow at their measured height, so column widths track `<thead>` again instead of being divided evenly. `virtualRowHeight` is now the pre-measurement ESTIMATE: it sets the initial scroll extent and how many rows render before the first measurement pass, not the final row height.
+
+  **New props (closes [#250](https://github.com/devalok-design/shilp-sutra/issues/250) — all backward compatible):**
+
+  - `onSelectionChange` second arg: `selectedIds: Set<string>` — complement of the `selectedIds` controlled prop. Existing single-arg handlers unaffected.
+  - `filterableColumns?: string[]` — restrict filter inputs to specific column IDs without touching `ColumnDef`.
+  - `rowClassName?: (row: TData) => string | undefined` — conditional classes on the `<tr>` (table layout) or the `Card` (card layout).
+  - `enableExport?: boolean` — was stranded on `DataTableToolbar` and never forwarded through `DataTableProps`. Now exposed. **The default is unchanged (`true`):** the Export button has rendered unconditionally since the toolbar existed, so defaulting it off — even only under server-side `pagination` — would silently delete a live affordance on upgrade. Opt out with `enableExport={false}`.
+  - `onExport?: (visibleRows: TData[]) => void` — replaces the built-in CSV export. `DataTableToolbar.onExport` was widened from `() => void` to the same signature (a widening: a `() => void` handler still assigns), so the prop forwards straight through and the two components no longer carry two different `onExport` shapes.
+
+- [#269](https://github.com/devalok-design/shilp-sutra/pull/269) [`5edfe42`](https://github.com/devalok-design/shilp-sutra/commit/5edfe42e6fb10ee9ee705024d9019da213efb584) Thanks [@bastitva0-blip](https://github.com/bastitva0-blip)! - **Test coverage:** closes the gaps tracked in [#268](https://github.com/devalok-design/shilp-sutra/issues/268) — added missing unit tests for `Diff`, `DataTableCards`, `DataTableBulkActions`, `DataTablePagination`, `DataTableHeader`, `DataTableBody`/inline cell editing, `BlockShell`, and expanded shallow coverage for `Sidebar` (collapsed state, `toggleSidebar`, keyboard shortcut, rail, mobile `Sheet`), `NotificationPreferences` (add/delete/mute callbacks, loading/empty states), `GlobalLoading` (loading-state transitions), `useViewportHeight` (SSR fallback, Visual Viewport resize, window-resize fallback, cleanup), and the `DatePicker`/`DateRangePicker`/`DateTimePicker` family (keyboard nav, `minDate`/`maxDate`, clearing).
+
+  **New features (all additive, non-breaking):**
+
+  - `BulkAction.icon?: IconInput` — renders an icon before the label in `DataTable`'s bulk-action buttons.
+  - `DataTable`'s bulk-actions bar now supports `bulkActionsPosition?: 'bottom' | 'top' | 'inline'` (default `'bottom'`, matching prior behavior) instead of hard-coded fixed positioning.
+  - `DateSeparator` gained `locale?: string` and `timeZone?: string` props — the default "Today"/"Yesterday"/date label now supports non-`en-US` locales and IANA time zones instead of always using the browser's local time zone and English month names.
+  - `Diff` gained a `language?: string` prop for line-level syntax highlighting (inline/split, `line` granularity), lazy-loading `react-syntax-highlighter` with the same one-dark theme as `MarkdownViewer`.
+  - `Diff` gained `beforeParseError?: (raw: string) => ReactNode` and `afterParseError?: (raw: string) => ReactNode` slot props, letting callers customize the fallback shown when `before`/`after` fails to parse as JSON in `fields` mode (previously a single fixed message covered both sides).
+  - New hook `useContainerSize()` — a `ResizeObserver`-based hook returning `{ ref, width, height }` for element-level responsive components.
+
+  **DataTable:** verified (via new tests) that `rowClassName` and `filterableColumns` — added in a prior changeset — actually work in `mobileView="card"`, and that `onExport` receives the currently visible (filtered) rows rather than the full data set.
+
+- [#261](https://github.com/devalok-design/shilp-sutra/pull/261) [`041f508`](https://github.com/devalok-design/shilp-sutra/commit/041f5082da4ad9e611cd5c4ff645444fcf5cfa7f) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - **Progress:** warn in DEV when a bar has no accessible name.
+
+  `<Progress value={72} />` rendered `role="progressbar"` with no `aria-label`, `aria-labelledby` or `title`, so a screen reader announced "progressbar, 72%" — the value, but not what is progressing. Lighthouse flags it as `aria-progressbar-name`.
+
+  It now warns once (latched at module scope, so a bar animating on every tick logs once rather than once per frame) and names both escape hatches:
+
+  ```tsx
+  <Progress value={72} label="Storage used" />          // visible text, wires aria-labelledby
+  <Progress value={72} aria-label="Upload progress" />  // visually unlabelled
+  ```
+
+  **Deliberately a warning and not an auto-generated default.** A generated name like `"Progress: 72%"` would silence the audit while leaving the announcement exactly as uninformative — `aria-valuenow` already carries the number — and it would make the bar _look_ labelled so nobody fixes it. Only the consumer knows what the bar measures.
+
+  Runtime behaviour in production is unchanged; the warning is stripped with `process.env.NODE_ENV === 'production'`. No API change. Passing `label`, `aria-label` or `aria-labelledby` already suppressed the problem and continues to.
+
+  **Released as a minor, not a patch.** The prop surface is untouched, but every consumer rendering an unlabelled `Progress` gets new console output on upgrade — a visible behaviour change in their dev loop, which pre-1.0 we bump minor for rather than slipping into a patch. Upgrading to 0.57.0 may surface warnings you have not seen before; each one is a real unlabelled bar.
+
+  Also adds the component's first test file (8 cases: label wiring, explicit `aria-label`, explicit `aria-labelledby`, the warn firing, warn-once across re-renders and multiple instances, labelled indeterminate bars staying silent, and axe).
+
+- [#273](https://github.com/devalok-design/shilp-sutra/pull/273) [`6fb93fe`](https://github.com/devalok-design/shilp-sutra/commit/6fb93fe5434fa5150b1d35e75b2ab3831c69b369) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - quieten the Badge fill and border, and open up the category ramps to match
+
+  Badge's twelve colour rows move their `subtle` fill from step 3 to step 2, and
+  their border from step 7 to step 4. From design work by Yogin and Goutham, tested against a
+  real dashboard rather than a variant grid.
+
+  **`soft` is deliberately excluded.** `subtle` and `soft` previously shared one
+  `bg` key, so moving it would have changed both. The design note said "Soft: no
+  changes", and the Figma variables hold the two independently, so the code now
+  does too: `colorMap` gains a `softBg` key that keeps step 3 while `bg` goes to
+  step 2. `StatusBadge` renders `variant="soft"` and is therefore unchanged.
+
+  **Alert gets the same treatment.** Its four numbered colours (info, success,
+  warning, error) move `subtle` fill 3 → 2 and border 7 → 4, from the same design
+  pass. Alert uses compound variants rather than a shared colour map, so its
+  `outline` keeps border step 7 — which leaves Alert outline and Badge outline on
+  different steps. Flagged in `docs/deviations.md`, not resolved here. `neutral` is
+  unchanged on both.
+
+  **The fill change is a straight improvement.** Label contrast is measured on
+  step-11 text against its own fill, worst case across the ten ramps that use
+  numbered steps: light rises from 6.36 to 7.13, dark from 7.50 to 8.41. Both
+  already cleared AA; both now clear it by more.
+
+  **The border change is a deliberate deviation, recorded in `docs/deviations.md`**
+  as `BADGE-OUTLINE-BORDER` and `BADGE-SUBTLE-BORDER`. Step 4 measures 1.26:1
+  against the page in light, under the 3.0 that WCAG 1.4.11 asks of non-text
+  boundaries. It is kept because the hairline reads to the eye at this weight, and
+  because a static badge is not an interactive control whose boundary carries
+  meaning — the label does that. Worth knowing: the previous step 7 was also under
+  the bar at 2.35, so this deepens a pre-existing shortfall rather than creating
+  one. Step 8 is the first that clears 3.0 on every ramp in both themes.
+
+  `default` and `neutral` are unchanged. They use `bg-surface-raised-hover` and
+  `border-surface-border-strong` rather than numbered steps, so the step change has
+  no meaning for them and inventing one would have been guesswork.
+
+  **New tokens.** The seven category ramps previously declared only steps 3, 7, 9
+  and 11 — exactly what Badge consumed. Steps 2 and 4 are now declared for each, so
+  `bg-category-teal-2`, `border-category-teal-4` and their siblings exist. Without
+  this the change would have shipped seven category badges with no background and
+  no border, since the classes would have referenced tokens that were never
+  declared.
+
+  Adds 14 tokens: `--color-category-{teal,amber,slate,indigo,cyan,orange,emerald}-{2,4}`.
+
+- [#276](https://github.com/devalok-design/shilp-sutra/pull/276) [`7fec786`](https://github.com/devalok-design/shilp-sutra/commit/7fec78603639c3e48ddc819562a7a1976b6930f3) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - rebuild the surface model: one surface per theme, edges that mark objects, and a tint that follows the brand
+
+  Three defects with one cause. `surface-raised`, `surface-overlay` and
+  `surface-chrome` all resolved to the same colour in light, so named tiers were
+  not distinct values. Menu hover was invisible because items used
+  `hover:bg-surface-raised` inside containers using `bg-surface-overlay` — the
+  same colour. And dark could not express depth because the ramp bottomed at
+  `#040404`, below where Material and Carbon deliberately stop.
+
+  The common cause: tiers named by role and valued by aliasing, with nothing
+  enforcing distinctness, and dark treated as light with the step numbers swapped.
+
+  **The model.** One surface per theme. Borders mark objects, fills mark regions.
+  In light the page, a panel and an overlay are all `#ffffff` — an edge is what
+  makes a card a card. Dark has room above the page, so panels genuinely lift.
+  Full reasoning in `docs/plans/2026-08-26-surface-model-rebuild.md`.
+
+  ## Breaking
+
+  **`surface-raised` is now `surface-panel`** (`-hover` and `-active` follow). In
+  light it is not raised — it is the same white as the page, so the name was a
+  lie. The old names still resolve as deprecated aliases and are removed next
+  major, so nothing breaks the moment you upgrade.
+
+  **`surface-chrome` is removed.** Chrome is an arrangement decision, not a theme
+  value — a shell's chrome is decided by which shell you picked. Use
+  `surface-base`.
+
+  **Shipped as a minor, and this is the one thing in it that can actually break
+  you.** Everything else in this release is aliased. `surface-chrome` is not — if
+  you reference it, the class stops resolving on upgrade. Pre-1.0 we bump minor
+  for breaking changes rather than reserving major for a stability promise the
+  system is not ready to make, so read this section rather than trusting the
+  version number. `shilp-sutra/no-renamed-surface-token` flags every use.
+
+  **Run the codemod, do not find-and-replace.** A new eslint rule,
+  `shilp-sutra/no-renamed-surface-token`, ships an autofix:
+
+  ```
+  pnpm eslint . --fix
+  ```
+
+  It is not a rename. **37 references are a retarget, not a rename** — a hover
+  painted with a container value is invisible now that base, panel and overlay
+  share a colour in light. The rule tells `hover:bg-surface-raised` (retarget to
+  `-panel-hover`) from `bg-surface-raised` (rename to `-panel`), and knows that
+  `dark:` and `md:` are not interaction states. A blind rename ships 37 invisible
+  hover states.
+
+  It reports template literals without fixing them — a `TemplateElement`'s range
+  covers its delimiters, so rewriting one destroys the literal. Those need a human.
+
+  **The neutral ramp is de-warmed and the dark end lifted.** Every step is now pure
+  grey (chroma 0), and dark lightness rises by 0.037 so surfaces have somewhere to
+  stack. This changes the actual colour of all text and every border, not only
+  surfaces. Dark page is now `#0a0a0a` and a dark panel `[#171717](https://github.com/devalok-design/shilp-sutra/issues/171717)`.
+
+  **Object borders are translucent.** `surface-border-subtle` / `-border` /
+  `-border-strong` are now black at 5/9/14% in light and white at 6/10/16% in dark,
+  so an edge darkens whatever it lands on and can never coincide with it. On white
+  the default edge computes to `#e8e8e8`.
+
+  **Control borders are a separate family.** `surface-border-interactive` and
+  `-interactive-strong` are solid and carry the WCAG 1.4.11 contrast that inputs,
+  checkboxes and switches need. Decorative edges are no longer constrained by it —
+  which is why our card edges were darker than every peer system's.
+
+  ## Other changes
+
+  **Shadows are scoped to floating things.** Cards, panels and the inset canvas
+  lose theirs; menus, dialogs, popovers, tooltips and control thumbs keep them.
+  Interactive cards now change surface on hover rather than gaining a shadow —
+  they keep their small motion lift. `Surface elevation="raised"` and `Card
+variant="elevated"` keep their shadows: those are explicit opt-ins, not panels
+  that happen to sit on a page. `--shadow-strength` remains as the consumer dial.
+
+  **A second new lint rule**, `shilp-sutra/no-subtle-text-on-sunken`, flags
+  `text-surface-fg-subtle` on `bg-surface-sunken` — 4.38:1, under AA. Not
+  autofixable: swapping to `fg-muted` changes the text's visual weight, which is
+  the author's call.
+
+  **A new tint dial** — `Neutral` / `Subtle` / `Medium` / `Strong` — washes the
+  page, canvas and chrome toward the brand's own accent hue while cards, overlays
+  and hover states hold neutral. Content sits on a true surface, and above
+  `Neutral` a light card stops matching the page, so cards lift for free.
+
+  **`AvatarGroup`'s `borderColor`** accepts `'surface-panel'`. `'surface-raised'`
+  still works — a widening, so this is not a break.
+
+  **Wells take `fg-muted`, not `fg-subtle`.** Our faintest text on our quietest
+  ground measured 4.38:1, under AA. A pairing mistake rather than a token defect.
+
+  **The lint gate now reaches stories.** `*.stories.tsx` was in a global ignore,
+  and a global ignore cannot be re-included by a later `files` block — which is
+  how 24 deprecated `surface-1` / `surface-2` references survived in the files
+  people copy from. Fixed, and the token rules now run there.
+
+### Patch Changes
+
+- [#274](https://github.com/devalok-design/shilp-sutra/pull/274) [`f497a6e`](https://github.com/devalok-design/shilp-sutra/commit/f497a6e4e16200cabf0145461b4be6281738585c) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - fix colour-contrast failures in alerts, badges, field placeholders and the chat surfaces
+
+  **Alert's dismiss button was effectively invisible on solid variants.** It was `text-surface-fg-subtle` regardless of variant, so on a saturated step 9 fill it measured 1.07:1 on info, 1.04:1 on error and **1.01:1 on success**, which is no contrast at all. It now inherits the alert's own foreground on solid, exactly as the title and body already do, and measures 4.66 to 7.76 across the five intents.
+
+  **Badge category labels failed AA in dark mode.** The seven category colours painted their solid label with a hardcoded `text-white`, but category step 9 _lightens_ in dark mode, the opposite of the intent ramps. Light passed at 4.59 to 5.10; dark landed at 3.28 to 3.70 on 10px text. Adds `--color-category-fg`, which resolves to `--neutral-0` in light and `--neutral-1` in dark, so it inverts with the theme. Measured 4.59 to 4.97 in light and 5.55 to 6.24 in dark across all seven.
+
+  **Input, Textarea, Select and Combobox placeholders missed AA in light.** `surface-fg-subtle` is compliant on the page canvas, but these controls sit on a tinted field fill, where the same token measures 4.14:1. Placeholders are body sized, so the bar is 4.5. All four now use `surface-fg-muted` (6.63:1) — Combobox included, which the first pass missed. The token itself is unchanged, because it is correct on the page canvas and has around 290 other usages.
+
+  **Seven chat surfaces used opacity to quieten text, which quietens contrast with it.** `Message` timestamps, edited and system markers, `DateSeparator`, `SystemMessage`, and the `MessageInput` / `RichChatInput` disclaimers all set `text-surface-fg-subtle/50` (or `/60`). Composited against the surface that is **2.011:1** in light, 2.369:1 at `/60`, and 2.422:1 in dark — under half the 4.5 bar, in both themes. `MessageInput`'s placeholder was the same, at 2.011:1.
+
+  Opacity was doing a job a token already does. All seven drop the modifier and keep `surface-fg-subtle`, the quietest compliant token, so the visual hierarchy is unchanged while the measurement moves to 5.061:1 light and 6.521:1 dark. The placeholder joins the other field controls on `surface-fg-muted`.
+
+  DataTable's filter and search placeholders also use `surface-fg-subtle`, and were checked rather than assumed: they render `bg-transparent` over the page or a panel — both white in light — where the token measures 5.061:1 and passes. They are left alone.
+
+  The first three were found by porting the design system into Figma and resolving each component's real foreground-on-background pair through the variable chain, rather than by reading tokens in isolation. The rest were found by re-checking that claim: **Combobox had been listed as fixed and was not**, and grepping for what survived turned up the opacity family, which no rule catches because the token is compliant and the modifier is what breaks it.
+
 ## 0.56.0
 
 <!-- breaking-summary:start -->
+
 > ### ⚠️ Breaking in 0.56.0
 >
 > - build!: externalize TipTap + the class utilities, drop `use-sync-external-store`, and remove the `postinstall` entirely
 >
 > See [`MIGRATION.md`](../../MIGRATION.md) and `docs/recipes/upgrading.md` before bumping.
+
 <!-- breaking-summary:end -->
 
 ### Minor Changes

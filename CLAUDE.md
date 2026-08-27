@@ -90,6 +90,8 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 **Built and PUBLISHED: 29 sets, 758 variants.** Button 330, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2. 31 collections, 20 text styles, 13 effect styles, **15 native slot properties** across 8 sets (Card 3, Sidebar 3, Top bar 3, Dialog 2, Alert 1, Sheet 1, Tabs 1, Segmented control 1). A `Bottom navbar` set existed at port time and no longer does. **Publishing is a human step — republish after any change.**
 
+**UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps a ~32px minimum height that nothing else collapses — a footerless Card was 40px too tall. Only 1 of the library's 20 slots (`Card.Action`) shipped with such a boolean; the other 17 still cannot be hidden. See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3.
+
 **Every set's `defaultVariant` now matches its code default.** It is READ-ONLY and derived from geometry (top-left-most variant), so a tidy ascending grid silently hands consumers the smallest size — 18 of 25 sets did. Assert `set.defaultVariant.name` after any re-layout.
 
 **`Accessibility review` page** carries three measured contrast failures that are CODE bugs this library reproduces faithfully, with proposed fixes and live-bound specimens: Alert dismiss on solid (**1.01:1**), Badge category solid in dark (3.28–3.70:1), Input/Textarea placeholder in light (4.14:1). Decide these before the next release.
@@ -104,7 +106,23 @@ Five rules that cost the most time when broken:
 5. **Never write `.visible` on a variable-bound node** — it silently clears the binding. An audit that reveals hidden nodes to inspect them will destroy what it inspects (it cost 264 spinner bindings).
 > **Before building any Figma component, load the `figma-component-authoring` skill** (user-level, alongside `figma-use`). It carries the mechanism decision table (variant vs boolean vs instance-swap vs slot vs variable mode), the verified build order, and every silent failure this project paid for. It exists because we shipped a whole library before discovering native slots.
 
-6. **Assume a Figma limitation is your ignorance until three distinct mechanisms have failed.** This has now been wrong five times. Two examples: "instances can't hold content" after trying exactly one approach (Figma has **native slots**, `component.createSlot()`); and the rule below, which we believed for the whole port and which is only half true.
+6. **Assume a Figma limitation is your ignorance until three distinct mechanisms have failed.** This has now been wrong **six** times. Two examples: "instances can't hold content" after trying exactly one approach (Figma has **native slots**, `component.createSlot()`); and the rule below, which we believed for the whole port and which is only half true.
+
+   **Slot content IS authorable from the plugin API** (measured 2026-08-27; we believed the opposite and wrote it into an audit). `setProperties` on a slot property fails with *"Slot component property values cannot be edited"*, and `appendChild` **stacks under** the inherited defaults — but `.remove()` the defaults first and `appendChild` then replaces cleanly, and it persists. Overriding a nested instance already in a slot works too.
+
+   ```js
+   // clear, then fill. RE-QUERY the slot after every mutation — never cache .children
+   let s = inst.findAll(n => n.type === 'SLOT').find(x => x.name === 'Content')
+   s.children[0].remove()                                    // ONE remove per slot per run
+   s = inst.findAll(n => n.type === 'SLOT').find(x => x.name === 'Content')
+   s.appendChild(myNode)                                     // append is unlimited
+   ```
+
+   Two invisible rate limits, both of which return success and then fail on the *next* call:
+   - **One `.remove()` per slot per run.** After the first, every node id inside that slot stops resolving (`Node with id "…" not found`). A 3-item slot takes 3 runs. Card's slots each held exactly 1 default, which is why a naive loop appeared to work there and died on Top bar's 3-item `End`.
+   - **One `setProperties` per nested slot instance per run.** The write persists but kills the slot subtree. Different instances are unaffected, so N components can each take one write in the same run.
+
+   Also: an **empty slot keeps a ~32px minimum drop-target height** and neither `HUG` nor `resize()` collapses it. The only way to remove an unused slot is a boolean wired to its `visible` (`componentPropertyReferences = { visible: key }`) — which, unlike a raw `.visible` write, does **not** clear variable bindings. Verify bindings after wiring anyway.
 
    **A slot CAN be added to an already-combined set** (measured 2026-08-21). The naive path does fail: calling `createSlot()` per variant *after* `combineAsVariants` gives one property **per variant** (`Action#274:0` AND `Action#274:3`), so dropped content dies on every variant switch. But this works:
 

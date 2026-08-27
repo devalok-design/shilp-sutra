@@ -336,6 +336,86 @@ separate `--color-field-border-*` indirection later if it earns its keep.
 **Group 3** — components whose colour is their meaning. ErrorBoundary is red
 because it is an error.
 
+## 8a. Figma spike — done 2026-08-27, on `Palette spike — 27 Aug`
+
+Step 2 of the sequence below, executed. Two outcomes: the reduction works, and it
+surfaced a shipped bug.
+
+### The palette collection already exists
+
+`Component/Intent` has 6 modes and **13 named role variables** —
+`x/solid-bg`, `x/solid-fg`, `x/solid-bg-hover`, `x/soft-bg`, `x/soft-fg`,
+`x/soft-bg-hover`, `x/soft-bg-active`, `x/border`, `x/outline-fg`,
+`x/ghost-fg`, `x/ghost-fg-hover`, `x/ghost-bg-hover`, `x/ghost-bg-active`.
+
+It already special-cases `neutral` exactly as §4 argues it must
+(`solid-bg → neutral/5`, `solid-fg → surface-fg`, `soft-bg → surface-panel-hover`).
+`Component/Style` chains on top of it. **Figma solved this before code did**, and
+independently reached the named-role answer.
+
+Every Button variant carries `explicitVariableModes: Component/Intent=<Colour>`.
+**So the Color axis exists only to pin a mode** — the colour system is already
+mode-driven and the six colour variants are pure bookkeeping.
+
+### 330 → 55, measured
+
+On a clone: deleted the 275 non-accent variants, dropped `Color=` from the
+remaining names, and cleared the pinned Intent mode.
+
+| | |
+|---|---|
+| variants | 330 → **55** (`Size 11 × State 5`) |
+| axes | `Size(11) · Color(6) · State(5)` → `Size(11) · State(5)` |
+| instances rendering correctly | **30** (6 intents × 5 styles), all from those 55 |
+| distinct resolved fills | **6/6** — `#c22d6d · #c53637 · #267d30 · #fc9f30 · #cacaca · #1479b0` |
+| label colours correct across the matrix | **30/30** |
+
+Note `Style` is *already* a variable mode, not a variant axis. Designers set it
+that way today, so colour-by-mode introduces no new interaction — it makes colour
+consistent with style.
+
+### The spike found a shipped bug: icon colour is wired to a stale collection
+
+Confirmed on the **live published** Button, not the clone:
+
+| combo | label | icon | |
+|---|---|---|---|
+| info / Soft | `#14557b` | `#88234d` accent | ✗ |
+| info / Outline | `#14557b` | `#88234d` accent | ✗ |
+| error / Ghost | `#8a2828` | `#534e50` grey | ✗ |
+| accent / Link | `#88234d` | `#fcfcfc` white | ✗ invisible on white |
+| error / Link | `#8a2828` | `#fcfcfc` white | ✗ invisible on white |
+
+Label and icon both bind to a variable named `component/fg`, but they are **two
+different variables**:
+
+- label → `VariableID:7:10`, local, collection `Component/Style` — correct.
+- icon → a **remote** variable in a collection named **`SPIKE Style`**, published
+  from the icon library. Modes `[Solid, Soft, Outline, Ghost]` — **no Link mode**,
+  `Ghost` hardcoded to `#534e50`, and no chain into `Component/Intent` at all.
+
+That accounts for every symptom: Ghost icons are always grey because the value is
+hardcoded; Link icons are white because there is no Link mode so it falls back to
+Solid; Info icons are accent because nothing chains to Intent. Setting the Intent
+mode directly on the glyph does not help — the variable cannot see this file's
+collections.
+
+**Code is unaffected.** `icon.tsx` renders `stroke="currentColor"`, so an icon
+cannot diverge from its label by construction. This is Figma-only — the mirror of
+`MENU-ITEM-HOVER`, which was Figma-ahead-of-code.
+
+**Why it survived a full port and audit:** it only shows on a non-accent button
+that has an icon. Every example screen uses accent buttons.
+
+**Fix** (needs confirming inside the icon library `Vst4WnV0LYfRZdC1dc7qv6`, then a
+republish of both files): the 4,962 icons should bind to the *local*
+`component/fg` in `Component/Style`, or `SPIKE Style` should be replaced by the
+real collection. The name alone says it was never meant to ship.
+
+This is independent of the palette work — it is broken today — but it must be
+fixed before Button's colour moves to a mode, because that change makes
+non-accent buttons far easier to reach.
+
 ## 9. Proposed sequence
 
 Mirrors the surface-model rebuild, which caught things a straight implementation

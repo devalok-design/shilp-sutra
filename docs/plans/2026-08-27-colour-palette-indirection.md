@@ -216,27 +216,109 @@ own rule (CLAUDE.md, 0.40.0) that is a **widening**, so **non-breaking**. Badge'
 
 **Contrast is the real one.** Every solid pairing we ship is measured — that was
 the whole 0.57.0 accessibility pass. An arbitrary consumer palette can fail AA on
-`palette-solid` and nothing would catch it. Mitigations, in order of preference:
+`palette-solid` and nothing would catch it.
 
-1. Registering a palette **requires** `palette-contrast`; it is never derived.
-2. Extend `scripts/audit-contrast.mjs` to iterate all registered palettes rather
-   than a fixed pairing list, so every built-in palette stays gated.
-3. Document that a consumer-registered palette is outside our contrast guarantee,
-   and say so in the recipe.
+**Decided: gate what we ship, derive for what we don't.** Two tiers, not one.
 
-**Figma caps at 10 modes.** Measured, not assumed — `addMode` throws
-*"Limited to 10 modes only"* on the 11th. So:
+*Built-in palettes* declare `palette-contrast` explicitly — hand-picked, never
+derived — and `scripts/audit-contrast.mjs` is extended to iterate every
+registered palette instead of a fixed pairing list. That is strictly stronger
+than today, where the gate checks a hardcoded set.
 
-- Button (6), Alert (5), Slider (4), Progress (4), Toast (6) → colour can become
-  a mode. 375 variants → 65.
-- **Badge (14) cannot.** Either colour stays a variant axis for Badge, or Figma
-  ships 10 of the 14 and the rest are code-only. Needs a decision and a
-  `docs/deviations.md` entry either way.
+*Consumer palettes* get an automatic derivation as the default, so the failure
+mode is "slightly blunt" rather than "unreadable". CSS relative colour syntax
+does this natively:
+
+```css
+--color-palette-contrast: oklch(from var(--color-palette-solid)
+                                clamp(0, (0.62 - l) * 1000, 1) 0 0);
+```
+
+Lightness above the threshold yields black, below yields white. Supported in
+Chrome 111+, Safari 15.4+ and Firefox 113+ (~93–95%), so it needs a static
+fallback declared before it — a plain `@supports` guard is enough.
+`contrast-color()` would be the purpose-built answer but is Safari 26+ only, so
+not yet.
+
+The author can always override the derived value, and the recipe states plainly
+that a consumer-registered palette is outside our measured guarantee.
+
+Worth noting the reference systems disagree here: **Chakra requires** the author
+to supply `contrast`, and **shadcn's whole convention is paired** — every
+`--primary` ships a `--primary-foreground`. Deriving is the more forgiving
+choice, and it is only the default, not the rule.
+
+**Figma caps at 10 modes** — measured, `addMode` throws *"Limited to 10 modes
+only"* on the 11th. Plan-dependent: Enterprise allows 40. See §7a, which
+concludes this constrains exactly one component.
+
+### 7a. Figma: the ceiling constrains exactly one component
+
+The first framing of this section asked "what do we do about Badge's 14 colours
+exceeding 10 modes". That was the wrong question — it accepted a limitation
+instead of checking whether it applied.
+
+**A colour costs a component the product of its *other* axes.**
+
+| set | other axes | variants per colour | today | if colour → mode |
+|---|---|---:|---|---:|
+| **Button** | Size 11 × State 5 | **55** | 6 → 330 | 55 |
+| Badge | Size 4 | **4** | 14 → 56 | 4 |
+| Alert | Size 3 | 3 | 5 → 15 | 3 |
+| Slider | Size 3 | 3 | 4 → 12 | 3 |
+| Progress | Size 3 | 3 | 4 → 12 | 3 |
+| Toast | — | 1 | 6 → 6 | 1 |
+
+Only Button is expensive. Badge carrying 30 colours would cost 120 variants,
+which is less than Button costs for six.
+
+**So the rule is: take the mode trade only where the variant reduction is large.**
+Everywhere else keep enumerating — a variant axis has no ceiling, so a designer
+can add as many Badge colours as they want, which is the behaviour we actually
+want and already have.
+
+Concretely:
+
+- **Button** → colour becomes a variable mode. 330 → 55. Capped at 10 palettes in
+  Figma; unlimited in code. This is the one place design and code diverge, and it
+  needs a `docs/deviations.md` entry.
+- **Badge, Alert, Slider, Progress, Toast** → colour stays a variant axis,
+  binding directly to each palette's tokens as they do today. Unlimited, cheap,
+  no ceiling, no divergence.
+
+Note the subtlety that makes this work: a Figma colour *variant* is only capped
+if its job is "select a palette mode". If it binds straight to that colour's own
+variables, there is no cap. Enumerating is the unlimited option in Figma; the
+indirection is the cheap one. They are opposite trades and we should use each
+where it wins.
+
+Two ways to remove even Button's ceiling, both out of scope here but worth
+recording: **Enterprise** raises modes 10 → 40, and **Button's 5-value `State`
+axis** is itself worth auditing — dropping it would take cost-per-colour from 55
+to 11 and let Button enumerate too.
 
 **A cascading palette is a footgun.** `data-palette` inherits, so an error
-palette on a container silently recolours a nested neutral button. Radix and
-Chakra both accept this. We should decide deliberately whether nested components
-reset to the default or inherit.
+palette on a container silently recolours a nested neutral button.
+
+The three reference systems do not agree, and the disagreement is informative:
+
+| system | mechanism | cascades? |
+|---|---|---|
+| **Chakra v3** | `colorPalette` prop → CSS variables | **yes**, at any DOM depth |
+| **Radix Themes** | `[data-accent-color]` attribute | **yes**, nested components inherit |
+| **shadcn** | none — `bg-primary` baked per variant | **n/a** |
+
+shadcn is the interesting one: it has **no colour prop at all**. Components hard-code
+`bg-primary text-primary-foreground` / `bg-destructive text-destructive-foreground`,
+and rebranding means redefining `--primary` globally. It sidesteps the question
+by never letting a component choose — which is the strictest possible reading of
+the Polaris/Material "components get roles, not colours" position.
+
+That is not available to us: we already ship `color` on six components and 14
+Badge colours, so the choice is between the two systems that *do* cascade. Both
+chose to. Recommendation is to cascade and document it, with `data-palette` on a
+component always winning over an inherited one — the same precedence a designer
+expects from a nested variable mode in Figma.
 
 **`palette-*` is a new public token namespace.** Once shipped, consumers depend on
 those ten names. Getting the contract right matters more than shipping it fast —
@@ -280,16 +362,16 @@ Steps 1–2 are the ones worth doing before committing to any of the rest.
 1. ~~Ten roles, or raw `palette-1..12`?~~ **Answered by `neutral` — roles.** See
    §4. Left here because it was the question I expected to be hardest and it
    turned out to be decided by evidence rather than taste.
-2. **Badge in Figma**: colour stays a variant axis (56 variants), or Figma ships
-   10 of the 14 and the rest are code-only? The 10-mode ceiling is measured and
-   not negotiable.
-3. **Does `data-palette` cascade, or do components reset to default unless told?**
-   Radix and Chakra both cascade. Cascading is more useful and more surprising —
-   an error palette on a container silently recolours a neutral button inside it.
-4. **Do consumer-registered palettes get a contrast gate**, or a documented
-   "outside the guarantee" boundary? Gating means shipping a runtime or build-time
-   check consumers must pass; documenting means our AA claim quietly stops being
-   true for anyone who registers one.
+2. ~~Badge in Figma?~~ **Answered — Badge keeps its variant axis and stays
+   unlimited.** See §7a. The ceiling only binds Button, because a colour costs a
+   component the product of its other axes and Button's is 55 against Badge's 4.
+3. ~~Does `data-palette` cascade?~~ **Yes**, with an explicit `data-palette`
+   always beating an inherited one. Chakra and Radix both cascade; shadcn avoids
+   the question by having no colour prop, which is not open to us. See §7.
+4. ~~Contrast gate or documented boundary?~~ **Both, in two tiers.** Built-ins
+   declare `palette-contrast` explicitly and are gated by an extended
+   `audit-contrast`; consumer palettes get CSS-derived contrast as a default and
+   a stated boundary. See §7.
 5. **How many palettes ship built-in?** All 13 primitive ramps, or the current 14
    semantic + category names? Built-in palettes are the ones we contrast-gate, so
    this is a support commitment, not just a list.

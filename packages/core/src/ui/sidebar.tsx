@@ -308,7 +308,11 @@ const Sidebar = forwardRef<
               : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
             variant === 'floating' || variant === 'inset'
               ? 'p-ds-03 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_1rem_+2px)]'
-              : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l',
+              // `border-surface-border` is load-bearing: Tailwind 4 leaves an
+              // uncoloured border at `currentColor`, so a bare `border-r` here
+              // inherited `text-surface-fg` and drew a 12.69:1 (light) /
+              // 15.44:1 (dark) rule down the full height of the app.
+              : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) border-surface-border group-data-[side=left]:border-r group-data-[side=right]:border-l',
             className,
           )}
           {...props}

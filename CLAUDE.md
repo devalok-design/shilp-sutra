@@ -94,7 +94,9 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 **Every set's `defaultVariant` now matches its code default.** It is READ-ONLY and derived from geometry (top-left-most variant), so a tidy ascending grid silently hands consumers the smallest size — 18 of 25 sets did. Assert `set.defaultVariant.name` after any re-layout.
 
-**`Accessibility review` page** carries three measured contrast failures that are CODE bugs this library reproduces faithfully, with proposed fixes and live-bound specimens: Alert dismiss on solid (**1.01:1**), Badge category solid in dark (3.28–3.70:1), Input/Textarea placeholder in light (4.14:1). Decide these before the next release.
+**`Accessibility review` page** carried three measured contrast failures that were CODE bugs this library reproduced faithfully: Alert dismiss on solid (**1.01:1**), Badge category solid in dark (3.28–3.70:1), Input/Textarea placeholder in light (4.14:1). **All three are FIXED in code** on `feat/surface-model` (changeset `clear-badges-see-clearly.md`) — Alert inherits its own fg on solid, `--color-category-fg` inverts with the theme, and the four field controls moved to `surface-fg-muted`.
+
+**The Figma library still shows the OLD, failing values** — it was built to match the code as it then was, so code and Figma have diverged on exactly these three. Update the specimens *and the affected components* before the next republish, or the library will teach the bug we just fixed.
 
 Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
 

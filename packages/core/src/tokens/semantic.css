@@ -178,7 +178,8 @@
      because in light it is not raised — it is the same white as the page.
      Aliased so nothing breaks mid-migration; `pnpm lint --fix` rewrites them.
      NOTE hover/focus utilities must retarget to `-panel-hover`, NOT rename: a
-     hover painted with a container value is invisible (see MENU-ITEM-HOVER). */
+     hover painted with a container value is invisible. That is what made every
+     menu item's hover a no-op in light before this rebuild. */
   --color-surface-raised:        var(--color-surface-panel);
   --color-surface-raised-hover:  var(--color-surface-panel-hover);
   --color-surface-raised-active: var(--color-surface-panel-active);

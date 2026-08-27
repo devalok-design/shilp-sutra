@@ -96,7 +96,7 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 **`Accessibility review` page** carried three measured contrast failures that were CODE bugs this library reproduced faithfully: Alert dismiss on solid (**1.01:1**), Badge category solid in dark (3.28–3.70:1), Input/Textarea placeholder in light (4.14:1). **All three are FIXED in code** on `feat/surface-model` (changeset `clear-badges-see-clearly.md`) — Alert inherits its own fg on solid, `--color-category-fg` inverts with the theme, and the four field controls moved to `surface-fg-muted`.
 
-**The Figma library still shows the OLD, failing values** — it was built to match the code as it then was, so code and Figma have diverged on exactly these three. Update the specimens *and the affected components* before the next republish, or the library will teach the bug we just fixed.
+**Figma is already synced** — verified by resolving the bindings, not by reading this note: Alert `*/dismiss` aliases the alert's own `*/body` in Solid mode, Badge category `*/fg` aliases `category-fg` (`neutral/0` light, `neutral/1` dark), and `Component/Field Content` `field/text-color` resolves to `surface-fg-muted` in Placeholder mode. The `Accessibility review` page carries before/after specimens bound to live variables and is labelled Fixed. Nothing to do there.
 
 Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
 

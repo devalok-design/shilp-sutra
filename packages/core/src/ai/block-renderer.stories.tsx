@@ -330,7 +330,7 @@ function WeatherCard({ data }: { data: { city: string; temp: number; condition: 
       style={{
         padding: 16,
         borderRadius: 12,
-        background: 'var(--color-surface-raised)',
+        background: 'var(--color-surface-panel)',
         border: '1px solid var(--color-border-default)',
       }}
     >
@@ -415,7 +415,7 @@ function ProviderWeatherCard({ data }: { data: { city: string; temp: number; con
       style={{
         padding: 16,
         borderRadius: 12,
-        background: 'var(--color-surface-raised)',
+        background: 'var(--color-surface-panel)',
         border: '1px solid var(--color-border-default)',
       }}
     >

@@ -152,7 +152,7 @@ export const Default: Story = {
           Command Palette
         </p>
         <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> (or <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Cmd+K</kbd> on Mac) to open the palette.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> (or <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Cmd+K</kbd> on Mac) to open the palette.
         </p>
         <p style={{ fontSize: 12, color: 'var(--color-surface-fg-subtle)' }}>
           Use arrow keys to navigate, Enter to select, Escape to close.
@@ -185,7 +185,7 @@ export const NavigationOnly: Story = {
       <CommandPalette {...args} />
       <div style={{ padding: 32 }}>
         <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> to open. This palette has only navigation items.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> to open. This palette has only navigation items.
         </p>
       </div>
     </div>
@@ -201,7 +201,7 @@ export const ActionsOnly: Story = {
       <CommandPalette {...args} />
       <div style={{ padding: 32 }}>
         <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> to open. This palette has only action items.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> to open. This palette has only action items.
         </p>
       </div>
     </div>
@@ -218,7 +218,7 @@ export const CustomPlaceholder: Story = {
       <CommandPalette {...args} />
       <div style={{ padding: 32 }}>
         <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> to open. This palette uses a custom placeholder.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> to open. This palette uses a custom placeholder.
         </p>
       </div>
     </div>
@@ -235,7 +235,7 @@ export const CustomEmptyMessage: Story = {
       <CommandPalette {...args} />
       <div style={{ padding: 32 }}>
         <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> to open, then type a query that matches nothing to see the custom empty message.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> to open, then type a query that matches nothing to see the custom empty message.
         </p>
       </div>
     </div>
@@ -252,7 +252,7 @@ export const EmptyGroups: Story = {
       <CommandPalette {...args} />
       <div style={{ padding: 32 }}>
         <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> to open. This palette has no commands, showing the empty state.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> to open. This palette has no commands, showing the empty state.
         </p>
       </div>
     </div>
@@ -269,7 +269,7 @@ export const WithSearchCallback: Story = {
       <CommandPalette {...args} />
       <div style={{ padding: 32 }}>
         <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> to open. Check the browser console for search query logs as you type.
+          Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> to open. Check the browser console for search query logs as you type.
         </p>
       </div>
     </div>
@@ -298,7 +298,7 @@ export const ControlledOpen: Story = {
               padding: '8px 16px',
               borderRadius: 8,
               border: '1px solid var(--color-surface-border-strong)',
-              background: 'var(--color-surface-raised)',
+              background: 'var(--color-surface-panel)',
               color: 'var(--color-surface-fg)',
               cursor: 'pointer',
               width: 'fit-content',
@@ -322,7 +322,7 @@ export const CustomKeybinding: Story = {
     <div style={{ height: '100vh', position: 'relative', padding: 32 }}>
       <CommandPalette {...args} />
       <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-        This palette opens with <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+P</kbd> instead of Ctrl+K.
+        This palette opens with <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+P</kbd> instead of Ctrl+K.
       </p>
     </div>
   ),
@@ -345,7 +345,7 @@ export const DisabledKeybinding: Story = {
               padding: '8px 16px',
               borderRadius: 8,
               border: '1px solid var(--color-surface-border-strong)',
-              background: 'var(--color-surface-raised)',
+              background: 'var(--color-surface-panel)',
               color: 'var(--color-surface-fg)',
               cursor: 'pointer',
               width: 'fit-content',
@@ -402,7 +402,7 @@ export const RichLabels: Story = {
     <div style={{ height: '100vh', position: 'relative', padding: 32 }}>
       <CommandPalette {...args} />
       <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-        Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> to see rich labels with match highlighting and badges.
+        Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> to see rich labels with match highlighting and badges.
       </p>
     </div>
   ),
@@ -426,7 +426,7 @@ export const CustomEmptyState: Story = {
     <div style={{ height: '100vh', position: 'relative', padding: 32 }}>
       <CommandPalette {...args} />
       <p style={{ fontSize: 13, color: 'var(--color-surface-fg-muted)' }}>
-        Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-raised)' }}>Ctrl+K</kbd> to see the custom empty state with an icon and suggestion text.
+        Press <kbd style={{ padding: '2px 6px', borderRadius: 4, border: '1px solid var(--color-surface-border-strong)', fontSize: 12, background: 'var(--color-surface-panel)' }}>Ctrl+K</kbd> to see the custom empty state with an icon and suggestion text.
       </p>
     </div>
   ),

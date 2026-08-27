@@ -9,7 +9,7 @@
     max: number (default: 4, overflow shows "+N" badge)
     size: "xs" | "sm" | "md" | "lg" | "xl"
     showTooltip: boolean (default: true)
-    borderColor: "surface-base" | "surface-raised" (default: "surface-raised") — overlap border color
+    borderColor: "surface-base" | "surface-panel" (default: "surface-panel") — overlap border color
     onOverflowClick: () => void — makes the "+N" badge interactive (button)
     renderAvatar: (user: AvatarUser, index: number) => ReactNode — custom avatar render
     expandDirection: "left" | "right" (default: "right") — direction group expands on hover
@@ -22,7 +22,7 @@
     indicator?: "lead" | "admin" | ReactNode — small dot indicator at top-right of avatar
 
 ## Defaults
-    size="md", max=4, showTooltip=true, borderColor="surface-raised", expandDirection="right", expandAmount="default"
+    size="md", max=4, showTooltip=true, borderColor="surface-panel", expandDirection="right", expandAmount="default"
 
 ## Example
 ```jsx
@@ -42,7 +42,7 @@
 - **Built on ui/Avatar** — each slot is an Avatar with overlap + border + optional Tooltip.
 - **Wraps TooltipProvider internally** — don't add another.
 - **renderAvatar** escape hatch for custom shapes. Wrapper handles overlap/border positioning; your renderer sets size + shape.
-- **borderColor** must match the surface the group sits on (`surface-raised` on Card, `surface-base` on page bg). Mismatch = visible seam.
+- **borderColor** must match the surface the group sits on (`surface-panel` on Card, `surface-base` on page bg). Mismatch = visible seam.
 - **Overflow:** +N badge with optional `onOverflowClick` → pair with a Popover/Sheet for "show all members".
 - Per-user `ring` (lead/admin/client) surfaces Avatar's ring semantic at group level — use for role/presence hints.
 
@@ -51,7 +51,7 @@
 - Users beyond `max` are collapsed into a "+N" overflow badge
 - Missing `image` falls back to initials derived from `name`
 - Hover expand animation uses CSS `group-hover` — parent must not clip overflow
-- `borderColor` should match the surface the group sits on (`surface-base` on page bg, `surface-raised` on cards)
+- `borderColor` should match the surface the group sits on (`surface-base` on page bg, `surface-panel` on cards)
 - `renderAvatar` wrapper is positioning-only — pass `size` directly to your Avatar (do NOT use `className="h-full w-full"`)
 
 ## Changes

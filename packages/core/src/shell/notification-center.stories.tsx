@@ -271,7 +271,7 @@ export const WithHeaderActions: Story = {
     headerActions: (
       <button
         type="button"
-        className="flex items-center justify-center rounded-control-inner p-ds-01 text-surface-fg-subtle hover:bg-surface-raised hover:text-surface-fg-muted"
+        className="flex items-center justify-center rounded-control-inner p-ds-01 text-surface-fg-subtle hover:bg-surface-panel-hover hover:text-surface-fg-muted"
         aria-label="Notification settings"
       >
         ⚙

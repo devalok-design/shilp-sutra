@@ -166,7 +166,7 @@ const AudioPlayer = React.forwardRef<HTMLDivElement, AudioPlayerProps>(
           type="button"
           onClick={cycleSpeed}
           aria-label={`Playback speed ${speed}x`}
-          className="shrink-0 text-body-xs bg-surface-raised rounded-pill px-ds-02 py-[1px] hover:bg-surface-raised-hover tabular-nums transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2"
+          className="shrink-0 text-body-xs bg-surface-panel rounded-pill px-ds-02 py-[1px] hover:bg-surface-panel-hover tabular-nums transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2"
         >
           {speed}x
         </button>

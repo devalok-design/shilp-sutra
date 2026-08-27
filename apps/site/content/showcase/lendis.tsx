@@ -467,7 +467,7 @@ export function LendisShowcase() {
                     aria-valuenow={kycScore}
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    className="relative h-2 w-full overflow-hidden rounded-pill bg-surface-raised-hover border border-surface-border-subtle"
+                    className="relative h-2 w-full overflow-hidden rounded-pill bg-surface-panel-hover border border-surface-border-subtle"
                   >
                     <div
                       className="absolute inset-y-0 left-0 bg-success-9 rounded-pill transition-[width] duration-moderate-02 ease-productive-standard"

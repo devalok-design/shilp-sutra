@@ -77,15 +77,21 @@ The semantic surface names are the public API. The old numeric names (`surface-1
 | Token                          | Use for                                                                            |
 | ------------------------------ | ---------------------------------------------------------------------------------- |
 | `bg-surface-base`              | Page background                                                                    |
-| `bg-surface-raised`            | Cards, widgets, panels — anything that sits **on** the page                        |
-| `bg-surface-sunken`            | Shell chrome (Sidebar, TopBar), recessed regions                                   |
+| `bg-surface-panel`             | Cards, widgets, panels — anything that sits **on** the page                        |
+| `bg-surface-sunken`            | Wells and recessed regions                                                         |
 | `bg-surface-overlay`           | Dialog, Sheet, Popover, Toast, Combobox menus, any floating overlay                |
-| `bg-surface-raised-hover`      | Hover state on raised surfaces                                                     |
-| `bg-surface-raised-active`     | Active/pressed state on raised surfaces                                            |
+| `bg-surface-panel-hover`       | Hover state on panels                                                              |
+| `bg-surface-panel-active`      | Active/pressed state on panels                                                     |
 | `bg-surface-disabled`          | Disabled surfaces (paired with `text-surface-fg-disabled`)                         |
 | `bg-surface-inverted`          | Inverted surfaces (dark on light themes, light on dark themes)                     |
 
-Putting `bg-surface-base` on a card is a bug — cards belong on `surface-raised`. The pre-publish audit in the DS repo enforces this and blocks the old numeric aliases in component source files.
+Putting `bg-surface-base` on a card is a bug — cards belong on `surface-panel`. The pre-publish audit in the DS repo enforces this and blocks the old numeric aliases in component source files.
+
+**In LIGHT, `base`, `panel` and `overlay` are the same white.** That is deliberate: an edge makes a card a card, not a fill. So **never paint an interaction state with a container value** — `hover:bg-surface-panel` is invisible. Use `bg-surface-panel-hover` / `-panel-active`. This applies to JS conditionals too (`isSelected ? 'bg-surface-panel' : …`), which no lint rule can see.
+
+Borders come in two families: `surface-border-subtle` / `-border` / `-border-strong` are decorative and translucent; `surface-border-interactive` / `-interactive-strong` are solid control edges that carry WCAG 1.4.11. Form controls use the interactive pair.
+
+`surface-raised` was renamed `surface-panel` in 0.57.0 and `surface-chrome` was removed. Old names still resolve; run `pnpm eslint . --fix` to migrate.
 
 ## Adding a component
 

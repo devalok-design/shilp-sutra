@@ -288,7 +288,7 @@ export default function FigmaMakePage() {
               {FAQ.map((item) => (
                 <details
                   key={item.q}
-                  className="group rounded-control border border-surface-border bg-surface-raised"
+                  className="group rounded-control border border-surface-border bg-surface-panel"
                 >
                   <summary className="cursor-pointer px-ds-05 py-ds-04 text-ds-md font-medium text-fg list-none flex items-center justify-between gap-ds-03">
                     <span>{item.q}</span>

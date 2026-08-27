@@ -7,15 +7,15 @@ The kit ships five semantic surface tiers and a paired shadow system. **Picking 
 | Tier | Token | What sits here |
 |---|---|---|
 | **Base** | `surface-base` | Page background. The "back wall." |
-| **Raised** | `surface-raised` | Cards, widgets, panels — anything that floats **on** the page. |
+| **Raised** | `surface-panel` | Cards, widgets, panels — anything that floats **on** the page. |
 | **Sunken** | `surface-sunken` | Shell chrome (Sidebar, TopBar), board columns, segmented-control tracks. |
 | **Overlay** | `surface-overlay` | Floating layers — Dialog, Sheet, Popover, Dropdown, Toast, Tooltip-when-light, Input field. |
 | **Inverted** | `surface-inverted` | Tooltips, inverted badges. Pair with `text-surface-inverted-fg`. |
 
 Each tier has hover / active variants:
 
-- `surface-raised-hover` — hover on a raised element.
-- `surface-raised-active` — pressed / selected raised element.
+- `surface-panel-hover` — hover on a raised element.
+- `surface-panel-active` — pressed / selected raised element.
 
 And a disabled state:
 
@@ -27,8 +27,8 @@ And a disabled state:
 |---|---|---|
 | Page / layout shell | `surface-base` | none |
 | Sidebar / TopBar (shell) | `surface-sunken` | `shadow-raised` |
-| Card / widget / panel | `surface-raised` | `shadow-raised` |
-| Card on hover | `surface-raised` | `shadow-raised-hover` |
+| Card / widget / panel | `surface-panel` | `shadow-raised` |
+| Card on hover | `surface-panel` | `shadow-raised-hover` |
 | Board column / well / track | `surface-sunken` | none |
 | Popover / dropdown / menu | `surface-overlay` | `shadow-floating` |
 | Dialog / modal / sheet | `surface-overlay` | `shadow-overlay` |
@@ -64,17 +64,17 @@ Shadow tokens include a 1-px ring layer (inset hairline + drop shadow). Adding a
 
 ❌ **Wrong:**
 ```tsx
-<div className="bg-surface-raised border border-surface-border shadow-raised rounded-(--radius-surface)">
+<div className="bg-surface-panel border border-surface-border shadow-raised rounded-(--radius-surface)">
 ```
 
 ✅ **Right (shadow only):**
 ```tsx
-<div className="bg-surface-raised shadow-raised rounded-(--radius-surface)">
+<div className="bg-surface-panel shadow-raised rounded-(--radius-surface)">
 ```
 
 ✅ **Right (border only — when shadow is unwanted, e.g. dense lists):**
 ```tsx
-<div className="bg-surface-raised border border-surface-border rounded-(--radius-surface)">
+<div className="bg-surface-panel border border-surface-border rounded-(--radius-surface)">
 ```
 
 `<Card>` already follows this rule. Don't override with extra border classes.
@@ -113,7 +113,7 @@ In dark mode the kit lightens surfaces with elevation (so `surface-overlay` is *
 
 ## Rules
 
-- **Card-like elements** (anything that reads as a panel on the page) → `surface-raised`, never `surface-base`.
+- **Card-like elements** (anything that reads as a panel on the page) → `surface-panel`, never `surface-base`.
 - **Overlay-like elements** → `surface-overlay`, always.
 - **Never** combine an explicit border with a shadow token.
 - **Never** invent a sixth tier. Five is the system.

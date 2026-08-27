@@ -18,8 +18,8 @@ The low-level elevated container primitive. Owns background + shadow + radius + 
     Surface: elevation="raised", padding="none", radius="surface", bordered=false
 
 ## Elevation
-    flat      — bg-surface-raised, no shadow (pair with `bordered` for an on-page tile)
-    raised    — bg-surface-raised + shadow-raised (card level)
+    flat      — bg-surface-panel, no shadow (pair with `bordered` for an on-page tile)
+    raised    — bg-surface-panel + shadow-raised (card level)
     floating  — bg-surface-overlay + shadow-floating (toasts, floating toolbars)
     overlay   — bg-surface-overlay + shadow-overlay (popovers, menus, dialogs)
 
@@ -48,7 +48,7 @@ The low-level elevated container primitive. Owns background + shadow + radius + 
 
 ## Gotchas
 - **Edge OR elevation, never both.** Combining `bordered` with a shadowed elevation (raised/floating/overlay) is the double-edge anti-pattern and dev-warns. Use `elevation="flat"` with `bordered`, or drop `bordered` and let the shadow be the edge.
-- `flat` still uses `bg-surface-raised` (a card without a shadow), not the page background — it is a surface, not a hole.
+- `flat` still uses `bg-surface-panel` (a card without a shadow), not the page background — it is a surface, not a hole.
 
 ## Changes
 ### Unreleased

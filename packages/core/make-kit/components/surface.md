@@ -9,7 +9,7 @@ The low-level elevated container. It paints a tokened surface — background + s
 ## When to use
 
 - You need a plain elevated box (a promo, a callout, a small panel) and don't need Card's header/content/footer slots.
-- You're building a new component that sits on a surface — compose `Surface`, never hand-roll `bg-surface-raised … shadow-raised`.
+- You're building a new component that sits on a surface — compose `Surface`, never hand-roll `bg-surface-panel … shadow-raised`.
 
 Use `<Card>` instead when you want the gap-model padding rhythm and the `CardHeader`/`CardContent`/`CardFooter` slots. Use raw utilities for nothing — if it's a surface, it's a `Surface`.
 
@@ -17,8 +17,8 @@ Use `<Card>` instead when you want the gap-model padding rhythm and the `CardHea
 
 | `elevation` | Surface | Use for |
 |---|---|---|
-| `flat` | `bg-surface-raised`, no shadow | On-page tiles. Pair with `bordered` for an edge. |
-| `raised` *(default)* | `bg-surface-raised` + `shadow-raised` | Cards, panels — anything sitting on the page. |
+| `flat` | `bg-surface-panel`, no shadow | On-page tiles. Pair with `bordered` for an edge. |
+| `raised` *(default)* | `bg-surface-panel` + `shadow-raised` | Cards, panels — anything sitting on the page. |
 | `floating` | `bg-surface-overlay` + `shadow-floating` | Toasts, floating toolbars. |
 | `overlay` | `bg-surface-overlay` + `shadow-overlay` | Popovers, menus, dialogs. |
 
@@ -55,6 +55,6 @@ Plus all native `div` props. Server-safe; forwards ref.
 ## Rules
 
 - **Edge OR elevation, never both.** `bordered` + a shadowed `elevation` is the double-edge anti-pattern (dev-warns). Use `elevation="flat" bordered`, or drop `bordered`.
-- `flat` is still a surface (`bg-surface-raised`), not the page — a card without a shadow, not a hole in the page.
+- `flat` is still a surface (`bg-surface-panel`), not the page — a card without a shadow, not a hole in the page.
 - Don't reach for `Surface` when you mean `Card` — if you're rebuilding header/content/footer spacing by hand, use `Card`.
 - Padding is symmetric. For anything asymmetric, use `className` or `Card`.

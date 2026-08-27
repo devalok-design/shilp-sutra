@@ -81,7 +81,7 @@ export function SiteHeader() {
             // raised dark surface (the wordmark swaps to its white variant in
             // dark, below, so nothing vanishes). Translucent + blurred so the
             // backdrop shows through.
-            'bg-surface-raised/80 border-surface-border-subtle backdrop-blur-2xl backdrop-saturate-150 shadow-overlay',
+            'bg-surface-panel/80 border-surface-border-subtle backdrop-blur-2xl backdrop-saturate-150 shadow-overlay',
           ].join(' ')}
         >
           {/* Logo cluster — on mobile the BrandSwitcher sits inline with the
@@ -202,7 +202,7 @@ export function SiteHeader() {
                             'flex items-center gap-ds-02 px-ds-03 py-ds-03 rounded-control text-ds-md',
                             isAccent
                               ? 'text-secondary-11 hover:bg-secondary-2'
-                              : 'text-surface-fg hover:bg-surface-raised-hover',
+                              : 'text-surface-fg hover:bg-surface-panel-hover',
                           ].join(' ')}
                         >
                           {link.label}

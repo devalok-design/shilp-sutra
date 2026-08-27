@@ -148,7 +148,7 @@ const CHAT_PROSE = [
   '[&_p:last-child]:mb-0',
   '[&_ul]:ml-ds-04 [&_ul]:list-disc [&_ol]:ml-ds-04 [&_ol]:list-decimal',
   '[&_li]:text-surface-fg',
-  '[&_code]:rounded [&_code]:bg-surface-raised [&_code]:px-ds-02 [&_code]:py-[1px] [&_code]:text-body-md [&_code]:text-accent-11',
+  '[&_code]:rounded [&_code]:bg-surface-panel [&_code]:px-ds-02 [&_code]:py-[1px] [&_code]:text-body-md [&_code]:text-accent-11',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   '[&_mark]:rounded-xs [&_mark]:bg-warning-3 [&_mark]:px-[2px]',
   '[&_a]:text-accent-11 [&_a]:underline',
@@ -181,9 +181,9 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
         aria-expanded={open}
         className={cn(
           'inline-flex h-ds-xs-plus w-5 items-center justify-center rounded-control touch-target',
-          'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg',
+          'text-surface-fg-subtle hover:bg-surface-panel-hover hover:text-surface-fg',
           'transition-colors duration-fast-01 ease-productive-standard',
-          open && 'bg-surface-raised-hover text-surface-fg',
+          open && 'bg-surface-panel-hover text-surface-fg',
         )}
       >
         <Icon icon={IconChevronDown} size="xs" />
@@ -197,7 +197,7 @@ function SplitSendDropdown({ options }: { options: Array<{ label: string; icon?:
               key={i}
               type="button"
               onClick={() => { opt.onSelect(); setOpen(false) }}
-              className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02 text-body-sm text-surface-fg hover:bg-surface-raised-hover transition-colors duration-fast-01"
+              className="flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02 text-body-sm text-surface-fg hover:bg-surface-panel-hover transition-colors duration-fast-01"
             >
               {opt.icon && <opt.icon className="h-ico-sm w-ico-sm text-surface-fg-muted" />}
               {opt.label}
@@ -272,8 +272,8 @@ function BubbleBtn({
       className={cn(
         'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target',
         'transition-colors duration-fast-01 ease-productive-standard',
-        'hover:bg-surface-raised-hover',
-        isActive ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
+        'hover:bg-surface-panel-hover',
+        isActive ? 'bg-surface-panel-hover text-accent-11' : 'text-surface-fg-subtle',
       )}
     >
       {children}
@@ -761,9 +761,9 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
           role="region"
           aria-label="Message composer"
           className={cn(
-            'flex-1 min-w-0 overflow-hidden rounded-surface border border-surface-border-strong bg-surface-raised-hover',
+            'flex-1 min-w-0 overflow-hidden rounded-surface border border-surface-border-interactive bg-surface-panel-hover',
             'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
-            'hover:bg-surface-raised-active',
+            'hover:bg-surface-panel-active',
             'focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-9',
             state === 'recording' && 'border-error-7/30',
             isDragging && 'border-dashed border-accent-7 bg-accent-2',
@@ -878,8 +878,8 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                     className={cn(
                       'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target',
                       'transition-colors duration-fast-01 ease-productive-standard',
-                      'hover:bg-surface-raised-hover',
-                      toolbarExpanded ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
+                      'hover:bg-surface-panel-hover',
+                      toolbarExpanded ? 'bg-surface-panel-hover text-accent-11' : 'text-surface-fg-subtle',
                     )}
                   >
                     <Icon icon={IconTextSize} size="xs" />
@@ -895,7 +895,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
                       aria-label="Emoji"
                       className={cn(
                         'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target transition-colors duration-fast-01',
-                        showEmojiPicker ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle hover:bg-surface-raised-hover hover:text-surface-fg',
+                        showEmojiPicker ? 'bg-surface-panel-hover text-accent-11' : 'text-surface-fg-subtle hover:bg-surface-panel-hover hover:text-surface-fg',
                       )}
                     >
                       <Icon icon={IconMoodSmile} size="xs" />
@@ -1107,7 +1107,7 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
 
         {/* Disclaimer */}
         {disclaimer && (
-          <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle/50">
+          <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle">
             {disclaimer}
           </p>
         )}

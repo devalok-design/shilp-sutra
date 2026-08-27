@@ -120,8 +120,8 @@ const SlashCommandList = React.forwardRef<SlashCommandListRef, SlashCommandListP
                   className={cn(
                     'flex w-full items-center gap-ds-03 rounded-control px-ds-03 py-ds-02 text-left cursor-pointer',
                     fi === selectedIndex
-                      ? 'bg-surface-raised-hover'
-                      : 'hover:bg-surface-raised-hover',
+                      ? 'bg-surface-panel-hover'
+                      : 'hover:bg-surface-panel-hover',
                   )}
                 >
                   {IconComp && (

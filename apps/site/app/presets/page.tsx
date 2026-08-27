@@ -28,7 +28,7 @@ export default function PresetsIndexPage() {
           />
 
           {/* AI-native install pitch */}
-          <div className="mb-ds-08 flex flex-col gap-ds-02 rounded-control border border-surface-border bg-surface-raised p-ds-05">
+          <div className="mb-ds-08 flex flex-col gap-ds-02 rounded-control border border-surface-border bg-surface-panel p-ds-05">
             <div className="flex items-center gap-ds-02 text-accent-11">
               <IconSparkles size={16} />
               <Text variant="label-md">Install by asking</Text>
@@ -47,7 +47,7 @@ export default function PresetsIndexPage() {
               <Link
                 key={preset.slug}
                 href={`/presets/${preset.slug}`}
-                className="group flex flex-col gap-ds-03 rounded-control border border-surface-border bg-surface-raised p-ds-05 transition-colors duration-fast-01 hover:border-surface-border-strong hover:bg-surface-raised-hover"
+                className="group flex flex-col gap-ds-03 rounded-control border border-surface-border bg-surface-panel p-ds-05 transition-colors duration-fast-01 hover:border-surface-border-strong hover:bg-surface-panel-hover"
               >
                 <div className="flex items-start justify-between gap-ds-03">
                   <Text variant="heading-xs" className="text-surface-fg">{preset.title}</Text>

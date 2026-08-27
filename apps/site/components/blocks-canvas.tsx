@@ -28,7 +28,7 @@ export function BlocksCanvas({ blocks }: { blocks: BlockTabData[] }) {
       <div
         role="tablist"
         aria-label="Blocks"
-        className="flex items-stretch border-b border-surface-border-subtle bg-surface-raised overflow-x-auto"
+        className="flex items-stretch border-b border-surface-border-subtle bg-surface-panel overflow-x-auto"
       >
         {blocks.map((b) => {
           const isActive = b.slug === active.slug

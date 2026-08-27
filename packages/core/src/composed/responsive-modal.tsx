@@ -276,7 +276,7 @@ const ResponsiveModalContent = React.forwardRef<
   const closeButton = dismissable ? (
     <DialogPrimitive.Close
       title="Close"
-      className="absolute right-ds-05 top-ds-05 z-10 flex min-h-ds-xs min-w-ds-xs items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-raised-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 active:scale-90 disabled:pointer-events-none"
+      className="absolute right-ds-05 top-ds-05 z-10 flex min-h-ds-xs min-w-ds-xs items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:bg-surface-panel-hover hover:text-surface-fg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 active:scale-90 disabled:pointer-events-none"
     >
       <Icon icon={IconX} size="lg" />
       <span className="sr-only">Close</span>

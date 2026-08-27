@@ -102,7 +102,7 @@ export default function DocumentPreview({ url, initialPage, onError }: { url: st
               onChange={(e) => setPageInput(e.target.value)}
               onKeyDown={handlePageInputSubmit}
               onBlur={() => setPageInput(String(page))}
-              className="w-8 bg-transparent text-center font-mono text-surface-fg outline-hidden focus:bg-surface-raised-hover rounded-control-inner"
+              className="w-8 bg-transparent text-center font-mono text-surface-fg outline-hidden focus:bg-surface-panel-hover rounded-control-inner"
               aria-label="Page number"
             />
             <span>/ {numPages}</span>

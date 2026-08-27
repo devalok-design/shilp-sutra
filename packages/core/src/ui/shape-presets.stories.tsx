@@ -32,7 +32,7 @@ const SAMPLE_PRESETS: { id: string; label: string; description: string }[] = [
 
 function PresetSample({ preset, label, description }: { preset: string; label: string; description: string }) {
   return (
-    <div data-shape={preset} className="flex flex-col gap-ds-04 rounded-surface border border-surface-border bg-surface-raised p-ds-06">
+    <div data-shape={preset} className="flex flex-col gap-ds-04 rounded-surface border border-surface-border bg-surface-panel p-ds-06">
       <div>
         <div className="text-ds-md font-semibold text-surface-fg">{label}</div>
         <div className="text-ds-sm text-surface-fg-muted">{description}</div>
@@ -92,7 +92,7 @@ export const InteractiveSwitcher: Story = {
               className={`rounded-control px-ds-04 py-ds-02 text-ds-sm font-medium transition-colors ${
                 preset === p.id
                   ? 'bg-accent-9 text-accent-fg'
-                  : 'bg-surface-raised-hover text-surface-fg-muted hover:bg-surface-raised-active'
+                  : 'bg-surface-panel-hover text-surface-fg-muted hover:bg-surface-panel-active'
               }`}
             >
               {p.id}
@@ -123,7 +123,7 @@ export const CustomPresetExample: Story = {
           '--radius-control': '14px',
           '--radius-surface': '4px',
         }}
-        className="flex flex-col gap-ds-04 rounded-surface border border-surface-border bg-surface-raised p-ds-06"
+        className="flex flex-col gap-ds-04 rounded-surface border border-surface-border bg-surface-panel p-ds-06"
       >
         <div className="flex flex-wrap gap-ds-03">
           <Button size="md">Soft control</Button>

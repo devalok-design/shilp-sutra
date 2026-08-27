@@ -45,7 +45,7 @@ type Story = StoryObj
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="space-y-ds-04 border border-surface-border rounded-ds-md p-ds-05 bg-surface-raised">
+    <section className="space-y-ds-04 border border-surface-border rounded-ds-md p-ds-05 bg-surface-panel">
       <h3 className="text-ds-lg font-semibold text-surface-fg">{title}</h3>
       {children}
     </section>
@@ -213,7 +213,7 @@ export const ComponentMatrix: Story = {
           <div className="flex flex-wrap items-center gap-ds-06">
             {(['accent', 'error', 'success', 'warning', 'info'] as const).map((c) => (
               <BadgeIndicator key={c} count={12} color={c}>
-                <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-ds-full bg-surface-raised-hover text-surface-fg-muted border border-surface-border-strong">
+                <span className="inline-flex h-ds-md w-ds-md items-center justify-center rounded-ds-full bg-surface-panel-hover text-surface-fg-muted border border-surface-border-strong">
                   <Icon icon={IconUser} size="sm" />
                 </span>
               </BadgeIndicator>

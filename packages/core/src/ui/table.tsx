@@ -101,14 +101,14 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      // raised-hover, NOT raised — tables live on cards (surface-raised), so a
-      // surface-raised hover would be invisible (the 0.44-era port bug).
+      // panel-hover, NOT panel — tables live on cards (surface-panel), so a
+      // surface-panel hover would be invisible (the 0.44-era port bug).
       // selected+hover gets its own explicit step — without it the hover and
       // selected classes tie on specificity and stylesheet order decides.
       // `group/row` lets TableRowActions reveal on row hover/focus; the has-[]
       // rule draws a row-level focus ring when a TableRowLink inside is
       // keyboard-focused (the anchor itself suppresses its own ring).
-      "group/row border-b border-surface-border-subtle transition-colors hover:bg-surface-raised-hover data-[state=selected]:bg-accent-3 data-[state=selected]:hover:bg-accent-4 data-[state=selected]:forced-colors:outline data-[state=selected]:forced-colors:outline-1",
+      "group/row border-b border-surface-border-subtle transition-colors hover:bg-surface-panel-hover data-[state=selected]:bg-accent-3 data-[state=selected]:hover:bg-accent-4 data-[state=selected]:forced-colors:outline data-[state=selected]:forced-colors:outline-1",
       "has-[[data-slot=row-link]:focus-visible]:outline-2 has-[[data-slot=row-link]:focus-visible]:outline-accent-9 has-[[data-slot=row-link]:focus-visible]:-outline-offset-2",
       className,
     )}

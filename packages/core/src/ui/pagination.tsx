@@ -72,7 +72,7 @@ const PaginationLink = React.forwardRef<HTMLButtonElement, PaginationLinkProps>(
           'inline-flex items-center justify-center h-ds-sm-plus w-ds-sm-plus rounded-control text-body-md font-medium tabular-nums transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled active:scale-95',
           isActive
             ? 'bg-accent-9 text-accent-fg'
-            : 'hover:bg-surface-raised-hover text-surface-fg',
+            : 'hover:bg-surface-panel-hover text-surface-fg',
           className,
         )}
         {...props}

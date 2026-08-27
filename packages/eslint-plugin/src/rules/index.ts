@@ -10,6 +10,8 @@ import noDeprecatedChip from './no-deprecated-chip'
 import noDeprecatedShadowToken from './no-deprecated-shadow-token'
 import noDeprecatedSurfaceToken from './no-deprecated-surface-token'
 import noIconButtonChildren from './no-iconbutton-children'
+import noRenamedSurfaceToken from './no-renamed-surface-token'
+import noSubtleTextOnSunken from './no-subtle-text-on-sunken'
 import noTailwindConfigPreset from './no-tailwind-config-preset'
 import preferPerComponentImport from './prefer-per-component-import'
 import requireMutationAnnotation from './require-mutation-annotation'
@@ -26,6 +28,8 @@ export const rules = {
   'no-deprecated-shadow-token': noDeprecatedShadowToken,
   'no-deprecated-surface-token': noDeprecatedSurfaceToken,
   'no-iconbutton-children': noIconButtonChildren,
+  'no-renamed-surface-token': noRenamedSurfaceToken,
+  'no-subtle-text-on-sunken': noSubtleTextOnSunken,
   'no-tailwind-config-preset': noTailwindConfigPreset,
   'prefer-per-component-import': preferPerComponentImport,
   'require-mutation-annotation': requireMutationAnnotation,

@@ -20,7 +20,7 @@ function Box({ children }: { children: React.ReactNode }) {
   return (
     <div
       style={{ width: 220 }}
-      className="rounded-surface border border-border-subtle bg-surface-2 p-ds-04"
+      className="rounded-surface border border-border-subtle bg-surface-panel p-ds-04"
     >
       {children}
     </div>
@@ -67,7 +67,7 @@ export const FitsNoTruncation: Story = {
 export const InFlexRow: Story = {
   name: 'In a flex row (needs min-w-0)',
   render: () => (
-    <div style={{ width: 260 }} className="flex items-center gap-ds-03 rounded-surface border border-border-subtle bg-surface-2 p-ds-04">
+    <div style={{ width: 260 }} className="flex items-center gap-ds-03 rounded-surface border border-border-subtle bg-surface-panel p-ds-04">
       <span className="size-8 shrink-0 rounded-pill bg-accent-3" aria-hidden />
       {/* min-w-0 lets the truncating item shrink below its content width */}
       <TruncatedText className="min-w-0 flex-1 font-medium">{LONG_NAME}</TruncatedText>

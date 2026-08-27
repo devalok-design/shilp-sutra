@@ -55,7 +55,7 @@ export function Layout({
           {/* Dark mode toggle */}
           <button
             onClick={onToggleDarkMode}
-            className="rounded-md p-2 text-surface-fg-muted hover:bg-surface-raised hover:text-surface-fg"
+            className="rounded-md p-2 text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg"
             aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {darkMode ? '\u2600\uFE0F' : '\uD83C\uDF19'}

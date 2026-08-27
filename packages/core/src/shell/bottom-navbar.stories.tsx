@@ -313,6 +313,7 @@ export const Interactive: Story = {
         React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }>(
           function NavLink({ href, onClick, ...props }, ref) {
             return (
+              // eslint-disable-next-line jsx-a11y/anchor-has-content -- children arrive via {...props}; the rule cannot see spread children
               <a
                 ref={ref}
                 href={href}

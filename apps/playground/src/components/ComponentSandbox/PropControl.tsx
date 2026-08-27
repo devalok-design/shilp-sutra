@@ -14,7 +14,7 @@ export function PropControl({ schema, value, onChange }: PropControlProps) {
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 rounded border border-surface-border bg-surface-raised-hover px-2 py-1.5 text-xs"
+          className="flex-1 rounded border border-surface-border bg-surface-panel-hover px-2 py-1.5 text-xs"
         >
           {schema.options?.map((opt) => (
             <option key={opt} value={opt}>{opt}</option>
@@ -26,7 +26,7 @@ export function PropControl({ schema, value, onChange }: PropControlProps) {
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 rounded border border-surface-border bg-surface-raised-hover px-2 py-1.5 text-xs"
+          className="flex-1 rounded border border-surface-border bg-surface-panel-hover px-2 py-1.5 text-xs"
         />
       )}
       {schema.type === 'boolean' && (
@@ -42,7 +42,7 @@ export function PropControl({ schema, value, onChange }: PropControlProps) {
           type="number"
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="flex-1 rounded border border-surface-border bg-surface-raised-hover px-2 py-1.5 text-xs"
+          className="flex-1 rounded border border-surface-border bg-surface-panel-hover px-2 py-1.5 text-xs"
         />
       )}
     </div>

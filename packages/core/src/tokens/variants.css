@@ -2,7 +2,7 @@
    CUSTOM VARIANTS (TW4 native)
 
    `@custom-variant <name> <selector>` registers a Tailwind 4 variant
-   that consumers can use as a prefix, e.g. `dark:bg-surface-raised`.
+   that consumers can use as a prefix, e.g. `dark:bg-surface-panel`.
 
    Our dark variant matches TW3's classic `darkMode: 'class'` behavior
    plus one extra: the `.dark` element itself also receives `dark:*`

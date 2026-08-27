@@ -146,11 +146,11 @@ export const UsageGuidelines: Story = {
         </p>
         <div className="flex items-center gap-ds-06 p-ds-06 rounded-ds-md border border-surface-border bg-surface-base">
           {/* Nav bar mockup */}
-          <div className="flex items-center gap-ds-02 px-ds-04 py-ds-02 rounded-ds-md bg-surface-raised border border-surface-border">
+          <div className="flex items-center gap-ds-02 px-ds-04 py-ds-02 rounded-ds-md bg-surface-panel border border-surface-border">
             <DevalokLogo type="chakra" color="brand" size="sm" />
             <span className="text-ds-sm text-surface-fg font-medium">Devalok</span>
           </div>
-          <div className="flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-md bg-surface-raised border border-surface-border">
+          <div className="flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-ds-md bg-surface-panel border border-surface-border">
             <DevalokLogo type="chakra" color="brand" size="xs" />
           </div>
           <div className="flex flex-col items-center gap-ds-01">

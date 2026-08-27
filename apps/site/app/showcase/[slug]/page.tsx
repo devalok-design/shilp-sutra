@@ -73,7 +73,7 @@ export default async function ShowcaseDetailPage({ params }: { params: Promise<{
                 {entry.uses.map((u) => (
                   <span
                     key={u}
-                    className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-raised border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
+                    className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-panel border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
                   >
                     {u}
                   </span>

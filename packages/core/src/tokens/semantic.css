@@ -163,17 +163,26 @@
   --color-surface-3: var(--neutral-3);
   --color-surface-4: var(--neutral-4);
 
-  --color-surface-base:          var(--neutral-2);
-  --color-surface-sunken:        var(--color-surface-0);
-  --color-surface-raised:        var(--neutral-1);
-  --color-surface-overlay:       var(--neutral-1);
-  --color-surface-raised-hover:  var(--neutral-3);
-  --color-surface-raised-active: var(--neutral-4);
-  /* App chrome (TopBar, Sidebar, BottomNavbar). Its own tier so chrome's
-     surface is an explicit, independently-tunable decision (per the Carbon/
-     Atlassian/Ant model), not coupled to the card surface. Starts equal to
-     `raised` — zero visual change — but can now diverge without touching cards. */
-  --color-surface-chrome:        var(--neutral-1);
+  /* GROUNDS take the brand tint; OBJECTS hold neutral. In light the page, the
+     panel and an overlay are all pure white — an edge is what makes a card a
+     card. See docs/plans/2026-08-26-surface-model-rebuild.md */
+  --color-surface-base:          var(--neutral-0);
+  --color-surface-panel:         var(--neutral-0);
+  --color-surface-overlay:       var(--neutral-0);
+  --color-surface-panel-hover:   var(--neutral-2);
+  --color-surface-panel-active:  var(--neutral-3);
+  --color-surface-sunken:        var(--neutral-sunken);
+  --color-surface-sunken-hover:  var(--neutral-3);
+
+  /* DEPRECATED, removed next major. `surface-raised` is renamed `surface-panel`
+     because in light it is not raised — it is the same white as the page.
+     Aliased so nothing breaks mid-migration; `pnpm lint --fix` rewrites them.
+     NOTE hover/focus utilities must retarget to `-panel-hover`, NOT rename: a
+     hover painted with a container value is invisible. That is what made every
+     menu item's hover a no-op in light before this rebuild. */
+  --color-surface-raised:        var(--color-surface-panel);
+  --color-surface-raised-hover:  var(--color-surface-panel-hover);
+  --color-surface-raised-active: var(--color-surface-panel-active);
   --color-surface-inverted:      var(--neutral-12);
   --color-surface-inverted-fg:   var(--neutral-1);
   --color-surface-disabled:      var(--neutral-2);
@@ -181,11 +190,17 @@
   --color-surface-fg:            var(--neutral-12);
   --color-surface-fg-muted:      var(--neutral-11);
   --color-surface-fg-subtle:     var(--neutral-9);  /* 4.664:1 on surface-base — WCAG AA (verify, don't assume: see neutral-9) */
-  --color-surface-border:        var(--neutral-6);  /* bumped for WCAG 1.4.11 (interactive/control edge) */
-  --color-surface-border-strong: var(--neutral-7);
-  --color-surface-border-subtle: var(--neutral-5);
-  /* Card/panel edge — a faint hairline (NOT for interactive controls, which need the contrast-bumped token above). */
-  --color-surface-border-card:   color-mix(in oklch, var(--neutral-5) 30%, transparent);
+  /* OBJECT edges — translucent, so an edge darkens whatever it lands on and can
+     never coincide with it. `surface-border` on white computes to #e8e8e8. */
+  --color-surface-border-subtle: oklch(0 0 0 / 0.05);
+  --color-surface-border:        oklch(0 0 0 / 0.09);
+  --color-surface-border-strong: oklch(0 0 0 / 0.14);
+  --color-surface-border-card:   var(--color-surface-border);
+
+  /* CONTROL edges — solid, so their contrast is measurable. WCAG 1.4.11 applies
+     to these and NOT to the decorative tiers above. */
+  --color-surface-border-interactive:        var(--neutral-6);
+  --color-surface-border-interactive-strong: var(--neutral-7);
   --color-backdrop:              oklch(0 0 0 / 0.4);
 
   /* Segmented control — translucent recess + raised thumb. Alpha, NOT a fixed
@@ -627,16 +642,29 @@
   --color-warning-11: var(--amber-bright-11);
   --color-warning-fg: var(--neutral-0);
 
-  /* Surface — dark page, lighter cards */
-  --color-surface-base:          var(--neutral-1);  /* 0.11L */
-  --color-surface-raised:        var(--neutral-2);  /* 0.17L */
-  --color-surface-chrome:        var(--neutral-2);  /* chrome tier — matches raised for now */
-  --color-surface-border:        var(--neutral-4);
-  --color-surface-border-strong: var(--neutral-5);
-  --color-surface-overlay:       oklch(0.13 0.0002 350);
-  --color-surface-border-subtle: var(--neutral-3);
-  /* Card edge in dark: a hair stronger so it still reads on the near-black base. */
-  --color-surface-border-card:   color-mix(in oklch, var(--neutral-6) 45%, transparent);
+  /* Surface — dark page, lighter cards. Unlike light, dark HAS room above the
+     page, so panel and overlay genuinely lift. */
+  --color-surface-base:          var(--neutral-1);        /* 0.147L */
+  --color-surface-panel:         var(--neutral-2);        /* 0.207L */
+  --color-surface-overlay:       var(--neutral-2);        /* same as panel + shadow */
+  --color-surface-panel-hover:   var(--neutral-3);
+  --color-surface-panel-active:  var(--neutral-4);
+  --color-surface-sunken:        var(--neutral-sunken);   /* coincides with the page */
+  --color-surface-sunken-hover:  var(--neutral-2);
+
+  /* DEPRECATED — see the light block. */
+  --color-surface-raised:        var(--color-surface-panel);
+  --color-surface-raised-hover:  var(--color-surface-panel-hover);
+  --color-surface-raised-active: var(--color-surface-panel-active);
+
+  /* Object edges invert to translucent white. */
+  --color-surface-border-subtle: oklch(1 0 0 / 0.06);
+  --color-surface-border:        oklch(1 0 0 / 0.10);
+  --color-surface-border-strong: oklch(1 0 0 / 0.16);
+  --color-surface-border-card:   var(--color-surface-border);
+
+  --color-surface-border-interactive:        var(--neutral-6);
+  --color-surface-border-interactive-strong: var(--neutral-7);
   --color-backdrop:              oklch(0 0 0 / 0.6);
 
   /* Segmented control — inverted elevation in dark: track is a faint LIGHTER
@@ -754,20 +782,27 @@
     --color-surface-fg-muted:     CanvasText;
     --color-surface-fg-subtle:    GrayText;
     --color-surface-fg-disabled:  GrayText;
-    --color-surface-base:         Canvas;
-    --color-surface-sunken:       Canvas;
-    --color-surface-raised:       Canvas;
-    --color-surface-raised-hover: Canvas;
+    --color-surface-base:          Canvas;
+    --color-surface-panel:         Canvas;
+    --color-surface-overlay:       Canvas;
+    --color-surface-panel-hover:   Canvas;
+    --color-surface-panel-active:  Canvas;
+    --color-surface-sunken:        Canvas;
+    --color-surface-sunken-hover:  Canvas;
+    --color-surface-raised:        Canvas;
+    --color-surface-raised-hover:  Canvas;
     --color-surface-raised-active: Canvas;
-    --color-surface-chrome:       Canvas;
-    --color-surface-overlay:      Canvas;
-    --color-surface-disabled:     Canvas;
-    --color-surface-inverted:     CanvasText;
-    --color-surface-inverted-fg:  Canvas;
-    --color-surface-border:         CanvasText;
-    --color-surface-border-strong:  CanvasText;
-    --color-surface-border-subtle:  GrayText;
-    --color-surface-border-card:    GrayText;
+    --color-surface-disabled:      Canvas;
+    --color-surface-inverted:      CanvasText;
+    --color-surface-inverted-fg:   Canvas;
+    /* Forced colours flatten the object/control split — every edge must be a
+       system colour or it disappears entirely. */
+    --color-surface-border:                    CanvasText;
+    --color-surface-border-strong:             CanvasText;
+    --color-surface-border-subtle:             GrayText;
+    --color-surface-border-card:               GrayText;
+    --color-surface-border-interactive:        CanvasText;
+    --color-surface-border-interactive-strong: CanvasText;
     --color-backdrop: Canvas;
     --color-overlay:  Canvas;
     --color-disabled: GrayText;

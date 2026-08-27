@@ -145,23 +145,23 @@ describe('Input', () => {
   // --- Section types ---
 
   describe('section types', () => {
-    it('string startSection renders with border-r and bg-surface-raised', () => {
+    it('string startSection renders with border-r and bg-surface-panel', () => {
       render(<Input startSection="$" placeholder="Amount" />)
       const input = screen.getByPlaceholderText('Amount')
       const wrapper = input.parentElement!
       const labelSpan = wrapper.firstElementChild!
       expect(labelSpan).toHaveClass('border-r')
-      expect(labelSpan).toHaveClass('bg-surface-raised')
+      expect(labelSpan).toHaveClass('bg-surface-panel')
       expect(labelSpan).toHaveTextContent('$')
     })
 
-    it('string endSection renders with border-l and bg-surface-raised', () => {
+    it('string endSection renders with border-l and bg-surface-panel', () => {
       render(<Input endSection=".com" placeholder="Domain" />)
       const input = screen.getByPlaceholderText('Domain')
       const wrapper = input.parentElement!
       const labelSpan = wrapper.lastElementChild!
       expect(labelSpan).toHaveClass('border-l')
-      expect(labelSpan).toHaveClass('bg-surface-raised')
+      expect(labelSpan).toHaveClass('bg-surface-panel')
       expect(labelSpan).toHaveTextContent('.com')
     })
 
@@ -171,7 +171,7 @@ describe('Input', () => {
       )
       const startSpan = screen.getByTestId('icon-el').parentElement!
       expect(startSpan).not.toHaveClass('border-r')
-      expect(startSpan).not.toHaveClass('bg-surface-raised')
+      expect(startSpan).not.toHaveClass('bg-surface-panel')
     })
 
     it('explicit sectionType="label" overrides auto-inference for ReactElement', () => {
@@ -186,7 +186,7 @@ describe('Input', () => {
       const wrapper = input.parentElement!
       const labelSpan = wrapper.firstElementChild!
       expect(labelSpan).toHaveClass('border-r')
-      expect(labelSpan).toHaveClass('bg-surface-raised')
+      expect(labelSpan).toHaveClass('bg-surface-panel')
     })
 
     it('explicit sectionType="icon" overrides auto-inference for string', () => {
@@ -201,7 +201,7 @@ describe('Input', () => {
       const wrapper = input.parentElement!
       const iconSpan = wrapper.firstElementChild!
       expect(iconSpan).not.toHaveClass('border-r')
-      expect(iconSpan).not.toHaveClass('bg-surface-raised')
+      expect(iconSpan).not.toHaveClass('bg-surface-panel')
       // Icon sections get fixed width
       expect(iconSpan).toHaveClass('w-[38px]')
     })

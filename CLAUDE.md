@@ -71,7 +71,7 @@ Pick one. Declared-and-bundled is the bug that shipped twice (framer-motion/sonn
 ## Design Preferences (default to these)
 
 **Prefer `variant="soft"` over `variant="outline"` for non-primary Button actions.** Soft (tinted step-3 bg, step-11 text, no visible border) feels warmer, brand-consistent, and reads better in data-dense UIs than outline's bordered-transparent look. When generating examples, docs, stories, or writing new screens, default to soft for secondary actions and use outline only when:
-- The button sits on a colored or surface-raised background where soft's tint would disappear
+- The button sits on a colored or surface-panel background where soft's tint would disappear
 - A toolbar/icon-dense context where soft would feel visually heavy
 - Paired adjacent to a primary action where you want a clear hierarchy that outline provides
 
@@ -90,9 +90,13 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 **Built and PUBLISHED: 29 sets, 758 variants.** Button 330, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2. 31 collections, 20 text styles, 13 effect styles, **15 native slot properties** across 8 sets (Card 3, Sidebar 3, Top bar 3, Dialog 2, Alert 1, Sheet 1, Tabs 1, Segmented control 1). A `Bottom navbar` set existed at port time and no longer does. **Publishing is a human step — republish after any change.**
 
+**UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps a ~32px minimum height that nothing else collapses — a footerless Card was 40px too tall. Only 1 of the library's 20 slots (`Card.Action`) shipped with such a boolean; the other 17 still cannot be hidden. See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3.
+
 **Every set's `defaultVariant` now matches its code default.** It is READ-ONLY and derived from geometry (top-left-most variant), so a tidy ascending grid silently hands consumers the smallest size — 18 of 25 sets did. Assert `set.defaultVariant.name` after any re-layout.
 
-**`Accessibility review` page** carries three measured contrast failures that are CODE bugs this library reproduces faithfully, with proposed fixes and live-bound specimens: Alert dismiss on solid (**1.01:1**), Badge category solid in dark (3.28–3.70:1), Input/Textarea placeholder in light (4.14:1). Decide these before the next release.
+**`Accessibility review` page** carried three measured contrast failures that were CODE bugs this library reproduced faithfully: Alert dismiss on solid (**1.01:1**), Badge category solid in dark (3.28–3.70:1), Input/Textarea placeholder in light (4.14:1). **All three are FIXED in code** on `feat/surface-model` (changeset `clear-badges-see-clearly.md`) — Alert inherits its own fg on solid, `--color-category-fg` inverts with the theme, and the four field controls moved to `surface-fg-muted`.
+
+**Figma is already synced** — verified by resolving the bindings, not by reading this note: Alert `*/dismiss` aliases the alert's own `*/body` in Solid mode, Badge category `*/fg` aliases `category-fg` (`neutral/0` light, `neutral/1` dark), and `Component/Field Content` `field/text-color` resolves to `surface-fg-muted` in Placeholder mode. The `Accessibility review` page carries before/after specimens bound to live variables and is labelled Fixed. Nothing to do there.
 
 Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
 
@@ -104,7 +108,23 @@ Five rules that cost the most time when broken:
 5. **Never write `.visible` on a variable-bound node** — it silently clears the binding. An audit that reveals hidden nodes to inspect them will destroy what it inspects (it cost 264 spinner bindings).
 > **Before building any Figma component, load the `figma-component-authoring` skill** (user-level, alongside `figma-use`). It carries the mechanism decision table (variant vs boolean vs instance-swap vs slot vs variable mode), the verified build order, and every silent failure this project paid for. It exists because we shipped a whole library before discovering native slots.
 
-6. **Assume a Figma limitation is your ignorance until three distinct mechanisms have failed.** This has now been wrong five times. Two examples: "instances can't hold content" after trying exactly one approach (Figma has **native slots**, `component.createSlot()`); and the rule below, which we believed for the whole port and which is only half true.
+6. **Assume a Figma limitation is your ignorance until three distinct mechanisms have failed.** This has now been wrong **six** times. Two examples: "instances can't hold content" after trying exactly one approach (Figma has **native slots**, `component.createSlot()`); and the rule below, which we believed for the whole port and which is only half true.
+
+   **Slot content IS authorable from the plugin API** (measured 2026-08-27; we believed the opposite and wrote it into an audit). `setProperties` on a slot property fails with *"Slot component property values cannot be edited"*, and `appendChild` **stacks under** the inherited defaults — but `.remove()` the defaults first and `appendChild` then replaces cleanly, and it persists. Overriding a nested instance already in a slot works too.
+
+   ```js
+   // clear, then fill. RE-QUERY the slot after every mutation — never cache .children
+   let s = inst.findAll(n => n.type === 'SLOT').find(x => x.name === 'Content')
+   s.children[0].remove()                                    // ONE remove per slot per run
+   s = inst.findAll(n => n.type === 'SLOT').find(x => x.name === 'Content')
+   s.appendChild(myNode)                                     // append is unlimited
+   ```
+
+   Two invisible rate limits, both of which return success and then fail on the *next* call:
+   - **One `.remove()` per slot per run.** After the first, every node id inside that slot stops resolving (`Node with id "…" not found`). A 3-item slot takes 3 runs. Card's slots each held exactly 1 default, which is why a naive loop appeared to work there and died on Top bar's 3-item `End`.
+   - **One `setProperties` per nested slot instance per run.** The write persists but kills the slot subtree. Different instances are unaffected, so N components can each take one write in the same run.
+
+   Also: an **empty slot keeps a ~32px minimum drop-target height** and neither `HUG` nor `resize()` collapses it. The only way to remove an unused slot is a boolean wired to its `visible` (`componentPropertyReferences = { visible: key }`) — which, unlike a raw `.visible` write, does **not** clear variable bindings. Verify bindings after wiring anyway.
 
    **A slot CAN be added to an already-combined set** (measured 2026-08-21). The naive path does fail: calling `createSlot()` per variant *after* `combineAsVariants` gives one property **per variant** (`Action#274:0` AND `Action#274:3`), so dropped content dies on every variant switch. But this works:
 
@@ -177,21 +197,46 @@ Every component MUST use the correct surface level. This is a hard rule, enforce
 
 ```
 bg-surface-base    → Page background (the canvas everything sits on)
+bg-surface-panel   → Cards, widgets, panels, editor containers — anything ON the page
 bg-surface-overlay → Overlays: Dialog, Sheet, Popover, DropdownMenu, Select,
-                     Combobox, Toast, HoverCard, sticky headers, input controls,
-                     floating toolbars
-bg-surface-chrome  → shell chrome: TopBar, Sidebar, BottomNavbar. Its OWN tier so
-                     chrome's surface is an explicit, independently tunable decision
-                     (Carbon/Atlassian/Ant model), not coupled to the card surface.
-                     Currently equals `raised` — chrome reads slightly elevated in
-                     dark — but can diverge without touching cards.
-bg-surface-raised        → Cards, widgets, panels, editor containers — anything ON the page
-bg-surface-raised-hover  → Hover on raised elements, skeleton shimmers, track fills
-bg-surface-raised-active → Active/pressed states, hover on raised-hover elements
+                     Combobox, Toast, HoverCard, floating toolbars
+bg-surface-panel-hover   → Hover on panels, skeleton shimmers, track fills
+bg-surface-panel-active  → Active/pressed states, hover on panel-hover elements
 bg-surface-sunken        → Wells/insets that recede below the page
+bg-surface-sunken-hover  → Hover on a well
 ```
 
-**The rule:** If a component renders as a card/widget/panel on the page, its background is `bg-surface-raised`, NOT `bg-surface-base`. `bg-surface-base` is the page canvas + overlay backdrops only. When unsure which tier, grep a sibling component for its `bg-surface-*` usage and match — never reach for a numbered class.
+**`surface-raised` was renamed `surface-panel` in 0.57.0**, because in light it is
+not raised — it is the same white as the page. Old names still resolve as
+deprecated aliases; `pnpm eslint . --fix` rewrites them. **`surface-chrome` is
+gone** — chrome is an arrangement decision, not a theme value, and comes from
+`AppShell` (`variant` + `chrome`) or `surface-base`.
+
+**The rule:** if a component renders as a card/widget/panel on the page, its
+background is `bg-surface-panel`, NOT `bg-surface-base`. When unsure which tier,
+grep a sibling component and match — never reach for a numbered class.
+
+### The trap this model creates
+
+**In LIGHT, `base`, `panel` and `overlay` are all `#ffffff`.** That is deliberate
+— an edge is what makes a card a card, not a fill. Two consequences:
+
+1. **Never paint an interaction state with a container value.** `hover:bg-surface-panel`
+   on anything sitting on base/panel/overlay is invisible. Use
+   `-panel-hover` / `-panel-active`. `shilp-sutra/no-renamed-surface-token`
+   catches the Tailwind-modifier form, but **it cannot see a JS conditional** —
+   `isActive ? 'bg-surface-panel' : …` compiles to a plain string and slipped
+   past both the codemod and a full audit. Three components shipped that way.
+2. **You cannot verify "is this the right surface?" by sampling a colour.** It
+   has to be read from intent. Any audit that compares pixels will report false
+   agreement.
+
+**Borders split into two families.** `surface-border-subtle` / `-border` /
+`-border-strong` are *decorative*, translucent, and mark objects. `surface-border-interactive`
+/ `-interactive-strong` are *control* edges, solid, and carry WCAG 1.4.11. A form
+control on a decorative tier loses required contrast.
+
+Full model: [`docs/plans/2026-08-26-surface-model-rebuild.md`](./docs/plans/2026-08-26-surface-model-rebuild.md).
 
 ## Publishing
 

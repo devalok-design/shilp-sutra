@@ -30,6 +30,7 @@ any gate that needs to skip a known case.
 | `ALERT-SUBTLE-BORDER` | Alert `subtle` border step | 1.26:1 | — (refinement only) | 2026-08-24 |
 | `SURFACE-BASE-GROUND` | Light canvas `#f5f5f5` | n/a | Setu `grounds`, tier 1 | open |
 | `AVATAR-RING-RADIUS` | Figma ring corner radius | `scale/lg` = 10 | derive from `role/control` + 4 | 2026-08-24 |
+| `WARNING-RAMP-CHROMA` | `warning/background` saturation | chroma 74.2 | siblings at 21.9–33.5 | 2026-08-26 |
 
 ---
 
@@ -103,6 +104,39 @@ unilaterally.
 `neutral` is unchanged; it uses `surface-raised` and `surface-border-strong`.
 ---
 
+### `WARNING-RAMP-CHROMA` — warning is louder than its siblings
+
+**What.** `warning/background` carries two to three times the chroma of the other
+three status backgrounds. Measured in OKLCh (×1000):
+
+| | light | dark |
+|---|---:|---:|
+| `info/background` | 21.9 | 25.2 |
+| `success/background` | 25.6 | 30.6 |
+| `error/background` | 33.5 | 37.9 |
+| **`warning/background`** | **74.2** | **44.3** |
+
+**Why it stands.** Deliberate, decided 2026-08-26. Amber means attention, and a
+warning that reads as loud as an error or as quiet as an info is arguably the
+worse outcome. In a UI showing mixed statuses, "Review" is meant to catch the eye.
+
+**Not an accessibility issue.** Text contrast on all four backgrounds is
+comfortable — 6.4–7.0 in light, 7.6–9.0 in dark. This is a consistency
+departure only.
+
+**Pre-existing.** Nothing in the 2026-08-26 surface work created this. It became
+visible when the shell specimens were bound to the real status tokens instead of
+the hand-picked pastels they had been drawn with; before that, nobody was looking
+at the four chips side by side.
+
+**What would change the answer.** If warning ever needs to sit inside a dense
+run of chips where every status appears at once, the shouting stops being useful
+and starts being noise. A de-saturated version was built and rejected — it is on
+the Figma showcase page under `DECISIONS` (`#efe0cb` light, `#2d1e0f` dark, at
+chroma 32.0 / 35.0) if the question reopens.
+
+---
+
 ### `SURFACE-BASE-GROUND` — light canvas is `#f5f5f5`
 
 **Status: open.** Recorded here because it is a known, deliberate hold rather than
@@ -163,6 +197,8 @@ This is a Figma-representation concern only.
 - **Waybill `brand/error` and `brand/info`** carry `#ff00ff` placeholders in the
   Figma `Brand` collection under the "Waybill (derived, unapproved)" mode. That is
   an unfilled gap awaiting a colour decision, not a knowingly-shipped shortfall.
-- **Fixed, do not re-file:** Alert dismiss on solid (was 1.01:1), Badge category
+- **Fixed, do not re-file:** menu-item hover in light (`MENU-ITEM-HOVER`, was
+  invisible — every menu item now takes `surface-panel-hover`, distinct from the
+  `surface-overlay` ground in both themes), Alert dismiss on solid (was 1.01:1), Badge category
   labels in dark (was 3.28–3.70), and Input/Textarea/Select/Combobox placeholders
   in light (was 4.14). All corrected and shipped; they are history, not exceptions.

@@ -266,7 +266,7 @@ export const OnSurfaces: Story = {
           Your project management workspace, crafted by Devalok.
         </p>
       </Surface>
-      <Surface className="bg-surface-raised border border-surface-border" label="Card with subtle grain">
+      <Surface className="bg-surface-panel border border-surface-border" label="Card with subtle grain">
         <DevalokGrain intensity="subtle" surface="soft" tint="var(--color-accent-9)" />
         <h3 className="relative z-[2] text-ds-sm font-semibold text-surface-fg mb-ds-01">
           Project Update

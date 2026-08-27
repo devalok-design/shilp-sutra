@@ -22,10 +22,10 @@
 These are not preferences. Generated code that violates them is wrong.
 
 1. **Use design system components, not raw HTML.** `<Button>` not `<button>`. `<Input>` not `<input>`. `<Text>` not `<span>`/`<p>` (when typographic semantics matter). `<Stack>` not bare flex divs.
-2. **Use semantic tokens, never hex / rgb / hsl.** `bg-surface-raised` not `bg-white`. `text-fg` not `text-zinc-900`. `bg-accent-9` not `bg-pink-500`.
+2. **Use semantic tokens, never hex / rgb / hsl.** `bg-surface-panel` not `bg-white`. `text-fg` not `text-zinc-900`. `bg-accent-9` not `bg-pink-500`.
 3. **Spacing uses `ds-*` cadence.** `p-ds-05`, `gap-ds-03`. Never `p-4` / `p-6`. Default cadence is `ds-03 / ds-05 / ds-07` (related items / grouped sections / page sections). Do not reach for every adjacent token (`ds-04`, `ds-06`) — three tiers, not five.
 4. **Prefer `variant="soft"` over `variant="outline"` for non-primary actions.** Soft (tinted bg, no visible border) reads better in data-dense UIs. Outline only when on a colored bg or paired with a primary for explicit hierarchy.
-5. **Surface layering is strict.** Page = `surface-base`. Cards/panels/widgets = `surface-raised`. Dialogs/popovers/dropdowns/inputs = `surface-overlay`. Shell chrome (sidebar, topbar) = `surface-sunken`. Tooltips = `surface-inverted`. If you're unsure, read `foundations/surfaces.md`.
+5. **Surface layering is strict.** Page = `surface-base`. Cards/panels/widgets = `surface-panel`. Dialogs/popovers/dropdowns/inputs = `surface-overlay`. Shell chrome (sidebar, topbar) = `surface-sunken`. Tooltips = `surface-inverted`. If you're unsure, read `foundations/surfaces.md`.
 6. **Never combine `border-*` + `shadow-*` tokens.** Shadow tokens already include a 1px ring layer. Adding an explicit border creates a 2-px edge.
 7. **Icons use `<Icon icon={...} />` from `@tabler/icons-react`.** Do not import lucide, heroicons, mui-icons. The icon system auto-sizes via `IconProvider` context.
 8. **Toasts mount once at app root.** `<Toaster />` (singleton). All triggering is imperative: `toast.success("...")`, `toast.error("...")`.

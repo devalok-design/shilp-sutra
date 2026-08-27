@@ -16,8 +16,11 @@ const surfaceVariants = cva('', {
     // popover/menu/toast levels. bg + shadow always move together, so there is no
     // way to produce an un-tokened surface.
     elevation: {
-      flat: 'bg-surface-raised',
-      raised: 'bg-surface-raised shadow-raised',
+      flat: 'bg-surface-panel',
+      // opt-in elevation: the consumer explicitly asked for a lift, the same way
+      // Card's `elevated` variant does. Panels that merely sit on the page get
+      // `flat` and are defined by their edge.
+      raised: 'bg-surface-panel shadow-raised',
       floating: 'bg-surface-overlay shadow-floating',
       overlay: 'bg-surface-overlay shadow-overlay',
     },

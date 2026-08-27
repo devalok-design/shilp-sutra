@@ -16,7 +16,7 @@ export default meta
 type Story = StoryObj<typeof Container>
 
 const Placeholder = ({ label }: { label: string }) => (
-  <div className="rounded-control border border-dashed border-surface-border-strong bg-surface-raised px-ds-05 py-ds-06 text-center text-ds-sm text-surface-fg-muted">
+  <div className="rounded-control border border-dashed border-surface-border-strong bg-surface-panel px-ds-05 py-ds-06 text-center text-ds-sm text-surface-fg-muted">
     {label}
   </div>
 )
@@ -60,7 +60,7 @@ export const AllVariants: Story = {
           </p>
           <div className="rounded-control border border-surface-border-strong bg-surface-base">
             <Container maxWidth={maxWidth}>
-              <div className="rounded-control border border-dashed border-accent-7 bg-surface-raised px-ds-05 py-ds-04 text-center text-ds-sm text-surface-fg">
+              <div className="rounded-control border border-dashed border-accent-7 bg-surface-panel px-ds-05 py-ds-04 text-center text-ds-sm text-surface-fg">
                 Container content ({maxWidth})
               </div>
             </Container>

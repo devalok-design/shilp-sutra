@@ -77,7 +77,7 @@ const nav: Parent[] = [
 export function SidebarProjects() {
   return (
     <SidebarProvider className="min-h-0">
-      <Sidebar collapsible="none" className="border-r border-surface-border-subtle bg-surface-raised">
+      <Sidebar collapsible="none" className="border-r border-surface-border-subtle bg-surface-panel">
         <SidebarHeader className="px-ds-05 py-ds-05">
           <Text variant="label-md" className="text-surface-fg">Karm Studio</Text>
         </SidebarHeader>
@@ -120,7 +120,7 @@ export function SidebarProjects() {
                           <CollapsibleTrigger asChild>
                             <button
                               aria-label={`Toggle ${parent.title}`}
-                              className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-control text-surface-fg-subtle transition-colors hover:bg-surface-raised-hover hover:text-surface-fg"
+                              className="absolute right-ds-02 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-control text-surface-fg-subtle transition-colors hover:bg-surface-panel-hover hover:text-surface-fg"
                             >
                               <IconChevronRight className="h-4 w-4 transition-transform duration-fast-02 ease-productive-standard group-data-[state=open]/collapsible:rotate-90" />
                             </button>

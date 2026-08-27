@@ -12,6 +12,7 @@ const config = {
   rules: {
     'shilp-sutra/no-deprecated-button-variant': 'error',
     'shilp-sutra/no-deprecated-surface-token': 'error',
+    'shilp-sutra/no-renamed-surface-token': 'error',
     'shilp-sutra/no-deprecated-shadow-token': 'error',
     'shilp-sutra/no-deprecated-chip': 'error',
     'shilp-sutra/no-tailwind-config-preset': 'error',

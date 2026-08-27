@@ -100,7 +100,7 @@ export function AttachmentStrip({
                   scale: { type: 'spring', stiffness: 400, damping: 30 },
                   opacity: { duration: durations.fast02 },
                 }}
-                className="flex items-center gap-ds-02 shrink-0 rounded-control bg-surface-raised px-ds-03 py-ds-01 group"
+                className="flex items-center gap-ds-02 shrink-0 rounded-control bg-surface-panel px-ds-03 py-ds-01 group"
               >
                 <Icon
                   icon={IconFile}

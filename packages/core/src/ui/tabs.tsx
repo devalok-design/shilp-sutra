@@ -126,7 +126,9 @@ const tabsListVariants = cva('inline-flex items-center', {
     variant: {
       line: 'border-b border-surface-border-strong w-full gap-0',
       contained:
-        'bg-surface-raised p-ds-02 rounded-surface gap-ds-02',
+        // alpha, not a fixed tier: a contained track must read as a groove on the
+        // page AND on a card, and in light the page and panel are the same white
+        'bg-segment-track p-ds-02 rounded-surface gap-ds-02',
     },
     size: {
       sm: 'h-8',

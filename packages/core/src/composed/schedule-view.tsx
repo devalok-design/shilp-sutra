@@ -75,7 +75,7 @@ const eventColorMap: Record<NonNullable<ScheduleEvent['color']>, string> = {
   warning: 'bg-warning-3 text-warning-11',
   error: 'bg-error-3 text-error-11',
   info: 'bg-info-3 text-info-11',
-  neutral: 'bg-surface-raised text-surface-fg-muted',
+  neutral: 'bg-surface-panel text-surface-fg-muted',
 }
 
 const eventDotMap: Record<NonNullable<ScheduleEvent['color']>, string> = {
@@ -258,7 +258,7 @@ function DayColumn({
         <div
           className={cn(
             'border-b border-surface-border-strong py-ds-02 text-center text-body-sm font-semibold',
-            todayInView ? 'bg-accent-2 text-accent-11' : 'bg-surface-raised text-surface-fg',
+            todayInView ? 'bg-accent-2 text-accent-11' : 'bg-surface-panel text-surface-fg',
           )}
         >
           {format(date, 'EEE d')}
@@ -277,7 +277,7 @@ function DayColumn({
               tabIndex={dayIndex === active.day && i === active.slot ? 0 : -1}
               className={cn(
                 'block w-full min-h-ds-06 border-b transition-colors ease-productive-standard duration-fast-02',
-                'hover:bg-surface-raised-hover',
+                'hover:bg-surface-panel-hover',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent-9',
                 i % 2 === 0 ? 'border-surface-border-strong' : 'border-surface-border-subtle',
               )}
@@ -312,7 +312,7 @@ function DayColumn({
               className={cn(
                 'absolute overflow-hidden rounded-control-inner px-ds-02 py-ds-01',
                 'cursor-pointer text-start text-body-xs font-medium',
-                'transition-[box-shadow] ease-productive-standard duration-fast-02 hover:shadow-raised',
+                'transition-colors ease-productive-standard duration-fast-02 hover:bg-surface-panel-hover',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 'motion-safe:active:scale-[0.98]',
                 selected && 'ring-2 ring-accent-9',
@@ -454,7 +454,7 @@ const ScheduleView = React.forwardRef<HTMLDivElement, ScheduleViewProps>(
               ? `Schedule for ${format(date, 'EEEE, MMMM d, yyyy')}`
               : `Week schedule starting ${format(days[0], 'MMMM d, yyyy')}`
           }
-          className="flex overflow-hidden rounded-surface border border-surface-border-strong bg-surface-raised"
+          className="flex overflow-hidden rounded-surface border border-surface-border-strong bg-surface-panel"
           style={{ height: typeof height === 'number' ? `${height}px` : height }}
         >
           <TimeColumn startHour={startHour} endHour={endHour} />

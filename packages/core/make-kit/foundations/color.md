@@ -13,7 +13,7 @@ The kit ships an OKLCH 12-step ramp per color family (`1`=app-bg, `9`=solid/acce
 ```
 Surface (background of a region)?
   → page bg                → bg-surface-base
-  → card / widget / panel  → bg-surface-raised
+  → card / widget / panel  → bg-surface-panel
   → sidebar / topbar       → bg-surface-sunken
   → dialog / popover / dropdown / input → bg-surface-overlay
   → tooltip                → bg-surface-inverted
@@ -50,9 +50,9 @@ Brand emphasis?
 | Token | Use |
 |---|---|
 | `surface-base` | Page background. The "back wall" of the app. |
-| `surface-raised` | Cards, widgets, panels, anything that sits **on** the page. |
-| `surface-raised-hover` | Hover state on a `surface-raised` element. |
-| `surface-raised-active` | Pressed / active state. |
+| `surface-panel` | Cards, widgets, panels, anything that sits **on** the page. |
+| `surface-panel-hover` | Hover state on a `surface-panel` element. |
+| `surface-panel-active` | Pressed / active state. |
 | `surface-sunken` | Shell chrome (sidebar, topbar), board columns, segmented-control tracks. |
 | `surface-overlay` | Floating layers — dialogs, popovers, dropdowns, inputs, toasts. |
 | `surface-inverted` | Tooltips, inverted badges. Pair with `surface-inverted-fg`. |

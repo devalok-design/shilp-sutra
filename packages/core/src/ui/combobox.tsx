@@ -25,7 +25,7 @@ const stateBorderClasses: Record<Exclude<FieldState, 'default'>, string> = {
 export const comboboxTriggerVariants = cva(
   [
     'flex w-full items-center justify-between whitespace-nowrap rounded-control',
-    'border border-surface-border-strong bg-surface-raised-hover',
+    'border border-surface-border-interactive bg-surface-panel-hover',
     'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
     // Trigger is a div[role=combobox] (so chip remove-buttons in multi-select
@@ -384,7 +384,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                   {option.label}
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center rounded-pill outline-hidden hover:bg-surface-raised-hover transition-colors duration-fast-01 ease-productive-standard"
+                    className="inline-flex items-center justify-center rounded-pill outline-hidden hover:bg-surface-panel-hover transition-colors duration-fast-01 ease-productive-standard"
                     onClick={(e) => handleRemovePill(e, val)}
                     aria-label={`Remove ${option.label}`}
                     tabIndex={-1}
@@ -411,7 +411,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
       }
 
       return (
-        <span className="min-w-0 flex-1 truncate text-left text-surface-fg-subtle">
+        <span className="min-w-0 flex-1 truncate text-left text-surface-fg-muted">
           {placeholder}
         </span>
       )

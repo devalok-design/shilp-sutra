@@ -925,7 +925,7 @@ function DropdownLink({
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-control-inner text-left hover:bg-surface-raised-hover transition-colors duration-fast-01"
+      className="flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-control-inner text-left hover:bg-surface-panel-hover transition-colors duration-fast-01"
     >
       <span className="text-surface-fg-subtle shrink-0">{icon}</span>
       <span className="flex flex-col flex-1 min-w-0">

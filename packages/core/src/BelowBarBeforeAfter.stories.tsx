@@ -180,7 +180,7 @@ export const BeforeAfter: Story = {
             </div>
           }
           changes={[
-            'S6 (P0): dropped every bg-surface-raised-hover fill override — all bars now inherit the base Skeleton’s skeleton-base, so the whole system shimmers from ONE source (was two vocabularies) and bars no longer vanish in forced-colors (Windows HCM).',
+            'S6 (P0): dropped every bg-surface-panel-hover fill override — all bars now inherit the base Skeleton’s skeleton-base, so the whole system shimmers from ONE source (was two vocabularies) and bars no longer vanish in forced-colors (Windows HCM).',
             'a11y (P0): each root is now role="status" + aria-busy with an sr-only label (was silent to AT — child Skeletons are all aria-hidden). New optional `label` prop.',
             'state (P1): count props clamped (Math.max(0, floor)) — rows={-1}/NaN can’t throw a RangeError anymore.',
             'motion (P1): removed the inert animationDelay (it sat on non-animated wrapper divs and never fired).',

@@ -306,7 +306,7 @@ function InlineRows({
               key={`gap-${i}`}
               type="button"
               onClick={() => onExpand(item.key)}
-              className="flex w-full items-center gap-ds-02 border-y border-surface-border-subtle/30 bg-surface-raised-hover px-ds-03 py-ds-01 text-caption text-surface-fg-subtle hover:bg-surface-raised-active"
+              className="flex w-full items-center gap-ds-02 border-y border-surface-border-subtle/30 bg-surface-panel-hover px-ds-03 py-ds-01 text-caption text-surface-fg-subtle hover:bg-surface-panel-active"
             >
               <Icon icon={IconChevronDown} size="xs" />
               Expand {hidden.length} unchanged {hidden.length === 1 ? 'line' : 'lines'}
@@ -347,7 +347,7 @@ function InlineRows({
 
 function CtxLine({ row, split, language }: { row: Row; split: boolean; language?: string }) {
   return (
-    <div className="flex bg-surface-raised">
+    <div className="flex bg-surface-panel">
       <span className={cn(GUTTER, 'min-w-[3.5ch]')}>{row.oldNo}</span>
       {!split && <span className={cn(GUTTER, 'min-w-[3.5ch]')}>{row.newNo}</span>}
       <span className={cn(SIGN, 'text-surface-fg-subtle')}>&nbsp;</span>
@@ -393,8 +393,8 @@ function SplitRows({
               <Reveal key={`reveal-${item.key}`}>
                 {hidden.map((r) => (
                   <div key={`${item.key}-${r.oldNo}`} className="flex divide-x divide-surface-border-subtle/30">
-                    {sideCell(r.oldNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-raised text-surface-fg-muted', ' ')}
-                    {sideCell(r.newNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-raised text-surface-fg-muted', ' ')}
+                    {sideCell(r.oldNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-panel text-surface-fg-muted', ' ')}
+                    {sideCell(r.newNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-panel text-surface-fg-muted', ' ')}
                   </div>
                 ))}
               </Reveal>
@@ -405,7 +405,7 @@ function SplitRows({
               key={`gap-${i}`}
               type="button"
               onClick={() => onExpand(item.key)}
-              className="flex w-full items-center gap-ds-02 border-y border-surface-border-subtle/30 bg-surface-raised-hover px-ds-03 py-ds-01 text-caption text-surface-fg-subtle hover:bg-surface-raised-active"
+              className="flex w-full items-center gap-ds-02 border-y border-surface-border-subtle/30 bg-surface-panel-hover px-ds-03 py-ds-01 text-caption text-surface-fg-subtle hover:bg-surface-panel-active"
             >
               <Icon icon={IconChevronDown} size="xs" />
               Expand {hidden.length} unchanged {hidden.length === 1 ? 'line' : 'lines'}
@@ -416,8 +416,8 @@ function SplitRows({
           const r = item.row
           return (
             <div key={`c-${i}`} className="flex divide-x divide-surface-border-subtle/30">
-              {sideCell(r.oldNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-raised text-surface-fg-muted', ' ')}
-              {sideCell(r.newNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-raised text-surface-fg-muted', ' ')}
+              {sideCell(r.oldNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-panel text-surface-fg-muted', ' ')}
+              {sideCell(r.newNo, language ? <CodeText language={language} text={r.text} /> : (r.text || ' '), 'bg-surface-panel text-surface-fg-muted', ' ')}
             </div>
           )
         }
@@ -439,10 +439,10 @@ function SplitRows({
                 <div key={`r-${k}`} className="flex divide-x divide-surface-border-subtle/30">
                   {d
                     ? sideCell(d.oldNo, leftNode, 'bg-error-3 text-error-11', '−')
-                    : sideCell(undefined, '', 'bg-surface-raised-hover/40', ' ')}
+                    : sideCell(undefined, '', 'bg-surface-panel-hover/40', ' ')}
                   {a
                     ? sideCell(a.newNo, rightNode, 'bg-success-3 text-success-11', '+')
-                    : sideCell(undefined, '', 'bg-surface-raised-hover/40', ' ')}
+                    : sideCell(undefined, '', 'bg-surface-panel-hover/40', ' ')}
                 </div>
               )
             })}
@@ -513,7 +513,7 @@ function collapse(
 function WordDiff({ before, after }: { before: string; after: string }) {
   const parts = diffWordsWithSpace(before, after)
   return (
-    <div className="whitespace-pre-wrap break-words px-ds-04 py-ds-03 font-sans text-body-md leading-ds-relaxed text-surface-fg bg-surface-raised">
+    <div className="whitespace-pre-wrap break-words px-ds-04 py-ds-03 font-sans text-body-md leading-ds-relaxed text-surface-fg bg-surface-panel">
       {parts.map((p, i) => {
         if (p.added) return <mark key={i} className="rounded-xs bg-success-4 text-success-11">{p.value}</mark>
         if (p.removed) return <mark key={i} className="rounded-xs bg-error-4 text-error-11 line-through decoration-error-11/40">{p.value}</mark>
@@ -601,14 +601,14 @@ function FieldsDiff({
   const hasReview = !!onAcceptHunk || !!onRejectHunk
   if (beforeError || afterError) {
     return (
-      <div className="flex flex-col gap-ds-02 bg-surface-raised px-ds-04 py-ds-03 text-body-sm text-error-11">
+      <div className="flex flex-col gap-ds-02 bg-surface-panel px-ds-04 py-ds-03 text-body-sm text-error-11">
         {beforeError && (beforeParseError ? beforeParseError(before) : <span>Fields mode needs valid before JSON.</span>)}
         {afterError && (afterParseError ? afterParseError(after) : <span>Fields mode needs valid after JSON.</span>)}
       </div>
     )
   }
   if (changes.length === 0) {
-    return <div className="bg-surface-raised px-ds-04 py-ds-03 text-body-sm text-surface-fg-subtle">No field changes.</div>
+    return <div className="bg-surface-panel px-ds-04 py-ds-03 text-body-sm text-surface-fg-subtle">No field changes.</div>
   }
   const TONE = {
     added: 'text-success-11',
@@ -616,7 +616,7 @@ function FieldsDiff({
     changed: 'text-surface-fg',
   } as const
   return (
-    <div className="divide-y divide-surface-border-subtle/30 bg-surface-raised">
+    <div className="divide-y divide-surface-border-subtle/30 bg-surface-panel">
       {changes.map((c, i) => (
         <div key={c.path} className="group flex items-start gap-ds-03 px-ds-04 py-ds-03">
           <span className={cn('mt-[2px] shrink-0 text-body-xs font-medium', TONE[c.kind])}>
@@ -865,7 +865,7 @@ const Diff = React.forwardRef<HTMLDivElement, DiffProps>(function Diff(
   return (
     <div
       ref={ref}
-      className={cn('overflow-hidden rounded-surface border border-card bg-surface-raised text-surface-fg', className)}
+      className={cn('overflow-hidden rounded-surface border border-card bg-surface-panel text-surface-fg', className)}
       {...props}
     >
       <DiffRoot
@@ -885,7 +885,7 @@ const Diff = React.forwardRef<HTMLDivElement, DiffProps>(function Diff(
         afterParseError={afterParseError}
       >
         {(showSummary || mode === 'split') && (
-          <div className="flex items-center justify-between gap-ds-03 border-b border-surface-border-subtle/30 bg-surface-raised px-ds-04 py-ds-02">
+          <div className="flex items-center justify-between gap-ds-03 border-b border-surface-border-subtle/30 bg-surface-panel px-ds-04 py-ds-02">
             {mode === 'split' ? (
               <DiffColumnLabels className="flex-1" />
             ) : (

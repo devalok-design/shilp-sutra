@@ -688,6 +688,11 @@
       "import": "./dist/shell/app-command-palette.js",
       "default": "./dist/shell/app-command-palette.js"
     },
+    "./shell/app-shell": {
+      "types": "./dist/shell/app-shell.d.ts",
+      "import": "./dist/shell/app-shell.js",
+      "default": "./dist/shell/app-shell.js"
+    },
     "./shell/bottom-navbar": {
       "types": "./dist/shell/bottom-navbar.d.ts",
       "import": "./dist/shell/bottom-navbar.js",

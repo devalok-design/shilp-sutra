@@ -35,7 +35,7 @@ export function BlockDetailShell({
         <div
           role="tablist"
           aria-label="View"
-          className="inline-flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-raised p-ds-01"
+          className="inline-flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-panel p-ds-01"
         >
           <button
             type="button"
@@ -95,7 +95,7 @@ export function BlockDetailShell({
           {uses.map((u) => (
             <span
               key={u}
-              className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-raised border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
+              className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-panel border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
             >
               {u}
             </span>

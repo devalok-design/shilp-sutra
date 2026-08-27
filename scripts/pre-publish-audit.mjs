@@ -121,7 +121,7 @@ function getChangelogLatestVersion(pkg = 'core') {
 }
 
 // Deprecated surface tokens: old numeric Tailwind classes (bg-surface-1..4)
-// These are replaced by semantic names: bg-surface-base, bg-surface-raised, etc.
+// These are replaced by semantic names: bg-surface-base, bg-surface-panel, etc.
 const DEPRECATED_SURFACE_TOKENS = [
   'bg-surface-1', 'bg-surface-2', 'bg-surface-3', 'bg-surface-4',
   'text-surface-1', 'text-surface-2', 'text-surface-3', 'text-surface-4',
@@ -479,7 +479,7 @@ gate('No deprecated surface tokens in components', () => {
   }
 
   if (violations.length > 0) {
-    return `Deprecated surface tokens found:\n${violations.map(v => `      ${v}`).join('\n')}\n      Use semantic names: bg-surface-base, bg-surface-raised, bg-surface-overlay, etc.`
+    return `Deprecated surface tokens found:\n${violations.map(v => `      ${v}`).join('\n')}\n      Use semantic names: bg-surface-base, bg-surface-panel, bg-surface-overlay, etc.`
   }
   return true
 })
@@ -949,6 +949,7 @@ gate('Icon-prop components import normalize-icon', () => {
     'src/ui/toast.tsx',                  // sonner pass-through; internal config, not consumer prop
     'src/ui/icon.tsx',                   // the Icon component itself
     'src/ui/icon-button.tsx',            // routes through Button's normalize
+    'src/ui/data-table-bulk-actions.tsx', // forwards action.icon to Button.startIcon which does normalize (same shape as composed/bulk-action-bar)
     'src/ui/tree-view/use-tree.ts',      // type-only TreeNode export, no render here
     'src/composed/extensions/slash-command.tsx',  // tiptap extension, internal
     'src/composed/error-boundary.tsx',   // internal Tabler refs in config

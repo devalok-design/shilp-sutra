@@ -14,13 +14,13 @@ export type InputState = FieldState
 const inputWrapperVariants = cva(
   [
     'relative flex items-center w-full font-sans',
-    'bg-surface-raised-hover text-surface-fg',
-    'border border-surface-border-strong rounded-control',
-    'hover:bg-surface-raised-active',
+    'bg-surface-panel-hover text-surface-fg',
+    'border border-surface-border-interactive rounded-control',
+    'hover:bg-surface-panel-active',
     'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
-    'focus-within:outline-hidden focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-surface-border',
+    'focus-within:outline-hidden focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-7',
     'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-action-disabled',
-    'has-[:read-only]:bg-surface-raised has-[:read-only]:cursor-default',
+    'has-[:read-only]:bg-surface-panel has-[:read-only]:cursor-default',
   ],
   {
     variants: {
@@ -170,7 +170,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               'flex items-center shrink-0 select-none self-stretch',
               'border-r border-surface-border',
-              'bg-surface-raised text-surface-fg-muted',
+              'bg-surface-panel text-surface-fg-muted',
               'rounded-l-[inherit]',
               labelPaddingMap[size],
               labelTextMap[size],
@@ -222,7 +222,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               'flex items-center shrink-0 select-none self-stretch',
               'border-l border-surface-border',
-              'bg-surface-raised text-surface-fg-muted',
+              'bg-surface-panel text-surface-fg-muted',
               'rounded-r-[inherit]',
               labelPaddingMap[size],
               labelTextMap[size],

@@ -10,11 +10,11 @@ const contentCardVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-surface-raised shadow-raised hover:shadow-raised-hover',
+          'bg-surface-panel hover:bg-surface-panel-hover',
         outline:
           'border border-surface-border bg-transparent hover:border-surface-border-strong',
         ghost:
-          'border border-transparent bg-transparent hover:bg-surface-raised',
+          'border border-transparent bg-transparent hover:bg-surface-panel-hover',
       },
       padding: {
         default: 'p-ds-05b',

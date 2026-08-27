@@ -76,7 +76,7 @@ export function DataTableBulkActions<TData>({
         aria-label="Clear selection"
         className={cn(
           'flex items-center justify-center p-ds-01',
-          'rounded-control-inner hover:bg-surface-raised transition-colors',
+          'rounded-control-inner hover:bg-surface-panel-hover transition-colors',
           'text-surface-fg-muted hover:text-surface-fg',
         )}
       >

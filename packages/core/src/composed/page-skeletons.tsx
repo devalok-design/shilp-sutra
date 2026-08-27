@@ -30,7 +30,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={`stat-${i}`}
-            className="flex flex-col gap-ds-04 rounded-surface border border-card bg-surface-raised p-ds-05b"
+            className="flex flex-col gap-ds-04 rounded-surface border border-card bg-surface-panel p-ds-05b"
           >
             <div className="flex items-center justify-between">
               <Skeleton className={'h-ds-04 w-ds-11'} />
@@ -43,7 +43,7 @@ const DashboardSkeleton = React.forwardRef<HTMLDivElement, DashboardSkeletonProp
       </div>
 
       {/* Attendance calendar placeholder */}
-      <div className="rounded-surface border border-card bg-surface-raised p-ds-06">
+      <div className="rounded-surface border border-card bg-surface-panel p-ds-06">
         <div className="mb-ds-06 flex items-center justify-between">
           <Skeleton className={'h-ds-05b w-[128px]'} />
           <div className="flex items-center gap-ds-03">
@@ -111,7 +111,7 @@ const ProjectListSkeleton = React.forwardRef<HTMLDivElement, ProjectListSkeleton
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={`proj-${i}`}
-            className="flex flex-col gap-ds-05 rounded-surface border border-card bg-surface-raised p-ds-05b"
+            className="flex flex-col gap-ds-05 rounded-surface border border-card bg-surface-panel p-ds-05b"
           >
             {/* Top row: status + org */}
             <div className="flex items-center justify-between">
@@ -156,7 +156,7 @@ export interface TaskDetailSkeletonProps extends React.ComponentPropsWithoutRef<
 const TaskDetailSkeleton = React.forwardRef<HTMLDivElement, TaskDetailSkeletonProps>(
   function TaskDetailSkeleton({ className, label, ...props }, ref) {
   return (
-    <div ref={ref} {...statusProps(label)} {...props} className={cn("flex h-full flex-col gap-0 rounded-surface border border-card bg-surface-raised", className)}>
+    <div ref={ref} {...statusProps(label)} {...props} className={cn("flex h-full flex-col gap-0 rounded-surface border border-card bg-surface-panel", className)}>
       <SrLabel label={label} />
       {/* Header */}
       <div className="flex items-center justify-between border-b border-surface-border-strong px-ds-05b py-ds-05">

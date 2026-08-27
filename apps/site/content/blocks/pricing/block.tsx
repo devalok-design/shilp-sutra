@@ -146,7 +146,7 @@ export function PricingBlock() {
           {faqs.map((f) => (
             <div
               key={f.q}
-              className="p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-raised"
+              className="p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-panel"
             >
               <dt>
                 <Text variant="label-md" className="text-surface-fg">

@@ -19,7 +19,7 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 |---|---|
 | `solid` (default) | Primary CTA. One per region. Heavy visual weight. |
 | `soft` | Secondary action. **Preferred default for any non-primary action.** Tinted bg, colored text, no visible border — warmer than outline, brand-consistent. |
-| `outline` | Secondary action on a colored / `surface-raised` bg where soft's tint disappears. In toolbars / icon-dense rows. Paired adjacent to a primary that needs explicit hierarchy. |
+| `outline` | Secondary action on a colored / `surface-panel` bg where soft's tint disappears. In toolbars / icon-dense rows. Paired adjacent to a primary that needs explicit hierarchy. |
 | `ghost` | Tertiary / dismissive — close, cancel, skip. Minimal weight. |
 | `link` | Inline action that should read as a link but behave as a button. Use sparingly. |
 

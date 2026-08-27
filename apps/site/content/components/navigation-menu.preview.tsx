@@ -45,7 +45,7 @@ export function NavigationMenuHero() {
         <NavigationMenuItem>
           <NavigationMenuLink
             href="#pricing"
-            className="inline-flex h-ds-sm-plus w-max items-center rounded-control px-ds-05 py-ds-03 text-body-md font-medium transition-colors hover:bg-surface-raised-hover"
+            className="inline-flex h-ds-sm-plus w-max items-center rounded-control px-ds-05 py-ds-03 text-body-md font-medium transition-colors hover:bg-surface-panel-hover"
           >
             Pricing
           </NavigationMenuLink>
@@ -86,7 +86,7 @@ function MenuLink({ title, href, children }: { title: string; href: string; chil
     <li>
       <NavigationMenuLink
         href={href}
-        className="block rounded-control p-ds-03 transition-colors hover:bg-surface-raised-hover"
+        className="block rounded-control p-ds-03 transition-colors hover:bg-surface-panel-hover"
       >
         <span className="block text-body-md font-medium text-surface-fg">{title}</span>
         <span className="block text-body-sm text-surface-fg-muted">{children}</span>
@@ -97,7 +97,7 @@ function MenuLink({ title, href, children }: { title: string; href: string; chil
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-raised">
+    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-panel">
       <span className="text-ds-xs font-mono text-surface-fg-subtle">{title}</span>
       <div className="flex flex-wrap items-center gap-ds-02">{children}</div>
     </div>

@@ -131,7 +131,7 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           style={{ paddingLeft: `calc(${depth} * var(--spacing-ds-05b) + var(--spacing-ds-03))` }}
           className={cn(
             'flex items-center gap-ds-02 py-ds-02 px-ds-02 rounded-control cursor-pointer transition-colors duration-fast-01',
-            'hover:bg-surface-raised',
+            'hover:bg-surface-panel-hover',
             'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
             isSelected &&
               'bg-accent-3 text-accent-11',

@@ -48,7 +48,7 @@ export function StackSupport() {
                 href={`/docs/${fw.slug}`}
                 event="framework_click"
                 eventProps={{ framework: fw.name, location: 'stack-support' }}
-                className="group flex items-center gap-ds-03 rounded-surface border border-surface-border-subtle bg-surface-raised px-ds-04 py-ds-04 text-surface-fg-muted transition-[color,border-color,box-shadow] duration-fast-02 ease-productive-standard hover:border-surface-border-strong hover:text-surface-fg hover:shadow-raised focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
+                className="group flex items-center gap-ds-03 rounded-surface border border-surface-border-subtle bg-surface-panel px-ds-04 py-ds-04 text-surface-fg-muted transition-[color,border-color,box-shadow] duration-fast-02 ease-productive-standard hover:border-surface-border-strong hover:text-surface-fg hover:shadow-raised focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
               >
                 <fw.Mark className="h-6 w-6 shrink-0" />
                 <Text variant="body-sm" className="text-current">

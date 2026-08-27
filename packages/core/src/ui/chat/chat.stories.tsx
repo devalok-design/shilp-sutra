@@ -51,7 +51,7 @@ type Story = StoryObj
 
 export const FlatConversation: Story = {
   render: () => (
-    <div className="h-[480px] w-full max-w-xl rounded-surface border border-surface-border bg-surface-2">
+    <div className="h-[480px] w-full max-w-xl rounded-surface border border-surface-border bg-surface-panel">
       <MessageList>
         <DateSeparator date="2026-03-24" />
 
@@ -148,7 +148,7 @@ export const FlatConversation: Story = {
 
 export const BubbleConversation: Story = {
   render: () => (
-    <div className="h-[400px] w-full max-w-md rounded-surface border border-surface-border bg-surface-2">
+    <div className="h-[400px] w-full max-w-md rounded-surface border border-surface-border bg-surface-panel">
       <MessageList>
         <Message variant="bubble" placement="end">
           <Message.Body>
@@ -184,7 +184,7 @@ export const BubbleConversation: Story = {
 
 export const GroupedMessages: Story = {
   render: () => (
-    <div className="h-[400px] w-full max-w-xl rounded-surface border border-surface-border bg-surface-2">
+    <div className="h-[400px] w-full max-w-xl rounded-surface border border-surface-border bg-surface-panel">
       <MessageList>
         <Message>
           <Message.Avatar src="https://i.pravatar.cc/32?u=meera" fallback="MR" />
@@ -239,7 +239,7 @@ export const GroupedMessages: Story = {
 
 export const MessageStates: Story = {
   render: () => (
-    <div className="flex w-full max-w-xl flex-col gap-ds-04 rounded-surface border border-surface-border bg-surface-2 p-ds-05">
+    <div className="flex w-full max-w-xl flex-col gap-ds-04 rounded-surface border border-surface-border bg-surface-panel p-ds-05">
       <Message deleted />
 
       <Message highlight="mention">
@@ -285,7 +285,7 @@ function EditableBodyDemo() {
   )
 
   return (
-    <div className="w-full max-w-xl rounded-surface border border-surface-border bg-surface-2 p-ds-05">
+    <div className="w-full max-w-xl rounded-surface border border-surface-border bg-surface-panel p-ds-05">
       <Message>
         <Message.Avatar src="https://i.pravatar.cc/32?u=you" fallback="YO" />
         <Message.Content>
@@ -315,7 +315,7 @@ export const EditableBody: Story = {
 
 export const SystemMessages: Story = {
   render: () => (
-    <div className="flex w-full max-w-xl flex-col gap-ds-03 rounded-surface border border-surface-border bg-surface-2 p-ds-05">
+    <div className="flex w-full max-w-xl flex-col gap-ds-03 rounded-surface border border-surface-border bg-surface-panel p-ds-05">
       <SystemMessage
         icon={<Icon icon={IconUserPlus} size="xs" />}
         timestamp="2026-03-25T09:00:00"
@@ -366,7 +366,7 @@ function InputVariantsDemo() {
         <p className="mb-ds-02 text-ds-xs font-medium text-surface-fg-subtle">
           Default
         </p>
-        <div className="rounded-surface border border-surface-border bg-surface-2">
+        <div className="rounded-surface border border-surface-border bg-surface-panel">
           <MessageInput
             onSubmit={(text) => console.log('send:', text)}
             placeholder="Type a message..."
@@ -378,7 +378,7 @@ function InputVariantsDemo() {
         <p className="mb-ds-02 text-ds-xs font-medium text-surface-fg-subtle">
           With leading slot (internal toggle)
         </p>
-        <div className="rounded-surface border border-surface-border bg-surface-2">
+        <div className="rounded-surface border border-surface-border bg-surface-panel">
           <MessageInput
             onSubmit={(text) =>
               console.log('send:', text, { internal: isInternal })
@@ -406,7 +406,7 @@ function InputVariantsDemo() {
         <p className="mb-ds-02 text-ds-xs font-medium text-surface-fg-subtle">
           Streaming (stop button)
         </p>
-        <div className="rounded-surface border border-surface-border bg-surface-2">
+        <div className="rounded-surface border border-surface-border bg-surface-panel">
           <MessageInput
             onSubmit={() => {}}
             isStreaming
@@ -428,7 +428,7 @@ export const InputVariants: Story = {
 
 export const Separators: Story = {
   render: () => (
-    <div className="flex w-full max-w-md flex-col gap-ds-03 rounded-surface border border-surface-border bg-surface-2 p-ds-05">
+    <div className="flex w-full max-w-md flex-col gap-ds-03 rounded-surface border border-surface-border bg-surface-panel p-ds-05">
       <DateSeparator date={new Date()} />
       <DateSeparator
         date={new Date(Date.now() - 86_400_000)}

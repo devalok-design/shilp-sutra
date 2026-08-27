@@ -13,7 +13,10 @@ export default tseslint.config(
     ignores: [
       '**/dist/**',
       'node_modules/**',
-      '**/*.stories.tsx',
+      // NOT ignoring *.stories.tsx globally: a global ignore cannot be
+      // re-included by a later `files` block, and that is precisely how 24
+      // deprecated surface tokens survived in stories. General rules are
+      // switched off for stories further down; the token rules stay on.
       '.storybook/**',
       'packages/core/src/primitives/**',
     ],
@@ -161,12 +164,39 @@ export default tseslint.config(
     rules: {
       // Numbered surface aliases don't invert for dark mode; the named tiers do.
       'shilp-sutra/no-deprecated-surface-token': 'error',
+      // `surface-raised` -> `surface-panel`, and interaction states retarget to
+      // `-panel-hover` rather than renaming (a hover painted with a container
+      // value is invisible in light). See the 2026-08-26 surface audit, A1.
+      'shilp-sutra/no-renamed-surface-token': 'error',
       'shilp-sutra/no-deprecated-shadow-token': 'error',
       // Bare `shadow` renders nothing in TW4.
       'shilp-sutra/no-bare-shadow': 'error',
       // `bg-gradient-to-*` is dead in TW4 — `bg-linear-to-*` replaced it.
       'shilp-sutra/no-bg-gradient-to': 'error',
       // `w-[--var]` is dead in TW4 — the shorthand is `w-(--var)`.
+      'shilp-sutra/no-css-var-bracket': 'error',
+    },
+  },
+  // Stories are globally ignored above, which is how 24 deprecated surface
+  // tokens survived in them — and stories are precisely what consumers copy
+  // from. Re-include them for the token rules only, so this stays a token gate
+  // and not a general lint of demo code.
+  {
+    files: ['**/*.stories.tsx'],
+    plugins: { 'shilp-sutra': shilpSutra },
+    rules: {
+      // Demo code gets latitude on general lint...
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+      'react-hooks/rules-of-hooks': 'off',
+      'jsx-a11y/anchor-is-valid': 'off',
+      'no-console': 'off',
+      // ...but none at all on tokens, because stories are what people copy.
+      'shilp-sutra/no-deprecated-surface-token': 'error',
+      'shilp-sutra/no-renamed-surface-token': 'error',
+      'shilp-sutra/no-deprecated-shadow-token': 'error',
+      'shilp-sutra/no-bg-gradient-to': 'error',
       'shilp-sutra/no-css-var-bracket': 'error',
     },
   },

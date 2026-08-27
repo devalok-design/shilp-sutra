@@ -77,11 +77,11 @@ const RadioGroupItem = React.forwardRef<
       className={cn(
         'touch-target aspect-square rounded-pill',
         radioSizeClasses[size],
-        'border border-surface-border-strong bg-surface-raised-hover',
+        'border border-surface-border-interactive bg-surface-panel-hover',
         'transition-colors duration-fast-01',
         'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-        'hover:border-accent-7 hover:bg-surface-raised-active',
+        'hover:border-accent-7 hover:bg-surface-panel-active',
         'data-[state=checked]:border-accent-7',
         state && stateBorderClasses[state],
         className,

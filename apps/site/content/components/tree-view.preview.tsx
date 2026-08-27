@@ -32,7 +32,7 @@ const ITEMS = [
 
 export function TreeViewHero() {
   return (
-    <div className="w-full max-w-sm rounded-surface border border-surface-border-subtle bg-surface-raised p-ds-03">
+    <div className="w-full max-w-sm rounded-surface border border-surface-border-subtle bg-surface-panel p-ds-03">
       <TreeView items={ITEMS} defaultExpanded={['src', 'components']} />
     </div>
   )
@@ -54,7 +54,7 @@ export function TreeViewVariants() {
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-raised">
+    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-panel">
       <span className="text-ds-xs font-mono text-surface-fg-subtle">{title}</span>
       <div className="flex flex-col">{children}</div>
     </div>

@@ -91,7 +91,7 @@ function FileRow({ file, version }: { file: Item; version: string }) {
   const viewUrl = `https://unpkg.com/@devalok/shilp-sutra@${version}/make-kit/${file.path}`
 
   return (
-    <li className="rounded-control border border-surface-border bg-surface-raised overflow-hidden">
+    <li className="rounded-control border border-surface-border bg-surface-panel overflow-hidden">
       <div className="flex items-center justify-between px-ds-04 py-ds-03 gap-ds-03">
         <button
           type="button"

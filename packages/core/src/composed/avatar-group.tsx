@@ -45,8 +45,13 @@ export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   max?: number
   size?: Size
   showTooltip?: boolean
-  /** Border color for the group avatars. @default 'surface-raised' */
-  borderColor?: 'surface-base' | 'surface-raised'
+  /**
+   * Border color for the group avatars. @default 'surface-panel'
+   *
+   * `'surface-raised'` is the pre-0.57 name for `'surface-panel'` and still
+   * works — a widening, so nothing breaks. It is removed next major.
+   */
+  borderColor?: 'surface-base' | 'surface-panel' | 'surface-raised'
   /** Callback when the "+N" overflow badge is clicked (renders it as a button). */
   onOverflowClick?: () => void
   /** Custom render function for each avatar (consumer owns the Avatar). */
@@ -81,7 +86,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       max = 4,
       size = 'md',
       showTooltip = true,
-      borderColor = 'surface-raised',
+      borderColor = 'surface-panel',
       onOverflowClick,
       renderAvatar,
       expandDirection = 'right',
@@ -106,10 +111,10 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     const displayed = users.slice(0, cap)
     const overflow = users.length - cap
     const overlapClass = overlapMap[size]
-    const borderClass = borderColor === 'surface-base' ? 'border-surface-base' : 'border-surface-raised'
+    const borderClass = borderColor === 'surface-base' ? 'border-surface-base' : 'border-surface-panel'
     const ringOffsetClass = borderColor === 'surface-base'
       ? 'ring-offset-1 ring-offset-surface-base'
-      : 'ring-offset-1 ring-offset-surface-raised'
+      : 'ring-offset-1 ring-offset-surface-panel'
 
     const spreadPx = spreadPxMap[size]
     const spreadMult = { compact: 0.5, default: 1, wide: 1.5 }[expandAmount]
@@ -165,7 +170,7 @@ const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   <span
                     aria-hidden="true"
                     className={cn(
-                      'absolute top-0 right-0 rounded-pill ring-1 ring-surface-raised',
+                      'absolute top-0 right-0 rounded-pill ring-1 ring-surface-panel',
                       indicatorDotMap[size],
                       user.indicator === 'lead' ? 'bg-accent-9'
                         : user.indicator === 'admin' ? 'bg-warning-9' : '',

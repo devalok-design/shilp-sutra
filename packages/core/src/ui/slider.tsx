@@ -8,7 +8,7 @@ import { useFormField } from './form'
 import { cn } from './lib/utils'
 
 const sliderTrackVariants = cva(
-  'relative w-full grow overflow-hidden rounded-pill bg-surface-raised-hover',
+  'relative w-full grow overflow-hidden rounded-pill bg-surface-panel-hover',
   {
     variants: {
       size: {

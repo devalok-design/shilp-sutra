@@ -104,7 +104,7 @@ export const Presets = React.forwardRef<HTMLDivElement, PresetsProps>(
             className={cn(
               'h-ds-sm w-full rounded-control px-ds-03 text-left text-body-sm',
               'text-surface-fg transition-colors',
-              'hover:bg-surface-raised-hover',
+              'hover:bg-surface-panel-hover',
               'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
             )}
           >

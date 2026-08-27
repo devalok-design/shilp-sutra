@@ -15,13 +15,13 @@ import { cn } from './lib/utils'
 
 // ── Color map — single source of truth for all badge color × variant combos ──
 const colorMap = {
-  default: { bg: 'bg-surface-raised-hover', softBg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
+  default: { bg: 'bg-surface-panel-hover', softBg: 'bg-surface-panel-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
   accent:  { bg: 'bg-accent-2', softBg: 'bg-accent-3',  fg: 'text-accent-11',  border: 'border-accent-4',  solid: 'bg-accent-9',  solidFg: 'text-accent-fg' },
   error:   { bg: 'bg-error-2', softBg: 'bg-error-3',   fg: 'text-error-11',   border: 'border-error-4',   solid: 'bg-error-9',   solidFg: 'text-error-fg' },
   success: { bg: 'bg-success-2', softBg: 'bg-success-3', fg: 'text-success-11', border: 'border-success-4', solid: 'bg-success-9', solidFg: 'text-success-fg' },
   warning: { bg: 'bg-warning-2', softBg: 'bg-warning-3', fg: 'text-warning-11', border: 'border-warning-4', solid: 'bg-warning-9', solidFg: 'text-warning-fg' },
   info:    { bg: 'bg-info-2', softBg: 'bg-info-3',    fg: 'text-info-11',    border: 'border-info-4',    solid: 'bg-info-9',    solidFg: 'text-info-fg' },
-  neutral: { bg: 'bg-surface-raised-hover', softBg: 'bg-surface-raised-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
+  neutral: { bg: 'bg-surface-panel-hover', softBg: 'bg-surface-panel-hover', fg: 'text-surface-fg-muted', border: 'border-surface-border-strong', solid: 'bg-neutral-5', solidFg: 'text-surface-fg' },
   teal:    { bg: 'bg-category-teal-2', softBg: 'bg-category-teal-3',    fg: 'text-category-teal-11',    border: 'border-category-teal-4',    solid: 'bg-category-teal-9',    solidFg: 'text-category-fg' },
   amber:   { bg: 'bg-category-amber-2', softBg: 'bg-category-amber-3',   fg: 'text-category-amber-11',   border: 'border-category-amber-4',   solid: 'bg-category-amber-9',   solidFg: 'text-category-fg' },
   slate:   { bg: 'bg-category-slate-2', softBg: 'bg-category-slate-3',   fg: 'text-category-slate-11',   border: 'border-category-slate-4',   solid: 'bg-category-slate-9',   solidFg: 'text-category-fg' },

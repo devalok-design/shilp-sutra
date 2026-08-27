@@ -68,7 +68,7 @@ const Switch = React.forwardRef<
   return (
     <SwitchPrimitives.Root
       className={cn(
-        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-pill border-2 border-surface-border-strong shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-raised-active",
+        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-pill border-2 border-surface-border-interactive shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-panel-active",
         track,
         colorMap[color],
         state && stateTintClasses[state],

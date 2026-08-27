@@ -33,7 +33,7 @@ export function ShowcaseCanvas({
   return (
     <motion.div
       animate={{
-        backgroundColor: 'var(--color-surface-raised)',
+        backgroundColor: 'var(--color-surface-panel)',
         borderColor: 'var(--color-surface-border)',
       }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
@@ -43,7 +43,7 @@ export function ShowcaseCanvas({
       ].join(' ')}
       style={brandStyle}
     >
-      <div className="flex items-center justify-between gap-ds-03 px-ds-05 py-ds-03 bg-surface-raised border-b border-surface-border-subtle">
+      <div className="flex items-center justify-between gap-ds-03 px-ds-05 py-ds-03 bg-surface-panel border-b border-surface-border-subtle">
         <Text variant="label-sm" className="text-surface-fg-subtle">
           {productName} · live preview
         </Text>

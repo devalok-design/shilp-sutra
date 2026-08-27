@@ -78,7 +78,7 @@ function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
       <div className="p-ds-03">
         <Frimousse.Search
           placeholder="Search emoji…"
-          className="w-full rounded-control bg-surface-raised px-ds-03 py-ds-02b text-body-sm text-surface-fg placeholder:text-surface-fg-subtle focus-ring"
+          className="w-full rounded-control bg-surface-panel-hover px-ds-03 py-ds-02b text-body-sm text-surface-fg placeholder:text-surface-fg-subtle focus-ring"
         />
       </div>
       <Frimousse.Viewport className="relative flex-1 overflow-y-auto">
@@ -111,8 +111,8 @@ function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
                 type="button"
                 className={cn(
                   'flex aspect-square w-[calc(100%/var(--frimousse-list-columns))] items-center justify-center rounded-control text-[1.375rem] leading-none',
-                  'hover:bg-surface-raised',
-                  emoji.isActive && 'bg-surface-raised',
+                  'hover:bg-surface-panel-hover',
+                  emoji.isActive && 'bg-surface-panel-hover',
                 )}
                 {...props}
               >
@@ -137,7 +137,7 @@ function EmojiPicker({ onSelect, emojibaseUrl, className }: EmojiPickerProps) {
         </Frimousse.ActiveEmoji>
         <Frimousse.SkinToneSelector
           aria-label="Change skin tone"
-          className="flex size-8 shrink-0 items-center justify-center rounded-control text-[1.25rem] leading-none hover:bg-surface-raised focus-ring"
+          className="flex size-8 shrink-0 items-center justify-center rounded-control text-[1.25rem] leading-none hover:bg-surface-panel-hover focus-ring"
         />
       </div>
     </Frimousse.Root>

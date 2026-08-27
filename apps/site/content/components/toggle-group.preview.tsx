@@ -68,7 +68,7 @@ export function ToggleGroupVariants() {
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-raised">
+    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-panel">
       <span className="text-ds-xs font-mono text-surface-fg-subtle">{title}</span>
       <div className="flex flex-wrap items-center gap-ds-04">{children}</div>
     </div>

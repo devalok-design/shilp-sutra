@@ -53,7 +53,7 @@ const items: Item[] = [
 export function SidebarClient() {
   return (
     <SidebarProvider className="min-h-0">
-      <Sidebar collapsible="none" className="border-r border-surface-border-subtle bg-surface-raised">
+      <Sidebar collapsible="none" className="border-r border-surface-border-subtle bg-surface-panel">
         <SidebarHeader className="px-ds-05 py-ds-05">
           <div className="flex flex-col leading-tight">
             <Text variant="label-md" className="text-surface-fg">Acme Co.</Text>

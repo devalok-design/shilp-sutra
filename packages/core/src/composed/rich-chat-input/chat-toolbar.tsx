@@ -74,10 +74,10 @@ export function ToolbarButton({
         'inline-flex h-ds-xs-plus items-center justify-center rounded-control touch-target',
         !classNameProp?.includes('w-') && 'w-ds-xs-plus',
         'transition-[color,background-color,transform] duration-fast-01 ease-productive-standard',
-        'hover:bg-surface-raised-hover hover:text-surface-fg',
+        'hover:bg-surface-panel-hover hover:text-surface-fg',
         'active:scale-95',
         'disabled:pointer-events-none disabled:opacity-action-disabled',
-        isActive ? 'bg-surface-raised-hover text-accent-11' : 'text-surface-fg-subtle',
+        isActive ? 'bg-surface-panel-hover text-accent-11' : 'text-surface-fg-subtle',
         classNameProp,
       )}
     >

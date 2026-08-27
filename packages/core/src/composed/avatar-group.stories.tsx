@@ -40,7 +40,7 @@ const meta: Meta<typeof AvatarGroup> = {
     },
     borderColor: {
       control: 'select',
-      options: ['surface-base', 'surface-raised'],
+      options: ['surface-base', 'surface-panel'],
     },
   },
 }
@@ -332,7 +332,7 @@ export const AllSizesUpdated: Story = {
 export const OnCardSurface: Story = {
   render: () => (
     <div
-      className="rounded-control border border-surface-border bg-surface-raised p-ds-05"
+      className="rounded-control border border-surface-border bg-surface-panel p-ds-05"
       style={{ maxWidth: 320 }}
     >
       <p className="mb-ds-03 text-ds-sm font-semibold text-surface-fg">
@@ -341,14 +341,14 @@ export const OnCardSurface: Story = {
       <AvatarGroup
         users={mockUsers.slice(0, 5)}
         max={4}
-        borderColor="surface-raised"
+        borderColor="surface-panel"
       />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'When placed on a `bg-surface-raised` card, use `borderColor="surface-raised"` so the avatar border blends with the card background.',
+        story: 'When placed on a `bg-surface-panel` card, use `borderColor="surface-panel"` so the avatar border blends with the card background.',
       },
     },
   },

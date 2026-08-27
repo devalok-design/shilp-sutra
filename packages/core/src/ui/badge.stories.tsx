@@ -300,7 +300,7 @@ export const Indicator: Story = {
         <div className="flex flex-wrap items-center gap-ds-06">
           {(['top-right', 'top-left', 'bottom-right', 'bottom-left'] as const).map((placement) => (
             <BadgeIndicator key={placement} count={1} placement={placement} color="accent">
-              <div className="flex h-10 w-10 items-center justify-center rounded-control bg-surface-raised-hover text-ds-xs text-surface-fg-muted">
+              <div className="flex h-10 w-10 items-center justify-center rounded-control bg-surface-panel-hover text-ds-xs text-surface-fg-muted">
                 {placement.replace('-', '\n')}
               </div>
             </BadgeIndicator>
@@ -570,7 +570,7 @@ export const IndicatorPlacements: Story = {
       {(['top-right', 'top-left', 'bottom-right', 'bottom-left'] as const).map((p) => (
         <div key={p} className="flex flex-col items-center gap-ds-03">
           <BadgeIndicator dot placement={p}>
-            <div className="h-10 w-10 rounded-pill bg-surface-raised flex items-center justify-center">
+            <div className="h-10 w-10 rounded-pill bg-surface-panel flex items-center justify-center">
               <Icon icon={IconUser} size="md" />
             </div>
           </BadgeIndicator>

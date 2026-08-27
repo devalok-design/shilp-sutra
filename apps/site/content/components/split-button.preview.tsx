@@ -5,13 +5,13 @@ import { SplitButton } from '@devalok/shilp-sutra/ui/split-button'
 function DropdownItems() {
   return (
     <div className="flex flex-col">
-      <button className="rounded-control-inner px-ds-03 py-ds-02 text-left text-body-sm text-surface-fg hover:bg-surface-raised-hover">
+      <button className="rounded-control-inner px-ds-03 py-ds-02 text-left text-body-sm text-surface-fg hover:bg-surface-panel-hover">
         Save and duplicate
       </button>
-      <button className="rounded-control-inner px-ds-03 py-ds-02 text-left text-body-sm text-surface-fg hover:bg-surface-raised-hover">
+      <button className="rounded-control-inner px-ds-03 py-ds-02 text-left text-body-sm text-surface-fg hover:bg-surface-panel-hover">
         Save as template
       </button>
-      <button className="rounded-control-inner px-ds-03 py-ds-02 text-left text-body-sm text-surface-fg hover:bg-surface-raised-hover">
+      <button className="rounded-control-inner px-ds-03 py-ds-02 text-left text-body-sm text-surface-fg hover:bg-surface-panel-hover">
         Save and close
       </button>
     </div>
@@ -55,7 +55,7 @@ export function SplitButtonVariants() {
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-raised">
+    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-panel">
       <span className="text-ds-xs font-mono text-surface-fg-subtle">{title}</span>
       <div className="flex flex-wrap items-center gap-ds-03">{children}</div>
     </div>

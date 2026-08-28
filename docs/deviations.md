@@ -31,6 +31,10 @@ any gate that needs to skip a known case.
 | `SURFACE-BASE-GROUND` | Light canvas `#f5f5f5` | n/a | Setu `grounds`, tier 1 | open |
 | `AVATAR-RING-RADIUS` | Figma ring corner radius | `scale/lg` = 10 | derive from `role/control` + 4 | 2026-08-24 |
 | `WARNING-RAMP-CHROMA` | `warning/background` saturation | chroma 74.2 | siblings at 21.9–33.5 | 2026-08-26 |
+| `PALETTE-EDGE-WHISPER` | Coloured edges at ramp step 4 | 1.37–1.49:1 | — (a plain edge is 1.23:1) | open |
+| `PALETTE-CONTROL-EDGE-BELOW-AA` | Control edges on every colour | 2.00:1 default | WCAG 1.4.11 non-text, 3.0 | open |
+| `SLIDER-THUMB-EDGE-STEP-7` | Slider thumb edge stays at step 7 | 2.31–2.86:1 | our own step-4 edge rule | open |
+| `SWITCH-HOVER-DIRECTION` | Switch hover inverts per theme | darker in dark | every other control lightens | open |
 
 ---
 
@@ -293,3 +297,57 @@ above.
   `surface-overlay` ground in both themes), Alert dismiss on solid (was 1.01:1), Badge category
   labels in dark (was 3.28–3.70), and Input/Textarea/Select/Combobox placeholders
   in light (was 4.14). All corrected and shipped; they are history, not exceptions.
+---
+
+### `SLIDER-THUMB-EDGE-STEP-7` — the slider handle keeps the old, louder edge
+
+**The threshold.** Not an accessibility one. This is a deliberate departure from
+our own `PALETTE-EDGE-WHISPER` decision, which put every coloured edge in the
+system at ramp step 4.
+
+**What we ship.** The Slider thumb alone stays at **step 7** —
+`border-palette-border-strong` rather than `border-palette-border`.
+
+| | contrast vs white |
+|---|---|
+| step 4 — everything else | 1.37 – 1.49:1 |
+| step 7 — the slider thumb | 2.31 – 2.86:1 |
+
+**Why.** `PALETTE-EDGE-WHISPER` was reasoned about *card* edges: an object you
+should notice without looking at. A slider handle is the opposite kind of thing.
+It is the only part of the control that moves, it is what you aim the pointer at,
+and it is defined mostly by its own outline rather than by a fill against a
+background. Reviewed in Figma against the alternative and chosen knowingly.
+
+**What this costs.** One component now disagrees with the system's edge rule, so
+anyone grepping for `palette-border` will find an exception. That is the price of
+the call, recorded here rather than left to be rediscovered as an inconsistency.
+
+**Related:** `PALETTE-EDGE-WHISPER`, which still governs every other coloured
+edge and is unchanged.
+
+---
+
+### `SWITCH-HOVER-DIRECTION` — the switch hover moves opposite ways per theme
+
+**The threshold.** Internal consistency, not a measured standard. Every other
+control in the system gets subtly *lighter* on hover in both themes.
+
+**What we ship.** The Switch off-track is painted with a border token
+(`surface-border-strong`) rather than a surface one, and its hover is an opaque
+surface value. The two do not move together:
+
+| | rest | hover | direction |
+|---|---|---|---|
+| light | `#dbdbdb` | `#e8e8e8` | lighter |
+| dark | `#3d3d3d` | `#353535` | **darker** |
+
+**Why it stands.** Reviewed in Figma alongside a version that moves the same way
+in both themes, and the current behaviour was kept. An off-switch dimming as the
+pointer lands on it reads as the control arming itself, which is not obviously
+wrong for a toggle even though it is inconsistent with the rest of the system.
+
+**What this costs.** A token audit will keep surfacing it, which is exactly why
+it is written down. It also means Switch is the one colour-taking component
+outside the palette layer — converting it would force this decision open again.
+

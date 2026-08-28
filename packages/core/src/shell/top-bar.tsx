@@ -206,7 +206,7 @@ const TopBarIconButton = React.forwardRef<
         type="button"
         aria-label={tooltip}
         className={cn(
-          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-card-strong bg-surface-panel-hover text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-panel-active active:scale-90 duration-fast-01 ease-productive-standard',
+          'flex h-ds-sm-plus w-ds-sm-plus items-center justify-center rounded-pill border border-surface-border-interactive bg-surface-panel-hover text-surface-fg-muted transition-[color,background-color,border-color,transform] hover:bg-surface-panel-active active:scale-90 duration-fast-01 ease-productive-standard',
           className,
         )}
         {...props}

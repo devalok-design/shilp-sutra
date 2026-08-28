@@ -55,7 +55,7 @@
      edges a whisper. Measured 1.37–1.49:1 against white, where the plain
      uncoloured edge we already ship is 1.23:1, so the colour barely reads.
      Recorded as PALETTE-EDGE-WHISPER in docs/deviations.md. */
-  --color-palette-border:        var(--color-accent-4);
+  --color-palette-border:        var(--color-accent-4);        --color-palette-border-strong: var(--color-accent-7);
   --color-palette-solid:         var(--color-accent-9);   /* filled control */
   --color-palette-solid-hover:   var(--color-accent-10);  /* filled control, hovered */
   --color-palette-solid-active:  var(--color-accent-11);  /* filled control, pressed */
@@ -92,7 +92,7 @@
   --color-palette-soft-hover:    var(--color-accent-4);
   --color-palette-soft-active:   var(--color-accent-5);
   --color-palette-border-subtle: var(--color-accent-6);
-  --color-palette-border:        var(--color-accent-4);
+  --color-palette-border:        var(--color-accent-4);        --color-palette-border-strong: var(--color-accent-7);
   --color-palette-solid:         var(--color-accent-9);
   --color-palette-solid-hover:   var(--color-accent-10);
   --color-palette-solid-active:  var(--color-accent-11);
@@ -106,7 +106,7 @@
   --color-palette-soft-hover:    var(--color-secondary-4);
   --color-palette-soft-active:   var(--color-secondary-5);
   --color-palette-border-subtle: var(--color-secondary-6);
-  --color-palette-border:        var(--color-secondary-4);
+  --color-palette-border:        var(--color-secondary-4);        --color-palette-border-strong: var(--color-secondary-7);
   --color-palette-solid:         var(--color-secondary-9);
   --color-palette-solid-hover:   var(--color-secondary-10);
   --color-palette-solid-active:  var(--color-secondary-11);
@@ -120,7 +120,7 @@
   --color-palette-soft-hover:    var(--color-error-4);
   --color-palette-soft-active:   var(--color-error-5);
   --color-palette-border-subtle: var(--color-error-6);
-  --color-palette-border:        var(--color-error-4);
+  --color-palette-border:        var(--color-error-4);        --color-palette-border-strong: var(--color-error-7);
   --color-palette-solid:         var(--color-error-9);
   --color-palette-solid-hover:   var(--color-error-10);
   --color-palette-solid-active:  var(--color-error-11);
@@ -134,7 +134,7 @@
   --color-palette-soft-hover:    var(--color-success-4);
   --color-palette-soft-active:   var(--color-success-5);
   --color-palette-border-subtle: var(--color-success-6);
-  --color-palette-border:        var(--color-success-4);
+  --color-palette-border:        var(--color-success-4);        --color-palette-border-strong: var(--color-success-7);
   --color-palette-solid:         var(--color-success-9);
   --color-palette-solid-hover:   var(--color-success-10);
   --color-palette-solid-active:  var(--color-success-11);
@@ -148,7 +148,7 @@
   --color-palette-soft-hover:    var(--color-warning-4);
   --color-palette-soft-active:   var(--color-warning-5);
   --color-palette-border-subtle: var(--color-warning-6);
-  --color-palette-border:        var(--color-warning-4);
+  --color-palette-border:        var(--color-warning-4);        --color-palette-border-strong: var(--color-warning-7);
   --color-palette-solid:         var(--color-warning-9);
   --color-palette-solid-hover:   var(--color-warning-10);
   --color-palette-solid-active:  var(--color-warning-11);
@@ -162,7 +162,7 @@
   --color-palette-soft-hover:    var(--color-info-4);
   --color-palette-soft-active:   var(--color-info-5);
   --color-palette-border-subtle: var(--color-info-6);
-  --color-palette-border:        var(--color-info-4);
+  --color-palette-border:        var(--color-info-4);        --color-palette-border-strong: var(--color-info-7);
   --color-palette-solid:         var(--color-info-9);
   --color-palette-solid-hover:   var(--color-info-10);
   --color-palette-solid-active:  var(--color-info-11);
@@ -182,6 +182,7 @@
   --color-palette-soft-active:   var(--color-neutral-5);
   --color-palette-border-subtle: var(--color-surface-border-subtle);
   --color-palette-border:        var(--color-surface-border);
+  --color-palette-border-strong: var(--color-surface-border-strong);
   --color-palette-solid:         var(--color-neutral-5);
   --color-palette-solid-hover:   var(--color-neutral-7);
   --color-palette-solid-active:  var(--color-neutral-8);
@@ -209,7 +210,7 @@
 [data-palette='teal'] {
   --color-palette-subtle: var(--teal-2);       --color-palette-soft: var(--teal-3);
   --color-palette-soft-hover: var(--teal-4);   --color-palette-soft-active: var(--teal-5);
-  --color-palette-border-subtle: var(--teal-6);--color-palette-border: var(--teal-4);
+  --color-palette-border-subtle: var(--teal-6);--color-palette-border: var(--teal-4); --color-palette-border-strong: var(--teal-7);
   --color-palette-solid: var(--teal-9);        --color-palette-solid-hover: var(--teal-10);
   --color-palette-solid-active: var(--teal-11);
   --color-palette-text: var(--teal-11);        --color-palette-fg: var(--color-category-fg);
@@ -218,7 +219,7 @@
 [data-palette='amber'] {
   --color-palette-subtle: var(--amber-2);       --color-palette-soft: var(--amber-3);
   --color-palette-soft-hover: var(--amber-4);   --color-palette-soft-active: var(--amber-5);
-  --color-palette-border-subtle: var(--amber-6);--color-palette-border: var(--amber-4);
+  --color-palette-border-subtle: var(--amber-6);--color-palette-border: var(--amber-4); --color-palette-border-strong: var(--amber-7);
   --color-palette-solid: var(--amber-9);        --color-palette-solid-hover: var(--amber-10);
   --color-palette-solid-active: var(--amber-11);
   --color-palette-text: var(--amber-11);        --color-palette-fg: var(--color-category-fg);
@@ -227,7 +228,7 @@
 [data-palette='slate'] {
   --color-palette-subtle: var(--slate-2);       --color-palette-soft: var(--slate-3);
   --color-palette-soft-hover: var(--slate-4);   --color-palette-soft-active: var(--slate-5);
-  --color-palette-border-subtle: var(--slate-6);--color-palette-border: var(--slate-4);
+  --color-palette-border-subtle: var(--slate-6);--color-palette-border: var(--slate-4); --color-palette-border-strong: var(--slate-7);
   --color-palette-solid: var(--slate-9);        --color-palette-solid-hover: var(--slate-10);
   --color-palette-solid-active: var(--slate-11);
   --color-palette-text: var(--slate-11);        --color-palette-fg: var(--color-category-fg);
@@ -236,7 +237,7 @@
 [data-palette='indigo'] {
   --color-palette-subtle: var(--indigo-2);       --color-palette-soft: var(--indigo-3);
   --color-palette-soft-hover: var(--indigo-4);   --color-palette-soft-active: var(--indigo-5);
-  --color-palette-border-subtle: var(--indigo-6);--color-palette-border: var(--indigo-4);
+  --color-palette-border-subtle: var(--indigo-6);--color-palette-border: var(--indigo-4); --color-palette-border-strong: var(--indigo-7);
   --color-palette-solid: var(--indigo-9);        --color-palette-solid-hover: var(--indigo-10);
   --color-palette-solid-active: var(--indigo-11);
   --color-palette-text: var(--indigo-11);        --color-palette-fg: var(--color-category-fg);
@@ -245,7 +246,7 @@
 [data-palette='cyan'] {
   --color-palette-subtle: var(--cyan-2);       --color-palette-soft: var(--cyan-3);
   --color-palette-soft-hover: var(--cyan-4);   --color-palette-soft-active: var(--cyan-5);
-  --color-palette-border-subtle: var(--cyan-6);--color-palette-border: var(--cyan-4);
+  --color-palette-border-subtle: var(--cyan-6);--color-palette-border: var(--cyan-4); --color-palette-border-strong: var(--cyan-7);
   --color-palette-solid: var(--cyan-9);        --color-palette-solid-hover: var(--cyan-10);
   --color-palette-solid-active: var(--cyan-11);
   --color-palette-text: var(--cyan-11);        --color-palette-fg: var(--color-category-fg);
@@ -254,7 +255,7 @@
 [data-palette='orange'] {
   --color-palette-subtle: var(--orange-2);       --color-palette-soft: var(--orange-3);
   --color-palette-soft-hover: var(--orange-4);   --color-palette-soft-active: var(--orange-5);
-  --color-palette-border-subtle: var(--orange-6);--color-palette-border: var(--orange-4);
+  --color-palette-border-subtle: var(--orange-6);--color-palette-border: var(--orange-4); --color-palette-border-strong: var(--orange-7);
   --color-palette-solid: var(--orange-9);        --color-palette-solid-hover: var(--orange-10);
   --color-palette-solid-active: var(--orange-11);
   --color-palette-text: var(--orange-11);        --color-palette-fg: var(--color-category-fg);
@@ -263,7 +264,7 @@
 [data-palette='emerald'] {
   --color-palette-subtle: var(--emerald-2);       --color-palette-soft: var(--emerald-3);
   --color-palette-soft-hover: var(--emerald-4);   --color-palette-soft-active: var(--emerald-5);
-  --color-palette-border-subtle: var(--emerald-6);--color-palette-border: var(--emerald-4);
+  --color-palette-border-subtle: var(--emerald-6);--color-palette-border: var(--emerald-4); --color-palette-border-strong: var(--emerald-7);
   --color-palette-solid: var(--emerald-9);        --color-palette-solid-hover: var(--emerald-10);
   --color-palette-solid-active: var(--emerald-11);
   --color-palette-text: var(--emerald-11);        --color-palette-fg: var(--color-category-fg);

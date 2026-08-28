@@ -486,6 +486,10 @@
   --shadow-warning: 0 2px 8px oklch(0.78 0.16 65 / 0.22),  0 6px 20px oklch(0.78 0.16 65 / 0.15);
 
   /* Keyboard shortcut badge shadow */
+  /* A key cap's bottom bevel. Black works on a light cap; on a dark one it is
+     invisible (1.02:1), so the cap loses the only thing making it look pressable.
+     `.dark` flips it to a top highlight, which is how a raised surface catches
+     light from above in a dark UI. See the .dark block below. */
   --shadow-kbd: inset 0 -1px 0 oklch(0 0 0 / 0.1);
 
   /* ───────────────────────────────────────────────────────────
@@ -711,6 +715,7 @@
      ground, so anything using them as its only edge has none. 0.07 keeps a
      raised card quieter than a floating overlay while still reading. */
   --shadow-edge-ring-subtle: 0 0 0 1px oklch(1 0 0 / 0.07);
+  --shadow-kbd: inset 0 1px 0 oklch(1 0 0 / 0.10);
   /* The segmented thumb is documented as deliberately ring-less, the shadow
      being its whole edge. That works in light and cannot work in dark, where
      the shadow is near-black on a near-black ground — so the fallback failed in
@@ -754,7 +759,7 @@
    WCAG 2.2 SC 1.4.11 asks for 3:1 between a control's edge and its
    background. Our default control edge is 2.00:1 in light and 2.08:1 in
    dark — deliberately softer, and deliberately under the bar. That gap is
-   recorded in docs/deviations.md as CONTROL-EDGE-BELOW-AA.
+   recorded in docs/deviations.md as PALETTE-CONTROL-EDGE-BELOW-AA.
 
    This block is the opt-out from that decision. Set the attribute on
    <html> (or any wrapper) and every control edge in the subtree moves to

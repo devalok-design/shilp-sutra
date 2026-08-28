@@ -160,7 +160,7 @@ function LinkButton({ editor }: { editor: Editor }) {
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="https://..."
-            className="h-ds-sm w-[240px] rounded-control-inner border border-surface-border-strong bg-surface-overlay px-ds-03 text-body-sm text-surface-fg focus:border-accent-7 focus:outline-hidden"
+            className="h-ds-sm w-[240px] rounded-control-inner border border-surface-border-interactive bg-surface-panel-hover px-ds-03 text-body-sm text-surface-fg focus:border-accent-7 focus:outline-hidden"
           />
           <Button type="submit" variant="solid" size="sm">
             Apply

@@ -30,16 +30,17 @@ const sliderThumbVariants = cva(
         md: 'h-6 w-6 border-2',
         lg: 'h-8 w-8 border-[3px]',
       },
-      // NOTE: the thumb's edge follows the `border` role, which moved to step 4
-      // with the rest of the system. A thumb is a draggable affordance rather
-      // than a container edge, so this is the place where the lighter edge is
-      // felt most — the thumb is defined mostly by its fill against the track.
-      // Reversing just this one is a single-line change if it reads too faint.
+      // The thumb keeps the OLD step-7 edge while every container in the system
+      // moved to step 4. PALETTE-EDGE-WHISPER was reasoned about card edges —
+      // an object you are meant to notice but not look at. A slider handle is
+      // the opposite: it is the thing you aim at, and it is the only part of the
+      // control that moves. Step 4 measured 1.37–1.49:1 against white; step 7 is
+      // 2.31–2.86:1. Recorded as SLIDER-THUMB-EDGE-STEP-7 in the register.
       color: {
-        accent: 'border-palette-border focus-visible:ring-palette-solid',
-        success: 'border-palette-border focus-visible:ring-palette-solid',
-        warning: 'border-palette-border focus-visible:ring-palette-solid',
-        error: 'border-palette-border focus-visible:ring-palette-solid',
+        accent: 'border-palette-border-strong focus-visible:ring-palette-solid',
+        success: 'border-palette-border-strong focus-visible:ring-palette-solid',
+        warning: 'border-palette-border-strong focus-visible:ring-palette-solid',
+        error: 'border-palette-border-strong focus-visible:ring-palette-solid',
       },
     },
     defaultVariants: { size: 'md', color: 'accent' },

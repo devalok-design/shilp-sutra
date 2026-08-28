@@ -48,6 +48,18 @@ export const comboboxTriggerVariants = cva(
 
 export type ComboboxSize = NonNullable<VariantProps<typeof comboboxTriggerVariants>['size']>
 
+/** Colour treatment for a selected pill. See `ComboboxProps.pillTone`. */
+export type ComboboxPillTone = 'neutral' | 'accent'
+
+// accent-2 was the previous fixed value and is not offered: in LIGHT it is the
+// same lightness as the trigger behind it (1.006:1), so the pill vanished
+// entirely, and in dark it sits below the panel. Both options below clear their
+// ground in both themes.
+const PILL_TONES: Record<ComboboxPillTone, string> = {
+  neutral: 'bg-surface-panel-active text-surface-fg',
+  accent: 'bg-accent-4 text-accent-11',
+}
+
 /** Maps combobox size to Icon component size for chevron / check icons */
 const iconSizeMap: Record<NonNullable<ComboboxSize>, IconSize> = {
   xs: 'xs',
@@ -152,6 +164,18 @@ interface ComboboxBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   size?: ComboboxSize
   /** Validation/feedback state. `'error'` also sets `aria-invalid`. Inherited from `FormField` when omitted. */
   state?: FieldState
+  /**
+   * How a selected pill is coloured.
+   *
+   * - `neutral` (default) — grey. A pill here is a removable token, not a
+   *   selection, so the brand colour stays reserved for things that ARE
+   *   selected. 1.12:1 light / 1.16:1 dark against the trigger.
+   * - `accent` — brand-tinted, for pickers where the tokens should feel like
+   *   part of the brand. 1.30:1 light / 1.05:1 dark.
+   *
+   * @default 'neutral'
+   */
+  pillTone?: ComboboxPillTone
 }
 
 interface ComboboxSingleProps extends ComboboxBaseProps {
@@ -193,6 +217,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
       id: externalId,
       size: sizeProp = 'md',
       state: stateProp,
+      pillTone = 'neutral',
       ...rest
     },
     ref,
@@ -379,7 +404,7 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
               return (
                 <span
                   key={val}
-                  className={cn('inline-flex items-center gap-ds-01 rounded-control-inner bg-accent-2', resolvedPillClasses)}
+                  className={cn('inline-flex items-center gap-ds-01 rounded-control-inner', PILL_TONES[pillTone], resolvedPillClasses)}
                 >
                   {option.label}
                   <button

@@ -246,7 +246,9 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
               'text-body-sm font-medium',
               'border border-surface-border-interactive',
               'bg-surface-panel-hover text-surface-fg-muted',
-              'hover:bg-accent-3',
+              // step 4: the resting fill is surface-panel-hover, which sits
+              // ABOVE accent-3 in dark — hovering made the button darker.
+              'hover:bg-accent-4',
               'disabled:opacity-action-disabled disabled:cursor-not-allowed',
               'transition-colors',
             )}

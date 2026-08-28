@@ -300,7 +300,9 @@ describe('Message', () => {
     )
     const btn = screen.getByText('👍').closest('button')!
     expect(btn).toHaveClass('ring-accent-6')
-    expect(btn).toHaveClass('bg-accent-3')
+    // step 4: an unreacted chip is surface-panel-hover, which sits above
+    // accent-3 in dark — the reacted chip was the dimmest thing in the row.
+    expect(btn).toHaveClass('bg-accent-4')
   })
 
   // ── Actions ──────────────────────────────────────────────────────────

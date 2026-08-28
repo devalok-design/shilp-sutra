@@ -408,7 +408,7 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
                       {format === f && (
                         <motion.span
                           layoutId={`color-input-format-pill-${instanceId}`}
-                          className="absolute inset-0 rounded-control-inner bg-accent-3"
+                          className="absolute inset-0 rounded-control-inner bg-accent-4"
                           transition={springs.snappy}
                         />
                       )}

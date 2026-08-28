@@ -115,7 +115,7 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
 
-Twelve rules that cost the most time when broken:
+Thirteen rules that cost the most time when broken:
 1. **The collection a variable lives in is the OUTERMOST selector of its resolution chain.** A value that varies by state *and* style must live in the state collection and alias into the style one. Get it backwards and the value is unreachable. This is what lets one `component/fg` serve 4,962 icons across every state.
 2. **Regenerate the component spec before every build** (`figma-sync-components.mjs <name>`) and read the component *body* for prop interactions — the CVA describes appearance, not which prop overrides which. It reports **0 compound rules for Badge and Card**, whose colours live in a plain object, not the CVA.
 3. **Test with real scenarios and varied copy, not a variant grid.** A grid hides layout bugs because every label is the same length.
@@ -218,6 +218,17 @@ Twelve rules that cost the most time when broken:
     first child, while `children` order looks correct. Wrapping the text in a FRAME
     and appending that reflows properly. Read back `child.y` after appending, not
     just the child list.
+
+13. **Every form control in Figma is bound to the DECORATIVE border tier** (measured
+    2026-08-28), where the code uses the control tier. `field/border-color` and
+    `select/border-base` both alias `surface-border-strong`, and Switch strokes it
+    directly. The code binds `border-surface-border-interactive`. So the library
+    renders **1.38:1 light / 1.63:1 dark** where the product renders 2.00:1 / 2.08:1 —
+    a designer measuring in Figma and a developer measuring in the browser get
+    different answers, and the library is the further of the two from the 3:1 bar.
+    Same tier confusion the `utilities.css` comment caused in code. Fix by repointing
+    those variables at `surface-border-interactive`; the STEP is a separate question,
+    the TIER is just wrong.
 
 ### Legacy checklist (2026-04-20)
 

@@ -437,12 +437,21 @@ function writeRecipeTables({ check } = {}) {
   const recipeDir = join(ROOT, 'docs', 'recipes')
   const files = readdirSync(recipeDir).filter((f) => /^install-.*\.md$/.test(f))
   const changed = []
+  // A recipe with NO §2a table used to be skipped silently. install-next-pages.md
+  // sat that way and additionally claimed "rich-text editors bundle their deps —
+  // no install needed", which stopped being true when TipTap was externalized in
+  // 0.56.0. Every install recipe must carry the table, not a cross-reference:
+  // a pointer is what rotted, because nothing checks the far end of it.
+  const missingTable = []
   for (const f of files) {
     const p = join(recipeDir, f)
     const src = readFileSync(p, 'utf8').replace(/\r\n/g, '\n')
     const lines = src.split('\n')
     const hi = lines.findIndex((l) => /^\|\s*When you import/.test(l))
-    if (hi < 0) continue
+    if (hi < 0) {
+      missingTable.push(f)
+      continue
+    }
     let end = hi + 2 // header + separator
     while (end < lines.length && lines[end].trim().startsWith('|')) end++
     const block = ['| When you import… | Install |', '|---|---|', ...rows, TABLER_ROW]
@@ -453,14 +462,24 @@ function writeRecipeTables({ check } = {}) {
     }
   }
   if (check) {
+    if (missingTable.length) {
+      console.log(`✗ ${missingTable.length} install recipe(s) carry no §2a peer table: ${missingTable.join(', ')}`)
+      console.log('  Add a "| When you import… | Install |" header, then run --write-recipes to fill it.')
+      console.log('  Do NOT cross-reference another recipe — nothing verifies the far end of a link.')
+      process.exitCode = 1
+    }
     if (changed.length) {
       console.log(`✗ ${changed.length} recipe §2a table(s) out of sync with the derived map: ${changed.join(', ')}`)
       console.log('Run `node scripts/derive-peer-map.mjs --write-recipes` to regenerate.')
       process.exitCode = 1
-    } else {
+    }
+    if (!missingTable.length && !changed.length) {
       console.log('✓ Recipe §2a tables match the manifest peer map.')
     }
   } else {
+    if (missingTable.length) {
+      console.log(`! ${missingTable.length} recipe(s) have no §2a table to regenerate: ${missingTable.join(', ')}`)
+    }
     console.log(changed.length ? `Regenerated §2a table in: ${changed.join(', ')}` : 'Recipe §2a tables already current.')
   }
 }
@@ -495,12 +514,30 @@ async function main() {
 
   const { missing, phantom } = diffAgainstRecipe(map, union)
 
+  // The union above is deliberate — it stops one recipe's omission from being
+  // reported against all six. But it also MASKS a recipe that documents nothing
+  // at all, which is how install-next-pages.md shipped with no §2a table and a
+  // claim that "rich-text editors bundle their deps", false since TipTap was
+  // externalized in 0.56.0. Presence is therefore checked per file, before the
+  // union runs.
+  const noTable = Object.entries(perRecipe)
+    .filter(([, parsed]) => Object.keys(parsed).length === 0)
+    .map(([f]) => f)
+
   console.log('# derive-peer-map --check\n')
   console.log(`Derived ${Object.keys(map).length} components with gated peers from source.`)
   console.log(`Recipe §2a tables (union of ${recipeFiles.length} files) list ${Object.keys(union).length} components.\n`)
 
+  if (noTable.length) {
+    console.log(`✗ NO §2a TABLE — these install recipes document no optional peers at all:`)
+    for (const f of noTable) console.log(`    ${f}`)
+    console.log('    Add a "| When you import… | Install |" header and run --write-recipes to fill it.')
+    console.log('    Do not cross-reference another recipe: nothing verifies the far end of a link.\n')
+    process.exitCode = 1
+  }
+
   if (!missing.length && !phantom.length) {
-    console.log('✓ Recipe peer tables match the source-derived map. No drift.')
+    if (!noTable.length) console.log('✓ Recipe peer tables match the source-derived map. No drift.')
     return
   }
 

@@ -59,7 +59,7 @@ export function DataTablePagination<TData>({
           aria-label="Previous page"
           className={cn(
             'h-ds-sm w-ds-sm flex items-center justify-center',
-            'rounded-control border border-surface-border-strong',
+            'rounded-control border border-surface-border-interactive',
             'enabled:hover:bg-surface-panel-hover',
             'disabled:opacity-action-disabled disabled:cursor-not-allowed',
             'transition-colors',
@@ -82,7 +82,7 @@ export function DataTablePagination<TData>({
           aria-label="Next page"
           className={cn(
             'h-ds-sm w-ds-sm flex items-center justify-center',
-            'rounded-control border border-surface-border-strong',
+            'rounded-control border border-surface-border-interactive',
             'enabled:hover:bg-surface-panel-hover',
             'disabled:opacity-action-disabled disabled:cursor-not-allowed',
             'transition-colors',

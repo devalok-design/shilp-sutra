@@ -489,7 +489,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
               : 'rounded-surface px-ds-05',
             isProcessing
               ? 'border-transparent'
-              : 'border-surface-border-strong',
+              : 'border-surface-border-interactive',
             isFocused && !isProcessing && 'border-accent-7 shadow-ring',
             shake && 'animate-shake',
           )}
@@ -582,7 +582,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                 animate={{ opacity: 1 }}
                 exit={isReduced ? undefined : { opacity: 0 }}
                 transition={tweenFade}
-                className="hidden shrink-0 select-none rounded-control border border-card-strong bg-surface-panel px-ds-02b py-ds-01 text-body-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex"
+                className="hidden shrink-0 select-none rounded-control border border-card-strong bg-surface-sunken px-ds-02b py-ds-01 text-body-sm font-medium text-surface-fg-subtle shadow-kbd sm:inline-flex"
               >
                 {getModifierDisplay(isMac)}J
               </motion.kbd>
@@ -847,10 +847,10 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
               {hasGroups && (
                 <div className="flex items-center gap-ds-02b">
                   <div className="flex items-center gap-ds-01">
-                    <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-card-strong bg-surface-panel shadow-kbd">
+                    <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-card-strong bg-surface-sunken shadow-kbd">
                       <Icon icon={IconArrowUp} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
-                    <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-card-strong bg-surface-panel shadow-kbd">
+                    <kbd className="inline-flex h-ico-md w-ico-md items-center justify-center rounded border border-card-strong bg-surface-sunken shadow-kbd">
                       <Icon icon={IconArrowDown} size="xs" className="text-surface-fg-subtle" />
                     </kbd>
                   </div>
@@ -860,7 +860,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                 </div>
               )}
               <div className="flex items-center gap-ds-02b">
-                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-card-strong bg-surface-panel px-ds-02b shadow-kbd">
+                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-card-strong bg-surface-sunken px-ds-02b shadow-kbd">
                   <Icon icon={IconCornerDownLeft} size="xs" className="text-surface-fg-subtle" />
                 </kbd>
                 <span className="text-caption text-surface-fg-subtle">
@@ -868,7 +868,7 @@ const CommandBar = React.forwardRef<HTMLDivElement, CommandBarProps>(
                 </span>
               </div>
               <div className="flex items-center gap-ds-02b">
-                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-card-strong bg-surface-panel px-ds-02b text-caption font-medium text-surface-fg-subtle shadow-kbd">
+                <kbd className="inline-flex h-[20px] items-center justify-center rounded-control border border-card-strong bg-surface-sunken px-ds-02b text-caption font-medium text-surface-fg-subtle shadow-kbd">
                   Esc
                 </kbd>
                 <span className="text-caption text-surface-fg-subtle">

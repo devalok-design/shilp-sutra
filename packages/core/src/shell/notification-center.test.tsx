@@ -232,4 +232,53 @@ describe('NotificationCenter', () => {
       expect(onNavigate).toHaveBeenCalledWith('/route')
     })
   })
+
+describe('unreadStyle', () => {
+  const rowOf = (title: string) =>
+    screen.getByText(title).closest('[role="button"]') as HTMLElement
+
+  it('defaults to a tint that beats a hovered already-read row', () => {
+    render(<NotificationCenter notifications={[makeNotification()]} />)
+    // step 4, not 3: rows hover to surface-panel-hover, and accent-3 sits BELOW
+    // that in dark, so an unread row would lose to a row you had already read.
+    expect(rowOf('Test notification').className).toContain('bg-accent-4')
+  })
+
+  it('strong uses the heavier wash', () => {
+    render(
+      <NotificationCenter notifications={[makeNotification()]} unreadStyle="strong" />,
+    )
+    expect(rowOf('Test notification').className).toContain('bg-accent-5')
+  })
+
+  it('none paints no wash at all', () => {
+    render(
+      <NotificationCenter notifications={[makeNotification()]} unreadStyle="none" />,
+    )
+    const cls = rowOf('Test notification').className
+    expect(cls).not.toMatch(/bg-accent-\d/)
+  })
+
+  it('a READ row is never tinted, whatever the style', () => {
+    for (const style of ['tint', 'strong', 'none'] as const) {
+      const { unmount } = render(
+        <NotificationCenter
+          notifications={[makeNotification({ isRead: true, title: `Read ${style}` })]}
+          unreadStyle={style}
+        />,
+      )
+      const cls = rowOf(`Read ${style}`).className
+      expect(cls).not.toMatch(/bg-accent-\d/)
+      unmount()
+    }
+  })
+
+  it('the tier dot still carries the state when the wash is off', () => {
+    const { container } = render(
+      <NotificationCenter notifications={[makeNotification()]} unreadStyle="none" />,
+    )
+    // unread -> full opacity; the read case dims the same dot to 20%
+    expect(container.querySelector('.opacity-100')).toBeInTheDocument()
+  })
+})
 })

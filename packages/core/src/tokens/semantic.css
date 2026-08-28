@@ -749,6 +749,39 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   HIGH CONTRAST — opt-in, via `data-contrast="high"` on any ancestor
+
+   WCAG 2.2 SC 1.4.11 asks for 3:1 between a control's edge and its
+   background. Our default control edge is 2.00:1 in light and 2.08:1 in
+   dark — deliberately softer, and deliberately under the bar. That gap is
+   recorded in docs/deviations.md as CONTROL-EDGE-BELOW-AA.
+
+   This block is the opt-out from that decision. Set the attribute on
+   <html> (or any wrapper) and every control edge in the subtree moves to
+   3.64:1 light / 3.93:1 dark.
+
+       <html data-contrast="high">          <!-- whole app -->
+       <div data-contrast="high"> … </div>  <!-- one region -->
+
+   It is an ATTRIBUTE rather than a React provider on purpose: `.dark`
+   already works this way, so a consumer's existing theme switcher can set
+   both, it needs no client component, and it survives SSR.
+
+   The steps are named, not literal, so a consumer who rebrands the neutral
+   ramp gets a correctly-scaled high-contrast mode for free. `--neutral-*`
+   is itself theme-aware, so ONE rule serves light and dark.
+
+   Placed after `.dark` deliberately: `[data-contrast='high']` and `.dark`
+   have the same specificity (0,1,0), so when both sit on <html> source
+   order is what decides. Moving this block above `.dark` silently breaks
+   high contrast in dark mode only.
+   ═══════════════════════════════════════════════════════════════════ */
+[data-contrast='high'] {
+  --color-surface-border-interactive:        var(--neutral-8);
+  --color-surface-border-interactive-strong: var(--neutral-9);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    Ensure Radix popper content (Select, Combobox, Popover, etc.)
    renders above Sheet/Dialog overlays.
    ═══════════════════════════════════════════════════════════════════ */

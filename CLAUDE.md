@@ -115,7 +115,7 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
 
-Nine rules that cost the most time when broken:
+Thirteen rules that cost the most time when broken:
 1. **The collection a variable lives in is the OUTERMOST selector of its resolution chain.** A value that varies by state *and* style must live in the state collection and alias into the style one. Get it backwards and the value is unreachable. This is what lets one `component/fg` serve 4,962 icons across every state.
 2. **Regenerate the component spec before every build** (`figma-sync-components.mjs <name>`) and read the component *body* for prop interactions — the CVA describes appearance, not which prop overrides which. It reports **0 compound rules for Badge and Card**, whose colours live in a plain object, not the CVA.
 3. **Test with real scenarios and varied copy, not a variant grid.** A grid hides layout bugs because every label is the same length.
@@ -184,6 +184,51 @@ Nine rules that cost the most time when broken:
 9. **Never blanket a variable mode on a container frame.** Each example screen set `Component/Style = Ghost` and `Component/Intent = Neutral` on the screen frame, so the whole subtree inherited it — every Button on all 10 screens rendered transparent with grey text, including "Start free", "New task" and "Save changes". The screens had no visual hierarchy at all and had looked plausible for weeks, because a ghost button is still perfectly legible on its own.
 
    A blanket is worse than a wrong value: it is invisible at the point of use, and anything dropped onto that frame later silently inherits it. **Set the mode on the instance that means it.** A container should only carry a mode when the mode is genuinely a property of the container (theme: `Semantic/Color = Dark` on a dark screen is correct).
+
+10. **Figma effect STYLES do not follow variable modes — so every shadow in the
+    library is light-mode-only** (measured 2026-08-28). An `EffectStyle` holds one
+    fixed set of effects. `shadow/floating`'s ring layer is `#1c2533 a0.04`, a
+    near-black hairline. CSS flips `--shadow-edge-ring` to `oklch(1 0 0 / 0.12)`
+    under `.dark` precisely because a dark ring cannot be seen on a dark ground —
+    **Figma never got that correction**, so Menu, Popover, Tooltip and Dialog all
+    render with no visible edge in Figma's dark mode while the code is correct.
+    A designer reviewing dark mode in Figma is not seeing what ships.
+
+    It IS fixable: `figma.variables.setBoundVariableForEffect(effect, 'color', v)`
+    works on an effect inside an `EffectStyle`, not just on a node — verified. The
+    fix is a mode-aware colour variable per shadow tier, bound to the ring layer of
+    each of the 13 styles. 301 effects across 145 nodes already bind this way
+    (`btn/shadow-*`, `card/shadow-*`, `tabs/pill-shadow`), so the pattern is
+    established; the shared styles just never adopted it.
+
+    **An effect object is frozen.** `delete effect.boundVariables` throws
+    *"could not delete property"*, and `style.effects = […]` has already applied by
+    the time a revert fails — a read-only probe silently left `shadow/floating`
+    modified for every consumer of it. Rebuild the array from literals to restore,
+    and read it back. Same lesson as rule 5: an audit that writes is not an audit.
+
+11. **A slot can ship EMPTY, and nothing warns you.** `Menu`'s `Items` slot has no
+    default content, so dragging it in gives a blank 240×107 white box. Its siblings
+    `Popover` and `Breadcrumb` both carry defaults, which is what tells a designer
+    what belongs there. Check `slot.children.length` on every slotted component
+    before publishing.
+
+12. **Appending a bare TEXT to an existing auto-layout frame in a LATER plugin run
+    does not reflow it** — the node lands at `y = 0` and paints over the frame's
+    first child, while `children` order looks correct. Wrapping the text in a FRAME
+    and appending that reflows properly. Read back `child.y` after appending, not
+    just the child list.
+
+13. **Every form control in Figma is bound to the DECORATIVE border tier** (measured
+    2026-08-28), where the code uses the control tier. `field/border-color` and
+    `select/border-base` both alias `surface-border-strong`, and Switch strokes it
+    directly. The code binds `border-surface-border-interactive`. So the library
+    renders **1.38:1 light / 1.63:1 dark** where the product renders 2.00:1 / 2.08:1 —
+    a designer measuring in Figma and a developer measuring in the browser get
+    different answers, and the library is the further of the two from the 3:1 bar.
+    Same tier confusion the `utilities.css` comment caused in code. Fix by repointing
+    those variables at `surface-border-interactive`; the STEP is a separate question,
+    the TIER is just wrong.
 
 ### Legacy checklist (2026-04-20)
 
@@ -273,11 +318,37 @@ grep a sibling component and match — never reach for a numbered class.
 2. **You cannot verify "is this the right surface?" by sampling a colour.** It
    has to be read from intent. Any audit that compares pixels will report false
    agreement.
+3. **The same applies to STRUCTURAL differentiators, not just interaction states**
+   (2026-08-28). A groove, a zebra stripe, a recess, a well, a bubble — anything
+   whose whole job is to differ from the thing behind it — is a no-op if it uses
+   a container value. `Table striped` and linear `Progress` both shipped this
+   way and rendered **nothing at all** in light: 1.00:1. Neither had a test, and
+   neither looks broken in dark, where the tiers do differ. Reach for
+   `-panel-hover` or `-sunken`, and check the value against the ground the
+   component actually sits on, not against the page.
 
 **Borders split into two families.** `surface-border-subtle` / `-border` /
 `-border-strong` are *decorative*, translucent, and mark objects. `surface-border-interactive`
 / `-interactive-strong` are *control* edges, solid, and carry WCAG 1.4.11. A form
 control on a decorative tier loses required contrast.
+
+**Two more asymmetries that only bite in dark** (both fixed 2026-08-28, both
+worth knowing before you add a token):
+
+- **Steps 1–2 of every colour ramp sit BELOW `surface-panel` in dark**, while
+  `panel-hover` sits above it. So a selection painted with `accent-2` recedes
+  exactly as its own hover advances — the hovered row out-reads the selected one,
+  in the opposite direction. Selections start at **step 4**. Step 2 is a
+  `surface-base` device only.
+- **A near-black shadow is not an edge on a dark ground.** `--shadow-edge-ring`
+  flips to a light ring under `.dark` for this reason; anything that hardcodes
+  `oklch(var(--shadow-color) …)` instead of consuming that var will silently
+  measure ~1.00:1 in dark. If you add an elevation token, give it a `.dark`
+  entry or route it through the shared ring.
+
+Both are recorded with measurements in
+[`docs/audits/2026-08-28-surface-model-audit.md`](./docs/audits/2026-08-28-surface-model-audit.md),
+along with the four root causes a full sweep of 205 files turned up.
 
 Full model: [`docs/plans/2026-08-26-surface-model-rebuild.md`](./docs/plans/2026-08-26-surface-model-rebuild.md).
 

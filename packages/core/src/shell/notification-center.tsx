@@ -64,6 +64,9 @@ export interface Notification {
   actions?: NotificationAction[]
 }
 
+/** Visual weight of an unread row. See `NotificationCenterProps.unreadStyle`. */
+export type NotificationUnreadStyle = 'tint' | 'strong' | 'none'
+
 export interface NotificationCenterProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** List of notifications to display */
@@ -96,6 +99,21 @@ export interface NotificationCenterProps
   footerSlot?: React.ReactNode
   /** Called when the user dismisses a notification. Renders an X button per row when provided. */
   onDismiss?: (id: string) => void
+  /**
+   * How an unread row announces itself.
+   *
+   * - `tint` (default) — an accent wash plus a bold title. The conventional
+   *   look, and the quietest fill that still reads louder than a hovered
+   *   already-read row in both themes.
+   * - `strong` — a heavier wash, for inboxes where unread has to carry across
+   *   a long list at a glance.
+   * - `none` — no wash at all. The tier dot (which already fades to 20% once
+   *   read) and the bold title carry the state on their own. The calmest
+   *   option, and the one that scales best down a long list.
+   *
+   * @default 'tint'
+   */
+  unreadStyle?: NotificationUnreadStyle
   /** Additional className for the popover content container */
   popoverClassName?: string
   /** Additional className */
@@ -126,6 +144,25 @@ function getDateGroup(dateStr: string): string {
   return 'Earlier'
 }
 
+// The comparison that matters is against a HOVERED READ row, not against the
+// panel. Rows hover to `surface-panel-hover`, so an unread wash has to beat that
+// or a row you have already read looks more urgent than one you have not.
+//
+// Measured on a panel, unread vs hovered-read (1.091:1 light / 1.173:1 dark):
+//
+//   accent-3   1.246 light / 1.042 dark   <- LOSES in dark
+//   accent-4   1.422 light / 1.231 dark
+//   accent-5   1.690 light / 1.458 dark
+//
+// So step 4 is the floor, not step 3. An earlier revision of this file used
+// step 3 for `tint` on the grounds that it clears `surface-panel` — true, but
+// the panel is not what an unread row competes with.
+const UNREAD_STYLES: Record<NotificationUnreadStyle, string> = {
+  tint: 'bg-accent-4',
+  strong: 'bg-accent-5',
+  none: '',
+}
+
 const TIER_COLORS: Record<string, string> = {
   INFO: 'bg-info-9',
   IMPORTANT: 'bg-warning-9',
@@ -142,12 +179,14 @@ function NotificationItem({
   onNavigate,
   getRoute,
   onDismiss,
+  unreadStyle,
 }: {
   notification: Notification
   onRead: (id: string) => void
   onNavigate: (path: string) => void
   getRoute: (notification: Notification) => string | null
   onDismiss?: (id: string) => void
+  unreadStyle: NotificationUnreadStyle
 }) {
   const route = getRoute(notification)
 
@@ -176,10 +215,7 @@ function NotificationItem({
       className={cn(
         'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard',
         'hover:bg-surface-panel-hover',
-        // accent-1 measured 1.03:1 in light — the unread state was effectively
-        // undetectable — and went darker than the panel in dark, so hovering an
-        // unread row swung it straight through the ground.
-        !notification.isRead && 'bg-accent-4',
+        !notification.isRead && UNREAD_STYLES[unreadStyle],
       )}
     >
       {/* Tier dot — doubles as read/unread marker */}
@@ -275,6 +311,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
     {
       notifications = [],
       unreadCount: unreadCountProp,
+      unreadStyle = 'tint',
       open,
       onOpenChange,
       isLoading = false,
@@ -416,6 +453,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
                       onNavigate={handleNavigate}
                       getRoute={getRoute}
                       onDismiss={onDismiss}
+                      unreadStyle={unreadStyle}
                     />
                   </motion.div>
                 ))}

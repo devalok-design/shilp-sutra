@@ -143,6 +143,23 @@ const MUST_EMIT = [
   /\bfont-(light|regular|medium|semibold|bold)\b/g,
 ]
 
+// Non-class selectors that must survive compilation. The class scan below can't
+// see these — they aren't utilities — so a silent drop would be invisible until
+// a consumer noticed the feature doing nothing.
+const REQUIRED_SELECTORS = [
+  {
+    selector: "[data-contrast='high']",
+    // TW4/Lightning CSS may normalise the quotes away
+    alternates: ['[data-contrast=high]', '[data-contrast="high"]'],
+    why: 'opt-in WCAG 1.4.11 control edges (docs/deviations.md CONTROL-EDGE-BELOW-AA)',
+  },
+  {
+    selector: '[data-palette=',
+    alternates: [],
+    why: 'the colour-role layer every palette-* utility resolves through',
+  },
+]
+
 const usedClasses = new Set()
 
 for (const glob of SOURCE_GLOBS) {
@@ -215,6 +232,27 @@ const EXPECTED_ABSENT = new Set([
 ])
 
 const realMissing = missing.filter((c) => !EXPECTED_ABSENT.has(c))
+
+// ── Required non-class selectors ─────────────────────────────────────
+
+const missingSelectors = REQUIRED_SELECTORS.filter(
+  (r) => ![r.selector, ...r.alternates].some((s) => css.includes(s)),
+)
+
+if (missingSelectors.length > 0) {
+  console.log(`${RED}${BOLD}Missing required selectors:${RESET}`)
+  for (const r of missingSelectors) {
+    console.log(`  ${YELLOW}${r.selector}${RESET} — ${r.why}`)
+  }
+  console.log(
+    `\n${RED}These are not utilities, so the class scan below cannot see them.`,
+  )
+  console.log(`A silent drop makes the feature a no-op with no error anywhere.${RESET}\n`)
+  process.exit(1)
+}
+console.log(
+  `  ${GREEN}✓${RESET} ${REQUIRED_SELECTORS.length} required non-class selectors present\n`,
+)
 
 console.log(`${CYAN}Coverage:${RESET}`)
 console.log(`  ${GREEN}✓${RESET} ${present.length} classes emit CSS rules`)

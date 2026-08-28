@@ -256,6 +256,64 @@ Every override should consider both modes. Pattern:
 
 `.dark` is a regular class selector — its specificity is higher than `:root`/`@theme` body, so dark-mode overrides win when the class is active.
 
+## High contrast (`[data-contrast]`)
+
+WCAG 2.2 SC 1.4.11 asks for **3:1** between a control's edge and its background.
+The default control edge here is **2.00:1** in light and **2.08:1** in dark — a
+deliberately softer look, and deliberately under that bar. It is recorded as
+`CONTROL-EDGE-BELOW-AA` in the deviations register.
+
+Set `data-contrast="high"` to opt into edges that clear the threshold:
+
+```html
+<!-- whole app -->
+<html data-contrast="high">
+```
+
+```tsx
+{/* or one region — a data-entry screen inside an otherwise soft product */}
+<div data-contrast="high">
+  <InvoiceForm />
+</div>
+```
+
+| | control edge, light | control edge, dark |
+|---|---|---|
+| default | `#b7b7b7` — 2.00:1 | `#4c4c4c` — 2.08:1 |
+| `data-contrast="high"` | `#868686` — **3.64:1** | `#767676` — **3.93:1** |
+
+It affects Input, Textarea, Select, Combobox, Checkbox, Radio, Switch,
+NumberInput and outlined Button — anything using the control-edge tier. It does
+**not** touch decorative borders (card and panel hairlines stay soft), and it
+does not touch the chromatic ramps, so an outlined Button on a colour is
+unchanged.
+
+Composes with everything else — it is a plain attribute, like `.dark` and
+`data-shape`:
+
+```html
+<html class="dark" data-shape="sharp" data-contrast="high">
+```
+
+**Two things worth knowing.**
+
+If you override the neutral ramp, high contrast follows automatically — the
+block resolves `--neutral-8` / `--neutral-9` by name rather than hard-coding
+hexes, so a rebrand gets a correctly-scaled high-contrast mode for free.
+
+If you want the *opposite* — compliant edges everywhere, with no attribute to
+remember — set the tokens directly and skip the attribute entirely:
+
+```css
+:root {
+  --color-surface-border-interactive:        var(--neutral-8);
+  --color-surface-border-interactive-strong: var(--neutral-9);
+}
+```
+
+That is worth considering. A default is what most products ship, so leaving the
+attribute unset means shipping the edge that misses 1.4.11.
+
 ## Forced colors (Windows high-contrast)
 
 If you override semantic colors, the `@media (forced-colors: active)` block in `semantic.css` continues to remap to system keywords. Your override is ignored when the user is in high-contrast mode — this is the correct behavior.

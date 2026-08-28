@@ -67,7 +67,7 @@ export {
   selectTriggerVariants,
   SelectValue,
 } from './select'
-export { Slider, type SliderColor,type SliderProps, type SliderSize, sliderThumbVariants, sliderTrackVariants } from './slider'
+export { Slider, type SliderColor,type SliderMark, type SliderMarkProps, type SliderProps, type SliderSize, sliderThumbVariants, sliderTrackVariants } from './slider'
 export { Switch, type SwitchProps } from './switch'
 export { Textarea, type TextareaProps,textareaVariants } from './textarea'
 export { Toggle, type ToggleProps,toggleVariants } from './toggle'

@@ -1,5 +1,150 @@
 # @devalok/shilp-sutra
 
+## 0.58.0
+
+### Minor Changes
+
+- [#279](https://github.com/devalok-design/shilp-sutra/pull/279) [`fb3ee41`](https://github.com/devalok-design/shilp-sutra/commit/fb3ee4166601f9abef310236b1624c25c271331d) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - colour becomes a role, not a hardcoded hue — and any palette now works
+
+  A component used to support a colour by having a hand-written line for it. That
+  made the number of colours you could use a function of how much code we were
+  willing to write, which is the wrong thing for it to depend on. Button carried
+  **30 hand-written `compoundVariants`** for 5 variants × 6 colours; SplitButton
+  carried 27 more. Adding a seventh colour meant five new lines per component, and
+  `<Button color="teal">` was simply impossible.
+
+  Now a component styles itself once, in roles:
+
+  ```
+  bg-palette-solid  text-palette-fg  hover:bg-palette-solid-hover
+  ```
+
+  and the colour comes from `data-palette` on the element or any ancestor.
+
+  ## New: `palette-*` utilities
+
+  Eleven roles — `subtle`, `soft`, `soft-hover`, `soft-active`, `border-subtle`,
+  `border`, `solid`, `solid-hover`, `solid-active`, `text`, `fg` — available as
+  `bg-`, `text-`, `border-` and `ring-` utilities.
+
+  **Fourteen palettes ship**: accent, secondary, error, success, warning, info,
+  neutral, plus teal, amber, slate, indigo, cyan, orange and emerald. The first
+  seven resolve from the semantic layer, so overriding `--color-accent-*` to
+  rebrand still flows through.
+
+  **Register your own** with a CSS block:
+
+  ```css
+  [data-palette='brand-purple'] {
+    --color-palette-solid: #6d28d9;
+    --color-palette-solid-hover: #5b21b6;
+    --color-palette-fg: #ffffff; /* supply this */
+    /* …the remaining roles… */
+  }
+  ```
+
+  Omit `--color-palette-fg` and it is derived black-or-white from the solid's
+  lightness — readable, but blunt, and outside the contrast we measure for the
+  built-ins.
+
+  ## Not breaking
+
+  `color` keeps working on every component that had it. Its type widens from a
+  closed union to `union | (string & {})` — a widening, so existing values all
+  still type-check. `<Button color="error">` is unchanged; `<Button color="teal">`
+  now works.
+
+  One behaviour note: **a component with no `color` prop no longer stamps a
+  palette**, so it inherits from an ancestor and falls back to accent when there
+  is none. That is the point of the layer — a `data-palette` on a section themes
+  everything inside it — but it means a plain Button inside a palette-scoped
+  region will now pick that palette up.
+
+  ## Visual change: coloured edges are lighter
+
+  The system disagreed with itself about a coloured container's edge — Badge used
+  ramp step 4 while Card, Alert, Banner and Slider used step 7. Unifying it was
+  unavoidable once the edge became one role, and it was resolved toward the
+  lighter end.
+
+  Every coloured edge is now **step 4**. Measured against white that is 1.37–1.49:1
+  where step 7 was 2.31–2.86:1, and the plain uncoloured edge we already ship is
+  1.23:1 — so a coloured edge now carries noticeably less information than it did.
+  This was chosen deliberately with those numbers in hand and is recorded as
+  `PALETTE-EDGE-WHISPER` in `docs/deviations.md`, alongside
+  `PALETTE-CONTROL-EDGE-BELOW-AA`, which notes that outlined controls sit under
+  the WCAG 1.4.11 3:1 boundary requirement — before this change as well as after.
+
+  If you relied on a coloured container's edge to signal intent, add a second cue.
+
+  ## Converted
+
+  Twelve components: **Button, SplitButton, Badge, Alert, Card, Banner, Slider,
+  Toggle, Dot, BadgeIndicator, Progress and ButtonGroup**.
+
+  Button and SplitButton were verified against their previous output rather than
+  by eye — every one of the 30 Button pairs and 42 SplitButton pairs resolves to
+  identical classes.
+
+  Five are deliberately left alone: `StatFlash`, `Avatar`, `Toast`,
+  `ActivityFeed` and `ScheduleView` map an internal state to a colour rather than
+  offering a choice, so the colour _is_ the meaning and indirection would only add
+  a layer.
+
+  `Badge` is the clearest illustration of the payoff: an 84-value map becomes four
+  lines, and `color="teal"` on a Button — impossible before — now works.
+
+- [#282](https://github.com/devalok-design/shilp-sutra/pull/282) [`e656f6a`](https://github.com/devalok-design/shilp-sutra/commit/e656f6a3ef8e618692f6accb3caa015dc3a3a729) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Fix six surface-model faults, most of which were invisible in exactly one theme
+
+  An audit of all 205 component files found roughly 60 failing sites that turned
+  out to be four repeated mistakes plus two flat bugs. Everything here is a visual
+  fix — no API changes — but the changes are visible, hence a minor rather than a
+  patch.
+
+  **Selected no longer loses to hovered.** In dark, `accent-1` and `accent-2` sit
+  below `surface-panel` in lightness while `surface-panel-hover` sits above it, so
+  selections receded exactly as hover advanced. On the sidebar the selected item
+  measured 1.03:1 and a merely hovered one 1.30:1 — the wrong item was louder, in
+  the opposite direction. Selections move to `accent-4` (light 1.42:1,
+  dark-on-panel 1.23:1, dark-on-base 1.36:1). Affects Sidebar, MasterDetail,
+  MultiSelectPopover, NotificationCenter, Combobox, Autocomplete, Table,
+  BottomNavbar, ScheduleView, TreeView and Toggle.
+
+  **Two shipped features rendered nothing in light mode.** `base`, `panel` and
+  `overlay` are all `#ffffff` in light by design, so anything using one to stand
+  out against another painted nothing: `Table striped` never striped, and
+  `Progress` had no groove behind its bar. Around twenty such sites now take
+  whatever their already-correct sibling uses.
+
+  **Raised surfaces regained their edge in dark.** `--shadow-edge-ring` is
+  swapped to a light ring in dark, but only the `md`/`lg` internals consumed it.
+  `shadow-raised` and `shadow-raised-hover` kept a near-black ring measuring
+  1.01:1 on a dark panel, so `Sidebar variant="floating"`, `Card
+variant="elevated"`, `Menubar` and the keyboard caps had no boundary at all.
+  Now 1.21:1, still quieter than a floating overlay's 1.42:1.
+
+  **The selected segment was darker than its own groove.** `SegmentedControl`'s
+  thumb resolved to `neutral-3` against a track that composited to a lighter
+  value, so the selection read as a dent (1.028:1, inverted). The thumb moves to
+  `neutral-5`: 1.46:1 over a panel, 1.69:1 over the page. `--shadow-segment`, its
+  documented ring-less fallback, was near-black and so failed in the same theme;
+  it takes a light ring in dark now. `Tabs`' contained pill had the identical bug
+  via different tokens and now shares the corrected ones.
+
+  **`Sidebar` drew a full-contrast line down the app.** Its divider had no
+  border-color utility, and Tailwind 4 leaves those at `currentColor` rather than
+  a grey default, so it inherited the text colour: 12.69:1 in light and 15.44:1 in
+  dark, where 1.23:1 / 1.47:1 was intended.
+
+  **`border-card-strong` was not stronger than `border-card`.** Both resolved to
+  `--color-surface-border`, so the ~13 call sites asking for a heavier edge got
+  the faint one. It now resolves to `--color-surface-border-strong`. The comment
+  above them also described the border model backwards — it told authors to use
+  the decorative tier for interactive controls, when that tier is precisely the
+  one that does not carry WCAG 1.4.11.
+
+  Full measurements: `docs/audits/2026-08-28-surface-model-audit.md`.
+
 ## 0.57.0
 
 ### Minor Changes

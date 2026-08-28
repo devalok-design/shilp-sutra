@@ -4,6 +4,91 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.58.0 — nothing errors, several things look different
+
+No API is removed and no prop type narrows, so `tsc` and your build stay green
+on upgrade day. The reason this section exists anyway is that a number of
+components **change appearance**, and two of them start rendering something that
+previously rendered nothing at all. If you screenshot-test, expect diffs.
+
+### Two features that were silently no-ops now work
+
+Both were painted in a colour identical to their own background in light mode,
+so they emitted markup and showed nothing:
+
+| | before | after |
+|---|---|---|
+| `<Table striped>` | 1.00:1 — no stripes rendered at all | visible zebra |
+| `<Progress>` groove | 1.00:1 — no track behind the bar | visible track |
+
+If you worked around either of these — a local `nth-child` stripe rule, a
+wrapper drawing a track behind Progress — remove the workaround, or you will now
+have two.
+
+### Selected rows are more prominent, and correctly so
+
+Selection fills moved from accent step 2 to step 4. In dark, steps 1–2 sit
+*below* the panel in lightness while the grey hover sits above it, so a selected
+row receded exactly as a hovered row advanced: the sidebar measured 1.03:1
+selected against 1.30:1 hovered. The wrong row was louder, in the opposite
+direction.
+
+Affects Sidebar, MasterDetail, MultiSelectPopover, NotificationCenter, Combobox,
+Autocomplete, Table, BottomNavbar, ScheduleView, TreeView and Toggle. Nothing to
+do unless you override those fills yourself, in which case re-check them against
+your hover state.
+
+### `border-card-strong` is now actually stronger than `border-card`
+
+They resolved to the same value. Both pointed at `--color-surface-border`, so
+roughly thirteen call sites asking for the heavier edge silently got the faint
+one. `border-card-strong` now resolves to `--color-surface-border-strong`:
+
+| | light | dark |
+|---|---|---|
+| before | 1.22:1 | 1.33:1 |
+| after | 1.38:1 | 1.63:1 |
+
+If you picked `border-card-strong` *because* it looked identical to
+`border-card`, switch those to `border-card`.
+
+### The Sidebar's divider was a full-contrast line, and is now a hairline
+
+`Sidebar` had a `border-r` with no colour utility. Tailwind 4 leaves an
+uncoloured border at `currentColor` rather than defaulting it to grey, so it
+inherited the text colour and drew at **12.69:1 in light and 15.44:1 in dark**
+where `surface-border` (1.23:1 / 1.47:1) was intended.
+
+This is the one place an upgrade might *remove* something you had come to rely
+on. If you overrode the sidebar edge downstream to tame it, drop the override.
+
+### Raised surfaces gain an edge in dark
+
+`--shadow-edge-ring` is deliberately swapped to a light ring under `.dark`,
+because a dark ring cannot be seen on a dark ground. Only the larger shadows
+consumed it, so `shadow-raised` and `shadow-raised-hover` kept a near-black ring
+measuring 1.01:1 — no edge at all. `Sidebar variant="floating"`, `Card
+variant="elevated"`, `Menubar` and the keyboard caps had no visible boundary in
+dark. They now measure 1.21:1, still quieter than a floating overlay's 1.42:1.
+
+### Colour is a role now, not a variant
+
+The palette layer landed in the same release. Twelve components stopped encoding
+colour as a cross-product of variants and now resolve it through
+`[data-palette]`. Existing `color="…"` values all still type-check — the union
+widened rather than narrowed — and the visual result is unchanged for the six
+built-in palettes. The gain is that a colour we do not ship can now be
+registered in CSS.
+
+### Also in this release
+
+Segmented control and Tabs: the selected pill was *darker* than the groove it
+sat in, in dark (1.028:1, inverted). Read-only Input and Textarea, DataTable
+pinned columns and expanded rows, code blocks in RichTextEditor, ContentCard's
+default variant and AI message bubbles all stopped painting themselves in their
+own background colour. Full measurements in
+`docs/audits/2026-08-28-surface-model-audit.md`.
+
 ## v0.57.0 — one token removed, one renamed, and a colour change you will see
 
 The surface model was rebuilt. Almost all of it is aliased, so `tsc` and your

@@ -256,6 +256,31 @@ roughly step 8 on the chromatic ramps, and a darker neutral — applied to outli
 Button, inputs, checkbox, radio and switch. Deliberately out of scope of the
 colour-role work: it is an accessibility change that needs its own visual review.
 
+**Partly addressed 2026-08-28 — but the DEFAULT still deviates, so this entry
+stays open.** `data-contrast="high"` on any ancestor now moves the neutral control
+edge to step 8 / step 9, measured **3.64:1 in light and 3.93:1 in dark**, which
+clears the threshold:
+
+```html
+<html data-contrast="high">
+```
+
+The visual review this entry called for happened (Figma → `Decisions — please
+pick`, Q1). The decision was to keep the softer edge as the default and make
+compliance opt-in, so that products which want the calmer look are not forced
+off it.
+
+**Be clear about what that costs.** A consumer who never sets the attribute ships
+a control edge that fails SC 1.4.11, and most consumers will never set it — a
+design system's default is, in practice, most people's product. The counter-case
+(ship compliant by default, let teams opt *out* via the same one-line token
+override they already have) was put and not taken. Recording it here so the
+trade-off is owned rather than rediscovered.
+
+The chromatic ramps are untouched: `data-contrast` moves the neutral control edge
+only, so outlined Button on a colour still sits at 1.37–1.49:1 per the table
+above.
+
 ---
 
 ## Related, but not deviations

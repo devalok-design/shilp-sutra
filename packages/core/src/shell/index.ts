@@ -48,6 +48,7 @@ export {
   type Notification,
   NotificationCenter,
   type NotificationCenterProps,
+  type NotificationUnreadStyle,
 } from './notification-center'
 export {
   type NotificationPreference,

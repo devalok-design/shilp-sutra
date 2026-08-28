@@ -232,4 +232,53 @@ describe('NotificationCenter', () => {
       expect(onNavigate).toHaveBeenCalledWith('/route')
     })
   })
+
+describe('unreadStyle', () => {
+  const rowOf = (title: string) =>
+    screen.getByText(title).closest('[role="button"]') as HTMLElement
+
+  it('defaults to the quieter tint', () => {
+    render(<NotificationCenter notifications={[makeNotification()]} />)
+    expect(rowOf('Test notification').className).toContain('bg-accent-3')
+  })
+
+  it('strong uses the heavier wash', () => {
+    render(
+      <NotificationCenter notifications={[makeNotification()]} unreadStyle="strong" />,
+    )
+    expect(rowOf('Test notification').className).toContain('bg-accent-4')
+  })
+
+  it('none paints no wash at all', () => {
+    render(
+      <NotificationCenter notifications={[makeNotification()]} unreadStyle="none" />,
+    )
+    const cls = rowOf('Test notification').className
+    expect(cls).not.toContain('bg-accent-3')
+    expect(cls).not.toContain('bg-accent-4')
+  })
+
+  it('a READ row is never tinted, whatever the style', () => {
+    for (const style of ['tint', 'strong', 'none'] as const) {
+      const { unmount } = render(
+        <NotificationCenter
+          notifications={[makeNotification({ isRead: true, title: `Read ${style}` })]}
+          unreadStyle={style}
+        />,
+      )
+      const cls = rowOf(`Read ${style}`).className
+      expect(cls).not.toContain('bg-accent-3')
+      expect(cls).not.toContain('bg-accent-4')
+      unmount()
+    }
+  })
+
+  it('the tier dot still carries the state when the wash is off', () => {
+    const { container } = render(
+      <NotificationCenter notifications={[makeNotification()]} unreadStyle="none" />,
+    )
+    // unread -> full opacity; the read case dims the same dot to 20%
+    expect(container.querySelector('.opacity-100')).toBeInTheDocument()
+  })
+})
 })

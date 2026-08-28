@@ -64,6 +64,9 @@ export interface Notification {
   actions?: NotificationAction[]
 }
 
+/** Visual weight of an unread row. See `NotificationCenterProps.unreadStyle`. */
+export type NotificationUnreadStyle = 'tint' | 'strong' | 'none'
+
 export interface NotificationCenterProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** List of notifications to display */
@@ -96,6 +99,19 @@ export interface NotificationCenterProps
   footerSlot?: React.ReactNode
   /** Called when the user dismisses a notification. Renders an X button per row when provided. */
   onDismiss?: (id: string) => void
+  /**
+   * How an unread row announces itself.
+   *
+   * - `tint` (default) — a soft accent wash plus a bold title. The
+   *   conventional look, and quiet enough for a long list.
+   * - `strong` — a heavier wash. Unmistakable, but it carries the same weight
+   *   a selected row does, so the two can compete.
+   * - `none` — no wash at all. The tier dot (which already fades to 20% once
+   *   read) and the bold title carry the state on their own.
+   *
+   * @default 'tint'
+   */
+  unreadStyle?: NotificationUnreadStyle
   /** Additional className for the popover content container */
   popoverClassName?: string
   /** Additional className */
@@ -126,6 +142,16 @@ function getDateGroup(dateStr: string): string {
   return 'Earlier'
 }
 
+// accent-3 / accent-4 rather than accent-1: steps 1-2 sit BELOW surface-panel in
+// dark, so a wash painted there recedes while the grey hover advances, and the
+// hovered row ends up louder than the unread one. Step 3 is the first that goes
+// the right way in both themes.
+const UNREAD_STYLES: Record<NotificationUnreadStyle, string> = {
+  tint: 'bg-accent-3',
+  strong: 'bg-accent-4',
+  none: '',
+}
+
 const TIER_COLORS: Record<string, string> = {
   INFO: 'bg-info-9',
   IMPORTANT: 'bg-warning-9',
@@ -142,12 +168,14 @@ function NotificationItem({
   onNavigate,
   getRoute,
   onDismiss,
+  unreadStyle,
 }: {
   notification: Notification
   onRead: (id: string) => void
   onNavigate: (path: string) => void
   getRoute: (notification: Notification) => string | null
   onDismiss?: (id: string) => void
+  unreadStyle: NotificationUnreadStyle
 }) {
   const route = getRoute(notification)
 
@@ -176,10 +204,7 @@ function NotificationItem({
       className={cn(
         'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard',
         'hover:bg-surface-panel-hover',
-        // accent-1 measured 1.03:1 in light — the unread state was effectively
-        // undetectable — and went darker than the panel in dark, so hovering an
-        // unread row swung it straight through the ground.
-        !notification.isRead && 'bg-accent-4',
+        !notification.isRead && UNREAD_STYLES[unreadStyle],
       )}
     >
       {/* Tier dot — doubles as read/unread marker */}
@@ -275,6 +300,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
     {
       notifications = [],
       unreadCount: unreadCountProp,
+      unreadStyle = 'tint',
       open,
       onOpenChange,
       isLoading = false,
@@ -416,6 +442,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
                       onNavigate={handleNavigate}
                       getRoute={getRoute}
                       onDismiss={onDismiss}
+                      unreadStyle={unreadStyle}
                     />
                   </motion.div>
                 ))}

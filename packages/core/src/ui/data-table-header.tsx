@@ -9,6 +9,7 @@ import { flexRender } from '@tanstack/react-table'
 import { AnimatePresence,motion } from 'framer-motion'
 import React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import {
   getColumnMetaClasses,
   getPinnedCellStyle,
@@ -46,97 +47,99 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
             )
 
             return (
-              <TableHead
-                key={header.id}
-                className={cn(
-                  pinned.className,
-                  getColumnMetaClasses(
-                    header.column.columnDef.meta as Record<string, unknown>,
-                  ),
-                )}
-                style={pinned.style}
-                aria-sort={
-                  canSort
-                    ? sorted === 'asc'
-                      ? 'ascending'
-                      : sorted === 'desc'
-                        ? 'descending'
-                        : 'none'
-                    : undefined
-                }
-              >
-                {header.isPlaceholder ? null : canSort ? (
-                  <button
-                    type="button"
-                    className={cn(
-                      'flex items-center gap-ds-01 font-medium',
-                      'cursor-pointer select-none',
-                      '-ml-ds-01 rounded-control-inner px-ds-01 py-ds-01',
-                      'hover:bg-surface-panel-hover transition-colors',
-                    )}
-                    onClick={header.column.getToggleSortingHandler()}
-                    aria-label={`Sort by ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
-                  >
-                    {flexRender(
+              <MotionPreference>
+                <TableHead
+                  key={header.id}
+                  className={cn(
+                    pinned.className,
+                    getColumnMetaClasses(
+                      header.column.columnDef.meta as Record<string, unknown>,
+                    ),
+                  )}
+                  style={pinned.style}
+                  aria-sort={
+                    canSort
+                      ? sorted === 'asc'
+                        ? 'ascending'
+                        : sorted === 'desc'
+                          ? 'descending'
+                          : 'none'
+                      : undefined
+                  }
+                >
+                  {header.isPlaceholder ? null : canSort ? (
+                    <button
+                      type="button"
+                      className={cn(
+                        'flex items-center gap-ds-01 font-medium',
+                        'cursor-pointer select-none',
+                        '-ml-ds-01 rounded-control-inner px-ds-01 py-ds-01',
+                        'hover:bg-surface-panel-hover transition-colors',
+                      )}
+                      onClick={header.column.getToggleSortingHandler()}
+                      aria-label={`Sort by ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.column.id}`}
+                    >
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                      <AnimatePresence mode="wait" initial={false}>
+                        {sorted === 'asc' ? (
+                          <motion.span
+                            key="asc"
+                            initial={{ opacity: 0, rotate: 90 }}
+                            animate={{ opacity: 1, rotate: 0 }}
+                            exit={{ opacity: 0, rotate: -90 }}
+                            transition={springs.snappy}
+                            className="inline-flex"
+                          >
+                            <Icon
+                              icon={IconArrowUp}
+                              size="sm"
+                              className="text-surface-fg-muted"
+                            />
+                          </motion.span>
+                        ) : sorted === 'desc' ? (
+                          <motion.span
+                            key="desc"
+                            initial={{ opacity: 0, rotate: -90 }}
+                            animate={{ opacity: 1, rotate: 0 }}
+                            exit={{ opacity: 0, rotate: 90 }}
+                            transition={springs.snappy}
+                            className="inline-flex"
+                          >
+                            <Icon
+                              icon={IconArrowDown}
+                              size="sm"
+                              className="text-surface-fg-muted"
+                            />
+                          </motion.span>
+                        ) : (
+                          <motion.span
+                            key="unsorted"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={springs.snappy}
+                            className="inline-flex"
+                          >
+                            <Icon
+                              icon={IconArrowsSort}
+                              size="sm"
+                              className="text-surface-fg-subtle"
+                            />
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </button>
+                  ) : (
+                    flexRender(
                       header.column.columnDef.header,
                       header.getContext(),
-                    )}
-                    <AnimatePresence mode="wait" initial={false}>
-                      {sorted === 'asc' ? (
-                        <motion.span
-                          key="asc"
-                          initial={{ opacity: 0, rotate: 90 }}
-                          animate={{ opacity: 1, rotate: 0 }}
-                          exit={{ opacity: 0, rotate: -90 }}
-                          transition={springs.snappy}
-                          className="inline-flex"
-                        >
-                          <Icon
-                            icon={IconArrowUp}
-                            size="sm"
-                            className="text-surface-fg-muted"
-                          />
-                        </motion.span>
-                      ) : sorted === 'desc' ? (
-                        <motion.span
-                          key="desc"
-                          initial={{ opacity: 0, rotate: -90 }}
-                          animate={{ opacity: 1, rotate: 0 }}
-                          exit={{ opacity: 0, rotate: 90 }}
-                          transition={springs.snappy}
-                          className="inline-flex"
-                        >
-                          <Icon
-                            icon={IconArrowDown}
-                            size="sm"
-                            className="text-surface-fg-muted"
-                          />
-                        </motion.span>
-                      ) : (
-                        <motion.span
-                          key="unsorted"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={springs.snappy}
-                          className="inline-flex"
-                        >
-                          <Icon
-                            icon={IconArrowsSort}
-                            size="sm"
-                            className="text-surface-fg-subtle"
-                          />
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
-                  </button>
-                ) : (
-                  flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )
-                )}
-              </TableHead>
+                    )
+                  )}
+                </TableHead>
+              </MotionPreference>
             )
           })}
         </TableRow>

@@ -4,6 +4,7 @@ import { IconCalendarEvent, IconClock, IconPencil,IconX } from '@tabler/icons-re
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../../motion/motion-preference'
 import { Button } from '../../ui/button'
 import {
   Dialog,
@@ -413,39 +414,41 @@ function formatScheduleTime(date: Date): string {
 
 export function ScheduleBanner({ date, onClear, onEdit }: { date: Date; onClear: () => void; onEdit?: () => void }) {
   return (
-    <motion.div
-      initial={{ height: 0, opacity: 0 }}
-      animate={{ height: 'auto', opacity: 1 }}
-      exit={{ height: 0, opacity: 0 }}
-      transition={{ duration: durations.moderate01 }}
-      className="overflow-hidden"
-    >
-      <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b text-body-xs text-accent-11 bg-accent-2 border-b border-accent-4">
-        <Icon icon={IconClock} size="xs" className="shrink-0" />
-        <span className="min-w-0 flex-1 truncate">
-          Scheduled for {formatScheduleTime(date)}
-        </span>
-        {onEdit && (
+    <MotionPreference>
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: 'auto', opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        transition={{ duration: durations.moderate01 }}
+        className="overflow-hidden"
+      >
+        <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b text-body-xs text-accent-11 bg-accent-2 border-b border-accent-4">
+          <Icon icon={IconClock} size="xs" className="shrink-0" />
+          <span className="min-w-0 flex-1 truncate">
+            Scheduled for {formatScheduleTime(date)}
+          </span>
+          {onEdit && (
+            <Button
+              variant="soft"
+              size="icon-xs"
+              className="shrink-0"
+              onClick={onEdit}
+              aria-label="Edit schedule"
+            >
+              <Icon icon={IconPencil} size="xs" />
+            </Button>
+          )}
           <Button
             variant="soft"
             size="icon-xs"
             className="shrink-0"
-            onClick={onEdit}
-            aria-label="Edit schedule"
+            onClick={onClear}
+            aria-label="Cancel schedule"
           >
-            <Icon icon={IconPencil} size="xs" />
+            <Icon icon={IconX} size="xs" />
           </Button>
-        )}
-        <Button
-          variant="soft"
-          size="icon-xs"
-          className="shrink-0"
-          onClick={onClear}
-          aria-label="Cancel schedule"
-        >
-          <Icon icon={IconX} size="xs" />
-        </Button>
-      </div>
-    </motion.div>
+        </div>
+      </motion.div>
+    </MotionPreference>
   )
 }

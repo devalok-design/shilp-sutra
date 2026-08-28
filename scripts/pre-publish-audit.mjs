@@ -548,6 +548,51 @@ gate('No deprecated surface tokens in components', () => {
   return true
 })
 
+// Framer Motion's MotionConfigContext defaults to `reducedMotion: "never"`, so
+// every `motion.*` element ignores the reader's OS setting until some ancestor
+// overrides it. Our only ancestor that did was <MotionProvider>, which
+// consumers are not required to mount — so the library animated straight
+// through `prefers-reduced-motion` by default. <MotionPreference> supplies that
+// ancestor per component.
+//
+// Only positional animation is suppressed under `"user"` (transforms plus
+// width/height/top/left/right/bottom, and layout animations); opacity, colour
+// and filter still run. So an opacity-only component genuinely needs no
+// wrapper, and this gate DERIVES the requirement from what the file animates
+// rather than carrying an allowlist that would rot the moment someone adds a
+// transform to an exempt file.
+const POSITIONAL_ANIM = /(?<![\w-])(x|y|scale|scaleX|scaleY|rotate|rotateX|rotateY|rotateZ|skew|skewX|skewY|width|height|top|left|right|bottom|translateX|translateY)\s*:/
+gate('Positional animations respect reduced motion', () => {
+  const offenders = []
+  for (const file of globSync('packages/core/src/**/*.tsx', { cwd: ROOT })) {
+    const normalized = file.replace(/\\/g, '/')
+    if (normalized.includes('.stories.') || normalized.includes('__tests__') || normalized.includes('.test.')) continue
+    // The motion infrastructure itself defines the mechanism.
+    if (normalized.endsWith('/motion/motion-preference.tsx') || normalized.endsWith('/motion/motion-provider.tsx')) continue
+
+    const content = readFileSync(join(ROOT, file), 'utf-8')
+    if (!content.includes('framer-motion')) continue
+
+    // Two mechanisms are acceptable, and roughly half the library uses each:
+    //   1. <MotionPreference> — hands the decision to Framer.
+    //   2. Calling useReducedMotion()/useMotion() and branching by hand. Note
+    //      that Framer's useReducedMotion() reads the media query DIRECTLY, so
+    //      it honours the OS without a provider but also ignores a deliberate
+    //      <MotionProvider reducedMotion={false}> override.
+    if (content.includes('MotionPreference')) continue
+    if (/\buse(Reduced)?Motion\s*\(/.test(content)) continue
+
+    if (POSITIONAL_ANIM.test(content) || /(?<![\w-])layout(Id)?[=\s]/.test(content)) {
+      offenders.push(normalized)
+    }
+  }
+
+  if (offenders.length > 0) {
+    return `These animate position but never opt into the OS reduced-motion setting:\n${offenders.map(f => `      ${f}`).join('\n')}\n      Wrap the component's animated root in <MotionPreference> (packages/core/src/motion/motion-preference.tsx).\n      It renders no DOM and nesting is self-cancelling, so wrapping is always safe.`
+  }
+  return true
+})
+
 gate('No deprecated shadow tokens in components', () => {
   const violations = []
   const sourceFiles = [

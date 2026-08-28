@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { LayoutGroup,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -260,45 +261,47 @@ const TabsTrigger = React.forwardRef<
   const isVertical = orientation === 'vertical'
 
   return (
-    <TabsPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        tabsTriggerVariants({ variant, size }),
-        variant === 'line' && lineActiveColorMap[color],
-        // Vertical: full width triggers, left margin instead of bottom
-        isVertical && 'w-full justify-start',
-        variant === 'line' && isVertical && '-ml-px -mb-0',
-        className,
-      )}
-      {...props}
-    >
-      {/* Contained variant: sliding pill background */}
-      {variant === 'contained' && isActive && (
-        <motion.span
-          layoutId={`${listContext.layoutId}-contained`}
-          className="absolute inset-0 rounded-control bg-segment-thumb shadow-segment"
-          transition={springs.smooth}
-        />
-      )}
-      {/* Content sits above the indicator */}
-      <span className="relative z-[1] inline-flex min-w-0 items-center gap-ds-02">
-        <span className="truncate">{children}</span>
-      </span>
-      {/* Line variant: sliding indicator -- bottom underline (horizontal) or left bar (vertical) */}
-      {variant === 'line' && isActive && (
-        <motion.span
-          layoutId={`${listContext.layoutId}-line`}
-          className={cn(
-            'absolute',
-            isVertical
-              ? 'left-0 top-0 bottom-0 w-0.5'
-              : 'bottom-0 left-0 right-0 h-0.5',
-            lineIndicatorColorMap[color],
-          )}
-          transition={springs.smooth}
-        />
-      )}
-    </TabsPrimitive.Trigger>
+    <MotionPreference>
+      <TabsPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          tabsTriggerVariants({ variant, size }),
+          variant === 'line' && lineActiveColorMap[color],
+          // Vertical: full width triggers, left margin instead of bottom
+          isVertical && 'w-full justify-start',
+          variant === 'line' && isVertical && '-ml-px -mb-0',
+          className,
+        )}
+        {...props}
+      >
+        {/* Contained variant: sliding pill background */}
+        {variant === 'contained' && isActive && (
+          <motion.span
+            layoutId={`${listContext.layoutId}-contained`}
+            className="absolute inset-0 rounded-control bg-segment-thumb shadow-segment"
+            transition={springs.smooth}
+          />
+        )}
+        {/* Content sits above the indicator */}
+        <span className="relative z-[1] inline-flex min-w-0 items-center gap-ds-02">
+          <span className="truncate">{children}</span>
+        </span>
+        {/* Line variant: sliding indicator -- bottom underline (horizontal) or left bar (vertical) */}
+        {variant === 'line' && isActive && (
+          <motion.span
+            layoutId={`${listContext.layoutId}-line`}
+            className={cn(
+              'absolute',
+              isVertical
+                ? 'left-0 top-0 bottom-0 w-0.5'
+                : 'bottom-0 left-0 right-0 h-0.5',
+              lineIndicatorColorMap[color],
+            )}
+            transition={springs.smooth}
+          />
+        )}
+      </TabsPrimitive.Trigger>
+    </MotionPreference>
   )
 })
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
@@ -311,23 +314,25 @@ const TabsContent = React.forwardRef<
   const isVertical = orientation === 'vertical'
 
   return (
-    <TabsPrimitive.Content
-      ref={ref}
-      className={cn(
-        'ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
-        isVertical ? 'mt-0 flex-1 min-w-0' : 'mt-ds-05',
-        className,
-      )}
-    {...props}
-  >
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={tweens.fade}
+    <MotionPreference>
+      <TabsPrimitive.Content
+        ref={ref}
+        className={cn(
+          'ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+          isVertical ? 'mt-0 flex-1 min-w-0' : 'mt-ds-05',
+          className,
+        )}
+      {...props}
     >
-      {children}
-    </motion.div>
-  </TabsPrimitive.Content>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={tweens.fade}
+      >
+        {children}
+      </motion.div>
+    </TabsPrimitive.Content>
+    </MotionPreference>
   )
 })
 TabsContent.displayName = TabsPrimitive.Content.displayName

@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { springs } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -179,15 +180,17 @@ const ProgressIndicator = React.forwardRef<HTMLDivElement, ProgressIndicatorProp
       )
     }
     return (
-      <motion.div
-        ref={ref}
-        data-palette={resolved}
-        className={cn(progressIndicatorVariants({ color: resolved }), 'transition-colors', className)}
-        initial={false}
-        animate={{ width: `${clampPct(value ?? 0, max)}%` }}
-        transition={springs.smooth}
-        {...(props as React.ComponentProps<typeof motion.div>)}
-      />
+      <MotionPreference>
+        <motion.div
+          ref={ref}
+          data-palette={resolved}
+          className={cn(progressIndicatorVariants({ color: resolved }), 'transition-colors', className)}
+          initial={false}
+          animate={{ width: `${clampPct(value ?? 0, max)}%` }}
+          transition={springs.smooth}
+          {...(props as React.ComponentProps<typeof motion.div>)}
+        />
+      </MotionPreference>
     )
   },
 )

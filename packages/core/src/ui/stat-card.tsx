@@ -4,6 +4,7 @@ import { IconMinus, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Card, CardContent, CardFooter, type CardSize } from './card'
 import { Icon } from './icon'
 import { IconProvider } from './icon-context'
@@ -427,51 +428,57 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     // href → wrap Card in the framework Link (Card stays the shell; hover-lift inside).
     if (href) {
       return (
-        <Link
-          ref={ref as React.Ref<HTMLAnchorElement>}
-          href={href}
-          onClick={onClick}
-          className="block no-underline"
-          aria-label={computedAriaLabel}
-          {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-        >
-          <Card variant={variant} size={size} interactive className={tintClass}>
-            {body}
-          </Card>
-        </Link>
+        <MotionPreference>
+          <Link
+            ref={ref as React.Ref<HTMLAnchorElement>}
+            href={href}
+            onClick={onClick}
+            className="block no-underline"
+            aria-label={computedAriaLabel}
+            {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+          >
+            <Card variant={variant} size={size} interactive className={tintClass}>
+              {body}
+            </Card>
+          </Link>
+        </MotionPreference>
       )
     }
 
     // onClick → interactive Card with button semantics + keyboard activation.
     if (onClick) {
       return (
-        <Card
-          ref={ref}
-          variant={variant}
-          size={size}
-          interactive
-          className={cn(tintClass, className)}
-          role="button"
-          tabIndex={0}
-          aria-label={computedAriaLabel}
-          onClick={onClick}
-          onKeyDown={(e: React.KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              onClick()
-            }
-          }}
-          {...props}
-        >
-          {body}
-        </Card>
+        <MotionPreference>
+          <Card
+            ref={ref}
+            variant={variant}
+            size={size}
+            interactive
+            className={cn(tintClass, className)}
+            role="button"
+            tabIndex={0}
+            aria-label={computedAriaLabel}
+            onClick={onClick}
+            onKeyDown={(e: React.KeyboardEvent) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                onClick()
+              }
+            }}
+            {...props}
+          >
+            {body}
+          </Card>
+        </MotionPreference>
       )
     }
 
     return (
-      <Card ref={ref} variant={variant} size={size} className={cn(tintClass, className)} {...props}>
-        {body}
-      </Card>
+      <MotionPreference>
+        <Card ref={ref} variant={variant} size={size} className={cn(tintClass, className)} {...props}>
+          {body}
+        </Card>
+      </MotionPreference>
     )
   },
 )

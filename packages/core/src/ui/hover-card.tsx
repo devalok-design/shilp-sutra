@@ -4,6 +4,7 @@ import * as HoverCardPrimitive from '@primitives/react-hover-card'
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -53,33 +54,35 @@ const HoverCardContent = React.forwardRef<
   const open = React.useContext(HoverCardOpenContext)
 
   return (
-    <AnimatePresence>
-      {open && (
-        <HoverCardPrimitive.Portal forceMount>
-          <HoverCardPrimitive.Content
-            ref={ref}
-            align={align}
-            sideOffset={sideOffset}
-            forceMount
-            asChild
-            {...props}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ ...springs.snappy, opacity: tweens.fade }}
-              className={cn(
-                'z-popover w-64 rounded-overlay bg-surface-overlay p-ds-05 shadow-floating outline-hidden',
-                className,
-              )}
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <HoverCardPrimitive.Portal forceMount>
+            <HoverCardPrimitive.Content
+              ref={ref}
+              align={align}
+              sideOffset={sideOffset}
+              forceMount
+              asChild
+              {...props}
             >
-              {children}
-            </motion.div>
-          </HoverCardPrimitive.Content>
-        </HoverCardPrimitive.Portal>
-      )}
-    </AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ ...springs.snappy, opacity: tweens.fade }}
+                className={cn(
+                  'z-popover w-64 rounded-overlay bg-surface-overlay p-ds-05 shadow-floating outline-hidden',
+                  className,
+                )}
+              >
+                {children}
+              </motion.div>
+            </HoverCardPrimitive.Content>
+          </HoverCardPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 HoverCardContent.displayName = HoverCardPrimitive.Content.displayName

@@ -4,6 +4,7 @@ import * as TooltipPrimitive from '@primitives/react-tooltip'
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { springs, tweens } from './lib/motion'
 import { useControllableOpen } from './lib/use-controllable-open'
 import { cn } from './lib/utils'
@@ -79,33 +80,35 @@ const TooltipContent = React.forwardRef<
   const slideInit = sideOffset[side] ?? {}
 
   return (
-    <AnimatePresence>
-      {open && (
-        <TooltipPrimitive.Portal forceMount>
-          <TooltipPrimitive.Content
-            ref={ref}
-            forceMount
-            sideOffset={sideOffsetProp}
-            side={side}
-            {...props}
-            asChild
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, ...slideInit }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, ...slideInit }}
-              transition={{ ...springs.snappy, opacity: tweens.fade }}
-              className={cn(
-                'z-tooltip overflow-hidden rounded-overlay-sm bg-surface-inverted px-ds-04 py-ds-02b text-body-sm text-surface-inverted-fg shadow-floating',
-                className,
-              )}
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <TooltipPrimitive.Portal forceMount>
+            <TooltipPrimitive.Content
+              ref={ref}
+              forceMount
+              sideOffset={sideOffsetProp}
+              side={side}
+              {...props}
+              asChild
             >
-              {children}
-            </motion.div>
-          </TooltipPrimitive.Content>
-        </TooltipPrimitive.Portal>
-      )}
-    </AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, ...slideInit }}
+                animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, ...slideInit }}
+                transition={{ ...springs.snappy, opacity: tweens.fade }}
+                className={cn(
+                  'z-tooltip overflow-hidden rounded-overlay-sm bg-surface-inverted px-ds-04 py-ds-02b text-body-sm text-surface-inverted-fg shadow-floating',
+                  className,
+                )}
+              >
+                {children}
+              </motion.div>
+            </TooltipPrimitive.Content>
+          </TooltipPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 TooltipContent.displayName = TooltipPrimitive.Content.displayName

@@ -4,6 +4,7 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible'
 import { Icon } from '../ui/icon'
 import { springs } from '../ui/lib/motion'
@@ -51,24 +52,26 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(({
 
   if (collapsible) {
     return (
-      <Collapsible defaultOpen={defaultOpen} onOpenChange={setIsOpen} className={cn('space-y-ds-04', className)} {...props}>
-        <CollapsibleTrigger className="flex w-full items-center justify-between py-ds-02 group">
-          {header}
-          <motion.span
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={springs.snappy}
-            className="inline-flex"
-          >
-            <Icon icon={IconChevronDown} size="sm" className="text-surface-fg-muted" />
-          </motion.span>
-        </CollapsibleTrigger>
-        <div className="border-b border-surface-border-subtle" />
-        <CollapsibleContent>
-          <div className="space-y-ds-04 pt-ds-02">
-            {children}
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
+      <MotionPreference>
+        <Collapsible defaultOpen={defaultOpen} onOpenChange={setIsOpen} className={cn('space-y-ds-04', className)} {...props}>
+          <CollapsibleTrigger className="flex w-full items-center justify-between py-ds-02 group">
+            {header}
+            <motion.span
+              animate={{ rotate: isOpen ? 180 : 0 }}
+              transition={springs.snappy}
+              className="inline-flex"
+            >
+              <Icon icon={IconChevronDown} size="sm" className="text-surface-fg-muted" />
+            </motion.span>
+          </CollapsibleTrigger>
+          <div className="border-b border-surface-border-subtle" />
+          <CollapsibleContent>
+            <div className="space-y-ds-04 pt-ds-02">
+              {children}
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      </MotionPreference>
     )
   }
 

@@ -4,6 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { motionProps, springs } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -154,17 +155,19 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
     if (interactive) {
       return (
-        <motion.div
-          ref={ref}
-          whileHover={{ y: -3 }}
-          whileTap={{ scale: 0.98 }}
-          transition={springs.snappy}
-          data-palette={color ?? undefined}
-          className={classes}
-          {...motionProps(props)}
-        >
-          {children}
-        </motion.div>
+        <MotionPreference>
+          <motion.div
+            ref={ref}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.98 }}
+            transition={springs.snappy}
+            data-palette={color ?? undefined}
+            className={classes}
+            {...motionProps(props)}
+          >
+            {children}
+          </motion.div>
+        </MotionPreference>
       )
     }
 

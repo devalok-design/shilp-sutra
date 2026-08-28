@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { motionProps, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -104,17 +105,19 @@ const FormHelperText = React.forwardRef<HTMLParagraphElement, FormHelperTextProp
     const id = idProp ?? context.helperTextId
 
     return (
-      <motion.p
-        ref={ref}
-        id={id}
-        role={state === 'error' ? 'alert' : undefined}
-        className={cn('text-body-sm', helperStateClasses[state], className)}
-        initial={{ opacity: 0, y: -4 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -4 }}
-        transition={tweens.fade}
-        {...motionProps(props)}
-      />
+      <MotionPreference>
+        <motion.p
+          ref={ref}
+          id={id}
+          role={state === 'error' ? 'alert' : undefined}
+          className={cn('text-body-sm', helperStateClasses[state], className)}
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={tweens.fade}
+          {...motionProps(props)}
+        />
+      </MotionPreference>
     )
   },
 )

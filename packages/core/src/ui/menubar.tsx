@@ -5,6 +5,7 @@ import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react'
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
@@ -121,29 +122,31 @@ const MenubarSubContent = React.forwardRef<
   const open = React.useContext(MenubarSubOpenContext)
 
   return (
-    <AnimatePresence>
-      {open && (
-        <MenubarPrimitive.SubContent
-          ref={ref}
-          forceMount
-          asChild
-          {...props}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ ...springs.snappy, opacity: tweens.fade }}
-            className={cn(
-              'z-popover min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
-              className,
-            )}
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <MenubarPrimitive.SubContent
+            ref={ref}
+            forceMount
+            asChild
+            {...props}
           >
-            {children}
-          </motion.div>
-        </MenubarPrimitive.SubContent>
-      )}
-    </AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ ...springs.snappy, opacity: tweens.fade }}
+              className={cn(
+                'z-popover min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
+                className,
+              )}
+            >
+              {children}
+            </motion.div>
+          </MenubarPrimitive.SubContent>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 MenubarSubContent.displayName = MenubarPrimitive.SubContent.displayName

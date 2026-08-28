@@ -5,6 +5,7 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { tweens } from './lib/motion'
 import { cn } from './lib/utils'
@@ -103,19 +104,21 @@ const AccordionContent = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className="w-full overflow-hidden text-body-md data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up"
-    {...props}
-  >
-    <motion.div
-      initial={false}
-      animate={{ opacity: 1 }}
-      transition={tweens.fade}
+  <MotionPreference>
+    <AccordionPrimitive.Content
+      ref={ref}
+      className="w-full overflow-hidden text-body-md data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up"
+      {...props}
     >
-      <div className={cn('pb-ds-05 pt-ds-02', className)}>{children}</div>
-    </motion.div>
-  </AccordionPrimitive.Content>
+      <motion.div
+        initial={false}
+        animate={{ opacity: 1 }}
+        transition={tweens.fade}
+      >
+        <div className={cn('pb-ds-05 pt-ds-02', className)}>{children}</div>
+      </motion.div>
+    </AccordionPrimitive.Content>
+  </MotionPreference>
 ))
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
 

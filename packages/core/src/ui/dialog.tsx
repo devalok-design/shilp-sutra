@@ -6,6 +6,7 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
 import { useIsMobile } from '../hooks/use-mobile'
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
 import { useControllableOpen } from './lib/use-controllable-open'
@@ -118,49 +119,51 @@ const DialogContent = React.forwardRef<
   const isMobile = responsive !== false && isMobileRaw
 
   return (
-    <AnimatePresence>
-      {open && (
-        <DialogPortal forceMount>
-          <DialogOverlay asChild>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={tweens.fade}
-            />
-          </DialogOverlay>
-          <DialogPrimitive.Content
-            ref={ref}
-            forceMount
-            asChild
-            {...props}
-          >
-            <motion.div
-              initial={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-              animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
-              exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-              transition={isMobile
-                ? springs.smooth
-                : { ...springs.smooth, opacity: tweens.fade }
-              }
-              className={cn(
-                'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
-                responsive !== false
-                  ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-overlay-lg md:shadow-overlay'
-                  : 'left-[50%] top-[50%] max-w-lg rounded-overlay-lg shadow-overlay',
-                className,
-              )}
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <DialogPortal forceMount>
+            <DialogOverlay asChild>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={tweens.fade}
+              />
+            </DialogOverlay>
+            <DialogPrimitive.Content
+              ref={ref}
+              forceMount
+              asChild
+              {...props}
             >
-              {children}
-              <DialogPrimitive.Close title="Close" className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-panel-hover active:scale-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
-                <Icon icon={CloseIcon} size="lg" />
-                <span className="sr-only">Close</span>
-              </DialogPrimitive.Close>
-            </motion.div>
-          </DialogPrimitive.Content>
-        </DialogPortal>
-      )}
-    </AnimatePresence>
+              <motion.div
+                initial={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+                animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+                exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+                transition={isMobile
+                  ? springs.smooth
+                  : { ...springs.smooth, opacity: tweens.fade }
+                }
+                className={cn(
+                  'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
+                  responsive !== false
+                    ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-overlay-lg md:shadow-overlay'
+                    : 'left-[50%] top-[50%] max-w-lg rounded-overlay-lg shadow-overlay',
+                  className,
+                )}
+              >
+                {children}
+                <DialogPrimitive.Close title="Close" className="absolute right-ds-05 top-ds-05 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner text-surface-fg-subtle transition-colors duration-fast-01 ease-productive-standard hover:text-surface-fg-muted hover:bg-surface-panel-hover active:scale-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 disabled:pointer-events-none">
+                  <Icon icon={CloseIcon} size="lg" />
+                  <span className="sr-only">Close</span>
+                </DialogPrimitive.Close>
+              </motion.div>
+            </DialogPrimitive.Content>
+          </DialogPortal>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 DialogContent.displayName = DialogPrimitive.Content.displayName

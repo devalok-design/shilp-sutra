@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { motionProps,springs } from './lib/motion'
 import { cn } from './lib/utils'
@@ -89,37 +90,39 @@ const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
     }, [])
 
     return (
-      <AnimatePresence onExitComplete={onDismiss}>
-        {isVisible && (
-          <motion.div
-            ref={ref}
-            initial={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={springs.snappy}
-            data-palette={color}
-            className={cn(bannerVariants({ color }), 'overflow-hidden', className)}
-            role="alert"
-            {...motionProps(props)}
-          >
-            <Icon icon={BannerIcon} size="md" className="shrink-0" />
-            <div className="min-w-0 flex-1">{children}</div>
-            {actions && (
-              <div className="flex shrink-0 items-center gap-ds-02 [&_button]:transition-colors [&_button]:duration-moderate-01 [&_button]:ease-productive-standard [&_button:hover]:bg-current/10">{actions}</div>
-            )}
-            {onDismiss && (
-              <button
-                type="button"
-                onClick={handleDismiss}
-                className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner transition-colors duration-moderate-01 ease-productive-standard hover:bg-current/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
-                aria-label="Dismiss"
-                title="Dismiss"
-              >
-                <Icon icon={IconX} size="sm" />
-              </button>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MotionPreference>
+        <AnimatePresence onExitComplete={onDismiss}>
+          {isVisible && (
+            <motion.div
+              ref={ref}
+              initial={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={springs.snappy}
+              data-palette={color}
+              className={cn(bannerVariants({ color }), 'overflow-hidden', className)}
+              role="alert"
+              {...motionProps(props)}
+            >
+              <Icon icon={BannerIcon} size="md" className="shrink-0" />
+              <div className="min-w-0 flex-1">{children}</div>
+              {actions && (
+                <div className="flex shrink-0 items-center gap-ds-02 [&_button]:transition-colors [&_button]:duration-moderate-01 [&_button]:ease-productive-standard [&_button:hover]:bg-current/10">{actions}</div>
+              )}
+              {onDismiss && (
+                <button
+                  type="button"
+                  onClick={handleDismiss}
+                  className="shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner transition-colors duration-moderate-01 ease-productive-standard hover:bg-current/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9"
+                  aria-label="Dismiss"
+                  title="Dismiss"
+                >
+                  <Icon icon={IconX} size="sm" />
+                </button>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </MotionPreference>
     )
   },
 )

@@ -10,6 +10,7 @@ import {
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../../motion/motion-preference'
 import { Button } from '../../ui/button'
 import { Icon } from '../../ui/icon'
 import { tweens } from '../../ui/lib/motion'
@@ -40,17 +41,19 @@ export function ErrorFallback({ message, url }: { message: string; url: string }
 
 export function Toolbar({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={tweens.fade}
-      className={cn(
-        'flex items-center gap-ds-01 rounded-control bg-surface-overlay/95 px-ds-02 py-ds-01 shadow-floating backdrop-blur-xs',
-        className,
-      )}
-    >
-      {children}
-    </motion.div>
+    <MotionPreference>
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={tweens.fade}
+        className={cn(
+          'flex items-center gap-ds-01 rounded-control bg-surface-overlay/95 px-ds-02 py-ds-01 shadow-floating backdrop-blur-xs',
+          className,
+        )}
+      >
+        {children}
+      </motion.div>
+    </MotionPreference>
   )
 }
 

@@ -4,6 +4,7 @@ import { IconCheck,IconPaperclip, IconUpload } from '@tabler/icons-react'
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
@@ -290,134 +291,136 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     }
 
     return (
-      <div
-        ref={ref}
-        {...props}
-        role="presentation"
-        className={cn('flex flex-col', className)}
-        data-drag-active={isDragActive ? 'true' : undefined}
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
-        <motion.div
-          role="button"
-          tabIndex={disabled ? -1 : 0}
-          aria-disabled={disabled || undefined}
-          onClick={disabled ? undefined : openPicker}
-          onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-            if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
-              e.preventDefault()
-              openPicker()
-            }
-          }}
-          className={cn(
-            'flex flex-col items-center justify-center gap-ds-03 rounded-surface',
-            'border-2 border-dashed p-ds-08',
-            'focus-ring transition-colors duration-fast-02 ease-productive-standard',
-            // Rest on the canvas fill; reserve the hover token for actual hover.
-            'border-surface-border-interactive bg-surface-base',
-            disabled ? 'cursor-not-allowed opacity-action-disabled' : 'cursor-pointer hover:bg-surface-panel-hover',
-            isDragActive && 'border-accent-7 bg-accent-2',
-          )}
-          animate={{
-            scale: isDragActive ? 1.02 : 1,
-          }}
-          transition={springs.snappy}
+      <MotionPreference>
+        <div
+          ref={ref}
+          {...props}
+          role="presentation"
+          className={cn('flex flex-col', className)}
+          data-drag-active={isDragActive ? 'true' : undefined}
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
         >
-          {/* Icon — animates between upload ↔ spinner ↔ checkmark */}
-          <AnimatePresence mode="wait">
+          <motion.div
+            role="button"
+            tabIndex={disabled ? -1 : 0}
+            aria-disabled={disabled || undefined}
+            onClick={disabled ? undefined : openPicker}
+            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+              if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault()
+                openPicker()
+              }
+            }}
+            className={cn(
+              'flex flex-col items-center justify-center gap-ds-03 rounded-surface',
+              'border-2 border-dashed p-ds-08',
+              'focus-ring transition-colors duration-fast-02 ease-productive-standard',
+              // Rest on the canvas fill; reserve the hover token for actual hover.
+              'border-surface-border-interactive bg-surface-base',
+              disabled ? 'cursor-not-allowed opacity-action-disabled' : 'cursor-pointer hover:bg-surface-panel-hover',
+              isDragActive && 'border-accent-7 bg-accent-2',
+            )}
+            animate={{
+              scale: isDragActive ? 1.02 : 1,
+            }}
+            transition={springs.snappy}
+          >
+            {/* Icon — animates between upload ↔ spinner ↔ checkmark */}
+            <AnimatePresence mode="wait">
+              {uploading ? (
+                <motion.div
+                  key="spinner"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={tweens.fade}
+                >
+                  <Spinner size="md" />
+                </motion.div>
+              ) : progress === 100 && !error ? (
+                <motion.div
+                  key="complete"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={springs.bouncy}
+                >
+                  <Icon icon={IconCheck} size="2xl" className="text-success-11" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="upload"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={tweens.fade}
+                >
+                  <Icon icon={IconUpload} size="2xl" className="text-surface-fg-subtle" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <span id={inputId + '-label'} className="text-body-sm text-surface-fg-muted">
+              {defaultLabel}
+            </span>
             {uploading ? (
-              <motion.div
-                key="spinner"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={tweens.fade}
-              >
-                <Spinner size="md" />
-              </motion.div>
-            ) : progress === 100 && !error ? (
-              <motion.div
-                key="complete"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={springs.bouncy}
-              >
-                <Icon icon={IconCheck} size="2xl" className="text-success-11" />
-              </motion.div>
+              <div className="w-full max-w-xs">
+                <div
+                  role="progressbar"
+                  aria-valuenow={progress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  className="h-2 w-full overflow-hidden rounded-pill bg-surface-panel-hover"
+                >
+                  <motion.div
+                    // scaleX (compositor-only) not width (layout) → smooth + honored by reduced-motion.
+                    className="h-full w-full origin-left rounded-pill bg-accent-9"
+                    animate={{ scaleX: Math.max(0, Math.min(100, progress)) / 100 }}
+                    transition={springs.smooth}
+                  />
+                </div>
+              </div>
             ) : (
-              <motion.div
-                key="upload"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+              <span className="text-caption text-surface-fg-subtle">
+                {defaultSublabel}
+              </span>
+            )}
+          </motion.div>
+          <input
+            ref={inputRef}
+            id={inputId}
+            type="file"
+            className="sr-only"
+            style={{ visibility: 'hidden' }}
+            aria-hidden="true"
+            aria-label={defaultLabel}
+            accept={accept}
+            multiple={multiple}
+            disabled={disabled}
+            onChange={handleInputChange}
+            onClick={handleInputClick}
+            onFocus={handleInputFocus}
+            tabIndex={-1}
+          />
+          {/* Error message — a calm fade/slide in (no decorative shake). */}
+          <AnimatePresence>
+            {displayError && (
+              <motion.p
+                role="alert"
+                className="mt-ds-02 text-body-xs text-error-11"
+                initial={{ opacity: 0, y: -2 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={tweens.fade}
               >
-                <Icon icon={IconUpload} size="2xl" className="text-surface-fg-subtle" />
-              </motion.div>
+                {displayError}
+              </motion.p>
             )}
           </AnimatePresence>
-          <span id={inputId + '-label'} className="text-body-sm text-surface-fg-muted">
-            {defaultLabel}
-          </span>
-          {uploading ? (
-            <div className="w-full max-w-xs">
-              <div
-                role="progressbar"
-                aria-valuenow={progress}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                className="h-2 w-full overflow-hidden rounded-pill bg-surface-panel-hover"
-              >
-                <motion.div
-                  // scaleX (compositor-only) not width (layout) → smooth + honored by reduced-motion.
-                  className="h-full w-full origin-left rounded-pill bg-accent-9"
-                  animate={{ scaleX: Math.max(0, Math.min(100, progress)) / 100 }}
-                  transition={springs.smooth}
-                />
-              </div>
-            </div>
-          ) : (
-            <span className="text-caption text-surface-fg-subtle">
-              {defaultSublabel}
-            </span>
-          )}
-        </motion.div>
-        <input
-          ref={inputRef}
-          id={inputId}
-          type="file"
-          className="sr-only"
-          style={{ visibility: 'hidden' }}
-          aria-hidden="true"
-          aria-label={defaultLabel}
-          accept={accept}
-          multiple={multiple}
-          disabled={disabled}
-          onChange={handleInputChange}
-          onClick={handleInputClick}
-          onFocus={handleInputFocus}
-          tabIndex={-1}
-        />
-        {/* Error message — a calm fade/slide in (no decorative shake). */}
-        <AnimatePresence>
-          {displayError && (
-            <motion.p
-              role="alert"
-              className="mt-ds-02 text-body-xs text-error-11"
-              initial={{ opacity: 0, y: -2 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={tweens.fade}
-            >
-              {displayError}
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </div>
+        </div>
+      </MotionPreference>
     )
   },
 )

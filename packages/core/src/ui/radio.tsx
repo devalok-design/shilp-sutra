@@ -5,6 +5,7 @@ import { IconCircle } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { useFormField } from './form'
 import { type FieldState, resolveFieldState } from './lib/field-state'
 import { springs } from './lib/motion'
@@ -72,33 +73,35 @@ const RadioGroupItem = React.forwardRef<
 >(({ className, size = 'md', ...props }, ref) => {
   const state = React.useContext(RadioStateContext)
   return (
-    <RadioGroupPrimitive.Item
-      ref={ref}
-      className={cn(
-        'touch-target aspect-square rounded-pill',
-        radioSizeClasses[size],
-        'border border-surface-border-interactive bg-surface-panel-hover',
-        'transition-colors duration-fast-01',
-        'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
-        'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-        'hover:border-accent-7 hover:bg-surface-panel-active',
-        'data-[state=checked]:border-accent-7',
-        state && stateBorderClasses[state],
-        className,
-      )}
-      {...props}
-    >
-      <RadioGroupPrimitive.Indicator asChild className="flex items-center justify-center">
-        <motion.span
-          className="flex items-center justify-center"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={springs.snappy}
-        >
-          <IconCircle className={cn(radioIndicatorClasses[size], 'fill-accent-9 text-accent-11')} />
-        </motion.span>
-      </RadioGroupPrimitive.Indicator>
-    </RadioGroupPrimitive.Item>
+    <MotionPreference>
+      <RadioGroupPrimitive.Item
+        ref={ref}
+        className={cn(
+          'touch-target aspect-square rounded-pill',
+          radioSizeClasses[size],
+          'border border-surface-border-interactive bg-surface-panel-hover',
+          'transition-colors duration-fast-01',
+          'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
+          'disabled:cursor-not-allowed disabled:opacity-action-disabled',
+          'hover:border-accent-7 hover:bg-surface-panel-active',
+          'data-[state=checked]:border-accent-7',
+          state && stateBorderClasses[state],
+          className,
+        )}
+        {...props}
+      >
+        <RadioGroupPrimitive.Indicator asChild className="flex items-center justify-center">
+          <motion.span
+            className="flex items-center justify-center"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={springs.snappy}
+          >
+            <IconCircle className={cn(radioIndicatorClasses[size], 'fill-accent-9 text-accent-11')} />
+          </motion.span>
+        </RadioGroupPrimitive.Indicator>
+      </RadioGroupPrimitive.Item>
+    </MotionPreference>
   )
 })
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName

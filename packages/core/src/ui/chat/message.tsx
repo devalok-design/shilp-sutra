@@ -4,6 +4,7 @@ import { IconTrash } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../../motion/motion-preference'
 import { Avatar, AvatarFallback,AvatarImage } from '../avatar'
 import { Icon } from '../icon'
 import { IconProvider } from '../icon-context'
@@ -68,25 +69,64 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
 
     if (deleted) {
       return (
-        <motion.div
-          ref={ref}
-          initial={{ y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={springs.snappy}
-          className={cn(
-            'flex items-center gap-ds-02 py-ds-02 text-caption text-surface-fg-subtle italic',
-            className,
-          )}
-          {...motionProps(props)}
-        >
-          <Icon icon={IconTrash} size="xs" />
-          {deletedText}
-        </motion.div>
+        <MotionPreference>
+          <motion.div
+            ref={ref}
+            initial={{ y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={springs.snappy}
+            className={cn(
+              'flex items-center gap-ds-02 py-ds-02 text-caption text-surface-fg-subtle italic',
+              className,
+            )}
+            {...motionProps(props)}
+          >
+            <Icon icon={IconTrash} size="xs" />
+            {deletedText}
+          </motion.div>
+        </MotionPreference>
       )
     }
 
     if (variant === 'bubble') {
       return (
+        <MotionPreference>
+          <MessageContext.Provider value={ctx}>
+            <motion.div
+              ref={ref}
+              data-highlight={highlight}
+              initial={{ y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={springs.snappy}
+              className={cn(
+                'group/message relative flex',
+                placement === 'end' ? 'justify-end' : 'justify-start',
+                // mention is carried by the styled in-content @token (see MENTION_TOKEN_CLASS), not a row tint/rail
+                MENTION_TOKEN_CLASS,
+                highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
+                className,
+              )}
+              {...motionProps(props)}
+            >
+              <div
+                className={cn(
+                  'max-w-[85%] rounded-bubble px-ds-04 py-ds-03',
+                  placement === 'end'
+                    ? 'bg-accent-3 text-surface-fg'
+                    : 'bg-surface-panel text-surface-fg',
+                )}
+              >
+                {children}
+              </div>
+            </motion.div>
+          </MessageContext.Provider>
+        </MotionPreference>
+      )
+    }
+
+    // flat variant (default)
+    return (
+      <MotionPreference>
         <MessageContext.Provider value={ctx}>
           <motion.div
             ref={ref}
@@ -95,52 +135,19 @@ const MessageRoot = React.forwardRef<HTMLDivElement, MessageProps>(
             animate={{ opacity: 1, y: 0 }}
             transition={springs.snappy}
             className={cn(
-              'group/message relative flex',
-              placement === 'end' ? 'justify-end' : 'justify-start',
-              // mention is carried by the styled in-content @token (see MENTION_TOKEN_CLASS), not a row tint/rail
+              'group/message relative flex gap-ds-04',
+              grouped && '-mt-ds-01',
+              // mention is carried by the styled in-content @token (see MENTION_TOKEN_CLASS), not a row rail/tint
               MENTION_TOKEN_CLASS,
               highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
               className,
             )}
             {...motionProps(props)}
           >
-            <div
-              className={cn(
-                'max-w-[85%] rounded-bubble px-ds-04 py-ds-03',
-                placement === 'end'
-                  ? 'bg-accent-3 text-surface-fg'
-                  : 'bg-surface-panel text-surface-fg',
-              )}
-            >
-              {children}
-            </div>
+            {children}
           </motion.div>
         </MessageContext.Provider>
-      )
-    }
-
-    // flat variant (default)
-    return (
-      <MessageContext.Provider value={ctx}>
-        <motion.div
-          ref={ref}
-          data-highlight={highlight}
-          initial={{ y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={springs.snappy}
-          className={cn(
-            'group/message relative flex gap-ds-04',
-            grouped && '-mt-ds-01',
-            // mention is carried by the styled in-content @token (see MENTION_TOKEN_CLASS), not a row rail/tint
-            MENTION_TOKEN_CLASS,
-            highlight === 'internal' && 'bg-warning-2/50 rounded-control-inner',
-            className,
-          )}
-          {...motionProps(props)}
-        >
-          {children}
-        </motion.div>
-      </MessageContext.Provider>
+      </MotionPreference>
     )
   },
 )

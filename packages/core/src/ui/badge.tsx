@@ -6,6 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Dot } from './dot'
 import { Icon } from './icon'
 import type { IconInput } from './lib/icon-input'
@@ -235,107 +236,109 @@ const Badge = React.forwardRef<HTMLElement, BadgeProps>(
     const hasTrailing = !!(onDismiss || endIcon)
 
     return (
-      <Comp
-        ref={ref as React.Ref<never>}
-        // `custom` keeps driving colour through inline styles from
-        // `--badge-color`; every other value is a palette name.
-        data-palette={resolvedColor === 'custom' ? undefined : resolvedColor}
-        className={cn(
-          badgeVariants({ variant: resolvedVariant, size: resolvedSize }),
-          getColorClasses(resolvedVariant, resolvedColor),
-          hasLeading && paddingLeftWithIcon[resolvedSize],
-          hasTrailing && paddingRightWithTrailing[resolvedSize],
-          onClick &&
-            'cursor-pointer hover:brightness-[0.97] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 transition-[color,background-color,border-color,transform,filter] duration-moderate-01 ease-productive-exit hover:duration-fast-02 hover:ease-productive-entrance active:scale-[0.95] active:brightness-[0.92] active:duration-[0ms]',
-          selected && 'ring-1 ring-current/20 transition-shadow duration-fast-02',
-          disabled && 'opacity-action-disabled pointer-events-none saturate-[0.3]',
-          circle && 'justify-center px-0 aspect-square',
-          className,
-        )}
-        style={{ ...style, ...customStyles, ...(maxWidth ? { maxWidth } : undefined) }}
-        onClick={disabled ? undefined : (onClick as React.MouseEventHandler<HTMLElement>)}
-        onKeyDown={handleKeyDown}
-        {...(Comp === 'button' && { type: 'button' as const })}
-        {...(Comp === 'button' && disabled ? { disabled: true } : {})}
-        {...(Comp === 'div' && onClick ? { role: 'button' as const, tabIndex: 0 } : {})}
-        {...props}
-      >
-        {/* Dot indicator — animated entrance, uses the shared <Dot> (current colour + pulse) */}
-        <AnimatePresence>
-          {dot && (
+      <MotionPreference>
+        <Comp
+          ref={ref as React.Ref<never>}
+          // `custom` keeps driving colour through inline styles from
+          // `--badge-color`; every other value is a palette name.
+          data-palette={resolvedColor === 'custom' ? undefined : resolvedColor}
+          className={cn(
+            badgeVariants({ variant: resolvedVariant, size: resolvedSize }),
+            getColorClasses(resolvedVariant, resolvedColor),
+            hasLeading && paddingLeftWithIcon[resolvedSize],
+            hasTrailing && paddingRightWithTrailing[resolvedSize],
+            onClick &&
+              'cursor-pointer hover:brightness-[0.97] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-1 transition-[color,background-color,border-color,transform,filter] duration-moderate-01 ease-productive-exit hover:duration-fast-02 hover:ease-productive-entrance active:scale-[0.95] active:brightness-[0.92] active:duration-[0ms]',
+            selected && 'ring-1 ring-current/20 transition-shadow duration-fast-02',
+            disabled && 'opacity-action-disabled pointer-events-none saturate-[0.3]',
+            circle && 'justify-center px-0 aspect-square',
+            className,
+          )}
+          style={{ ...style, ...customStyles, ...(maxWidth ? { maxWidth } : undefined) }}
+          onClick={disabled ? undefined : (onClick as React.MouseEventHandler<HTMLElement>)}
+          onKeyDown={handleKeyDown}
+          {...(Comp === 'button' && { type: 'button' as const })}
+          {...(Comp === 'button' && disabled ? { disabled: true } : {})}
+          {...(Comp === 'div' && onClick ? { role: 'button' as const, tabIndex: 0 } : {})}
+          {...props}
+        >
+          {/* Dot indicator — animated entrance, uses the shared <Dot> (current colour + pulse) */}
+          <AnimatePresence>
+            {dot && (
+              <motion.span
+                key="dot"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                transition={springs.snappy}
+                className="inline-flex shrink-0"
+              >
+                <Dot color="current" size="sm" pulse={dotPulse} />
+              </motion.span>
+            )}
+          </AnimatePresence>
+
+          {/* Selected check icon — always mounted for interactive badges */}
+          {onClick && !startIcon && !dot && (
             <motion.span
-              key="dot"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              transition={springs.snappy}
-              className="inline-flex shrink-0"
+              initial={false}
+              animate={selected
+                ? { opacity: 1, scale: 1, width: 'auto', marginRight: 0 }
+                : { opacity: 0, scale: 0.5, width: 0, marginRight: -4 }
+              }
+              transition={{ type: 'tween', duration: durations.moderate01, ease: [0.2, 0, 0.38, 0.9] }}  /* ease-productive-standard */
+              className="inline-flex shrink-0 overflow-hidden"
+              aria-hidden={!selected}
             >
-              <Dot color="current" size="sm" pulse={dotPulse} />
+              <Icon icon={IconCheck} size="xs" />
             </motion.span>
           )}
-        </AnimatePresence>
 
-        {/* Selected check icon — always mounted for interactive badges */}
-        {onClick && !startIcon && !dot && (
-          <motion.span
-            initial={false}
-            animate={selected
-              ? { opacity: 1, scale: 1, width: 'auto', marginRight: 0 }
-              : { opacity: 0, scale: 0.5, width: 0, marginRight: -4 }
-            }
-            transition={{ type: 'tween', duration: durations.moderate01, ease: [0.2, 0, 0.38, 0.9] }}  /* ease-productive-standard */
-            className="inline-flex shrink-0 overflow-hidden"
-            aria-hidden={!selected}
-          >
-            <Icon icon={IconCheck} size="xs" />
-          </motion.span>
-        )}
+          {/* Start icon */}
+          {startIcon && (
+            <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{normalizeIcon(startIcon)}</span>
+          )}
 
-        {/* Start icon */}
-        {startIcon && (
-          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{normalizeIcon(startIcon)}</span>
-        )}
+          {/* Children — with optional truncation */}
+          {truncate || maxWidth ? (
+            <span
+              className="truncate"
+              title={typeof children === 'string' ? children : undefined}
+            >
+              {children}
+            </span>
+          ) : (
+            children
+          )}
 
-        {/* Children — with optional truncation */}
-        {truncate || maxWidth ? (
-          <span
-            className="truncate"
-            title={typeof children === 'string' ? children : undefined}
-          >
-            {children}
-          </span>
-        ) : (
-          children
-        )}
+          {/* End icon */}
+          {endIcon && (
+            <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{normalizeIcon(endIcon)}</span>
+          )}
 
-        {/* End icon */}
-        {endIcon && (
-          <span className={cn('shrink-0', iconSizeMap[resolvedSize])}>{normalizeIcon(endIcon)}</span>
-        )}
-
-        {/* Dismiss button */}
-        {onDismiss && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation()
-              onDismiss()
-            }}
-            className={cn(
-              'shrink-0 rounded-pill text-current/60 hover:text-current hover:bg-current/10 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-accent-9',
-              resolvedSize === 'xs'
-                ? 'p-0 -mr-0.5 min-w-ds-05 min-h-ds-05'
-                : 'p-px',
-            )}
-            aria-label={
-              `Remove ${typeof children === 'string' ? children : ''}`.trim() || 'Remove'
-            }
-          >
-            <Icon icon={IconX} size="xs" />
-          </button>
-        )}
-      </Comp>
+          {/* Dismiss button */}
+          {onDismiss && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                onDismiss()
+              }}
+              className={cn(
+                'shrink-0 rounded-pill text-current/60 hover:text-current hover:bg-current/10 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-accent-9',
+                resolvedSize === 'xs'
+                  ? 'p-0 -mr-0.5 min-w-ds-05 min-h-ds-05'
+                  : 'p-px',
+              )}
+              aria-label={
+                `Remove ${typeof children === 'string' ? children : ''}`.trim() || 'Remove'
+              }
+            >
+              <Icon icon={IconX} size="xs" />
+            </button>
+          )}
+        </Comp>
+      </MotionPreference>
     )
   },
 )

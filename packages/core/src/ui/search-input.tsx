@@ -4,6 +4,7 @@ import { IconSearch, IconX } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Button } from './button'
 import { Icon } from './icon'
 import { Input } from './input'
@@ -84,18 +85,20 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     )
 
     return (
-      <Input
-        ref={ref}
-        size={size}
-        startSection={<Icon icon={IconSearch} />}
-        endSection={endContent}
-        endSectionClickable={!!hasValue && !loading}
-        placeholder={placeholder}
-        value={value}
-        aria-busy={loading || undefined}
-        className={className}
-        {...props}
-      />
+      <MotionPreference>
+        <Input
+          ref={ref}
+          size={size}
+          startSection={<Icon icon={IconSearch} />}
+          endSection={endContent}
+          endSectionClickable={!!hasValue && !loading}
+          placeholder={placeholder}
+          value={value}
+          aria-busy={loading || undefined}
+          className={className}
+          {...props}
+        />
+      </MotionPreference>
     )
   },
 )

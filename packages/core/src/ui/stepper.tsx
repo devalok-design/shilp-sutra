@@ -3,6 +3,7 @@
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { IconProvider } from './icon-context'
 import type { IconInput } from './lib/icon-input'
 import { springs } from './lib/motion'
@@ -296,21 +297,23 @@ function StepperContent({ activeStep, children, className }: StepperContentProps
   }, [activeStep])
 
   return (
-    <div className={cn('relative overflow-hidden', className)}>
-      <AnimatePresence mode="wait" custom={direction}>
-        <motion.div
-          key={activeStep}
-          custom={direction}
-          variants={stepContentVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={springs.smooth}
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
-    </div>
+    <MotionPreference>
+      <div className={cn('relative overflow-hidden', className)}>
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={activeStep}
+            custom={direction}
+            variants={stepContentVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={springs.smooth}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </MotionPreference>
   )
 }
 

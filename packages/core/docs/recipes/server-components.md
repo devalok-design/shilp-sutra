@@ -78,7 +78,7 @@ export function MyButton() {
 |---|---|
 | `ContentCard` | All other composed components become client islands when rendered |
 | `PageHeader` | |
-| `LoadingSkeleton` | |
+| `CardSkeleton` / `TableSkeleton` / `BoardSkeleton` / `ListSkeleton` | |
 | `PageSkeletons` | |
 
 ### `@devalok/shilp-sutra/shell`
@@ -127,20 +127,23 @@ All shilp-sutra components SSR cleanly. They have no client-only side effects at
 
 Use `<Suspense>` boundaries normally:
 
+<!-- typecheck-skip: ClientHeavyComponent is the reader's own component -->
 ```tsx
 import { Suspense } from "react";
-import { LoadingSkeleton } from "@devalok/shilp-sutra/composed/loading-skeleton";
+import { CardSkeleton } from "@devalok/shilp-sutra/composed/loading-skeleton";
 
 export default function Page() {
   return (
-    <Suspense fallback={<LoadingSkeleton variant="page" />}>
+    <Suspense fallback={<CardSkeleton />}>
       <ClientHeavyComponent />
     </Suspense>
   );
 }
 ```
 
-Both `<Suspense>` and `<LoadingSkeleton>` are server-safe.
+Both `<Suspense>` and the skeletons are server-safe. The module exports
+`CardSkeleton`, `TableSkeleton`, `BoardSkeleton` and `ListSkeleton` — pick the
+one whose shape matches what is loading.
 
 ## Common RSC mistakes
 

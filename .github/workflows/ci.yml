@@ -120,6 +120,13 @@ jobs:
         if: steps.scope.outputs.mcp_only != 'true'
         run: pnpm lint:props
 
+      # Recipe/make-kit snippets must compile against the shipped .d.ts. Needs
+      # the build above, since it resolves against dist rather than src — a
+      # snippet is only correct if it is correct against what consumers get.
+      - name: Typecheck doc snippets
+        if: steps.scope.outputs.mcp_only != 'true'
+        run: pnpm --filter @devalok/shilp-sutra typecheck:docs
+
       - name: Test
         if: steps.scope.outputs.mcp_only != 'true'
         run: pnpm test

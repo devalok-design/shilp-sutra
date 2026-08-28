@@ -1,7 +1,7 @@
 {
   "name": "@devalok/shilp-sutra",
   "version": "0.58.0",
-  "description": "Devalok Design System — accessible React components, OKLCH design tokens, and Tailwind 4 CSS-first setup. Ships with AI-agent setup recipes.",
+  "description": "Devalok Design System \u2014 accessible React components, OKLCH design tokens, and Tailwind 4 CSS-first setup. Ships with AI-agent setup recipes.",
   "license": "MIT",
   "author": "Devalok Design & Strategy Studios <shilp-sutra@devalok.in>",
   "homepage": "https://shilp-sutra.devalok.in",
@@ -870,7 +870,8 @@
     "lint": "eslint src/",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "typecheck:docs": "node scripts/typecheck-doc-snippets.mjs --check"
   },
   "peerDependencies": {
     "@tabler/icons-react": "^3.0.0",

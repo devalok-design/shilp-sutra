@@ -274,6 +274,23 @@ gate('Component doc examples lint clean (dead classes / invalid enums)', () => {
   }
 })
 
+// Gate C: recipe and make-kit snippets must COMPILE against the shipped .d.ts.
+// Gate B above catches dead classes and invalid enum values; it cannot see a
+// snippet destructuring a hook key that does not exist or passing a wrong-typed
+// prop. Seven files had drifted that way before anyone noticed (#177), and it
+// matters more here than in ordinary docs because the MCP and the agent skill
+// both instruct agents to trust these snippets over their training data.
+gate('Doc snippets typecheck against the shipped .d.ts', () => {
+  try {
+    execFileSync(process.execPath, ['scripts/typecheck-doc-snippets.mjs', '--check'], {
+      cwd: join(ROOT, 'packages/core'), encoding: 'utf-8', stdio: 'pipe',
+    })
+    return true
+  } catch (e) {
+    return (e.stdout || e.stderr || 'typecheck-doc-snippets failed').trim()
+  }
+})
+
 // Gate: the recipe §2a optional-peer tables must match the map derived from
 // source (each component's real imports × vite.config `external`). Catches the
 // drift the 2026-07-10 dogfood found — missing sonner / remark-gfm peers and

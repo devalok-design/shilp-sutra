@@ -84,7 +84,7 @@ This applies to: Button, SplitButton, and anywhere else `variant="outline" | "so
 - [`docs/plans/2026-08-18-figma-build-playbook.md`](./docs/plans/2026-08-18-figma-build-playbook.md) — API traps, layout tricks, per-component audit, verification protocol
 - [`docs/plans/2026-08-18-figma-foundations-spec.md`](./docs/plans/2026-08-18-figma-foundations-spec.md) — every collection, mode and variable as built
 - [`docs/plans/2026-08-18-figma-port-retrospective.md`](./docs/plans/2026-08-18-figma-port-retrospective.md) — how the work went, the full bug ledger, and what caught what
-- [`docs/plans/2026-08-19-figma-components-build.md`](./docs/plans/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 32 sets, 780 variants, the mode-chain architecture, native slots, the shells, and 10 findings in the DS itself
+- [`docs/plans/2026-08-19-figma-components-build.md`](./docs/plans/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 32 sets, 505 variants, the mode-chain architecture, native slots, the shells, and 10 findings in the DS itself
 
 Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (owned, editable, 4,962 icons bound to `component/fg`). The April 2026 plan and its Figma file are superseded.
 
@@ -97,9 +97,15 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 > **Components publish from EVERY page, not just `Components`.** A spike or scratch component set left on any page ships to consumers on the next publish. Before publishing, assert zero `COMPONENT`/`COMPONENT_SET` nodes outside the `Components` page.
 
-**Built: 32 sets, 780 variants, 7 standalone components.** Button 330, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2, plus Menu item 12, Breadcrumb item 6, Accordion item 4. Standalone components (no variant axes): Bottom navbar, Menu, Menu label, Menu separator, Popover, Breadcrumb, Breadcrumb separator. 31 collections, 20 text styles, 13 effect styles, **20 native slot properties** across 13 components (Card 3, Sidebar 3, Top bar 3, Dialog 2, Accordion item 1, Alert 1, Bottom navbar 1, Breadcrumb 1, Menu 1, Popover 1, Segmented control 1, Sheet 1, Tabs 1). **The menu family, Popover, Breadcrumb and Accordion are built but deliberately NOT published** — held for review. Everything else is published. **Publishing is a human step — republish after any change.**
+**Built: 32 sets, 505 variants, 7 standalone components.** Button 55, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2, plus Menu item 12, Breadcrumb item 6, Accordion item 4. Standalone components (no variant axes): Bottom navbar, Menu, Menu label, Menu separator, Popover, Breadcrumb, Breadcrumb separator. 31 collections, 20 text styles, 13 effect styles, **20 native slot properties** across 13 components (Card 3, Sidebar 3, Top bar 3, Dialog 2, Accordion item 1, Alert 1, Bottom navbar 1, Breadcrumb 1, Menu 1, Popover 1, Segmented control 1, Sheet 1, Tabs 1). **The menu family, Popover, Breadcrumb and Accordion are built but deliberately NOT published** — held for review. Everything else is published. **Publishing is a human step — republish after any change.**
 
 **UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps a ~32px minimum height that nothing else collapses — a footerless Card was 40px too tall. Only 1 of the library's 20 slots (`Card.Action`) shipped with such a boolean; the other 17 still cannot be hidden. See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3.
+
+**Colour is a variable MODE on Button, not a variant axis (2026-08-27).** Button went 330 → **55** variants by deleting its `Color` axis: every variant had been pinning `Component/Intent` via `explicitVariableModes`, so the axis existed only to select a mode. Designers now set colour by selecting the instance and switching the `Component/Intent` mode — the same way they already set `Style`. Verified: 6 distinct fills from 55 variants, icon matching label throughout.
+
+**How a designer changes a Button colour now:** select the instance, right-click > Change variable mode > `Component/Intent`, pick one of the six. Also in the right panel under Variable modes. This is less discoverable than the dropdown it replaced — a real cost, accepted knowingly for the variant reduction — so the instruction leads the Button set's `description`, which is what shows in the right panel at the moment of use. `Style`, `Shape` and `Weight` already worked this way, so the gesture is not new.
+
+**A consuming file CANNOT add a palette.** Measured: `addMode` and `setValueForMode` on a library collection both throw *"Cannot write to internal and read-only node"*. The mode list is ours, capped at 10 (40 on Enterprise), and we ship 6. A consumer's only route to a bespoke colour is rebinding an instance's fill to their own variable — which **does work and survives a variant switch**, but is per-instance, per-layer, and does not ride the hover/active roles. Adding a palette for a team means adding a mode here.
 
 **Every set's `defaultVariant` now matches its code default.** It is READ-ONLY and derived from geometry (top-left-most variant), so a tidy ascending grid silently hands consumers the smallest size — 18 of 25 sets did. Assert `set.defaultVariant.name` after any re-layout.
 
@@ -109,7 +115,7 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
 
-Five rules that cost the most time when broken:
+Nine rules that cost the most time when broken:
 1. **The collection a variable lives in is the OUTERMOST selector of its resolution chain.** A value that varies by state *and* style must live in the state collection and alias into the style one. Get it backwards and the value is unreachable. This is what lets one `component/fg` serve 4,962 icons across every state.
 2. **Regenerate the component spec before every build** (`figma-sync-components.mjs <name>`) and read the component *body* for prop interactions — the CVA describes appearance, not which prop overrides which. It reports **0 compound rules for Badge and Card**, whose colours live in a plain object, not the CVA.
 3. **Test with real scenarios and varied copy, not a variant grid.** A grid hides layout bugs because every label is the same length.
@@ -150,6 +156,34 @@ Five rules that cost the most time when broken:
    `slotContentId` is the reference field. `addComponentProperty` alone creates an **orphan** property and no nodes; `createSlot` alone creates per-variant properties. Only the pair merges. Note the typings document `addComponentProperty` as `BOOLEAN | TEXT | INSTANCE_SWAP | VARIANT` — `'SLOT'` is undocumented and works.
 
    Two traps when doing this: `createSlot()` gives the node a **white SOLID fill** (set `fills = []`, or you ship a white band), and a SLOT node is **not auto-layout by default** — set `layoutMode` before any `HUG`/`FILL` sizing or it throws.
+
+7. **Deleting variants leaves ZOMBIE instances that still render.** Collapsing Button 330 -> 55 orphaned 18 instances across the example screens. They kept pointing at the deleted main components (`Button/md/neutral/Default`, old `#115:*` property ids) and looked completely fine, so no visual check would find them. They are frozen: no Size/State switch, and they track nothing the library does next.
+
+   The obvious probes all return a clean bill of health. `detachedInfo` is null, and **`getMainComponentAsync()` returns a real node** — Figma keeps the deleted main alive off-page to service the instance. The only tell is that the main has no page:
+
+   ```js
+   const pageOf = n => { let p=n; while(p&&p.type!=='PAGE'&&p.type!=='DOCUMENT') p=p.parent
+                         return p&&p.type==='PAGE' ? p.name : null }
+   const mc = await inst.getMainComponentAsync()
+   const zombie = mc && !mc.remote && !pageOf(mc)   // `remote` matters — see below
+   ```
+
+   **Exclude `mc.remote` or you get a 100% false-positive rate.** Icons from the published Tabler library legitimately have no page in this document; a naive check called all 92 of them orphans.
+
+   `swapComponent(liveVariant)` repairs one cleanly and carries Label, icon booleans, size and child index across by matching property NAME — including for instances sitting inside a SLOT. Sweep by re-querying the page each pass rather than reusing cached nested ids (`I535:2031;235:597;535:2178`-style paths do not survive their host being mutated).
+
+8. **`swapComponent` silently drops `explicitVariableModes`.** The instance keeps its properties and loses its modes. Now that colour is a variable mode this means **a swap resets the colour**, with no error. Read the modes first, swap, then set them back:
+
+   ```js
+   const keep = { ...inst.explicitVariableModes }        // BEFORE the swap
+   inst.swapComponent(variant)
+   for (const [cid, mid] of Object.entries(keep))
+     inst.setExplicitVariableModeForCollection(await figma.variables.getVariableCollectionByIdAsync(cid), mid)
+   ```
+
+9. **Never blanket a variable mode on a container frame.** Each example screen set `Component/Style = Ghost` and `Component/Intent = Neutral` on the screen frame, so the whole subtree inherited it — every Button on all 10 screens rendered transparent with grey text, including "Start free", "New task" and "Save changes". The screens had no visual hierarchy at all and had looked plausible for weeks, because a ghost button is still perfectly legible on its own.
+
+   A blanket is worse than a wrong value: it is invisible at the point of use, and anything dropped onto that frame later silently inherits it. **Set the mode on the instance that means it.** A container should only carry a mode when the mode is genuinely a property of the container (theme: `Semantic/Color = Dark` on a dark screen is correct).
 
 ### Legacy checklist (2026-04-20)
 

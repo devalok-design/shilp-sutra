@@ -346,3 +346,70 @@ palette (subtle at rest, accent 11 active).
 Third wrong icon key in this project. `home` was actually the `plus` glyph, so every
 sidebar row and nav tab shipped a plus sign until it was caught at 3x zoom. The
 thumbnail looked fine. **Read keys from the library, never from a hand-kept map.**
+
+## Example screens repaired after the Button collapse (2026-08-28)
+
+Ten screens (Platform / Marketing / Settings / Mobile home / Mobile form, each light
+and dark), 334 instances. Audited and repaired after Button collapsed 330 -> 55 and
+colour became the `Component/Intent` variable mode.
+
+Final state: **334 instances, 0 orphaned, 0 detached, 0 hand-built frames shadowing a
+component, 0 blanket modes.** 270 mains on the Components page, 64 remote icon
+instances. Every one of the 32 Buttons declares its own `Component/Style` and
+`Component/Intent`.
+
+### What was actually wrong
+
+The screens were already 100% component instances, so the structural check passed on
+the first pass and told us nothing. Three real defects sat underneath it.
+
+**1. Eighteen zombie Button instances.** Ten top-level, eight nested inside Card and
+Top bar slots, all still pointing at main components deleted by the collapse. See rule
+7 in CLAUDE.md for the detection — the short version is that every obvious probe says
+they are healthy and the only tell is that the main component has no page.
+
+**2. Every Button on every screen was a transparent grey ghost.** Each screen frame
+blanket-set `Component/Style = Ghost` and `Component/Intent = Neutral`, which the whole
+subtree inherited. Measured: all 20 top-level Buttons at `a0.00` background with
+`#4f4f4f` / `#bcbcbc` text — "Start free", "New task", "Save changes" and "Save"
+included. The showcase screens had no visual hierarchy whatsoever.
+
+This is the failure mode rule 3 warns about, arriving from the other direction. A
+variant grid would not have caught it, but neither did looking at the screens, because
+a ghost button is legible and unremarkable. It took reading the resolved fill of every
+Button to see that *none* of them had one.
+
+Fixed by dropping the blanket from all 10 frames and declaring intent and style on each
+Button: primaries Solid/Accent, chrome actions (Filter, Invite, View all, Sign in,
+Cancel) Ghost/Neutral, pricing tier CTAs and the hero secondary Soft/Neutral per the
+soft-over-outline preference.
+
+Removing the blanket also surfaced 10 nested Buttons that had been relying on it. They
+fell through to the default mode and became **solid neutral grey** (`#cacaca` light,
+`#424242` dark) — proof that the default is not a safe landing place either. Each now
+declares its own.
+
+**3. The wrong-key `plus` glyph again.** 28 of 32 Buttons rendered a leading "+",
+giving "Sign in +", "Read the docs +", "Choose Starter +", "Filter +". Same root cause
+as the sidebar rows noted above. Start icons are now off everywhere except the four
+"New task" buttons, where a plus is what the label means.
+
+### Method note
+
+Diffing by paint signature is what made this safe. Hashing every descendant fill,
+stroke and string per instance gave a 100-instance before/after baseline, so removing
+the blanket could be proven to change exactly the 20 intended instances and leave the
+other 80 byte-identical. The 10 unintended changes it surfaced were the nested Buttons
+in point 2 — which a spot-check of the screens would have missed entirely.
+
+Two corrections earned during the pass, both from reading a number instead of trusting
+a call that did not throw: `orphanMainComponents: 100` was a false positive until
+`mc.remote` was excluded (the icon library legitimately has no local page), and
+`brokenMainComponent: 0` from the first audit was a false negative, because
+`getMainComponentAsync()` happily returns deleted mains.
+
+### Left alone
+
+Twenty zero-width empty `Label` text nodes inside the pricing-list check Badges. They
+render nothing, they predate this work, and fixing them means changing how those
+Badges are authored.

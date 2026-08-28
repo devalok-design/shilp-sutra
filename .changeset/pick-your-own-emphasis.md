@@ -28,10 +28,23 @@ calmer look are not forced off it. Recorded in full on `CONTROL-EDGE-BELOW-AA`
 in the deviations register, which stays open.
 
 **`NotificationCenter` gains `unreadStyle`** — `'tint'` (default), `'strong'`,
-or `'none'`. This also walks back part of 0.58.0: the unread row had been
-1.03:1, effectively invisible, so it had to move, but it moved to the same step a
-full selection uses and the two ended up competing. The default is now a step
-quieter. `'none'` leans on the tier dot, which already fades to 20% once read.
+or `'none'`. `'none'` leans on the tier dot, which already fades to 20% once
+read.
+
+The number that governs this is not the one you would reach for first. An unread
+row does not compete with the panel it sits on, it competes with a **hovered
+already-read row** — because rows hover to `surface-panel-hover`. Measured on a
+panel, against that hover (1.091:1 light / 1.173:1 dark):
+
+| | light | dark |
+|---|---|---|
+| `accent-3` | 1.246 | **1.042 — loses** |
+| `accent-4` (`tint`) | 1.422 | 1.231 |
+| `accent-5` (`strong`) | 1.690 | 1.458 |
+
+So step 4 is the floor. Anything quieter and a notification you have already
+read looks more urgent than one you have not, in dark, whenever the pointer is
+over it.
 
 **`Slider` gains tick marks and a value bubble.** The value was previously
 unreadable without a separate label.

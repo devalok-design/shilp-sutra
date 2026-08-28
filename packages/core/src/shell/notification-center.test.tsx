@@ -237,16 +237,18 @@ describe('unreadStyle', () => {
   const rowOf = (title: string) =>
     screen.getByText(title).closest('[role="button"]') as HTMLElement
 
-  it('defaults to the quieter tint', () => {
+  it('defaults to a tint that beats a hovered already-read row', () => {
     render(<NotificationCenter notifications={[makeNotification()]} />)
-    expect(rowOf('Test notification').className).toContain('bg-accent-3')
+    // step 4, not 3: rows hover to surface-panel-hover, and accent-3 sits BELOW
+    // that in dark, so an unread row would lose to a row you had already read.
+    expect(rowOf('Test notification').className).toContain('bg-accent-4')
   })
 
   it('strong uses the heavier wash', () => {
     render(
       <NotificationCenter notifications={[makeNotification()]} unreadStyle="strong" />,
     )
-    expect(rowOf('Test notification').className).toContain('bg-accent-4')
+    expect(rowOf('Test notification').className).toContain('bg-accent-5')
   })
 
   it('none paints no wash at all', () => {
@@ -254,8 +256,7 @@ describe('unreadStyle', () => {
       <NotificationCenter notifications={[makeNotification()]} unreadStyle="none" />,
     )
     const cls = rowOf('Test notification').className
-    expect(cls).not.toContain('bg-accent-3')
-    expect(cls).not.toContain('bg-accent-4')
+    expect(cls).not.toMatch(/bg-accent-\d/)
   })
 
   it('a READ row is never tinted, whatever the style', () => {
@@ -267,8 +268,7 @@ describe('unreadStyle', () => {
         />,
       )
       const cls = rowOf(`Read ${style}`).className
-      expect(cls).not.toContain('bg-accent-3')
-      expect(cls).not.toContain('bg-accent-4')
+      expect(cls).not.toMatch(/bg-accent-\d/)
       unmount()
     }
   })

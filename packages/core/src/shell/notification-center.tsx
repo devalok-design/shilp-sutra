@@ -102,12 +102,14 @@ export interface NotificationCenterProps
   /**
    * How an unread row announces itself.
    *
-   * - `tint` (default) — a soft accent wash plus a bold title. The
-   *   conventional look, and quiet enough for a long list.
-   * - `strong` — a heavier wash. Unmistakable, but it carries the same weight
-   *   a selected row does, so the two can compete.
+   * - `tint` (default) — an accent wash plus a bold title. The conventional
+   *   look, and the quietest fill that still reads louder than a hovered
+   *   already-read row in both themes.
+   * - `strong` — a heavier wash, for inboxes where unread has to carry across
+   *   a long list at a glance.
    * - `none` — no wash at all. The tier dot (which already fades to 20% once
-   *   read) and the bold title carry the state on their own.
+   *   read) and the bold title carry the state on their own. The calmest
+   *   option, and the one that scales best down a long list.
    *
    * @default 'tint'
    */
@@ -142,13 +144,22 @@ function getDateGroup(dateStr: string): string {
   return 'Earlier'
 }
 
-// accent-3 / accent-4 rather than accent-1: steps 1-2 sit BELOW surface-panel in
-// dark, so a wash painted there recedes while the grey hover advances, and the
-// hovered row ends up louder than the unread one. Step 3 is the first that goes
-// the right way in both themes.
+// The comparison that matters is against a HOVERED READ row, not against the
+// panel. Rows hover to `surface-panel-hover`, so an unread wash has to beat that
+// or a row you have already read looks more urgent than one you have not.
+//
+// Measured on a panel, unread vs hovered-read (1.091:1 light / 1.173:1 dark):
+//
+//   accent-3   1.246 light / 1.042 dark   <- LOSES in dark
+//   accent-4   1.422 light / 1.231 dark
+//   accent-5   1.690 light / 1.458 dark
+//
+// So step 4 is the floor, not step 3. An earlier revision of this file used
+// step 3 for `tint` on the grounds that it clears `surface-panel` — true, but
+// the panel is not what an unread row competes with.
 const UNREAD_STYLES: Record<NotificationUnreadStyle, string> = {
-  tint: 'bg-accent-3',
-  strong: 'bg-accent-4',
+  tint: 'bg-accent-4',
+  strong: 'bg-accent-5',
   none: '',
 }
 

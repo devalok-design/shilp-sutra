@@ -137,6 +137,7 @@ export function ThemeToggle() {
 
 If you installed `sonner`, mount the Toaster once near the app root:
 
+<!-- typecheck-skip: imports the reader's own App entry -->
 ```tsx
 // src/main.tsx
 import { StrictMode } from "react";

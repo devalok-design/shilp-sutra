@@ -31,3 +31,6 @@ tests/.strict-consumer/
 # Impeccable design-hook cache — local tooling state, must never ship to consumers.
 # It was landing inside packages/core/docs/recipes/, which IS in the npm tarball.
 .impeccable/
+
+# throwaway project the doc-snippet typecheck assembles
+.doc-typecheck/

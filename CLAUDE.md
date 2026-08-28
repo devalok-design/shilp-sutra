@@ -273,11 +273,37 @@ grep a sibling component and match — never reach for a numbered class.
 2. **You cannot verify "is this the right surface?" by sampling a colour.** It
    has to be read from intent. Any audit that compares pixels will report false
    agreement.
+3. **The same applies to STRUCTURAL differentiators, not just interaction states**
+   (2026-08-28). A groove, a zebra stripe, a recess, a well, a bubble — anything
+   whose whole job is to differ from the thing behind it — is a no-op if it uses
+   a container value. `Table striped` and linear `Progress` both shipped this
+   way and rendered **nothing at all** in light: 1.00:1. Neither had a test, and
+   neither looks broken in dark, where the tiers do differ. Reach for
+   `-panel-hover` or `-sunken`, and check the value against the ground the
+   component actually sits on, not against the page.
 
 **Borders split into two families.** `surface-border-subtle` / `-border` /
 `-border-strong` are *decorative*, translucent, and mark objects. `surface-border-interactive`
 / `-interactive-strong` are *control* edges, solid, and carry WCAG 1.4.11. A form
 control on a decorative tier loses required contrast.
+
+**Two more asymmetries that only bite in dark** (both fixed 2026-08-28, both
+worth knowing before you add a token):
+
+- **Steps 1–2 of every colour ramp sit BELOW `surface-panel` in dark**, while
+  `panel-hover` sits above it. So a selection painted with `accent-2` recedes
+  exactly as its own hover advances — the hovered row out-reads the selected one,
+  in the opposite direction. Selections start at **step 4**. Step 2 is a
+  `surface-base` device only.
+- **A near-black shadow is not an edge on a dark ground.** `--shadow-edge-ring`
+  flips to a light ring under `.dark` for this reason; anything that hardcodes
+  `oklch(var(--shadow-color) …)` instead of consuming that var will silently
+  measure ~1.00:1 in dark. If you add an elevation token, give it a `.dark`
+  entry or route it through the shared ring.
+
+Both are recorded with measurements in
+[`docs/audits/2026-08-28-surface-model-audit.md`](./docs/audits/2026-08-28-surface-model-audit.md),
+along with the four root causes a full sweep of 205 files turned up.
 
 Full model: [`docs/plans/2026-08-26-surface-model-rebuild.md`](./docs/plans/2026-08-26-surface-model-rebuild.md).
 

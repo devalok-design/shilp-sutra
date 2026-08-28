@@ -453,6 +453,32 @@ gate('No stale .js files in core/src/ui/', () => {
   return true
 })
 
+// The gate above only ever looked at src/ui/, which is why this went unnoticed
+// for four months. Vite's default resolve.extensions puts .js BEFORE .tsx and
+// `@primitives` is a directory alias, so the bundler took the .js; TypeScript,
+// with no allowJs, took the .tsx. Six vendored primitives were migrated to
+// TypeScript on 2026-04-11 and their compiled .js left behind, so every build
+// until 2026-08-28 type-checked one file and shipped another. Nothing failed,
+// because the pair happened to stay in sync — but the next real fix to one of
+// those .tsx files would have silently not shipped.
+//
+// A vendored .js with NO .ts/.tsx twin is fine: that is the whole primitives
+// vendoring strategy, and 27 of them are legitimately .js-only.
+gate('No compiled .js shadowing a TypeScript source', () => {
+  const shadowed = []
+  for (const js of globSync('packages/*/src/**/*.js', { cwd: ROOT })) {
+    const base = js.slice(0, -3)
+    if (existsSync(join(ROOT, `${base}.tsx`))) shadowed.push([js, `${base}.tsx`])
+    else if (existsSync(join(ROOT, `${base}.ts`))) shadowed.push([js, `${base}.ts`])
+  }
+  if (shadowed.length > 0) {
+    return `${shadowed.length} compiled .js shadow a TypeScript source — the bundler
+      resolves .js first, tsc resolves the .ts/.tsx, so you type-check one file
+      and ship the other. Delete the .js:\n${shadowed.map(([j, s]) => `      ${j}\n        shadows ${s}`).join('\n')}`
+  }
+  return true
+})
+
 gate('No deprecated surface tokens in components', () => {
   const violations = []
   const sourceFiles = [

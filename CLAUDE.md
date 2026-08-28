@@ -99,7 +99,7 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 **Built: 32 sets, 505 variants, 7 standalone components.** Button 55, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2, plus Menu item 12, Breadcrumb item 6, Accordion item 4. Standalone components (no variant axes): Bottom navbar, Menu, Menu label, Menu separator, Popover, Breadcrumb, Breadcrumb separator. 31 collections, 20 text styles, 13 effect styles, **20 native slot properties** across 13 components (Card 3, Sidebar 3, Top bar 3, Dialog 2, Accordion item 1, Alert 1, Bottom navbar 1, Breadcrumb 1, Menu 1, Popover 1, Segmented control 1, Sheet 1, Tabs 1). **The menu family, Popover, Breadcrumb and Accordion are built but deliberately NOT published** — held for review. Everything else is published. **Publishing is a human step — republish after any change.**
 
-**UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps a ~32px minimum height that nothing else collapses — a footerless Card was 40px too tall. Only 1 of the library's 20 slots (`Card.Action`) shipped with such a boolean; the other 17 still cannot be hidden. See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3.
+**UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps the height it was created at and nothing else collapses it — a footerless Card was 40px too tall. Only 1 of the library's 20 slots (`Card.Action`) shipped with such a boolean; the other 17 still cannot be hidden, and each needs its own (see rule 6 — `displayEmptyByDefault` was measured and does not help). See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3.
 
 **Colour is a variable MODE on Button, not a variant axis (2026-08-27).** Button went 330 → **55** variants by deleting its `Color` axis: every variant had been pinning `Component/Intent` via `explicitVariableModes`, so the axis existed only to select a mode. Designers now set colour by selecting the instance and switching the `Component/Intent` mode — the same way they already set `Style`. Verified: 6 distinct fills from 55 variants, icon matching label throughout.
 
@@ -139,7 +139,17 @@ Thirteen rules that cost the most time when broken:
    - **One `.remove()` per slot per run.** After the first, every node id inside that slot stops resolving (`Node with id "…" not found`). A 3-item slot takes 3 runs. Card's slots each held exactly 1 default, which is why a naive loop appeared to work there and died on Top bar's 3-item `End`.
    - **One `setProperties` per nested slot instance per run.** The write persists but kills the slot subtree. Different instances are unaffected, so N components can each take one write in the same run.
 
-   Also: an **empty slot keeps a ~32px minimum drop-target height** and neither `HUG` nor `resize()` collapses it. The only way to remove an unused slot is a boolean wired to its `visible` (`componentPropertyReferences = { visible: key }`) — which, unlike a raw `.visible` write, does **not** clear variable bindings. Verify bindings after wiring anyway.
+   Four more slot traps (measured 2026-08-29). The handle invalidation above is now documented by Figma, which recommends the same fix — re-find through `slot.children`:
+   - **`slotNode.clone()` returns a plain `FrameNode`, not a SLOT.** The clone looks right and is inert.
+   - **A `ComponentNode` cannot be appended to a slot** — append an *instance* of it.
+   - **Deleting a slot property deletes every instance's content in that slot.** There is no warning and no undo across a run; treat `deleteComponentProperty` on a SLOT as destructive to consumer work.
+   - **`SlotSettings` can be retrofitted onto existing slots** via `editComponentProperty`, with no rebuild — then gate on `slotNode.limitViolations`.
+
+   Also: an **empty slot keeps the space it was created at**, and neither `HUG` nor `resize()` collapses it. This was recorded as "a ~32px minimum" from the Card measurement; re-measured 2026-08-28 on a `VERTICAL` slot it cost **100px**, so the number is the slot's *created size*, not a floor — it varies by construction and you have to measure the slot you actually built.
+
+   **`displayEmptyByDefault: false` does not reclaim the space.** It round-trips correctly (`false` reads back as `false`) and changes nothing about layout: 121px component, 121px instance, 100px slot with it either way. It governs whether the empty drop-target is *drawn*, not whether it occupies space — so it is not the cheap fix for composability gap 3.
+
+   The only way to remove an unused slot is a boolean wired to its `visible` (`componentPropertyReferences = { visible: key }`) — which, unlike a raw `.visible` write, does **not** clear variable bindings. Verify bindings after wiring anyway. That means each of the remaining 17 slots needs its own boolean; there is no global switch.
 
    **A slot CAN be added to an already-combined set** (measured 2026-08-21). The naive path does fail: calling `createSlot()` per variant *after* `combineAsVariants` gives one property **per variant** (`Action#274:0` AND `Action#274:3`), so dropped content dies on every variant switch. But this works:
 
@@ -153,7 +163,9 @@ Thirteen rules that cost the most time when broken:
    }
    ```
 
-   `slotContentId` is the reference field. `addComponentProperty` alone creates an **orphan** property and no nodes; `createSlot` alone creates per-variant properties. Only the pair merges. Note the typings document `addComponentProperty` as `BOOLEAN | TEXT | INSTANCE_SWAP | VARIANT` — `'SLOT'` is undocumented and works.
+   `slotContentId` is the reference field. `addComponentProperty` alone creates an **orphan** property and no nodes; `createSlot` alone creates per-variant properties. Only the pair merges. Note the bundled typings document `addComponentProperty` as `BOOLEAN | TEXT | INSTANCE_SWAP | VARIANT`. `'SLOT'` is **documented** as of Figma's 2026-06-10 plugin-API update — it is only the `.d.ts` that lags, so trust the published API over the types here.
+
+   **`VariableCollection.defaultModeId` is read-only, and is always `modes[0]`.** This is the mode-level twin of the `defaultVariant` geometry trap: the default is derived from position, not chosen, so re-ordering modes silently re-points it. `collection.setDefaultMode(modeId)` is the writer — reach for it rather than renaming or re-creating modes to get the ordering you want.
 
    Two traps when doing this: `createSlot()` gives the node a **white SOLID fill** (set `fills = []`, or you ship a white band), and a SLOT node is **not auto-layout by default** — set `layoutMode` before any `HUG`/`FILL` sizing or it throws.
 

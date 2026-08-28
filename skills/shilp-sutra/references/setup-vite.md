@@ -49,10 +49,10 @@ Some components ship hard peers as optional. **Install BEFORE first import.** âš
 | When you importâ€¦ | Install |
 |---|---|
 | `@devalok/shilp-sutra/composed/date-picker` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/composed/diff` | `pnpm add react-syntax-highlighter` |
 | `@devalok/shilp-sutra/composed/file-preview` | `pnpm add react-pdf react-zoom-pan-pinch` |
 | `@devalok/shilp-sutra/composed/markdown-viewer` | `pnpm add react-markdown react-syntax-highlighter remark-gfm` |
 | `@devalok/shilp-sutra/composed/rich-chat-input` | `pnpm add @tiptap/core @tiptap/extension-highlight @tiptap/extension-image @tiptap/extension-list @tiptap/extension-mention @tiptap/extension-text-align @tiptap/extensions @tiptap/markdown @tiptap/pm @tiptap/react @tiptap/starter-kit @tiptap/suggestion date-fns` |
-| `@devalok/shilp-sutra/composed/diff` | `pnpm add react-syntax-highlighter` |
 | `@devalok/shilp-sutra/composed/rich-text-editor` | `pnpm add @tiptap/core @tiptap/extension-highlight @tiptap/extension-image @tiptap/extension-list @tiptap/extension-mention @tiptap/extension-text-align @tiptap/extensions @tiptap/markdown @tiptap/pm @tiptap/react @tiptap/starter-kit @tiptap/suggestion` |
 | `@devalok/shilp-sutra/composed/schedule-view` | `pnpm add date-fns` |
 | `@devalok/shilp-sutra/ui/charts` | `pnpm add d3-axis d3-scale d3-selection d3-shape` |
@@ -139,6 +139,7 @@ export function ThemeToggle() {
 
 If you installed `sonner`, mount the Toaster once near the app root:
 
+<!-- typecheck-skip: imports the reader's own App entry -->
 ```tsx
 // src/main.tsx
 import { StrictMode } from "react";

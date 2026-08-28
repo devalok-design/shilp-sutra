@@ -409,7 +409,10 @@ function MessageReactions({ reactions, onReact }: MessageReactionsProps) {
           className={cn(
             'inline-flex items-center gap-ds-01 rounded-pill px-ds-02 py-ds-01 text-body-xs transition-colors',
             r.reacted
-              ? 'bg-accent-3 ring-1 ring-accent-6'
+              // accent-4, not 3: an unreacted chip is surface-panel-hover and
+              // hovers to panel-active, so at step 3 the chip you HAD reacted to
+              // was the dimmest thing in the row.
+              ? 'bg-accent-4 ring-1 ring-accent-6'
               : 'bg-surface-panel-hover hover:bg-surface-panel-active',
           )}
         >

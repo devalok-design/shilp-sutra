@@ -104,7 +104,7 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
       <select
         value={hours12}
         onChange={(e) => setHour(Number(e.target.value))}
-        className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-panel px-ds-02 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+        className="h-ds-sm rounded-control border border-surface-border-interactive bg-surface-panel-hover px-ds-02 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         aria-label="Hour"
       >
         {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
@@ -118,7 +118,7 @@ function InlineTimePicker({ value, onChange }: { value: Date; onChange: (d: Date
       <select
         value={minutes - (minutes % 5)}
         onChange={(e) => setMinute(Number(e.target.value))}
-        className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-panel px-ds-02 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+        className="h-ds-sm rounded-control border border-surface-border-interactive bg-surface-panel-hover px-ds-02 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         aria-label="Minute"
       >
         {Array.from({ length: 12 }, (_, i) => i * 5).map((m) => (
@@ -182,7 +182,7 @@ function CompactDateTimeEntry({
           value={dateStr}
           min={minDateStr}
           onChange={handleDateChange}
-          className="h-ds-sm rounded-control border border-surface-border-strong bg-surface-panel px-ds-03 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
+          className="h-ds-sm rounded-control border border-surface-border-interactive bg-surface-panel-hover px-ds-03 text-body-sm text-surface-fg focus:outline-hidden focus:ring-2 focus:ring-accent-9"
         />
       </div>
 

@@ -37,7 +37,7 @@ const Code = React.forwardRef<HTMLPreElement | HTMLElement, CodeProps>(
         <pre
           ref={ref as React.Ref<HTMLPreElement>}
           className={cn(
-            'overflow-x-auto rounded-surface border border-card-strong bg-surface-panel p-ds-05 font-mono text-body-sm leading-ds-relaxed text-surface-fg',
+            'overflow-x-auto rounded-surface border border-card-strong bg-surface-sunken p-ds-05 font-mono text-body-sm leading-ds-relaxed text-surface-fg',
             className,
           )}
           {...props}

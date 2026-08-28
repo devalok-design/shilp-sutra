@@ -352,7 +352,9 @@ export const RadarChart = React.forwardRef<HTMLDivElement, RadarChartProps>(
                             cy={y}
                             r={4}
                             fill={colors[seriesIdx]}
-                            stroke="var(--color-surface-base)"
+                            // knockout, so it has to match the ground the chart sits on.
+                            // surface-base is DARKER than a card in dark and drew a halo.
+                            stroke="var(--color-surface-panel)"
                             strokeWidth={2}
                             className="transition-opacity"
                           />

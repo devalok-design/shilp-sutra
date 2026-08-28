@@ -277,7 +277,7 @@ const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps>(
                         title={option.label}
                         className={cn(
                           'cursor-pointer truncate px-ds-04 py-ds-03 text-body-md text-surface-fg transition-colors duration-fast-01',
-                          highlightedIndex === index && 'bg-accent-3',
+                          highlightedIndex === index && 'bg-accent-4',
                           selected?.value === option.value && 'font-semibold',
                         )}
                         onMouseDown={(e) => e.preventDefault()}

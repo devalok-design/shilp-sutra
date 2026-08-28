@@ -214,7 +214,9 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
             'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01 ease-productive-standard',
             'hover:bg-surface-panel-hover',
             'disabled:opacity-action-disabled disabled:cursor-not-allowed',
-            isSelected && 'bg-accent-2 text-accent-11',
+            // accent-4 so the selection stays above the focus ring's
+            // panel-hover fill in dark; accent-2 sat below the panel.
+            isSelected && 'bg-accent-4 text-accent-11',
             isFocused && 'bg-surface-panel-hover',
           )}
         >

@@ -55,8 +55,8 @@ const PROSE_CLASSES = [
   '[&_p]:mb-ds-02b [&_p]:text-surface-fg-muted',
   '[&_ul]:ml-ds-05 [&_ul]:list-disc [&_ol]:ml-ds-05 [&_ol]:list-decimal',
   '[&_li]:text-surface-fg-muted',
-  '[&_code]:rounded [&_code]:bg-surface-panel [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-body-md [&_code]:text-accent-11',
-  '[&_pre]:rounded-surface [&_pre]:bg-surface-panel [&_pre]:p-ds-04',
+  '[&_code]:rounded [&_code]:bg-surface-sunken [&_code]:px-ds-02b [&_code]:py-ds-01 [&_code]:text-body-md [&_code]:text-accent-11',
+  '[&_pre]:rounded-surface [&_pre]:bg-surface-sunken [&_pre]:p-ds-04',
   '[&_strong]:font-semibold [&_strong]:text-surface-fg',
   // slop-allow: side-stripe — blockquote left-rule is standard typography, not a card accent-rail
   '[&_blockquote]:border-l-[3px] [&_blockquote]:border-accent-6 [&_blockquote]:pl-ds-04 [&_blockquote]:italic [&_blockquote]:text-surface-fg-subtle',

@@ -98,13 +98,13 @@ export function getPinnedCellStyle(
 
   if (leftIndex !== -1) {
     return {
-      className: 'sticky bg-surface-base z-raised',
+      className: 'sticky bg-surface-panel z-raised',
       style: { left: 0 } as React.CSSProperties,
     }
   }
   if (rightIndex !== -1) {
     return {
-      className: 'sticky bg-surface-base z-raised',
+      className: 'sticky bg-surface-panel z-raised',
       style: { right: 0 } as React.CSSProperties,
     }
   }

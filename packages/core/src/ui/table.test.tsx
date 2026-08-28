@@ -103,7 +103,7 @@ describe('Table', () => {
       </Table>,
     )
     const row = screen.getAllByRole('row')[0]
-    expect(row).toHaveClass('data-[state=selected]:bg-accent-3', 'data-[state=selected]:hover:bg-accent-4')
+    expect(row).toHaveClass('data-[state=selected]:bg-accent-4', 'data-[state=selected]:hover:bg-accent-5')
   })
 
   it('footer is a surface-base band, not a translucent raised wash', () => {
@@ -117,7 +117,7 @@ describe('Table', () => {
       </Table>,
     )
     const tfoot = screen.getByTestId('tfoot')
-    expect(tfoot).toHaveClass('bg-surface-base', 'border-t', 'border-surface-border-subtle')
+    expect(tfoot).toHaveClass('bg-surface-panel-hover', 'border-t', 'border-surface-border-subtle')
   })
 
   it('density defaults to standard and sets --table-py; cells read it', () => {
@@ -157,9 +157,9 @@ describe('Table', () => {
 
   it('striped is opt-in — zebra class only when set', () => {
     const { rerender } = render(<Table><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
-    expect(screen.getByRole('table')).not.toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-base')
+    expect(screen.getByRole('table')).not.toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-panel-hover')
     rerender(<Table striped><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
-    expect(screen.getByRole('table')).toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-base')
+    expect(screen.getByRole('table')).toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-panel-hover')
   })
 
   it('header cells are quieter than data — text-body-sm muted, density-tracked padding', () => {

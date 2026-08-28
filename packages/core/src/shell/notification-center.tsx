@@ -176,7 +176,10 @@ function NotificationItem({
       className={cn(
         'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard',
         'hover:bg-surface-panel-hover',
-        !notification.isRead && 'bg-accent-1',
+        // accent-1 measured 1.03:1 in light — the unread state was effectively
+        // undetectable — and went darker than the panel in dark, so hovering an
+        // unread row swung it straight through the ground.
+        !notification.isRead && 'bg-accent-4',
       )}
     >
       {/* Tier dot — doubles as read/unread marker */}
@@ -378,7 +381,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
         {notifications.length === 0 ? (
           emptyState || (
             <div className="flex flex-col items-center justify-center px-ds-05 py-ds-09">
-              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-pill bg-surface-panel">
+              <div className="flex h-ds-lg w-ds-lg items-center justify-center rounded-pill bg-surface-panel-hover">
                 <Icon icon={IconInbox} size="lg" className="text-surface-fg-subtle" />
               </div>
               <p className="mt-ds-04 text-body-md text-surface-fg-subtle">

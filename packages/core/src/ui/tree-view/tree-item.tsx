@@ -131,10 +131,15 @@ const TreeItem = React.forwardRef<HTMLLIElement, TreeItemProps>(
           style={{ paddingLeft: `calc(${depth} * var(--spacing-ds-05b) + var(--spacing-ds-03))` }}
           className={cn(
             'flex items-center gap-ds-02 py-ds-02 px-ds-02 rounded-control cursor-pointer transition-colors duration-fast-01',
-            'hover:bg-surface-panel-hover',
+            // Hover only applies when NOT selected. `hover:bg-…` is specificity
+            // (0,2,0) while the conditional `bg-accent-4` below compiles to a
+            // plain (0,1,0) class, so an unqualified hover won every time and
+            // pointing at a selected row visibly deselected it. Table solves the
+            // same problem with `data-[state=selected]:hover:…`.
+            !isSelected && 'hover:bg-surface-panel-hover',
             'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
             isSelected &&
-              'bg-accent-3 text-accent-11',
+              'bg-accent-4 text-accent-11 hover:bg-accent-5',
             disabled && 'opacity-action-disabled cursor-not-allowed pointer-events-none',
             className,
           )}

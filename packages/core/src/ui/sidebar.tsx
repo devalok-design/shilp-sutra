@@ -308,7 +308,11 @@ const Sidebar = forwardRef<
               : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
             variant === 'floating' || variant === 'inset'
               ? 'p-ds-03 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_1rem_+2px)]'
-              : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l',
+              // `border-surface-border` is load-bearing: Tailwind 4 leaves an
+              // uncoloured border at `currentColor`, so a bare `border-r` here
+              // inherited `text-surface-fg` and drew a 12.69:1 (light) /
+              // 15.44:1 (dark) rule down the full height of the app.
+              : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon) border-surface-border group-data-[side=left]:border-r group-data-[side=right]:border-l',
             className,
           )}
           {...props}
@@ -575,7 +579,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button hover:bg-surface-panel-hover active:bg-accent-2 data-[active=true]:bg-accent-2 data-[state=open]:hover:bg-surface-panel-hover flex w-full items-center gap-ds-03 overflow-hidden rounded-control p-ds-03 text-left outline-hidden ring-accent-9 transition-[width,height,padding] hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled data-[active=true]:font-medium data-[active=true]:text-surface-fg data-[state=open]:hover:text-surface-fg group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-ds-03! [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
+  'peer/menu-button hover:bg-surface-panel-hover active:bg-surface-panel-active data-[active=true]:bg-accent-4 data-[state=open]:hover:bg-surface-panel-hover flex w-full items-center gap-ds-03 overflow-hidden rounded-control p-ds-03 text-left outline-hidden ring-accent-9 transition-[width,height,padding] hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled group-has-[[data-sidebar=menu-action]]/menu-item:pr-ds-07 aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled data-[active=true]:font-medium data-[active=true]:text-surface-fg data-[state=open]:hover:text-surface-fg group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-ds-03! [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -635,7 +639,7 @@ const SidebarMenuButton = forwardRef<
             {isActive && (
               <motion.span
                 layoutId="sidebar-active-indicator"
-                className="absolute inset-0 rounded-control bg-accent-2"
+                className="absolute inset-0 rounded-control bg-accent-4"
                 transition={springs.smooth}
               />
             )}
@@ -795,8 +799,8 @@ const SidebarMenuSubButton = forwardRef<
       data-size={size}
       data-active={isActive}
       className={cn(
-        'hover:bg-surface-panel-hover active:bg-accent-2 flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-control px-ds-03 text-surface-fg outline-hidden ring-accent-9 hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0 [&>svg]:text-surface-fg',
-        'data-[active=true]:bg-accent-2 data-[active=true]:text-surface-fg',
+        'hover:bg-surface-panel-hover active:bg-surface-panel-active flex h-ds-xs-plus min-w-0 -translate-x-px items-center gap-ds-03 overflow-hidden rounded-control px-ds-03 text-surface-fg outline-hidden ring-accent-9 hover:text-surface-fg focus-visible:ring-2 active:text-surface-fg disabled:pointer-events-none disabled:opacity-action-disabled aria-disabled:pointer-events-none aria-disabled:opacity-action-disabled [&>span:last-child]:truncate [&>svg]:h-ico-sm [&>svg]:w-ico-sm [&>svg]:shrink-0 [&>svg]:text-surface-fg',
+        'data-[active=true]:bg-accent-4 data-[active=true]:text-surface-fg',
         size === 'sm' && 'text-body-sm',
         size === 'md' && 'text-body-md',
         'group-data-[collapsible=icon]:hidden',

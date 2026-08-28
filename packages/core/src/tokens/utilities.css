@@ -334,15 +334,18 @@
 @utility bg-gradient-brand-dark { background-image: var(--gradient-brand-dark); }
 
 /* ───────────────────────────────────────────────────────────────────
-   Card edge — the faint hairline for card/panel containers (NOT interactive
-   controls, which use border-surface-border/-strong for WCAG 1.4.11 contrast).
+   Card edge — the faint hairline for card/panel containers. These are the
+   DECORATIVE border tier: they mark objects. Interactive controls must NOT
+   use them — controls take `border-surface-border-interactive[-strong]`,
+   which is the tier that carries WCAG 1.4.11 non-text contrast.
+   (This comment previously said the opposite, and ~19 controls followed it.)
    Single tunable source of truth; pairs with `border` (width) on the element.
    ─────────────────────────────────────────────────────────────────── */
 
 @utility border-card { border-color: var(--color-surface-border-card); }
 /* Stronger card edge (kbd caps, code blocks, skeleton/panel outlines, chip
-   borders) — one step up from the faint `border-card` mix. Dark-mode aware via
-   the semantic token. Was referenced in ~11 components with no matching utility
-   (dead class → border fell back to currentColor); defined here to restore the
-   intended hairline. */
-@utility border-card-strong { border-color: var(--color-surface-border); }
+   borders) — genuinely one step up from `border-card`. It previously pointed at
+   `--color-surface-border`, which is exactly what `--color-surface-border-card`
+   already aliases, so the two utilities were the SAME colour and the ~13 call
+   sites asking for a heavier edge silently got the faint one. */
+@utility border-card-strong { border-color: var(--color-surface-border-strong); }

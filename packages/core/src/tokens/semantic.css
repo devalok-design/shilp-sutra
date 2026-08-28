@@ -540,21 +540,31 @@
   --shadow-strength: 1;
   --shadow-transition: box-shadow var(--duration-fast-02) var(--ease-productive-standard);
 
+  /* Hairline edge ring — the shadow's own 1px border-substitute (make-kit rule #6:
+     shadow already carries the ring, so components never add an explicit border).
+     Light: cool tint. Dark: a light ring, since drop shadows barely read on dark.
+
+     Declared BEFORE the internals below because all four consume it. It used to
+     sit between sm and md, and only md/lg referenced it — xs and sm hardcoded
+     their own near-black ring and so never received the dark-mode correction.
+     That left `shadow-raised` / `-raised-hover` at 1.00–1.03:1 in dark, i.e. no
+     edge, for every component using them as its only boundary. */
+  --shadow-edge-ring: 0 0 0 1px oklch(var(--shadow-color) / calc(0.09 * var(--shadow-strength)));
+  /* xs/sm take the ring at a lighter weight than md/lg — a raised card should
+     not read as strongly as a floating overlay. `--shadow-edge-ring-subtle`
+     mirrors `--shadow-edge-ring` and is likewise dark-corrected below. */
+  --shadow-edge-ring-subtle: 0 0 0 1px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength)));
   --shadow-xs-internal:
-    0 0 0 1px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
+    var(--shadow-edge-ring-subtle),
     0 0.5px 1px -0.5px oklch(var(--shadow-color) / calc(0.045 * var(--shadow-strength))),
     0 1.5px 3px -1px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
     0 3px 7px -2px oklch(var(--shadow-color) / calc(0.03 * var(--shadow-strength)));
   --shadow-sm-internal:
-    0 0 0 1px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
+    var(--shadow-edge-ring-subtle),
     0 0.5px 1px -0.5px oklch(var(--shadow-color) / calc(0.04 * var(--shadow-strength))),
     0 2px 4px -1.5px oklch(var(--shadow-color) / calc(0.045 * var(--shadow-strength))),
     0 6px 12px -3px oklch(var(--shadow-color) / calc(0.035 * var(--shadow-strength))),
     0 14px 28px -8px oklch(var(--shadow-color) / calc(0.025 * var(--shadow-strength)));
-  /* Hairline edge ring — the shadow's own 1px border-substitute (make-kit rule #6:
-     shadow already carries the ring, so components never add an explicit border).
-     Light: cool tint. Dark: a light ring, since drop shadows barely read on dark. */
-  --shadow-edge-ring: 0 0 0 1px oklch(var(--shadow-color) / calc(0.09 * var(--shadow-strength)));
   --shadow-md-internal:
     var(--shadow-edge-ring),
     0 1px 2px -1px oklch(var(--shadow-color) / calc(0.05 * var(--shadow-strength))),
@@ -668,9 +678,14 @@
   --color-backdrop:              oklch(0 0 0 / 0.6);
 
   /* Segmented control — inverted elevation in dark: track is a faint LIGHTER
-     fill (can't go darker than a near-black page), thumb steps lighter still. */
+     fill (can't go darker than a near-black page), thumb steps lighter still.
+     The model is right; the value was one step short. neutral-3 (#262626) is
+     DARKER than the track composited over a panel (#282828), so the selected
+     segment read as a dent — 1.028:1, inverted. neutral-5 clears the track on
+     both grounds a segmented control actually sits on: 1.46:1 over a panel,
+     1.69:1 over the page. */
   --color-segment-track: color-mix(in oklch, oklch(1 0 0) 7%, transparent);
-  --color-segment-thumb: var(--neutral-3);
+  --color-segment-thumb: var(--neutral-5);
 
   /* Overlay */
   --color-overlay: oklch(0 0 0 / 0.70);
@@ -691,6 +706,17 @@
   --shadow-strength: 2.5;
   /* Light ring on dark — a dark-tinted ring would vanish against dark surfaces. */
   --shadow-edge-ring: 0 0 0 1px oklch(1 0 0 / 0.12);
+  /* Same correction for the raised tier. Without this, `shadow-raised` /
+     `-raised-hover` keep a near-black ring that measures ~1.00:1 on a dark
+     ground, so anything using them as its only edge has none. 0.07 keeps a
+     raised card quieter than a floating overlay while still reading. */
+  --shadow-edge-ring-subtle: 0 0 0 1px oklch(1 0 0 / 0.07);
+  /* The segmented thumb is documented as deliberately ring-less, the shadow
+     being its whole edge. That works in light and cannot work in dark, where
+     the shadow is near-black on a near-black ground — so the fallback failed in
+     the same theme as the fill it was meant to rescue. In dark it takes a ring
+     like everything else. */
+  --shadow-segment: 0 0 0 1px oklch(1 0 0 / 0.07), 0 1px 2px -0.5px oklch(0 0 0 / 0.40), 0 3px 8px -2px oklch(0 0 0 / 0.30);
   --shadow-brand:    0 2px 8px color-mix(in oklch, var(--color-accent-9) 30%, transparent), 0 6px 20px color-mix(in oklch, var(--color-accent-9) 20%, transparent);
   --shadow-glow:     0 0 0 1.5px color-mix(in oklch, var(--color-accent-9) 35%, transparent), 0 0 10px color-mix(in oklch, var(--color-accent-9) 20%, transparent);
   --shadow-ring:     0 0 0 2px color-mix(in oklch, var(--color-accent-9) 45%, transparent);

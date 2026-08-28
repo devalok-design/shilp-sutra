@@ -276,7 +276,7 @@ const TabsTrigger = React.forwardRef<
       {variant === 'contained' && isActive && (
         <motion.span
           layoutId={`${listContext.layoutId}-contained`}
-          className="absolute inset-0 rounded-control bg-surface-overlay shadow-raised"
+          className="absolute inset-0 rounded-control bg-segment-thumb shadow-segment"
           transition={springs.smooth}
         />
       )}

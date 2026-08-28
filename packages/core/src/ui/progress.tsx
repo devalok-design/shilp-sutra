@@ -29,7 +29,7 @@ export type ProgressSize = 'sm' | 'md' | 'lg'
 export type ProgressColor = 'accent' | 'success' | 'warning' | 'error'
 
 export const progressTrackVariants = cva(
-  'relative w-full overflow-hidden rounded-pill bg-surface-panel',
+  'relative w-full overflow-hidden rounded-pill bg-surface-panel-hover',
   {
     variants: { size: { sm: 'h-1', md: 'h-2', lg: 'h-3' } },
     defaultVariants: { size: 'md' },

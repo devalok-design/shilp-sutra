@@ -151,7 +151,7 @@ function ActivityEntry({
       {/* Dot */}
       <div
         className={cn(
-          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-pill ring-2 ring-surface-base',
+          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-pill ring-2 ring-surface-panel',
           dotColorMap[color],
         )}
       />
@@ -239,7 +239,7 @@ function CustomEntry({
       {/* Dot — same as ActivityEntry */}
       <div
         className={cn(
-          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-pill ring-2 ring-surface-base',
+          'relative z-10 mt-1.5 h-2 w-2 shrink-0 rounded-pill ring-2 ring-surface-panel',
           dotColorMap[color],
         )}
       />
@@ -268,7 +268,7 @@ function GroupHeader({
       )}
     >
       <hr className="flex-1 border-surface-border" />
-      <span className="bg-surface-base px-ds-03 text-label-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
+      <span className="bg-surface-panel px-ds-03 text-label-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
         {label}
       </span>
       <hr className="flex-1 border-surface-border" />

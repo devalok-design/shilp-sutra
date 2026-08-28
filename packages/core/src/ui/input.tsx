@@ -20,7 +20,7 @@ const inputWrapperVariants = cva(
     'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
     'focus-within:outline-hidden focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-7',
     'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-action-disabled',
-    'has-[:read-only]:bg-surface-panel has-[:read-only]:cursor-default',
+    'has-[:read-only]:bg-surface-sunken has-[:read-only]:cursor-default',
   ],
   {
     variants: {

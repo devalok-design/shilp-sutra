@@ -75,7 +75,7 @@ const eventColorMap: Record<NonNullable<ScheduleEvent['color']>, string> = {
   warning: 'bg-warning-3 text-warning-11',
   error: 'bg-error-3 text-error-11',
   info: 'bg-info-3 text-info-11',
-  neutral: 'bg-surface-panel text-surface-fg-muted',
+  neutral: 'bg-surface-panel-hover text-surface-fg-muted',
 }
 
 const eventDotMap: Record<NonNullable<ScheduleEvent['color']>, string> = {
@@ -258,7 +258,7 @@ function DayColumn({
         <div
           className={cn(
             'border-b border-surface-border-strong py-ds-02 text-center text-body-sm font-semibold',
-            todayInView ? 'bg-accent-2 text-accent-11' : 'bg-surface-panel text-surface-fg',
+            todayInView ? 'bg-accent-4 text-accent-11' : 'bg-surface-panel text-surface-fg',
           )}
         >
           {format(date, 'EEE d')}

@@ -10,7 +10,7 @@ const contentCardVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-surface-panel hover:bg-surface-panel-hover',
+          'bg-surface-panel border border-card hover:bg-surface-panel-hover',
         outline:
           'border border-surface-border bg-transparent hover:border-surface-border-strong',
         ghost:

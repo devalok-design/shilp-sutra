@@ -145,10 +145,10 @@ function ActiveIndicator({
     return <motion.span {...common} className="absolute top-0 h-[3px] w-full rounded-b-control-inner bg-accent-9" />
   }
   if (indicator === 'tint') {
-    return <motion.span {...common} className="absolute inset-0 rounded-control bg-accent-3" />
+    return <motion.span {...common} className="absolute inset-0 rounded-control bg-accent-4" />
   }
   // pill (default) — Material-3 tonal pill behind the icon
-  return <motion.span {...common} className="absolute inset-0 rounded-pill bg-accent-3" />
+  return <motion.span {...common} className="absolute inset-0 rounded-pill bg-accent-4" />
 }
 
 // -----------------------------------------------------------------------

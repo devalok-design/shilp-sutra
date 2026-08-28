@@ -111,7 +111,7 @@ function UserMessage({
 }) {
   if (reducedMotion) {
     return (
-      <div className="bg-surface-panel rounded-surface px-ds-05 py-ds-04">
+      <div className="bg-surface-panel-hover rounded-surface px-ds-05 py-ds-04">
         <p className="text-body-sm text-surface-fg">{message.content}</p>
       </div>
     )
@@ -119,7 +119,7 @@ function UserMessage({
 
   return (
     <motion.div
-      className="bg-surface-panel rounded-surface px-ds-05 py-ds-04"
+      className="bg-surface-panel-hover rounded-surface px-ds-05 py-ds-04"
       initial={{ y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={springs.snappy}

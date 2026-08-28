@@ -9,14 +9,53 @@
  *   src/configs/flat-strict.ts
  *   src/configs/flat-migration.ts
  *
- * Runs in `prebuild` so the configs always match the live rule registry.
- * Don't hand-edit the generated files — they're recomputed every build.
+ * ─────────────────────────────────────────────────────────────────────────
+ * NOT WIRED UP. DO NOT RUN THIS WITHOUT READING THE REST OF THIS COMMENT.
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * The header used to claim this ran in `prebuild` and that the configs were
+ * recomputed every build. None of that was true, and believing it cost real
+ * time — someone adding a rule skipped the manual edits and shipped a rule
+ * that belonged to no preset.
+ *
+ * What is actually true:
+ *   - there is no `prebuild` script in this package
+ *   - `tsx`, which this script needs, is not a devDependency anywhere in the repo
+ *   - `src/configs/*.ts` are HAND-MAINTAINED and carry no generated marker
+ *
+ * So when you add a rule, edit `recommended.ts`, `strict.ts`, `migration.ts`
+ * and their three `flat-` counterparts by hand. That is the real workflow.
+ *
+ * This script is kept rather than deleted because regenerating is still the
+ * right end state — but it cannot simply be switched on. Running it today
+ * strips the doc comments off every preset (they explain WHY a rule sits at
+ * error vs warn, which the rule metadata does not capture) and introduces a
+ * circular import. Fixing those two things is the prerequisite for wiring it
+ * into `build`.
+ *
+ * It refuses to run without `--force` so that nobody discovers the above by
+ * overwriting the configs.
  */
 
 import { execSync } from 'node:child_process'
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+// See the header. This overwrites hand-maintained files and currently produces
+// a circular import, so it is opt-in rather than opt-out.
+if (!process.argv.includes('--force')) {
+  console.error(`
+generate-configs is NOT wired into the build, and the configs it would
+overwrite are hand-maintained. Running it today strips the doc comments off
+every preset and introduces a circular import.
+
+Add or change a rule by editing src/configs/*.ts directly.
+
+If you are deliberately working on fixing the generator, pass --force.
+`)
+  process.exit(1)
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')

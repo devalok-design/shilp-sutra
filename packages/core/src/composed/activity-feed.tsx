@@ -4,6 +4,7 @@ import { IconChevronRight } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
@@ -257,22 +258,24 @@ function GroupHeader({
   isFirst: boolean
 }) {
   return (
-    <motion.div
-      initial={false}
-      animate={{ opacity: 1 }}
-      transition={tweens.fade}
-      className={cn(
-        'flex items-center gap-ds-03',
-        !isFirst ? 'mt-ds-06' : '',
-        'mb-ds-03',
-      )}
-    >
-      <hr className="flex-1 border-surface-border" />
-      <span className="bg-surface-panel px-ds-03 text-label-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
-        {label}
-      </span>
-      <hr className="flex-1 border-surface-border" />
-    </motion.div>
+    <MotionPreference>
+      <motion.div
+        initial={false}
+        animate={{ opacity: 1 }}
+        transition={tweens.fade}
+        className={cn(
+          'flex items-center gap-ds-03',
+          !isFirst ? 'mt-ds-06' : '',
+          'mb-ds-03',
+        )}
+      >
+        <hr className="flex-1 border-surface-border" />
+        <span className="bg-surface-panel px-ds-03 text-label-xs font-medium uppercase tracking-wider text-surface-fg-subtle">
+          {label}
+        </span>
+        <hr className="flex-1 border-surface-border" />
+      </motion.div>
+    </MotionPreference>
   )
 }
 
@@ -334,59 +337,61 @@ const ActivityFeed = React.forwardRef<HTMLDivElement, ActivityFeedProps>(
     }
 
     return (
-      <div ref={ref} className={cn('relative', className)} {...props}>
-        {/* Items */}
-        {useGrouping ? (
-          <div>
-            {groupItemsByTime(visibleItems, groupLabels).map((group, gi) => (
-              <div key={group.label}>
-                <GroupHeader label={group.label} isFirst={gi === 0} />
-                {/* Timeline line scoped to this group */}
-                <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
-                  <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
-                  {group.items.map((item, index) => (
-                    <motion.div key={item.id} initial={false} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
-                      {resolveEntry(item, index)}
-                    </motion.div>
-                  ))}
+      <MotionPreference>
+        <div ref={ref} className={cn('relative', className)} {...props}>
+          {/* Items */}
+          {useGrouping ? (
+            <div>
+              {groupItemsByTime(visibleItems, groupLabels).map((group, gi) => (
+                <div key={group.label}>
+                  <GroupHeader label={group.label} isFirst={gi === 0} />
+                  {/* Timeline line scoped to this group */}
+                  <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
+                    <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
+                    {group.items.map((item, index) => (
+                      <motion.div key={item.id} initial={false} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
+                        {resolveEntry(item, index)}
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
-            {/* Timeline line */}
-            <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
-            {visibleItems.map((item, index) => (
-              <motion.div key={item.id} initial={false} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
-                {resolveEntry(item, index)}
-              </motion.div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          ) : (
+            <div className={cn('relative flex flex-col', compact ? 'gap-1' : 'gap-3')}>
+              {/* Timeline line */}
+              <div className="absolute bottom-0 left-[3px] top-0 w-px bg-surface-border" />
+              {visibleItems.map((item, index) => (
+                <motion.div key={item.id} initial={false} animate={{ opacity: 1 }} transition={{ ...tweens.fade, delay: index * 0.03 }}>
+                  {resolveEntry(item, index)}
+                </motion.div>
+              ))}
+            </div>
+          )}
 
-        {/* Show all button */}
-        {truncated && (
-          <div className="relative mt-ds-03 flex justify-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowAll(true)}
-            >
-              Show all ({items.length})
-            </Button>
-          </div>
-        )}
+          {/* Show all button */}
+          {truncated && (
+            <div className="relative mt-ds-03 flex justify-center">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAll(true)}
+              >
+                Show all ({items.length})
+              </Button>
+            </div>
+          )}
 
-        {/* Load more button */}
-        {hasMore && onLoadMore && !truncated && (
-          <div className="relative mt-ds-03 flex justify-center">
-            <Button variant="ghost" size="sm" onClick={onLoadMore}>
-              Load more
-            </Button>
-          </div>
-        )}
-      </div>
+          {/* Load more button */}
+          {hasMore && onLoadMore && !truncated && (
+            <div className="relative mt-ds-03 flex justify-center">
+              <Button variant="ghost" size="sm" onClick={onLoadMore}>
+                Load more
+              </Button>
+            </div>
+          )}
+        </div>
+      </MotionPreference>
     )
   },
 )

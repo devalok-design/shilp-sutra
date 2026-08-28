@@ -11,6 +11,7 @@ import { motion } from 'framer-motion'
 import * as React from 'react'
 import { TransformComponent,TransformWrapper } from 'react-zoom-pan-pinch'
 
+import { MotionPreference } from '../../motion/motion-preference'
 import { Button } from '../../ui/button'
 import { Icon } from '../../ui/icon'
 import { tweens } from '../../ui/lib/motion'
@@ -79,53 +80,55 @@ export default function ImagePreview({ url, alt, onError }: { url: string; alt?:
         {({ zoomIn, zoomOut, resetTransform, centerView }) => {
           controlsRef.current = { zoomIn, zoomOut, resetTransform, centerView }
           return (
-            <>
-              <div className={cn(
-                'overflow-hidden rounded-control bg-surface-sunken',
-                fullscreen ? 'flex-1 w-full' : 'max-h-[70vh] max-w-full',
-              )}>
-                {!loaded && <Skeleton className="h-64 w-full rounded-control" />}
-                <TransformComponent
-                  wrapperClass={cn('w-full!', fullscreen && 'h-full!')}
-                  contentClass="w-full! flex! items-center! justify-center!"
-                >
-                  <motion.img
-                    src={url}
-                    alt={alt ?? ''}
-                    onLoad={() => setLoaded(true)}
-                    onError={() => { setError(true); onError?.('Image failed to load') }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: loaded ? 1 : 0 }}
-                    transition={tweens.fade}
-                    className={cn('max-w-full select-none', !loaded && 'hidden', fullscreen && 'max-h-[90vh] object-contain')}
-                    draggable={false}
-                  />
-                </TransformComponent>
-              </div>
+            <MotionPreference>
+              <>
+                <div className={cn(
+                  'overflow-hidden rounded-control bg-surface-sunken',
+                  fullscreen ? 'flex-1 w-full' : 'max-h-[70vh] max-w-full',
+                )}>
+                  {!loaded && <Skeleton className="h-64 w-full rounded-control" />}
+                  <TransformComponent
+                    wrapperClass={cn('w-full!', fullscreen && 'h-full!')}
+                    contentClass="w-full! flex! items-center! justify-center!"
+                  >
+                    <motion.img
+                      src={url}
+                      alt={alt ?? ''}
+                      onLoad={() => setLoaded(true)}
+                      onError={() => { setError(true); onError?.('Image failed to load') }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: loaded ? 1 : 0 }}
+                      transition={tweens.fade}
+                      className={cn('max-w-full select-none', !loaded && 'hidden', fullscreen && 'max-h-[90vh] object-contain')}
+                      draggable={false}
+                    />
+                  </TransformComponent>
+                </div>
 
-              {/* Toolbar — Google Drive style */}
-              {loaded && (
-                <Toolbar className={fullscreen ? 'absolute bottom-ds-06' : undefined}>
-                  <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out (-)" title="Zoom out">
-                    <Icon icon={IconZoomOut} size="sm" />
-                  </Button>
-                  <span className="text-caption font-mono text-surface-fg-muted w-12 text-center tabular-nums select-none">
-                    {zoom}%
-                  </span>
-                  <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in (+)" title="Zoom in">
-                    <Icon icon={IconZoomIn} size="sm" />
-                  </Button>
-                  <ToolbarDivider />
-                  <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom (0)" title="Reset zoom">
-                    <Icon icon={IconZoomReset} size="sm" />
-                  </Button>
-                  <ToolbarDivider />
-                  <Button variant="ghost" size="icon-xs" onClick={() => setFullscreen((f) => !f)} aria-label={fullscreen ? 'Exit fullscreen (Esc)' : 'Fullscreen (F)'} title={fullscreen ? 'Exit fullscreen' : 'Fullscreen'}>
-                    {fullscreen ? <Icon icon={IconMinimize} size="sm" /> : <Icon icon={IconMaximize} size="sm" />}
-                  </Button>
-                </Toolbar>
-              )}
-            </>
+                {/* Toolbar — Google Drive style */}
+                {loaded && (
+                  <Toolbar className={fullscreen ? 'absolute bottom-ds-06' : undefined}>
+                    <Button variant="ghost" size="icon-xs" onClick={() => zoomOut()} aria-label="Zoom out (-)" title="Zoom out">
+                      <Icon icon={IconZoomOut} size="sm" />
+                    </Button>
+                    <span className="text-caption font-mono text-surface-fg-muted w-12 text-center tabular-nums select-none">
+                      {zoom}%
+                    </span>
+                    <Button variant="ghost" size="icon-xs" onClick={() => zoomIn()} aria-label="Zoom in (+)" title="Zoom in">
+                      <Icon icon={IconZoomIn} size="sm" />
+                    </Button>
+                    <ToolbarDivider />
+                    <Button variant="ghost" size="icon-xs" onClick={() => resetTransform()} aria-label="Reset zoom (0)" title="Reset zoom">
+                      <Icon icon={IconZoomReset} size="sm" />
+                    </Button>
+                    <ToolbarDivider />
+                    <Button variant="ghost" size="icon-xs" onClick={() => setFullscreen((f) => !f)} aria-label={fullscreen ? 'Exit fullscreen (Esc)' : 'Fullscreen (F)'} title={fullscreen ? 'Exit fullscreen' : 'Fullscreen'}>
+                      {fullscreen ? <Icon icon={IconMinimize} size="sm" /> : <Icon icon={IconMaximize} size="sm" />}
+                    </Button>
+                  </Toolbar>
+                )}
+              </>
+            </MotionPreference>
           )
         }}
       </TransformWrapper>

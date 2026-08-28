@@ -5,6 +5,7 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
@@ -122,24 +123,26 @@ const NavigationMenuContent = React.forwardRef<
       : contentSlideVariants.center
 
   return (
-    <NavigationMenuPrimitive.Content
-      ref={composedRef}
-      className={cn(
-        'left-0 top-0 w-full md:absolute md:w-auto',
-        className,
-      )}
-      {...props}
-    >
-      <motion.div
-        key={motionDir}
-        initial={initial}
-        animate={animate}
-        transition={{ ...springs.smooth, opacity: tweens.fade }}
-        className="w-full"
+    <MotionPreference>
+      <NavigationMenuPrimitive.Content
+        ref={composedRef}
+        className={cn(
+          'left-0 top-0 w-full md:absolute md:w-auto',
+          className,
+        )}
+        {...props}
       >
-        {props.children}
-      </motion.div>
-    </NavigationMenuPrimitive.Content>
+        <motion.div
+          key={motionDir}
+          initial={initial}
+          animate={animate}
+          transition={{ ...springs.smooth, opacity: tweens.fade }}
+          className="w-full"
+        >
+          {props.children}
+        </motion.div>
+      </NavigationMenuPrimitive.Content>
+    </MotionPreference>
   )
 })
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName
@@ -183,24 +186,26 @@ const NavigationMenuViewport = React.forwardRef<
   }, [])
 
   return (
-    <div className={cn('absolute left-0 top-full flex justify-center')}>
-      <NavigationMenuPrimitive.Viewport
-        className={cn(
-          'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-overlay bg-surface-overlay shadow-floating md:w-[var(--radix-navigation-menu-viewport-width)]',
-          className,
-        )}
-        ref={composedRef}
-        {...props}
-      />
-      {/* Overlay motion element for scale+fade animation */}
-      <motion.div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        initial={false}
-        animate={isOpen ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-        transition={{ ...springs.smooth, opacity: tweens.fade }}
-      />
-    </div>
+    <MotionPreference>
+      <div className={cn('absolute left-0 top-full flex justify-center')}>
+        <NavigationMenuPrimitive.Viewport
+          className={cn(
+            'origin-top-center relative mt-ds-02b h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-overlay bg-surface-overlay shadow-floating md:w-[var(--radix-navigation-menu-viewport-width)]',
+            className,
+          )}
+          ref={composedRef}
+          {...props}
+        />
+        {/* Overlay motion element for scale+fade animation */}
+        <motion.div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          initial={false}
+          animate={isOpen ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+          transition={{ ...springs.smooth, opacity: tweens.fade }}
+        />
+      </div>
+    </MotionPreference>
   )
 })
 NavigationMenuViewport.displayName =
@@ -243,22 +248,24 @@ const NavigationMenuIndicator = React.forwardRef<
   }, [])
 
   return (
-    <NavigationMenuPrimitive.Indicator
-      ref={composedRef}
-      className={cn(
-        'top-full z-base flex h-ds-02b items-end justify-center overflow-hidden',
-        className,
-      )}
-      {...props}
-    >
-      <motion.div
-        layout
-        initial={false}
-        animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-        transition={tweens.fade}
-        className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-control-inner bg-surface-border shadow-raised-hover"
-      />
-    </NavigationMenuPrimitive.Indicator>
+    <MotionPreference>
+      <NavigationMenuPrimitive.Indicator
+        ref={composedRef}
+        className={cn(
+          'top-full z-base flex h-ds-02b items-end justify-center overflow-hidden',
+          className,
+        )}
+        {...props}
+      >
+        <motion.div
+          layout
+          initial={false}
+          animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
+          transition={tweens.fade}
+          className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-control-inner bg-surface-border shadow-raised-hover"
+        />
+      </NavigationMenuPrimitive.Indicator>
+    </MotionPreference>
   )
 })
 NavigationMenuIndicator.displayName =

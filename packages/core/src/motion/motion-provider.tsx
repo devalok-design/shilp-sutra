@@ -50,4 +50,4 @@ function useMotion(): MotionContextValue {
   return { springs, tweens, reducedMotion: osPreference }
 }
 
-export { MotionProvider, type MotionProviderProps,useMotion }
+export { MotionContext, MotionProvider, type MotionProviderProps,useMotion }

@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { motionProps,springs } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -55,14 +56,16 @@ const Toggle = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
     VariantProps<typeof toggleVariants>
 >(({ className, variant, size, color, ...props }, ref) => (
-  <MotionToggleRoot
-    ref={ref}
-    whileTap={{ scale: 0.95 }}
-    transition={springs.snappy}
-    data-palette={color ?? undefined}
-    className={cn(toggleVariants({ variant, size, color }), className)}
-    {...motionProps(props)}
-  />
+  <MotionPreference>
+    <MotionToggleRoot
+      ref={ref}
+      whileTap={{ scale: 0.95 }}
+      transition={springs.snappy}
+      data-palette={color ?? undefined}
+      className={cn(toggleVariants({ variant, size, color }), className)}
+      {...motionProps(props)}
+    />
+  </MotionPreference>
 ))
 Toggle.displayName = TogglePrimitive.Root.displayName
 

@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { motion } from "framer-motion"
 import * as React from "react"
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Dot, type DotColor, type DotSize } from "./dot"
 import { springs } from "./lib/motion"
 import { cn } from "./lib/utils"
@@ -196,54 +197,56 @@ const Avatar = React.forwardRef<
   const showBadge = badge !== undefined && badge !== 0
 
   return (
-    <AvatarShapeContext.Provider value={resolvedShape}>
-    <AvatarSizeContext.Provider value={size ?? 'md'}>
-    <span className={cn('relative inline-flex shrink-0', ringClasses)}>
-      <AvatarPrimitive.Root
-        ref={ref}
-        className={cn(avatarVariants({ size, shape }), className)}
-        {...props}
-      >
-        {children}
-      </AvatarPrimitive.Root>
-      {status && (
-        <span
-          className="absolute bottom-0 right-0"
-          role="img"
-          aria-label={statusLabelMap[status]}
+    <MotionPreference>
+      <AvatarShapeContext.Provider value={resolvedShape}>
+      <AvatarSizeContext.Provider value={size ?? 'md'}>
+      <span className={cn('relative inline-flex shrink-0', ringClasses)}>
+        <AvatarPrimitive.Root
+          ref={ref}
+          className={cn(avatarVariants({ size, shape }), className)}
+          {...props}
         >
-          {/* Shared Dot primitive: colour + contrast ring; wrapper owns position + a11y. */}
-          <Dot color={statusDotColor[status]} size={statusDotSize[size ?? 'md']} withBorder aria-hidden />
-        </span>
-      )}
-      {showBadge && (
-        badge === 'dot' ? (
+          {children}
+        </AvatarPrimitive.Root>
+        {status && (
           <span
-            className="absolute -right-0.5 -top-0.5 h-ds-03 w-ds-03 rounded-pill bg-error-9 ring-2 ring-surface-panel"
-            data-slot="avatar-badge-dot"
-            aria-hidden="true"
-          />
-        ) : typeof badge === 'number' ? (
-          <motion.span
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={springs.smooth}
-            className="absolute -right-1 -top-1 flex min-w-ds-05 items-center justify-center rounded-pill bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-error-fg ring-2 ring-surface-panel"
-            data-slot="avatar-badge"
-            role="status"
-            aria-label={`${badge > 99 ? '99+' : badge} notifications`}
+            className="absolute bottom-0 right-0"
+            role="img"
+            aria-label={statusLabelMap[status]}
           >
-            {badge > 99 ? '99+' : badge}
-          </motion.span>
-        ) : (
-          <span className="absolute -right-1 -top-1" data-slot="avatar-badge-custom">
-            {badge}
+            {/* Shared Dot primitive: colour + contrast ring; wrapper owns position + a11y. */}
+            <Dot color={statusDotColor[status]} size={statusDotSize[size ?? 'md']} withBorder aria-hidden />
           </span>
-        )
-      )}
-    </span>
-    </AvatarSizeContext.Provider>
-    </AvatarShapeContext.Provider>
+        )}
+        {showBadge && (
+          badge === 'dot' ? (
+            <span
+              className="absolute -right-0.5 -top-0.5 h-ds-03 w-ds-03 rounded-pill bg-error-9 ring-2 ring-surface-panel"
+              data-slot="avatar-badge-dot"
+              aria-hidden="true"
+            />
+          ) : typeof badge === 'number' ? (
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={springs.smooth}
+              className="absolute -right-1 -top-1 flex min-w-ds-05 items-center justify-center rounded-pill bg-error-9 px-1 text-[10px] font-bold leading-[16px] text-error-fg ring-2 ring-surface-panel"
+              data-slot="avatar-badge"
+              role="status"
+              aria-label={`${badge > 99 ? '99+' : badge} notifications`}
+            >
+              {badge > 99 ? '99+' : badge}
+            </motion.span>
+          ) : (
+            <span className="absolute -right-1 -top-1" data-slot="avatar-badge-custom">
+              {badge}
+            </span>
+          )
+        )}
+      </span>
+      </AvatarSizeContext.Provider>
+      </AvatarShapeContext.Provider>
+    </MotionPreference>
   )
 })
 Avatar.displayName = AvatarPrimitive.Root.displayName
@@ -252,18 +255,20 @@ const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
 >(({ className, ...props }, ref) => (
-  <motion.span
-    initial={{ scale: 0.96 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={springs.smooth}
-    className="absolute inset-0 h-full w-full"
-  >
-    <AvatarPrimitive.Image
-      ref={ref}
-      className={cn("aspect-square h-full w-full", className)}
-      {...props}
-    />
-  </motion.span>
+  <MotionPreference>
+    <motion.span
+      initial={{ scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={springs.smooth}
+      className="absolute inset-0 h-full w-full"
+    >
+      <AvatarPrimitive.Image
+        ref={ref}
+        className={cn("aspect-square h-full w-full", className)}
+        {...props}
+      />
+    </motion.span>
+  </MotionPreference>
 ))
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 

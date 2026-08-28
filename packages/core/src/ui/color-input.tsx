@@ -4,6 +4,7 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 import { HexColorPicker } from 'react-colorful'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { useFormField } from './form'
 import { durations,springs } from './lib/motion'
 import { cn } from './lib/utils'
@@ -303,261 +304,263 @@ const ColorInput = React.forwardRef<HTMLDivElement, ColorInputProps>(
     const formats: ColorFormat[] = ['hex', 'rgb', 'hsl']
 
     return (
-      <div ref={ref} className={cn('inline-flex flex-col', className)} {...props}>
-        <Popover open={open} onOpenChange={handleOpenChange}>
-          <PopoverTrigger asChild>
-            {variant === 'inline' ? (
-              <motion.button
-                type="button"
-                disabled={disabled}
-                className={cn(
-                  'group flex items-center justify-center rounded-control px-ds-04 py-ds-02 font-mono text-body-sm font-medium',
-                  'focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
-                  disabled && 'cursor-not-allowed opacity-50',
-                )}
-                animate={{
-                  backgroundColor: internalColor,
-                  color: isLightColor(internalColor) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.95)',
-                }}
-                whileHover={{ y: -1, boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}
-                whileTap={{ scale: 0.97 }}
-                transition={springs.smooth}
-                id={triggerId}
-                aria-describedby={fieldCtx.helperTextId}
-                aria-invalid={fieldCtx.state === 'error' || undefined}
-                // Inside a FormField, let the visible <Label> name the trigger; else describe it.
-                aria-label={fieldCtx.inputId ? undefined : `Color picker: ${internalColor}`}
-              >
-                {internalColor.toUpperCase()}
-              </motion.button>
-            ) : (
-              <motion.button
-                type="button"
-                disabled={disabled}
-                className={cn(
-                  'group relative flex items-center overflow-hidden rounded-control border border-surface-border-interactive',
-                  'hover:border-accent-7 focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
-                  disabled && 'cursor-not-allowed opacity-50',
-                )}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={springs.snappy}
-                id={triggerId}
-                aria-describedby={fieldCtx.helperTextId}
-                aria-invalid={fieldCtx.state === 'error' || undefined}
-                // Inside a FormField, let the visible <Label> name the trigger; else describe it.
-                aria-label={fieldCtx.inputId ? undefined : `Color picker: ${internalColor}`}
-              >
-                {/* Gradient background: color → surface */}
-                <motion.span
-                  className="absolute inset-0"
+      <MotionPreference>
+        <div ref={ref} className={cn('inline-flex flex-col', className)} {...props}>
+          <Popover open={open} onOpenChange={handleOpenChange}>
+            <PopoverTrigger asChild>
+              {variant === 'inline' ? (
+                <motion.button
+                  type="button"
+                  disabled={disabled}
+                  className={cn(
+                    'group flex items-center justify-center rounded-control px-ds-04 py-ds-02 font-mono text-body-sm font-medium',
+                    'focus:outline-hidden focus:ring-2 focus:ring-accent-9 focus:ring-offset-2 focus:ring-offset-surface-base',
+                    disabled && 'cursor-not-allowed opacity-50',
+                  )}
                   animate={{
-                    background: `linear-gradient(to right, ${internalColor} 0%, ${internalColor} 35%, transparent 70%)`,
+                    backgroundColor: internalColor,
+                    color: isLightColor(internalColor) ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.95)',
                   }}
-                  /* Between durations.moderate02 (0.24) and durations.slow01 (0.4) — gradient lerp feel */
-                  transition={{ duration: 0.3 }}
-                />
-                <span className="absolute inset-0 bg-surface-overlay/60" style={{
-                  maskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
-                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
-                }} />
-                {/* Hex value */}
-                <span className="relative z-10 py-ds-02 pl-6 pr-ds-03 font-mono text-body-sm text-surface-fg">
-                  {internalColor.toUpperCase()}
-                </span>
-              </motion.button>
-            )}
-          </PopoverTrigger>
-
-          <PopoverContent
-            role="dialog"
-            aria-label="Color picker"
-            align={align}
-            sideOffset={8}
-            className="w-[272px] rounded-overlay-lg bg-surface-overlay p-0 shadow-floating"
-          >
-            <div className="flex flex-col">
-              {/* Interactive picker */}
-              {showPicker && (
-                <div className="p-ds-04 pb-ds-03" onPointerUp={handlePickerChangeComplete} onPointerLeave={handlePickerChangeComplete}>
-                  <HexColorPicker
-                    color={internalColor}
-                    onChange={handleChange}
-                    className="w-full!"
-                    style={{ height: 160 }}
-                  />
-                </div>
-              )}
-
-              {/* Format inputs */}
-              <div className="border-t border-surface-border px-ds-04 py-ds-03">
-                {/* Format switcher */}
-                <div className="mb-ds-03 flex items-center gap-ds-01">
-                  {formats.map((f) => (
-                    <button
-                      key={f}
-                      type="button"
-                      onClick={() => setFormat(f)}
-                      className={cn(
-                        'relative min-h-6 rounded-control-inner px-ds-02 py-px text-label-xs font-semibold uppercase tracking-wider transition-colors',
-                        format === f
-                          ? 'text-accent-11'
-                          : 'text-surface-fg-muted hover:text-surface-fg',
-                      )}
-                    >
-                      {format === f && (
-                        <motion.span
-                          layoutId={`color-input-format-pill-${instanceId}`}
-                          className="absolute inset-0 rounded-control-inner bg-accent-4"
-                          transition={springs.snappy}
-                        />
-                      )}
-                      <span className="relative z-10">{f}</span>
-                    </button>
-                  ))}
-                </div>
-
-                {/* Format fields — animated swap */}
-                <AnimatePresence mode="wait">
-                  {format === 'hex' && (
-                    <motion.div
-                      key="hex"
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: durations.moderate01 }}
-                      className="flex gap-ds-02"
-                    >
-                      <FormatInput
-                        id={`${instanceId}-hex`}
-                        label="Hex"
-                        value={hexDraft ?? internalColor.replace('#', '').toUpperCase()}
-                        onChange={(v) => {
-                          const clean = v.replace(/[^0-9a-fA-F]/g, '').slice(0, 6)
-                          setHexDraft(clean.toUpperCase())
-                          if (clean.length === 6) handleDiscreteChange(`#${clean}`)
-                        }}
-                        onBlur={() => {
-                          // Drop any incomplete draft; display falls back to the
-                          // committed color. A complete value already committed onChange.
-                          setHexDraft(null)
-                        }}
-                        disabled={disabled}
-                        maxLength={6}
-                        prefix="#"
-                        className="flex-1"
-                      />
-                    </motion.div>
-                  )}
-
-                  {format === 'rgb' && rgb && (
-                    <motion.div
-                      key="rgb"
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: durations.moderate01 }}
-                      className="flex gap-ds-02"
-                    >
-                      <FormatInput id={`${instanceId}-r`} label="R" value={String(rgb.r)} onChange={(v) => handleRgbChange('r', v)} disabled={disabled} className="flex-1" />
-                      <FormatInput id={`${instanceId}-g`} label="G" value={String(rgb.g)} onChange={(v) => handleRgbChange('g', v)} disabled={disabled} className="flex-1" />
-                      <FormatInput id={`${instanceId}-b`} label="B" value={String(rgb.b)} onChange={(v) => handleRgbChange('b', v)} disabled={disabled} className="flex-1" />
-                    </motion.div>
-                  )}
-
-                  {format === 'hsl' && hsl && (
-                    <motion.div
-                      key="hsl"
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: durations.moderate01 }}
-                      className="flex gap-ds-02"
-                    >
-                      <FormatInput id={`${instanceId}-h`} label="H" value={String(hsl.h)} onChange={(v) => handleHslChange('h', v)} disabled={disabled} className="flex-1" />
-                      <FormatInput id={`${instanceId}-s`} label="S" value={String(hsl.s)} onChange={(v) => handleHslChange('s', v)} disabled={disabled} className="flex-1" />
-                      <FormatInput id={`${instanceId}-l`} label="L" value={String(hsl.l)} onChange={(v) => handleHslChange('l', v)} disabled={disabled} className="flex-1" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Preset swatches */}
-              {resolvedPresets.length > 0 && (
-                <div className="border-t border-surface-border px-ds-04 py-ds-03">
-                  <div className="flex flex-wrap gap-ds-02">
-                    {resolvedPresets.map((preset, i) => {
-                      const isSelected = internalColor.toLowerCase() === preset.hex.toLowerCase()
-                      return (
-                        <motion.button
-                          key={preset.hex}
-                          type="button"
-                          disabled={disabled}
-                          onClick={() => handleDiscreteChange(preset.hex)}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: isSelected ? 1.15 : 1 }}
-                          whileHover={{ scale: isSelected ? 1.15 : 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          transition={{ ...springs.bouncy, delay: i * 0.02 }}
-                          className={cn(
-                            'h-6 w-6 rounded-control-inner border',
-                            isSelected
-                              ? 'border-accent-7 ring-2 ring-accent-9/30'
-                              : 'border-surface-border-interactive hover:border-surface-border-interactive-strong',
-                            disabled && 'cursor-not-allowed opacity-50',
-                          )}
-                          style={{ backgroundColor: preset.hex }}
-                          title={preset.label}
-                          aria-label={`${preset.label}: ${preset.hex}`}
-                        />
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Reset / Undo footer */}
-              {(undoStack.length > 0 || internalColor !== openColor) && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="flex items-center gap-ds-02 border-t border-surface-border px-ds-04 py-ds-02"
+                  whileHover={{ y: -1, boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={springs.smooth}
+                  id={triggerId}
+                  aria-describedby={fieldCtx.helperTextId}
+                  aria-invalid={fieldCtx.state === 'error' || undefined}
+                  // Inside a FormField, let the visible <Label> name the trigger; else describe it.
+                  aria-label={fieldCtx.inputId ? undefined : `Color picker: ${internalColor}`}
                 >
-                  {/* Original color preview */}
-                  <span
-                    className="h-4 w-4 shrink-0 rounded-pill border border-surface-border"
-                    style={{ backgroundColor: openColor }}
-                    title={`Original: ${openColor}`}
+                  {internalColor.toUpperCase()}
+                </motion.button>
+              ) : (
+                <motion.button
+                  type="button"
+                  disabled={disabled}
+                  className={cn(
+                    'group relative flex items-center overflow-hidden rounded-control border border-surface-border-interactive',
+                    'hover:border-accent-7 focus:border-accent-7 focus:outline-hidden focus:ring-1 focus:ring-accent-9',
+                    disabled && 'cursor-not-allowed opacity-50',
+                  )}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={springs.snappy}
+                  id={triggerId}
+                  aria-describedby={fieldCtx.helperTextId}
+                  aria-invalid={fieldCtx.state === 'error' || undefined}
+                  // Inside a FormField, let the visible <Label> name the trigger; else describe it.
+                  aria-label={fieldCtx.inputId ? undefined : `Color picker: ${internalColor}`}
+                >
+                  {/* Gradient background: color → surface */}
+                  <motion.span
+                    className="absolute inset-0"
+                    animate={{
+                      background: `linear-gradient(to right, ${internalColor} 0%, ${internalColor} 35%, transparent 70%)`,
+                    }}
+                    /* Between durations.moderate02 (0.24) and durations.slow01 (0.4) — gradient lerp feel */
+                    transition={{ duration: 0.3 }}
                   />
-                  <span className="text-caption text-surface-fg-muted">
-                    {openColor.toUpperCase()}
+                  <span className="absolute inset-0 bg-surface-overlay/60" style={{
+                    maskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
+                    WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 40%)',
+                  }} />
+                  {/* Hex value */}
+                  <span className="relative z-10 py-ds-02 pl-6 pr-ds-03 font-mono text-body-sm text-surface-fg">
+                    {internalColor.toUpperCase()}
                   </span>
-                  <span className="flex-1" />
-                  {undoStack.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={handleUndo}
-                      className="min-h-6 rounded-control-inner px-ds-02 py-px text-caption font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
-                    >
-                      Undo
-                    </button>
-                  )}
-                  {internalColor !== openColor && (
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      className="min-h-6 rounded-control-inner px-ds-02 py-px text-caption font-medium text-surface-fg-muted transition-colors hover:text-error-11"
-                    >
-                      Reset
-                    </button>
-                  )}
-                </motion.div>
+                </motion.button>
               )}
-            </div>
-          </PopoverContent>
-        </Popover>
-      </div>
+            </PopoverTrigger>
+
+            <PopoverContent
+              role="dialog"
+              aria-label="Color picker"
+              align={align}
+              sideOffset={8}
+              className="w-[272px] rounded-overlay-lg bg-surface-overlay p-0 shadow-floating"
+            >
+              <div className="flex flex-col">
+                {/* Interactive picker */}
+                {showPicker && (
+                  <div className="p-ds-04 pb-ds-03" onPointerUp={handlePickerChangeComplete} onPointerLeave={handlePickerChangeComplete}>
+                    <HexColorPicker
+                      color={internalColor}
+                      onChange={handleChange}
+                      className="w-full!"
+                      style={{ height: 160 }}
+                    />
+                  </div>
+                )}
+
+                {/* Format inputs */}
+                <div className="border-t border-surface-border px-ds-04 py-ds-03">
+                  {/* Format switcher */}
+                  <div className="mb-ds-03 flex items-center gap-ds-01">
+                    {formats.map((f) => (
+                      <button
+                        key={f}
+                        type="button"
+                        onClick={() => setFormat(f)}
+                        className={cn(
+                          'relative min-h-6 rounded-control-inner px-ds-02 py-px text-label-xs font-semibold uppercase tracking-wider transition-colors',
+                          format === f
+                            ? 'text-accent-11'
+                            : 'text-surface-fg-muted hover:text-surface-fg',
+                        )}
+                      >
+                        {format === f && (
+                          <motion.span
+                            layoutId={`color-input-format-pill-${instanceId}`}
+                            className="absolute inset-0 rounded-control-inner bg-accent-4"
+                            transition={springs.snappy}
+                          />
+                        )}
+                        <span className="relative z-10">{f}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Format fields — animated swap */}
+                  <AnimatePresence mode="wait">
+                    {format === 'hex' && (
+                      <motion.div
+                        key="hex"
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: durations.moderate01 }}
+                        className="flex gap-ds-02"
+                      >
+                        <FormatInput
+                          id={`${instanceId}-hex`}
+                          label="Hex"
+                          value={hexDraft ?? internalColor.replace('#', '').toUpperCase()}
+                          onChange={(v) => {
+                            const clean = v.replace(/[^0-9a-fA-F]/g, '').slice(0, 6)
+                            setHexDraft(clean.toUpperCase())
+                            if (clean.length === 6) handleDiscreteChange(`#${clean}`)
+                          }}
+                          onBlur={() => {
+                            // Drop any incomplete draft; display falls back to the
+                            // committed color. A complete value already committed onChange.
+                            setHexDraft(null)
+                          }}
+                          disabled={disabled}
+                          maxLength={6}
+                          prefix="#"
+                          className="flex-1"
+                        />
+                      </motion.div>
+                    )}
+
+                    {format === 'rgb' && rgb && (
+                      <motion.div
+                        key="rgb"
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: durations.moderate01 }}
+                        className="flex gap-ds-02"
+                      >
+                        <FormatInput id={`${instanceId}-r`} label="R" value={String(rgb.r)} onChange={(v) => handleRgbChange('r', v)} disabled={disabled} className="flex-1" />
+                        <FormatInput id={`${instanceId}-g`} label="G" value={String(rgb.g)} onChange={(v) => handleRgbChange('g', v)} disabled={disabled} className="flex-1" />
+                        <FormatInput id={`${instanceId}-b`} label="B" value={String(rgb.b)} onChange={(v) => handleRgbChange('b', v)} disabled={disabled} className="flex-1" />
+                      </motion.div>
+                    )}
+
+                    {format === 'hsl' && hsl && (
+                      <motion.div
+                        key="hsl"
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: durations.moderate01 }}
+                        className="flex gap-ds-02"
+                      >
+                        <FormatInput id={`${instanceId}-h`} label="H" value={String(hsl.h)} onChange={(v) => handleHslChange('h', v)} disabled={disabled} className="flex-1" />
+                        <FormatInput id={`${instanceId}-s`} label="S" value={String(hsl.s)} onChange={(v) => handleHslChange('s', v)} disabled={disabled} className="flex-1" />
+                        <FormatInput id={`${instanceId}-l`} label="L" value={String(hsl.l)} onChange={(v) => handleHslChange('l', v)} disabled={disabled} className="flex-1" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Preset swatches */}
+                {resolvedPresets.length > 0 && (
+                  <div className="border-t border-surface-border px-ds-04 py-ds-03">
+                    <div className="flex flex-wrap gap-ds-02">
+                      {resolvedPresets.map((preset, i) => {
+                        const isSelected = internalColor.toLowerCase() === preset.hex.toLowerCase()
+                        return (
+                          <motion.button
+                            key={preset.hex}
+                            type="button"
+                            disabled={disabled}
+                            onClick={() => handleDiscreteChange(preset.hex)}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: isSelected ? 1.15 : 1 }}
+                            whileHover={{ scale: isSelected ? 1.15 : 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            transition={{ ...springs.bouncy, delay: i * 0.02 }}
+                            className={cn(
+                              'h-6 w-6 rounded-control-inner border',
+                              isSelected
+                                ? 'border-accent-7 ring-2 ring-accent-9/30'
+                                : 'border-surface-border-interactive hover:border-surface-border-interactive-strong',
+                              disabled && 'cursor-not-allowed opacity-50',
+                            )}
+                            style={{ backgroundColor: preset.hex }}
+                            title={preset.label}
+                            aria-label={`${preset.label}: ${preset.hex}`}
+                          />
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Reset / Undo footer */}
+                {(undoStack.length > 0 || internalColor !== openColor) && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="flex items-center gap-ds-02 border-t border-surface-border px-ds-04 py-ds-02"
+                  >
+                    {/* Original color preview */}
+                    <span
+                      className="h-4 w-4 shrink-0 rounded-pill border border-surface-border"
+                      style={{ backgroundColor: openColor }}
+                      title={`Original: ${openColor}`}
+                    />
+                    <span className="text-caption text-surface-fg-muted">
+                      {openColor.toUpperCase()}
+                    </span>
+                    <span className="flex-1" />
+                    {undoStack.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleUndo}
+                        className="min-h-6 rounded-control-inner px-ds-02 py-px text-caption font-medium text-surface-fg-muted transition-colors hover:text-surface-fg"
+                      >
+                        Undo
+                      </button>
+                    )}
+                    {internalColor !== openColor && (
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className="min-h-6 rounded-control-inner px-ds-02 py-px text-caption font-medium text-surface-fg-muted transition-colors hover:text-error-11"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </motion.div>
+                )}
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+      </MotionPreference>
     )
   },
 )

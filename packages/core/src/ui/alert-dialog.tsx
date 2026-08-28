@@ -5,6 +5,7 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
 import { useIsMobile } from '../hooks/use-mobile'
+import { MotionPreference } from '../motion/motion-preference'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
 
@@ -76,45 +77,47 @@ const AlertDialogContent = React.forwardRef<
   const isMobile = responsive !== false && isMobileRaw
 
   return (
-    <AnimatePresence>
-      {open && (
-        <AlertDialogPortal forceMount>
-          <AlertDialogOverlay asChild>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={tweens.fade}
-            />
-          </AlertDialogOverlay>
-          <AlertDialogPrimitive.Content
-            ref={ref}
-            forceMount
-            asChild
-            {...props}
-          >
-            <motion.div
-              initial={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-              animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
-              exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-              transition={isMobile
-                ? springs.smooth
-                : { ...springs.smooth, opacity: tweens.fade }
-              }
-              className={cn(
-                'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
-                responsive !== false
-                  ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-overlay-lg md:shadow-overlay'
-                  : 'left-[50%] top-[50%] max-w-lg rounded-overlay-lg shadow-overlay',
-                className,
-              )}
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <AlertDialogPortal forceMount>
+            <AlertDialogOverlay asChild>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={tweens.fade}
+              />
+            </AlertDialogOverlay>
+            <AlertDialogPrimitive.Content
+              ref={ref}
+              forceMount
+              asChild
+              {...props}
             >
-              {children}
-            </motion.div>
-          </AlertDialogPrimitive.Content>
-        </AlertDialogPortal>
-      )}
-    </AnimatePresence>
+              <motion.div
+                initial={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+                animate={isMobile ? { y: 0 } : { opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+                exit={isMobile ? { y: '100%' } : { opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+                transition={isMobile
+                  ? springs.smooth
+                  : { ...springs.smooth, opacity: tweens.fade }
+                }
+                className={cn(
+                  'fixed z-modal grid w-full gap-ds-05 bg-surface-overlay p-ds-06',
+                  responsive !== false
+                    ? 'inset-0 md:inset-auto md:left-[50%] md:top-[50%] md:max-w-lg md:rounded-overlay-lg md:shadow-overlay'
+                    : 'left-[50%] top-[50%] max-w-lg rounded-overlay-lg shadow-overlay',
+                  className,
+                )}
+              >
+                {children}
+              </motion.div>
+            </AlertDialogPrimitive.Content>
+          </AlertDialogPortal>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName

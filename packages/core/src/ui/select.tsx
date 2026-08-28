@@ -6,6 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { useFormField } from './form'
 import { Icon } from './icon'
 import { type FieldState, resolveFieldState } from './lib/field-state'
@@ -149,38 +150,40 @@ const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, children, position = 'popper', ...props }, ref) => (
-  <SelectPrimitive.Portal>
-    <SelectPrimitive.Content
-      ref={ref}
-      position={position}
-      asChild
-      {...props}
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ ...springs.snappy, opacity: tweens.fade }}
-        className={cn(
-          'relative z-popover max-h-96 min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay text-surface-fg shadow-floating',
-          position === 'popper' &&
-            'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
-          className,
-        )}
+  <MotionPreference>
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
+        ref={ref}
+        position={position}
+        asChild
+        {...props}
       >
-        <SelectScrollUpButton />
-        <SelectPrimitive.Viewport
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ ...springs.snappy, opacity: tweens.fade }}
           className={cn(
-            'p-ds-02',
+            'relative z-popover max-h-96 min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay text-surface-fg shadow-floating',
             position === 'popper' &&
-              'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]',
+              'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
+            className,
           )}
         >
-          {children}
-        </SelectPrimitive.Viewport>
-        <SelectScrollDownButton />
-      </motion.div>
-    </SelectPrimitive.Content>
-  </SelectPrimitive.Portal>
+          <SelectScrollUpButton />
+          <SelectPrimitive.Viewport
+            className={cn(
+              'p-ds-02',
+              position === 'popper' &&
+                'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]',
+            )}
+          >
+            {children}
+          </SelectPrimitive.Viewport>
+          <SelectScrollDownButton />
+        </motion.div>
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
+  </MotionPreference>
 ))
 SelectContent.displayName = SelectPrimitive.Content.displayName
 

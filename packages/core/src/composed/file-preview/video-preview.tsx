@@ -8,6 +8,7 @@ import {
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../../motion/motion-preference'
 import { Icon } from '../../ui/icon'
 import { springs, tweens } from '../../ui/lib/motion'
 import { ErrorFallback, formatTime,MediaSlider,VolumeControl } from './shared'
@@ -128,106 +129,108 @@ export default function VideoPreview({ url, onError }: { url: string; onError?: 
   if (error) return <ErrorFallback message="Could not load video" url={url} />
 
   return (
-    <div
-      ref={containerRef}
-      className="group relative rounded-control bg-black overflow-hidden"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => playing && setShowControls(false)}
-      tabIndex={-1}
-    >
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <video
-        ref={videoRef}
-        src={url}
-        className="max-h-[70vh] w-full"
-        onClick={togglePlay}
-        muted={muted}
-        onTimeUpdate={() => {
-          if (!videoRef.current) return
-          setCurrentTime(videoRef.current.currentTime)
-          if (videoRef.current.duration) setProgress((videoRef.current.currentTime / videoRef.current.duration) * 100)
-        }}
-        onLoadedMetadata={() => setDuration(videoRef.current?.duration ?? 0)}
-        onEnded={() => { setPlaying(false); setShowControls(true) }}
-        onError={() => { setError(true); onError?.('Video failed to load') }}
-        playsInline
-      />
-
-      {/* Play button overlay — shown when paused */}
-      {!playing && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={springs.snappy}
+    <MotionPreference>
+      <div
+        ref={containerRef}
+        className="group relative rounded-control bg-black overflow-hidden"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => playing && setShowControls(false)}
+        tabIndex={-1}
+      >
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+        <video
+          ref={videoRef}
+          src={url}
+          className="max-h-[70vh] w-full"
           onClick={togglePlay}
-          className="absolute inset-0 flex items-center justify-center bg-black/30"
-          aria-label="Play video"
-        >
-          <div className="flex h-14 w-14 items-center justify-center rounded-pill bg-white/90 shadow-floating">
-            <Icon icon={IconPlayerPlay} size="xl" className="text-surface-fg ml-0.5" />
-          </div>
-        </motion.button>
-      )}
+          muted={muted}
+          onTimeUpdate={() => {
+            if (!videoRef.current) return
+            setCurrentTime(videoRef.current.currentTime)
+            if (videoRef.current.duration) setProgress((videoRef.current.currentTime / videoRef.current.duration) * 100)
+          }}
+          onLoadedMetadata={() => setDuration(videoRef.current?.duration ?? 0)}
+          onEnded={() => { setPlaying(false); setShowControls(true) }}
+          onError={() => { setError(true); onError?.('Video failed to load') }}
+          playsInline
+        />
 
-      {/* Bottom controls — auto-hide after 3s during playback */}
-      <AnimatePresence>
-        {showControls && duration > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={tweens.fade}
-            className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent px-ds-04 pb-ds-04 pt-ds-08"
+        {/* Play button overlay — shown when paused */}
+        {!playing && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={springs.snappy}
+            onClick={togglePlay}
+            className="absolute inset-0 flex items-center justify-center bg-black/30"
+            aria-label="Play video"
           >
-            {/* Progress bar */}
-            <MediaSlider
-              className="mb-ds-03"
-              value={progress}
-              max={100}
-              step={0.1}
-              onValueChange={handleSeek}
-              tone="dark"
-              ariaLabel="Video progress"
-            />
-
-            {/* Controls row */}
-            <div className="flex items-center gap-ds-03">
-              <button onClick={togglePlay} className="text-white hover:text-white/80" aria-label={playing ? 'Pause' : 'Play'} title={playing ? 'Pause' : 'Play'}>
-                {playing ? <Icon icon={IconPlayerPause} size="lg" /> : <Icon icon={IconPlayerPlay} size="lg" />}
-              </button>
-              <VolumeControl
-                volume={muted ? 0 : 1}
-                muted={muted}
-                onVolumeChange={(v) => {
-                  if (videoRef.current) videoRef.current.volume = v
-                  if (v > 0 && muted) { setMuted(false); if (videoRef.current) videoRef.current.muted = false }
-                }}
-                onMuteToggle={() => { setMuted(!muted); if (videoRef.current) videoRef.current.muted = !muted }}
-                variant="dark"
-              />
-              <span className="text-body-sm font-mono text-white/70 tabular-nums">
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
-              <div className="flex-1" />
-              <button
-                onClick={() => cyclePlaybackRate(1)}
-                className="text-body-sm font-mono text-white/70 hover:text-white px-1 rounded-control-inner hover:bg-white/10 transition-colors"
-                aria-label={`Playback speed: ${playbackRate}x`}
-              >
-                {playbackRate}x
-              </button>
-              <button
-                onClick={() => videoRef.current?.requestFullscreen?.()}
-                className="text-white hover:text-white/80"
-                aria-label="Fullscreen (F)"
-                title="Fullscreen"
-              >
-                <Icon icon={IconMaximize} size="sm" />
-              </button>
+            <div className="flex h-14 w-14 items-center justify-center rounded-pill bg-white/90 shadow-floating">
+              <Icon icon={IconPlayerPlay} size="xl" className="text-surface-fg ml-0.5" />
             </div>
-          </motion.div>
+          </motion.button>
         )}
-      </AnimatePresence>
-    </div>
+
+        {/* Bottom controls — auto-hide after 3s during playback */}
+        <AnimatePresence>
+          {showControls && duration > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={tweens.fade}
+              className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent px-ds-04 pb-ds-04 pt-ds-08"
+            >
+              {/* Progress bar */}
+              <MediaSlider
+                className="mb-ds-03"
+                value={progress}
+                max={100}
+                step={0.1}
+                onValueChange={handleSeek}
+                tone="dark"
+                ariaLabel="Video progress"
+              />
+
+              {/* Controls row */}
+              <div className="flex items-center gap-ds-03">
+                <button onClick={togglePlay} className="text-white hover:text-white/80" aria-label={playing ? 'Pause' : 'Play'} title={playing ? 'Pause' : 'Play'}>
+                  {playing ? <Icon icon={IconPlayerPause} size="lg" /> : <Icon icon={IconPlayerPlay} size="lg" />}
+                </button>
+                <VolumeControl
+                  volume={muted ? 0 : 1}
+                  muted={muted}
+                  onVolumeChange={(v) => {
+                    if (videoRef.current) videoRef.current.volume = v
+                    if (v > 0 && muted) { setMuted(false); if (videoRef.current) videoRef.current.muted = false }
+                  }}
+                  onMuteToggle={() => { setMuted(!muted); if (videoRef.current) videoRef.current.muted = !muted }}
+                  variant="dark"
+                />
+                <span className="text-body-sm font-mono text-white/70 tabular-nums">
+                  {formatTime(currentTime)} / {formatTime(duration)}
+                </span>
+                <div className="flex-1" />
+                <button
+                  onClick={() => cyclePlaybackRate(1)}
+                  className="text-body-sm font-mono text-white/70 hover:text-white px-1 rounded-control-inner hover:bg-white/10 transition-colors"
+                  aria-label={`Playback speed: ${playbackRate}x`}
+                >
+                  {playbackRate}x
+                </button>
+                <button
+                  onClick={() => videoRef.current?.requestFullscreen?.()}
+                  className="text-white hover:text-white/80"
+                  aria-label="Fullscreen (F)"
+                  title="Fullscreen"
+                >
+                  <Icon icon={IconMaximize} size="sm" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </MotionPreference>
   )
 }

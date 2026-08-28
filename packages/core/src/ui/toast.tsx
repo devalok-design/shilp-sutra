@@ -17,6 +17,7 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 import { type ExternalToast,toast as sonnerToast } from 'sonner'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
 import { cn } from './lib/utils'
@@ -179,107 +180,109 @@ function ToastContent({
   // warnings stay polite but atomically re-read the message.
   const isUrgent = type === 'error'
   return (
-    <motion.div
-      layout="position"
-      role={isUrgent ? 'alert' : 'status'}
-      aria-live={isUrgent ? 'assertive' : 'polite'}
-      aria-atomic="true"
-      className={cn(
-        'group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating',
-        // Faint surface tint on error only — the one you must not miss.
-        type === 'error' && 'bg-error-2',
-      )}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocusCapture={() => setFocused(true)}
-      onBlurCapture={() => setFocused(false)}
-      transition={springs.smooth}
-    >
-      {/* Left accent bar — opt-in via showAccent (status is carried by icon + timer bar) */}
-      {showAccent && config.accentClass && (
-        <div
-          className={cn('w-1 shrink-0 rounded-l-overlay-sm', config.accentClass)}
-        />
-      )}
+    <MotionPreference>
+      <motion.div
+        layout="position"
+        role={isUrgent ? 'alert' : 'status'}
+        aria-live={isUrgent ? 'assertive' : 'polite'}
+        aria-atomic="true"
+        className={cn(
+          'group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating',
+          // Faint surface tint on error only — the one you must not miss.
+          type === 'error' && 'bg-error-2',
+        )}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocusCapture={() => setFocused(true)}
+        onBlurCapture={() => setFocused(false)}
+        transition={springs.smooth}
+      >
+        {/* Left accent bar — opt-in via showAccent (status is carried by icon + timer bar) */}
+        {showAccent && config.accentClass && (
+          <div
+            className={cn('w-1 shrink-0 rounded-l-overlay-sm', config.accentClass)}
+          />
+        )}
 
-      {/* Content */}
-      <div className="flex min-w-0 flex-1 items-start gap-ds-03 p-ds-04">
-        {/* Status icon — animates between spinner ↔ typed icon */}
-        <AnimatePresence mode="wait">
-          {type === 'loading' ? (
-            <motion.div
-              key="loading"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={tweens.fade}
-              className="mt-0.5 shrink-0"
-            >
-              <Spinner size="sm" className="h-4 w-4" />
-            </motion.div>
-          ) : StatusIcon ? (
-            <motion.div
-              key={type}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={springs.bouncy}
-              className="mt-0.5 shrink-0"
-            >
-              <Icon icon={StatusIcon} size="sm" className={config.iconClass} />
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
+        {/* Content */}
+        <div className="flex min-w-0 flex-1 items-start gap-ds-03 p-ds-04">
+          {/* Status icon — animates between spinner ↔ typed icon */}
+          <AnimatePresence mode="wait">
+            {type === 'loading' ? (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={tweens.fade}
+                className="mt-0.5 shrink-0"
+              >
+                <Spinner size="sm" className="h-4 w-4" />
+              </motion.div>
+            ) : StatusIcon ? (
+              <motion.div
+                key={type}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={springs.bouncy}
+                className="mt-0.5 shrink-0"
+              >
+                <Icon icon={StatusIcon} size="sm" className={config.iconClass} />
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
 
-        {/* Text */}
-        <div className="min-w-0 flex-1">
-          {title && (
-            <p className="text-body-md font-semibold text-surface-fg">
-              {title}
-            </p>
-          )}
-          {description && (
-            <p
-              className={cn(
-                'text-body-sm text-surface-fg-muted',
-                title && 'mt-0.5',
-              )}
-            >
-              {description}
-            </p>
-          )}
+          {/* Text */}
+          <div className="min-w-0 flex-1">
+            {title && (
+              <p className="text-body-md font-semibold text-surface-fg">
+                {title}
+              </p>
+            )}
+            {description && (
+              <p
+                className={cn(
+                  'text-body-sm text-surface-fg-muted',
+                  title && 'mt-0.5',
+                )}
+              >
+                {description}
+              </p>
+            )}
 
-          {/* Action / cancel buttons */}
-          {(action || cancel) && (
-            <div className="mt-ds-03 flex items-center gap-ds-03">
-              {action && (
-                <button
-                  type="button"
-                  onClick={action.onClick}
-                  className="text-body-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-panel-hover rounded-control-inner px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
-                >
-                  {action.label}
-                </button>
-              )}
-              {cancel && (
-                <button
-                  type="button"
-                  onClick={cancel.onClick}
-                  className="text-body-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
-                >
-                  {cancel.label}
-                </button>
-              )}
-            </div>
-          )}
+            {/* Action / cancel buttons */}
+            {(action || cancel) && (
+              <div className="mt-ds-03 flex items-center gap-ds-03">
+                {action && (
+                  <button
+                    type="button"
+                    onClick={action.onClick}
+                    className="text-body-sm font-medium text-accent-11 underline-offset-2 hover:underline hover:bg-surface-panel-hover rounded-control-inner px-ds-02 py-ds-01 transition-[color,background-color] duration-fast-01 ease-productive-standard focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
+                  >
+                    {action.label}
+                  </button>
+                )}
+                {cancel && (
+                  <button
+                    type="button"
+                    onClick={cancel.onClick}
+                    className="text-body-sm text-surface-fg-muted hover:text-surface-fg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:rounded-control-inner"
+                  >
+                    {cancel.label}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Timer bar */}
-      {showTimerBar && type !== 'loading' && (
-        <TimerBar duration={duration} type={type} paused={paused} />
-      )}
-    </motion.div>
+        {/* Timer bar */}
+        {showTimerBar && type !== 'loading' && (
+          <TimerBar duration={duration} type={type} paused={paused} />
+        )}
+      </motion.div>
+    </MotionPreference>
   )
 }
 
@@ -348,127 +351,129 @@ function UploadFileRow({
     file.status === 'uploading' || file.status === 'processing'
 
   return (
-    <motion.div
-      layout
-      className="flex items-center gap-ds-02 py-1"
-      initial={false}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, x: -20, height: 0 }}
-      transition={springs.snappy}
-    >
-      {/* File icon — animates between states */}
-      <div className="flex h-5 w-5 shrink-0 items-center justify-center">
-        <AnimatePresence mode="wait">
-          {file.status === 'complete' ? (
-            <motion.div
-              key="complete"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={springs.bouncy}
-            >
-              <Icon icon={IconCheck} size="xs" className="text-success-11" />
-            </motion.div>
-          ) : file.status === 'error' ? (
-            <motion.div
-              key="error"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={tweens.fade}
-            >
-              <Icon icon={IconAlertCircle} size="xs" className="text-error-11" />
-            </motion.div>
-          ) : file.status === 'processing' ? (
-            <motion.div
-              key="processing"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={tweens.fade}
-            >
-              <Spinner size="sm" className="h-3.5 w-3.5" />
-            </motion.div>
-          ) : isImageFile(file) ? (
-            <motion.div
-              key="image"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={tweens.fade}
-            >
-              <Icon icon={IconPhoto} size="xs" className="text-surface-fg-muted" />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="file"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={tweens.fade}
-            >
-              <Icon icon={IconFile} size="xs" className="text-surface-fg-muted" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Filename */}
-      <span className="min-w-0 flex-1 truncate text-body-xs text-surface-fg">
-        {file.name}
-      </span>
-
-      {/* Progress bar or status */}
-      {isUploading ? (
-        <div className="flex w-16 items-center gap-1">
-          <Progress
-            size="sm"
-            color={getProgressColor(file.status)}
-            value={getProgressValue(file)}
-            className="flex-1"
-          />
-          {file.progress !== undefined && (
-            <span className="shrink-0 text-caption tabular-nums text-surface-fg-muted">
-              {file.progress}%
-            </span>
-          )}
+    <MotionPreference>
+      <motion.div
+        layout
+        className="flex items-center gap-ds-02 py-1"
+        initial={false}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, x: -20, height: 0 }}
+        transition={springs.snappy}
+      >
+        {/* File icon — animates between states */}
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center">
+          <AnimatePresence mode="wait">
+            {file.status === 'complete' ? (
+              <motion.div
+                key="complete"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={springs.bouncy}
+              >
+                <Icon icon={IconCheck} size="xs" className="text-success-11" />
+              </motion.div>
+            ) : file.status === 'error' ? (
+              <motion.div
+                key="error"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={tweens.fade}
+              >
+                <Icon icon={IconAlertCircle} size="xs" className="text-error-11" />
+              </motion.div>
+            ) : file.status === 'processing' ? (
+              <motion.div
+                key="processing"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={tweens.fade}
+              >
+                <Spinner size="sm" className="h-3.5 w-3.5" />
+              </motion.div>
+            ) : isImageFile(file) ? (
+              <motion.div
+                key="image"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={tweens.fade}
+              >
+                <Icon icon={IconPhoto} size="xs" className="text-surface-fg-muted" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="file"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={tweens.fade}
+              >
+                <Icon icon={IconFile} size="xs" className="text-surface-fg-muted" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      ) : file.status === 'complete' ? (
-        <span className="text-body-xs text-success-11">Done</span>
-      ) : file.status === 'error' ? (
-        <span className="max-w-[60px] truncate text-body-xs text-error-11">
-          {file.error || 'Failed'}
-        </span>
-      ) : (
-        <span className="text-caption text-surface-fg-muted">
-          {formatFileSize(file.size)}
-        </span>
-      )}
 
-      {/* Actions */}
-      {file.status === 'error' && onRetry && (
-        <button
-          type="button"
-          onClick={() => onRetry(file.id)}
-          className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-control-inner text-surface-fg-muted hover:text-surface-fg"
-          aria-label={`Retry ${file.name}`}
-          title="Retry"
-        >
-          <IconRefresh className="h-3.5 w-3.5" />
-        </button>
-      )}
-      {!isTerminal && onRemove && (
-        <button
-          type="button"
-          onClick={() => onRemove(file.id)}
-          className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-control-inner text-surface-fg-muted hover:text-surface-fg"
-          aria-label={`Cancel ${file.name}`}
-          title="Remove"
-        >
-          <IconX className="h-3.5 w-3.5" />
-        </button>
-      )}
-    </motion.div>
+        {/* Filename */}
+        <span className="min-w-0 flex-1 truncate text-body-xs text-surface-fg">
+          {file.name}
+        </span>
+
+        {/* Progress bar or status */}
+        {isUploading ? (
+          <div className="flex w-16 items-center gap-1">
+            <Progress
+              size="sm"
+              color={getProgressColor(file.status)}
+              value={getProgressValue(file)}
+              className="flex-1"
+            />
+            {file.progress !== undefined && (
+              <span className="shrink-0 text-caption tabular-nums text-surface-fg-muted">
+                {file.progress}%
+              </span>
+            )}
+          </div>
+        ) : file.status === 'complete' ? (
+          <span className="text-body-xs text-success-11">Done</span>
+        ) : file.status === 'error' ? (
+          <span className="max-w-[60px] truncate text-body-xs text-error-11">
+            {file.error || 'Failed'}
+          </span>
+        ) : (
+          <span className="text-caption text-surface-fg-muted">
+            {formatFileSize(file.size)}
+          </span>
+        )}
+
+        {/* Actions */}
+        {file.status === 'error' && onRetry && (
+          <button
+            type="button"
+            onClick={() => onRetry(file.id)}
+            className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-control-inner text-surface-fg-muted hover:text-surface-fg"
+            aria-label={`Retry ${file.name}`}
+            title="Retry"
+          >
+            <IconRefresh className="h-3.5 w-3.5" />
+          </button>
+        )}
+        {!isTerminal && onRemove && (
+          <button
+            type="button"
+            onClick={() => onRemove(file.id)}
+            className="touch-target flex min-h-6 min-w-6 items-center justify-center rounded-control-inner text-surface-fg-muted hover:text-surface-fg"
+            aria-label={`Cancel ${file.name}`}
+            title="Remove"
+          >
+            <IconX className="h-3.5 w-3.5" />
+          </button>
+        )}
+      </motion.div>
+    </MotionPreference>
   )
 }
 
@@ -527,111 +532,113 @@ function UploadToastContent({
 
   const uploadUrgent = allTerminal && errorCount > 0
   return (
-    <motion.div
-      layout
-      role={uploadUrgent ? 'alert' : 'status'}
-      aria-live={uploadUrgent ? 'assertive' : 'polite'}
-      aria-label="File uploads"
-      className={cn(
-        'group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating',
-        // Faint surface tint when the batch ended with failures.
-        uploadUrgent && 'bg-error-2',
-      )}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocusCapture={() => setFocused(true)}
-      onBlurCapture={() => setFocused(false)}
-      transition={springs.smooth}
-    >
-      {/* Left accent bar — opt-in via showAccent */}
-      {showAccent && (
-        <div className={cn('w-1 shrink-0 rounded-l-overlay-sm', accentClass)} />
-      )}
-
-      {/* Content */}
-      <div className="min-w-0 flex-1 p-ds-04">
-        {/* Header — icon morphs between upload ↔ result */}
-        <div className="flex items-center gap-ds-02">
-          <AnimatePresence mode="wait">
-            {allTerminal ? (
-              errorCount > 0 ? (
-                <motion.div
-                  key="error-icon"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                  transition={springs.bouncy}
-                >
-                  <Icon icon={IconAlertCircle} size="sm" className="shrink-0 text-error-11" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="success-icon"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                  transition={springs.bouncy}
-                >
-                  <Icon icon={IconCheck} size="sm" className="shrink-0 text-success-11" />
-                </motion.div>
-              )
-            ) : (
-              <motion.div
-                key="upload-icon"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={tweens.fade}
-              >
-                <Icon icon={IconUpload} size="sm" className="shrink-0 text-surface-fg-muted" />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <p className="text-body-md font-semibold text-surface-fg">
-            {allTerminal
-              ? errorCount > 0
-                ? `${completeCount} of ${files.length} uploaded`
-                : `${files.length} file${files.length > 1 ? 's' : ''} uploaded`
-              : `Uploading ${files.length} file${files.length > 1 ? 's' : ''}`}
-          </p>
-        </div>
-        {!allTerminal && (
-          <p className="mt-0.5 text-caption text-surface-fg-muted">
-            {completeCount} of {files.length} complete
-            {errorCount > 0 && ` · ${errorCount} failed`}
-          </p>
+    <MotionPreference>
+      <motion.div
+        layout
+        role={uploadUrgent ? 'alert' : 'status'}
+        aria-live={uploadUrgent ? 'assertive' : 'polite'}
+        aria-label="File uploads"
+        className={cn(
+          'group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating',
+          // Faint surface tint when the batch ended with failures.
+          uploadUrgent && 'bg-error-2',
+        )}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocusCapture={() => setFocused(true)}
+        onBlurCapture={() => setFocused(false)}
+        transition={springs.smooth}
+      >
+        {/* Left accent bar — opt-in via showAccent */}
+        {showAccent && (
+          <div className={cn('w-1 shrink-0 rounded-l-overlay-sm', accentClass)} />
         )}
 
-        {/* File list */}
-        <div className="mt-ds-02 max-h-[140px] overflow-y-auto">
-          <AnimatePresence>
-            {files.map((file) => (
-              <UploadFileRow
-                key={file.id}
-                file={file}
-                onRetry={onRetry}
-                onRemove={onRemove}
-              />
-            ))}
-          </AnimatePresence>
+        {/* Content */}
+        <div className="min-w-0 flex-1 p-ds-04">
+          {/* Header — icon morphs between upload ↔ result */}
+          <div className="flex items-center gap-ds-02">
+            <AnimatePresence mode="wait">
+              {allTerminal ? (
+                errorCount > 0 ? (
+                  <motion.div
+                    key="error-icon"
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    transition={springs.bouncy}
+                  >
+                    <Icon icon={IconAlertCircle} size="sm" className="shrink-0 text-error-11" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="success-icon"
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    transition={springs.bouncy}
+                  >
+                    <Icon icon={IconCheck} size="sm" className="shrink-0 text-success-11" />
+                  </motion.div>
+                )
+              ) : (
+                <motion.div
+                  key="upload-icon"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={tweens.fade}
+                >
+                  <Icon icon={IconUpload} size="sm" className="shrink-0 text-surface-fg-muted" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <p className="text-body-md font-semibold text-surface-fg">
+              {allTerminal
+                ? errorCount > 0
+                  ? `${completeCount} of ${files.length} uploaded`
+                  : `${files.length} file${files.length > 1 ? 's' : ''} uploaded`
+                : `Uploading ${files.length} file${files.length > 1 ? 's' : ''}`}
+            </p>
+          </div>
+          {!allTerminal && (
+            <p className="mt-0.5 text-caption text-surface-fg-muted">
+              {completeCount} of {files.length} complete
+              {errorCount > 0 && ` · ${errorCount} failed`}
+            </p>
+          )}
+
+          {/* File list */}
+          <div className="mt-ds-02 max-h-[140px] overflow-y-auto">
+            <AnimatePresence>
+              {files.map((file) => (
+                <UploadFileRow
+                  key={file.id}
+                  file={file}
+                  onRetry={onRetry}
+                  onRemove={onRemove}
+                />
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Screen reader announcement */}
+          <div className="sr-only" aria-live="polite">
+            {completeCount} of {files.length} files uploaded
+            {errorCount > 0 && `, ${errorCount} failed`}
+          </div>
         </div>
 
-        {/* Screen reader announcement */}
-        <div className="sr-only" aria-live="polite">
-          {completeCount} of {files.length} files uploaded
-          {errorCount > 0 && `, ${errorCount} failed`}
-        </div>
-      </div>
-
-      {/* Timer bar — only after all terminal */}
-      {allTerminal && (
-        <TimerBar
-          duration={UPLOAD_COMPLETE_DELAY}
-          type={timerBarType}
-          paused={false}
-        />
-      )}
-    </motion.div>
+        {/* Timer bar — only after all terminal */}
+        {allTerminal && (
+          <TimerBar
+            duration={UPLOAD_COMPLETE_DELAY}
+            type={timerBarType}
+            paused={false}
+          />
+        )}
+      </motion.div>
+    </MotionPreference>
   )
 }
 

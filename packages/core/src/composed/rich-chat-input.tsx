@@ -30,6 +30,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
 import { useIsMobile } from '../hooks/use-mobile'
+import { MotionPreference } from '../motion/motion-preference'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
 import { MENTION_TOKEN_CLASS } from '../ui/lib/mention'
@@ -729,399 +730,401 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
     const iconSize = 'md' as const
 
     return (
-      <div
-        ref={ref}
-        className={cn(
-          'border-t border-surface-border-subtle px-ds-05 py-ds-04',
-          'flex items-center gap-ds-03',
-          className,
-        )}
-        {...props}
-      >
-        {/* Action button outside the input on the left */}
-        {actionButton !== false && (
-          actionButton ?? (
-            (onFileUpload || onImageUpload) ? (
-              <Button
-                variant="solid"
-                size="icon-md"
-                onClick={() => fileInputRef.current?.click()}
-                title="Attach"
-                aria-label="Attach file"
-                className="shrink-0"
-              >
-                <Icon icon={IconPlus} size="md" />
-              </Button>
-            ) : null
-          )
-        )}
-
-        {/* Container */}
+      <MotionPreference>
         <div
-          role="region"
-          aria-label="Message composer"
+          ref={ref}
           className={cn(
-            'flex-1 min-w-0 overflow-hidden rounded-surface border border-surface-border-interactive bg-surface-panel-hover',
-            'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
-            'hover:bg-surface-panel-active',
-            'focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-9',
-            state === 'recording' && 'border-error-7/30',
-            isDragging && 'border-dashed border-accent-7 bg-accent-2',
-            disabled && 'opacity-action-disabled cursor-not-allowed',
+            'border-t border-surface-border-subtle px-ds-05 py-ds-04',
+            'flex items-center gap-ds-03',
+            className,
           )}
-          onFocus={() => setEditorFocused(true)}
-          onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setEditorFocused(false) }}
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={handleDrop}
+          {...props}
         >
-          {/* Leading slot */}
-          {leadingSlot}
-
-          {/* Zone 1: Reply Banner */}
-          <AnimatePresence>
-            {replyTo && (
-              <ReplyBanner
-                key="reply"
-                author={replyTo.author}
-                preview={replyTo.preview}
-                onDismiss={replyTo.onDismiss}
-              />
-            )}
-          </AnimatePresence>
-
-          {/* Schedule Banner */}
-          <AnimatePresence>
-            {scheduledDate && (
-              <ScheduleBanner
-                key="schedule"
-                date={scheduledDate}
-                onEdit={() => setScheduleDialogOpen(true)}
-                onClear={() => setScheduledDate(null)}
-              />
-            )}
-          </AnimatePresence>
-
-          {/* Zone 2: Attachment Strip */}
-          <AnimatePresence>
-            {attachments.length > 0 && (
-              <AttachmentStrip
-                key="attachments"
-                attachments={attachments}
-                onRemoveAttachment={removeAttachment}
-              />
-            )}
-          </AnimatePresence>
-
-          {/* Toolbar above input (inline variant) — CSS transition */}
-          {config.toolbarPosition === 'top' && editor && (
-            <div
-              className={cn(
-                'grid transition-[grid-template-rows,opacity] duration-moderate-01 ease-productive-standard',
-                toolbarExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none',
-              )}
-            >
-              <div className="overflow-hidden">
-                <ChatToolbar
-                  editor={editor}
-                  toolbar={toolbarProp}
-                  isMobile={false}
-                  hasMentions={!!(mentions || onMentionSearch)}
-                  hasSlashCommands={!!slashCommands}
-                  disabled={disabled}
-                />
-              </div>
-            </div>
+          {/* Action button outside the input on the left */}
+          {actionButton !== false && (
+            actionButton ?? (
+              (onFileUpload || onImageUpload) ? (
+                <Button
+                  variant="solid"
+                  size="icon-md"
+                  onClick={() => fileInputRef.current?.click()}
+                  title="Attach"
+                  aria-label="Attach file"
+                  className="shrink-0"
+                >
+                  <Icon icon={IconPlus} size="md" />
+                </Button>
+              ) : null
+            )
           )}
 
-          {/* Zone 3: Editor (always mounted — never unmount TipTap) */}
-          <div className="relative">
-            {/* Recording overlay — positioned over the editor, no AnimatePresence */}
-            {state === 'recording' && (
-              <RecordingOverlay
-                duration={voiceRecorder.duration}
-                analyserNode={voiceRecorder.analyserNode}
-                maxDuration={maxDuration}
-                onCancel={handleCancelRecording}
-              />
+          {/* Container */}
+          <div
+            role="region"
+            aria-label="Message composer"
+            className={cn(
+              'flex-1 min-w-0 overflow-hidden rounded-surface border border-surface-border-interactive bg-surface-panel-hover',
+              'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
+              'hover:bg-surface-panel-active',
+              'focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-9',
+              state === 'recording' && 'border-error-7/30',
+              isDragging && 'border-dashed border-accent-7 bg-accent-2',
+              disabled && 'opacity-action-disabled cursor-not-allowed',
+            )}
+            onFocus={() => setEditorFocused(true)}
+            onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setEditorFocused(false) }}
+            onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={handleDrop}
+          >
+            {/* Leading slot */}
+            {leadingSlot}
+
+            {/* Zone 1: Reply Banner */}
+            <AnimatePresence>
+              {replyTo && (
+                <ReplyBanner
+                  key="reply"
+                  author={replyTo.author}
+                  preview={replyTo.preview}
+                  onDismiss={replyTo.onDismiss}
+                />
+              )}
+            </AnimatePresence>
+
+            {/* Schedule Banner */}
+            <AnimatePresence>
+              {scheduledDate && (
+                <ScheduleBanner
+                  key="schedule"
+                  date={scheduledDate}
+                  onEdit={() => setScheduleDialogOpen(true)}
+                  onClear={() => setScheduledDate(null)}
+                />
+              )}
+            </AnimatePresence>
+
+            {/* Zone 2: Attachment Strip */}
+            <AnimatePresence>
+              {attachments.length > 0 && (
+                <AttachmentStrip
+                  key="attachments"
+                  attachments={attachments}
+                  onRemoveAttachment={removeAttachment}
+                />
+              )}
+            </AnimatePresence>
+
+            {/* Toolbar above input (inline variant) — CSS transition */}
+            {config.toolbarPosition === 'top' && editor && (
+              <div
+                className={cn(
+                  'grid transition-[grid-template-rows,opacity] duration-moderate-01 ease-productive-standard',
+                  toolbarExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none',
+                )}
+              >
+                <div className="overflow-hidden">
+                  <ChatToolbar
+                    editor={editor}
+                    toolbar={toolbarProp}
+                    isMobile={false}
+                    hasMentions={!!(mentions || onMentionSearch)}
+                    hasSlashCommands={!!slashCommands}
+                    disabled={disabled}
+                  />
+                </div>
+              </div>
             )}
 
-            {/* Editor + inline action icons in one flex row */}
-            <div
-              ref={editorWrapperRef}
-              className={cn(
-                'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-hidden',
-                state === 'recording' && 'invisible',
+            {/* Zone 3: Editor (always mounted — never unmount TipTap) */}
+            <div className="relative">
+              {/* Recording overlay — positioned over the editor, no AnimatePresence */}
+              {state === 'recording' && (
+                <RecordingOverlay
+                  duration={voiceRecorder.duration}
+                  analyserNode={voiceRecorder.analyserNode}
+                  maxDuration={maxDuration}
+                  onCancel={handleCancelRecording}
+                />
               )}
-              style={{
-                minHeight: config.minHeight,
-                maxHeight: maxHeightPx,
-                overflowY: 'auto',
-              }}
-              onClick={() => editor?.commands.focus()}
-            >
-              {/* Editor takes all available space */}
-              <div className="flex-1 min-w-0">
-                <EditorContent editor={editor} />
-              </div>
 
-              {/* Action icons — right-aligned inside input */}
-              {editor && state !== 'recording' && (
-                <div className="flex items-center gap-ds-01 shrink-0 ml-ds-03">
-                  {/* Formatting toggle (A button) */}
-                  <button
-                    type="button"
-                    onClick={() => setToolbarExpanded(prev => !prev)}
-                    title={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
-                    aria-label={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
-                    aria-pressed={toolbarExpanded}
-                    className={cn(
-                      'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target',
-                      'transition-colors duration-fast-01 ease-productive-standard',
-                      'hover:bg-surface-panel-hover',
-                      toolbarExpanded ? 'bg-surface-panel-hover text-accent-11' : 'text-surface-fg-subtle',
-                    )}
-                  >
-                    <Icon icon={IconTextSize} size="xs" />
-                  </button>
+              {/* Editor + inline action icons in one flex row */}
+              <div
+                ref={editorWrapperRef}
+                className={cn(
+                  'flex items-center px-ds-04 py-ds-03 cursor-text [&_.tiptap]:w-full [&_.tiptap]:outline-hidden',
+                  state === 'recording' && 'invisible',
+                )}
+                style={{
+                  minHeight: config.minHeight,
+                  maxHeight: maxHeightPx,
+                  overflowY: 'auto',
+                }}
+                onClick={() => editor?.commands.focus()}
+              >
+                {/* Editor takes all available space */}
+                <div className="flex-1 min-w-0">
+                  <EditorContent editor={editor} />
+                </div>
 
-                  {/* Emoji picker */}
-                  <div className="relative">
+                {/* Action icons — right-aligned inside input */}
+                {editor && state !== 'recording' && (
+                  <div className="flex items-center gap-ds-01 shrink-0 ml-ds-03">
+                    {/* Formatting toggle (A button) */}
                     <button
-                      ref={emojiAnchorRef}
                       type="button"
-                      onClick={() => setShowEmojiPicker(prev => !prev)}
-                      title="Emoji"
-                      aria-label="Emoji"
+                      onClick={() => setToolbarExpanded(prev => !prev)}
+                      title={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
+                      aria-label={toolbarExpanded ? 'Hide formatting' : 'Show formatting'}
+                      aria-pressed={toolbarExpanded}
                       className={cn(
-                        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target transition-colors duration-fast-01',
-                        showEmojiPicker ? 'bg-surface-panel-hover text-accent-11' : 'text-surface-fg-subtle hover:bg-surface-panel-hover hover:text-surface-fg',
+                        'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target',
+                        'transition-colors duration-fast-01 ease-productive-standard',
+                        'hover:bg-surface-panel-hover',
+                        toolbarExpanded ? 'bg-surface-panel-hover text-accent-11' : 'text-surface-fg-subtle',
                       )}
                     >
-                      <Icon icon={IconMoodSmile} size="xs" />
+                      <Icon icon={IconTextSize} size="xs" />
                     </button>
-                    {showEmojiPicker && ReactDOM.createPortal(
-                      <div ref={emojiFloatingRef} className="absolute z-popover" style={{ top: 0, left: 0 }}>
-                        <EmojiPickerPopover
-                          onSelect={({ id, native }) => {
-                            editor.chain().focus().insertContent({
-                              type: 'emojiNode',
-                              attrs: { id, native },
-                            }).run()
-                            setShowEmojiPicker(false)
-                          }}
-                          onClose={() => setShowEmojiPicker(false)}
-                        />
-                      </div>,
-                      document.body,
-                    )}
+
+                    {/* Emoji picker */}
+                    <div className="relative">
+                      <button
+                        ref={emojiAnchorRef}
+                        type="button"
+                        onClick={() => setShowEmojiPicker(prev => !prev)}
+                        title="Emoji"
+                        aria-label="Emoji"
+                        className={cn(
+                          'inline-flex h-ds-xs-plus w-ds-xs-plus items-center justify-center rounded-control touch-target transition-colors duration-fast-01',
+                          showEmojiPicker ? 'bg-surface-panel-hover text-accent-11' : 'text-surface-fg-subtle hover:bg-surface-panel-hover hover:text-surface-fg',
+                        )}
+                      >
+                        <Icon icon={IconMoodSmile} size="xs" />
+                      </button>
+                      {showEmojiPicker && ReactDOM.createPortal(
+                        <div ref={emojiFloatingRef} className="absolute z-popover" style={{ top: 0, left: 0 }}>
+                          <EmojiPickerPopover
+                            onSelect={({ id, native }) => {
+                              editor.chain().focus().insertContent({
+                                type: 'emojiNode',
+                                attrs: { id, native },
+                              }).run()
+                              setShowEmojiPicker(false)
+                            }}
+                            onClose={() => setShowEmojiPicker(false)}
+                          />
+                        </div>,
+                        document.body,
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
+
+            {/* Voice Note Review — shown in 'review' state */}
+            {state === 'review' && voiceNote && (
+              <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b border-b border-surface-border">
+                <AudioPlayer
+                  src={voiceNote.blob}
+                  duration={voiceNote.duration}
+                  waveformData={voiceNote.waveformData}
+                  className="flex-1"
+                />
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={handleDiscardVoice}
+                  aria-label="Discard voice note"
+                  title="Discard voice note"
+                  className="text-surface-fg-subtle hover:text-error-11"
+                >
+                  <Icon icon={IconTrash} size="sm" />
+                </Button>
+              </div>
+            )}
+
+            {/* Mobile BubbleMenu — shows on text selection */}
+            {isMobile && editor && !editorIsEmpty && (
+              <ChatBubbleMenu editor={editor} />
+            )}
+
+            {/* Zone 4: Toolbar below — CSS transition instead of AnimatePresence */}
+            {config.toolbarPosition === 'bottom' && editor && (
+              <div
+                className={cn(
+                  'grid transition-[grid-template-rows,opacity] duration-moderate-01 ease-productive-standard',
+                  showToolbar ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none',
+                )}
+              >
+                <div className="overflow-hidden">
+                  <ChatToolbar
+                    editor={editor}
+                    toolbar={toolbarProp}
+                    isMobile={isMobile}
+                    hasMentions={!!(mentions || onMentionSearch)}
+                    hasSlashCommands={!!slashCommands}
+                    disabled={disabled}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Character counter */}
+            {maxLength && charCountDisplay !== 'hidden' && (() => {
+              const ratio = charCount / maxLength
+              const showAlways = charCountDisplay === 'always'
+              const showFocus = charCountDisplay === 'focus' && editorFocused
+              const showNearLimit = (charCountDisplay === 'near-limit' || !charCountDisplay) && ratio >= 0.8
+              const visible = showAlways || showFocus || showNearLimit || ratio >= 1
+
+              if (!visible) return null
+
+              return (
+                <div className={cn(
+                  'flex justify-end px-ds-04 pb-ds-02 text-body-xs tabular-nums transition-opacity duration-fast-01',
+                  ratio >= 1 ? 'text-error-11 font-medium' : ratio >= 0.9 ? 'text-warning-11' : 'text-surface-fg-subtle',
+                )}>
+                  {charCount}/{maxLength}
+                </div>
+              )
+            })()}
+
+            {/* Trailing slot */}
+            {trailingSlot}
+
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              className="hidden"
+              onChange={handleFileInput}
+            />
           </div>
 
-          {/* Voice Note Review — shown in 'review' state */}
-          {state === 'review' && voiceNote && (
-            <div className="flex items-center gap-ds-03 px-ds-04 py-ds-02b border-b border-surface-border">
-              <AudioPlayer
-                src={voiceNote.blob}
-                duration={voiceNote.duration}
-                waveformData={voiceNote.waveformData}
-                className="flex-1"
-              />
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={handleDiscardVoice}
-                aria-label="Discard voice note"
-                title="Discard voice note"
-                className="text-surface-fg-subtle hover:text-error-11"
-              >
-                <Icon icon={IconTrash} size="sm" />
-              </Button>
-            </div>
-          )}
-
-          {/* Mobile BubbleMenu — shows on text selection */}
-          {isMobile && editor && !editorIsEmpty && (
-            <ChatBubbleMenu editor={editor} />
-          )}
-
-          {/* Zone 4: Toolbar below — CSS transition instead of AnimatePresence */}
-          {config.toolbarPosition === 'bottom' && editor && (
-            <div
-              className={cn(
-                'grid transition-[grid-template-rows,opacity] duration-moderate-01 ease-productive-standard',
-                showToolbar ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none',
-              )}
-            >
-              <div className="overflow-hidden">
-                <ChatToolbar
-                  editor={editor}
-                  toolbar={toolbarProp}
-                  isMobile={isMobile}
-                  hasMentions={!!(mentions || onMentionSearch)}
-                  hasSlashCommands={!!slashCommands}
-                  disabled={disabled}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Character counter */}
-          {maxLength && charCountDisplay !== 'hidden' && (() => {
-            const ratio = charCount / maxLength
-            const showAlways = charCountDisplay === 'always'
-            const showFocus = charCountDisplay === 'focus' && editorFocused
-            const showNearLimit = (charCountDisplay === 'near-limit' || !charCountDisplay) && ratio >= 0.8
-            const visible = showAlways || showFocus || showNearLimit || ratio >= 1
-
-            if (!visible) return null
-
-            return (
-              <div className={cn(
-                'flex justify-end px-ds-04 pb-ds-02 text-body-xs tabular-nums transition-opacity duration-fast-01',
-                ratio >= 1 ? 'text-error-11 font-medium' : ratio >= 0.9 ? 'text-warning-11' : 'text-surface-fg-subtle',
-              )}>
-                {charCount}/{maxLength}
-              </div>
-            )
-          })()}
-
-          {/* Trailing slot */}
-          {trailingSlot}
-
-          {/* Hidden file input */}
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            className="hidden"
-            onChange={handleFileInput}
-          />
-        </div>
-
-        {/* Send/mic/recording buttons — animated transitions between states */}
-        <div className="flex items-center gap-ds-02 shrink-0">
-          {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
-            <SplitSendDropdown options={sendOptions} />
-          )}
-          <AnimatePresence mode="popLayout" initial={false}>
-            {state === 'recording' && (
-              <motion.div
-                key="recording"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: durations.moderate01 }}
-                className="flex items-center gap-ds-02"
-              >
-                <Button variant="soft" size={btnSize} onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11">
-                  <Icon icon={IconTrash} size={iconSize} />
-                </Button>
-                <Button variant="solid" size={btnSize} color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
-                  <Icon icon={IconSquare} size={iconSize} />
-                </Button>
-              </motion.div>
+          {/* Send/mic/recording buttons — animated transitions between states */}
+          <div className="flex items-center gap-ds-02 shrink-0">
+            {sendOptions && sendOptions.length > 0 && state !== 'recording' && (
+              <SplitSendDropdown options={sendOptions} />
             )}
-            {isStreaming && state !== 'recording' && (
-              <motion.div
-                key="streaming"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: durations.moderate01 }}
-              >
-                <Button variant="solid" size={btnSize} color="error" onClick={onCancel} aria-label="Stop" title="Stop">
-                  <Icon icon={IconSquare} size={iconSize} />
-                </Button>
-              </motion.div>
-            )}
-            {!isStreaming && state !== 'recording' && hasContent && onSchedule && (
-              <motion.div
-                key="split-send"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: durations.moderate01 }}
-              >
-                <SplitButton
-                  onClick={handleSubmit}
-                  disabled={disabled}
-                  aria-label={scheduledDate ? 'Schedule send' : 'Send'}
-                  size={btnSize}
-                  dropdownContent={
-                    <ScheduleDropdownContent
-                      onSchedule={(date) => setScheduledDate(date)}
-                      onClose={() => {}}
-                      onOpenDialog={() => setScheduleDialogOpen(true)}
-                    />
-                  }
+            <AnimatePresence mode="popLayout" initial={false}>
+              {state === 'recording' && (
+                <motion.div
+                  key="recording"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: durations.moderate01 }}
+                  className="flex items-center gap-ds-02"
                 >
-                  <Icon icon={scheduledDate ? IconClock : IconSend} size={iconSize} />
-                </SplitButton>
-              </motion.div>
-            )}
-            {!isStreaming && state !== 'recording' && hasContent && !onSchedule && (
-              <motion.div
-                key="send"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: durations.moderate01 }}
-              >
-                <Button variant="solid" size={btnSize} onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
-                  <Icon icon={IconSend} size={iconSize} />
-                </Button>
-              </motion.div>
-            )}
-            {!isStreaming && state !== 'recording' && !hasContent && onVoiceRecord && (
-              <motion.div
-                key="mic"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: durations.moderate01 }}
-              >
-                <Button variant="soft" size={btnSize} onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
-                  <Icon icon={IconMicrophone} size={iconSize} />
-                </Button>
-              </motion.div>
-            )}
-            {!isStreaming && state !== 'recording' && !hasContent && !onVoiceRecord && (
-              <motion.div
-                key="send-disabled"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: durations.moderate01 }}
-              >
-                <Button variant="solid" size={btnSize} disabled aria-label="Send" title="Send">
-                  <Icon icon={IconSend} size={iconSize} />
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  <Button variant="soft" size={btnSize} onClick={handleCancelRecording} aria-label="Cancel recording" title="Cancel recording" className="text-surface-fg-subtle hover:text-error-11">
+                    <Icon icon={IconTrash} size={iconSize} />
+                  </Button>
+                  <Button variant="solid" size={btnSize} color="error" onClick={handleStopRecording} aria-label="Stop recording" title="Stop recording">
+                    <Icon icon={IconSquare} size={iconSize} />
+                  </Button>
+                </motion.div>
+              )}
+              {isStreaming && state !== 'recording' && (
+                <motion.div
+                  key="streaming"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: durations.moderate01 }}
+                >
+                  <Button variant="solid" size={btnSize} color="error" onClick={onCancel} aria-label="Stop" title="Stop">
+                    <Icon icon={IconSquare} size={iconSize} />
+                  </Button>
+                </motion.div>
+              )}
+              {!isStreaming && state !== 'recording' && hasContent && onSchedule && (
+                <motion.div
+                  key="split-send"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: durations.moderate01 }}
+                >
+                  <SplitButton
+                    onClick={handleSubmit}
+                    disabled={disabled}
+                    aria-label={scheduledDate ? 'Schedule send' : 'Send'}
+                    size={btnSize}
+                    dropdownContent={
+                      <ScheduleDropdownContent
+                        onSchedule={(date) => setScheduledDate(date)}
+                        onClose={() => {}}
+                        onOpenDialog={() => setScheduleDialogOpen(true)}
+                      />
+                    }
+                  >
+                    <Icon icon={scheduledDate ? IconClock : IconSend} size={iconSize} />
+                  </SplitButton>
+                </motion.div>
+              )}
+              {!isStreaming && state !== 'recording' && hasContent && !onSchedule && (
+                <motion.div
+                  key="send"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: durations.moderate01 }}
+                >
+                  <Button variant="solid" size={btnSize} onClick={handleSubmit} disabled={disabled} aria-label="Send" title="Send">
+                    <Icon icon={IconSend} size={iconSize} />
+                  </Button>
+                </motion.div>
+              )}
+              {!isStreaming && state !== 'recording' && !hasContent && onVoiceRecord && (
+                <motion.div
+                  key="mic"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: durations.moderate01 }}
+                >
+                  <Button variant="soft" size={btnSize} onClick={handleStartRecording} aria-label="Record voice message" title="Record voice message">
+                    <Icon icon={IconMicrophone} size={iconSize} />
+                  </Button>
+                </motion.div>
+              )}
+              {!isStreaming && state !== 'recording' && !hasContent && !onVoiceRecord && (
+                <motion.div
+                  key="send-disabled"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: durations.moderate01 }}
+                >
+                  <Button variant="solid" size={btnSize} disabled aria-label="Send" title="Send">
+                    <Icon icon={IconSend} size={iconSize} />
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Disclaimer */}
+          {disclaimer && (
+            <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle">
+              {disclaimer}
+            </p>
+          )}
+
+          {/* Schedule Dialog (full picker) */}
+          {onSchedule && (
+            <ScheduleDialog
+              open={scheduleDialogOpen}
+              onOpenChange={setScheduleDialogOpen}
+              onSchedule={(date) => setScheduledDate(date)}
+              initialDate={scheduledDate}
+            />
+          )}
         </div>
-
-        {/* Disclaimer */}
-        {disclaimer && (
-          <p className="mt-ds-02 text-center text-caption text-surface-fg-subtle">
-            {disclaimer}
-          </p>
-        )}
-
-        {/* Schedule Dialog (full picker) */}
-        {onSchedule && (
-          <ScheduleDialog
-            open={scheduleDialogOpen}
-            onOpenChange={setScheduleDialogOpen}
-            onSchedule={(date) => setScheduledDate(date)}
-            initialDate={scheduledDate}
-          />
-        )}
-      </div>
+      </MotionPreference>
     )
   },
 )

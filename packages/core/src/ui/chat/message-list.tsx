@@ -3,6 +3,7 @@
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../../motion/motion-preference'
 import { tweens } from '../lib/motion'
 import { cn } from '../lib/utils'
 import { Spinner } from '../spinner'
@@ -107,54 +108,56 @@ const MessageList = React.forwardRef<HTMLDivElement, MessageListProps>(
     }, [onScrollToBottom])
 
     return (
-      <div
-        ref={ref}
-        className={cn('relative flex flex-1 flex-col overflow-hidden', className)}
-        {...props}
-      >
-        {headerSlot}
+      <MotionPreference>
         <div
-          ref={scrollRef}
-          role="log"
-          aria-live="polite"
-          aria-relevant="additions"
-          className="flex-1 overflow-y-auto px-ds-05 py-ds-04"
-          style={{
-            scrollbarWidth: 'thin',
-            scrollbarColor: 'var(--color-surface-border) transparent',
-          }}
-          onScroll={handleScroll}
+          ref={ref}
+          className={cn('relative flex flex-1 flex-col overflow-hidden', className)}
+          {...props}
         >
-          {loadingMore && (
-            <div className="flex justify-center py-ds-03">
-              <Spinner size="sm" />
-            </div>
-          )}
-          {isEmpty ? (
-            emptySlot
-          ) : (
-            <div className="flex flex-col gap-ds-04">
-              <AnimatePresence initial={false}>{children}</AnimatePresence>
-            </div>
-          )}
-        </div>
+          {headerSlot}
+          <div
+            ref={scrollRef}
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions"
+            className="flex-1 overflow-y-auto px-ds-05 py-ds-04"
+            style={{
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'var(--color-surface-border) transparent',
+            }}
+            onScroll={handleScroll}
+          >
+            {loadingMore && (
+              <div className="flex justify-center py-ds-03">
+                <Spinner size="sm" />
+              </div>
+            )}
+            {isEmpty ? (
+              emptySlot
+            ) : (
+              <div className="flex flex-col gap-ds-04">
+                <AnimatePresence initial={false}>{children}</AnimatePresence>
+              </div>
+            )}
+          </div>
 
-        {/* "N new" floating pill */}
-        <AnimatePresence>
-          {showNewPill && (
-            <motion.button
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={tweens.fade}
-              onClick={handleScrollToBottom}
-              className="absolute bottom-ds-04 left-1/2 z-10 -translate-x-1/2 rounded-pill bg-accent-9 px-ds-04 py-ds-02 text-body-xs font-medium text-accent-fg shadow-raised transition-colors hover:bg-accent-10"
-            >
-              {newMessageCount} new
-            </motion.button>
-          )}
-        </AnimatePresence>
-      </div>
+          {/* "N new" floating pill */}
+          <AnimatePresence>
+            {showNewPill && (
+              <motion.button
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={tweens.fade}
+                onClick={handleScrollToBottom}
+                className="absolute bottom-ds-04 left-1/2 z-10 -translate-x-1/2 rounded-pill bg-accent-9 px-ds-04 py-ds-02 text-body-xs font-medium text-accent-fg shadow-raised transition-colors hover:bg-accent-10"
+              >
+                {newMessageCount} new
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </div>
+      </MotionPreference>
     )
   },
 )

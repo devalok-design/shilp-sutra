@@ -11,14 +11,20 @@ shilp-sutra uses **Framer Motion** for all animations. The system follows two ru
 
 ## Setup
 
-Wrap your app root with `<MotionProvider>` to enable the motion system:
+**No setup is required.** Every shilp-sutra component already respects the
+reader's OS reduced-motion setting on its own, and `useMotion()` works with or
+without a provider.
+
+Mount `<MotionProvider>` only when you want to **override** that default — for
+example to expose an in-app "reduce motion" switch that works independently of
+the OS setting:
 
 ```tsx
 import { MotionProvider } from '@devalok/shilp-sutra/motion'
 
 function App() {
   return (
-    <MotionProvider>
+    <MotionProvider reducedMotion={userPrefersCalm ? true : 'user'}>
       {/* your app */}
     </MotionProvider>
   )
@@ -26,7 +32,8 @@ function App() {
 ```
 
 `MotionProvider` does two things:
-1. Wraps children in Framer Motion's `<MotionConfig>` for global reduced-motion handling
+1. Wraps children in Framer Motion's `<MotionConfig>`, which overrides the
+   per-component default described under [Reduced Motion](#reduced-motion)
 2. Provides `useMotion()` context with spring/tween presets and reduced-motion state
 
 ### Props
@@ -230,11 +237,29 @@ Use Framer Motion's gesture props directly:
 
 ## Reduced Motion
 
-`MotionProvider` automatically handles `prefers-reduced-motion`:
+`prefers-reduced-motion` is respected **by default, with no provider mounted**.
+Each component wraps its own animated subtree in `<MotionPreference>`, which
+opts that subtree into Framer Motion's `reducedMotion="user"` unless something
+above it has already made the call.
 
-- **`reducedMotion="user"` (default)**: Reads the OS preference. When enabled, Framer Motion suppresses all animations.
-- **`reducedMotion={true}`**: Force all animations off (useful for testing or user settings).
-- **`reducedMotion={false}`**: Force all animations on.
+What "reduced" means here is deliberately not "nothing moves":
+
+- **Suppressed**: every transform (`x`, `y`, `scale`, `rotate`, `skew`) plus
+  `width`, `height`, `top`, `left`, `right`, `bottom` — and layout animations.
+  These are the vestibular triggers WCAG 2.3.3 is about.
+- **Kept**: `opacity`, colour and `filter`. A cross-fade still reads as a state
+  change without moving anything, so removing it would cost clarity and buy
+  nothing.
+
+Mounting `<MotionProvider>` overrides that default for its whole subtree:
+
+- **`reducedMotion="user"` (default)**: Reads the OS preference — same as the
+  no-provider behaviour, just applied at one place.
+- **`reducedMotion={true}`**: Force reduced motion on, whatever the OS says.
+- **`reducedMotion={false}`**: Force full motion on, whatever the OS says. Use
+  this rather than a bare `<MotionConfig reducedMotion="never">` — a hand-rolled
+  `MotionConfig` set to `"never"` is indistinguishable from the framework
+  default, so components cannot tell it apart and will re-apply the OS setting.
 
 The `useMotion()` hook exposes `reducedMotion: boolean` for custom logic:
 
@@ -246,7 +271,24 @@ if (reducedMotion) {
 }
 ```
 
-No action needed from consumers for standard animations — `MotionProvider` handles it globally.
+No action needed from consumers for standard animations — components handle it
+themselves, whether or not a provider is mounted.
+
+### Building your own animated component
+
+If you write a component that renders `motion.*` and lives outside this library,
+wrap its animated root so it inherits the same default:
+
+```tsx
+import { MotionPreference } from '@devalok/shilp-sutra/motion'
+
+<MotionPreference>
+  <motion.div animate={{ x: 100 }} />
+</MotionPreference>
+```
+
+It renders no DOM, and nesting is self-cancelling — only the outermost one in a
+given tree configures anything, so wrapping is always safe.
 
 ## Decision Tree
 

@@ -5,6 +5,7 @@ import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
 import { useIsMobile } from '../hooks/use-mobile'
+import { MotionPreference } from '../motion/motion-preference'
 import { BottomSheet } from './lib/bottom-sheet'
 import { springs, tweens } from './lib/motion'
 import { useControllableOpen } from './lib/use-controllable-open'
@@ -60,33 +61,35 @@ const PopoverContent = React.forwardRef<
   }
 
   return (
-    <AnimatePresence>
-      {open && (
-        <PopoverPrimitive.Portal forceMount>
-          <PopoverPrimitive.Content
-            ref={ref}
-            align={align}
-            sideOffset={sideOffset}
-            forceMount
-            asChild
-            {...props}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ ...springs.snappy, opacity: tweens.fade }}
-              className={cn(
-                'z-popover w-72 rounded-overlay bg-surface-overlay p-ds-05 text-surface-fg shadow-floating outline-hidden',
-                className,
-              )}
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <PopoverPrimitive.Portal forceMount>
+            <PopoverPrimitive.Content
+              ref={ref}
+              align={align}
+              sideOffset={sideOffset}
+              forceMount
+              asChild
+              {...props}
             >
-              {children}
-            </motion.div>
-          </PopoverPrimitive.Content>
-        </PopoverPrimitive.Portal>
-      )}
-    </AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ ...springs.snappy, opacity: tweens.fade }}
+                className={cn(
+                  'z-popover w-72 rounded-overlay bg-surface-overlay p-ds-05 text-surface-fg shadow-floating outline-hidden',
+                  className,
+                )}
+              >
+                {children}
+              </motion.div>
+            </PopoverPrimitive.Content>
+          </PopoverPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 PopoverContent.displayName = PopoverPrimitive.Content.displayName

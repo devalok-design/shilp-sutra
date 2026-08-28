@@ -4,6 +4,7 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Icon } from '../ui/icon'
@@ -169,42 +170,44 @@ function FilterMultiSelect({
   }
 
   return (
-    <MultiSelectPopover
-      items={items}
-      value={value}
-      onValueChange={onValueChange}
-      searchPlaceholder={`Search ${label.toLowerCase()}...`}
-    >
-      <button
-        type="button"
-        className={cn(
-          'flex items-center justify-between gap-ds-02 whitespace-nowrap rounded-control border bg-surface-panel-hover text-surface-fg',
-          'hover:bg-surface-panel-active transition-colors duration-fast-01 ease-productive-standard',
-          triggerSizeClasses[size],
-          count > 0 ? 'border-accent-7' : 'border-surface-border-strong',
-          'w-40',
-          className,
-        )}
+    <MotionPreference>
+      <MultiSelectPopover
+        items={items}
+        value={value}
+        onValueChange={onValueChange}
+        searchPlaceholder={`Search ${label.toLowerCase()}...`}
       >
-        <span className="flex min-w-0 items-center gap-ds-02">
-          <span className="truncate">{label}</span>
-          {count > 0 && (
-            <motion.span
-              key={count}
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={springs.snappy}
-              className="inline-flex"
-            >
-              <Badge size="xs" variant="solid" className="ml-ds-01">
-                {count}
-              </Badge>
-            </motion.span>
+        <button
+          type="button"
+          className={cn(
+            'flex items-center justify-between gap-ds-02 whitespace-nowrap rounded-control border bg-surface-panel-hover text-surface-fg',
+            'hover:bg-surface-panel-active transition-colors duration-fast-01 ease-productive-standard',
+            triggerSizeClasses[size],
+            count > 0 ? 'border-accent-7' : 'border-surface-border-strong',
+            'w-40',
+            className,
           )}
-        </span>
-        <Icon icon={IconChevronDown} size="xs" className="opacity-50 shrink-0" />
-      </button>
-    </MultiSelectPopover>
+        >
+          <span className="flex min-w-0 items-center gap-ds-02">
+            <span className="truncate">{label}</span>
+            {count > 0 && (
+              <motion.span
+                key={count}
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={springs.snappy}
+                className="inline-flex"
+              >
+                <Badge size="xs" variant="solid" className="ml-ds-01">
+                  {count}
+                </Badge>
+              </motion.span>
+            )}
+          </span>
+          <Icon icon={IconChevronDown} size="xs" className="opacity-50 shrink-0" />
+        </button>
+      </MultiSelectPopover>
+    </MotionPreference>
   )
 }
 

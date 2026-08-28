@@ -6,6 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { useFormField } from './form'
 import { Icon } from './icon'
 import { IconProvider, type IconSize } from './icon-context'
@@ -449,179 +450,181 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
     const ariaRequired = fieldCtx.required
 
     return (
-      <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
-        <div className={cn('relative', className)} {...rest}>
-        <PopoverPrimitive.Trigger asChild disabled={disabled}>
-          {/* role=combobox on a <div>, NOT a <button> — a native button can't
-              legally contain the chip remove-<button>s rendered in multi-select
-              (invalid HTML + a11y break). This is the W3C select-only combobox
-              pattern. Radix Trigger wires click/toggle; we add the keyboard-open
-              (Enter/Space/ArrowDown) a real button would have given for free. */}
-          <div
-            ref={ref}
-            role="combobox"
-            tabIndex={disabled ? -1 : 0}
-            data-disabled={disabled || undefined}
-            id={externalId}
-            aria-expanded={open}
-            aria-controls={listboxId}
-            aria-haspopup="listbox"
-            aria-disabled={disabled || undefined}
-            // The trigger is a div[role=combobox] — non-labellable, so `<Label htmlFor>`
-            // can't target it. Inside a FormField, adopt the label's id via
-            // aria-labelledby; explicit accessibleLabel wins; placeholder is the
-            // standalone fallback.
-            aria-labelledby={accessibleLabel ? undefined : fieldCtx.labelId}
-            aria-label={accessibleLabel ?? (fieldCtx.labelId ? undefined : placeholder)}
-            aria-invalid={isError || undefined}
-            aria-describedby={ariaDescribedBy}
-            aria-required={ariaRequired || undefined}
-            onKeyDown={(e) => {
-              if (disabled) return
-              if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
-                e.preventDefault()
-                handleOpenChange(true)
-              }
-            }}
-            className={cn(
-              comboboxTriggerVariants({ size }),
-              'cursor-pointer',
-              open && 'border-accent-7',
-              state && stateBorderClasses[state],
-              triggerClassName,
-            )}
-          >
-            {renderTriggerContent()}
-            <Icon icon={IconChevronDown} size={resolvedIconSize} className={cn("ml-ds-02 shrink-0 opacity-50 transition-transform duration-fast-01 ease-productive-standard", open && 'rotate-180')} />
-          </div>
-        </PopoverPrimitive.Trigger>
-
-        <PopoverPrimitive.Portal>
-          <PopoverPrimitive.Content
-            asChild
-            sideOffset={4}
-            align="start"
-            onOpenAutoFocus={(e) => {
-              e.preventDefault()
-              searchInputRef.current?.focus()
-            }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ ...springs.snappy, opacity: tweens.fade }}
+      <MotionPreference>
+        <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+          <div className={cn('relative', className)} {...rest}>
+          <PopoverPrimitive.Trigger asChild disabled={disabled}>
+            {/* role=combobox on a <div>, NOT a <button> — a native button can't
+                legally contain the chip remove-<button>s rendered in multi-select
+                (invalid HTML + a11y break). This is the W3C select-only combobox
+                pattern. Radix Trigger wires click/toggle; we add the keyboard-open
+                (Enter/Space/ArrowDown) a real button would have given for free. */}
+            <div
+              ref={ref}
+              role="combobox"
+              tabIndex={disabled ? -1 : 0}
+              data-disabled={disabled || undefined}
+              id={externalId}
+              aria-expanded={open}
+              aria-controls={listboxId}
+              aria-haspopup="listbox"
+              aria-disabled={disabled || undefined}
+              // The trigger is a div[role=combobox] — non-labellable, so `<Label htmlFor>`
+              // can't target it. Inside a FormField, adopt the label's id via
+              // aria-labelledby; explicit accessibleLabel wins; placeholder is the
+              // standalone fallback.
+              aria-labelledby={accessibleLabel ? undefined : fieldCtx.labelId}
+              aria-label={accessibleLabel ?? (fieldCtx.labelId ? undefined : placeholder)}
+              aria-invalid={isError || undefined}
+              aria-describedby={ariaDescribedBy}
+              aria-required={ariaRequired || undefined}
+              onKeyDown={(e) => {
+                if (disabled) return
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                  e.preventDefault()
+                  handleOpenChange(true)
+                }
+              }}
               className={cn(
-                'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-overlay bg-surface-overlay shadow-floating',
+                comboboxTriggerVariants({ size }),
+                'cursor-pointer',
+                open && 'border-accent-7',
+                state && stateBorderClasses[state],
+                triggerClassName,
               )}
             >
-                  {/* Search input */}
-                  <div className="flex items-center gap-ds-02 border-b border-surface-border px-ds-04">
-                    <Icon icon={IconSearch} size="sm" className="shrink-0 text-surface-fg-subtle" />
-                    <input
-                      ref={searchInputRef}
-                      type="text"
-                      className="flex-1 bg-transparent py-ds-03 text-body-md outline-hidden placeholder:text-surface-fg-muted"
-                      placeholder={searchPlaceholder}
-                      value={search}
-                      onChange={(e) => {
-                        setSearch(e.target.value)
-                        setHighlightedIndex(-1)
-                      }}
-                      onKeyDown={handleKeyDown}
-                      aria-autocomplete="list"
-                      aria-controls={listboxId}
-                      aria-activedescendant={
-                        highlightedIndex >= 0
-                          ? `${optionIdPrefix}-option-${highlightedIndex}`
-                          : undefined
-                      }
-                      aria-label="Search options"
-                    />
-                  </div>
+              {renderTriggerContent()}
+              <Icon icon={IconChevronDown} size={resolvedIconSize} className={cn("ml-ds-02 shrink-0 opacity-50 transition-transform duration-fast-01 ease-productive-standard", open && 'rotate-180')} />
+            </div>
+          </PopoverPrimitive.Trigger>
 
-                  {/* Options list */}
-                  {filteredOptions.length === 0 ? (
-                    <div className="px-ds-04 py-ds-05 text-center text-body-md text-surface-fg-subtle">
-                      {emptyMessage}
+          <PopoverPrimitive.Portal>
+            <PopoverPrimitive.Content
+              asChild
+              sideOffset={4}
+              align="start"
+              onOpenAutoFocus={(e) => {
+                e.preventDefault()
+                searchInputRef.current?.focus()
+              }}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ ...springs.snappy, opacity: tweens.fade }}
+                className={cn(
+                  'z-popover w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-overlay bg-surface-overlay shadow-floating',
+                )}
+              >
+                    {/* Search input */}
+                    <div className="flex items-center gap-ds-02 border-b border-surface-border px-ds-04">
+                      <Icon icon={IconSearch} size="sm" className="shrink-0 text-surface-fg-subtle" />
+                      <input
+                        ref={searchInputRef}
+                        type="text"
+                        className="flex-1 bg-transparent py-ds-03 text-body-md outline-hidden placeholder:text-surface-fg-muted"
+                        placeholder={searchPlaceholder}
+                        value={search}
+                        onChange={(e) => {
+                          setSearch(e.target.value)
+                          setHighlightedIndex(-1)
+                        }}
+                        onKeyDown={handleKeyDown}
+                        aria-autocomplete="list"
+                        aria-controls={listboxId}
+                        aria-activedescendant={
+                          highlightedIndex >= 0
+                            ? `${optionIdPrefix}-option-${highlightedIndex}`
+                            : undefined
+                        }
+                        aria-label="Search options"
+                      />
                     </div>
-                  ) : (
-                    <ul
-                      ref={listRef}
-                      id={listboxId}
-                      role="listbox"
-                      aria-multiselectable={multiple || undefined}
-                      className="overflow-auto p-ds-02"
-                      style={{ maxHeight: `${maxVisible * ITEM_HEIGHT_PX}px` }}
-                    >
-                      {filteredOptions.map((option, index) => {
-                        const selected = isSelected(option.value)
-                        return (
-                          <li
-                            key={option.value}
-                            id={`${optionIdPrefix}-option-${index}`}
-                            role="option"
-                            aria-selected={selected}
-                            aria-disabled={option.disabled || undefined}
-                            className={cn(
-                              'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-control px-ds-04 py-ds-03 text-body-md outline-hidden',
-                              'transition-colors duration-fast-01 ease-productive-standard',
-                              highlightedIndex === index &&
-                                'bg-accent-4',
-                              selected && 'text-accent-11',
-                              option.disabled &&
-                                'pointer-events-none opacity-action-disabled',
-                            )}
-                            onClick={() => {
-                              if (!option.disabled) {
-                                handleSelect(option.value)
-                              }
-                            }}
-                            onKeyDown={(e) => {
-                              if (!option.disabled && (e.key === 'Enter' || e.key === ' ')) {
-                                e.preventDefault()
-                                handleSelect(option.value)
-                              }
-                            }}
-                            onMouseEnter={() => {
-                              if (!option.disabled) {
-                                setHighlightedIndex(index)
-                              }
-                            }}
-                          >
-                            {option.icon && (
-                              <span className="flex h-ico-sm w-ico-sm items-center justify-center shrink-0">
-                                <IconProvider size={resolvedIconSize}>
-                                  {normalizeIcon(option.icon)}
-                                </IconProvider>
-                              </span>
-                            )}
-                            <span className="flex flex-1 flex-col">
-                              {renderOption ? (
-                                renderOption(option, selected)
-                              ) : (
-                                <>
-                                  <span>{option.label}</span>
-                                  {option.description && (
-                                    <span className="text-body-sm text-surface-fg-muted">
-                                      {option.description}
-                                    </span>
-                                  )}
-                                </>
+
+                    {/* Options list */}
+                    {filteredOptions.length === 0 ? (
+                      <div className="px-ds-04 py-ds-05 text-center text-body-md text-surface-fg-subtle">
+                        {emptyMessage}
+                      </div>
+                    ) : (
+                      <ul
+                        ref={listRef}
+                        id={listboxId}
+                        role="listbox"
+                        aria-multiselectable={multiple || undefined}
+                        className="overflow-auto p-ds-02"
+                        style={{ maxHeight: `${maxVisible * ITEM_HEIGHT_PX}px` }}
+                      >
+                        {filteredOptions.map((option, index) => {
+                          const selected = isSelected(option.value)
+                          return (
+                            <li
+                              key={option.value}
+                              id={`${optionIdPrefix}-option-${index}`}
+                              role="option"
+                              aria-selected={selected}
+                              aria-disabled={option.disabled || undefined}
+                              className={cn(
+                                'relative flex cursor-pointer select-none items-center gap-ds-03 rounded-control px-ds-04 py-ds-03 text-body-md outline-hidden',
+                                'transition-colors duration-fast-01 ease-productive-standard',
+                                highlightedIndex === index &&
+                                  'bg-accent-4',
+                                selected && 'text-accent-11',
+                                option.disabled &&
+                                  'pointer-events-none opacity-action-disabled',
                               )}
-                            </span>
-                            {selected && (
-                              <Icon icon={IconCheck} size="sm" className="shrink-0" />
-                            )}
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  )}
-                </motion.div>
-          </PopoverPrimitive.Content>
-        </PopoverPrimitive.Portal>
-        </div>
-      </PopoverPrimitive.Root>
+                              onClick={() => {
+                                if (!option.disabled) {
+                                  handleSelect(option.value)
+                                }
+                              }}
+                              onKeyDown={(e) => {
+                                if (!option.disabled && (e.key === 'Enter' || e.key === ' ')) {
+                                  e.preventDefault()
+                                  handleSelect(option.value)
+                                }
+                              }}
+                              onMouseEnter={() => {
+                                if (!option.disabled) {
+                                  setHighlightedIndex(index)
+                                }
+                              }}
+                            >
+                              {option.icon && (
+                                <span className="flex h-ico-sm w-ico-sm items-center justify-center shrink-0">
+                                  <IconProvider size={resolvedIconSize}>
+                                    {normalizeIcon(option.icon)}
+                                  </IconProvider>
+                                </span>
+                              )}
+                              <span className="flex flex-1 flex-col">
+                                {renderOption ? (
+                                  renderOption(option, selected)
+                                ) : (
+                                  <>
+                                    <span>{option.label}</span>
+                                    {option.description && (
+                                      <span className="text-body-sm text-surface-fg-muted">
+                                        {option.description}
+                                      </span>
+                                    )}
+                                  </>
+                                )}
+                              </span>
+                              {selected && (
+                                <Icon icon={IconCheck} size="sm" className="shrink-0" />
+                              )}
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    )}
+                  </motion.div>
+            </PopoverPrimitive.Content>
+          </PopoverPrimitive.Portal>
+          </div>
+        </PopoverPrimitive.Root>
+      </MotionPreference>
     )
   },
 )

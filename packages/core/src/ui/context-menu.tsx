@@ -5,6 +5,7 @@ import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react'
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from "react"
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
 import { cn } from "./lib/utils"
@@ -98,44 +99,10 @@ const ContextMenuSubContent = React.forwardRef<
   const open = React.useContext(ContextMenuSubOpenContext)
 
   return (
-    <AnimatePresence>
-      {open && (
-        <ContextMenuPrimitive.SubContent
-          ref={ref}
-          forceMount
-          asChild
-          {...props}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ ...springs.snappy, opacity: tweens.fade }}
-            className={cn(
-              "z-popover min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
-              className
-            )}
-          >
-            {children}
-          </motion.div>
-        </ContextMenuPrimitive.SubContent>
-      )}
-    </AnimatePresence>
-  )
-})
-ContextMenuSubContent.displayName = ContextMenuPrimitive.SubContent.displayName
-
-const ContextMenuContent = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>
->(({ className, children, ...props }, ref) => {
-  const open = React.useContext(ContextMenuOpenContext)
-
-  return (
-    <AnimatePresence>
-      {open && (
-        <ContextMenuPrimitive.Portal forceMount>
-          <ContextMenuPrimitive.Content
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <ContextMenuPrimitive.SubContent
             ref={ref}
             forceMount
             asChild
@@ -147,16 +114,54 @@ const ContextMenuContent = React.forwardRef<
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ ...springs.snappy, opacity: tweens.fade }}
               className={cn(
-                "z-popover rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
+                "z-popover min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
                 className
               )}
             >
               {children}
             </motion.div>
-          </ContextMenuPrimitive.Content>
-        </ContextMenuPrimitive.Portal>
-      )}
-    </AnimatePresence>
+          </ContextMenuPrimitive.SubContent>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
+  )
+})
+ContextMenuSubContent.displayName = ContextMenuPrimitive.SubContent.displayName
+
+const ContextMenuContent = React.forwardRef<
+  React.ElementRef<typeof ContextMenuPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>
+>(({ className, children, ...props }, ref) => {
+  const open = React.useContext(ContextMenuOpenContext)
+
+  return (
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <ContextMenuPrimitive.Portal forceMount>
+            <ContextMenuPrimitive.Content
+              ref={ref}
+              forceMount
+              asChild
+              {...props}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ ...springs.snappy, opacity: tweens.fade }}
+                className={cn(
+                  "z-popover rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating",
+                  className
+                )}
+              >
+                {children}
+              </motion.div>
+            </ContextMenuPrimitive.Content>
+          </ContextMenuPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 ContextMenuContent.displayName = ContextMenuPrimitive.Content.displayName

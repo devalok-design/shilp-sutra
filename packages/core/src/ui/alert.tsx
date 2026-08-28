@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { motionProps,springs } from './lib/motion'
 import { cn } from './lib/utils'
@@ -132,56 +133,58 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     const titleClass = size === 'sm' ? 'text-body-sm' : size === 'lg' ? 'text-heading-xs' : 'text-body-md'
 
     return (
-      <AnimatePresence onExitComplete={onDismiss}>
-        {isVisible && (
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={springs.snappy}
-            data-palette={color}
-            className={cn(alertVariants({ variant, color, size }), className)}
-            role="alert"
-            {...motionProps(props)}
-          >
-            <Icon icon={AlertIcon} size={iconSize} className="mt-ds-01 shrink-0" />
-            <div className="flex-1 min-w-0">
-              {title && <p className={cn(titleClass, 'font-semibold mb-ds-01')}>{title}</p>}
-              {/* Body: on solid variants the CVA sets text-accent-fg (white) on
-                  saturated step-9 backgrounds. Muting the body to surface-fg (grey)
-                  there drops contrast below WCAG AA. Only mute on subtle/outline
-                  variants where the root color is a readable step-11. */}
-              <div
-                className={cn(
-                  textClass,
-                  variant !== 'solid' && 'text-surface-fg-muted',
-                )}
-              >
-                {children}
+      <MotionPreference>
+        <AnimatePresence onExitComplete={onDismiss}>
+          {isVisible && (
+            <motion.div
+              ref={ref}
+              initial={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={springs.snappy}
+              data-palette={color}
+              className={cn(alertVariants({ variant, color, size }), className)}
+              role="alert"
+              {...motionProps(props)}
+            >
+              <Icon icon={AlertIcon} size={iconSize} className="mt-ds-01 shrink-0" />
+              <div className="flex-1 min-w-0">
+                {title && <p className={cn(titleClass, 'font-semibold mb-ds-01')}>{title}</p>}
+                {/* Body: on solid variants the CVA sets text-accent-fg (white) on
+                    saturated step-9 backgrounds. Muting the body to surface-fg (grey)
+                    there drops contrast below WCAG AA. Only mute on subtle/outline
+                    variants where the root color is a readable step-11. */}
+                <div
+                  className={cn(
+                    textClass,
+                    variant !== 'solid' && 'text-surface-fg-muted',
+                  )}
+                >
+                  {children}
+                </div>
               </div>
-            </div>
-            {onDismiss && (
-              <button
-                type="button"
-                onClick={handleDismiss}
-                className={cn(
-                  'shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner transition-colors duration-fast-01 ease-productive-standard active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
-                  // On solid the fill is a saturated step 9, where a mid grey
-                  // measures as low as 1.01:1. Inherit the alert's own foreground,
-                  // exactly as the title and body already do.
-                  variant === 'solid'
-                    ? 'text-current opacity-80 hover:opacity-100'
-                    : 'text-surface-fg-subtle hover:text-surface-fg-muted hover:bg-surface-panel-hover',
-                )}
-                aria-label="Dismiss"
-              >
-                <Icon icon={IconX} size={dismissIconSize} />
-              </button>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {onDismiss && (
+                <button
+                  type="button"
+                  onClick={handleDismiss}
+                  className={cn(
+                    'shrink-0 min-h-ds-xs min-w-ds-xs flex items-center justify-center rounded-control-inner transition-colors duration-fast-01 ease-productive-standard active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
+                    // On solid the fill is a saturated step 9, where a mid grey
+                    // measures as low as 1.01:1. Inherit the alert's own foreground,
+                    // exactly as the title and body already do.
+                    variant === 'solid'
+                      ? 'text-current opacity-80 hover:opacity-100'
+                      : 'text-surface-fg-subtle hover:text-surface-fg-muted hover:bg-surface-panel-hover',
+                  )}
+                  aria-label="Dismiss"
+                >
+                  <Icon icon={IconX} size={dismissIconSize} />
+                </button>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </MotionPreference>
     )
   },
 )

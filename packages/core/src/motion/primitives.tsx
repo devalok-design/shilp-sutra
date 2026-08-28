@@ -6,6 +6,7 @@ import * as React from 'react'
 import type { SpringPreset } from '../ui/lib/motion'
 import { springs, tweens } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
+import { MotionPreference } from './motion-preference'
 
 // ── Shared types ──
 
@@ -35,24 +36,26 @@ const MotionFade = React.forwardRef<HTMLDivElement, MotionPrimitiveProps & Motio
     } : {}
 
     return (
-      <AnimatePresence>
-        {show && (
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={tweens.fade}
-            className={cn(className)}
-            layout={layout}
-            layoutId={layoutId}
-            {...inViewProps}
-            {...rest}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MotionPreference>
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              ref={ref}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={tweens.fade}
+              className={cn(className)}
+              layout={layout}
+              layoutId={layoutId}
+              {...inViewProps}
+              {...rest}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </MotionPreference>
     )
   },
 )
@@ -71,24 +74,26 @@ const MotionScale = React.forwardRef<HTMLDivElement, MotionPrimitiveProps & Moti
     } : {}
 
     return (
-      <AnimatePresence>
-        {show && (
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.96 }}
-            transition={{ ...spring, opacity: tweens.fade }}
-            className={cn(className)}
-            layout={layout}
-            layoutId={layoutId}
-            {...inViewProps}
-            {...rest}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MotionPreference>
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              ref={ref}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ ...spring, opacity: tweens.fade }}
+              className={cn(className)}
+              layout={layout}
+              layoutId={layoutId}
+              {...inViewProps}
+              {...rest}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </MotionPreference>
     )
   },
 )
@@ -107,24 +112,26 @@ const MotionPop = React.forwardRef<HTMLDivElement, MotionPrimitiveProps & Motion
     } : {}
 
     return (
-      <AnimatePresence>
-        {show && (
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ ...spring, opacity: tweens.fade }}
-            className={cn(className)}
-            layout={layout}
-            layoutId={layoutId}
-            {...inViewProps}
-            {...rest}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MotionPreference>
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              ref={ref}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ ...spring, opacity: tweens.fade }}
+              className={cn(className)}
+              layout={layout}
+              layoutId={layoutId}
+              {...inViewProps}
+              {...rest}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </MotionPreference>
     )
   },
 )
@@ -153,24 +160,26 @@ const MotionSlide = React.forwardRef<
     } : {}
 
     return (
-      <AnimatePresence>
-        {show && (
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 0, ...offset }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            exit={{ opacity: 0, ...offset }}
-            transition={{ ...spring, opacity: tweens.fade }}
-            className={cn(className)}
-            layout={layout}
-            layoutId={layoutId}
-            {...inViewProps}
-            {...rest}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MotionPreference>
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              ref={ref}
+              initial={{ opacity: 0, ...offset }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              exit={{ opacity: 0, ...offset }}
+              transition={{ ...spring, opacity: tweens.fade }}
+              className={cn(className)}
+              layout={layout}
+              layoutId={layoutId}
+              {...inViewProps}
+              {...rest}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </MotionPreference>
     )
   },
 )
@@ -185,23 +194,25 @@ const MotionCollapse = React.forwardRef<HTMLDivElement, MotionPrimitiveProps & M
     const spring = springs[preset]
 
     return (
-      <AnimatePresence initial={false}>
-        {show && (
-          <motion.div
-            ref={ref}
-            initial={{ height: 0, opacity: 0, overflow: 'hidden' }}
-            animate={{ height: 'auto', opacity: 1, overflow: 'hidden' }}
-            exit={{ height: 0, opacity: 0, overflow: 'hidden' }}
-            transition={{ ...spring, opacity: tweens.fade }}
-            className={cn(className)}
-            layout={layout}
-            layoutId={layoutId}
-            {...rest}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MotionPreference>
+        <AnimatePresence initial={false}>
+          {show && (
+            <motion.div
+              ref={ref}
+              initial={{ height: 0, opacity: 0, overflow: 'hidden' }}
+              animate={{ height: 'auto', opacity: 1, overflow: 'hidden' }}
+              exit={{ height: 0, opacity: 0, overflow: 'hidden' }}
+              transition={{ ...spring, opacity: tweens.fade }}
+              className={cn(className)}
+              layout={layout}
+              layoutId={layoutId}
+              {...rest}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </MotionPreference>
     )
   },
 )
@@ -233,15 +244,17 @@ const MotionStagger = React.forwardRef<HTMLDivElement, MotionStaggerProps & Moti
       : { initial: 'hidden' as const, animate: 'visible' as const }
 
     return (
-      <motion.div
-        ref={ref}
-        variants={variants}
-        className={cn(className)}
-        {...viewProps}
-        {...rest}
-      >
-        {children}
-      </motion.div>
+      <MotionPreference>
+        <motion.div
+          ref={ref}
+          variants={variants}
+          className={cn(className)}
+          {...viewProps}
+          {...rest}
+        >
+          {children}
+        </motion.div>
+      </MotionPreference>
     )
   },
 )
@@ -259,14 +272,16 @@ const itemVariants: Variants = {
 const MotionStaggerItem = React.forwardRef<HTMLDivElement, { children: React.ReactNode; className?: string } & MotionDivProps>(
   ({ children, className, ...rest }, ref) => {
     return (
-      <motion.div
-        ref={ref}
-        variants={itemVariants}
-        className={cn(className)}
-        {...rest}
-      >
-        {children}
-      </motion.div>
+      <MotionPreference>
+        <motion.div
+          ref={ref}
+          variants={itemVariants}
+          className={cn(className)}
+          {...rest}
+        >
+          {children}
+        </motion.div>
+      </MotionPreference>
     )
   },
 )

@@ -5,6 +5,7 @@ import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react'
 import { AnimatePresence,motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from './icon'
 import { springs, tweens } from './lib/motion'
 import { useControllableOpen } from './lib/use-controllable-open'
@@ -144,29 +145,31 @@ const DropdownMenuSubContent = React.forwardRef<
   const open = React.useContext(DropdownMenuSubOpenContext)
 
   return (
-    <AnimatePresence>
-      {open && (
-        <DropdownMenuPrimitive.SubContent
-          ref={ref}
-          forceMount
-          asChild
-          {...props}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ ...springs.snappy, opacity: tweens.fade }}
-            className={cn(
-              'z-popover min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
-              className,
-            )}
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <DropdownMenuPrimitive.SubContent
+            ref={ref}
+            forceMount
+            asChild
+            {...props}
           >
-            {children}
-          </motion.div>
-        </DropdownMenuPrimitive.SubContent>
-      )}
-    </AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ ...springs.snappy, opacity: tweens.fade }}
+              className={cn(
+                'z-popover min-w-[8rem] overflow-hidden rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
+                className,
+              )}
+            >
+              {children}
+            </motion.div>
+          </DropdownMenuPrimitive.SubContent>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 DropdownMenuSubContent.displayName =
@@ -179,32 +182,34 @@ const DropdownMenuContent = React.forwardRef<
   const open = React.useContext(DropdownMenuOpenContext)
 
   return (
-    <AnimatePresence>
-      {open && (
-        <DropdownMenuPrimitive.Portal forceMount>
-          <DropdownMenuPrimitive.Content
-            ref={ref}
-            sideOffset={sideOffset}
-            forceMount
-            asChild
-            {...props}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ ...springs.snappy, opacity: tweens.fade }}
-              className={cn(
-                'z-popover min-w-[8rem] rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
-                className,
-              )}
+    <MotionPreference>
+      <AnimatePresence>
+        {open && (
+          <DropdownMenuPrimitive.Portal forceMount>
+            <DropdownMenuPrimitive.Content
+              ref={ref}
+              sideOffset={sideOffset}
+              forceMount
+              asChild
+              {...props}
             >
-              {children}
-            </motion.div>
-          </DropdownMenuPrimitive.Content>
-        </DropdownMenuPrimitive.Portal>
-      )}
-    </AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ ...springs.snappy, opacity: tweens.fade }}
+                className={cn(
+                  'z-popover min-w-[8rem] rounded-overlay bg-surface-overlay p-ds-02 text-surface-fg shadow-floating',
+                  className,
+                )}
+              >
+                {children}
+              </motion.div>
+            </DropdownMenuPrimitive.Content>
+          </DropdownMenuPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </MotionPreference>
   )
 })
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName

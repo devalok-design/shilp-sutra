@@ -4,6 +4,7 @@ import { IconCheck, IconSearch } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Icon } from '../ui/icon'
 import { springs } from '../ui/lib/motion'
 import { cn } from '../ui/lib/utils'
@@ -197,59 +198,61 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
       const index = itemCounter++
       const isFocused = index === focusedIndex
       return (
-        <motion.button
-          key={item.id}
-          id={`msp-item-${index}`}
-          type="button"
-          role="option"
-          aria-selected={isSelected}
-          disabled={item.disabled}
-          data-multiselect-item=""
-          data-focused={isFocused ? '' : undefined}
-          initial={{ opacity: 0, x: -8 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ ...springs.snappy, delay: index * 0.02 }}
-          onClick={() => toggle(item.id)}
-          className={cn(
-            'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01 ease-productive-standard',
-            'hover:bg-surface-panel-hover',
-            'disabled:opacity-action-disabled disabled:cursor-not-allowed',
-            // accent-4 so the selection stays above the focus ring's
-            // panel-hover fill in dark; accent-2 sat below the panel.
-            isSelected && 'bg-accent-4 text-accent-11',
-            isFocused && 'bg-surface-panel-hover',
-          )}
-        >
-          {renderItem ? (
-            <span className="flex-1 min-w-0">{renderItem(item, isSelected)}</span>
-          ) : (
-            <>
-              {item.image && (
-                <img
-                  src={item.image}
-                  alt=""
-                  className="h-ico-md w-ico-md rounded-pill object-cover shrink-0"
-                />
-              )}
-              <span className="flex-1 min-w-0">
-                <span className="block truncate text-body-md font-body text-surface-fg">{item.label}</span>
-                {item.description && (
-                  <span className="block truncate text-caption text-surface-fg-subtle">{item.description}</span>
+        <MotionPreference>
+          <motion.button
+            key={item.id}
+            id={`msp-item-${index}`}
+            type="button"
+            role="option"
+            aria-selected={isSelected}
+            disabled={item.disabled}
+            data-multiselect-item=""
+            data-focused={isFocused ? '' : undefined}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ ...springs.snappy, delay: index * 0.02 }}
+            onClick={() => toggle(item.id)}
+            className={cn(
+              'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01 ease-productive-standard',
+              'hover:bg-surface-panel-hover',
+              'disabled:opacity-action-disabled disabled:cursor-not-allowed',
+              // accent-4 so the selection stays above the focus ring's
+              // panel-hover fill in dark; accent-2 sat below the panel.
+              isSelected && 'bg-accent-4 text-accent-11',
+              isFocused && 'bg-surface-panel-hover',
+            )}
+          >
+            {renderItem ? (
+              <span className="flex-1 min-w-0">{renderItem(item, isSelected)}</span>
+            ) : (
+              <>
+                {item.image && (
+                  <img
+                    src={item.image}
+                    alt=""
+                    className="h-ico-md w-ico-md rounded-pill object-cover shrink-0"
+                  />
                 )}
-              </span>
-            </>
-          )}
-          {isSelected && (
-            <motion.span
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={springs.snappy}
-              className="inline-flex shrink-0"
-            >
-              <Icon icon={IconCheck} size="sm" className="text-accent-11" />
-            </motion.span>
-          )}
-        </motion.button>
+                <span className="flex-1 min-w-0">
+                  <span className="block truncate text-body-md font-body text-surface-fg">{item.label}</span>
+                  {item.description && (
+                    <span className="block truncate text-caption text-surface-fg-subtle">{item.description}</span>
+                  )}
+                </span>
+              </>
+            )}
+            {isSelected && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={springs.snappy}
+                className="inline-flex shrink-0"
+              >
+                <Icon icon={IconCheck} size="sm" className="text-accent-11" />
+              </motion.span>
+            )}
+          </motion.button>
+        </MotionPreference>
       )
     }
 

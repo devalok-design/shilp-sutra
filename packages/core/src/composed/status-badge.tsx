@@ -4,6 +4,7 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import * as React from 'react'
 
+import { MotionPreference } from '../motion/motion-preference'
 import { Badge } from '../ui/badge'
 import { Dot, type DotColor } from '../ui/dot'
 import type { IconInput } from '../ui/lib/icon-input'
@@ -74,30 +75,32 @@ const StatusBadge = React.forwardRef<HTMLElement, StatusBadgeProps>(
     const endIcon: IconInput | undefined = icon ?? (isClickable ? IconChevronDown : undefined)
 
     return (
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={key}
-          initial={{ opacity: 0.6, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0.6, scale: 0.95 }}
-          transition={statusMorphTransition}
-          className="inline-flex"
-          {...motionProps(props)}
-        >
-          <Badge
-            ref={ref}
-            variant="soft"
-            color={dotColor}
-            size={size}
-            onClick={onClick}
-            startIcon={!hideDot ? <Dot color={dotColor} size="sm" /> : undefined}
-            endIcon={endIcon}
-            className={className}
+      <MotionPreference>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={key}
+            initial={{ opacity: 0.6, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0.6, scale: 0.95 }}
+            transition={statusMorphTransition}
+            className="inline-flex"
+            {...motionProps(props)}
           >
-            {displayLabel}
-          </Badge>
-        </motion.span>
-      </AnimatePresence>
+            <Badge
+              ref={ref}
+              variant="soft"
+              color={dotColor}
+              size={size}
+              onClick={onClick}
+              startIcon={!hideDot ? <Dot color={dotColor} size="sm" /> : undefined}
+              endIcon={endIcon}
+              className={className}
+            >
+              {displayLabel}
+            </Badge>
+          </motion.span>
+        </AnimatePresence>
+      </MotionPreference>
     )
   },
 )

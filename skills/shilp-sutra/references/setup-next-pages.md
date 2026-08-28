@@ -18,7 +18,28 @@ If both `app/` and `pages/` exist, prefer [install-next-app-router.md](./install
 
 Same dependencies as the App Router recipe — see [install-next-app-router.md § 2](./install-next-app-router.md#2-install-dependencies). Replace `next-themes`'s `attribute="class"` setup with the same on Pages Router (it works identically).
 
-**Optional peer dependencies** — if you'll render `<DataTable>`, any chart, `<DatePicker>`, `<ScheduleView>`, `<InputOTP>`, `<FilePreview>`, `<MarkdownViewer>`, or `<Toaster>`, install the matching peers BEFORE first import. (The emoji picker and rich-text editors bundle their deps — no install needed; `@tabler/icons-react` auto-installs as a required peer.) Full table at [install-next-app-router.md § 2a](./install-next-app-router.md#2a-optional-peer-dependencies-install-only-when-importing-the-matching-subpath) — identical for Pages Router.
+### 2a. Optional peer dependencies (install only when importing the matching subpath)
+
+Some components depend on third-party libraries that ship as optional peers. **Install BEFORE first import** of the matching component, or `next build` will exit with `Module not found`. Skip entirely if you only use core components (`Button`, `Text`, `Stack`, `Dialog`, `Toast`, `Form*`, `Input`, `Card`, etc.).
+
+| When you import… | Install |
+|---|---|
+| `@devalok/shilp-sutra/composed/date-picker` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/composed/diff` | `pnpm add react-syntax-highlighter` |
+| `@devalok/shilp-sutra/composed/file-preview` | `pnpm add react-pdf react-zoom-pan-pinch` |
+| `@devalok/shilp-sutra/composed/markdown-viewer` | `pnpm add react-markdown react-syntax-highlighter remark-gfm` |
+| `@devalok/shilp-sutra/composed/rich-chat-input` | `pnpm add @tiptap/core @tiptap/extension-highlight @tiptap/extension-image @tiptap/extension-list @tiptap/extension-mention @tiptap/extension-text-align @tiptap/extensions @tiptap/markdown @tiptap/pm @tiptap/react @tiptap/starter-kit @tiptap/suggestion date-fns` |
+| `@devalok/shilp-sutra/composed/rich-text-editor` | `pnpm add @tiptap/core @tiptap/extension-highlight @tiptap/extension-image @tiptap/extension-list @tiptap/extension-mention @tiptap/extension-text-align @tiptap/extensions @tiptap/markdown @tiptap/pm @tiptap/react @tiptap/starter-kit @tiptap/suggestion` |
+| `@devalok/shilp-sutra/composed/schedule-view` | `pnpm add date-fns` |
+| `@devalok/shilp-sutra/ui/charts` | `pnpm add d3-axis d3-scale d3-selection d3-shape` |
+| `@devalok/shilp-sutra/ui/data-table` | `pnpm add @tanstack/react-table @tanstack/react-virtual` |
+| `@devalok/shilp-sutra/ui/data-table-toolbar` | `pnpm add @tanstack/react-table` |
+| `@devalok/shilp-sutra/ui/input-otp` | `pnpm add input-otp` |
+| `@devalok/shilp-sutra/ui/toast` | `pnpm add sonner` |
+| `@devalok/shilp-sutra/ui/toaster` | `pnpm add sonner` |
+| Any `Icon` / `IconButton` with Tabler icons (near-universal — most components use icons internally, so it is a base-install peer) | `pnpm add @tabler/icons-react` |
+
+> These aren't in core deps so consumers who never render a chart, OTP input, or rich-text editor don't pay the install / bundle cost. One-time decision at install.
 
 ## 3. PostCSS
 

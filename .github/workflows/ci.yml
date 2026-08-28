@@ -127,6 +127,18 @@ jobs:
         if: steps.scope.outputs.mcp_only != 'true'
         run: pnpm --filter @devalok/shilp-sutra typecheck:docs
 
+      # skills/shilp-sutra/references/ is GENERATED from docs/recipes/ and the
+      # root docs, and committed. Editing a recipe without re-running
+      # build-skill.mjs leaves the two out of sync.
+      #
+      # This gate already existed in pre-publish-audit, which PR CI does not
+      # run — so it only failed post-merge in integration.yml, where a red run
+      # can sit unnoticed. Two doc PRs (#288, #290) landed drift that way in one
+      # afternoon. It costs seconds, so run it here too.
+      - name: Skill references in sync
+        if: steps.scope.outputs.mcp_only != 'true'
+        run: node scripts/build-skill.mjs --check
+
       - name: Test
         if: steps.scope.outputs.mcp_only != 'true'
         run: pnpm test

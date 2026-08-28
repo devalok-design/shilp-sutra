@@ -93,6 +93,7 @@ After editing, delete the lockfile + `node_modules` and reinstall.
 
 Add:
 
+<!-- typecheck-skip: a fragment of next.config, not a standalone module -->
 ```ts
 transpilePackages: ["@devalok/shilp-sutra"],
 ```

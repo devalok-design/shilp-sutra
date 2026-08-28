@@ -472,11 +472,32 @@ gate('No compiled .js shadowing a TypeScript source', () => {
     else if (existsSync(join(ROOT, `${base}.ts`))) shadowed.push([js, `${base}.ts`])
   }
   if (shadowed.length > 0) {
-    return `${shadowed.length} compiled .js shadow a TypeScript source — the bundler
-      resolves .js first, tsc resolves the .ts/.tsx, so you type-check one file
-      and ship the other. Delete the .js:\n${shadowed.map(([j, s]) => `      ${j}\n        shadows ${s}`).join('\n')}`
+    const list = shadowed.map(([j, s]) => `      ${j} shadows ${s}`).join('\n')
+    return [
+      `${shadowed.length} compiled .js shadow a TypeScript source.`,
+      'The bundler resolves .js first, tsc resolves the .ts/.tsx, so you would',
+      'type-check one file and ship the other. Delete the .js:',
+      list,
+    ].join('\n')
   }
   return true
+})
+
+// Every rule's createRule() advertises a docs URL at
+// packages/eslint-plugin/docs/rules/<name>.md. That directory did not exist, so
+// all 16 links 404'd. The pages are generated from each rule's own metadata, so
+// this catches both "new rule, no page" and "metadata changed, page stale".
+gate('ESLint rule docs in sync with rule metadata', () => {
+  try {
+    execFileSync(process.execPath, ['scripts/generate-rule-docs.mjs', '--check'], {
+      cwd: join(ROOT, 'packages/eslint-plugin'),
+      encoding: 'utf-8',
+      stdio: 'pipe',
+    })
+    return true
+  } catch (e) {
+    return (e.stdout || e.stderr || 'rule docs check failed').trim()
+  }
 })
 
 gate('No deprecated surface tokens in components', () => {

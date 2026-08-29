@@ -214,12 +214,21 @@ const MultiSelectPopover = React.forwardRef<HTMLDivElement, MultiSelectPopoverPr
             onClick={() => toggle(item.id)}
             className={cn(
               'flex w-full items-center gap-ds-03 px-ds-04 py-ds-02b text-left transition-colors duration-fast-01 ease-productive-standard',
-              'hover:bg-surface-panel-hover',
               'disabled:opacity-action-disabled disabled:cursor-not-allowed',
+              // Both greys are gated on !isSelected, and the selected row
+              // carries its own hover. Two separate faults lived here:
+              //   hover:bg-surface-panel-hover is (0,2,0) and beat the selected
+              //   (0,1,0) outright, so pointing at a selected row greyed it;
+              //   and isFocused is also (0,1,0) but declared LATER, so arrowing
+              //   onto a selected row greyed it too.
+              !isSelected && 'hover:bg-surface-panel-hover',
+              !isSelected && isFocused && 'bg-surface-panel-hover',
               // accent-4 so the selection stays above the focus ring's
               // panel-hover fill in dark; accent-2 sat below the panel.
-              isSelected && 'bg-accent-4 text-accent-11',
-              isFocused && 'bg-surface-panel-hover',
+              isSelected && 'bg-accent-4 text-accent-11 hover:bg-accent-5',
+              // Keyboard focus on a selected row advances within the accent
+              // ramp rather than dropping to grey.
+              isSelected && isFocused && 'bg-accent-5',
             )}
           >
             {renderItem ? (

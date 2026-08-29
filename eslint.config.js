@@ -175,6 +175,12 @@ export default tseslint.config(
       'shilp-sutra/no-bg-gradient-to': 'error',
       // `w-[--var]` is dead in TW4 — the shorthand is `w-(--var)`.
       'shilp-sutra/no-css-var-bracket': 'error',
+      // An ungated `hover:bg-*` (0,2,0) outranks a conditional active
+      // `bg-*` (0,1,0), so hovering the selected row visually deselects it.
+      // Shipped three times — TreeItem, TableRow, MasterDetail — the last found
+      // only while rebuilding the component in Figma. Two of the three carry a
+      // hand-written comment explaining the guard; the rule replaces the fourth.
+      'shilp-sutra/no-ungated-hover-over-selection': 'error',
     },
   },
   // Stories are globally ignored above, which is how 24 deprecated surface

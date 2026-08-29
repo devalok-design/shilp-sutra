@@ -193,6 +193,56 @@ if (hits.length > 0) {
 
 pass(`next build (${VARIANT_LABEL}) completed without errors or known regressions`)
 
+// ── Step 4b: asChild renders during SSR ────────────────────────────────
+//
+// Issue #270: `<Button asChild>` inside a SERVER component reportedly emitted
+// no server HTML under Turbopack dev, so the anchor appeared only after client
+// render and React discarded the surrounding tree with a hydration mismatch.
+//
+// The smoke page is `'use client'` and imports Button directly, and the
+// reporter found that importing Button in the route MASKS the bug — so the
+// existing surface could never have caught this. `app/aschild-probe/` is a
+// server component one module below a route that does not import Button,
+// which is the reported shape exactly.
+//
+// The route prerenders, so the assertion is free: no dev server, no port, no
+// polling. If the Slot path ever stops resolving server-side, the anchor
+// disappears from the prerendered HTML and this fails.
+// Gated on the route existing in THIS consumer's source rather than on the
+// variant name, so adding the probe to the Next 15 app is all it takes to get
+// the check there too — no edit here.
+const probeRoute = join(CONSUMER, 'app', 'aschild-probe', 'page.tsx')
+if (!existsSync(probeRoute)) {
+  console.log(`  (skipping asChild SSR check — no aschild-probe route in ${CONSUMER_DIR})`)
+} else {
+  step('Verifying <Button asChild> renders in server HTML')
+  const probeHtml = join(CONSUMER, '.next', 'server', 'app', 'aschild-probe.html')
+  if (!existsSync(probeHtml)) {
+    fail(
+      'aschild-probe route did not prerender',
+      `Expected ${probeHtml}.\nThe probe guards issue #270; if the route was removed, remove this check too.`,
+    )
+  }
+  const html = readFileSync(probeHtml, 'utf8')
+  // The anchor must be present AND carry the button's classes — a bare <a>
+  // would mean Slot rendered but dropped the merged props.
+  const anchor = html.match(/<a [^>]*href="#tools"[^>]*>/)
+  if (!anchor) {
+    fail(
+      '<Button asChild> did not render to server HTML (issue #270 regression)',
+      `No <a href="#tools"> in the prerendered output. The Slot path is not resolving during SSR,\n` +
+      `which produces an empty container server-side and a hydration mismatch on the client.`,
+    )
+  }
+  if (!/class="[^"]*inline-flex/.test(anchor[0])) {
+    fail(
+      '<Button asChild> rendered the anchor without the button classes',
+      `Slot resolved but did not merge props into the child. Got:\n  ${anchor[0].slice(0, 200)}`,
+    )
+  }
+  pass('<Button asChild> renders server-side with merged props')
+}
+
 // ── Step 5: type-resolution matrix ─────────────────────────────────────
 //
 // `next build` type-checks with the consumer's own tsconfig, which sets

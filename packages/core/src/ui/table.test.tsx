@@ -155,11 +155,37 @@ describe('Table', () => {
     expect(screen.getByRole('cell')).toHaveClass('first:pl-(--table-edge)', 'last:pr-(--table-edge)')
   })
 
+  const STRIPE_ROWS = '[&_tbody_tr:nth-child(even):not([data-state=selected])]:bg-surface-panel-hover'
+  const STRIPE_PINNED = '[&_tbody_tr:nth-child(even):not([data-state=selected])_[data-pinned]]:bg-surface-panel-hover'
+
   it('striped is opt-in — zebra class only when set', () => {
     const { rerender } = render(<Table><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
-    expect(screen.getByRole('table')).not.toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-panel-hover')
+    expect(screen.getByRole('table')).not.toHaveClass(STRIPE_ROWS)
     rerender(<Table striped><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
-    expect(screen.getByRole('table')).toHaveClass('[&_tbody_tr:nth-child(even)]:bg-surface-panel-hover')
+    expect(screen.getByRole('table')).toHaveClass(STRIPE_ROWS)
+  })
+
+  // The `:not([data-state=selected])` is the whole fix, so assert it rather
+  // than the class as a blob. The stripe selector compiles to (0,2,2) and
+  // TableRow's `data-[state=selected]:bg-accent-4` to (0,2,0) — the stripe won,
+  // and a selected even row rendered grey. Selection was invisible on half the
+  // rows and only appeared on hover, where (0,3,0) took over.
+  it('striping never competes with selection', () => {
+    render(<Table striped><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
+    const cls = screen.getByRole('table').className
+    const stripeRules = cls.split(/\s+/).filter((c) => c.includes('nth-child(even)'))
+    expect(stripeRules.length).toBeGreaterThan(0)
+    for (const rule of stripeRules) {
+      expect(rule).toContain(':not([data-state=selected])')
+    }
+  })
+
+  // A pinned cell is opaque by necessity, so the row's stripe cannot show
+  // through it — without this the pinned column shows a white notch on every
+  // striped row.
+  it('striping reaches pinned cells, which are opaque and cannot inherit it', () => {
+    render(<Table striped><TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody></Table>)
+    expect(screen.getByRole('table')).toHaveClass(STRIPE_PINNED)
   })
 
   it('header cells are quieter than data — text-body-sm muted, density-tracked padding', () => {

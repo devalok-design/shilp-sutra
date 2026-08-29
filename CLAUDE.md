@@ -117,7 +117,9 @@ Headline architecture: **style is a variable mode, colour is a variant, interact
 
 Thirteen rules that cost the most time when broken:
 1. **The collection a variable lives in is the OUTERMOST selector of its resolution chain.** A value that varies by state *and* style must live in the state collection and alias into the style one. Get it backwards and the value is unreachable. This is what lets one `component/fg` serve 4,962 icons across every state.
-2. **Regenerate the component spec before every build** (`figma-sync-components.mjs <name>`) and read the component *body* for prop interactions — the CVA describes appearance, not which prop overrides which. It reports **0 compound rules for Badge and Card**, whose colours live in a plain object, not the CVA.
+2. **Regenerate the component spec before every build** (`figma-sync-components.mjs <name>`) and read the component *body* for prop interactions — the CVA describes appearance, not which prop overrides which.
+
+   **A spec is not a substitute for reading the source, and for many components it is nearly empty.** The script now resolves across `src/{ui,composed,shell}/`, flat or in its own directory, and emits `"cva": false` plus the names and line numbers of the style objects when a component has no CVA at all — Badge, Card, Table, DataTable, Autocomplete, TreeView, MasterDetail, NotificationCenter and ScheduleView all style from plain objects. Until 2026-08-29 it resolved `src/ui/<name>.tsx` only and threw on a missing `cva()`, so it failed on 7 of the 8 components in that build while this rule still called it mandatory.
 3. **Test with real scenarios and varied copy, not a variant grid.** A grid hides layout bugs because every label is the same length.
 4. **Measure, don't eyeball** — but also read the numbers you get back. Four of ten bugs in the Button spike were silent, and a later one sat unnoticed inside a verification output I had already looked at. A returned `0` is a finding.
 5. **Never write `.visible` on a variable-bound node** — it silently clears the binding. An audit that reveals hidden nodes to inspect them will destroy what it inspects (it cost 264 spinner bindings).

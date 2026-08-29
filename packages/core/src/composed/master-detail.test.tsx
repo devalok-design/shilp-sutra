@@ -60,6 +60,38 @@ describe('MasterDetail', () => {
     expect(item).toHaveAttribute('aria-selected', 'true')
   })
 
+  // An ungated `hover:bg-surface-panel-hover` is (0,2,0) and a plain
+  // `bg-accent-4` is (0,1,0), so hover WON and pointing at the selected row
+  // turned it grey. TreeItem and TableRow already guard against this; this was
+  // the third instance of the same fault.
+  //
+  // Asserted on the class list rather than by simulating hover, because jsdom
+  // does not apply :hover — a behavioural test here would pass while the bug
+  // was live, which is how it survived a review in the first place.
+  it('an active item keeps its tint under hover', () => {
+    render(
+      <MasterDetail selected="1">
+        <MasterDetail.List>
+          <MasterDetail.ListItem active>Active item</MasterDetail.ListItem>
+          <MasterDetail.ListItem>Idle item</MasterDetail.ListItem>
+        </MasterDetail.List>
+        <MasterDetail.Detail>Detail</MasterDetail.Detail>
+      </MasterDetail>,
+    )
+    const active = screen.getByRole('option', { name: 'Active item' })
+    const idle = screen.getByRole('option', { name: 'Idle item' })
+
+    // The grey hover must not be on the active row at all…
+    expect(active.className).not.toContain('hover:bg-surface-panel-hover')
+    // …and the active row still needs a hover state of its own, or it looks
+    // dead to the pointer.
+    expect(active.className).toContain('hover:bg-accent-5')
+    expect(active.className).toContain('bg-accent-4')
+
+    // The idle row is unaffected.
+    expect(idle.className).toContain('hover:bg-surface-panel-hover')
+  })
+
   it('renders both list and detail in desktop mode (matchMedia returns false)', () => {
     // matchMedia is mocked to return matches:false (desktop) in test-setup
     render(

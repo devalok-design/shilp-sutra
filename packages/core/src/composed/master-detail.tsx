@@ -213,13 +213,17 @@ const MasterDetailListItem = React.forwardRef<HTMLButtonElement, MasterDetailLis
         className={cn(
           'flex w-full items-center px-ds-04 py-ds-03 text-left text-body-md font-sans text-surface-fg',
           'transition-colors duration-fast-01 ease-productive-standard',
-          'hover:bg-surface-panel-hover',
+          // Gated on !isActive. `hover:bg-*` is (0,2,0) and a plain
+          // `bg-accent-4` is (0,1,0), so an ungated hover WINS over the active
+          // tint and pointing at the selected row turned it grey. TreeItem and
+          // TableRow already carry this guard; this was the third instance.
+          !isActive && 'hover:bg-surface-panel-hover',
           'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-7 focus-visible:ring-inset',
           // accent-4, not accent-2: in dark the pale steps sit BELOW the panel
           // while the grey hover sits above it, so a merely hovered row read
           // stronger than the selected one (1.03:1 vs 1.30:1) and in the
           // opposite direction.
-          isActive && 'bg-accent-4 text-accent-11 font-medium',
+          isActive && 'bg-accent-4 text-accent-11 font-medium hover:bg-accent-5',
           className,
         )}
         {...props}

@@ -109,7 +109,13 @@ function DataTableRow<TData>({ row }: { row: Row<TData> }) {
       onClick={onRowClick ? handleRowClick : undefined}
     >
       {visibleCells.map((cell) => {
-        const pinned = getPinnedCellStyle(cell.column.id, columnPinningState)
+        // `cell.column` is what makes the offset cumulative — without it every
+        // pinned column resolves to the same edge and they stack.
+        const pinned = getPinnedCellStyle(
+          cell.column.id,
+          columnPinningState,
+          cell.column,
+        )
         const isEditing =
           editingCell?.rowIndex === row.index &&
           editingCell?.columnId === cell.column.id
@@ -124,6 +130,7 @@ function DataTableRow<TData>({ row }: { row: Row<TData> }) {
               ),
             )}
             style={pinned.style}
+            data-pinned={pinned['data-pinned']}
             onDoubleClick={() => {
               if (isColumnEditable(cell.column.id, editable, table)) {
                 setEditingCell({

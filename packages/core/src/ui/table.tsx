@@ -46,7 +46,23 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
           // without creating a horizontal scrollbar (the wrapper owns scrolling).
           "w-full caption-bottom text-body-md overflow-x-clip [--table-edge:var(--card-spacing,var(--spacing-ds-04))]",
           densityClasses[density],
-          striped && "[&_tbody_tr:nth-child(even)]:bg-surface-panel-hover",
+          // `:not([data-state=selected])` is load-bearing, not defensive. The
+          // stripe selector compiles to (0,2,2) and TableRow's own
+          // `data-[state=selected]:bg-accent-4` to (0,2,0), so the stripe WON
+          // and a selected even row rendered grey — selection was invisible on
+          // half the rows, revealing itself only on hover where (0,3,0) took
+          // over. Excluding selected rows from the match makes the contest moot
+          // rather than escalating specificity, which the next stripe variant
+          // would only have to escalate again.
+          striped &&
+            "[&_tbody_tr:nth-child(even):not([data-state=selected])]:bg-surface-panel-hover",
+          // A pinned cell is opaque by necessity (it occludes scrolled content),
+          // so the row's stripe cannot show through it — the cell has to be
+          // striped too or a striped table shows a white notch in the pinned
+          // column. Keyed off `data-pinned` so this repaints only those cells,
+          // not every cell in the row.
+          striped &&
+            "[&_tbody_tr:nth-child(even):not([data-state=selected])_[data-pinned]]:bg-surface-panel-hover",
           className,
         )}
         {...props}

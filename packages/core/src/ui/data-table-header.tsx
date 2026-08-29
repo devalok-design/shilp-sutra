@@ -41,9 +41,12 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
           {headerGroup.headers.map((header) => {
             const canSort = sortable && header.column.getCanSort()
             const sorted = header.column.getIsSorted()
+            // `header.column` is what makes the offset cumulative — without it
+            // every pinned column resolves to the same edge and they stack.
             const pinned = getPinnedCellStyle(
               header.column.id,
               columnPinningState,
+              header.column,
             )
 
             return (
@@ -57,6 +60,7 @@ function DataTableHeaderImpl({ stickyHeader }: { stickyHeader?: boolean }) {
                     ),
                   )}
                   style={pinned.style}
+                  data-pinned={pinned['data-pinned']}
                   aria-sort={
                     canSort
                       ? sorted === 'asc'

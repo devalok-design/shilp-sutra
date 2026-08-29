@@ -18,12 +18,17 @@
  * DS uses (variants, compoundVariants, defaultVariants). If you change that
  * shape, update the parser.
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { dirname, join, resolve } from 'node:path'
+import { dirname, join, resolve, relative, sep } from 'node:path'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-const UI_DIR = join(HERE, '..', 'src', 'ui')
+const SRC_DIR = join(HERE, '..', 'src')
+// Components live in three layers, and some are a directory rather than a file
+// (`ui/tree-view/tree-view.tsx`). Resolving `src/ui/<name>.tsx` only made this
+// script throw on 7 of the 8 components in the 2026-08-29 Figma build, while
+// CLAUDE.md rule 2 still called it the mandatory pre-build step.
+const LAYERS = ['ui', 'composed', 'shell']
 const OUT_DIR = join(HERE, '.figma', 'components')
 
 const componentName = process.argv[2]
@@ -33,13 +38,59 @@ if (!componentName) {
   process.exit(1)
 }
 
-const sourcePath = resolve(UI_DIR, `${componentName}.tsx`)
-const source = readFileSync(sourcePath, 'utf8')
+/** Find <name>.tsx across the three layers, flat or in its own directory. */
+function resolveSource(name) {
+  const tried = []
+  for (const layer of LAYERS) {
+    for (const candidate of [
+      join(SRC_DIR, layer, `${name}.tsx`),
+      join(SRC_DIR, layer, name, `${name}.tsx`),
+      join(SRC_DIR, layer, name, 'index.tsx'),
+    ]) {
+      tried.push(candidate)
+      if (existsSync(candidate)) return { path: candidate, tried }
+    }
+  }
+  return { path: null, tried }
+}
 
-/** Slice out the CVA call body — assumes one cva(...) per file. */
+const { path: sourcePath, tried } = resolveSource(componentName)
+if (!sourcePath) {
+  console.error(`No source found for "${componentName}". Looked in:`)
+  for (const t of tried) console.error(`  ${relative(join(HERE, '..', '..', '..'), t).split(sep).join('/')}`)
+  // Offer the near-misses rather than just failing — a wrong guess at the
+  // hyphenation is the common case.
+  const all = []
+  for (const layer of LAYERS) {
+    const dir = join(SRC_DIR, layer)
+    if (!existsSync(dir)) continue
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (e.name.startsWith('_') || e.name === '__tests__' || e.name === 'lib') continue
+      const base = e.isDirectory() ? e.name : e.name.replace(/\.tsx$/, '')
+      // Stories and tests sit beside their component and are never a valid
+      // argument — suggesting them is noise at the exact moment someone is lost.
+      if (/\.(stories|test|mdx)$/.test(base)) continue
+      all.push(base)
+    }
+  }
+  const near = all.filter((n) => n.includes(componentName) || componentName.includes(n))
+  if (near.length) console.error(`\nDid you mean: ${[...new Set(near)].sort().join(', ')}`)
+  process.exit(1)
+}
+
+const source = readFileSync(sourcePath, 'utf8')
+const sourceRel = relative(join(HERE, '..', '..', '..'), sourcePath).split(sep).join('/')
+
+/**
+ * Slice out the CVA call body — assumes one cva(...) per file.
+ * Returns null when there is none. Plenty of components style from a plain
+ * object instead (Badge, Card, Table, DataTable, Autocomplete), and for those
+ * the honest answer is "no CVA, read the body" rather than a thrown error that
+ * makes the script look broken.
+ */
 function extractCva(src) {
   const cvaIdx = src.search(/cva\s*\(/)
-  if (cvaIdx === -1) throw new Error(`No cva() call found in ${sourcePath}`)
+  if (cvaIdx === -1) return null
   const start = src.indexOf('(', cvaIdx)
   let depth = 1, i = start + 1
   while (i < src.length && depth > 0) {
@@ -210,8 +261,53 @@ function extractTokenRefs(classes) {
   return Object.assign(base, Object.keys(used).length ? { states: used } : {})
 }
 
+/**
+ * Where a no-CVA component keeps its styling. Naming these is the difference
+ * between "the script is broken" and "the axes are in this object, go read it".
+ */
+function findStyleObjects(src) {
+  const found = []
+  // `const fooMap = { ... }` / `const FOO_STYLES = { ... }` — the shape Badge,
+  // Card and the table family use in place of a CVA.
+  for (const m of src.matchAll(/^\s*const\s+([A-Za-z_$][\w$]*(?:Map|Styles|STYLES|Variants|Classes|TONES|_[A-Z]+))\s*(?::[^=]+)?=\s*\{/gm)) {
+    found.push({ name: m[1], line: src.slice(0, m.index).split('\n').length })
+  }
+  return found
+}
+
 function main() {
   const cvaBody = extractCva(source)
+
+  if (cvaBody === null) {
+    // Emit a spec that says what IS true, so the caller has something to act on.
+    const styleObjects = findStyleObjects(source)
+    const out = {
+      generatedAt: new Date().toISOString(),
+      source: sourceRel,
+      component: componentName,
+      cva: false,
+      note:
+        'No cva() in this component — its styling lives in plain objects or inline classNames. ' +
+        'There are no machine-readable axes to extract; read the component body for prop interactions.',
+      styleObjects,
+      axes: [],
+      axesResolved: {},
+      compoundVariants: [],
+      defaults: {},
+    }
+    mkdirSync(OUT_DIR, { recursive: true })
+    const outPath = join(OUT_DIR, `${componentName}.json`)
+    writeFileSync(outPath, JSON.stringify(out, null, 2))
+    console.log(`Wrote ${outPath}`)
+    console.log(`  ${sourceRel}`)
+    console.log(`  NO CVA — nothing to extract. Read the component body for prop interactions.`)
+    if (styleObjects.length) {
+      console.log(`  Styling appears to live in:`)
+      for (const s of styleObjects) console.log(`    ${s.name}  (line ${s.line})`)
+    }
+    return
+  }
+
   const variants = parseVariants(cvaBody, 'variants') ?? {}
   const compoundVariants = parseCompoundVariants(cvaBody)
   const defaults = parseDefaultVariants(cvaBody)
@@ -231,7 +327,8 @@ function main() {
 
   const out = {
     generatedAt: new Date().toISOString(),
-    source: `packages/core/src/ui/${componentName}.tsx`,
+    source: sourceRel,
+    cva: true,
     component: componentName,
     axes: Object.keys(variants),
     axesResolved: resolvedAxes,

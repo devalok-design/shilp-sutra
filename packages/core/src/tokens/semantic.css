@@ -715,6 +715,16 @@
      ground, so anything using them as its only edge has none. 0.07 keeps a
      raised card quieter than a floating overlay while still reading. */
   --shadow-edge-ring-subtle: 0 0 0 1px oklch(1 0 0 / 0.07);
+  /* The third ring, and the one that was missed. `--shadow-pressed` is also a
+     1px ring built from `--shadow-color`, so in dark it composited to
+     **1.012:1** against `surface-panel` — a pressed control had no pressed
+     state at all. Its two siblings above were corrected; this was not, which is
+     the failure mode the comment on --shadow-edge-ring describes. White at 0.10
+     measures 2.640:1, between subtle (2.148:1) and the full edge ring
+     (2.968:1) — pressed should read more firmly than a resting card and less
+     than a floating overlay. Found while binding the Figma effect styles, where
+     it had been masked by a binding to the wrong variable. */
+  --shadow-pressed: 0 0 0 1px oklch(1 0 0 / 0.10);
   --shadow-kbd: inset 0 1px 0 oklch(1 0 0 / 0.10);
   /* The segmented thumb is documented as deliberately ring-less, the shadow
      being its whole edge. That works in light and cannot work in dark, where

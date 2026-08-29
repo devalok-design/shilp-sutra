@@ -99,7 +99,9 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 **Built: 32 sets, 505 variants, 7 standalone components.** Button 55, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2, plus Menu item 12, Breadcrumb item 6, Accordion item 4. Standalone components (no variant axes): Bottom navbar, Menu, Menu label, Menu separator, Popover, Breadcrumb, Breadcrumb separator. 31 collections, 20 text styles, 13 effect styles, **20 native slot properties** across 13 components (Card 3, Sidebar 3, Top bar 3, Dialog 2, Accordion item 1, Alert 1, Bottom navbar 1, Breadcrumb 1, Menu 1, Popover 1, Segmented control 1, Sheet 1, Tabs 1). **The menu family, Popover, Breadcrumb and Accordion are built but deliberately NOT published** — held for review. Everything else is published. **Publishing is a human step — republish after any change.**
 
-**UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps the height it was created at and nothing else collapses it — a footerless Card was 40px too tall. Only 1 of the library's 20 slots (`Card.Action`) shipped with such a boolean; the other 17 still cannot be hidden, and each needs its own (see rule 6 — `displayEmptyByDefault` was measured and does not help). See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3.
+**UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps the height it was created at and nothing else collapses it — a footerless Card was 40px too tall. **Composability gap 3 is now CLOSED (2026-08-29): all 37 slot properties across 26 components are wired to a visibility boolean, 0 unwired.** The counts in this file were wrong in both directions — there are **37 slots, not 20**, and **8 were already wired, not 1** (`Alert.Action` among them; the 2026-08-29 build added 17 more slots). 29 booleans were added, every one defaulting `true`, so no existing instance changes. Measured working end to end: a Card went 158px → 125px with content off → 81px with the footer off too → 158px restored, and 574 variable bindings across Card, Sidebar and Top bar all still resolve. See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3, and rule 6 for why `displayEmptyByDefault` is not the cheap alternative.
+
+> **Open question, not a defect:** ~7 of those 29 slots are structurally mandatory — `Menu.Items`, `Tabs.Items`, `Segmented control.Items`, `Breadcrumb.Trail`, `Table row.Cells`, `Table footer row.Cells`, `Schedule view.Days`. Hiding them yields empty chrome rather than a useful state, and the audit's own wording was "anywhere a slot is *legitimately optional*". The booleans are harmless (default `true`) but they are dead toggles in the right panel. Deleting them is a judgement call about designer UX, so they were left in place pending one.
 
 **Colour is a variable MODE on Button, not a variant axis (2026-08-27).** Button went 330 → **55** variants by deleting its `Color` axis: every variant had been pinning `Component/Intent` via `explicitVariableModes`, so the axis existed only to select a mode. Designers now set colour by selecting the instance and switching the `Component/Intent` mode — the same way they already set `Style`. Verified: 6 distinct fills from 55 variants, icon matching label throughout.
 
@@ -199,21 +201,40 @@ Thirteen rules that cost the most time when broken:
 
    A blanket is worse than a wrong value: it is invisible at the point of use, and anything dropped onto that frame later silently inherits it. **Set the mode on the instance that means it.** A container should only carry a mode when the mode is genuinely a property of the container (theme: `Semantic/Color = Dark` on a dark screen is correct).
 
-10. **Figma effect STYLES do not follow variable modes — so every shadow in the
-    library is light-mode-only** (measured 2026-08-28). An `EffectStyle` holds one
-    fixed set of effects. `shadow/floating`'s ring layer is `#1c2533 a0.04`, a
-    near-black hairline. CSS flips `--shadow-edge-ring` to `oklch(1 0 0 / 0.12)`
-    under `.dark` precisely because a dark ring cannot be seen on a dark ground —
-    **Figma never got that correction**, so Menu, Popover, Tooltip and Dialog all
-    render with no visible edge in Figma's dark mode while the code is correct.
-    A designer reviewing dark mode in Figma is not seeing what ships.
+10. **Figma effect STYLES do not follow variable modes, so every layer needs its
+    own bound variable — FIXED 2026-08-29, all 13 styles / 35 layers.** An
+    `EffectStyle` holds one fixed set of effects, so a mode-aware shadow is only
+    possible by binding a variable per layer:
+    `figma.variables.setBoundVariableForEffect(effect, 'color', v)` works inside
+    an `EffectStyle`, not just on a node.
 
-    It IS fixable: `figma.variables.setBoundVariableForEffect(effect, 'color', v)`
-    works on an effect inside an `EffectStyle`, not just on a node — verified. The
-    fix is a mode-aware colour variable per shadow tier, bound to the ring layer of
-    each of the 13 styles. 301 effects across 145 nodes already bind this way
-    (`btn/shadow-*`, `card/shadow-*`, `tabs/pill-shadow`), so the pattern is
-    established; the shared styles just never adopted it.
+    The original entry here said the *ring* layers were uncorrected. That half
+    was already fixed — `shadow/ring` and `shadow/ring-subtle` existed and were
+    bound. **The real gap was the other 29 layers**, and it was bigger: CSS sets
+    `--shadow-strength: 2.5` in dark, so every drop layer in Figma was **2.5×
+    too weak**; `kbd`'s inset offset never flipped sign; and `segment`'s
+    dark-only hairline did not exist at all.
+
+    Now 35/35 layers bound, every light value byte-identical to before. Dark ring
+    contrast on `surface-panel`: **1.011:1 → 1.418:1**. `offsetY` binds and flips
+    too, not just colour.
+
+    Two things this surfaced that are NOT fixed, both because they change light
+    rendering for every consumer and that is a design call:
+    - `shadow/floating` and `shadow/overlay` are each **missing their outermost
+      layer** (code has 4 and 5 drop layers; Figma has 3 and 4).
+    - Figma's shadow ink is `#1c2533` (oklch 0.263 0.029 259) where code's
+      `--shadow-color` is `oklch(0.15 0.015 260)` = `#080b12`. **Every layer is
+      lighter than code.**
+    - `shadow/success` is `oklch(0.512 0.125 150.3)` against code's
+      `oklch(0.55 0.14 145)`; its two siblings match code exactly, so this one
+      drifted alone.
+
+    **`--shadow-pressed` was a real CODE bug this uncovered** (fixed): it is a
+    1px ring built from `--shadow-color` with no `.dark` override, so it
+    composited to **1.012:1** in dark — a pressed control had no pressed state.
+    Its two sibling rings had been corrected and it had not. Figma had been
+    masking it by binding the wrong variable.
 
     **An effect object is frozen.** `delete effect.boundVariables` throws
     *"could not delete property"*, and `style.effects = […]` has already applied by
@@ -233,16 +254,23 @@ Thirteen rules that cost the most time when broken:
     and appending that reflows properly. Read back `child.y` after appending, not
     just the child list.
 
-13. **Every form control in Figma is bound to the DECORATIVE border tier** (measured
-    2026-08-28), where the code uses the control tier. `field/border-color` and
-    `select/border-base` both alias `surface-border-strong`, and Switch strokes it
-    directly. The code binds `border-surface-border-interactive`. So the library
-    renders **1.38:1 light / 1.63:1 dark** where the product renders 2.00:1 / 2.08:1 —
-    a designer measuring in Figma and a developer measuring in the browser get
-    different answers, and the library is the further of the two from the 3:1 bar.
-    Same tier confusion the `utilities.css` comment caused in code. Fix by repointing
-    those variables at `surface-border-interactive`; the STEP is a separate question,
-    the TIER is just wrong.
+13. ~~**Every form control in Figma is bound to the DECORATIVE border tier**~~
+    **RESOLVED — re-measured 2026-08-29 and this describes a state that no longer
+    exists.** `field/border-color` and `select/border-base` both already alias
+    `surface-border-interactive`, and Switch's *stroke* does too. (Switch's
+    `surface-border-strong` is the unchecked track **fill**, which correctly
+    matches `data-[state=unchecked]:bg-surface-border-strong` in `switch.tsx:71`
+    — reading a fill as a stroke is what made this look unfixed.)
+
+    Figma and the browser now agree: **2.00:1 light / 2.07:1 dark**, against
+    `surface-border-strong`'s 1.38:1 / 1.63:1. The old numbers here were right;
+    the diagnosis had simply gone stale. Both tiers still miss the 3:1 bar —
+    that is the STEP question and is untouched.
+
+    Kept rather than deleted because the *lesson* holds: a stale "known bug" is
+    expensive in both directions. This one nearly got re-fixed, and two other
+    entries in this list were also found stale on the same pass. **Re-measure
+    before acting on any rule here.**
 
 ### Legacy checklist (2026-04-20)
 

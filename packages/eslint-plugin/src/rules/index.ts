@@ -13,6 +13,7 @@ import noIconButtonChildren from './no-iconbutton-children'
 import noRenamedSurfaceToken from './no-renamed-surface-token'
 import noSubtleTextOnSunken from './no-subtle-text-on-sunken'
 import noTailwindConfigPreset from './no-tailwind-config-preset'
+import noUngatedHoverOverSelection from './no-ungated-hover-over-selection'
 import preferPerComponentImport from './prefer-per-component-import'
 import requireMutationAnnotation from './require-mutation-annotation'
 import requireProgressLabel from './require-progress-label'
@@ -31,6 +32,7 @@ export const rules = {
   'no-renamed-surface-token': noRenamedSurfaceToken,
   'no-subtle-text-on-sunken': noSubtleTextOnSunken,
   'no-tailwind-config-preset': noTailwindConfigPreset,
+  'no-ungated-hover-over-selection': noUngatedHoverOverSelection,
   'prefer-per-component-import': preferPerComponentImport,
   'require-mutation-annotation': requireMutationAnnotation,
   'require-progress-label': requireProgressLabel,

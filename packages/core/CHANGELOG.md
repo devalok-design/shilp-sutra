@@ -1,5 +1,211 @@
 # @devalok/shilp-sutra
 
+## 0.59.0
+
+### Minor Changes
+
+- [#287](https://github.com/devalok-design/shilp-sutra/pull/287) [`9f183a8`](https://github.com/devalok-design/shilp-sutra/commit/9f183a8f7e8c589888c6c196c1ed9b629d78fab7) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Fix ~20 more invisible states, and five decisions from a full-library visual review
+
+  A complete audit of the library against 0.58.0 turned up sites the surface sweep
+  never reached, plus a handful of judgement calls that were reviewed against real
+  components and settled.
+
+  **Four more selections that lost to their own neighbour.** Same inversion 0.58.0
+  removed, in files that sweep never opened. The chat reaction chip was the worst:
+  a chip you _had_ reacted to was the dimmest thing in the row, because `accent-3`
+  sits below `surface-panel-hover` in dark and that is what an *un*reacted chip is.
+  Also the command-palette shortcut cap (active darker than inactive), the
+  file-upload button (moved 2→3 in 0.58.0 and one step short, so hover still made
+  it darker), and the colour-format pill at 1.042:1.
+
+  **Fourteen more things painted in their own background colour**, so they rendered
+  nothing: the notification-preferences channel tile (1.000:1 in both themes, no
+  border, no shadow, no ring), the chat composer, `Code`'s block variant — which
+  contradicted its own inline variant thirteen lines below — four date-picker
+  triggers, three native selects, and the rich-text-editor link input.
+
+  **The radar chart drew a dark halo instead of a knockout.** Its vertex ring must
+  match the ground it sits on and used `surface-base` while charts sit on cards. An
+  SVG attribute, so no class scan or lint rule could see it.
+
+  **`--shadow-kbd` was 1.022:1 in dark** — hardcoded black with no `.dark` entry, so
+  a key cap's only 3D cue was invisible. It now flips to a top highlight.
+
+  ### Decisions
+  - **Keyboard caps sit in a well.** Their fill matched the menu behind them.
+  - **The slider thumb keeps a step-7 edge** while every container is at step 4.
+    Adds a new `--color-palette-border-strong` role across all 15 palettes, derived
+    from each ramp so a consumer-registered palette gets it free. Recorded as
+    `SLIDER-THUMB-EDGE-STEP-7`: `PALETTE-EDGE-WHISPER` was reasoned about _card_
+    edges, and a handle is the thing you aim at.
+  - **Outlined controls move to the control edge tier.** A Cancel and a Save in one
+    dialog footer were rendering 1.38:1 and 2.00:1 — two different greys. Affects
+    AlertDialog Cancel, the DataTable pager, the top-bar icon button and the
+    command bar. Dividers and chrome stay decorative.
+  - **`Combobox` gains `pillTone`** (`'neutral'` default, `'accent'`). The previous
+    fixed `accent-2` is not offered: in light it was the same lightness as the
+    trigger behind it, 1.006:1, so the pill was invisible.
+  - **`Switch` is deliberately unchanged.** Its hover lightens in light and darkens
+    in dark, inconsistent with every other control. Reviewed and kept; recorded as
+    `SWITCH-HOVER-DIRECTION`.
+
+  Also fixes a deviation ID in `semantic.css` that no gate could ever have matched,
+  and two register sections that were missing their table rows.
+
+- [#289](https://github.com/devalok-design/shilp-sutra/pull/289) [`628675d`](https://github.com/devalok-design/shilp-sutra/commit/628675d474152c52a85e207c7b0645778977fdfc) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Reduced motion is now the default, with no provider to mount
+
+  Every animated component in the library ran its full animation for a reader with
+  `prefers-reduced-motion` set, unless the consumer had mounted `<MotionProvider>`.
+  Nothing forced them to, and the docs described the provider as optional setup, so
+  the accessible behaviour was opt-in by accident.
+
+  The cause is a Framer Motion default: `MotionConfigContext` initialises to
+  `reducedMotion: "never"`, which means a `motion.*` element ignores the OS setting
+  until some ancestor overrides it. `<MotionProvider>` was the only thing in the
+  library that ever did.
+
+  **What changed.** A new `<MotionPreference>` wrapper supplies that ancestor from
+  inside each component, so the OS setting is honoured whether or not a provider is
+  mounted. It is applied across the 46 components that animate position, and
+  exported for anyone writing their own:
+
+  ```tsx
+  import { MotionPreference } from '@devalok/shilp-sutra/motion'
+
+  ;<MotionPreference>
+    <motion.div animate={{ x: 100 }} />
+  </MotionPreference>
+  ```
+
+  It renders no DOM, and nesting is self-cancelling — only the outermost one in a
+  tree configures anything — so wrapping is always safe.
+
+  **"Reduced" does not mean "frozen".** Under Framer's `"user"` mode the suppressed
+  set is every transform plus `width`, `height`, `top`, `left`, `right`, `bottom`,
+  and layout animations — the vestibular triggers WCAG 2.3.3 is concerned with.
+  `opacity`, colour and `filter` keep animating, so a cross-fade still reads as a
+  state change. Components that animate opacity only were left alone, because for
+  them the setting changes nothing.
+
+  **Overrides still win.** A mounted `<MotionProvider>` owns the decision for its
+  subtree, including the deliberate `reducedMotion={false}` "animate regardless"
+  override — the wrapper defers to it rather than re-enabling reduction underneath.
+  The one case it cannot read is a hand-rolled `<MotionConfig reducedMotion="never">`,
+  which is indistinguishable from the framework default; use
+  `<MotionProvider reducedMotion={false}>` to express that intent.
+
+  Roughly half the library already handled this by calling `useReducedMotion()` and
+  branching by hand. Those were left as they are — but note the two mechanisms
+  differ on overrides: Framer's `useReducedMotion()` reads the media query directly,
+  so it honours the OS without a provider _and_ ignores a `reducedMotion={false}`
+  override.
+
+  Also in this change:
+
+  - `pre-publish-audit` gains a **Positional animations respect reduced motion**
+    gate. It derives the requirement from what each file actually animates rather
+    than keeping an allowlist, so adding a transform to a previously opacity-only
+    component fails the build instead of shipping.
+  - The one-time dev `console.info` suggesting you mount `<MotionProvider>` is
+    removed. Its stated reason — that reduced motion needs the provider — is no
+    longer true.
+  - `motion.mdx` corrected. It claimed reduced motion "suppresses all animations"
+    and that the provider "handles it globally"; neither was accurate.
+
+- [#283](https://github.com/devalok-design/shilp-sutra/pull/283) [`af3762f`](https://github.com/devalok-design/shilp-sutra/commit/af3762ff10fb715bf0a6873bd342b972c3d2cf5f) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Opt-in high-contrast edges, three unread styles, and a slider that shows its value
+
+  Three additions, all from a visual review of the open design decisions.
+
+  **`data-contrast="high"` — opt-in WCAG 1.4.11 control edges.** SC 1.4.11 asks for
+  3:1 between a control's edge and its background; the default here is 2.00:1 in
+  light and 2.08:1 in dark. Setting the attribute on any ancestor moves every
+  control edge in the subtree to 3.64:1 / 3.93:1.
+
+  ```html
+  <html data-contrast="high"></html>
+  ```
+
+  An attribute rather than a provider, because `.dark` already works this way — it
+  composes with an existing theme switcher, needs no client component, and
+  survives SSR. Steps are referenced by name, so a consumer who rebrands the
+  neutral ramp gets a correctly scaled high-contrast mode for free.
+
+  Be aware of what stays true: the **default remains non-compliant**. Teams that
+  never set the attribute ship an edge that misses 1.4.11. Shipping compliant by
+  default and letting teams opt _out_ through the token override they already have
+  was the alternative; opt-in was chosen deliberately so products wanting the
+  calmer look are not forced off it. Recorded in full on `CONTROL-EDGE-BELOW-AA`
+  in the deviations register, which stays open.
+
+  **`NotificationCenter` gains `unreadStyle`** — `'tint'` (default), `'strong'`,
+  or `'none'`. `'none'` leans on the tier dot, which already fades to 20% once
+  read.
+
+  The number that governs this is not the one you would reach for first. An unread
+  row does not compete with the panel it sits on, it competes with a **hovered
+  already-read row** — because rows hover to `surface-panel-hover`. Measured on a
+  panel, against that hover (1.091:1 light / 1.173:1 dark):
+
+  |                       | light | dark              |
+  | --------------------- | ----- | ----------------- |
+  | `accent-3`            | 1.246 | **1.042 — loses** |
+  | `accent-4` (`tint`)   | 1.422 | 1.231             |
+  | `accent-5` (`strong`) | 1.690 | 1.458             |
+
+  So step 4 is the floor. Anything quieter and a notification you have already
+  read looks more urgent than one you have not, in dark, whenever the pointer is
+  over it.
+
+  **`Slider` gains tick marks and a value bubble.** The value was previously
+  unreadable without a separate label.
+
+  ```tsx
+  <Slider marks={[0, 25, 50, 75, 100]} />
+
+  <Slider showValue="interact">
+    <Slider.Mark value={0}>Off</Slider.Mark>
+    <Slider.Mark value={80}>Recommended</Slider.Mark>
+  </Slider>
+  ```
+
+  Both forms merge and sort, so they can be mixed; objects allow custom captions
+  and `label: null` draws a tick with none. Positions honour `min`/`max`.
+  `showValue` takes `'always'` or `'interact'`, and `formatValue` controls the
+  text. Ticks and bubble are both `aria-hidden` — the thumb's `role="slider"`
+  already announces value and range, so exposing them again would only add noise.
+
+  Also: the compiled-CSS audit now checks required non-class selectors. A plain
+  attribute rule is not a utility, so the existing scan could not see it, and a
+  silent drop would have made `data-contrast` a no-op with no error anywhere.
+
+### Patch Changes
+
+- [#290](https://github.com/devalok-design/shilp-sutra/pull/290) [`ba95886`](https://github.com/devalok-design/shilp-sutra/commit/ba9588652010a60ae12c87713eecdc239c1ad7ae) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Fix the Next.js Pages Router recipe, which told you not to install TipTap
+
+  `install-next-pages.md` carried no §2a peer table. Instead of listing peers it
+  pointed at the App Router recipe and summarised — and the summary said the
+  "rich-text editors bundle their deps — no install needed". That stopped being
+  true in 0.56.0, when TipTap was externalized precisely because bundling it while
+  also declaring it a peer gave consumers two copies of ProseMirror.
+
+  So a Pages Router consumer following our own recipe was told the opposite of
+  what they needed, and then hit `Module not found: Can't resolve '@tiptap/core'`
+  with no instruction anywhere in their recipe.
+
+  The recipe now carries the full generated table, same as the other five.
+
+  **Why the gate missed it.** `derive-peer-map --check` skipped any recipe with no
+  §2a table (`if (hi < 0) continue`) and then _unioned_ the tables it did find, so
+  a peer documented in five recipes counted as documented everywhere. A recipe
+  that documented nothing at all was invisible twice over. Presence is now checked
+  per file, before the union, and a recipe without a table fails the gate.
+
+  The union itself stays — it is right that one recipe's omission is not reported
+  against all six. What was wrong was treating absence as agreement.
+
+  Cross-referencing another recipe is no longer acceptable for this section:
+  nothing verifies the far end of a link, which is exactly how this rotted.
+
 ## 0.58.0
 
 ### Minor Changes

@@ -5,3 +5,10 @@ shilp-sutra-*.tgz
 next-env.d.ts
 pnpm-lock.yaml
 smoke-test.log
+
+# Written by `next dev` itself (see node_modules/next/dist/server/lib/
+# generate-agent-files.js), not by us and not by installing our tarball.
+# Without these, anyone who boots the dev server here dirties the tree and the
+# audit's "working tree is clean" gate fails for a reason that is not theirs.
+AGENTS.md
+CLAUDE.md

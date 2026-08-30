@@ -14,9 +14,9 @@ export type InputState = FieldState
 const inputWrapperVariants = cva(
   [
     'relative flex items-center w-full font-sans',
-    'bg-surface-panel-hover text-surface-fg',
+    'bg-field text-surface-fg',
     'border border-surface-border-interactive rounded-control',
-    'hover:bg-surface-panel-active',
+    'hover:bg-field-hover',
     'transition-[color,background-color,border-color,box-shadow] duration-fast-02 ease-productive-standard',
     'focus-within:outline-hidden focus-within:ring-2 focus-within:ring-accent-9 focus-within:ring-offset-2 focus-within:border-accent-7',
     'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-action-disabled',
@@ -148,10 +148,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       lg: 'text-body-md',
     }
 
+    // 12px on every size (design 2026-08-24). Only applies to the bare field —
+    // an adjacent icon section still zeroes the padding on its side below.
     const inputPadding: Record<string, string> = {
-      xs: 'px-ds-02',
-      sm: 'px-ds-03',
-      md: 'px-ds-03',
+      xs: 'px-ds-04',
+      sm: 'px-ds-04',
+      md: 'px-ds-04',
       lg: 'px-ds-04',
     }
 
@@ -159,9 +161,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div
         className={cn(
           inputWrapperVariants({ size }),
-          state === 'error' && 'border-error-7 focus-within:ring-error-7',
+          // Validation edges moved to step 8 (design 2026-08-24). This CLEARS the
+          // 3:1 non-text bar that step 7 missed: error 2.831:1 → 3.929:1 and
+          // success 2.557:1 → 3.441:1 in light (3.440:1 / 3.971:1 in dark).
+          // Warning stays at 7 — the designers marked it "border color no
+          // changed", so it keeps sitting at 2.319:1. See docs/deviations.md.
+          state === 'error' && 'border-error-8 focus-within:ring-error-7',
           state === 'warning' && 'border-warning-7 focus-within:ring-warning-7',
-          state === 'success' && 'border-success-7 focus-within:ring-success-7',
+          state === 'success' && 'border-success-8 focus-within:ring-success-7',
           wrapperClassName,
         )}
       >

@@ -129,3 +129,24 @@ export const WithoutDefaultValue: Story = {
     </RadioGroup>
   ),
 }
+
+/**
+ * Design refresh 2026-08-24 — the selected dial is sized `control − 8`, so the
+ * ring of empty space around it is exactly 4px at every size. It was a fixed
+ * 6/8/10px before, which left a 7/8/9px gap and made the md and lg dials read
+ * as specks inside an oversized ring.
+ */
+export const DialLeavesAFourPixelRing: Story = {
+  render: () => (
+    <div className="flex items-center gap-ds-06">
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <div key={size} className="flex items-center gap-ds-02">
+          <RadioGroup defaultValue="on" aria-label={`${size} example`}>
+            <RadioGroupItem value="on" id={`dial-${size}`} size={size} />
+          </RadioGroup>
+          <Label htmlFor={`dial-${size}`}>{size}</Label>
+        </div>
+      ))}
+    </div>
+  ),
+}

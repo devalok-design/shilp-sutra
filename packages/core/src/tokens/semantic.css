@@ -211,6 +211,21 @@
   --color-segment-track: color-mix(in oklch, var(--neutral-12) 6%, transparent);
   --color-segment-thumb: var(--neutral-1);
 
+  /* Form-control ground (Input, Select, Textarea, Combobox). A ROLE token, not
+     a surface tier: the control is defined by its BORDER, so its fill sits
+     essentially flush with whatever it is dropped onto and the edge does the
+     work. Design 2026-08-24 moved light from neutral-2 to neutral-1.
+
+     The spec was authored light-only. Taking it literally in dark would be a
+     regression — neutral-1 in dark IS surface-base, so the field would vanish
+     into the page at 1.000:1 (the Table-striped / linear-Progress failure).
+     Dark therefore takes the step that preserves the INTENT, not the number.
+     Measured: light field #fcfcfc = 1.026:1 vs the page, hover lifts 1.063:1;
+     dark field #181818 = 1.000:1 vs a panel / 1.115:1 vs the page, hover lifts
+     1.173:1. Same relationship in both themes. */
+  --color-field:       var(--neutral-1);
+  --color-field-hover: var(--neutral-2);
+
   /* Overlay + disabled — promoted from internal :root into @theme so
      `bg-overlay`, `text-overlay`, `bg-disabled`, `text-disabled` emit. */
   --color-overlay:  oklch(0 0 0 / 0.50);
@@ -228,6 +243,11 @@
   --color-error-5:  var(--red-5);
   --color-error-6:  var(--red-6);
   --color-error-7:  var(--red-7);
+  /* Step 8 exists so validation EDGES can clear WCAG 1.4.11. Step 7 measures
+     2.831:1 on a light field; step 8 is 3.929:1 (dark: 2.397:1 → 3.440:1).
+     Bridged 2026-08-24 — the primitive was always there, the semantic alias
+     was not, so `border-error-8` silently emitted nothing. */
+  --color-error-8:  var(--red-8);
   --color-error-9:  var(--red-9);
   --color-error-10: var(--red-10);
   --color-error-11: var(--red-11);
@@ -240,6 +260,8 @@
   --color-success-5:  var(--green-5);
   --color-success-6:  var(--green-6);
   --color-success-7:  var(--green-7);
+  /* See --color-error-8. 2.557:1 → 3.441:1 light, 2.660:1 → 3.971:1 dark. */
+  --color-success-8:  var(--green-8);
   --color-success-9:  var(--green-9);
   --color-success-10: var(--green-10);
   --color-success-11: var(--green-11);
@@ -526,7 +548,12 @@
   /* Action state opacities (reflected by preset `opacity-action-*` util) */
   --action-hover-opacity:    0.04;
   --action-selected-opacity: 0.08;
-  --action-disabled-opacity: 0.38;
+  /* 0.38 → 0.45 (design, 2026-08-24). Disabled text is exempt from WCAG 1.4.3,
+     so this is a legibility call, not a pass/fail one — and it moves the right
+     way on every ground. Measured over surface-panel, worst case first:
+     surface-fg-subtle 1.673:1 → 1.859:1, surface-fg-muted 1.879:1 → 2.169:1,
+     surface-fg 2.144:1 → 2.523:1 in light; surface-fg 3.046:1 → 3.745:1 in dark. */
+  --action-disabled-opacity: 0.45;
   --action-focus-opacity:    0.12;
   --action-active-opacity:   0.12;
 
@@ -681,6 +708,12 @@
   --color-surface-raised-hover:  var(--color-surface-panel-hover);
   --color-surface-raised-active: var(--color-surface-panel-active);
 
+  /* Form-control ground — one step up from the light values, NOT the same
+     neutral step. neutral-1 in dark is surface-base, so reusing the light
+     number would sink the field into the page. See the :root note. */
+  --color-field:       var(--neutral-2);
+  --color-field-hover: var(--neutral-3);
+
   /* Object edges invert to translucent white. */
   --color-surface-border-subtle: oklch(1 0 0 / 0.06);
   --color-surface-border:        oklch(1 0 0 / 0.10);
@@ -707,7 +740,8 @@
   /* Action state opacities (higher in dark mode) */
   --action-hover-opacity:    0.08;
   --action-selected-opacity: 0.12;
-  --action-disabled-opacity: 0.38;
+  /* Tracks the light value — see the note on the :root declaration. */
+  --action-disabled-opacity: 0.45;
   --action-focus-opacity:    0.12;
   --action-active-opacity:   0.16;
 
@@ -903,6 +937,8 @@
     --color-surface-disabled:      Canvas;
     --color-surface-inverted:      CanvasText;
     --color-surface-inverted-fg:   Canvas;
+    --color-field:              Canvas;
+    --color-field-hover:        Canvas;
     /* Forced colours flatten the object/control split — every edge must be a
        system colour or it disappears entirely. */
     --color-surface-border:                    CanvasText;
@@ -942,6 +978,7 @@
     --color-error-4: Canvas;
     --color-error-5: Canvas;
     --color-error-7: CanvasText;
+    --color-error-8: CanvasText;
     --color-error-9:  Mark;
     --color-error-10: Mark;
     --color-error-11: CanvasText;
@@ -951,6 +988,7 @@
     --color-success-4: Canvas;
     --color-success-5: Canvas;
     --color-success-7: CanvasText;
+    --color-success-8: CanvasText;
     --color-success-9:  Highlight;
     --color-success-10: Highlight;
     --color-success-11: CanvasText;

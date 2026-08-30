@@ -46,7 +46,7 @@ export const selectTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          'border border-surface-border-interactive bg-surface-panel-hover focus-visible:border-accent-7',
+          'border border-surface-border-interactive bg-field hover:bg-field-hover focus-visible:border-accent-7',
         outline:
           'border border-surface-border-interactive bg-transparent focus-visible:border-accent-7',
         ghost:
@@ -54,15 +54,18 @@ export const selectTriggerVariants = cva(
       },
       state: {
         default: '',
-        error: 'border-error-7 text-error-11 focus-visible:ring-error-9',
-        success: 'border-success-7',
+        // Step 8 clears the 3:1 non-text bar that step 7 missed. Warning stays
+        // at 7 per the design note ("border color no changed").
+        error: 'border-error-8 text-error-11 focus-visible:ring-error-9',
+        success: 'border-success-8',
         warning: 'border-warning-7',
       },
+      // 12px inline padding on every size (design 2026-08-24).
       size: {
-        xs: 'h-ds-xs-plus text-body-sm px-ds-02',
-        sm: 'h-ds-sm text-body-sm px-ds-03',
+        xs: 'h-ds-xs-plus text-body-sm px-ds-04',
+        sm: 'h-ds-sm text-body-sm px-ds-04',
         md: 'h-ds-md text-body-md px-ds-04',
-        lg: 'h-ds-lg text-body-md px-ds-05',
+        lg: 'h-ds-lg text-body-md px-ds-04',
       },
     },
     defaultVariants: { variant: 'default', state: 'default', size: 'md' },

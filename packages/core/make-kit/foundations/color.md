@@ -31,7 +31,7 @@ Border?
   → standard hairline      → border-surface-border
   → emphasized             → border-surface-border-strong
   → subtle divider         → border-surface-border-subtle
-  → state (form invalid)   → border-error-7 (or use Input state="error" instead)
+  → state (form invalid)   → border-error-8 (or use Input state="error" instead)
 
 Status?
   → error    → bg-error-3 / text-error-11 / border-error-7
@@ -57,6 +57,8 @@ Brand emphasis?
 | `surface-overlay` | Floating layers — dialogs, popovers, dropdowns, inputs, toasts. |
 | `surface-inverted` | Tooltips, inverted badges. Pair with `surface-inverted-fg`. |
 | `surface-disabled` | Disabled controls. Pair with `surface-fg-disabled`. |
+| `field` | Ground for a form control — Input, Textarea, Select, Combobox. Not a surface tier: the control is defined by its border, so the fill sits flush with whatever it is on. |
+| `field-hover` | Hover state on a form control. |
 
 Available as: `bg-surface-*`, `text-surface-*`, `border-surface-*`.
 

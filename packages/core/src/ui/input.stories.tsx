@@ -268,3 +268,37 @@ export const WrapperClassName: Story = {
     </div>
   ),
 }
+
+/**
+ * Design refresh 2026-08-24 — every size now carries the same 12px inline
+ * padding, so a stack of mixed-size fields shares one text baseline on the
+ * left. Before this, xs/sm/md/lg stepped 4/8/8/12px and the column ragged.
+ * The ground also moved to the `field` role token: light sits a hair off the
+ * page and the border does the work of defining the control.
+ */
+export const PaddingAlignsAcrossSizes: Story = {
+  render: () => (
+    <div className="flex w-[340px] flex-col gap-ds-03">
+      <Input size="xs" placeholder="Search deliverables" />
+      <Input size="sm" placeholder="Filter by assignee" />
+      <Input size="md" placeholder="Project name" />
+      <Input size="lg" placeholder="Brand guidelines v3" />
+    </div>
+  ),
+}
+
+/**
+ * Validation edges moved from ramp step 7 to step 8 for error and success,
+ * which is what clears the WCAG 1.4.11 3:1 non-text bar: error 2.831:1 →
+ * 3.929:1, success 2.557:1 → 3.441:1 in light. Warning was deliberately left
+ * at step 7 by the designers and still measures 2.319:1 — see docs/deviations.md.
+ */
+export const ValidationEdgeContrast: Story = {
+  render: () => (
+    <div className="flex w-[340px] flex-col gap-ds-03">
+      <Input state="error" defaultValue="notanemail" />
+      <Input state="warning" defaultValue="Billing code expires Friday" />
+      <Input state="success" defaultValue="hello@devalok.in" />
+    </div>
+  ),
+}

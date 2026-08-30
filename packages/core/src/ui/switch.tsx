@@ -9,8 +9,13 @@ import { type FieldState, resolveFieldState } from './lib/field-state'
 import { springs } from './lib/motion'
 import { cn } from "./lib/utils"
 
+// Travel must equal (track width − 2×border − thumb), so the thumb lands 2px
+// from the inner edge at both ends. sm was 16, which overshot by 2px and left
+// the checked thumb flush against the right border with no inset at all —
+// "Switch sm: increase the right padding to 2px" (design 2026-08-24).
+// md (44−4−20) and lg (52−4−24) were already correct.
 const sizeConfig = {
-  sm: { track: 'h-6 w-[38px]', thumb: 'h-5 w-5', travel: 16 },
+  sm: { track: 'h-6 w-[38px]', thumb: 'h-5 w-5', travel: 14 },
   md: { track: 'h-6 w-11', thumb: 'h-ico-md w-ico-md', travel: 20 },
   lg: { track: 'h-7 w-[52px]', thumb: 'h-6 w-6', travel: 24 },
 } as const
@@ -67,8 +72,19 @@ const Switch = React.forwardRef<
 
   return (
     <SwitchPrimitives.Root
+      // OFF track moved from `surface-border-strong` to neutral-5 and its hover
+      // from `surface-panel-active` (neutral-3) to neutral-6 (design 2026-08-24).
+      // Both darken the track, which is what makes the thumb readable against
+      // it: track-vs-thumb goes 1.350:1 → 1.598:1, and hover reaches 1.955:1.
+      // Direction holds in dark too (n-5 0.377 → n-6 0.417, both above panel).
+      //
+      // The design also asked to DROP the 2px border. Not done: unchecked, that
+      // border is the only edge the control has, and it is the stronger of the
+      // two (neutral-6 at 2.006:1 vs the fill's 1.639:1). Removing it lowers the
+      // component boundary against WCAG 1.4.11, which both values already miss.
+      // Raised as a question rather than shipped.
       className={cn(
-        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-pill border-2 border-surface-border-interactive shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-surface-border-strong data-[state=unchecked]:hover:bg-surface-panel-active",
+        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-pill border-2 border-surface-border-interactive shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-neutral-5 data-[state=unchecked]:hover:bg-neutral-6",
         track,
         colorMap[color],
         state && stateTintClasses[state],

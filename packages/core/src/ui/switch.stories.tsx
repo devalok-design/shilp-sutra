@@ -114,3 +114,24 @@ export const WithThumbIcon: Story = {
     </div>
   ),
 }
+
+/**
+ * Design refresh 2026-08-24 — the OFF track is neutral-5 (was
+ * `surface-border-strong`), which lifts thumb-against-track from 1.350:1 to
+ * 1.598:1; hover goes to neutral-6 at 1.955:1. The sm thumb also gained its
+ * missing 2px right inset: its travel was 16px against a 14px budget, so the
+ * checked thumb sat flush on the border. Toggle each one to see the inset.
+ */
+export const TrackContrastAndThumbInset: Story = {
+  render: () => (
+    <div className="flex flex-col gap-ds-04">
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <div key={size} className="flex items-center gap-ds-04">
+          <Switch size={size} aria-label={`${size} off`} />
+          <Switch size={size} defaultChecked aria-label={`${size} on`} />
+          <Label>{size}</Label>
+        </div>
+      ))}
+    </div>
+  ),
+}

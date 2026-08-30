@@ -61,10 +61,14 @@ const radioSizeClasses = {
   lg: 'h-7 w-7',
 } as const
 
+// The dial is sized so the ring of empty space between it and the control's
+// outer edge is exactly 4px at every size — i.e. control − 8 (design
+// 2026-08-24). 20→12, 24→16, 28→20. Previously 6/8/10, which left a 7/8/9px
+// gap and made the selected dot read as a speck at md and lg.
 const radioIndicatorClasses = {
-  sm: 'h-1.5 w-1.5',
-  md: 'h-ds-03 w-ds-03',
-  lg: 'h-2.5 w-2.5',
+  sm: 'h-ds-04 w-ds-04',
+  md: 'h-ds-05 w-ds-05',
+  lg: 'h-ds-05b w-ds-05b',
 } as const
 
 const RadioGroupItem = React.forwardRef<
@@ -83,7 +87,11 @@ const RadioGroupItem = React.forwardRef<
           'transition-colors duration-fast-01',
           'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
           'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-          'hover:border-accent-7 hover:bg-surface-panel-active',
+          // Hover darkens the dial only; the edge keeps the default border
+          // colour ("same as default", 2026-08-24). Gated on unchecked so a
+          // selected radio does not grey out under the pointer — the shape the
+          // `no-ungated-hover-over-selection` rule exists to stop.
+          'data-[state=unchecked]:hover:bg-neutral-4',
           'data-[state=checked]:border-accent-7',
           state && stateBorderClasses[state],
           className,

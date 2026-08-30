@@ -117,7 +117,7 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 Headline architecture: **style is a variable mode, colour is a variant, interactive state is a variant, icons come from our own published Tabler copy with colour bound in each icon's main component.** Code Connect is **blocked** — the Devalok plan is Pro, and Code Connect needs Organization/Enterprise. Use `description` + `documentationLinks`.
 
-Thirteen rules that cost the most time when broken:
+Fourteen rules that cost the most time when broken:
 1. **The collection a variable lives in is the OUTERMOST selector of its resolution chain.** A value that varies by state *and* style must live in the state collection and alias into the style one. Get it backwards and the value is unreachable. This is what lets one `component/fg` serve 4,962 icons across every state.
 2. **Regenerate the component spec before every build** (`figma-sync-components.mjs <name>`) and read the component *body* for prop interactions — the CVA describes appearance, not which prop overrides which.
 
@@ -234,7 +234,33 @@ Thirteen rules that cost the most time when broken:
     1px ring built from `--shadow-color` with no `.dark` override, so it
     composited to **1.012:1** in dark — a pressed control had no pressed state.
     Its two sibling rings had been corrected and it had not. Figma had been
-    masking it by binding the wrong variable.
+    masking it by binding the wrong variable. The deliberate stopping point of
+    all three rings is recorded as `SHADOW-RING-BELOW-NONTEXT` in
+    `docs/deviations.md`.
+
+    **Ten per-component shadow values still cannot follow dark mode.**
+    `card/shadow-1..5`, `btn/shadow-1..4` and `tabs/pill-shadow` live in
+    `Component/Card`, `Component/Style` and `Component/Tabs` — **none of which
+    has a Light/Dark mode at all**, so a mode switch cannot reach them. In dark,
+    an Elevated Card, a Solid Button and a contained Tab pill each cast a
+    near-black shadow on a near-black ground. Same fault as this rule, in
+    collections nobody thought to check because the fix went into the *shared*
+    styles. Cheap to fix now that `shadow/ink-*` exists — alias those ten at it.
+
+14. **Figma dark mode needs TWO collection modes set, and reviewing with one
+    shows you a hybrid** (measured 2026-08-29). `surface-panel[Dark]` is not a
+    value, it is an alias to `Primitives/Color :: neutral/2`, and *that*
+    collection has its own Light/Dark modes **defaulting to Light**. Setting
+    only `Semantic/Color = Dark` follows the pointer in dark and then reads it
+    in light: you get light-grey panels wearing dark-mode shadows, which reads
+    as "the dark shadows are broken" rather than "the ground is wrong".
+
+    Set both. Verified correct output: ground `#0a0a0a`, panels `#171717`.
+
+    This also means **any dark-mode review of this file done by setting one mode
+    was looking at a hybrid** — including measurements. A contrast number
+    obtained by walking aliases and forcing Dark everywhere is the *intended*
+    value, not the one a designer sees; say which you are quoting.
 
     **An effect object is frozen.** `delete effect.boundVariables` throws
     *"could not delete property"*, and `style.effects = […]` has already applied by

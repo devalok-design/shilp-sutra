@@ -93,43 +93,88 @@ tab contains. Every tabbed screen has to fake the panel outside the component.
 
 **Fix:** add a `Panel` slot to `Tabs`.
 
-### 2. `Select` and `Combobox` have no open state. **High.**
+### 2. `Select` and `Combobox` have no open state. **Half closed 2026-08-29 — `Select` still open.**
 
 Code exposes `SelectContent`, `SelectItem`, `SelectGroup`, `SelectLabel`,
 `SelectSeparator` — a whole menu. Figma's `Select` is a closed trigger with a
 `Text` prop and nothing else. The open list, which is the part with all the
 design decisions in it, cannot be drawn from the library at all.
 
-`Combobox` is the same, and worse, since its whole value is the filtered list.
+**`Combobox` is fixed.** It gained `State=Open` (12 → 16 variants), and the list
+itself is now expressible:
 
-**Fix:** either give them a `Menu`-shaped open state, or document that `Menu` +
-`Menu item` is the intended way to draw an open Select and make that explicit.
+- `Combobox option` (6 variants — `accent/4` highlight, `accent/11` selected
+  label, check glyph)
+- `Combobox listbox` (2)
+- `Autocomplete option` (4) and `Autocomplete listbox` (3), built at the same
+  time since `Autocomplete` had the identical gap
 
-### 3. An unused slot cannot be hidden, and costs its minimum height. **High.**
+One thing that could **not** be modelled, and is worth knowing before someone
+tries: **`Autocomplete`'s matched-substring emphasis is not representable.**
+Measured — binding a TEXT property wipes per-range styling, so you can have an
+editable label or a bolded match, not both. The editable label won.
 
-An empty slot keeps a minimum drop-target height — measured **32px** on Card's
-`Footer` — and neither `layoutSizingVertical = 'HUG'` nor `resize()` collapses
-it. The only way to remove it is a boolean property wired to the slot's
-`visible`, exactly as `Card.Show action` already does.
+**`Select` is still open.** Same fix shape as `Combobox`: a `Select listbox` +
+`Select option` pair, or an explicit documented instruction that `Menu` +
+`Menu item` is how you draw an open Select.
 
-Of **20 slots, only one** shipped with such a boolean (`Card.Action`). Every
-other slot silently costs height when a designer does not use it. A footerless
-Card was 40px too tall (32px slot + 8px stack gap).
+### 3. An unused slot cannot be hidden, and costs its minimum height. ~~**High.**~~ **CLOSED 2026-08-29.**
 
-**Fixed for two, 2026-08-27** — both need a republish:
+An empty slot keeps the space it was created at, and neither
+`layoutSizingVertical = 'HUG'` nor `resize()` collapses it. The only way to
+remove it is a boolean property wired to the slot's `visible`.
 
-- `Card` → added **`Show footer`** (`Show footer#529:0`), wired to the `Footer`
-  slot on all three vertical variants. Default `true`, so existing instances are
-  unchanged.
-- `Sidebar` → added **`Show header`** (`Show header#531:0`), wired to the
-  `Header` slot on all four variants. Default `true`.
+**Every optional slot now has one. 30 wired, 7 deliberately not.**
 
-Variable bindings on both slots were re-read after wiring and are intact —
-`componentPropertyReferences` does **not** clear bindings the way a raw
-`.visible` write does.
+Three things in the original entry were wrong, and all three were wrong in a
+way that made the problem look smaller than it was:
 
-**Still open** for the remaining 17 slots. The general fix is a `Show <slot>`
-boolean anywhere a slot is legitimately optional.
+- **"32px minimum" is not a floor, it is the slot's *created* size.** Card's
+  `Footer` measured 32px; a `VERTICAL` slot re-measured on 2026-08-29 cost
+  **100px**. There is no constant to design around — measure the slot you built.
+- **`displayEmptyByDefault: false` does not help.** It round-trips correctly
+  (`false` reads back as `false`) and changes nothing about layout: 121px
+  component, 121px instance, 100px slot either way. It governs whether the empty
+  drop-target is *drawn*, not whether it occupies space. This was the obvious
+  cheap fix and it does not exist.
+- **The counts were wrong in both directions.** Not 20 slots but **37**, across
+  26 components — the 2026-08-29 component build added 17 more. And not one
+  already wired but **eight**; `Alert.Action` had one and this document never
+  recorded it.
+
+**Measured working, end to end.** A Card instance: 158px → **125px** with
+`Content` off → **81px** with `Footer` off too → 158px restored. The mechanism
+reclaims space and is reversible.
+
+**Bindings survive.** Per-component before/after counts identical across all 26.
+Deep-verified on three by resolving values rather than counting them — Card
+**240**, Sidebar **250**, Top bar **84**: **574 resolved, 0 unresolved**
+(`Content.paddingLeft = scale/16 → 16`, `surface-fg → #333333`,
+`role/pill → 9999`). `componentPropertyReferences` does **not** clear bindings
+the way a raw `.visible` write does.
+
+**Seven slots deliberately have no boolean**, because hiding them yields empty
+chrome rather than a useful state, and this document's own wording was "anywhere
+a slot is *legitimately optional*":
+
+`Menu.Items` · `Tabs.Items` · `Segmented control.Items` · `Breadcrumb.Trail` ·
+`Table row.Cells` · `Table footer row.Cells` · `Schedule view.Days`
+
+They were given booleans in the first pass and the booleans were then **deleted**
+— a switch that produces a broken component is worse than no switch, and seven
+dead toggles in the right panel is a tax every designer pays forever.
+
+Deleting a **BOOLEAN** is safe; deleting a **SLOT** property is not (that
+destroys every instance's content, see rule 6). The safe order, used here, is to
+rewrite `componentPropertyReferences` to `{ slotContentId }` *first* — dropping
+the `visible` reference — and only then `deleteComponentProperty` on the
+boolean, so a dangling reference never exists at any point. Piloted on one
+component and verified before the other six. All seven: slot count, child count,
+`.visible` and binding count identical before and after (Table row alone carries
+15 slots and 547 bindings).
+
+One asymmetry worth knowing: `Top bar.Show center` only affects one of its two
+variants, because the other has no `Center` slot.
 
 ### 4. `Sheet` has no `Footer`. **Medium.**
 

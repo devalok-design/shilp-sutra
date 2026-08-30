@@ -122,7 +122,7 @@ Format: `[name](doc path): summary`. Import paths follow `@devalok/shilp-sutra/<
 ### composed
 - [activity-feed](docs/components/composed/activity-feed.md)
 - [avatar-group](docs/components/composed/avatar-group.md)
-- [bulk-action-bar](docs/components/composed/bulk-action-bar.md)
+- [bulk-action-bar](docs/components/composed/bulk-action-bar.md): Floating selection toolbar for bulk actions — re-exported from `ui/bulk-action-bar`
 - [command-palette](docs/components/composed/command-palette.md)
 - [confirm-dialog](docs/components/composed/confirm-dialog.md)
 - [content-card](docs/components/composed/content-card.md): **DEPRECATED (v0.44.0)** — will be removed in the next major

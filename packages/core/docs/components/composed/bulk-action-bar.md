@@ -4,10 +4,12 @@
 - Server-safe: No
 - Category: composed
 
-This path is a re-export and keeps working. The implementation moved to
-`ui/bulk-action-bar` so `DataTable` could use it — `ui/` may not import
-`composed/`. **See [ui/bulk-action-bar](../ui/bulk-action-bar.md) for the full
-reference**; it is the canonical doc and this one only mirrors the surface.
+Floating selection toolbar for bulk actions — re-exported from `ui/bulk-action-bar`.
+
+The implementation moved to `ui/bulk-action-bar` so `DataTable` could use it
+(`ui/` may not import `composed/`). This path keeps working. **See
+[ui/bulk-action-bar](../ui/bulk-action-bar.md) for the full reference**; it is
+the canonical doc and this one only mirrors the surface.
 
 ## Props
     show: boolean (controls visibility)

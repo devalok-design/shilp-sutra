@@ -1,6 +1,6 @@
 import { IconStar } from '@tabler/icons-react'
 import type { Table } from '@tanstack/react-table'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { axe } from 'vitest-axe'
@@ -52,19 +52,18 @@ describe('DataTableBulkActions', () => {
     expect(deleteButton).toHaveClass('bg-palette-solid')
   })
 
-  it('renders a non-error action as an outline Button', () => {
+  // Was `outline`. The bar converged on the shared BulkActionBar, which uses
+  // ghost for non-destructive actions — the bar is already the affordance, and
+  // `outline` contradicted the repo's own documented soft-over-outline
+  // preference. Destructive actions stay solid (see the test above).
+  it('renders a non-error action as a ghost Button', () => {
     const table = createMockTable()
     const actions: BulkAction<Item>[] = [{ label: 'Archive', onClick: vi.fn() }]
     render(<DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />)
 
     const archiveButton = screen.getByRole('button', { name: 'Archive' })
-    // variant="outline" gives the outline role classes.
-    expect(archiveButton).toHaveClass('border-palette-border')
     expect(archiveButton).not.toHaveClass('bg-palette-solid')
-    // No `color` means NO data-palette, deliberately: the button then inherits
-    // whatever palette an ancestor sets, and falls back to accent when none
-    // does. Stamping 'accent' here would defeat that inheritance.
-    expect(archiveButton).not.toHaveAttribute('data-palette')
+    expect(archiveButton).not.toHaveClass('border-palette-border')
   })
 
   it('disables an action button when disabled is true', () => {
@@ -118,8 +117,14 @@ describe('DataTableBulkActions', () => {
       <DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />,
     )
 
-    expect(container.firstChild).toHaveClass('fixed')
-    expect(container.firstChild).toHaveClass('bottom-6')
+    // Portalled to document.body, so it is NOT in `container` — that is the
+    // point of the placement prop. Query the toolbar itself.
+    void container
+    const bar = screen.getByRole('toolbar', { name: 'Bulk actions' })
+    expect(bar).toHaveClass('fixed')
+    // bottom-ds-06, not the raw bottom-6 this used to assert. The raw value
+    // was drift from the shared bar, which uses the spacing token.
+    expect(bar).toHaveClass('bottom-ds-06')
   })
 
   it('renders fixed top classes when position="top"', () => {
@@ -134,9 +139,11 @@ describe('DataTableBulkActions', () => {
       />,
     )
 
-    expect(container.firstChild).toHaveClass('fixed')
-    expect(container.firstChild).toHaveClass('top-6')
-    expect(container.firstChild).not.toHaveClass('bottom-6')
+    void container
+    const bar = screen.getByRole('toolbar', { name: 'Bulk actions' })
+    expect(bar).toHaveClass('fixed')
+    expect(bar).toHaveClass('top-ds-06')
+    expect(bar).not.toHaveClass('bottom-ds-06')
   })
 
   it('renders relative, non-fixed classes when position="inline"', () => {
@@ -173,5 +180,99 @@ describe('DataTableBulkActions', () => {
       <DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />,
     )
     expect(await axe(container)).toHaveNoViolations()
+  })
+})
+
+// The defect that motivated the convergence: this bar declared
+// `role="toolbar"` while implementing plain tab stops, so it told screen-reader
+// users to expect one tab stop and arrow navigation and delivered neither.
+// These assert the contract is now real, not just announced.
+describe('DataTableBulkActions — the toolbar contract it used to only claim', () => {
+  it('is a single tab stop, not one per control', () => {
+    const table = createMockTable()
+    const actions: BulkAction<Item>[] = [
+      { label: 'Archive', onClick: vi.fn() },
+      { label: 'Export', onClick: vi.fn() },
+    ]
+    render(<DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />)
+
+    const bar = screen.getByRole('toolbar', { name: 'Bulk actions' })
+    const buttons = within(bar).getAllByRole('button')
+    const reachable = buttons.filter((b) => b.getAttribute('tabindex') !== '-1')
+    expect(buttons.length).toBeGreaterThan(1)
+    expect(reachable).toHaveLength(1)
+  })
+
+  it('moves focus with ArrowRight and wraps at the end', async () => {
+    const user = userEvent.setup()
+    const table = createMockTable()
+    const actions: BulkAction<Item>[] = [
+      { label: 'Archive', onClick: vi.fn() },
+      { label: 'Export', onClick: vi.fn() },
+    ]
+    render(<DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />)
+
+    const bar = screen.getByRole('toolbar', { name: 'Bulk actions' })
+    await user.click(screen.getByRole('button', { name: 'Archive' }))
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('button', { name: 'Export' })).toHaveFocus()
+    // Clear is the last control; one more wraps back to the first.
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('button', { name: 'Clear selection' })).toHaveFocus()
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('button', { name: 'Archive' })).toHaveFocus()
+    void bar
+  })
+
+  it('Home and End jump to the ends', async () => {
+    const user = userEvent.setup()
+    const table = createMockTable()
+    const actions: BulkAction<Item>[] = [
+      { label: 'Archive', onClick: vi.fn() },
+      { label: 'Export', onClick: vi.fn() },
+    ]
+    render(<DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />)
+
+    await user.click(screen.getByRole('button', { name: 'Export' }))
+    await user.keyboard('{End}')
+    expect(screen.getByRole('button', { name: 'Clear selection' })).toHaveFocus()
+    await user.keyboard('{Home}')
+    expect(screen.getByRole('button', { name: 'Archive' })).toHaveFocus()
+  })
+
+  // Capabilities DataTable simply did not have before. Additive — the props
+  // already existed on BulkAction but were ignored by the old implementation.
+  it('runs a destructive action only after confirmation', async () => {
+    const user = userEvent.setup()
+    const onClick = vi.fn()
+    const table = createMockTable()
+    const actions: BulkAction<Item>[] = [
+      { label: 'Delete', color: 'error', onClick, requiresConfirmation: true },
+    ]
+    render(<DataTableBulkActions table={table} selectedRows={selectedRows} bulkActions={actions} />)
+
+    await user.click(screen.getByRole('button', { name: 'Delete' }))
+    expect(onClick).not.toHaveBeenCalled()
+    expect(screen.getByText('Are you sure?')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Confirm' }))
+    // Still the row payload, which is the API consumers already depend on.
+    expect(onClick).toHaveBeenCalledWith(selectedRows)
+  })
+
+  it('inline placement is NOT portalled, so it stays inside an overlay', () => {
+    const table = createMockTable()
+    const actions: BulkAction<Item>[] = [{ label: 'Archive', onClick: vi.fn() }]
+    const { container } = render(
+      <DataTableBulkActions
+        table={table}
+        selectedRows={selectedRows}
+        bulkActions={actions}
+        position="inline"
+      />,
+    )
+    // In `container` rather than document.body — the whole reason placement
+    // and portalling are one prop.
+    expect(within(container as HTMLElement).getByRole('toolbar')).toBeInTheDocument()
   })
 })

@@ -1,5 +1,321 @@
 # @devalok/shilp-sutra
 
+## 0.60.0
+
+### Minor Changes
+
+- [#302](https://github.com/devalok-design/shilp-sutra/pull/302) [`4c401ea`](https://github.com/devalok-design/shilp-sutra/commit/4c401ea1fdf583b4d9d877239e7b969165ec6dbf) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - DataTable's bulk-action bar is now the shared `BulkActionBar`, not a thinner copy
+
+  DataTable shipped its own bulk bar, parallel to `BulkActionBar` and worse. It
+  declared `role="toolbar"` while implementing plain tab stops — telling
+  screen-reader users to expect one tab stop and arrow-key navigation, and
+  delivering neither. That is the defect that motivated this, and it was sitting
+  on the higher-traffic path.
+
+  The copy had also drifted four ways inside one release cycle: raw `bottom-6`
+  instead of the spacing token, a non-RTL `left-1/2`, `outline` against this
+  repo's own documented soft-over-outline preference, and a bare `<button>` where
+  `Button` belonged.
+
+  **DataTable's public API is unchanged.** `bulkActions`, `bulkActionsPosition`,
+  and `onClick(selectedRows)` all behave exactly as before —
+  `DataTableBulkActions` is now a thin adapter that closes over the selected rows
+  and keeps wiring `table.resetRowSelection()` itself. Nothing to migrate.
+
+  What DataTable gains, all of it previously ignored even though `BulkAction`
+  already declared the props:
+
+  - roving focus with Arrow keys, Home and End, RTL-mirrored, and a real single
+    tab stop
+  - `requiresConfirmation` / `confirmMessage` — an inline confirm step for
+    destructive actions
+  - per-action `loading`
+  - Escape to clear, and reduced-motion support
+
+  **`BulkActionBar` gains `placement`** (`'bottom' | 'top' | 'inline'`, default
+  `'bottom'` — unchanged behaviour). Position and portalling are one prop
+  deliberately: a portal escapes its ancestors' stacking context, so a portalled
+  bar inside a Dialog or Sheet floats over the page instead of belonging to the
+  overlay. `inline` renders in flow and is the answer there. Every system surveyed
+  before building this — Carbon, Polaris, Material — renders its bulk bar in flow.
+
+  **The implementation moved** from `composed/bulk-action-bar` to
+  `ui/bulk-action-bar`, because `ui/` may not import `composed/` and DataTable
+  lives in `ui/`. The old subpath still resolves via a re-export, and a new
+  `@devalok/shilp-sutra/ui/bulk-action-bar` subpath is available.
+
+  Two small behaviour changes fall out of the convergence, both improvements:
+
+  - The toolbar's accessible name is now the stable `"Bulk actions"` rather than
+    `"N items selected"`. A name that changes on every selection change gets
+    re-announced; the count is already carried by the Badge inside.
+  - Non-destructive actions render `ghost` rather than `outline`. Destructive
+    (`color: 'error'`) actions stay `solid` — quietness is right for the bar, but
+    not for a Delete.
+
+- [#303](https://github.com/devalok-design/shilp-sutra/pull/303) [`4c1f81f`](https://github.com/devalok-design/shilp-sutra/commit/4c1f81f52fa3b653479d8d288d611b73a0d4883e) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Apply the 2026-08-24 design refresh to the form controls
+
+  Ported from the `Updated Components` page of the Figma library. The library's
+  own variables were **not** changed there — the designers specified intent by
+  rebinding individual specimens to raw primitives and annotating them on canvas —
+  so every value below was read off a specimen and re-derived, not copied from a
+  note. Three notes turned out to disagree with their own artifact, and those are
+  listed at the bottom.
+
+  **Field ground — Input, Textarea, Select, Combobox.** New role tokens
+  `--color-field` / `--color-field-hover`, emitting `bg-field` / `bg-field-hover`.
+  The control is now defined by its border, with a fill that sits essentially
+  flush with whatever it is dropped onto.
+
+  The spec was authored light-only, and taking it literally would have been a
+  dark-mode regression: `neutral-1` in dark **is** `surface-base`, so every field
+  would have sunk into the page at 1.000:1 — the same failure that shipped in
+  `Table striped` and linear `Progress`. Dark therefore takes the step that
+  preserves the relationship rather than the number. Measured: light field
+  `#fcfcfc` = 1.026:1 against the page with hover lifting 1.063:1; dark field
+  `[#181818](https://github.com/devalok-design/shilp-sutra/issues/181818)` = 1.000:1 against a panel / 1.115:1 against the page, hover lifting
+  1.173:1.
+
+  **Validation edges move to ramp step 8**, which is what finally clears WCAG
+  1.4.11 for them — error **2.831:1 → 3.929:1**, success **2.557:1 → 3.441:1** in
+  light (2.397:1 → 3.440:1 and 2.660:1 → 3.971:1 in dark). This required bridging
+  `--color-error-8` and `--color-success-8`, which did not exist: the primitives
+  were always there but the semantic aliases were not, so `border-error-8` would
+  have silently emitted nothing. Warning was explicitly held at step 7 by the
+  designers and still measures 2.319:1 — filed as `FIELD-WARNING-EDGE-STEP-7`.
+
+  **Uniform 12px inline padding** on all four controls at every size (Textarea
+  also 8px block). Previously each size stepped its own padding, so a column of
+  mixed-size fields did not share a text baseline.
+
+  **Disabled opacity 0.38 → 0.45.** A global token, so every
+  `opacity-action-disabled` consumer moves. Disabled text is exempt from WCAG
+  1.4.3, so this is legibility rather than pass/fail, and it improves on every
+  ground — worst case (`surface-fg-subtle` on a panel) 1.673:1 → 1.859:1, typical
+  `surface-fg` 2.144:1 → 2.523:1 light and 3.046:1 → 3.745:1 dark.
+
+  **Switch.** The OFF track moves to `neutral-5` and its hover to `neutral-6`,
+  lifting thumb-against-track from 1.350:1 to 1.598:1 and hover to 1.955:1. This
+  also resolves the `SWITCH-HOVER-DIRECTION` deviation, whose premise was wrong:
+  it recorded that "every other control gets lighter on hover in both themes", but
+  the standard surface hover gets _darker_ in light (`#ffffff` → `#f5f5f5`). The
+  Switch now moves away from the ground in both themes exactly as the norm does,
+  so the entry is deleted rather than renumbered.
+
+  Separately, the `sm` thumb had 16px of travel against a 14px budget
+  (`38 − 2×2 border − 20 thumb`), so a checked small switch sat flush on its right
+  border with no inset at all. `md` and `lg` were already correct.
+
+  **Radio.** The selected dial is sized `control − 8`, leaving exactly a 4px ring
+  at every size (20→12, 24→16, 28→20). It was a fixed 6/8/10px, which left a
+  7/8/9px gap and made the md and lg dials read as specks.
+
+  **Radio + Checkbox hover** darkens the control to `neutral-4` and no longer
+  recolours the edge to `accent-7`, which had read as a pre-selection. Radio's
+  hover is now gated on `data-[state=unchecked]` to match Checkbox.
+
+  **Toast.** The auto-dismiss countdown runs in a visible groove instead of over
+  bare surface, so a part-elapsed bar reads as time remaining rather than a stray
+  rule of arbitrary length.
+
+  Nothing here changes a prop, a prop type or an export — visual and token only.
+
+  **Three notes were not followed, because the artifact disagreed with the prose:**
+
+  - Badge `outline` was annotated "border 7 → 5", but its specimen is bound to
+    `pink/4` — step 4, the same as `subtle`, which is what the code already ships.
+    No change.
+  - The Avatar role ring was annotated 7 → 6. That is a measured contrast
+    _regression_ on the sole carrier of role, which has no text alternative:
+    lead 2.865:1 → 2.095:1, client 2.636:1 → 1.990:1, admin 2.319:1 → 1.930:1,
+    all already under 3:1. Not shipped; raised as a question.
+  - The Switch was annotated "removed the stroke". Unchecked, that border is the
+    only edge the control has and is the stronger of the two (neutral-6 at
+    2.006:1 against the fill's 1.639:1). Not shipped; raised as a question.
+
+  ## Adopted after review, against the measurement
+
+  Two notes were initially declined on contrast grounds and then adopted on the
+  maintainer's call. Both are recorded in `docs/deviations.md` with the numbers
+  they miss, so neither gets rediscovered as a bug.
+
+  **Avatar role ring, step 7 → 6** (`AVATAR-ROLE-RING-STEP-6`). Measured on white:
+  lead 2.865 → **2.095:1**, client 2.636 → 1.990, admin 2.319 → 1.930. The ring is
+  the sole carrier of role — no label, no icon, no tooltip — so colour is the whole
+  signal. All three were already under 3:1; this deepens an existing hole rather
+  than digging a new one. The honest fix is a non-colour representation of role,
+  not a darker ring.
+
+  **Switch resting stroke removed** (`SWITCH-RESTING-STROKE-REMOVED`). An unchecked
+  switch now reads on its fill alone: **1.639:1**, down from the border's 2.006:1.
+
+  Validation survives, and that took a specific shape. Unchecked, the border
+  colour was the _only_ thing separating error / warning / success from default,
+  because the coloured track applies solely when checked — so removing the stroke
+  outright would have made validation invisible. The 2px is therefore still
+  **reserved as transparent** and painted only when a state is set.
+
+  The reservation is structural rather than stylistic: the border sits inside the
+  box and the thumb's travel is `(track − 2×border − thumb)`, so dropping the
+  width instead of the colour would move the thumb 4px the instant a field
+  errored. There is a test asserting the geometry is identical with and without a
+  validation state.
+
+### Patch Changes
+
+- [#298](https://github.com/devalok-design/shilp-sutra/pull/298) [`a2c0257`](https://github.com/devalok-design/shilp-sutra/commit/a2c0257ba9a81cc4a997723ec42280a62dbb6ac4) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Give `--shadow-pressed` a dark-mode value — it measured 1.012:1
+
+  `--shadow-pressed` is a 1px ring built from `--shadow-color`, and it was the
+  only one of the three ring tokens without a `.dark` override. In dark it
+  composited to **1.012:1** against `surface-panel` — a pressed control had no
+  pressed state at all.
+
+  `--shadow-edge-ring` and `--shadow-edge-ring-subtle` both flip to a white ring
+  under `.dark`, and the comment on the first of them describes exactly this
+  failure: "a near-black shadow is not an edge on a dark ground". The third ring
+  never got the same treatment.
+
+  It now uses `oklch(1 0 0 / 0.10)` in dark, measuring **2.640:1** — between
+  `-subtle` (2.148:1) and the full edge ring (2.968:1), which matches where a
+  pressed state should sit: firmer than a resting card, quieter than a floating
+  overlay. Light is unchanged.
+
+  Found while binding the Figma effect styles, where it had been masked: Figma
+  had `shadow/pressed` bound to the _edge-ring_ variable rather than its own, so
+  the Figma rendering looked correct and the shipped CSS did not.
+
+- [#297](https://github.com/devalok-design/shilp-sutra/pull/297) [`ca8c6d5`](https://github.com/devalok-design/shilp-sutra/commit/ca8c6d597e26584c66374f8cd64d3f9b34d93ab1) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Add `no-ungated-hover-over-selection`, and fix the fifth instance it found
+
+  An ungated `hover:bg-*` compiles to `(0,2,0)` and a conditional active
+  `bg-*` to `(0,1,0)`, so pointing at the selected row visually deselects it.
+  `tailwind-merge` does not save you: it de-duplicates by group, and `hover:bg-x`
+  and `bg-y` are different groups, so both survive and the cascade decides.
+
+  This had shipped three times — `TreeItem`, `TableRow`, `MasterDetail` — two of
+  them carrying a hand-written comment explaining the guard. The rule replaces the
+  fourth comment.
+
+  On its first run against the library it found **two more**, in files nobody had
+  connected to the pattern:
+
+  - `MultiSelectPopover` — a real instance, plus a second fault on the same
+    element: `isFocused && 'bg-surface-panel-hover'` is also `(0,1,0)` but
+    declared _after_ `isSelected`, so arrowing onto a selected row greyed it as
+    well. Both are fixed; keyboard focus on a selected row now advances within
+    the accent ramp instead of dropping to grey.
+  - `EmojiPicker` — a **false positive**, and the rule was changed rather than the
+    component. Its hover and active paint the _same_ utility, so the cascade
+    conflict has no visual consequence: the keyboard-active emoji is meant to look
+    hovered. The rule now compares the two backgrounds and stays quiet when they
+    match. A rule that cries wolf on a deliberate pattern gets switched off.
+
+  Two shapes are accepted, because both are legitimate and which one is right
+  depends on whether the active row should respond to the pointer at all:
+
+  ```tsx
+  cn(!isActive && 'hover:bg-surface-panel-hover', isActive && 'bg-accent-4')
+  cn(
+    'hover:bg-surface-panel-hover',
+    isActive && 'bg-accent-4 hover:bg-accent-5',
+  )
+  ```
+
+  No autofix, for that reason.
+
+  Known limits, stated rather than papered over: it only reads `cn()`/`clsx()`
+  calls, because that is the only place the AST proves two class strings land on
+  the same element; and it ignores the `data-[state=selected]:` variant form,
+  which needs no gate since the variant carries its own specificity.
+
+  The repo now applies the rule to its own `packages/*/src`.
+
+- [#295](https://github.com/devalok-design/shilp-sutra/pull/295) [`fef555e`](https://github.com/devalok-design/shilp-sutra/commit/fef555eb2ef9a8714d7c07f72624de973bd6e9d6) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Fix five rendering bugs in Table, DataTable and MasterDetail
+
+  All five were found by reading the source closely enough to rebuild it in
+  Figma, and all five had survived review. Three are specificity faults — a rule
+  that looked right in the source and lost in the cascade.
+
+  **Selection was invisible on half the rows of a striped table.** `Table` put
+  striping on the `<table>` and `TableRow` put selection on the `<tr>`:
+
+  ```css
+  .[&_tbody_tr:nth-child(even)]:bg-surface-panel-hover tbody tr:nth-child(even)  /* (0,2,2) */
+  .data-[state=selected]:bg-accent-4[data-state="selected"]                      /* (0,2,0) */
+  ```
+
+  The stripe won, so a selected even row rendered grey. It revealed itself only
+  on hover, where `(0,3,0)` took over. The stripe selector now excludes selected
+  rows, which makes the contest moot rather than escalating specificity — the
+  next stripe variant would only have had to escalate again.
+
+  **Every pinned column was pinned to the same edge.** `leftIndex` was computed
+  and then discarded, so two left-pinned columns both resolved to `left: 0` and
+  stacked. `getPinnedCellStyle` now takes the column and asks TanStack for the
+  cumulative offset (`getStart('left')` / `getAfter('right')`) rather than
+  summing widths itself. The argument is optional so the signature stays
+  compatible, but omitting it _is_ the old behaviour — pass it.
+
+  **A pinned cell repainted the row.** It set `bg-surface-panel` unconditionally,
+  which is right for occluding scrolled content and wrong for everything else: a
+  selected row's pinned cell stayed panel-coloured and a striped row's showed a
+  white notch. The cell keeps an opaque base — `bg-inherit` does not work, since
+  `TableRow` has no background of its own and the cell would inherit
+  `transparent` — and layers the row's state on top through `group/row`, which
+  `TableRow` already declares. Striping reaches it through a new `data-pinned`
+  attribute, so only the pinned cell is repainted rather than every cell.
+
+  **A pinned column had no edge.** Unscrolled it was indistinguishable from a
+  normal column; scrolled, content slid under it with no seam. The last
+  left-pinned and first right-pinned column now carry a hairline on the boundary.
+
+  **`MasterDetail`'s active row went grey on hover.** `hover:bg-surface-panel-hover`
+  `(0,2,0)` beat `bg-accent-4` `(0,1,0)`, so pointing at the selected row
+  deselected it visually. The hover is now gated on `!isActive`, and the active
+  row gets `hover:bg-accent-5` so it still responds to the pointer. This is the
+  third instance of one fault — `TreeItem` and `TableRow` both already carry the
+  guard, each with a comment explaining it. A lint rule would be better than a
+  fourth hand-written guard.
+
+  The `data-table-pinning` tests assert the offsets diverge, the seam lands on
+  the boundary column only, and the state classes are present. The MasterDetail
+  test asserts on the class list rather than simulating hover, because jsdom does
+  not apply `:hover` — a behavioural test there would have passed while the bug
+  was live, which is how it survived in the first place.
+
+- [#301](https://github.com/devalok-design/shilp-sutra/pull/301) [`5de79fd`](https://github.com/devalok-design/shilp-sutra/commit/5de79fd15ade2769d36cf108da1d5e5b6bef6368) Thanks [@Mudit-Lal](https://github.com/Mudit-Lal)! - Split the shadow ink by theme — light matches Figma, dark stops glowing
+
+  `--shadow-color` was one value for both themes, and it was wrong in both
+  directions.
+
+  **Light now matches the Figma library exactly** (`#1c2533`). The two had
+  drifted, and Figma won on cost rather than merit: one value here against 26 in
+  the library, for a difference measured at **1/255** at the strongest light
+  layer. Below what anyone can see, so the cheaper of two equivalent outcomes.
+
+  **Dark gets its own, darker ink** (`oklch(0.05 0.012 260)`), because the light
+  reasoning does not survive the theme. Dark sets `--shadow-strength: 2.5`, and at
+  that weight:
+
+  - the new light ink composites to `#1b1d21` over a `#1a1a1a` panel — **lighter
+    than the surface it is meant to darken.** A glow, not a shadow.
+  - the _previous_ dark ink had a milder version of the same fault: fine on
+    `surface-panel`, but on `surface-base` (`#0a0a0a`) it is itself the lighter
+    colour, and the drop layers measured **1.001:1** separation. They contributed
+    nothing at all.
+
+  `0.05` sits below both dark grounds, so the sign is now correct everywhere.
+
+  **What this does not do, and no ink can:** make drop shadows carry dark
+  elevation. There is no headroom below a near-black ground — the best any ink
+  achieves at the strongest layer is 1.013:1 on base and 1.040:1 on panel. The
+  white edge ring is what actually separates an elevated surface in dark. That is
+  structural, not a workaround, and it is now written at the token so the next
+  person does not try to fix it by darkening the shadow further.
+
+  Light rendering is unchanged to within 1/255. Dark shadows are very slightly
+  more present and, on the page background, are shadows rather than glows for the
+  first time.
+
 ## 0.59.0
 
 ### Minor Changes

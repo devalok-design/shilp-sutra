@@ -4,6 +4,78 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.60.0 — no code changes needed, but several controls look different
+
+**Nothing breaks at the TypeScript level.** No prop removed, no type narrowed,
+no export dropped. You do not have to change any code to take this release.
+
+It is not "additive" either, and the distinction matters if you keep visual
+snapshots: several controls change appearance, and one screen-reader
+announcement changes. Everything below happens on upgrade, with no opt-out.
+
+### Form controls take a distinct ground
+
+Inputs, Textareas, Selects and Comboboxes now sit on their own `--color-field`
+token rather than a surface value — `neutral-1` in light, `neutral-2` in dark.
+Hover moves with them. Validation edges move from colour step 7 to step 8, which
+takes them **over** the WCAG 1.4.11 3:1 bar for the first time (error
+2.75 → 3.82:1, success 2.49 → 3.36:1).
+
+If you override field backgrounds, check them against the new token.
+
+### Switch loses its resting stroke
+
+An unchecked Switch is now carried by its fill alone. Validation states still
+paint the border — the 2px is reserved and transparent, so the thumb does not
+move when a field errors.
+
+If you relied on the resting outline to find an off switch on a busy surface,
+it is now 1.639:1 against the panel rather than 2.006:1. Recorded as
+`SWITCH-RESTING-STROKE-REMOVED` in `docs/deviations.md`.
+
+### Avatar role rings are fainter
+
+Step 7 → 6 on `lead`, `admin` and `client`. Measured on white the lead ring goes
+2.865 → 2.095:1. **The ring is the only thing conveying role** — no label, no
+icon, no tooltip — so if role matters in your UI, add a text affordance. This is
+a known, accepted shortfall (`AVATAR-ROLE-RING-STEP-6`), not an oversight.
+
+### Disabled elements are slightly more legible
+
+`--action-disabled-opacity` 38% → 45%, globally. Every `opacity-action-disabled`
+consumer moves. This improves every case measured; the worst
+(`surface-fg-subtle`) goes 1.673 → 1.859:1.
+
+### DataTable's bulk-action bar changed announcement and emphasis
+
+It now uses the shared `BulkActionBar` internally. `bulkActions`,
+`bulkActionsPosition` and `onClick(selectedRows)` are unchanged — nothing to
+migrate — but:
+
+- the toolbar's accessible name is the stable `"Bulk actions"` rather than
+  `"N items selected"`, which was re-announced on every selection change;
+- non-destructive actions render `ghost` rather than `outline`; destructive
+  (`color: 'error'`) actions stay `solid`;
+- it gains roving focus (Arrow / Home / End), inline confirmation via
+  `requiresConfirmation`, per-action `loading`, and reduced-motion support —
+  props `BulkAction` already declared and the previous implementation ignored.
+
+`BulkActionBar`'s implementation moved from `composed/bulk-action-bar` to
+`ui/bulk-action-bar`. **The old import path still works**; a new one is also
+available.
+
+### Shadows
+
+Light shadows are 1/255 lighter — invisible, done to match the Figma library
+exactly. Dark shadows changed more: they now render as shadows rather than
+faint glows on the page background, and the pressed ring is visible in dark for
+the first time (it measured 1.012:1, i.e. nothing).
+
+### If you keep visual snapshots
+
+Expect diffs on: any form control, Switch, Avatar with a role ring, anything
+disabled, DataTable with bulk actions, and anything elevated in dark mode.
+
 ## v0.59.0 — additive (no migration required)
 
 Nothing breaks at the TypeScript level; this release is additive.

@@ -20,7 +20,20 @@ const sizeConfig = {
   lg: { track: 'h-7 w-[52px]', thumb: 'h-6 w-6', travel: 24 },
 } as const
 
-/** Validation border + checked-track tint per state (overrides `color` when set). */
+/**
+ * Validation border + checked-track tint per state (overrides `color` when set).
+ *
+ * The border is only VISIBLE here. The track always reserves 2px of it —
+ * `border-transparent` in the base classes — because the border sits inside the
+ * box and the thumb's travel is computed as (track − 2×border − thumb). Making
+ * it appear and disappear would move the thumb by 4px whenever a field went
+ * into an error state.
+ *
+ * That reservation is also what lets the 2026-08-24 refresh remove the resting
+ * stroke without losing validation: unchecked, this border is the ONLY thing
+ * distinguishing error/warning/success from default, since the coloured track
+ * applies solely when checked.
+ */
 const stateTintClasses: Record<Exclude<FieldState, 'default'>, string> = {
   error: 'border-error-7 data-[state=checked]:bg-error-9',
   warning: 'border-warning-7 data-[state=checked]:bg-warning-9',
@@ -84,7 +97,14 @@ const Switch = React.forwardRef<
       // component boundary against WCAG 1.4.11, which both values already miss.
       // Raised as a question rather than shipped.
       className={cn(
-        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-pill border-2 border-surface-border-interactive shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=checked]:border-transparent data-[state=unchecked]:bg-neutral-5 data-[state=unchecked]:hover:bg-neutral-6",
+        // `border-transparent`, not "no border": the 2px is still reserved so
+        // the thumb's travel stays (track − 2×border − thumb) whether or not a
+        // validation state paints it. Removing the width outright would shift
+        // the thumb 4px the moment a field errored.
+        // The resting stroke is gone per the 2026-08-24 refresh, so an
+        // unchecked switch is now carried by its fill alone (1.639:1, down from
+        // the border's 2.006:1). deviation: SWITCH-RESTING-STROKE-REMOVED
+        "touch-target peer inline-flex shrink-0 cursor-pointer items-center rounded-pill border-2 border-transparent shadow-raised transition-colors duration-fast-01 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-action-disabled data-[state=unchecked]:bg-neutral-5 data-[state=unchecked]:hover:bg-neutral-6",
         track,
         colorMap[color],
         state && stateTintClasses[state],

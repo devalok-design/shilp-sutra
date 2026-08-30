@@ -142,12 +142,35 @@ describe('Switch off-track', () => {
     expect(cls).toContain('data-[state=unchecked]:hover:bg-neutral-6')
   })
 
-  it('keeps its border — it is the only edge an unchecked switch has', () => {
-    // Declining the design's "remove the stroke": the border is neutral-6 at
-    // 2.006:1 where the fill is 1.639:1, so dropping it lowers the component
-    // boundary further below WCAG 1.4.11. Raised as a question instead.
+  // The resting stroke is gone per the refresh, but the 2px is still RESERVED
+  // as transparent. Two separate reasons, and both are load-bearing:
+  //   1. Validation. Unchecked, the border colour is the only thing separating
+  //      error/warning/success from default — the coloured track applies solely
+  //      when checked. Dropping the width would make validation invisible.
+  //   2. Geometry. The border sits inside the box and travel is
+  //      (track − 2×border − thumb), so removing the width moves the thumb 4px.
+  it('reserves the border as transparent rather than dropping it', () => {
     render(<Switch aria-label="Notify" />)
-    expect(screen.getByRole('switch').className).toContain('border-surface-border-interactive')
+    const cls = screen.getByRole('switch').className
+    expect(cls).toContain('border-2')
+    expect(cls).toContain('border-transparent')
+    expect(cls).not.toContain('border-surface-border-interactive')
+  })
+
+  it('paints that reserved border when a validation state is set', () => {
+    render(<Switch aria-label="Notify" state="error" />)
+    const cls = screen.getByRole('switch').className
+    expect(cls).toContain('border-error-7')
+    // Still 2px — an errored switch must not shift its thumb.
+    expect(cls).toContain('border-2')
+  })
+
+  it('keeps the thumb travel identical with and without validation', () => {
+    const { rerender } = render(<Switch aria-label="Notify" />)
+    const plain = screen.getByRole('switch').className.match(/w-\[?[\w.]+\]?/)?.[0]
+    rerender(<Switch aria-label="Notify" state="error" />)
+    const errored = screen.getByRole('switch').className.match(/w-\[?[\w.]+\]?/)?.[0]
+    expect(errored).toBe(plain)
   })
 })
 

@@ -81,3 +81,31 @@ Nothing here changes a prop, a prop type or an export — visual and token only.
 - The Switch was annotated "removed the stroke". Unchecked, that border is the
   only edge the control has and is the stronger of the two (neutral-6 at
   2.006:1 against the fill's 1.639:1). Not shipped; raised as a question.
+
+## Adopted after review, against the measurement
+
+Two notes were initially declined on contrast grounds and then adopted on the
+maintainer's call. Both are recorded in `docs/deviations.md` with the numbers
+they miss, so neither gets rediscovered as a bug.
+
+**Avatar role ring, step 7 → 6** (`AVATAR-ROLE-RING-STEP-6`). Measured on white:
+lead 2.865 → **2.095:1**, client 2.636 → 1.990, admin 2.319 → 1.930. The ring is
+the sole carrier of role — no label, no icon, no tooltip — so colour is the whole
+signal. All three were already under 3:1; this deepens an existing hole rather
+than digging a new one. The honest fix is a non-colour representation of role,
+not a darker ring.
+
+**Switch resting stroke removed** (`SWITCH-RESTING-STROKE-REMOVED`). An unchecked
+switch now reads on its fill alone: **1.639:1**, down from the border's 2.006:1.
+
+Validation survives, and that took a specific shape. Unchecked, the border
+colour was the *only* thing separating error / warning / success from default,
+because the coloured track applies solely when checked — so removing the stroke
+outright would have made validation invisible. The 2px is therefore still
+**reserved as transparent** and painted only when a state is set.
+
+The reservation is structural rather than stylistic: the border sits inside the
+box and the thumb's travel is `(track − 2×border − thumb)`, so dropping the
+width instead of the colour would move the thumb 4px the instant a field
+errored. There is a test asserting the geometry is identical with and without a
+validation state.

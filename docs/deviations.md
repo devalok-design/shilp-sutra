@@ -36,6 +36,8 @@ any gate that needs to skip a known case.
 | `SLIDER-THUMB-EDGE-STEP-7` | Slider thumb edge stays at step 7 | 2.31–2.86:1 | our own step-4 edge rule | open |
 | `FIELD-WARNING-EDGE-STEP-7` | Field `warning` edge stays at step 7 | 2.319:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-24 |
 | `SHADOW-RING-BELOW-NONTEXT` | Elevation ring tokens, dark | 2.15-2.97:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-29 |
+| `AVATAR-ROLE-RING-STEP-6` | Avatar role ring, sole carrier of role | 1.93–2.10:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-30 |
+| `SWITCH-RESTING-STROKE-REMOVED` | Unchecked Switch edge | 1.64:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-30 |
 
 ---
 
@@ -326,6 +328,66 @@ the call, recorded here rather than left to be rediscovered as an inconsistency.
 
 **Related:** `PALETTE-EDGE-WHISPER`, which still governs every other coloured
 edge and is unchanged.
+
+---
+
+### `AVATAR-ROLE-RING-STEP-6` — the role ring moves to a fainter step
+
+**The threshold.** WCAG 1.4.11, 3:1 for non-text that identifies a component or
+conveys information. The Avatar role ring conveys information and has **no text
+alternative** — no label, no icon, no tooltip. Colour is the whole signal.
+
+**What we ship.** Step 6, per the 2026-08-24 Figma refresh. Measured on white:
+
+| role | step 7 (before) | step 6 (adopted) |
+|---|---|---|
+| lead | 2.865:1 | **2.095:1** |
+| client | 2.636:1 | **1.990:1** |
+| admin | 2.319:1 | **1.930:1** |
+
+**Why it stands.** A design call, taken with the numbers in front of it. All
+three were already under 3:1, so this deepens an existing shortfall rather than
+creating one, and the ring is a secondary cue on an element whose primary
+identity is the person's face or initials.
+
+**What this costs, stated plainly.** Role is not perceivable without colour
+vision at any step, and step 6 widens that gap. The honest fix is not a darker
+ring — it is giving role a non-colour representation. Until then this is a
+known, accepted hole rather than an oversight.
+
+**What would change the answer.** Any use of the ring where role carries
+consequence — permissions, billing, who can approve something — rather than
+being decorative context in a list of collaborators.
+
+---
+
+### `SWITCH-RESTING-STROKE-REMOVED` — an unchecked switch has no edge
+
+**The threshold.** WCAG 1.4.11, 3:1 for the boundary of a control.
+
+**What we ship.** No visible stroke at rest, per the 2026-08-24 refresh. The
+unchecked track is carried by its fill alone:
+
+| | contrast vs `surface-panel` |
+|---|---|
+| old border (`surface-border-interactive`) | **2.006:1** |
+| fill alone (`neutral-5`) | **1.639:1** |
+
+Both miss 3:1; the change gives up the stronger of the two.
+
+**Why it stands.** Deliberate visual simplification, and a switch is a large
+target whose shape and thumb are legible independently of its edge — the thumb
+is the affordance, not the outline.
+
+**What was NOT given up.** Validation. Unchecked, the border colour was the
+*only* thing distinguishing error / warning / success from default, because the
+coloured track applies solely when checked. Removing it outright would have
+made validation invisible on an unchecked switch. The stroke is therefore still
+reserved and transparent, and paints only when a state is set.
+
+**The reservation is structural, not stylistic.** The 2px sits inside the box
+and the thumb's travel is `(track − 2×border − thumb)`. Dropping the width
+rather than the colour would move the thumb 4px the moment a field errored.
 
 ---
 

@@ -166,8 +166,8 @@ describe('AvatarGroup', () => {
       const { container } = render(
         <AvatarGroup users={usersWithRings} showTooltip={false} />,
       )
-      expect(container.querySelector('.ring-accent-7')).toBeInTheDocument()
-      expect(container.querySelector('.ring-warning-7')).toBeInTheDocument()
+      expect(container.querySelector('.ring-accent-6')).toBeInTheDocument()
+      expect(container.querySelector('.ring-warning-6')).toBeInTheDocument()
     })
   })
 })

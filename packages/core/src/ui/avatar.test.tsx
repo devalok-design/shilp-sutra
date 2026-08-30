@@ -174,7 +174,9 @@ describe('Avatar', () => {
       </Avatar>,
     )
     const wrapper = container.firstChild as HTMLElement
-    expect(wrapper.className).toContain('ring-accent-7')
+    // Step 6 per the 2026-08-24 refresh — fainter than 7 and knowingly so.
+    // deviation: AVATAR-ROLE-RING-STEP-6
+    expect(wrapper.className).toContain('ring-accent-6')
   })
 
   // ── a11y — status indicator (not covered by conformance default render) ──

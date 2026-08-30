@@ -4,6 +4,11 @@
 - Server-safe: No
 - Category: composed
 
+This path is a re-export and keeps working. The implementation moved to
+`ui/bulk-action-bar` so `DataTable` could use it — `ui/` may not import
+`composed/`. **See [ui/bulk-action-bar](../ui/bulk-action-bar.md) for the full
+reference**; it is the canonical doc and this one only mirrors the surface.
+
 ## Props
     show: boolean (controls visibility)
     count: number (number of selected items — displayed in badge)
@@ -11,6 +16,7 @@
     actions: BulkActionBarAction[]
     totalCount: number (optional — total selectable items; enables "Select all")
     onSelectAll: () => void (optional — called by the "Select all" control)
+    placement: "bottom" | "top" | "inline" (default: "bottom")
     className: string
     ...div attributes (forwardRef to the toolbar div; HTMLAttributes spread)
 
@@ -25,7 +31,7 @@
     confirmMessage: string (optional — default "Are you sure?")
 
 ## Defaults
-    (no optional props with defaults)
+    placement: "bottom"
 
 ## Example
 ```jsx
@@ -42,11 +48,10 @@
 
 ## Composability
 - **Standalone floating toolbar** — use with DataTable, TreeView, or any selection-capable UI.
-- **DataTable auto-integration:** DataTable's `bulkActions` prop renders this internally — typically you don't render BulkActionBar directly when using DataTable.
-- **Data-driven actions:** `{ label, icon, onClick, color, disabled }[]`. For destructive confirmation, call ConfirmDialog from the onClick handler.
-- **Portal to body + fixed bottom-center z-50** — independent of parent layout. Check for other fixed elements that might overlap.
+- **DataTable auto-integration:** DataTable's `bulkActions` prop renders this internally; `bulkActionsPosition` maps to `placement`.
+- **Placement decides portalling** — `bottom` / `top` portal to the body, `inline` renders in flow.
 
 ## Gotchas
-- Renders via `createPortal` into `document.body` — will not appear during SSR (mounts only client-side)
-- Positioned fixed at bottom-center with `z-50`; ensure no other fixed elements conflict
-- Uses Framer Motion AnimatePresence for slide-in/out animation
+- Prefer importing from `@devalok/shilp-sutra/ui/bulk-action-bar`. This path is kept so existing imports do not break.
+- Portalled placements do not render during SSR; `inline` does.
+- Inside a Dialog or Sheet use `placement="inline"`, or the portal escapes the overlay's stacking context.

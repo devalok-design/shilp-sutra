@@ -133,6 +133,11 @@
       "import": "./dist/ui/button.js",
       "default": "./dist/ui/button.js"
     },
+    "./ui/bulk-action-bar": {
+      "types": "./dist/ui/bulk-action-bar.d.ts",
+      "import": "./dist/ui/bulk-action-bar.js",
+      "default": "./dist/ui/bulk-action-bar.js"
+    },
     "./ui/button-group": {
       "types": "./dist/ui/button-group.d.ts",
       "import": "./dist/ui/button-group.js",

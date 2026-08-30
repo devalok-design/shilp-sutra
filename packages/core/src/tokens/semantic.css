@@ -540,7 +540,17 @@
      the public `--shadow-raised`/`--shadow-floating` @theme values above.
      They depend on `--shadow-color` (a runtime var) so they cannot live
      in @theme (TW4 may statically-inline theme values). */
-  --shadow-color:    0.15 0.015 260;   /* cool blue tint */
+  /* Light ink matches the Figma library's `#1c2533` exactly, so a designer
+     measuring a shadow in Figma and a developer measuring it in the browser
+     get the same answer. The two had drifted; Figma won on cost, not merit —
+     one value here against 26 in the library, for a difference measured at
+     **1/255** at the strongest light layer. Below what anyone can see.
+     DARK overrides this (see the .dark block) and must keep a darker ink:
+     dark multiplies every alpha by --shadow-strength 2.5, and at that weight
+     this lighter ink composites LIGHTER than the panel it sits on — a glow,
+     not a shadow. Measured before adopting; the light-mode reasoning does not
+     survive the multiplier. */
+  --shadow-color:    0.263 0.029 259;  /* #1c2533 — cool blue tint, light */
   --shadow-strength: 1;
   --shadow-transition: box-shadow var(--duration-fast-02) var(--ease-productive-standard);
 
@@ -708,6 +718,28 @@
   /* Shadows (heavier in dark mode) — brand-reactive via color-mix on
      --color-accent-9 so they follow consumer brand swaps. */
   --shadow-strength: 2.5;
+  /* Dark needs its OWN, DARKER ink, and the reason is worth reading before
+     touching this line.
+
+     Light moved to #1c2533 to match the Figma library. Dark cannot follow:
+     --shadow-strength is 2.5 here, and at that weight #1c2533 composites to
+     #1b1d21 over a #1a1a1a panel — LIGHTER than the surface it is meant to
+     darken. A glow, not a shadow. Worst case 9/255 in the wrong direction.
+
+     The previous dark ink (oklch(0.15 …)) had a milder version of the same
+     fault: it reads as a shadow on `surface-panel` but GLOWS on
+     `surface-base` (#0a0a0a), where it is itself the lighter colour. Measured
+     separation there was 1.001:1 — the drop layers contributed literally
+     nothing. 0.05 is below both grounds, so the sign is now correct everywhere.
+
+     What this does NOT do is make drop shadows carry dark elevation, and no
+     ink can. There is no headroom below a near-black ground: the best any ink
+     achieves at the strongest layer is 1.013:1 on base and 1.040:1 on panel.
+     **The white edge ring is what actually separates an elevated surface in
+     dark, and that is structural rather than a workaround.** If dark elevation
+     ever needs to read more strongly, the answer is the ring or a lighter
+     surface step — not a darker shadow, which has nowhere left to go. */
+  --shadow-color:    0.05 0.012 260;
   /* Light ring on dark — a dark-tinted ring would vanish against dark surfaces. */
   --shadow-edge-ring: 0 0 0 1px oklch(1 0 0 / 0.12);
   /* Same correction for the raised tier. Without this, `shadow-raised` /

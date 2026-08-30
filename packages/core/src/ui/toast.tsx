@@ -107,7 +107,12 @@ function TimerBar({
 }) {
   const config = TOAST_TYPE_CONFIG[type]
   return (
-    <div className="absolute bottom-0 left-0 right-0 h-ds-01 overflow-hidden">
+    /* The countdown now runs in a visible groove rather than over bare surface,
+       so the bar reads as "time remaining" instead of a stray rule (design
+       2026-08-24). `surface-panel-hover` is the DS's designated track fill —
+       a container value here would be a no-op in light, where overlay, panel
+       and base are all the same white. */
+    <div className="absolute bottom-0 left-0 right-0 h-ds-01 overflow-hidden bg-surface-panel-hover">
       <div
         className={cn(
           'h-full w-full origin-left opacity-30',

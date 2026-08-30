@@ -127,7 +127,7 @@ describe('Input', () => {
   it('applies error border classes to the wrapper', () => {
     render(<Input state="error" placeholder="Error" />)
     const wrapper = screen.getByPlaceholderText('Error').parentElement!
-    expect(wrapper).toHaveClass('border-error-7')
+    expect(wrapper).toHaveClass('border-error-8')
   })
 
   it('applies warning border classes to the wrapper', () => {
@@ -139,7 +139,7 @@ describe('Input', () => {
   it('applies success border classes to the wrapper', () => {
     render(<Input state="success" placeholder="Success" />)
     const wrapper = screen.getByPlaceholderText('Success').parentElement!
-    expect(wrapper).toHaveClass('border-success-7')
+    expect(wrapper).toHaveClass('border-success-8')
   })
 
   // --- Section types ---

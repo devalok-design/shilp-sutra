@@ -68,10 +68,15 @@ const statusDotSize: Record<AvatarSize, DotSize> = {
 
 // ── Role ring ───────────────────────────────────────────────────────────────
 
+// Step 6, per the 2026-08-24 Figma refresh. Measurably fainter than step 7 —
+// lead drops 2.865 -> 2.095:1 on white — and the ring is the SOLE carrier of
+// role, with no label, icon or tooltip behind it. Shipped knowingly: all three
+// role colours were already under 3:1, so this deepens an existing shortfall
+// rather than creating one. deviation: AVATAR-ROLE-RING-STEP-6
 const ringColorMap: Record<Exclude<AvatarRing, 'none'>, string> = {
-  lead: 'ring-accent-7',
-  admin: 'ring-warning-7',
-  client: 'ring-info-7',
+  lead: 'ring-accent-6',
+  admin: 'ring-warning-6',
+  client: 'ring-info-6',
 }
 
 const ringShapeMap: Record<string, string> = {

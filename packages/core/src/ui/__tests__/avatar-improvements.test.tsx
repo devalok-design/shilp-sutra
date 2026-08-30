@@ -96,34 +96,34 @@ describe('Avatar role ring', () => {
     expect(results).toHaveNoViolations()
   })
 
-  it('renders ring-accent-7 for lead', () => {
+  it('renders ring-accent-6 for lead', () => {
     const { container } = render(
       <Avatar ring="lead">
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>,
     )
     const wrapper = container.firstElementChild as HTMLElement
-    expect(wrapper.className).toContain('ring-accent-7')
+    expect(wrapper.className).toContain('ring-accent-6')
   })
 
-  it('renders ring-warning-7 for admin', () => {
+  it('renders ring-warning-6 for admin', () => {
     const { container } = render(
       <Avatar ring="admin">
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>,
     )
     const wrapper = container.firstElementChild as HTMLElement
-    expect(wrapper.className).toContain('ring-warning-7')
+    expect(wrapper.className).toContain('ring-warning-6')
   })
 
-  it('renders ring-info-7 for client', () => {
+  it('renders ring-info-6 for client', () => {
     const { container } = render(
       <Avatar ring="client">
         <AvatarFallback>JD</AvatarFallback>
       </Avatar>,
     )
     const wrapper = container.firstElementChild as HTMLElement
-    expect(wrapper.className).toContain('ring-info-7')
+    expect(wrapper.className).toContain('ring-info-6')
   })
 
   it('no ring classes when ring not set', () => {
@@ -133,9 +133,9 @@ describe('Avatar role ring', () => {
       </Avatar>,
     )
     const wrapper = container.firstElementChild as HTMLElement
-    expect(wrapper.className).not.toContain('ring-accent-7')
-    expect(wrapper.className).not.toContain('ring-warning-7')
-    expect(wrapper.className).not.toContain('ring-info-7')
+    expect(wrapper.className).not.toContain('ring-accent-6')
+    expect(wrapper.className).not.toContain('ring-warning-6')
+    expect(wrapper.className).not.toContain('ring-info-6')
     expect(wrapper.className).not.toContain('ring-2')
   })
 })

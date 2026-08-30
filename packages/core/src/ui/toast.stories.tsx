@@ -401,3 +401,38 @@ export const Stacking: Story = {
     )
   },
 }
+
+/* ---------------------------------------------------------------------------
+ * Design refresh 2026-08-24
+ * ------------------------------------------------------------------------ */
+
+/**
+ * The auto-dismiss countdown now runs inside a visible groove
+ * (`bg-surface-panel-hover`) instead of over bare surface, so a part-elapsed
+ * bar reads as "time remaining" rather than as a stray rule of arbitrary
+ * length. A container token would have been a no-op here: on a toast, overlay
+ * / panel / base are all the same white in light.
+ *
+ * A long duration is used so the bar is caught mid-run rather than empty.
+ */
+export const TimerBarHasATrack: Story = {
+  parameters: { chromatic: { delay: 1200 } },
+  render: () => (
+    <Button
+      onClick={() =>
+        toast.success('Deliverable approved', {
+          description: 'Brand guidelines v3 is signed off.',
+          duration: 60_000,
+        })
+      }
+    >
+      Show toast with countdown
+    </Button>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: /show toast with countdown/i }))
+    const body = within(document.body)
+    await waitFor(() => expect(body.getByText('Deliverable approved')).toBeVisible())
+  },
+}

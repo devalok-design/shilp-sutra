@@ -34,8 +34,10 @@ any gate that needs to skip a known case.
 | `PALETTE-EDGE-WHISPER` | Coloured edges at ramp step 4 | 1.37–1.49:1 | — (a plain edge is 1.23:1) | open |
 | `PALETTE-CONTROL-EDGE-BELOW-AA` | Control edges on every colour | 2.00:1 default | WCAG 1.4.11 non-text, 3.0 | open |
 | `SLIDER-THUMB-EDGE-STEP-7` | Slider thumb edge stays at step 7 | 2.31–2.86:1 | our own step-4 edge rule | open |
+| `FIELD-WARNING-EDGE-STEP-7` | Field `warning` edge stays at step 7 | 2.319:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-24 |
 | `SHADOW-RING-BELOW-NONTEXT` | Elevation ring tokens, dark | 2.15-2.97:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-29 |
-| `SWITCH-HOVER-DIRECTION` | Switch hover inverts per theme | darker in dark | every other control lightens | open |
+| `AVATAR-ROLE-RING-STEP-6` | Avatar role ring, sole carrier of role | 1.93–2.10:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-30 |
+| `SWITCH-RESTING-STROKE-REMOVED` | Unchecked Switch edge | 1.64:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-30 |
 
 ---
 
@@ -329,6 +331,66 @@ edge and is unchanged.
 
 ---
 
+### `AVATAR-ROLE-RING-STEP-6` — the role ring moves to a fainter step
+
+**The threshold.** WCAG 1.4.11, 3:1 for non-text that identifies a component or
+conveys information. The Avatar role ring conveys information and has **no text
+alternative** — no label, no icon, no tooltip. Colour is the whole signal.
+
+**What we ship.** Step 6, per the 2026-08-24 Figma refresh. Measured on white:
+
+| role | step 7 (before) | step 6 (adopted) |
+|---|---|---|
+| lead | 2.865:1 | **2.095:1** |
+| client | 2.636:1 | **1.990:1** |
+| admin | 2.319:1 | **1.930:1** |
+
+**Why it stands.** A design call, taken with the numbers in front of it. All
+three were already under 3:1, so this deepens an existing shortfall rather than
+creating one, and the ring is a secondary cue on an element whose primary
+identity is the person's face or initials.
+
+**What this costs, stated plainly.** Role is not perceivable without colour
+vision at any step, and step 6 widens that gap. The honest fix is not a darker
+ring — it is giving role a non-colour representation. Until then this is a
+known, accepted hole rather than an oversight.
+
+**What would change the answer.** Any use of the ring where role carries
+consequence — permissions, billing, who can approve something — rather than
+being decorative context in a list of collaborators.
+
+---
+
+### `SWITCH-RESTING-STROKE-REMOVED` — an unchecked switch has no edge
+
+**The threshold.** WCAG 1.4.11, 3:1 for the boundary of a control.
+
+**What we ship.** No visible stroke at rest, per the 2026-08-24 refresh. The
+unchecked track is carried by its fill alone:
+
+| | contrast vs `surface-panel` |
+|---|---|
+| old border (`surface-border-interactive`) | **2.006:1** |
+| fill alone (`neutral-5`) | **1.639:1** |
+
+Both miss 3:1; the change gives up the stronger of the two.
+
+**Why it stands.** Deliberate visual simplification, and a switch is a large
+target whose shape and thumb are legible independently of its edge — the thumb
+is the affordance, not the outline.
+
+**What was NOT given up.** Validation. Unchecked, the border colour was the
+*only* thing distinguishing error / warning / success from default, because the
+coloured track applies solely when checked. Removing it outright would have
+made validation invisible on an unchecked switch. The stroke is therefore still
+reserved and transparent, and paints only when a state is set.
+
+**The reservation is structural, not stylistic.** The 2px sits inside the box
+and the thumb's travel is `(track − 2×border − thumb)`. Dropping the width
+rather than the colour would move the thumb 4px the moment a field errored.
+
+---
+
 ### `SHADOW-RING-BELOW-NONTEXT` — the elevation rings sit under 3:1 in dark
 
 **The threshold.** WCAG 1.4.11 asks 3:1 for visual information that identifies a
@@ -364,26 +426,31 @@ different treatment, not a stronger shadow.
 fixed, and is not what this entry records. This entry is about where the fixed
 value deliberately stopped.
 
-### `SWITCH-HOVER-DIRECTION` — the switch hover moves opposite ways per theme
+---
 
-**The threshold.** Internal consistency, not a measured standard. Every other
-control in the system gets subtly *lighter* on hover in both themes.
+### `FIELD-WARNING-EDGE-STEP-7` — the warning edge alone stays at step 7
 
-**What we ship.** The Switch off-track is painted with a border token
-(`surface-border-strong`) rather than a surface one, and its hover is an opaque
-surface value. The two do not move together:
+**What.** The 2026-08-24 field refresh moved the validation edge on Input,
+Textarea, Select and Combobox from ramp step 7 to step 8. That is what finally
+clears WCAG 1.4.11 for them:
 
-| | rest | hover | direction |
+| state | step 7 | step 8 | |
 |---|---|---|---|
-| light | `#dbdbdb` | `#e8e8e8` | lighter |
-| dark | `#3d3d3d` | `#353535` | **darker** |
+| error | 2.831:1 | **3.929:1** | passes |
+| success | 2.557:1 | **3.441:1** | passes |
+| warning | **2.319:1** | not applied | fails |
 
-**Why it stands.** Reviewed in Figma alongside a version that moves the same way
-in both themes, and the current behaviour was kept. An off-switch dimming as the
-pointer lands on it reads as the control arming itself, which is not obviously
-wrong for a toggle even though it is inconsistent with the rest of the system.
+(Light, measured against the field ground. Dark behaves the same way: error
+2.397:1 → 3.440:1, success 2.660:1 → 3.971:1.)
 
-**What this costs.** A token audit will keep surfacing it, which is exactly why
-it is written down. It also means Switch is the one colour-taking component
-outside the palette layer — converting it would force this decision open again.
+**Why it stands.** The designers marked warning explicitly — "border color no
+changed" — next to a specimen still bound to `amber-bright/7`, while the error
+and success specimens were rebound to step 8. So this is a decision, not an
+oversight in the spec. Amber is the one ramp where step 8 shifts the hue toward
+brown rather than simply darkening, which is the plausible reason.
 
+**What it costs.** Warning is now the only validation state whose edge misses
+the non-text bar, and it misses it while sitting directly beside two that clear
+it — so the inconsistency is visible in any form with mixed states. A warning
+field is still identifiable by its helper text; the edge is not the sole
+carrier. Revisit with the ramp, not per-component.

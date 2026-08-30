@@ -103,7 +103,10 @@ const Checkbox = React.forwardRef<
         'transition-colors duration-fast-01 ease-productive-standard',
         'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-action-disabled',
-        'data-[state=unchecked]:hover:border-accent-7 data-[state=unchecked]:hover:bg-surface-panel-active',
+        // Hover darkens the box only. The edge keeps the default border colour
+        // ("changed the surface border colors same as default", 2026-08-24) —
+        // previously it also jumped to accent-7, which read as a pre-selection.
+        'data-[state=unchecked]:hover:bg-neutral-4',
         'data-[state=checked]:bg-accent-9 data-[state=checked]:border-accent-7 data-[state=checked]:text-accent-fg',
         'data-[state=indeterminate]:bg-accent-9 data-[state=indeterminate]:border-accent-7 data-[state=indeterminate]:text-accent-fg',
         state && stateTintClasses[state],

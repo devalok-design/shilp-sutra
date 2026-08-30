@@ -18,15 +18,16 @@ import { cn } from './lib/utils'
 
 /** Border tint per validation state, applied to the trigger. */
 const stateBorderClasses: Record<Exclude<FieldState, 'default'>, string> = {
-  error: 'border-error-7',
+  // Step 8 clears the 3:1 non-text bar; warning stays at 7 per the design note.
+  error: 'border-error-8',
   warning: 'border-warning-7',
-  success: 'border-success-7',
+  success: 'border-success-8',
 }
 
 export const comboboxTriggerVariants = cva(
   [
     'flex w-full items-center justify-between whitespace-nowrap rounded-control',
-    'border border-surface-border-interactive bg-surface-panel-hover',
+    'border border-surface-border-interactive bg-field hover:bg-field-hover',
     'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
     // Trigger is a div[role=combobox] (so chip remove-buttons in multi-select
@@ -36,11 +37,12 @@ export const comboboxTriggerVariants = cva(
   ],
   {
     variants: {
+      // 12px inline padding on every size (design 2026-08-24).
       size: {
-        xs: 'h-ds-xs-plus text-body-sm px-ds-02',
-        sm: 'h-ds-sm text-body-sm px-ds-03',
+        xs: 'h-ds-xs-plus text-body-sm px-ds-04',
+        sm: 'h-ds-sm text-body-sm px-ds-04',
         md: 'h-ds-md text-body-md px-ds-04',
-        lg: 'h-ds-lg text-body-md px-ds-05',
+        lg: 'h-ds-lg text-body-md px-ds-04',
       },
     },
     defaultVariants: { size: 'md' },
@@ -71,9 +73,11 @@ const iconSizeMap: Record<NonNullable<ComboboxSize>, IconSize> = {
 
 /** Maps combobox size to pill text + padding classes */
 const pillSizeMap: Record<NonNullable<ComboboxSize>, string> = {
-  xs: 'px-ds-02 py-0 text-body-xs',
-  sm: 'px-ds-02 py-0 text-body-xs',
-  md: 'px-ds-03 py-[1px] text-body-sm',
+  // Every pill carries at least 1px block padding (design 2026-08-24) — xs/sm
+  // were flush at py-0, which let the chip text sit on the chip's own edge.
+  xs: 'px-ds-02 py-px text-body-xs',
+  sm: 'px-ds-02 py-px text-body-xs',
+  md: 'px-ds-03 py-px text-body-sm',
   lg: 'px-ds-03 py-[2px] text-body-sm',
 }
 
@@ -398,7 +402,8 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
         const remaining = selectedValues.length - MAX_VISIBLE_PILLS
 
         return (
-          <span className="flex flex-1 flex-wrap items-center gap-ds-02 overflow-hidden">
+          /* 2px between chips (design 2026-08-24) — was 4px. */
+          <span className="flex flex-1 flex-wrap items-center gap-ds-01 overflow-hidden">
             {visiblePills.map((val) => {
               const option = options.find((o) => o.value === val)
               if (!option) return null

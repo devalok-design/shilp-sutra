@@ -27,9 +27,9 @@ type Size = NonNullable<VariantProps<typeof avatarVariants>['size']>
 // a ring-offset that gets clipped by the group's overflow; the offset surface is
 // derived from `borderColor` so it never seams against a surface-base blend.
 const groupRingMap: Record<Exclude<AvatarRing, 'none'>, string> = {
-  lead: 'ring-2 ring-accent-7',
-  admin: 'ring-2 ring-warning-7',
-  client: 'ring-2 ring-info-7',
+  lead: 'ring-2 ring-accent-6',
+  admin: 'ring-2 ring-warning-6',
+  client: 'ring-2 ring-info-6',
 }
 
 export interface AvatarUser {

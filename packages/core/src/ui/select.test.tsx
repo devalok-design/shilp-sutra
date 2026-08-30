@@ -151,7 +151,7 @@ describe('Select', () => {
     it('applies default variant classes when no variant is specified', () => {
       renderSelect()
       const trigger = screen.getByRole('combobox')
-      expect(trigger.className).toMatch(/bg-surface-panel-hover/)
+      expect(trigger.className).toMatch(/bg-field/)
       expect(trigger.className).toMatch(/border-surface-border-interactive/)
     })
 
@@ -201,7 +201,7 @@ describe('Select', () => {
         </Select>,
       )
       const trigger = screen.getByRole('combobox')
-      expect(trigger.className).toMatch(/border-error-7/)
+      expect(trigger.className).toMatch(/border-error-8/)
       expect(trigger.className).toMatch(/text-error-11/)
       expect(trigger).toHaveAttribute('aria-invalid', 'true')
     })
@@ -218,7 +218,7 @@ describe('Select', () => {
         </Select>,
       )
       const trigger = screen.getByRole('combobox')
-      expect(trigger.className).toMatch(/border-success-7/)
+      expect(trigger.className).toMatch(/border-success-8/)
     })
 
     it('applies warning color classes', () => {

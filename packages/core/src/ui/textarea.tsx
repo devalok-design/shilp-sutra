@@ -12,10 +12,10 @@ import { cn } from './lib/utils'
 const textareaVariants = cva(
   [
     'flex w-full font-sans resize-y',
-    'bg-surface-panel-hover text-surface-fg',
+    'bg-field text-surface-fg',
     'border border-surface-border-interactive rounded-control',
     'placeholder:text-surface-fg-muted',
-    'hover:bg-surface-panel-active',
+    'hover:bg-field-hover',
     'transition-colors duration-fast-01 ease-productive-standard',
     'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:border-accent-7',
     'disabled:cursor-not-allowed disabled:opacity-action-disabled',
@@ -25,11 +25,13 @@ const textareaVariants = cva(
     variants: {
       // Min-height ramp 48/60/80/120: 48/80 map to spacing tokens (ds-09/ds-11);
       // 60/120 have no exact token so stay arbitrary (allowed). Rendered sizes unchanged.
+      // Padding is uniform across sizes (design 2026-08-24): 12px inline, 8px
+      // block. Only the min-height ramp still varies.
       size: {
-        xs: 'min-h-ds-09 text-body-sm px-ds-02 py-ds-02',
-        sm: 'min-h-[60px] text-body-sm px-ds-03 py-ds-02',
+        xs: 'min-h-ds-09 text-body-sm px-ds-04 py-ds-03',
+        sm: 'min-h-[60px] text-body-sm px-ds-04 py-ds-03',
         md: 'min-h-ds-11 text-body-md px-ds-04 py-ds-03',
-        lg: 'min-h-[120px] text-body-md px-ds-05 py-ds-04',
+        lg: 'min-h-[120px] text-body-md px-ds-04 py-ds-03',
       },
     },
     defaultVariants: { size: 'md' },
@@ -87,9 +89,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         aria-required={ariaRequired || undefined}
         className={cn(
           textareaVariants({ size }),
-          state === 'error' && 'border-error-7 focus-visible:ring-error-7',
+          // Step 8 clears the 3:1 non-text bar; warning stays at 7 per the note.
+          state === 'error' && 'border-error-8 focus-visible:ring-error-7',
           state === 'warning' && 'border-warning-7 focus-visible:ring-warning-7',
-          state === 'success' && 'border-success-7 focus-visible:ring-success-7',
+          state === 'success' && 'border-success-8 focus-visible:ring-success-7',
           className,
         )}
         ref={ref}

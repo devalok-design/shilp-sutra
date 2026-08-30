@@ -34,6 +34,7 @@ any gate that needs to skip a known case.
 | `PALETTE-EDGE-WHISPER` | Coloured edges at ramp step 4 | 1.37–1.49:1 | — (a plain edge is 1.23:1) | open |
 | `PALETTE-CONTROL-EDGE-BELOW-AA` | Control edges on every colour | 2.00:1 default | WCAG 1.4.11 non-text, 3.0 | open |
 | `SLIDER-THUMB-EDGE-STEP-7` | Slider thumb edge stays at step 7 | 2.31–2.86:1 | our own step-4 edge rule | open |
+| `SHADOW-RING-BELOW-NONTEXT` | Elevation ring tokens, dark | 2.15-2.97:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-29 |
 | `SWITCH-HOVER-DIRECTION` | Switch hover inverts per theme | darker in dark | every other control lightens | open |
 
 ---
@@ -327,6 +328,41 @@ the call, recorded here rather than left to be rediscovered as an inconsistency.
 edge and is unchanged.
 
 ---
+
+### `SHADOW-RING-BELOW-NONTEXT` — the elevation rings sit under 3:1 in dark
+
+**The threshold.** WCAG 1.4.11 asks 3:1 for visual information that identifies a
+component or its state.
+
+**What we ship.** Three 1px ring tokens, all white-on-dark, all short of it.
+Measured by compositing each ring over `surface-panel` in dark (`#1a1a1a`):
+
+| token | dark value | contrast |
+|---|---|---|
+| `--shadow-edge-ring` | `oklch(1 0 0 / 0.12)` | **2.968:1** |
+| `--shadow-pressed` | `oklch(1 0 0 / 0.10)` | **2.640:1** |
+| `--shadow-edge-ring-subtle` | `oklch(1 0 0 / 0.07)` | **2.148:1** |
+
+**Why it stands.** These are elevation cues, not the sole carrier of any state.
+A card is identified by its content and position, not by the hairline around it;
+a pressed control changes its *fill* as well as gaining this ring. 1.4.11 governs
+information you cannot get another way, and in every case here you can.
+
+Pushing the rings to 3:1 was considered and rejected: at that weight a "subtle"
+raised card stops reading as subtle, and the tier separation between raised,
+pressed and floating — which is the entire point of having three — collapses,
+because they would all be crowded against the same ceiling.
+
+**What this costs.** A contrast sweep will keep flagging all three, which is why
+they are written down together rather than one at a time. It also means the ring
+alone cannot be relied on to carry state anywhere new: if a future component
+wants a ring to be its *only* pressed/selected indicator, that component needs a
+different treatment, not a stronger shadow.
+
+**Related history.** `--shadow-pressed` had no dark value at all until
+2026-08-29 and composited to **1.012:1** — genuinely invisible. That was a bug,
+fixed, and is not what this entry records. This entry is about where the fixed
+value deliberately stopped.
 
 ### `SWITCH-HOVER-DIRECTION` — the switch hover moves opposite ways per theme
 

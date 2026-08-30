@@ -723,7 +723,9 @@
      measures 2.640:1, between subtle (2.148:1) and the full edge ring
      (2.968:1) — pressed should read more firmly than a resting card and less
      than a floating overlay. Found while binding the Figma effect styles, where
-     it had been masked by a binding to the wrong variable. */
+     it had been masked by a binding to the wrong variable.
+     All three rings stop deliberately short of 1.4.11's 3:1 —
+     deviation: SHADOW-RING-BELOW-NONTEXT */
   --shadow-pressed: 0 0 0 1px oklch(1 0 0 / 0.10);
   --shadow-kbd: inset 0 1px 0 oklch(1 0 0 / 0.10);
   /* The segmented thumb is documented as deliberately ring-less, the shadow

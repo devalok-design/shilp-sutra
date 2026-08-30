@@ -1028,21 +1028,65 @@ Also confirmed: the documented **add-a-slot-to-an-already-combined-set** recipe 
 
 ## 13. Fallout for other documents and scripts
 
-Not part of this build, but produced by it. Each is a one-line change somewhere else.
+Not part of this build, but produced by it. **Status as of 2026-08-29.**
 
-| Where | Change |
-|---|---|
-| `CLAUDE.md`, Figma section | `'SLOT'` on `addComponentProperty` is **documented** as of Figma's 2026-06-10 plugin-API update, not undocumented. Only the bundled `.d.ts` lags |
-| `CLAUDE.md`, Figma section | Add: **`VariableCollection.defaultModeId` is read-only and is `modes[0]`.** Mode-level twin of the `defaultVariant` geometry trap (§2.2) |
-| `packages/core/scripts/figma-sync-components.mjs` | It resolves `src/ui/<name>.tsx` only and hard-requires a `cva()`. Seven of eight target components make it **throw**. Either widen it to `src/{ui,composed,shell}/` and degrade gracefully to "no CVA, read the body", or stop describing it as the mandatory pre-build step |
-| The Figma audit script | Add a scan for **page-level and frame-level `explicitVariableModes`**. AG Grid's sweep found 86 across 47 pages; this library shipped ten screens of ghost Buttons from exactly that, caught only by hand |
-| The Figma audit script | Add **zombie `boundVariables` references** and **character-level `textRangeFills`** on TEXT nodes, from the same sweep |
-| `docs/audits/2026-08-27-figma-composability-gap.md` gap 3 | Record that the boolean workaround is **Figma-endorsed and the community standard**, not a patch: the underlying empty-slot issue is acknowledged-and-open at Figma as of today. Finish the remaining 17 slots |
-| The Figma audit script | Retrofit `SlotSettings` on the existing 20 slots via `editComponentProperty` (no rebuild needed), then gate on `slotNode.limitViolations` |
-| `CLAUDE.md` / playbook | Four new slot traps: `slotNode.clone()` returns a plain `FrameNode`; `ComponentNode`s cannot be appended to a slot (append an instance); deleting a slot property **deletes every instance's content in it**; Figma documents our handle-invalidation trap and recommends re-finding through `slot.children` |
-| `CLAUDE.md` | Headline counts are stale: **505 variants, not 780** (§1). Button collapsed 330 to 55 |
-| `docs/deviations.md` | Padding-on-slot: `Card` puts its inset on the slot layer, against Curtis's published convention, because that is what makes `CardBleed` work. Currently unrecorded |
-| Issue tracker | Findings A to E in §1.2. A, B, C are `Table`/`DataTable`; E is `MasterDetail` and is the third instance of one specificity fault, which argues for a lint rule over a third hand-written guard |
+| Where | Change | Status |
+|---|---|---|
+| `CLAUDE.md`, Figma section | `'SLOT'` on `addComponentProperty` is **documented** as of Figma's 2026-06-10 plugin-API update, not undocumented. Only the bundled `.d.ts` lags | **DONE** |
+| `CLAUDE.md`, Figma section | Add: **`VariableCollection.defaultModeId` is read-only and is `modes[0]`.** Mode-level twin of the `defaultVariant` geometry trap (§2.2) | **DONE** — with `setDefaultMode()` named as the writer |
+| `packages/core/scripts/figma-sync-components.mjs` | It resolves `src/ui/<name>.tsx` only and hard-requires a `cva()`. Seven of eight target components make it **throw** | **DONE** (#293) — resolves `src/{ui,composed,shell}/` flat or nested, and emits `"cva": false` plus the style objects' names and line numbers instead of throwing. Verified on 11 components |
+| `docs/audits/2026-08-27-figma-composability-gap.md` gap 3 | Finish the remaining slots | **DONE** — and the entry was wrong in both directions: 37 slots not 20, 8 already wired not 1. 30 now wired, 7 deliberately not |
+| `CLAUDE.md` | Headline counts are stale: **505 variants, not 780** (§1) | **DONE** |
+| `CLAUDE.md` / playbook | Four new slot traps: `slotNode.clone()` returns a plain `FrameNode`; `ComponentNode`s cannot be appended to a slot; deleting a slot property **deletes every instance's content in it**; re-find through `slot.children` | **DONE** |
+| Issue tracker | Findings A to E in §1.2 | **DONE** (#295) — all five fixed, with the specificity ones verified by compiling the classes. E argued for a lint rule and got one (#297), which then found a **fourth and fifth** instance |
+| The Figma audit script | Add a scan for **page-level and frame-level `explicitVariableModes`**. AG Grid's sweep found 86 across 47 pages; this library shipped ten screens of ghost Buttons from exactly that, caught only by hand | **OPEN** |
+| The Figma audit script | Add **zombie `boundVariables` references** and **character-level `textRangeFills`** on TEXT nodes, from the same sweep | **OPEN** |
+| The Figma audit script | Retrofit `SlotSettings` on the existing slots via `editComponentProperty` (no rebuild needed), then gate on `slotNode.limitViolations` | **OPEN** |
+| `docs/deviations.md` | Padding-on-slot: `Card` puts its inset on the slot layer, against Curtis's published convention, because that is what makes `CardBleed` work | **OPEN** |
+
+### 13.1 Produced by the follow-up pass, 2026-08-29
+
+Three entries in `CLAUDE.md`'s numbered rules turned out to describe states that
+no longer existed. All three are now marked, not deleted — a stale "known bug"
+costs in both directions, and one of these nearly got re-fixed.
+
+| Rule | Was | Actually |
+|---|---|---|
+| 13 — form controls on the decorative border tier | 1.38:1 / 1.63:1 | **Already fixed.** Both alias `surface-border-interactive`; Figma and browser agree at 2.00:1 / 2.07:1. The reported symptom came from reading Switch's unchecked track *fill* as a stroke |
+| 10 — Figma shadows are light-mode-only | ring layers uncorrected | **Half stale.** Rings were already mode-aware. The real gap was the other **29 layers**, 2.5× too weak in dark because CSS sets `--shadow-strength: 2.5` there. Now 35/35 bound, light byte-identical, dark ring contrast 1.011:1 → 1.418:1 |
+| gap 3 slot counts | 20 slots, 1 wired | **37 slots, 8 wired** |
+
+**One real CODE bug fell out of it.** `--shadow-pressed` is a 1px ring built from
+`--shadow-color` with no `.dark` override, so it composited to **1.012:1** — a
+pressed control had no pressed state in dark. Its two sibling rings had been
+corrected and it had not. Figma had been masking it by binding `shadow/pressed`
+to the *edge-ring* variable, so the design file looked right while the CSS did
+not. Fixed; the deliberate stopping point is recorded as
+`SHADOW-RING-BELOW-NONTEXT` in `docs/deviations.md`.
+
+**Still open, deliberately — each changes light rendering for every consumer, so
+it is a design call rather than a bug fix.** A `Shadow QA` page is being built in
+the Figma file so these can be judged on real components rather than in the
+abstract:
+
+1. `shadow/floating` and `shadow/overlay` are each **missing their outermost
+   layer** (code has 4 and 5 drop layers; Figma has 3 and 4).
+2. Figma's shadow ink is `#1c2533` (oklch 0.263 0.029 259) where code's
+   `--shadow-color` is `oklch(0.15 0.015 260)` = `#080b12`. **Every one of the 35
+   layers is lighter than code.**
+3. `shadow/success` is `oklch(0.512 0.125 150.3)` against code's
+   `oklch(0.55 0.14 145)`. Its two siblings match code exactly, so this one
+   drifted alone.
+
+Two more findings worth carrying, neither actioned:
+
+- **`shadow/brand` is a hardcoded Devalok magenta**, so it will not follow the
+  `Brand` collection's Waybill mode. Figma cannot alias-plus-alpha; fixing it
+  needs a literal per brand.
+- **`page.children.length` on an unloaded page lies.** `Getting Started`
+  reported 0 children before loading and 1 after. Any audit that reads child
+  counts without `setCurrentPageAsync` under-reports — which is a plausible
+  explanation for more than one "empty page" claim in these documents.
 
 ## 14. Republish list
 

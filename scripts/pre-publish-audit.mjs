@@ -1058,13 +1058,13 @@ gate('Icon-prop components import normalize-icon', () => {
     'src/ui/toast.tsx',                  // sonner pass-through; internal config, not consumer prop
     'src/ui/icon.tsx',                   // the Icon component itself
     'src/ui/icon-button.tsx',            // routes through Button's normalize
-    'src/ui/data-table-bulk-actions.tsx', // forwards action.icon to Button.startIcon which does normalize (same shape as composed/bulk-action-bar)
+    'src/ui/data-table-bulk-actions.tsx', // forwards action.icon to Button.startIcon which does normalize (same shape as ui/bulk-action-bar)
+    'src/ui/bulk-action-bar.tsx',        // forwards action.icon to Button.startIcon which does normalize
     'src/ui/tree-view/use-tree.ts',      // type-only TreeNode export, no render here
     'src/composed/extensions/slash-command.tsx',  // tiptap extension, internal
     'src/composed/error-boundary.tsx',   // internal Tabler refs in config
     'src/composed/priority-indicator.tsx',  // internal Tabler refs in PRIORITY_CONFIG dict
     'src/composed/rich-chat-input.tsx',  // ChatToolbarItem.icon — tiptap toolbar shape, ComponentType<{className}> by design
-    'src/composed/bulk-action-bar.tsx',  // forwards action.icon to Button.startIcon which does normalize
     'src/composed/status-badge.tsx',     // forwards icon to Badge.endIcon which does normalize (0.49: composes Badge + Dot)
     'src/composed/activity-feed.tsx',    // vestigial type, no render
     'src/shell/command-registry.tsx',    // type-only export, no render path here
@@ -1196,6 +1196,23 @@ advisory('Components have Storybook stories', () => {
       if (f.includes('.test.') || f.includes('.stories.') || f.startsWith('_')) continue
       const name = f.replace(/\.tsx$/, '')
       if (STORY_EXEMPT.has(name)) continue
+      // A pure re-export shim is not a component and cannot have a story of its
+      // own — the story belongs with the implementation. These exist when a
+      // component moves layers but its published subpath has to keep resolving
+      // (composed/bulk-action-bar -> ui/bulk-action-bar). Detected rather than
+      // allowlisted, so the next move does not need an entry here.
+      const src = readFileSync(join(srcDir, f), 'utf-8')
+      // Strip comments, then require that everything left is `export … from`.
+      // A per-line check does not work: the member names inside a multi-line
+      // `export { A, B } from '…'` are bare identifiers.
+      const stripped = src
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/^\s*\/\/.*$/gm, '')
+        .trim()
+      const isReExportOnly =
+        stripped.length > 0 &&
+        /^(export\s*(\{[\s\S]*?\}|\*(\s+as\s+\w+)?)\s*from\s*['"][^'"]+['"];?\s*)+$/.test(stripped)
+      if (isReExportOnly) continue
       const storyPath = join(srcDir, `${name}.stories.tsx`)
       if (!existsSync(storyPath)) missing.push(`${layer}/${name}`)
     }

@@ -4,6 +4,12 @@ This page indexes all breaking changes across `@devalok/shilp-sutra` versions. F
 
 > **Upgrading from &lt; 0.36?** Start here, then read each intermediate version section. Breaking changes stack — skipping versions means stacking migrations.
 
+## v0.60.0 — additive (no migration required)
+
+Nothing breaks at the TypeScript level; this release is additive.
+
+> Auto-stubbed by `version-packages` so the release audit's MIGRATION-section gate can't block. If any behavioral or visual change needs consumer action, replace this stub with the specifics on the Version Packages PR before publishing.
+
 ## v0.59.0 — additive (no migration required)
 
 Nothing breaks at the TypeScript level; this release is additive.

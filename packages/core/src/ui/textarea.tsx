@@ -27,6 +27,14 @@ const textareaVariants = cva(
       // 60/120 have no exact token so stay arbitrary (allowed). Rendered sizes unchanged.
       // Padding is uniform across sizes (design 2026-08-24): 12px inline, 8px
       // block. Only the min-height ramp still varies.
+      //
+      // The `lg` specimen shows 12px block, not 8px, and it was NOT simply
+      // stale: the designer opened it and changed its inline padding 16 → 12,
+      // leaving the block value alone in the same edit. So the note says "all
+      // sizes" and the artifact half-agrees. Reviewed 2026-08-31 against a
+      // frozen 8px-vs-12px comparison with real multi-line copy (121px vs
+      // 129px) and 8px was chosen, on the note's wording. Genuinely close —
+      // if it reopens, the 12px case is not weak, it just lost.
       size: {
         xs: 'min-h-ds-09 text-body-sm px-ds-04 py-ds-03',
         sm: 'min-h-[60px] text-body-sm px-ds-04 py-ds-03',

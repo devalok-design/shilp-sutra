@@ -75,6 +75,12 @@ const iconSizeMap: Record<NonNullable<ComboboxSize>, IconSize> = {
 const pillSizeMap: Record<NonNullable<ComboboxSize>, string> = {
   // Every pill carries at least 1px block padding (design 2026-08-24) — xs/sm
   // were flush at py-0, which let the chip text sit on the chip's own edge.
+  //
+  // `lg` keeps 2px, and that is a decision rather than an oversight. The one
+  // chip specimen in the Figma file is lg, and it was hand-overridden to 1px —
+  // so the spec says 1px and we are knowingly at 2px. Reviewed 2026-08-31
+  // against a frozen four-size comparison and left as-is; a 1px difference on
+  // the largest chip did not justify the churn.
   xs: 'px-ds-02 py-px text-body-xs',
   sm: 'px-ds-02 py-px text-body-xs',
   md: 'px-ds-03 py-px text-body-sm',
@@ -402,7 +408,19 @@ const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
         const remaining = selectedValues.length - MAX_VISIBLE_PILLS
 
         return (
-          /* 2px between chips (design 2026-08-24) — was 4px. */
+          /* 2px between chips. Kept deliberately on 2026-08-31 — do NOT
+             "restore" this to 4px on the strength of the Figma spec.
+
+             The 2026-08-24 note reads "Nested Chip: added 1px top & bottom
+             padding / Reduced the space in b/w to 2px", and the specimen shows
+             the gap it actually changed was the one INSIDE the chip (label ↔
+             dismiss, 4→2). The gap BETWEEN chips was left at 4px. So the spec
+             arguably says 4px here and we are knowingly not following it.
+
+             Reviewed against a frozen side-by-side (Figma page `Padding QA`,
+             both candidate gaps at 2× with six chips of varied length) and 2px
+             was chosen. It is also load-bearing at the margin: six chips total
+             458px in a 470px row, so 2px fits on one line and 4px wraps. */
           <span className="flex flex-1 flex-wrap items-center gap-ds-01 overflow-hidden">
             {visiblePills.map((val) => {
               const option = options.find((o) => o.value === val)

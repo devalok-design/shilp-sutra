@@ -157,9 +157,21 @@ function getDateGroup(dateStr: string): string {
 // So step 4 is the floor, not step 3. An earlier revision of this file used
 // step 3 for `tint` on the grounds that it clears `surface-panel` — true, but
 // the panel is not what an unread row competes with.
+//
+// Each wash carries its OWN hover, one step further up the ramp. The shared
+// `hover:bg-surface-panel-hover` on the row is `(0,2,0)` and the wash is
+// `(0,1,0)`, so without this an unread row loses its tint the moment you point
+// at it and renders identically to a hovered read row. `none` has no wash to
+// protect, so it falls through to the shared hover deliberately.
+//
+//   tint    rest 1.425 light / 1.231 dark -> hover 1.694 / 1.463
+//   strong  rest 1.694 light / 1.463 dark -> hover 2.095 / 1.691
+//
+// Both stay above a hovered read row (1.090 light / 1.170 dark) at rest and on
+// hover, in both themes.
 const UNREAD_STYLES: Record<NotificationUnreadStyle, string> = {
-  tint: 'bg-accent-4',
-  strong: 'bg-accent-5',
+  tint: 'bg-accent-4 hover:bg-accent-5',
+  strong: 'bg-accent-5 hover:bg-accent-6',
   none: '',
 }
 
@@ -213,7 +225,7 @@ function NotificationItem({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard',
+        'group relative flex w-full cursor-pointer items-start gap-ds-04 border-b border-surface-border px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard last:border-b-0',
         'hover:bg-surface-panel-hover',
         !notification.isRead && UNREAD_STYLES[unreadStyle],
       )}

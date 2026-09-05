@@ -99,6 +99,31 @@ Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (own
 
 **Built: 32 sets, 505 variants, 7 standalone components.** Button 55, Input 64, Textarea 64, Badge 56, Select 48, Checkbox 27, Radio 18, Switch 18, Alert 15, Combobox 12, Slider 12, Progress 12, Avatar 10, Segment item 9, Tab item 9, Sidebar item 9, Card 6, Toast 6, Sheet 4, Label 4, Tooltip 4, Sidebar 4, Segmented control 3, Tabs 3, Skeleton 3, Dialog 2, Separator 2, Top bar 2, Bottom nav item 2, plus Menu item 12, Breadcrumb item 6, Accordion item 4. Standalone components (no variant axes): Bottom navbar, Menu, Menu label, Menu separator, Popover, Breadcrumb, Breadcrumb separator. 31 collections, 20 text styles, 13 effect styles, **20 native slot properties** across 13 components (Card 3, Sidebar 3, Top bar 3, Dialog 2, Accordion item 1, Alert 1, Bottom navbar 1, Breadcrumb 1, Menu 1, Popover 1, Segmented control 1, Sheet 1, Tabs 1). **The menu family, Popover, Breadcrumb and Accordion are built but deliberately NOT published** — held for review. Everything else is published. **Publishing is a human step — republish after any change.**
 
+**UNPUBLISHED CHANGES pending a republish (2026-09-05):** the 0.60.0 form
+refresh was **finally back-ported into the Figma variables** — it had shipped in
+code (#303) and never been written back, so the file had been teaching the
+pre-refresh spec for a release. Eleven changes, all measured, all listed in
+[`docs/audits/2026-09-05-updated-components-pass.md`](./docs/audits/2026-09-05-updated-components-pass.md) §11:
+`control/opacity` 38 → 45; new `field` / `field-hover` semantic tokens with
+`control/bg` **and** `select/bg-base`/`select/bg-hover` repointed at them
+(Select routes through `Component/Select`, not `control/bg`, so it needs its own
+write — and Checkbox/Radio route through a *third* variable, `field/bg-tint`,
+which correctly stays on `surface-panel-hover`); new `brand/error/8`, `brand/success/8`,
+`error/8`, `success/8` with `field/border-color` moved to step 8 (warning held
+at 7); `avatar/ring-color` 7 → 6; Switch Off track → `neutral/5`, hover →
+`neutral/6`, resting stroke transparent-at-2px; and the **sm Switch thumb travel
+bug fixed** (`x: 18 → 16`, `rightGap` 0 → 2 — Figma had reproduced the exact
+defect #303 fixed in code). Also: three accidental `VIDEO` stroke paints cleared
+on `Updated Components`, and a section mislabelled `Tabs` that actually held
+Sidebar item specimens renamed.
+
+> **Still open on `Updated Components`, both refused by the harness classifier:**
+> a **duplicate `Notification center` COMPONENT_SET** (`876:3544`, key
+> `a821e3cd…`) that publishes alongside the real one (`750:774`, key
+> `95b1399…`) — verified to have **zero instances document-wide**, so deletion is
+> safe; and **18 zombie Button instances** still pointing at mains deleted in the
+> 330 → 55 collapse (13 in `Buttons Updated`, 2 in `Comparison`, 3 loose).
+
 **UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps the height it was created at and nothing else collapses it — a footerless Card was 40px too tall. **Composability gap 3 is now CLOSED (2026-08-29): all 37 slot properties across 26 components are wired to a visibility boolean, 0 unwired.** The counts in this file were wrong in both directions — there are **37 slots, not 20**, and **8 were already wired, not 1** (`Alert.Action` among them; the 2026-08-29 build added 17 more slots). 29 booleans were added, every one defaulting `true`, so no existing instance changes. Measured working end to end: a Card went 158px → 125px with content off → 81px with the footer off too → 158px restored, and 574 variable bindings across Card, Sidebar and Top bar all still resolve. See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3, and rule 6 for why `displayEmptyByDefault` is not the cheap alternative.
 
 > **Open question, not a defect:** ~7 of those 29 slots are structurally mandatory — `Menu.Items`, `Tabs.Items`, `Segmented control.Items`, `Breadcrumb.Trail`, `Table row.Cells`, `Table footer row.Cells`, `Schedule view.Days`. Hiding them yields empty chrome rather than a useful state, and the audit's own wording was "anywhere a slot is *legitimately optional*". The booleans are harmless (default `true`) but they are dead toggles in the right panel. Deleting them is a judgement call about designer UX, so they were left in place pending one.

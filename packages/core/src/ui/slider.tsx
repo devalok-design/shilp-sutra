@@ -8,7 +8,12 @@ import { useFormField } from './form'
 import { cn } from './lib/utils'
 
 const sliderTrackVariants = cva(
-  'relative w-full grow overflow-hidden rounded-pill bg-surface-panel-hover',
+  // The unfilled track is a GROOVE, so it has to differ from the panel it sits
+  // on. `surface-panel-hover` is 1.090:1 against a panel in light — the same
+  // near-invisibility that shipped in `Table striped` and linear `Progress`.
+  // `surface-panel-active` lifts light to 1.230:1; dark is unchanged, because
+  // `surface-panel-hover` in dark already IS this step.
+  'relative w-full grow overflow-hidden rounded-pill bg-surface-panel-active',
   {
     variants: {
       size: {

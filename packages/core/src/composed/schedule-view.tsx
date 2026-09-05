@@ -335,7 +335,7 @@ function DayColumn({
               ) : (
                 <span className="flex items-start gap-ds-02">
                   <span
-                    className={cn('mt-0.5 h-ds-03 w-ds-03 shrink-0 rounded-pill', eventDotMap[eventColor])}
+                    className={cn('mt-0.5 h-ds-02b w-ds-02b shrink-0 rounded-pill', eventDotMap[eventColor])}
                     aria-hidden="true"
                   />
                   <span className="line-clamp-2">{event.title}</span>

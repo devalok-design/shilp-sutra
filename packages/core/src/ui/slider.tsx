@@ -22,7 +22,7 @@ const sliderTrackVariants = cva(
 )
 
 const sliderThumbVariants = cva(
-  'touch-target block rounded-pill bg-surface-overlay shadow-raised transition-[color,transform,box-shadow] duration-fast-02 ease-productive-standard hover:shadow-raised-hover active:scale-[1.15] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
+  'touch-target block rounded-pill bg-palette-solid shadow-raised transition-[color,transform,box-shadow] duration-fast-02 ease-productive-standard hover:shadow-raised-hover active:scale-[1.15] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-action-disabled',
   {
     variants: {
       size: {

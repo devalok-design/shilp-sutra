@@ -315,7 +315,22 @@ function DayColumn({
                 'transition-colors ease-productive-standard duration-fast-02 hover:bg-surface-panel-hover',
                 'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
                 'motion-safe:active:scale-[0.98]',
-                selected && 'ring-2 ring-accent-9',
+                // Designed 2026-08/09: a 1px step-4 edge in place of the 2px
+                // accent-9 ring. The ring is the only marker of selection on an
+                // event — no tick, no label, no fill change — and this takes it
+                // from 4.914:1 to 1.297:1 against the event's own fill in light
+                // (3.372 -> 1.321 dark). Shipped as drawn; see the Decisions
+                // page in Figma.
+                //
+                // The spec draws the ring 2px outside a 2px-radius block, so its
+                // own corners land at 4px. A CSS ring follows the element's
+                // radius, and reproducing the offset needs `ring-offset-*` with a
+                // solid colour — which would punch a panel-coloured halo through
+                // any event sitting underneath, and through the today column's
+                // accent ground. The ring therefore stays on the block at its
+                // 2px radius. There is no 4px radius role token; the scale goes
+                // 2px (control-inner) to 6px (control).
+                selected && 'ring-1 ring-palette-border',
                 eventColorMap[eventColor],
               )}
               style={{
@@ -335,7 +350,7 @@ function DayColumn({
               ) : (
                 <span className="flex items-start gap-ds-02">
                   <span
-                    className={cn('mt-0.5 h-ds-03 w-ds-03 shrink-0 rounded-pill', eventDotMap[eventColor])}
+                    className={cn('mt-0.5 h-ds-02b w-ds-02b shrink-0 rounded-pill', eventDotMap[eventColor])}
                     aria-hidden="true"
                   />
                   <span className="line-clamp-2">{event.title}</span>

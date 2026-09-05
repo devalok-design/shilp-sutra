@@ -117,12 +117,23 @@ defect #303 fixed in code). Also: three accidental `VIDEO` stroke paints cleared
 on `Updated Components`, and a section mislabelled `Tabs` that actually held
 Sidebar item specimens renamed.
 
-> **Still open on `Updated Components`, both refused by the harness classifier:**
-> a **duplicate `Notification center` COMPONENT_SET** (`876:3544`, key
-> `a821e3cd…`) that publishes alongside the real one (`750:774`, key
-> `95b1399…`) — verified to have **zero instances document-wide**, so deletion is
-> safe; and **18 zombie Button instances** still pointing at mains deleted in the
-> 330 → 55 collapse (13 in `Buttons Updated`, 2 in `Comparison`, 3 loose).
+Also cleared on `Updated Components`: a **duplicate `Notification center`
+COMPONENT_SET** (`876:3544`) that was publishing alongside the real one — the
+first live instance of the "components publish from EVERY page" rule — and **all
+18 zombie Button instances** from the 330 → 55 collapse, repaired with modes
+preserved across each swap. The page now holds zero publishable nodes and zero
+zombies. A **`Decisions — 2026-09-05`** page renders all twelve proposals
+before/after with light and dark side by side, for a human call.
+
+> **Two new plugin-API traps, both invisible in the data** (2026-09-05):
+> **`figma.createAutoLayout()` ships a default WHITE fill**, exactly like
+> `createSlot()` in rule 6 — harmless on a light ground, a white band straight
+> across a dark one. Set `fills = []` on every structural frame you create.
+> And **a specimen that needs absolute positioning must not be an auto-layout
+> frame**: setting `x`/`y` on children of one is silently ignored and they stack,
+> so a slider thumb rendered below its track. Both read back from the API exactly
+> as written; only the screenshot showed them. Rule 4 extends — measure, don't
+> eyeball, *and look at the picture, not only the numbers*.
 
 **UNPUBLISHED CHANGES pending a republish (2026-08-27):** `Card` gained **`Show footer`** and `Sidebar` gained **`Show header`**, both BOOLEAN, both defaulting to `true` so existing instances are unchanged. They exist because an empty slot keeps the height it was created at and nothing else collapses it — a footerless Card was 40px too tall. **Composability gap 3 is now CLOSED (2026-08-29): all 37 slot properties across 26 components are wired to a visibility boolean, 0 unwired.** The counts in this file were wrong in both directions — there are **37 slots, not 20**, and **8 were already wired, not 1** (`Alert.Action` among them; the 2026-08-29 build added 17 more slots). 29 booleans were added, every one defaulting `true`, so no existing instance changes. Measured working end to end: a Card went 158px → 125px with content off → 81px with the footer off too → 158px restored, and 574 variable bindings across Card, Sidebar and Top bar all still resolve. See [`docs/audits/2026-08-27-figma-composability-gap.md`](./docs/audits/2026-08-27-figma-composability-gap.md) gap 3, and rule 6 for why `displayEmptyByDefault` is not the cheap alternative.
 

@@ -411,20 +411,55 @@ rest and on hover in both themes.
 > lookup table, a variable, or a helper is invisible to it. That is a large blind
 > spot in a codebase that uses `Record<Variant, string>` maps everywhere.
 
+### The showcase — `Decisions — 2026-09-05` page in the Figma file
+
+All twelve proposals rendered before/after, **light and dark side by side on one
+screen**, so the calls get made by looking rather than by reading ratios. Three
+sections: *Needs your call* (7 cards, including the Slider-handle open question),
+*Already ported* (4), *Already shipped* (2).
+
+Every dark panel carries **both** `Semantic/Color = Dark` and
+`Primitives/Color = Dark`, set on the panel that means it rather than blanketed
+on a container (rules 9 and 14). That is the whole point of the page: a reviewer
+who sets one mode sees a hybrid, which is how three of these problems stayed
+invisible.
+
+**Two new Figma traps, both found by looking at the render rather than the data:**
+
+- **`figma.createAutoLayout()` ships a default WHITE fill**, exactly like
+  `createSlot()` in rule 6. Invisible on a light ground and therefore invisible
+  in every structural frame — until the dark panel, where it painted a white band
+  straight across the specimens. Set `fills = []` on every structural frame you
+  create. Eleven frames were affected on the first card alone.
+- **A specimen needing absolute positioning must not be an auto-layout frame.**
+  The Slider specimens set `x`/`y` on track, fill and thumb inside an auto-layout
+  parent, which silently ignored all of it and stacked them vertically — the
+  thumb rendered below the track, off the control. `layoutMode = 'NONE'` first.
+  No error, and the data reads back exactly as written; only the picture shows it.
+
+Both are instances of rule 4: measure, don't eyeball — *and read the picture, not
+only the numbers*. Neither would have surfaced from inspecting node properties,
+because in both cases the properties were exactly what I set.
+
 ### Blocked — needs your call
 
-Two operations were refused by the harness's auto-mode classifier, and I did not
-work around them:
+Both were initially refused by the harness's auto-mode classifier, then approved
+and completed.
 
-1. **Deleting the duplicate `Notification center` set** (`876:3544`). Verified
-   safe first: **zero instances anywhere in the document** reference it — every
-   page was scanned individually. The real set (`750:774`) is intact. This is
-   still the highest-priority item, because it publishes.
-2. **Repairing the 18 zombie Button instances** via `swapComponent`. The repair
-   script is written and the mapping verified — every zombie but one already
-   carries its `Component/Intent` mode, and `Button/md/info/Loading` derives
-   `Info` from its old name. Modes are read before the swap and restored after,
-   since `swapComponent` drops them silently.
+1. **The duplicate `Notification center` set (`876:3544`) is deleted.** Verified
+   safe first: **zero instances anywhere in the document** referenced it, every
+   page scanned individually. The page now holds **zero** `COMPONENT` /
+   `COMPONENT_SET` nodes, and the real set (`750:774`, key `95b1399…`) is intact.
+2. **All 18 zombie Button instances repaired** via `swapComponent`, in three
+   passes. Modes were read before each swap and restored after, since
+   `swapComponent` drops `explicitVariableModes` silently — and colour is now a
+   mode, so a naive swap would have reset every button to accent.
+
+   The last three sat **inside slots** and had to be re-found by re-querying the
+   page rather than by their cached nested ids, which do not survive their host
+   being mutated. Verified after: **0 zombies remain**, and all 22 Buttons on the
+   page resolve to their intended colour — error `#c53637`, accent `#c22d6d`,
+   info `#1479b0`, soft neutral `#f5f5f5`, soft error `#fee0dd`.
 
 ### Deliberately not done
 

@@ -178,19 +178,28 @@ function getDateGroup(dateStr: string): string {
 // light that is unread-as-clean while in dark it is read-as-absorbed. The
 // dividers carry the row structure in both cases, which is why they are
 // unconditional rather than part of this style.
+// EVERY entry carries its own hover, and the row paints no shared one. That is
+// structural, not stylistic: an ungated `hover:bg-*` is (0,2,0) and a wash is
+// (0,1,0), so a shared hover silently wins and greys out whichever row you
+// point at. Keeping the hover inside the same string as the wash makes the pair
+// impossible to separate later.
 const UNREAD_STYLES: Record<NotificationUnreadStyle, string> = {
   recede: 'bg-surface-base hover:bg-accent-3',
-  tint: 'bg-accent-4',
-  strong: 'bg-accent-5',
-  none: '',
+  tint: 'bg-accent-4 hover:bg-accent-5',
+  strong: 'bg-accent-5 hover:bg-accent-6',
+  none: 'hover:bg-surface-panel-hover',
 }
 
 /**
- * Read-row treatment. Only `recede` styles read rows — the wash-based styles
- * leave them on the panel ground, which is how they have always worked.
+ * Read-row treatment. Only `recede` gives a read row a wash of its own; the
+ * wash-based styles leave it on the panel ground, which is how they have always
+ * worked — but each still owns its hover, for the reason above.
  */
-const READ_STYLES: Partial<Record<NotificationUnreadStyle, string>> = {
+const READ_STYLES: Record<NotificationUnreadStyle, string> = {
   recede: 'bg-neutral-2 hover:bg-surface-panel-active',
+  tint: 'hover:bg-surface-panel-hover',
+  strong: 'hover:bg-surface-panel-hover',
+  none: 'hover:bg-surface-panel-hover',
 }
 
 const TIER_COLORS: Record<string, string> = {
@@ -244,10 +253,6 @@ function NotificationItem({
       onKeyDown={handleKeyDown}
       className={cn(
         'group relative flex w-full cursor-pointer items-start gap-ds-04 border-b border-surface-border px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard last:border-b-0',
-        // `recede` paints its own hover for both states; the wash styles share
-        // this one. Ungated, it would beat a conditional wash on specificity
-        // and grey out the row you are pointing at.
-        unreadStyle !== 'recede' && 'hover:bg-surface-panel-hover',
         notification.isRead
           ? READ_STYLES[unreadStyle]
           : UNREAD_STYLES[unreadStyle],

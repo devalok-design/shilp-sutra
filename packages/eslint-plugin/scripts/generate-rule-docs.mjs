@@ -45,15 +45,26 @@ function description(src) {
 }
 
 /**
- * The rationale block comment. Take the LAST `/** … *\/` that appears before
- * `createRule(` — matching on what immediately follows the comment misses the
- * rules that declare helpers or types between the comment and the rule.
+ * The rationale block comment: the FIRST block in the file, which is the
+ * leading comment above the imports-and-helpers.
+ *
+ * This used to take the LAST block before `createRule(`, on the reasoning that
+ * matching what immediately follows the comment misses rules declaring helpers
+ * between the comment and the rule. True, but it fails the other way: it lifts
+ * whichever helper's JSDoc happens to sit closest to the export. Every rule
+ * with a documented helper had a private implementation note published as its
+ * "Why", and `no-ungated-hover-over-selection` documented a scope-walking
+ * function nobody outside this file can call.
  */
 function rationale(src) {
   const upto = src.slice(0, src.indexOf('createRule<') + 1 || src.indexOf('createRule('))
   const blocks = [...upto.matchAll(/\/\*\*([\s\S]*?)\*\//g)]
   if (!blocks.length) return null
-  const m = blocks[blocks.length - 1]
+  // The FIRST block is the file's leading comment, which is the rationale.
+  // Taking the last one picked up whichever helper happened to be declared
+  // closest to the export instead — so `no-ungated-hover-over-selection`
+  // documented a private scope-walking helper as its "Why".
+  const m = blocks[0]
   return m[1]
     .split('\n')
     .map((l) => l.replace(/^\s*\*ic?\s?/, '').replace(/^\s*\*\s?/, ''))

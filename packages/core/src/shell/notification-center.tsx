@@ -65,7 +65,7 @@ export interface Notification {
 }
 
 /** Visual weight of an unread row. See `NotificationCenterProps.unreadStyle`. */
-export type NotificationUnreadStyle = 'tint' | 'strong' | 'none'
+export type NotificationUnreadStyle = 'recede' | 'tint' | 'strong' | 'none'
 
 export interface NotificationCenterProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -100,18 +100,22 @@ export interface NotificationCenterProps
   /** Called when the user dismisses a notification. Renders an X button per row when provided. */
   onDismiss?: (id: string) => void
   /**
-   * How an unread row announces itself.
+   * How the list separates read from unread.
    *
-   * - `tint` (default) — an accent wash plus a bold title. The conventional
+   * - `recede` (default) — read rows step back instead of unread stepping
+   *   forward. Unread keeps the plain ground and a bold title; read takes a
+   *   grey wash. The calmest of the four in a busy inbox, and the design the
+   *   studio settled on.
+   * - `tint` — an accent wash on unread plus a bold title. The conventional
    *   look, and the quietest fill that still reads louder than a hovered
-   *   already-read row in both themes.
+   *   already-read row in both themes. This was the default before `recede`.
    * - `strong` — a heavier wash, for inboxes where unread has to carry across
    *   a long list at a glance.
    * - `none` — no wash at all. The tier dot (which already fades to 20% once
    *   read) and the bold title carry the state on their own. The calmest
    *   option, and the one that scales best down a long list.
    *
-   * @default 'tint'
+   * @default 'recede'
    */
   unreadStyle?: NotificationUnreadStyle
   /** Additional className for the popover content container */
@@ -154,13 +158,39 @@ function getDateGroup(dateStr: string): string {
 //   accent-4   1.422 light / 1.231 dark
 //   accent-5   1.690 light / 1.458 dark
 //
-// So step 4 is the floor, not step 3. An earlier revision of this file used
-// step 3 for `tint` on the grounds that it clears `surface-panel` — true, but
-// the panel is not what an unread row competes with.
+// So step 4 is the floor, not step 3 — for the wash-based styles below, where
+// unread is the thing carrying the weight.
+//
+// `recede` inverts that premise and so is not bound by it. Designed on the
+// Figma `Updated Components` page (2026-08/09) and adopted as the default:
+// instead of unread shouting, READ rows step back. Unread keeps the plain
+// ground, read takes a grey, and every row gets a divider. Measured against
+// the overlay the list sits in:
+//
+//   unread rest   surface-base           1.000 light / 1.111 dark
+//   unread hover  accent-3               1.244 light / 1.040 dark
+//   read rest     neutral-2              1.090 light / 1.000 dark
+//   read hover    surface-panel-active   1.230 light / 1.445 dark
+//
+// Two of those are 1.000 — unread is the same white as the panel in light, and
+// read is the same grey as the panel in dark. That is deliberate to the model:
+// the row that matches the panel is the one meant to disappear into it, and in
+// light that is unread-as-clean while in dark it is read-as-absorbed. The
+// dividers carry the row structure in both cases, which is why they are
+// unconditional rather than part of this style.
 const UNREAD_STYLES: Record<NotificationUnreadStyle, string> = {
+  recede: 'bg-surface-base hover:bg-accent-3',
   tint: 'bg-accent-4',
   strong: 'bg-accent-5',
   none: '',
+}
+
+/**
+ * Read-row treatment. Only `recede` styles read rows — the wash-based styles
+ * leave them on the panel ground, which is how they have always worked.
+ */
+const READ_STYLES: Partial<Record<NotificationUnreadStyle, string>> = {
+  recede: 'bg-neutral-2 hover:bg-surface-panel-active',
 }
 
 const TIER_COLORS: Record<string, string> = {
@@ -213,9 +243,14 @@ function NotificationItem({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative flex w-full cursor-pointer items-start gap-ds-04 px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard',
-        'hover:bg-surface-panel-hover',
-        !notification.isRead && UNREAD_STYLES[unreadStyle],
+        'group relative flex w-full cursor-pointer items-start gap-ds-04 border-b border-surface-border px-ds-05 py-ds-04 text-left transition-colors duration-fast-02 ease-productive-standard last:border-b-0',
+        // `recede` paints its own hover for both states; the wash styles share
+        // this one. Ungated, it would beat a conditional wash on specificity
+        // and grey out the row you are pointing at.
+        unreadStyle !== 'recede' && 'hover:bg-surface-panel-hover',
+        notification.isRead
+          ? READ_STYLES[unreadStyle]
+          : UNREAD_STYLES[unreadStyle],
       )}
     >
       {/* Tier dot — doubles as read/unread marker */}
@@ -311,7 +346,7 @@ const NotificationCenter = React.forwardRef<HTMLButtonElement, NotificationCente
     {
       notifications = [],
       unreadCount: unreadCountProp,
-      unreadStyle = 'tint',
+      unreadStyle = 'recede',
       open,
       onOpenChange,
       isLoading = false,

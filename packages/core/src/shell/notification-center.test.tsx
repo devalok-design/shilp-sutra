@@ -237,8 +237,39 @@ describe('unreadStyle', () => {
   const rowOf = (title: string) =>
     screen.getByText(title).closest('[role="button"]') as HTMLElement
 
-  it('defaults to a tint that beats a hovered already-read row', () => {
+  it('defaults to `recede` — read steps back rather than unread stepping forward', () => {
     render(<NotificationCenter notifications={[makeNotification()]} />)
+    const cls = rowOf('Test notification').className
+    // Unread keeps the plain ground and carries its own hover.
+    expect(cls).toContain('bg-surface-base')
+    expect(cls).toContain('hover:bg-accent-3')
+    // `recede` must NOT also get the shared grey hover — ungated it would win
+    // on specificity and grey out the row under the cursor.
+    expect(cls).not.toContain('hover:bg-surface-panel-hover')
+  })
+
+  it('recede greys the READ row and gives it its own hover', () => {
+    render(
+      <NotificationCenter
+        notifications={[makeNotification({ isRead: true, title: 'Read row' })]}
+      />,
+    )
+    const cls = rowOf('Read row').className
+    expect(cls).toContain('bg-neutral-2')
+    expect(cls).toContain('hover:bg-surface-panel-active')
+  })
+
+  it('every row carries a divider, whatever the style', () => {
+    render(<NotificationCenter notifications={[makeNotification()]} />)
+    const cls = rowOf('Test notification').className
+    expect(cls).toContain('border-b')
+    expect(cls).toContain('last:border-b-0')
+  })
+
+  it('tint still uses the step-4 wash that beats a hovered already-read row', () => {
+    render(
+      <NotificationCenter notifications={[makeNotification()]} unreadStyle="tint" />,
+    )
     // step 4, not 3: rows hover to surface-panel-hover, and accent-3 sits BELOW
     // that in dark, so an unread row would lose to a row you had already read.
     expect(rowOf('Test notification').className).toContain('bg-accent-4')
@@ -259,7 +290,7 @@ describe('unreadStyle', () => {
     expect(cls).not.toMatch(/bg-accent-\d/)
   })
 
-  it('a READ row is never tinted, whatever the style', () => {
+  it('a READ row is never tinted, for any of the wash styles', () => {
     for (const style of ['tint', 'strong', 'none'] as const) {
       const { unmount } = render(
         <NotificationCenter

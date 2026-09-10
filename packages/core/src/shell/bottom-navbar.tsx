@@ -184,7 +184,7 @@ function BottomNavLink({
         href={item.href}
         aria-label={item.title}
         aria-current={isActive ? 'page' : undefined}
-        className={cn(itemClass, isActive ? 'font-semibold text-accent-11' : 'text-surface-fg-subtle')}
+        className={cn(itemClass, isActive ? 'font-semibold text-accent-10' : 'text-surface-fg-subtle')}
       >
         {/* tint covers the whole cell — sits behind the content */}
         {isActive && indicator === 'tint' && (
@@ -256,7 +256,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
         ref={ref}
         aria-label="Mobile navigation"
         className={cn(
-          'fixed bottom-0 start-0 end-0 z-sticky flex w-full flex-row items-stretch justify-between border-t border-surface-border-strong bg-surface-base px-ds-05 pb-safe pt-0 md:hidden',
+          'fixed bottom-0 start-0 end-0 z-sticky flex w-full flex-row items-stretch justify-between border-t border-surface-border bg-surface-base px-ds-05 pb-safe pt-0 md:hidden',
           className,
         )}
       >
@@ -283,7 +283,7 @@ const BottomNavbar = React.forwardRef<HTMLElement, BottomNavbarProps>(
                 className={cn(
                   itemClass,
                   'min-w-0 flex-1 basis-0',
-                  moreSelected ? 'font-semibold text-accent-11' : 'text-surface-fg-subtle',
+                  moreSelected ? 'font-semibold text-accent-10' : 'text-surface-fg-subtle',
                 )}
               >
                 {moreSelected && indicator === 'tint' && (

@@ -192,7 +192,7 @@ function ToastContent({
         aria-live={isUrgent ? 'assertive' : 'polite'}
         aria-atomic="true"
         className={cn(
-          'group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating',
+          'group relative flex w-full overflow-hidden rounded-overlay-sm border border-neutral-2 bg-surface-overlay shadow-floating',
           // Faint surface tint on error only — the one you must not miss.
           type === 'error' && 'bg-error-2',
         )}
@@ -544,7 +544,7 @@ function UploadToastContent({
         aria-live={uploadUrgent ? 'assertive' : 'polite'}
         aria-label="File uploads"
         className={cn(
-          'group relative flex w-full overflow-hidden rounded-overlay-sm bg-surface-overlay shadow-floating',
+          'group relative flex w-full overflow-hidden rounded-overlay-sm border border-neutral-2 bg-surface-overlay shadow-floating',
           // Faint surface tint when the batch ended with failures.
           uploadUrgent && 'bg-error-2',
         )}

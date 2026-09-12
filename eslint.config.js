@@ -19,6 +19,14 @@ export default tseslint.config(
       // switched off for stories further down; the token rules stay on.
       '.storybook/**',
       'packages/core/src/primitives/**',
+      // Build output. `apps/site` emits ~13.6k parse/lint errors from `.next/**`
+      // alone, which is why a bare `eslint .` in that workspace was unusable and
+      // the site ended up on `next lint` — a gate that applies none of the rules
+      // below. Ignoring the artefacts is what makes the real gate affordable.
+      '**/.next/**',
+      'apps/site/public/r/**',
+      'storybook-static/**',
+      '**/next-env.d.ts',
     ],
   },
 
@@ -183,6 +191,36 @@ export default tseslint.config(
       'shilp-sutra/no-ungated-hover-over-selection': 'error',
     },
   },
+  // ── The site is a CONSUMER, and was the last unguarded surface ──────
+  //
+  // `apps/site` imports the published package exactly the way a customer does,
+  // and its `content/blocks` + `content/presets` are literally the source people
+  // copy out of the registry. It was running `next lint`, which applies none of
+  // the rules above — so the one tree whose job is to be copied was the one tree
+  // with no token gate on it. Same rule set as our own source, for the same
+  // reasons, plus the consumer-only import rule (the site imports per-component
+  // from the package, so the peer-cliff rule is true here where it is not in
+  // packages/*/src).
+  {
+    files: ['apps/*/**/*.{ts,tsx}'],
+    plugins: { 'shilp-sutra': shilpSutra },
+    rules: {
+      'shilp-sutra/no-deprecated-surface-token': 'error',
+      'shilp-sutra/no-renamed-surface-token': 'error',
+      'shilp-sutra/no-deprecated-shadow-token': 'error',
+      'shilp-sutra/no-bare-shadow': 'error',
+      'shilp-sutra/no-bg-gradient-to': 'error',
+      'shilp-sutra/no-css-var-bracket': 'error',
+      'shilp-sutra/no-ungated-hover-over-selection': 'error',
+      'shilp-sutra/prefer-per-component-import': 'error',
+      'shilp-sutra/no-deprecated-chip': 'error',
+      'shilp-sutra/use-toast-deprecated': 'error',
+      'shilp-sutra/no-iconbutton-children': 'error',
+      // NOT `no-deprecated-button-variant`: the site's showcase pages exist to
+      // render every variant the package ships, deprecated ones included.
+    },
+  },
+
   // Stories are globally ignored above, which is how 24 deprecated surface
   // tokens survived in them — and stories are precisely what consumers copy
   // from. Re-include them for the token rules only, so this stays a token gate

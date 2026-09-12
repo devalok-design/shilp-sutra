@@ -28,7 +28,7 @@ export function AutocompleteHero() {
 }
 
 export function AutocompleteVariants() {
-  const [picked, setPicked] = React.useState<AutocompleteOption | null>(null)
+  const [, setPicked] = React.useState<AutocompleteOption | null>(null)
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-ds-06">

@@ -40,7 +40,7 @@ const config: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'devalok-public-assets.s3.ap-south-1.amazonaws.com' },
+      { protocol: 'https', hostname: 'assets.devalok.in' },
     ],
   },
   experimental: {

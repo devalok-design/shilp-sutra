@@ -120,7 +120,7 @@ export function DevalokShowcase() {
       <header className="flex flex-col gap-ds-04 max-w-3xl">
         <div className="flex items-center gap-ds-04">
           <img
-            src="https://devalok-public-assets.s3.ap-south-1.amazonaws.com/brand/devalok/logos/chakra-brand.svg"
+            src="https://assets.devalok.in/brand/devalok/logos/chakra-brand.svg"
             alt=""
             aria-hidden
             width={48}
@@ -158,7 +158,7 @@ export function DevalokShowcase() {
           Karm, Manas, Sahayak, Patrika, and every digital surface we ship.
         </Text>
         <img
-          src="https://devalok-public-assets.s3.ap-south-1.amazonaws.com/brand/devalok/logos/wordmark-brand.svg"
+          src="https://assets.devalok.in/brand/devalok/logos/wordmark-brand.svg"
           alt="Devalok"
           width={160}
           height={32}

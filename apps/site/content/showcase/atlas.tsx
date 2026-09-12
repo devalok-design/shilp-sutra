@@ -12,7 +12,6 @@ import {
   IconHash,
   IconInbox,
   IconPlus,
-  IconSearch,
   IconSettings,
   IconTrendingUp,
   IconUsers,
@@ -691,7 +690,7 @@ function CalendarItem({
       onClick={onSelect}
       aria-pressed={active}
       className={`flex items-start gap-ds-03 px-ds-02 -mx-ds-02 py-ds-02 rounded-control transition-colors duration-fast-02 ease-productive-standard text-left w-full ${
-        active ? 'bg-surface-panel-hover' : 'hover:bg-surface-panel-hover'
+        active ? 'bg-surface-panel-active' : 'hover:bg-surface-panel-hover'
       }`}
     >
       <span className="w-8 h-8 rounded-control-inner bg-accent-3 text-accent-11 flex items-center justify-center shrink-0">

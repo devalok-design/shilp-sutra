@@ -29,7 +29,7 @@ export function AgentCallout() {
             </Button>
           </Link>
           <Link href="/docs">
-            <Button variant="ghost" size="md" startIcon={<IconBook size={14} />}>
+            <Button variant="soft" size="md" startIcon={<IconBook size={14} />}>
               Install by hand
             </Button>
           </Link>

@@ -408,7 +408,6 @@ export function VaidyaShowcase() {
               </TabsContent>
 
               <TabsContent value="labs" className="mt-ds-04">
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 <DataTable columns={labColumns} data={labRows} density="compact" />
               </TabsContent>
 

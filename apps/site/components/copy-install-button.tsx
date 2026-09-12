@@ -58,7 +58,9 @@ export function CopyInstallButton() {
         className={[
           'pointer-events-none absolute left-0 top-full z-10 mt-ds-02 w-max max-w-[min(20rem,90vw)]',
           'rounded-control border border-surface-border-subtle bg-surface-overlay px-ds-03 py-ds-02 text-ds-xs text-surface-fg shadow-overlay',
-          'transition-all duration-fast-02 ease-out motion-reduce:transition-none',
+          // Named properties, not `all`: this element animates exactly translate and opacity,
+          // and `transition-all` also transitions the box-shadow and border it is given above.
+          'transition-[translate,opacity] duration-fast-02 ease-out motion-reduce:transition-none',
           copied ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-1 opacity-0',
         ].join(' ')}
       >

@@ -212,12 +212,15 @@ export function PatrikaShowcase() {
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-ds-06 text-white">
-                <span className="text-ds-xs uppercase tracking-wider opacity-90">
-                  Patrika · Issue 14
-                </span>
-                <h2 className="text-ds-2xl font-semibold leading-tight mt-ds-02">
+                {/* The issue line used to sit ABOVE the headline as a tracked caps eyebrow. The
+                    house bans that outright; the sanctioned place for a caps string is inline or
+                    as a subtitle BELOW the title, so it moved down and dropped the caps. */}
+                <h2 className="text-ds-2xl font-semibold leading-tight">
                   Vol. iv: Margins
                 </h2>
+                <span className="text-ds-xs opacity-90 mt-ds-02 block">
+                  Patrika · Issue 14
+                </span>
               </div>
             </div>
             <figcaption className="text-ds-xs text-surface-fg-subtle">
@@ -497,11 +500,14 @@ export function PatrikaShowcase() {
                       className="group flex items-start justify-between gap-ds-04 py-ds-04 border-b border-surface-border-subtle last:border-b-0"
                     >
                       <div className="flex flex-col gap-ds-01 min-w-0">
-                        <span className="text-ds-xs uppercase tracking-wider text-accent-11">
-                          {e.kicker}
-                        </span>
+                        {/* Title first. The kicker used to sit above it in tracked caps — the one
+                            pattern the house bans without exception — so it moved below, in the
+                            mixed case the type rules ask for on meta. */}
                         <span className="text-ds-md text-surface-fg font-semibold line-clamp-2">
                           {e.title}
+                        </span>
+                        <span className="text-ds-xs text-accent-11">
+                          {e.kicker}
                         </span>
                         <span className="text-ds-xs text-surface-fg-subtle truncate">
                           {e.author} · {e.read}
@@ -525,7 +531,7 @@ export function PatrikaShowcase() {
                       <img
                         src={p.src}
                         alt={p.alt}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-moderate-01 ease-productive-standard hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover"
                         loading="lazy"
                       />
                     </div>
@@ -580,11 +586,12 @@ export function PatrikaShowcase() {
                     />
                   </div>
                   <div className="flex flex-col gap-ds-01 p-ds-04 pt-ds-02">
-                    <span className="text-ds-xs uppercase tracking-wider text-accent-11">
-                      {r.kicker}
-                    </span>
+                    {/* Same as the essay list: title leads, kicker follows in mixed case. */}
                     <span className="text-ds-md text-surface-fg font-semibold line-clamp-2 group-hover:text-accent-11 transition-colors duration-fast-02 ease-productive-standard">
                       {r.title}
+                    </span>
+                    <span className="text-ds-xs text-accent-11">
+                      {r.kicker}
                     </span>
                     <span className="text-ds-xs text-surface-fg-subtle inline-flex items-center gap-ds-02">
                       <IconClock size={12} /> {r.read}

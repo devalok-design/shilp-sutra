@@ -422,7 +422,6 @@ export function LendisShowcase() {
               </CardHeader>
               <CardContent>
                 <DataTable
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   columns={columns}
                   data={filteredTxns}
                   sortable
@@ -604,7 +603,7 @@ export function LendisShowcase() {
                         </dd>
                       </dl>
                       <div className="flex items-center gap-ds-02">
-                        <Button variant="ghost" size="sm" onClick={() => setReviewOpen(false)}>
+                        <Button variant="soft" size="sm" onClick={() => setReviewOpen(false)}>
                           Cancel
                         </Button>
                         <Button size="sm" fullWidth onClickAsync={confirmSend}>

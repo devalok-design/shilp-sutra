@@ -58,7 +58,14 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
             />
           </aside>
           <article className="min-w-0">
-            <PageHeader eyebrow={getCategoryLabel(doc.category)} title={doc.title} />
+            <PageHeader
+              title={doc.title}
+              meta={
+                <span className="text-ds-sm text-surface-fg-muted">
+                  {getCategoryLabel(doc.category)}
+                </span>
+              }
+            />
             <Markdown source={doc.source} />
 
             <nav className="mt-ds-12 pt-ds-06 border-t border-surface-border-subtle grid grid-cols-2 gap-ds-04">

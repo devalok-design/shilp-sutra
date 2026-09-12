@@ -116,7 +116,6 @@ export default function FigmaMakePage() {
       <main id="main" className="flex-1">
         <div className="mx-auto max-w-5xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <PageHeader
-            eyebrow="For Figma Make"
             title="Generate apps in Figma against the real design system."
             subtitle={`One npm version. ${fileCount()} guideline files. Same conventions as production.`}
             description="Figma Make turns prompts into React. shilp-sutra-as-a-Make-kit teaches it which Button to reach for, which surface a card sits on, why soft beats outline. The Buttons your team already ships, applied to AI-generated screens."
@@ -237,7 +236,7 @@ export default function FigmaMakePage() {
               </Text>
             </header>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-04">
-              <Card variant="outline" color="warning">
+              <Card variant="default" color="warning">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-ds-03">
                     <IconClockExclamation size={18} className="text-warning-11" />
@@ -313,7 +312,7 @@ export default function FigmaMakePage() {
                 rel="noreferrer"
                 className="group"
               >
-                <Card variant="outline" interactive>
+                <Card variant="default" interactive>
                   <CardHeader>
                     <CardTitle className="text-ds-md flex items-center gap-ds-02">
                       <IconPackage size={16} className="text-fg-muted" />
@@ -332,7 +331,7 @@ export default function FigmaMakePage() {
                 rel="noreferrer"
                 className="group"
               >
-                <Card variant="outline" interactive>
+                <Card variant="default" interactive>
                   <CardHeader>
                     <CardTitle className="text-ds-md flex items-center gap-ds-02">
                       <IconBrandGithub size={16} className="text-fg-muted" />
@@ -351,7 +350,7 @@ export default function FigmaMakePage() {
                 rel="noreferrer"
                 className="group"
               >
-                <Card variant="outline" interactive>
+                <Card variant="default" interactive>
                   <CardHeader>
                     <CardTitle className="text-ds-md flex items-center gap-ds-02">
                       <IconBrandFigma size={16} className="text-fg-muted" />

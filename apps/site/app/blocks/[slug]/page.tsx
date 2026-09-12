@@ -40,7 +40,15 @@ export default async function BlockDetailPage({ params }: { params: Promise<{ sl
             </Link>
           </nav>
 
-          <PageHeader eyebrow={`Block · ${block.tags[0] ?? 'pattern'}`} title={block.title} description={block.description} />
+          <PageHeader
+            title={block.title}
+            description={block.description}
+            meta={
+              <span className="text-ds-sm text-surface-fg-muted">
+                Block · {block.tags[0] ?? 'pattern'}
+              </span>
+            }
+          />
 
           <BlockDetailShell source={source} uses={block.uses}>
             <Component />

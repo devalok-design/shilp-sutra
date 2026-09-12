@@ -41,9 +41,13 @@ export default async function PresetDetailPage({ params }: { params: Promise<{ s
           </nav>
 
           <PageHeader
-            eyebrow={`Preset · ${preset.categories[0] ?? 'pattern'}`}
             title={preset.title}
             description={preset.description}
+            meta={
+              <span className="text-ds-sm text-surface-fg-muted">
+                Preset · {preset.categories[0] ?? 'pattern'}
+              </span>
+            }
           />
 
           <PresetDetailShell source={source} uses={preset.uses} installName={preset.installName}>

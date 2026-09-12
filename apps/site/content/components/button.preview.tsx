@@ -10,9 +10,11 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 export function ButtonHero() {
   return (
     <div className="flex flex-wrap items-center gap-ds-03">
+      {/* The hero is what people copy, so it shows the RECOMMENDED pair rather than the full
+          range: product UI runs solid for the one primary action and soft for everything else.
+          The five-variant gallery sits directly below for the rest. */}
       <Button>Continue</Button>
       <Button variant="soft">Cancel</Button>
-      <Button variant="ghost">Skip</Button>
     </div>
   )
 }
@@ -77,7 +79,7 @@ export function ButtonVariants() {
 
 function PreviewBlock({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-ds-md border border-surface-border-subtle bg-surface-panel">
+    <div className="flex flex-col gap-ds-03 p-ds-05 rounded-control border border-surface-border-subtle bg-surface-panel">
       <span className="text-ds-xs font-mono text-surface-fg-subtle">{title}</span>
       {children}
     </div>

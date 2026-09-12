@@ -16,31 +16,31 @@ function nodeToText(node: ReactNode): string {
 const components: Components = {
   h1: (props) => (
     <h1
-      className="text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg mt-ds-09 mb-ds-05 first:mt-0"
+      className="text-heading-xl text-surface-fg mt-ds-09 mb-ds-05 first:mt-0"
       {...props}
     />
   ),
   h2: (props) => (
     <h2
-      className="text-[length:var(--typo-heading-lg-size)] font-[number:var(--typo-heading-lg-weight)] leading-[var(--typo-heading-lg-leading)] tracking-[var(--typo-heading-lg-tracking)] text-surface-fg mt-ds-09 mb-ds-04 scroll-mt-24"
+      className="text-heading-lg text-surface-fg mt-ds-09 mb-ds-04 scroll-mt-24"
       {...props}
     />
   ),
   h3: (props) => (
     <h3
-      className="text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] tracking-[var(--typo-heading-md-tracking)] text-surface-fg mt-ds-08 mb-ds-03 scroll-mt-24"
+      className="text-heading-md text-surface-fg mt-ds-08 mb-ds-03 scroll-mt-24"
       {...props}
     />
   ),
   h4: (props) => (
     <h4
-      className="text-[length:var(--typo-heading-sm-size)] font-[number:var(--typo-heading-sm-weight)] leading-[var(--typo-heading-sm-leading)] tracking-[var(--typo-heading-sm-tracking)] text-surface-fg mt-ds-06 mb-ds-02 scroll-mt-24"
+      className="text-heading-sm text-surface-fg mt-ds-06 mb-ds-02 scroll-mt-24"
       {...props}
     />
   ),
   p: (props) => (
     <p
-      className="text-[length:var(--typo-body-md-size)] font-[number:var(--typo-body-md-weight)] leading-[var(--typo-body-md-leading)] tracking-[var(--typo-body-md-tracking)] text-surface-fg-muted my-ds-04"
+      className="text-body-md text-surface-fg-muted my-ds-04"
       {...props}
     />
   ),

@@ -112,15 +112,16 @@ export default function DocsIndexPage() {
             {/* For AI editors — first-class path. The MCP serves version-exact
                 docs so agents stop guessing. */}
             <section className="flex flex-col gap-ds-04 rounded-surface border border-accent-6 bg-accent-2 p-ds-06">
+              {/* No eyebrow. "For AI editors" was a small tracked caps label sitting directly
+                  above this heading, which the house bans outright — the heading and its size are
+                  what signpost a section. The icon carries the same signal inline, and the
+                  sentence already says who it is for. */}
               <div className="flex items-center gap-ds-02">
-                <IconCode size={16} className="text-accent-11" />
-                <Text variant="label-sm" className="font-semibold uppercase tracking-wide text-accent-11">
-                  For AI editors
+                <IconCode size={16} className="shrink-0 text-accent-11" />
+                <Text variant="heading-sm" className="text-surface-fg">
+                  Point your editor at the docs MCP.
                 </Text>
               </div>
-              <Text variant="heading-sm" className="text-surface-fg">
-                Point your editor at the docs MCP.
-              </Text>
               <Text variant="body-sm" className="max-w-2xl text-surface-fg-muted">
                 Cursor, Claude, Copilot, and Aider can read every component, prop, token, and setup
                 step straight from the source. Add the server once and stop pasting docs into chat.
@@ -142,7 +143,7 @@ export default function DocsIndexPage() {
                 <span className="text-ds-xs text-surface-fg-subtle">
                   Install
                 </span>
-                <h2 className="font-display text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
+                <h2 className="text-heading-md text-surface-fg">
                   Pick your framework.
                 </h2>
                 <Text variant="body-sm" className="text-surface-fg-muted">
@@ -158,9 +159,9 @@ export default function DocsIndexPage() {
             </section>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-ds-06">
-              <DocsSection eyebrow="Customize" title="Make it yours." items={CUSTOMIZE} />
-              <DocsSection eyebrow="Reference" title="Deeper context." items={REFERENCE} />
-              <DocsSection eyebrow="Troubleshoot" title="When things break." items={TROUBLESHOOT} />
+              <DocsSection title="Customize" blurb="Make it yours." items={CUSTOMIZE} />
+              <DocsSection title="Reference" blurb="Deeper context." items={REFERENCE} />
+              <DocsSection title="Troubleshoot" blurb="When things break." items={TROUBLESHOOT} />
             </div>
 
           </div>
@@ -171,20 +172,27 @@ export default function DocsIndexPage() {
   )
 }
 
+/**
+ * No eyebrow slot. The category used to sit above the heading as a small
+ * subtle label, which the house bans outright — a heading is what signposts
+ * a section. So the category IS the heading now, and the line it used to
+ * introduce sits below it as the section's blurb, which is where the rule
+ * says a secondary string belongs.
+ */
 function DocsSection({
-  eyebrow,
   title,
+  blurb,
   items,
 }: {
-  eyebrow: string
   title: string
+  blurb: string
   items: DocCard[]
 }) {
   return (
     <section className="flex flex-col gap-ds-04">
       <header className="flex flex-col gap-ds-01">
-        <span className="text-ds-xs text-surface-fg-subtle">{eyebrow}</span>
         <h2 className="text-ds-lg text-surface-fg font-semibold">{title}</h2>
+        <p className="text-ds-sm text-surface-fg-muted">{blurb}</p>
       </header>
       <ul className="flex flex-col gap-ds-03">
         {items.map((item) => (

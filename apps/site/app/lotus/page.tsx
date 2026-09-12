@@ -19,7 +19,6 @@ export default function LotusPage() {
         <div className="mx-auto max-w-7xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
-              eyebrow="Lotus"
               title="A field of lotuses."
               subtitle="Eight petals out, six in, every one a little different."
               description="Each petal gets seeded jitter. Rotation ±4°, scale ±10 %, tip distance ±3 px. No two read identically and the flower feels hand-arranged. Devalok paper grain woven into the petal fill via a single SVG filter; brand colour follows your accent ramp live."

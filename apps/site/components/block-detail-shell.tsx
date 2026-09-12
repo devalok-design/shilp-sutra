@@ -35,7 +35,12 @@ export function BlockDetailShell({
         <div
           role="tablist"
           aria-label="View"
-          className="inline-flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-panel p-ds-01"
+          // The track is `segment-track` — the translucent groove that reads on the page AND on a
+          // card — and carries no border, because the thumb defines its own edge with
+          // `shadow-segment`. This is the recipe packages/core's own SegmentedControl and Tabs use.
+          // It was a `surface-panel` track holding a `surface-overlay` thumb, and in light those are
+          // the SAME #ffffff: the selected tab's fill did nothing at all.
+          className="inline-flex items-center gap-ds-01 rounded-control bg-segment-track p-ds-01"
         >
           <button
             type="button"
@@ -44,7 +49,7 @@ export function BlockDetailShell({
             onClick={() => setTab('preview')}
             className={[
               'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
-              tab === 'preview' ? 'bg-surface-overlay text-surface-fg shadow-raised' : 'text-surface-fg-muted',
+              tab === 'preview' ? 'bg-segment-thumb text-surface-fg shadow-segment' : 'text-surface-fg-muted',
             ].join(' ')}
           >
             <IconEye size={14} />
@@ -57,7 +62,7 @@ export function BlockDetailShell({
             onClick={() => setTab('code')}
             className={[
               'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
-              tab === 'code' ? 'bg-surface-overlay text-surface-fg shadow-raised' : 'text-surface-fg-muted',
+              tab === 'code' ? 'bg-segment-thumb text-surface-fg shadow-segment' : 'text-surface-fg-muted',
             ].join(' ')}
           >
             <IconCode size={14} />
@@ -95,7 +100,7 @@ export function BlockDetailShell({
           {uses.map((u) => (
             <span
               key={u}
-              className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-panel border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
+              className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-surface-panel border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
             >
               {u}
             </span>

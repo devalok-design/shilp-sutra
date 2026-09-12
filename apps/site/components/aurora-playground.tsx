@@ -158,7 +158,7 @@ export function AuroraPlayground() {
                       {preset.name}
                     </Text>
                     {isActive && (
-                      <span className="inline-flex items-center rounded-control-inner bg-accent-3 px-ds-02 py-[1px] text-ds-xs font-mono text-accent-11">
+                      <span className="inline-flex items-center rounded-control-inner bg-accent-3 px-ds-02 py-px text-ds-xs font-mono text-accent-11">
                         active
                       </span>
                     )}
@@ -174,7 +174,7 @@ export function AuroraPlayground() {
                       brand-follows tag instead of static swatches. */}
                   <div className="mt-ds-02 flex items-center gap-ds-02">
                     {preset.props.palette === 'brand' ? (
-                      <span className="inline-flex items-center gap-ds-01 rounded-control-inner border border-surface-border-subtle bg-surface-base px-ds-02 py-[1px] text-ds-xs font-mono text-surface-fg-subtle">
+                      <span className="inline-flex items-center gap-ds-01 rounded-control-inner border border-surface-border-subtle bg-surface-base px-ds-02 py-px text-ds-xs font-mono text-surface-fg-subtle">
                         <span className="w-2 h-2 rounded-pill bg-accent-9" aria-hidden />
                         follows brand
                       </span>
@@ -219,7 +219,7 @@ export function AuroraPlayground() {
               <Text variant="label-md" className="text-surface-fg-subtle">
                 Live preview
               </Text>
-              <h2 className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] text-surface-fg max-w-2xl text-balance">
+              <h2 className="text-heading-xl text-surface-fg max-w-2xl text-balance">
                 The library that <span className="text-accent-11">looks like yours.</span>
               </h2>
               <Text variant="body-md" className="text-surface-fg-muted max-w-lg">
@@ -242,7 +242,7 @@ export function AuroraPlayground() {
             <Text variant="label-md" className="text-surface-fg">
               Aurora controls
             </Text>
-            <Button variant="ghost" size="sm" onClick={() => applyPreset('devalok')}>
+            <Button variant="soft" size="sm" onClick={() => applyPreset('devalok')}>
               Reset
             </Button>
           </div>

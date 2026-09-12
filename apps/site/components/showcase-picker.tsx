@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { IconArrowUpRight } from '@tabler/icons-react'
 import { Text } from '@devalok/shilp-sutra/ui/text'
-import { CARD_EYEBROW, CARD_INTERACTIVE, CARD_TITLE } from '@/lib/card-recipe'
+import { CARD_INTERACTIVE, CARD_META, CARD_TITLE } from '@/lib/card-recipe'
 import { getAllShowcases } from '@/lib/showcase-registry'
 
 export function ShowcasePicker({ currentSlug }: { currentSlug: string }) {
@@ -21,8 +21,11 @@ export function ShowcasePicker({ currentSlug }: { currentSlug: string }) {
         {others.map((e) => (
           <li key={e.slug}>
             <Link href={`/showcase/${e.slug}`} className={CARD_INTERACTIVE + ' flex flex-col gap-ds-03 h-full'}>
-              <header className="flex items-center justify-between gap-ds-02">
-                <span className={CARD_EYEBROW + ' mb-0'}>{e.industry.split(' · ')[0]}</span>
+              {/* Name left, the swatch pinned top-right, meta below — the card shape the house
+                  asks for. The industry used to be an eyebrow above the title; a small label in
+                  that position is banned, and the title is what should lead. */}
+              <header className="flex items-start justify-between gap-ds-02">
+                <h3 className={CARD_TITLE}>{e.product}</h3>
                 <span
                   aria-hidden
                   className="w-4 h-4 rounded-pill border border-surface-border shrink-0"
@@ -30,8 +33,8 @@ export function ShowcasePicker({ currentSlug }: { currentSlug: string }) {
                 />
               </header>
               <div className="flex flex-col gap-ds-01">
-                <h3 className={CARD_TITLE}>{e.product}</h3>
-                <p className="text-ds-xs text-surface-fg-subtle line-clamp-2">{e.tagline}</p>
+                <span className={CARD_META}>{e.industry.split(' · ')[0]}</span>
+                <p className="text-body-xs text-surface-fg-subtle line-clamp-2">{e.tagline}</p>
               </div>
               <span className="mt-auto inline-flex items-center gap-ds-02 text-ds-xs text-accent-11 group-hover:underline underline-offset-2">
                 See it

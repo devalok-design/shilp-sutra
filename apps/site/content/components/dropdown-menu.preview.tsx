@@ -28,7 +28,7 @@ export function DropdownMenuHero() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">My account</Button>
+        <Button variant="soft">My account</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-56">
         <DropdownMenuLabel>My account</DropdownMenuLabel>

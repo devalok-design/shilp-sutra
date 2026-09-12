@@ -346,7 +346,7 @@ export function BrahmaBackdrop() {
           rel="noopener noreferrer nofollow"
           aria-hidden
           tabIndex={-1}
-          className="hero-egg pointer-events-auto absolute z-20 hidden select-none rounded-control px-ds-04 py-ds-03 text-ds-sm font-medium transition-transform duration-fast-02 hover:scale-105 lg:block"
+          className="hero-egg pointer-events-auto absolute z-20 hidden select-none rounded-control px-ds-04 py-ds-03 text-ds-sm font-medium transition-transform duration-fast-02 active:scale-[0.97] lg:block"
           style={{ left: px(9.2), top: py(5.4), background: C.lime, color: C.ink, ['--egg-delay' as string]: '5.4s' }}
         >
           Watch on YouTube
@@ -357,7 +357,7 @@ export function BrahmaBackdrop() {
           rel="noopener noreferrer nofollow"
           aria-hidden
           tabIndex={-1}
-          className="hero-egg pointer-events-auto absolute z-20 hidden size-[4.5rem] items-center justify-center rounded-control shadow-raised transition-transform duration-fast-02 hover:scale-105 lg:flex"
+          className="hero-egg pointer-events-auto absolute z-20 hidden size-[4.5rem] items-center justify-center rounded-control shadow-raised transition-transform duration-fast-02 active:scale-[0.97] lg:flex"
           style={{ left: px(9), top: py(8), background: C.ink, color: C.inkFg, ['--egg-delay' as string]: '5.8s' }}
         >
           <IconLink size={30} />

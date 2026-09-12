@@ -177,10 +177,10 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
                     title={sw.name}
                     className={[
                       'group relative aspect-square w-full rounded-control transition-transform duration-fast-01',
-                      'hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-overlay',
+                      'active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-overlay',
                       isActive
                         ? 'ring-2 ring-surface-fg ring-offset-2 ring-offset-surface-overlay'
-                        : 'ring-1 ring-inset ring-black/10',
+                        : 'ring-1 ring-inset ring-surface-border',
                     ].join(' ')}
                     style={{ background: sw.color }}
                   />
@@ -196,7 +196,7 @@ export function BrandSwitcher({ align = 'end' }: BrandSwitcherProps = {}) {
               <label className="relative shrink-0 cursor-pointer" title="Open colour picker">
                 <span
                   aria-hidden
-                  className="block h-11 w-11 rounded-control ring-1 ring-inset ring-black/10"
+                  className="block h-11 w-11 rounded-control ring-1 ring-inset ring-surface-border"
                   style={{ background: isHex(hex) ? hex : DEFAULT_HEX }}
                 />
                 <input

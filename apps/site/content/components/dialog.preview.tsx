@@ -64,7 +64,7 @@ export function DialogVariants() {
       <Block title="responsive={false} (always centered)">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline">Open centered</Button>
+            <Button variant="soft">Open centered</Button>
           </DialogTrigger>
           <DialogContent responsive={false}>
             <DialogHeader>

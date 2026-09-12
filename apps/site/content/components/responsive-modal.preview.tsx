@@ -49,7 +49,7 @@ export function ResponsiveModalVariants() {
       <Block title="snapPoints={[0.5, 0.9]} (mobile rest heights)">
         <ResponsiveModal>
           <ResponsiveModalTrigger asChild>
-            <Button variant="outline">Open with snap points</Button>
+            <Button variant="soft">Open with snap points</Button>
           </ResponsiveModalTrigger>
           <ResponsiveModalContent snapPoints={[0.5, 0.9]}>
             <ResponsiveModalHeader>

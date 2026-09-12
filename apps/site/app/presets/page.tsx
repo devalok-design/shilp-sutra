@@ -22,8 +22,8 @@ export default function PresetsIndexPage() {
       <main id="main" className="flex-1">
         <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <PageHeader
-            eyebrow="Preset Library"
-            title="Screens, pre-assembled from the system"
+            title="The Preset Library"
+            subtitle="Screens, pre-assembled from the system."
             description="Real-world compositions built from shilp-sutra components. Copy the source and own it, or point your AI agent at our registry and let it install one for you."
           />
 
@@ -57,7 +57,7 @@ export default function PresetsIndexPage() {
                   />
                 </div>
                 <Text variant="body-sm" className="text-surface-fg-muted">{preset.description}</Text>
-                <code className="mt-auto w-fit rounded-control-inner bg-surface-overlay px-ds-02 py-[2px] text-ds-xs font-mono text-surface-fg-subtle">
+                <code className="mt-auto w-fit rounded-control-inner bg-surface-overlay px-ds-02 py-ds-01 text-ds-xs font-mono text-surface-fg-subtle">
                   {preset.installName}
                 </code>
               </Link>

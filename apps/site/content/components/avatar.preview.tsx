@@ -34,7 +34,7 @@ export function AvatarVariants() {
       <Block title="with image + fallback">
         <div className="flex items-center gap-ds-03">
           <Avatar>
-            <AvatarImage src="https://devalok-public-assets.s3.ap-south-1.amazonaws.com/brand/devalok/logos/monogram-brand-1024.png" alt="Devalok" />
+            <AvatarImage src="https://assets.devalok.in/brand/devalok/logos/monogram-brand-1024.png" alt="Devalok" />
             <AvatarFallback>DV</AvatarFallback>
           </Avatar>
           <Avatar>

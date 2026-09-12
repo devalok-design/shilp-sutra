@@ -154,8 +154,8 @@ export function BrandOrbit() {
         </motion.div>
 
         {/* Centre plate */}
-        <div className="absolute left-1/2 top-1/2 flex h-[9.5rem] w-[9.5rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-surface-border-subtle bg-surface-base/85 text-center shadow-raised backdrop-blur-sm">
-          <span className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-none text-surface-fg">
+        <div className="absolute left-1/2 top-1/2 flex h-[9.5rem] w-[9.5rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-pill border border-surface-border-subtle bg-surface-base/85 text-center shadow-raised backdrop-blur-sm">
+          <span className="text-heading-xl leading-none text-surface-fg">
             120+
           </span>
           <span className="mt-ds-01 text-ds-sm text-surface-fg-muted">components</span>

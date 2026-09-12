@@ -105,7 +105,10 @@ export function PresetDetailShell({
           <div
             role="tablist"
             aria-label="View"
-            className="inline-flex items-center gap-ds-01 rounded-control border border-surface-border bg-surface-panel p-ds-01"
+            // Same correction as block-detail-shell: `segment-track` groove, no border, and the
+            // thumb defines its own edge with `shadow-segment`. A `surface-panel` track holding a
+            // `surface-overlay` thumb is two #ffffff in light — the selected tab's fill was a no-op.
+            className="inline-flex items-center gap-ds-01 rounded-control bg-segment-track p-ds-01"
           >
             <button
               type="button"
@@ -114,7 +117,7 @@ export function PresetDetailShell({
               onClick={() => setTab('preview')}
               className={[
                 'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
-                tab === 'preview' ? 'bg-surface-overlay text-surface-fg shadow-raised' : 'text-surface-fg-muted',
+                tab === 'preview' ? 'bg-segment-thumb text-surface-fg shadow-segment' : 'text-surface-fg-muted',
               ].join(' ')}
             >
               <IconEye size={14} />
@@ -127,7 +130,7 @@ export function PresetDetailShell({
               onClick={() => setTab('code')}
               className={[
                 'inline-flex items-center gap-ds-02 px-ds-03 py-ds-02 rounded-control-inner text-ds-sm transition-colors duration-fast-01',
-                tab === 'code' ? 'bg-surface-overlay text-surface-fg shadow-raised' : 'text-surface-fg-muted',
+                tab === 'code' ? 'bg-segment-thumb text-surface-fg shadow-segment' : 'text-surface-fg-muted',
               ].join(' ')}
             >
               <IconCode size={14} />

@@ -447,7 +447,7 @@ function Surface({
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="group flex items-center justify-between gap-ds-03 rounded-control -mx-ds-02 px-ds-02 py-ds-01 hover:bg-surface-overlay transition-colors duration-fast-02 ease-productive-standard"
+        className="group flex items-center justify-between gap-ds-03 rounded-control -mx-ds-02 px-ds-02 py-ds-01 hover:bg-surface-panel-hover transition-colors duration-fast-02 ease-productive-standard"
       >
         {body}
       </a>

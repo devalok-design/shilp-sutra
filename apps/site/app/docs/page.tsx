@@ -112,15 +112,16 @@ export default function DocsIndexPage() {
             {/* For AI editors — first-class path. The MCP serves version-exact
                 docs so agents stop guessing. */}
             <section className="flex flex-col gap-ds-04 rounded-surface border border-accent-6 bg-accent-2 p-ds-06">
+              {/* No eyebrow. "For AI editors" was a small tracked caps label sitting directly
+                  above this heading, which the house bans outright — the heading and its size are
+                  what signpost a section. The icon carries the same signal inline, and the
+                  sentence already says who it is for. */}
               <div className="flex items-center gap-ds-02">
-                <IconCode size={16} className="text-accent-11" />
-                <Text variant="label-sm" className="font-semibold uppercase tracking-wide text-accent-11">
-                  For AI editors
+                <IconCode size={16} className="shrink-0 text-accent-11" />
+                <Text variant="heading-sm" className="text-surface-fg">
+                  Point your editor at the docs MCP.
                 </Text>
               </div>
-              <Text variant="heading-sm" className="text-surface-fg">
-                Point your editor at the docs MCP.
-              </Text>
               <Text variant="body-sm" className="max-w-2xl text-surface-fg-muted">
                 Cursor, Claude, Copilot, and Aider can read every component, prop, token, and setup
                 step straight from the source. Add the server once and stop pasting docs into chat.
@@ -142,7 +143,7 @@ export default function DocsIndexPage() {
                 <span className="text-ds-xs text-surface-fg-subtle">
                   Install
                 </span>
-                <h2 className="font-display text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
+                <h2 className="text-heading-md text-surface-fg">
                   Pick your framework.
                 </h2>
                 <Text variant="body-sm" className="text-surface-fg-muted">

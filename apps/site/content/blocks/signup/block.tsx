@@ -53,7 +53,7 @@ function GoogleGMark({ size = 18 }: { size?: number }) {
 
 export function SignupBlock() {
   return (
-    <div className="min-h-[560px] grid grid-cols-1 lg:grid-cols-2 rounded-ds-md border border-surface-border overflow-hidden">
+    <div className="min-h-[560px] grid grid-cols-1 lg:grid-cols-2 rounded-control border border-surface-border overflow-hidden">
       {/* Brand panel */}
       <aside className="hidden lg:flex flex-col justify-between p-ds-09 bg-accent-2 relative">
         <header>
@@ -71,7 +71,7 @@ export function SignupBlock() {
           <ul className="flex flex-col gap-ds-03 mt-ds-04">
             {benefits.map((b) => (
               <li key={b} className="flex items-start gap-ds-03">
-                <span className="mt-1 w-5 h-5 rounded-full bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
+                <span className="mt-1 w-5 h-5 rounded-pill bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
                   <IconCheck size={12} />
                 </span>
                 <Text variant="body-sm" className="text-surface-fg">

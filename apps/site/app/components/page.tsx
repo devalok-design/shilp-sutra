@@ -51,7 +51,7 @@ export default async function ComponentsPage() {
                   <span className="text-ds-xs text-surface-fg-subtle">
                     Browse all
                   </span>
-                  <h2 className="font-display text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
+                  <h2 className="text-heading-md text-surface-fg">
                     {items.length} components · browse by category or search by name.
                   </h2>
                 </header>

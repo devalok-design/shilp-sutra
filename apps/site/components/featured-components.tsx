@@ -25,7 +25,7 @@ export function FeaturedComponents() {
     <TooltipProvider delayDuration={200}>
       <section className="mb-ds-12">
         <header className="flex flex-col gap-ds-03 max-w-2xl mb-ds-08">
-          <h2 className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg">
+          <h2 className="text-heading-xl text-surface-fg">
             Try them before you click.
           </h2>
           <p className="text-ds-md text-surface-fg-muted">

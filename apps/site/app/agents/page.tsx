@@ -166,7 +166,7 @@ export default function AgentsPage() {
                       <code>{r.cmd}</code>
                     </pre>
                     <Link href={r.href} target="_blank" rel="noreferrer">
-                      <Button variant="ghost" size="sm" startIcon={<IconBrandGithub size={14} />}>
+                      <Button variant="soft" size="sm" startIcon={<IconBrandGithub size={14} />}>
                         View on GitHub
                       </Button>
                     </Link>
@@ -207,7 +207,7 @@ export default function AgentsPage() {
                       </pre>
                     ) : null}
                     <Link href={c.href} target="_blank" rel="noreferrer">
-                      <Button variant="ghost" size="sm" startIcon={<IconBrandGithub size={14} />}>
+                      <Button variant="soft" size="sm" startIcon={<IconBrandGithub size={14} />}>
                         Get the instructions
                       </Button>
                     </Link>

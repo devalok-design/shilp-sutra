@@ -33,7 +33,7 @@ export default async function ShowcaseIndexPage() {
 
             <section className="flex flex-col gap-ds-05">
               <header className="flex flex-col gap-ds-02 max-w-2xl">
-                <h2 className="font-display text-[length:var(--typo-heading-md-size)] font-[number:var(--typo-heading-md-weight)] leading-[var(--typo-heading-md-leading)] text-surface-fg">
+                <h2 className="text-heading-md text-surface-fg">
                   Full pages, not toys.
                 </h2>
                 <Text variant="body-sm" className="text-surface-fg-muted">

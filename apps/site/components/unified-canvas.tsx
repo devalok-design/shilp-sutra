@@ -81,7 +81,7 @@ export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' 
   return (
     <section id="canvas" className="mx-auto max-w-6xl px-page-x py-ds-12">
       <header className="flex flex-col gap-ds-03 max-w-2xl mb-ds-08">
-        <h2 className="font-display text-[length:var(--typo-heading-xl-size)] font-[number:var(--typo-heading-xl-weight)] leading-[var(--typo-heading-xl-leading)] tracking-[var(--typo-heading-xl-tracking)] text-surface-fg">
+        <h2 className="text-heading-xl text-surface-fg">
           One library. Many worlds.
         </h2>
         <p className="text-ds-md text-surface-fg-muted">
@@ -208,7 +208,14 @@ export function UnifiedCanvas({ ctaPosition = 'bottom' }: { ctaPosition?: 'top' 
                       'group/tab relative flex flex-col items-start gap-ds-01 px-ds-03 md:px-ds-04 py-ds-03',
                       'min-w-[5.5rem] md:min-w-[8.5rem] text-left transition-colors duration-fast-02 ease-productive-standard shrink-0 snap-start',
                       'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9',
-                      isActive ? 'text-surface-fg bg-surface-base' : 'text-surface-fg-muted hover:bg-surface-panel-hover',
+                      // ⛔ THE FILLS WERE THE WRONG WAY ROUND. Active was `bg-surface-base` and the
+                      // strip behind it is `bg-surface-panel` — the same #ffffff in light, so the
+                      // selected tab painted nothing, while an inactive tab under the pointer got
+                      // `panel-hover` and read as the selected one. Dark inverted it further: base
+                      // is neutral-1 (below the strip) and panel-hover is neutral-3 (above it).
+                      // packages/core's own `line` Tabs variant carries the state in TEXT plus the
+                      // sliding indicator and touches no background at all; this now matches it.
+                      isActive ? 'text-surface-fg' : 'text-surface-fg-muted hover:text-surface-fg',
                     ].join(' ')}
                   >
                     {isActive && (

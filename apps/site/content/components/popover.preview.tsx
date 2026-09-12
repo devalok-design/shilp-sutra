@@ -7,7 +7,7 @@ export function PopoverHero() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">Dimensions</Button>
+        <Button variant="soft">Dimensions</Button>
       </PopoverTrigger>
       <PopoverContent>
         <div className="flex flex-col gap-ds-03">

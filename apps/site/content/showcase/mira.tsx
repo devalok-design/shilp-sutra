@@ -229,12 +229,12 @@ export function MiraShowcase() {
               />
             </AnimatePresence>
 
-            <div className="relative z-[1] p-ds-05 flex items-end justify-between gap-ds-03 w-full text-surface-fg-inverted">
+            <div className="relative z-[1] p-ds-05 flex items-end justify-between gap-ds-03 w-full text-white">
               <div className="flex flex-col gap-ds-02 min-w-0 flex-1">
                 <Badge variant="solid" color="accent" size="sm">
                   <span className="truncate">Slow-made · {activeColour.name}</span>
                 </Badge>
-                <span className="text-ds-xs text-surface-fg-inverted/80 line-clamp-2">{activeColour.story}</span>
+                <span className="text-ds-xs text-white/80 line-clamp-2">{activeColour.story}</span>
               </div>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -253,7 +253,7 @@ export function MiraShowcase() {
                     >
                       <IconHeart
                         size={20}
-                        className={favourite ? 'fill-accent-9 text-accent-9' : 'text-surface-fg-inverted'}
+                        className={favourite ? 'fill-accent-9 text-accent-9' : 'text-white'}
                       />
                     </Button>
                   </motion.span>
@@ -267,7 +267,10 @@ export function MiraShowcase() {
           <div className="flex flex-col gap-ds-05">
             <header className="flex flex-col gap-ds-02">
               <div className="flex items-center gap-ds-02">
-                <Text variant="label-sm" className="text-surface-fg-subtle uppercase tracking-wide">
+                {/* Mixed case, not tracked caps. This row sits directly above the product's H1,
+                    which is exactly the eyebrow shape the house bans; dropping the caps leaves it
+                    reading as the meta line it actually is. */}
+                <Text variant="label-plain-sm" className="text-surface-fg-subtle">
                   Mira-001 · The everyday kurta
                 </Text>
                 <Tooltip>
@@ -353,7 +356,7 @@ export function MiraShowcase() {
                           aria-label={`${c.name}: ${c.story}`}
                           aria-pressed={active}
                           onClick={() => setColour(c.id)}
-                          className="relative w-9 h-9 shrink-0 rounded-pill border border-surface-border-subtle transition-transform duration-fast-01 hover:scale-105 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
+                          className="relative w-9 h-9 shrink-0 rounded-pill border border-surface-border-subtle transition-transform duration-fast-01 active:scale-[0.97] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-9 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-base"
                           style={{ background: c.value }}
                         >
                           {active && (

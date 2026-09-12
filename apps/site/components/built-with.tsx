@@ -228,10 +228,10 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
               <span aria-hidden className="h-1.5 w-2/3 rounded-pill bg-accent-3" />
             </div>
             <div className="flex items-center justify-between gap-ds-02 pt-ds-01">
-              <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-9 text-accent-fg text-[10px] font-semibold uppercase tracking-wide">
+              <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-9 text-accent-fg text-body-xs font-semibold uppercase tracking-wide">
                 Send for review
               </span>
-              <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-[10px] font-medium">
+              <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-body-xs font-medium">
                 Save draft
               </span>
             </div>

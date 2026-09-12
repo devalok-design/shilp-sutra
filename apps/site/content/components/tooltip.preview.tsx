@@ -14,7 +14,7 @@ export function TooltipHero() {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline">Hover me</Button>
+          <Button variant="soft">Hover me</Button>
         </TooltipTrigger>
         <TooltipContent>Copies the install command to your clipboard</TooltipContent>
       </Tooltip>

@@ -42,7 +42,7 @@ export function AlertDialogVariants() {
       <Block title="confirm before leaving">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="outline">Discard changes</Button>
+            <Button variant="soft">Discard changes</Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>

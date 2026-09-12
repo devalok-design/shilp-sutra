@@ -237,7 +237,7 @@ export default function FigmaMakePage() {
               </Text>
             </header>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-ds-04">
-              <Card variant="outline" color="warning">
+              <Card variant="default" color="warning">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-ds-03">
                     <IconClockExclamation size={18} className="text-warning-11" />
@@ -313,7 +313,7 @@ export default function FigmaMakePage() {
                 rel="noreferrer"
                 className="group"
               >
-                <Card variant="outline" interactive>
+                <Card variant="default" interactive>
                   <CardHeader>
                     <CardTitle className="text-ds-md flex items-center gap-ds-02">
                       <IconPackage size={16} className="text-fg-muted" />
@@ -332,7 +332,7 @@ export default function FigmaMakePage() {
                 rel="noreferrer"
                 className="group"
               >
-                <Card variant="outline" interactive>
+                <Card variant="default" interactive>
                   <CardHeader>
                     <CardTitle className="text-ds-md flex items-center gap-ds-02">
                       <IconBrandGithub size={16} className="text-fg-muted" />
@@ -351,7 +351,7 @@ export default function FigmaMakePage() {
                 rel="noreferrer"
                 className="group"
               >
-                <Card variant="outline" interactive>
+                <Card variant="default" interactive>
                   <CardHeader>
                     <CardTitle className="text-ds-md flex items-center gap-ds-02">
                       <IconBrandFigma size={16} className="text-fg-muted" />

@@ -7,7 +7,7 @@ import { SimpleTooltip } from '@devalok/shilp-sutra/composed/simple-tooltip'
 export function SimpleTooltipHero() {
   return (
     <SimpleTooltip content="Copy the install command to your clipboard">
-      <Button variant="outline">Hover me</Button>
+      <Button variant="soft">Hover me</Button>
     </SimpleTooltip>
   )
 }

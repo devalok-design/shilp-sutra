@@ -44,11 +44,11 @@ const navItems: NavItem[] = [
 
 export function DashboardBlock() {
   return (
-    <div className="rounded-ds-md border border-surface-border overflow-hidden grid grid-cols-1 lg:grid-cols-[16rem_1fr]">
+    <div className="rounded-control border border-surface-border overflow-hidden grid grid-cols-1 lg:grid-cols-[16rem_1fr]">
       {/* Sidebar */}
       <aside className="hidden lg:flex flex-col gap-ds-04 p-ds-05 bg-surface-sunken border-r border-surface-border-subtle min-h-[640px]">
         <div className="flex items-center gap-ds-02">
-          <span className="w-7 h-7 rounded-md bg-accent-9 text-accent-fg flex items-center justify-center text-ds-sm font-bold">
+          <span className="w-7 h-7 rounded-control bg-accent-9 text-accent-fg flex items-center justify-center text-ds-sm font-bold">
             D
           </span>
           <Text variant="label-md" className="text-surface-fg">
@@ -61,7 +61,7 @@ export function DashboardBlock() {
               key={item.label}
               type="button"
               className={[
-                'flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-ds-sm text-ds-sm text-left transition-colors duration-fast-01',
+                'flex items-center gap-ds-03 px-ds-03 py-ds-02 rounded-control-inner text-ds-sm text-left transition-colors duration-fast-01',
                 item.active
                   ? 'bg-accent-3 text-accent-11 font-medium'
                   : 'text-surface-fg-muted hover:bg-surface-panel-hover hover:text-surface-fg',
@@ -72,7 +72,7 @@ export function DashboardBlock() {
             </button>
           ))}
         </nav>
-        <div className="mt-auto rounded-ds-sm border border-surface-border-subtle bg-surface-panel p-ds-03 flex items-center gap-ds-03">
+        <div className="mt-auto rounded-control-inner border border-surface-border-subtle bg-surface-panel p-ds-03 flex items-center gap-ds-03">
           <Avatar size="sm">
             <AvatarFallback>ML</AvatarFallback>
           </Avatar>

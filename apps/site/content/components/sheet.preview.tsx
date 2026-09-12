@@ -16,7 +16,7 @@ export function SheetHero() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">Open settings</Button>
+        <Button variant="soft">Open settings</Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>

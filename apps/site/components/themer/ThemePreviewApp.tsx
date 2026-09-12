@@ -60,7 +60,7 @@ export function ThemePreviewApp({ style }: { style: React.CSSProperties }) {
             </Badge>
           </div>
           <div className="flex items-baseline gap-ds-01">
-            <span className="font-display text-[length:var(--typo-heading-lg-size)] font-semibold text-surface-fg">
+            <span className="text-heading-lg text-surface-fg">
               $24
             </span>
             <span className="text-ds-sm text-surface-fg-subtle">/mo</span>

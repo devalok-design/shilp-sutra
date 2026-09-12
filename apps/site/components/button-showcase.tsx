@@ -32,7 +32,7 @@ import { Button } from '@devalok/shilp-sutra/ui/button'
 import { ButtonGroup } from '@devalok/shilp-sutra/ui/button-group'
 import { SplitButton } from '@devalok/shilp-sutra/ui/split-button'
 import { Text } from '@devalok/shilp-sutra/ui/text'
-import { CARD_EYEBROW, CARD_RESTING } from '@/lib/card-recipe'
+import { CARD_RESTING, CARD_TITLE } from '@/lib/card-recipe'
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
@@ -188,8 +188,10 @@ function Scene({
   return (
     <article className={CARD_RESTING + ' flex flex-col gap-ds-04'}>
       <header className="flex flex-col gap-ds-02">
-        <span className={CARD_EYEBROW + ' mb-0'}>{product}</span>
-        <p className="text-ds-sm text-surface-fg-subtle line-clamp-2">{why}</p>
+        {/* The product name IS this card's title, not an eyebrow over one — it was rendered at
+            10px subtle, which is the meta tier. Item-tier card title: label-plain-md, 14 semibold. */}
+        <span className={CARD_TITLE}>{product}</span>
+        <p className="text-body-sm text-surface-fg-subtle line-clamp-2">{why}</p>
       </header>
       <div className="rounded-control bg-surface-overlay border border-surface-border-subtle p-ds-04">
         {children}

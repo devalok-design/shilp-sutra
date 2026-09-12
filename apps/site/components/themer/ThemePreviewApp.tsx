@@ -105,7 +105,7 @@ export function ThemePreviewApp({ style }: { style: React.CSSProperties }) {
 
           {/* Live toast */}
           <div className="flex items-start gap-ds-03 rounded-control border border-accent-6 bg-accent-2 p-ds-03">
-            <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-pill bg-accent-9 text-accent-fg">
+            <span className="mt-ds-01 flex size-5 shrink-0 items-center justify-center rounded-pill bg-accent-9 text-accent-fg">
               <IconCheck size={12} />
             </span>
             <div className="flex flex-col">

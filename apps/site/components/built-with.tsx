@@ -130,7 +130,7 @@ function UsesRow({ uses, max }: { uses: readonly string[]; max?: number }) {
     <ul className="flex flex-wrap items-center gap-ds-02">
       {visible.map((c) => (
         <li key={c}>
-          <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-ds-xs font-mono">
+          <span className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-accent-3 text-accent-11 text-ds-xs font-mono">
             {c}
           </span>
         </li>
@@ -138,7 +138,7 @@ function UsesRow({ uses, max }: { uses: readonly string[]; max?: number }) {
       {overflow > 0 ? (
         <li>
           <span
-            className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-overlay text-surface-fg-subtle text-ds-xs font-mono"
+            className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-surface-overlay text-surface-fg-subtle text-ds-xs font-mono"
             title={uses.slice(limit).join(', ')}
           >
             +{overflow} more
@@ -228,10 +228,10 @@ function FeaturedCard({ consumer }: { consumer: Consumer }) {
               <span aria-hidden className="h-1.5 w-2/3 rounded-pill bg-accent-3" />
             </div>
             <div className="flex items-center justify-between gap-ds-02 pt-ds-01">
-              <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-9 text-accent-fg text-body-xs font-semibold uppercase tracking-wide">
+              <span className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-accent-9 text-accent-fg text-body-xs font-semibold uppercase tracking-wide">
                 Send for review
               </span>
-              <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-body-xs font-medium">
+              <span className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-accent-3 text-accent-11 text-body-xs font-medium">
                 Save draft
               </span>
             </div>

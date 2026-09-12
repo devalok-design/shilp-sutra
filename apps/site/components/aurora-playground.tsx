@@ -158,7 +158,7 @@ export function AuroraPlayground() {
                       {preset.name}
                     </Text>
                     {isActive && (
-                      <span className="inline-flex items-center rounded-control-inner bg-accent-3 px-ds-02 py-[1px] text-ds-xs font-mono text-accent-11">
+                      <span className="inline-flex items-center rounded-control-inner bg-accent-3 px-ds-02 py-px text-ds-xs font-mono text-accent-11">
                         active
                       </span>
                     )}
@@ -174,7 +174,7 @@ export function AuroraPlayground() {
                       brand-follows tag instead of static swatches. */}
                   <div className="mt-ds-02 flex items-center gap-ds-02">
                     {preset.props.palette === 'brand' ? (
-                      <span className="inline-flex items-center gap-ds-01 rounded-control-inner border border-surface-border-subtle bg-surface-base px-ds-02 py-[1px] text-ds-xs font-mono text-surface-fg-subtle">
+                      <span className="inline-flex items-center gap-ds-01 rounded-control-inner border border-surface-border-subtle bg-surface-base px-ds-02 py-px text-ds-xs font-mono text-surface-fg-subtle">
                         <span className="w-2 h-2 rounded-pill bg-accent-9" aria-hidden />
                         follows brand
                       </span>

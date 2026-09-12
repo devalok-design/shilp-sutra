@@ -91,21 +91,21 @@ export function ComponentGrid({
                         <h3 className={CARD_TITLE}>{item.name}</h3>
                         <IconArrowUpRight
                           size={16}
-                          className="text-surface-fg-subtle group-hover:text-surface-fg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-1"
+                          className="text-surface-fg-subtle group-hover:text-surface-fg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-ds-02"
                         />
                       </div>
                       <code className="text-ds-xs font-mono text-surface-fg-subtle truncate">{item.importPath}</code>
                       <div className="flex flex-wrap items-center gap-ds-02 mt-auto pt-ds-02">
-                        <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-overlay text-ds-xs text-surface-fg-subtle font-mono">
+                        <span className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-surface-overlay text-ds-xs text-surface-fg-subtle font-mono">
                           {LAYER_LABELS[item.layer]}
                         </span>
                         {previewSet.has(item.slug) && (
-                          <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-accent-3 text-accent-11 text-ds-xs font-mono">
+                          <span className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-accent-3 text-accent-11 text-ds-xs font-mono">
                             live preview
                           </span>
                         )}
                         {item.serverSafe && (
-                          <span className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-success-3 text-success-11 text-ds-xs font-mono">
+                          <span className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-success-3 text-success-11 text-ds-xs font-mono">
                             rsc-safe
                           </span>
                         )}

@@ -166,7 +166,7 @@ export function PresetDetailShell({
             {uses.map((u) => (
               <span
                 key={u}
-                className="inline-flex items-center px-ds-02 py-[1px] rounded-control-inner bg-surface-panel border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
+                className="inline-flex items-center px-ds-02 py-px rounded-control-inner bg-surface-panel border border-surface-border-subtle text-ds-xs font-mono text-surface-fg-muted"
               >
                 {u}
               </span>

@@ -84,7 +84,7 @@ const components: Components = {
     }
     return (
       <code
-        className="font-mono text-[0.9em] px-1.5 py-0.5 rounded-control-inner bg-surface-overlay text-surface-fg border border-surface-border-subtle"
+        className="font-mono text-[0.9em] px-ds-02b py-ds-01 rounded-control-inner bg-surface-overlay text-surface-fg border border-surface-border-subtle"
         {...rest}
       >
         {children}

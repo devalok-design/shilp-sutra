@@ -204,10 +204,10 @@ function DocLinkCard({ item }: { item: DocCard }) {
         className={CARD_INTERACTIVE + ' flex flex-col gap-ds-03 h-full'}
       >
         <div className="flex items-start justify-between gap-ds-03">
-          <item.Icon size={18} className="text-accent-11 shrink-0 mt-1" />
+          <item.Icon size={18} className="text-accent-11 shrink-0 mt-ds-02" />
           <IconArrowRight
             size={16}
-            className="text-surface-fg-subtle group-hover:translate-x-1 group-hover:text-surface-fg transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-1"
+            className="text-surface-fg-subtle group-hover:translate-x-1 group-hover:text-surface-fg transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-ds-02"
           />
         </div>
         <h3 className={CARD_TITLE}>{item.name}</h3>

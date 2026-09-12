@@ -136,7 +136,7 @@ function CommandPaletteDemo() {
         <Button
           startIcon={<IconKeyboard size={14} />}
           endIcon={
-            <span className="inline-flex items-center gap-1 text-ds-xs font-mono px-1.5 py-0.5 rounded-control-inner border border-surface-border-subtle">
+            <span className="inline-flex items-center gap-ds-02 text-ds-xs font-mono px-ds-02b py-ds-01 rounded-control-inner border border-surface-border-subtle">
               ⌘K
             </span>
           }

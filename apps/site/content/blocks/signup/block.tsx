@@ -71,7 +71,7 @@ export function SignupBlock() {
           <ul className="flex flex-col gap-ds-03 mt-ds-04">
             {benefits.map((b) => (
               <li key={b} className="flex items-start gap-ds-03">
-                <span className="mt-1 w-5 h-5 rounded-pill bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
+                <span className="mt-ds-02 w-5 h-5 rounded-pill bg-accent-9 text-accent-fg flex items-center justify-center shrink-0">
                   <IconCheck size={12} />
                 </span>
                 <Text variant="body-sm" className="text-surface-fg">

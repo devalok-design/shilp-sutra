@@ -169,7 +169,7 @@ function AvatarStackDemo() {
       caption="Team rows, comment threads, attendee lists. Initials fall back when photos miss."
     >
       <div className="flex flex-col items-center gap-ds-04">
-        <div className="flex -space-x-2">
+        <div className="flex -space-x-ds-03">
           {members.map((m) => (
             <Tooltip key={m.initials}>
               <TooltipTrigger asChild>

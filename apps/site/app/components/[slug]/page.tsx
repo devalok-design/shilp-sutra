@@ -94,7 +94,7 @@ export default async function ComponentDetailPage({ params }: { params: Promise<
                   {item.layer} · {item.layer === 'ui' ? 'Primitive' : item.layer === 'composed' ? 'Composed pattern' : 'Shell'}
                 </span>
                 {item.serverSafe && (
-                  <span className="inline-flex items-center gap-ds-01 rounded-control-inner bg-success-3 text-success-11 px-ds-02 py-[1px] font-mono normal-case tracking-normal">
+                  <span className="inline-flex items-center gap-ds-01 rounded-control-inner bg-success-3 text-success-11 px-ds-02 py-px font-mono normal-case tracking-normal">
                     <IconShieldCheck size={12} /> rsc-safe
                   </span>
                 )}

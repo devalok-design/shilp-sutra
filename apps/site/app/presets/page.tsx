@@ -53,7 +53,7 @@ export default function PresetsIndexPage() {
                   <Text variant="heading-xs" className="text-surface-fg">{preset.title}</Text>
                   <IconArrowRight
                     size={16}
-                    className="mt-ds-02 shrink-0 text-surface-fg-subtle transition-transform duration-fast-01 group-hover:translate-x-0.5"
+                    className="mt-1 shrink-0 text-surface-fg-subtle transition-transform duration-fast-01 group-hover:translate-x-0.5"
                   />
                 </div>
                 <Text variant="body-sm" className="text-surface-fg-muted">{preset.description}</Text>

@@ -91,7 +91,7 @@ export function ComponentGrid({
                         <h3 className={CARD_TITLE}>{item.name}</h3>
                         <IconArrowUpRight
                           size={16}
-                          className="text-surface-fg-subtle group-hover:text-surface-fg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-ds-02"
+                          className="text-surface-fg-subtle group-hover:text-surface-fg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-fast-02 ease-productive-standard shrink-0 mt-1"
                         />
                       </div>
                       <code className="text-ds-xs font-mono text-surface-fg-subtle truncate">{item.importPath}</code>

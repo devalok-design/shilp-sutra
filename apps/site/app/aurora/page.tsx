@@ -19,7 +19,6 @@ export default function AuroraPage() {
         <div className="mx-auto max-w-7xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
-              eyebrow="Aurora"
               title="Aurora, your way."
               subtitle="Curtain or halo. Top or full. Subtle or loud."
               description="Every prop on AuroraBloom is live below. The preview pulls the same brand ramp the rest of the system uses, so changes flow through colour, theme, and motion in one place."

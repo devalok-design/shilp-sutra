@@ -92,7 +92,6 @@ export default function AgentsPage() {
       <main id="main" className="flex-1">
         <div className="mx-auto max-w-5xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <PageHeader
-            eyebrow="For your AI editor"
             title="Your AI editor already knows shilp-sutra."
             subtitle="One install. Every release."
             description="We ship an installable skill, an llms.txt router, a hosted MCP server, and AGENTS.md with every release so your coding agent doesn't guess at the library. Install once, never paste docs into chat again."

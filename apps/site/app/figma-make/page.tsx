@@ -116,7 +116,6 @@ export default function FigmaMakePage() {
       <main id="main" className="flex-1">
         <div className="mx-auto max-w-5xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <PageHeader
-            eyebrow="For Figma Make"
             title="Generate apps in Figma against the real design system."
             subtitle={`One npm version. ${fileCount()} guideline files. Same conventions as production.`}
             description="Figma Make turns prompts into React. shilp-sutra-as-a-Make-kit teaches it which Button to reach for, which surface a card sits on, why soft beats outline. The Buttons your team already ships, applied to AI-generated screens."

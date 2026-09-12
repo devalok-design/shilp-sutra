@@ -60,23 +60,27 @@ export function ComponentShowcase() {
  * Card primitive — shared shell for component demos
  * --------------------------------------------------------------------- */
 
+/**
+ * The component's name used to sit above this card's heading as a tiny
+ * subtle label, which is the kicker-over-heading the house bans in any
+ * typeface. The name IS the card's title now — it is what identifies the
+ * demo — and the line it used to introduce folds into the caption below,
+ * the sanctioned position for a secondary string.
+ */
 function DemoCard({
-  eyebrow,
   title,
   caption,
   children,
 }: {
-  eyebrow: string
   title: string
   caption: React.ReactNode
   children: React.ReactNode
 }) {
   return (
     <article className="flex flex-col gap-ds-05 p-ds-06 rounded-surface border border-transparent bg-surface-panel shadow-raised">
-      <header className="flex flex-col">
-        <span className="text-ds-xs text-surface-fg-subtle">{eyebrow}</span>
-        <h3 className="text-ds-md text-surface-fg font-semibold mt-ds-01">{title}</h3>
-        <p className="text-ds-sm text-surface-fg-subtle mt-ds-02">{caption}</p>
+      <header className="flex flex-col gap-ds-02">
+        <h3 className="text-ds-md text-surface-fg font-semibold">{title}</h3>
+        <p className="text-ds-sm text-surface-fg-subtle">{caption}</p>
       </header>
       <div className="flex-1 flex flex-col">{children}</div>
     </article>
@@ -128,9 +132,8 @@ function CommandPaletteDemo() {
 
   return (
     <DemoCard
-      eyebrow="Command Palette"
-      title="Press ⌘K from anywhere."
-      caption="The shortcut power users reach for. Works from anywhere."
+      title="Command Palette"
+      caption="Press ⌘K from anywhere. The shortcut power users reach for."
     >
       <div className="flex flex-col gap-ds-04 items-start">
         <Button
@@ -161,9 +164,8 @@ function CommandPaletteDemo() {
 function ToastDemo() {
   return (
     <DemoCard
-      eyebrow="Toast"
-      title="The system answers back."
-      caption="Success, warning, error. They stack and clear themselves. Fire a few."
+      title="Toast"
+      caption="The system answers back. Success, warning, error: they stack and clear themselves. Fire a few."
     >
       <div className="flex flex-wrap items-center gap-ds-02">
         <Button
@@ -228,9 +230,8 @@ function ComboboxDemo() {
 
   return (
     <DemoCard
-      eyebrow="Combobox"
-      title="Search becomes the interface."
-      caption="Filter as you type. Works with the keyboard, handles big lists."
+      title="Combobox"
+      caption="Search becomes the interface. Filter as you type, works with the keyboard, handles big lists."
     >
       <div className="flex flex-col gap-ds-03 items-start w-full max-w-sm">
         <Combobox
@@ -267,9 +268,8 @@ const chartData = [
 function ChartDemo() {
   return (
     <DemoCard
-      eyebrow="Charts"
-      title="Numbers that move."
-      caption="Animates in, shows a tooltip on hover, reachable by keyboard."
+      title="Charts"
+      caption="Numbers that move. Animates in, shows a tooltip on hover, reachable by keyboard."
     >
       <div className="flex items-baseline justify-between gap-ds-03 mb-ds-04">
         <div className="flex flex-col">

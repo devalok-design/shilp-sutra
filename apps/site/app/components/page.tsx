@@ -32,9 +32,13 @@ export default async function ComponentsPage() {
         <div className="mx-auto max-w-6xl px-page-x pt-[5.5rem] sm:pt-[5rem] pb-ds-09">
           <div className="flex flex-col gap-ds-09">
             <PageHeader
-              eyebrow={`Components · v${SHILP_SUTRA_MINOR}`}
               title={`${items.length} pieces. Every one yours.`}
               subtitle="Accessible. Themeable. Animated with intention. Ship the same components your favourite Devalok products ship."
+              meta={
+                <span className="text-ds-sm text-surface-fg-muted">
+                  Components · v{SHILP_SUTRA_MINOR}
+                </span>
+              }
             />
             <FeaturedComponents />
             <div className="grid grid-cols-1 lg:grid-cols-[14rem_1fr] gap-ds-06 lg:gap-ds-09">

@@ -59,12 +59,12 @@ export default async function ShowcaseDetailPage({ params }: { params: Promise<{
           </nav>
 
           <PageHeader
-            eyebrow={entry.industry}
             title={<span style={{ color: `oklch(0.55 ${entry.chroma} ${entry.hue})` }}>{entry.product}</span>}
             subtitle={entry.tagline}
             description={entry.premise}
             meta={
               <div className="flex flex-wrap items-center gap-ds-02">
+                <span className="text-ds-sm text-surface-fg-muted">{entry.industry}</span>
                 <Link href={`/theming?hue=${entry.hue}&chroma=${entry.chroma}`}>
                   <Button variant="soft" size="sm" startIcon={<IconPalette size={14} />}>
                     Take this brand into the editor

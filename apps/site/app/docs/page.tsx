@@ -159,9 +159,9 @@ export default function DocsIndexPage() {
             </section>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-ds-06">
-              <DocsSection eyebrow="Customize" title="Make it yours." items={CUSTOMIZE} />
-              <DocsSection eyebrow="Reference" title="Deeper context." items={REFERENCE} />
-              <DocsSection eyebrow="Troubleshoot" title="When things break." items={TROUBLESHOOT} />
+              <DocsSection title="Customize" blurb="Make it yours." items={CUSTOMIZE} />
+              <DocsSection title="Reference" blurb="Deeper context." items={REFERENCE} />
+              <DocsSection title="Troubleshoot" blurb="When things break." items={TROUBLESHOOT} />
             </div>
 
           </div>
@@ -172,20 +172,27 @@ export default function DocsIndexPage() {
   )
 }
 
+/**
+ * No eyebrow slot. The category used to sit above the heading as a small
+ * subtle label, which the house bans outright — a heading is what signposts
+ * a section. So the category IS the heading now, and the line it used to
+ * introduce sits below it as the section's blurb, which is where the rule
+ * says a secondary string belongs.
+ */
 function DocsSection({
-  eyebrow,
   title,
+  blurb,
   items,
 }: {
-  eyebrow: string
   title: string
+  blurb: string
   items: DocCard[]
 }) {
   return (
     <section className="flex flex-col gap-ds-04">
       <header className="flex flex-col gap-ds-01">
-        <span className="text-ds-xs text-surface-fg-subtle">{eyebrow}</span>
         <h2 className="text-ds-lg text-surface-fg font-semibold">{title}</h2>
+        <p className="text-ds-sm text-surface-fg-muted">{blurb}</p>
       </header>
       <ul className="flex flex-col gap-ds-03">
         {items.map((item) => (

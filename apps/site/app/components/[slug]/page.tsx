@@ -88,21 +88,19 @@ export default async function ComponentDetailPage({ params }: { params: Promise<
           </nav>
 
           <PageHeader
-            eyebrow={
-              <span className="inline-flex flex-wrap items-center gap-ds-02">
-                <span>
-                  {item.layer} · {item.layer === 'ui' ? 'Primitive' : item.layer === 'composed' ? 'Composed pattern' : 'Shell'}
-                </span>
-                {item.serverSafe && (
-                  <span className="inline-flex items-center gap-ds-01 rounded-control-inner bg-success-3 text-success-11 px-ds-02 py-px font-mono normal-case tracking-normal">
-                    <IconShieldCheck size={12} /> rsc-safe
-                  </span>
-                )}
-              </span>
-            }
             title={item.name}
             meta={
               <div className="flex flex-wrap items-center gap-ds-04">
+                <span className="inline-flex flex-wrap items-center gap-ds-02 text-ds-sm text-surface-fg-muted">
+                  <span>
+                    {item.layer} · {item.layer === 'ui' ? 'Primitive' : item.layer === 'composed' ? 'Composed pattern' : 'Shell'}
+                  </span>
+                  {item.serverSafe && (
+                    <span className="inline-flex items-center gap-ds-01 rounded-control-inner bg-success-3 text-success-11 px-ds-02 py-px font-mono">
+                      <IconShieldCheck size={12} /> rsc-safe
+                    </span>
+                  )}
+                </span>
                 <code className="text-ds-sm font-mono text-surface-fg-muted">{item.importPath}</code>
                 <Link
                   href={item.storybookUrl}

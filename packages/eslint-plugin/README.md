@@ -41,14 +41,14 @@ When you upgrade `@devalok/shilp-sutra`:
 
 ```bash
 pnpm up @devalok/shilp-sutra@latest
-pnpm eslint --fix src/                # autofixes 9 of 12 rules
+pnpm eslint --fix src/                # autofixes 10 of the 17 rules
 git diff                              # review
 pnpm test
 ```
 
 Most breaking changes from 0.23 → today fix themselves. Per-site judgment calls (e.g. `no-tailwind-config-preset` removal, `useToast()` call-site rewrite, `toast({})` → `toast.success()`) flag without autofix.
 
-## All 12 rules
+## All 17 rules
 
 | Rule | What | Autofix? | Applies from |
 |---|---|---|---|
@@ -64,6 +64,11 @@ Most breaking changes from 0.23 → today fix themselves. Per-site judgment call
 | `no-iconbutton-children` | `<IconButton>{...}</IconButton>` → `<IconButton icon={...} />`. | ✅ (single child) | 0.1.0 |
 | `no-bare-shadow` | Bare `shadow` class — renders no shadow in TW4. Pick `shadow-raised` / `shadow-floating` / `shadow-overlay`. | ❌ (consumer chooses intent) | 0.37.0 |
 | `toast-object-syntax` | `toast.success({title})` or `toast({title})` — both are old shapes. Use positional `toast.success("message", { description })`. | ❌ (context-dependent rewrite) | 0.30.0 |
+| `no-renamed-surface-token` | `bg-surface-raised` → `bg-surface-panel`, `hover:bg-surface-panel` → `hover:bg-surface-panel-hover`, and the removed `surface-chrome`. | ✅ | 0.57.0 |
+| `no-subtle-text-on-sunken` | `text-surface-fg-subtle` on a sunken well measures 4.38:1 — under AA. Wells take `surface-fg-muted`. | ❌ (needs the surrounding surface) | 0.57.0 |
+| `no-ungated-hover-over-selection` | An ungated `hover:bg-*` is (0,2,0) and beats a conditional selected/active `bg-*` at (0,1,0), so pointing at the selected row visually deselects it. | ❌ (two legitimate fixes — author's call) | 0.60.0 |
+| `require-mutation-annotation` | A raw colour literal in a class string must use a token, or carry `// @mutation reason: <why>`. | ❌ (a token choice is a design decision) | 0.50.0 |
+| `require-progress-label` | `<Progress>` with no `label` / `aria-label` / `aria-labelledby` announces as a bare "progressbar". | ❌ (only you know the name) | 0.4.0 |
 
 ## Bail on dynamic class names
 

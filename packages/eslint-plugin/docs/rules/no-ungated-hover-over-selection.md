@@ -6,7 +6,7 @@ An ungated hover background outranks a conditional selected/active background, s
 |---|---|
 | Type | `problem` |
 | Category | `recommended` |
-| Presets | `recommended` (error), `strict` (error) |
+| Presets | `recommended` (warn), `strict` (error) |
 | Fixable | no |
 | Applies from | `0.60.0` |
 

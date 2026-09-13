@@ -31,6 +31,34 @@ Tier 3: Tailwind           rounded-control, rounded-surface, rounded-overlay-lg,
 
 Components reference roles, not primitives. That lets the **`[data-shape]` preset switch** on `<html>` (or any subtree) re-skin roundness across the whole UI in one attribute change. See the `Foundations / Shape Presets` story for an interactive demo of all three shipped presets (`sharp`, `slightly-rounded`, `rounded`) and a custom-preset example.
 
+## Density — a named dial on body text
+
+Body text has one more root-level switch, the same shape as `[data-shape]`:
+
+```
+[data-density="comfortable"]   leading 1.5, tracking -0.01em → +0.02em   (default)
+[data-density="compact"]       leading 1.4, tracking -0.02em → +0.01em
+```
+
+Set `data-density` on `<html>` or on any subtree and the four `text-body-*`
+composites retune together. Headings, labels, caption, overline and code do not
+move — they are already tuned for their job, and a dense screen is made dense by
+its body copy.
+
+The point of the dial is that **wanting denser text should not be a reason to
+leave the type system.** The alternative was reaching for raw `text-ds-*` sizes,
+which carry size only — no weight, no leading, no tracking — so each such site
+silently opts out of everything on this page.
+
+Leading is the lever that does the work: 1.5 → 1.4 is -6.7% of vertical rhythm
+(a 14px line box goes 21px → 19.6px), where the tracking shift is worth about 1%
+of line width. That also means **compact reflows** — it changes layout metrics,
+not just optics — and its body text sits below WCAG 2.2 SC 1.4.8's AAA
+line-spacing bar, which the default meets. Scope it to the screens that need it.
+
+See `customize-brand.md → Density` for the per-variant table and the
+build-your-own-density block.
+
 ---
 
 <FoundationsShowcase />

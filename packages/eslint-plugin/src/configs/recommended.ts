@@ -3,7 +3,15 @@
  *
  * All migration rules at `error` (they autofix past breaking changes;
  * leaving them at warn is just deferring the cost). The recommended
- * advisory rules (no-bare-shadow, toast-object-syntax) at `warn`.
+ * advisory rules (no-bare-shadow, no-ungated-hover-over-selection,
+ * toast-object-syntax) at `warn`.
+ *
+ * `no-ungated-hover-over-selection` sits at `warn` here even though its own
+ * metadata once said `error`, because it reads existing consumer code rather
+ * than a deprecated API: it judges whether a selected row's tint survives its
+ * own hover, and a repo that has always spelt selection that way would light
+ * up red on upgrade. `strict` carries it at `error` for repos that want the
+ * gate. See `strict.ts`.
  *
  * Stylistic rules are NOT included in `recommended` — see `strict`.
  *
@@ -28,6 +36,7 @@ const config = {
     'shilp-sutra/no-iconbutton-children': 'error',
     // Recommended (warn / advisory)
     'shilp-sutra/no-bare-shadow': 'warn',
+    'shilp-sutra/no-ungated-hover-over-selection': 'warn',
     'shilp-sutra/require-mutation-annotation': 'warn',
     'shilp-sutra/require-progress-label': 'warn',
     'shilp-sutra/toast-object-syntax': 'warn',

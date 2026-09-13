@@ -128,3 +128,128 @@
   --typo-code-tracking:        0em;
   --typo-code-font:            var(--font-mono);
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   DENSITY — [data-density="comfortable" | "compact"]
+
+   A named root-level dial, the same shape as [data-shape], [data-palette] and
+   [data-contrast='high']: set an attribute on <html> or on any subtree, and
+   everything inside it retunes.
+
+       <html data-density="compact">        <!-- whole app -->
+       <div data-density="compact"> … </div> <!-- one dense region -->
+       <div data-density="comfortable">     <!-- opt one region back out -->
+
+   WHY IT EXISTS. A consumer who wanted denser text had exactly one route:
+   abandon the composite variants and reach for raw `text-ds-*` sizes. Those
+   carry size ONLY — no weight, no leading, no tracking — so every such site
+   silently opts out of the tuning on this page. One consumer app accumulated
+   771 of them. This dial is the supported answer, so wanting compact text is
+   no longer a reason to leave the type system.
+
+   SCOPE. It retunes the BODY composites only — `--typo-body-{lg,md,sm,xs}-*`.
+   Headings already carry negative tracking (-0.025em → 0) at tight/snug
+   leading; they are display sizes set once per screen and are not what makes a
+   data-dense screen feel loose. Labels (0.06em), caption (0.025em) and overline
+   (0.08em) are deliberately OPEN for their job — tightening them makes them
+   harder to scan, not denser — and code is monospace at 0em, where tracking is
+   the font's business, not ours.
+
+   It does NOT touch `--leading-ds-relaxed` itself. That token is public — a
+   consumer who wrote `leading-ds-relaxed` asked for 1.5 by name and must keep
+   getting it. Only the body composites move.
+
+   ── TRACKING ──
+   Today's values were deliberately loosened from a flat -0.02em, step by step,
+   "for small text legibility". That slope is the correct instinct and compact
+   keeps it: optical tracking scales inversely with size, so a flat return to
+   -0.02em would re-introduce the exact legibility problem the loosening fixed
+   (-0.02em at 10px closes the counters and `rn` starts reading as `m`).
+
+   So compact shifts the whole ramp tighter by a CONSTANT -0.01em and keeps the
+   size-relative slope intact. Nothing small goes negative:
+
+       body-lg  16px   -0.01em → -0.02em   (-0.16px/char; back to the original)
+       body-md  14px    0      → -0.01em   (-0.14px/char)
+       body-sm  12px   +0.01em →  0        (what 14px ships as default today)
+       body-xs  10px   +0.02em → +0.01em   (still positive — never tightened
+                                            below zero at 10px)
+
+   Honest about the size of the win: on a 60-character line this is about 1%
+   of line width. Tracking alone is not a density lever.
+
+   ── LEADING — included, and here is the argument ──
+   Leading IS the lever. All four body variants sit at `--leading-ds-relaxed`
+   (1.5); compact moves them to `--leading-ds-normal` (1.4). On body-md that is
+   a 21px line box → 19.6px, -6.7% of vertical rhythm — roughly two extra rows
+   on a 40-row list. Six times what the tracking change buys.
+
+   Excluding it was the safer call and it was rejected on purpose: a dial named
+   "density" that moves the text by 1% will be judged not to work, and the
+   consumer goes straight back to raw `text-ds-*`. That is the failure this
+   dial exists to prevent, so shipping a cosmetic version of it is worse than
+   shipping nothing.
+
+   1.4 is not an invented number — it is `--leading-ds-normal`, already in the
+   scale and already what `caption` and `code` use.
+
+   Two things a consumer is opting into, stated plainly rather than buried:
+
+     1. COMPACT REFLOWS. Tracking is almost purely optical; leading changes
+        layout metrics. Any fixed-height row, `line-clamp`, or hand-measured
+        container may need re-checking under compact. Comfortable does not
+        move, so this is a cost of the opt-in, not of the release.
+     2. WCAG 2.2 SC 1.4.8 (Visual Presentation, level AAA) asks for line
+        spacing of at least 1.5 within paragraphs. The DEFAULT stays at 1.5
+        and stays compliant. Compact's body text does not meet that AAA
+        criterion — it is a product decision for dense UI, not for reading
+        copy. SC 1.4.12 (Text Spacing, AA) is unaffected either way: it asks
+        that content survive a USER override up to 1.5, which is unchanged.
+
+   ── CASCADE ──
+   `[data-density='…']` is (0,1,0) and so is `:root`, so SOURCE ORDER decides.
+   These blocks must stay BELOW the `:root` block above, in this same file.
+   Same trap as `[data-contrast='high']` in semantic.css — moving them up
+   silently makes the dial a no-op with no error anywhere.
+
+   `comfortable` is spelled out rather than left implicit, matching
+   `[data-shape="slightly-rounded"]`: without it there is no way to opt a
+   subtree back out of a compact set higher up the tree. Its values are
+   byte-identical to the `:root` defaults, so a consumer who sets no attribute
+   at all renders exactly as before.
+   ═══════════════════════════════════════════════════════════════════ */
+[data-density="comfortable"] {
+  --typo-body-lg-leading:      var(--leading-ds-relaxed);
+  --typo-body-lg-tracking:     -0.01em;
+
+  --typo-body-md-leading:      var(--leading-ds-relaxed);
+  --typo-body-md-tracking:     0em;
+
+  --typo-body-sm-leading:      var(--leading-ds-relaxed);
+  --typo-body-sm-tracking:     0.01em;
+
+  --typo-body-xs-leading:      var(--leading-ds-relaxed);
+  --typo-body-xs-tracking:     0.02em;
+}
+
+[data-density="compact"] {
+  /* 16px — back to the original -0.02em. The one step large enough that the
+     pre-loosening value was never the legibility problem. */
+  --typo-body-lg-leading:      var(--leading-ds-normal);
+  --typo-body-lg-tracking:     -0.02em;
+
+  /* 14px — the default UI body size, so this is the step that does most of
+     the work. -0.01em is 0.14px/char. */
+  --typo-body-md-leading:      var(--leading-ds-normal);
+  --typo-body-md-tracking:     -0.01em;
+
+  /* 12px — lands on 0, which is exactly what 14px ships as its comfortable
+     default. Tightening 12px below neutral is where counters start to close. */
+  --typo-body-sm-leading:      var(--leading-ds-normal);
+  --typo-body-sm-tracking:     0em;
+
+  /* 10px — stays POSITIVE. The floor of the dial: tiny text keeps the extra
+     air the comfortable ramp gave it, just less of it. */
+  --typo-body-xs-leading:      var(--leading-ds-normal);
+  --typo-body-xs-tracking:     0.01em;
+}

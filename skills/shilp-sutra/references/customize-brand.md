@@ -316,6 +316,94 @@ remember — set the tokens directly and skip the attribute entirely:
 That is worth considering. A default is what most products ship, so leaving the
 attribute unset means shipping the edge that misses 1.4.11.
 
+## Density (`[data-density]`)
+
+Body text ships at comfortable spacing. If your product is data-dense — a
+table-heavy console, an inbox, an admin surface — set `data-density="compact"`
+and the four body variants retune together.
+
+```html
+<!-- whole app -->
+<html data-density="compact">
+```
+
+```tsx
+{/* or one region — a dense table inside an otherwise comfortable product */}
+<div data-density="compact">
+  <DataTable … />
+</div>
+
+{/* and back out again, at any depth */}
+<div data-density="comfortable">
+  <ArticleBody />
+</div>
+```
+
+**Reach for this instead of dropping to raw `text-ds-*` sizes.** A raw size
+token carries size only — no weight, no leading, no tracking — so every site
+that uses one silently opts out of the type tuning. One app accumulated 771 of
+them chasing density. This is the supported route.
+
+| Variant | Size | Comfortable (default) | Compact |
+|---|---|---|---|
+| `text-body-lg` | 16px | 24px / `-0.01em` | **22.4px / `-0.02em`** |
+| `text-body-md` | 14px | 21px / `0` | **19.6px / `-0.01em`** |
+| `text-body-sm` | 12px | 18px / `+0.01em` | **16.8px / `0`** |
+| `text-body-xs` | 10px | 15px / `+0.02em` | **14px / `+0.01em`** |
+
+Line height moves from `--leading-ds-relaxed` (1.5) to `--leading-ds-normal`
+(1.4) — **-6.7% of vertical rhythm**, roughly two extra rows on a 40-row list.
+Tracking tightens by a constant `-0.01em`, which is worth about 1% of line
+width. The leading is the part you will actually see.
+
+Composes with everything else — it is a plain attribute, like `.dark`,
+`data-shape` and `data-contrast`:
+
+```html
+<html class="dark" data-shape="sharp" data-contrast="high" data-density="compact">
+```
+
+**Three things worth knowing.**
+
+**It touches body text only.** Headings, labels, caption, overline and code are
+unchanged. Headings are already tight and are set once per screen; labels and
+overline are deliberately spaced (`0.06em` / `0.08em`) so they stay scannable,
+and tightening them would work against that.
+
+**It does not change `leading-ds-relaxed`.** If you wrote that utility, you
+asked for 1.5 by name and you still get 1.5, inside compact or out. Only the
+`text-body-*` composites move.
+
+**Compact reflows.** Tracking is optical; leading is layout. Re-check any
+fixed-height row, `line-clamp`, or hand-measured container after switching.
+Also note WCAG 2.2 SC 1.4.8 (Visual Presentation, **AAA**) asks for line
+spacing of at least 1.5 within paragraphs — the default meets it, compact does
+not. That is a reasonable trade for a dense product UI and a bad one for
+reading copy, so scope it to the screens that need it rather than setting it on
+`<html>` for a content-heavy app. SC 1.4.12 (Text Spacing, AA) is unaffected:
+it asks that content survive a *user* override up to 1.5, which is unchanged.
+
+### Build your own density
+
+Both blocks are plain attribute selectors, so you can define a third:
+
+```css
+[data-density="ultra"] {
+  --typo-body-lg-leading:  var(--leading-ds-snug);
+  --typo-body-lg-tracking: -0.025em;
+  --typo-body-md-leading:  var(--leading-ds-snug);
+  --typo-body-md-tracking: -0.015em;
+  --typo-body-sm-leading:  var(--leading-ds-snug);
+  --typo-body-sm-tracking: -0.005em;
+  --typo-body-xs-leading:  var(--leading-ds-snug);
+  --typo-body-xs-tracking: 0em;
+}
+```
+
+Declare it **after** `@import "@devalok/shilp-sutra/css"`. `[data-density]` and
+`:root` have the same specificity (0,1,0), so source order is what decides —
+the same rule that governs `[data-contrast]` and `.dark`.
+
 ## Forced colors (Windows high-contrast)
 
 If you override semantic colors, the `@media (forced-colors: active)` block in `semantic.css` continues to remap to system keywords. Your override is ignored when the user is in high-contrast mode — this is the correct behavior.

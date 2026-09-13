@@ -22,7 +22,7 @@
     "@tabler/icons-react": "^3.45.0",
     "@tanstack/react-table": "^8.21.3",
     "framer-motion": "^12.42.2",
-    "next": "^15.5.21",
+    "next": "^15.5.24",
     "posthog-js": "^1.406.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

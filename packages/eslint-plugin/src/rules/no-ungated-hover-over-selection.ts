@@ -1,4 +1,6 @@
-import type { TSESTree } from '@typescript-eslint/utils'
+import type { TSESLint,TSESTree } from '@typescript-eslint/utils'
+
+type Scope = TSESLint.Scope.Scope
 
 import { createRule } from '../util/create-rule'
 
@@ -46,8 +48,34 @@ import { createRule } from '../util/create-rule'
 
 const CLASS_FNS = new Set(['cn', 'clsx', 'classNames', 'cx', 'twMerge'])
 
-/** Identifiers that read as "this row is the chosen one". */
-const SELECTED_WORDS = ['active', 'selected', 'current', 'chosen', 'checked']
+/**
+ * Identifiers that read as "this row is the one to notice".
+ *
+ * `unread` earns its place here from a real miss: NotificationCenter tinted
+ * unread rows and shared an ungated hover, so pointing at an unread row greyed
+ * it. Semantically that is not "selection", but it is the same fault — a
+ * conditional wash marking one row out, beaten on specificity by a hover.
+ */
+const SELECTED_WORDS = [
+  'active',
+  'selected',
+  'current',
+  'chosen',
+  'checked',
+  'unread',
+  // `read` covers both spellings of the same state — `isUnread && …` and the
+  // far more common `!isRead && …`. A read row legitimately carries a wash too
+  // (NotificationCenter's `recede` greys it), so this is not only about the
+  // negated form.
+  'read',
+]
+
+/**
+ * Words that disqualify an otherwise-matching identifier. `isReadOnly` splits
+ * to `is`/`read`/`only` and would match on `read`, but a read-only field is a
+ * disabled-ish state, not a marked-out one — a shared hover over it is intended.
+ */
+const DISQUALIFIERS = ['only', 'disabled', 'readonly']
 
 /**
  * Match on WORDS, not on a substring, and split camelCase first — `\b` never
@@ -61,6 +89,7 @@ function readsAsSelection(identifier: string): boolean {
     .toLowerCase()
     .split(/\s+/)
     .filter(Boolean)
+  if (words.some((w) => DISQUALIFIERS.includes(w))) return false
   return words.some((w) => SELECTED_WORDS.includes(w))
 }
 
@@ -100,9 +129,67 @@ function literalText(node: TSESTree.Node): string | null {
   return null
 }
 
+/**
+ * Resolve a node to EVERY class string it could evaluate to.
+ *
+ * A literal resolves to itself. `MAP[key]` resolves to every string value in
+ * `MAP`, when `MAP` is a module-scoped object of string literals — which is how
+ * this codebase spells a style table (`Record<Variant, string>` appears in
+ * dozens of components). `a ? b : c` resolves to both branches.
+ *
+ * This closes the gap that let the NotificationCenter fault through: the rule
+ * only ever compared string literals, so `UNREAD_STYLES[unreadStyle]` was
+ * invisible to it and the pair was never judged at all. Every value is checked,
+ * because a table whose entries disagree about carrying a hover is exactly the
+ * shape that ships the bug on some of its values and not others.
+ *
+ * Deliberately shallow: no cross-file resolution, no spreads, no computed keys.
+ * A table it cannot read resolves to nothing and the rule stays quiet, which is
+ * the right failure direction for a lint rule.
+ */
+function possibleTexts(
+  node: TSESTree.Node,
+  scope: ReturnType<typeof resolveObject>['scope'],
+): string[] {
+  const direct = literalText(node)
+  if (direct !== null) return [direct]
+
+  if (node.type === 'ConditionalExpression') {
+    return [
+      ...possibleTexts(node.consequent, scope),
+      ...possibleTexts(node.alternate, scope),
+    ]
+  }
+
+  if (node.type === 'MemberExpression' && node.object.type === 'Identifier') {
+    const obj = resolveObject(node.object.name, scope).properties
+    if (!obj) return []
+    // `MAP.key` — one entry. `MAP[expr]` — any entry.
+    if (!node.computed && node.property.type === 'Identifier') {
+      const one = obj.get(node.property.name)
+      return one === undefined ? [] : [one]
+    }
+    if (node.computed) {
+      const key = literalText(node.property)
+      if (key !== null) {
+        const one = obj.get(key)
+        return one === undefined ? [] : [one]
+      }
+      return [...obj.values()]
+    }
+  }
+
+  return []
+}
+
 /** Does this test expression read as a selected/active check? */
 function testsSelection(node: TSESTree.Node): boolean {
   if (node.type === 'Identifier') return readsAsSelection(node.name)
+  // `!isRead && '…'` is the same shape as `isUnread && '…'`; the negation is
+  // how half the codebase spells the interesting state.
+  if (node.type === 'UnaryExpression' && node.operator === '!') {
+    return testsSelection(node.argument)
+  }
   if (node.type === 'MemberExpression' && node.property.type === 'Identifier') {
     return readsAsSelection(node.property.name)
   }
@@ -111,6 +198,47 @@ function testsSelection(node: TSESTree.Node): boolean {
     return testsSelection(node.left) || testsSelection(node.right)
   }
   return false
+}
+
+/**
+ * Find a variable's initialiser object, if it is a `const` bound to an object
+ * literal whose values are all plain strings. Walks up through enclosing
+ * scopes, so a table declared at module level is visible from inside a
+ * component.
+ */
+function resolveObject(
+  name: string,
+  scope: Scope | null,
+): { properties: Map<string, string> | null; scope: Scope | null } {
+  for (let s = scope; s; s = s.upper) {
+    const variable = s.variables.find((v) => v.name === name)
+    if (!variable) continue
+    const def = variable.defs[0]
+    if (!def || def.type !== 'Variable') return { properties: null, scope }
+    const init = def.node.init
+    if (!init) return { properties: null, scope }
+    // `X = {…} as Record<K, string>` and `satisfies` both wrap the literal.
+    const unwrapped =
+      init.type === 'TSAsExpression' || init.type === 'TSSatisfiesExpression'
+        ? init.expression
+        : init
+    if (unwrapped.type !== 'ObjectExpression') return { properties: null, scope }
+    const out = new Map<string, string>()
+    for (const prop of unwrapped.properties) {
+      if (prop.type !== 'Property') continue
+      const value = literalText(prop.value)
+      if (value === null) continue
+      const key =
+        prop.key.type === 'Identifier'
+          ? prop.key.name
+          : prop.key.type === 'Literal' && typeof prop.key.value === 'string'
+            ? prop.key.value
+            : null
+      if (key !== null) out.set(key, value)
+    }
+    return { properties: out, scope }
+  }
+  return { properties: null, scope }
 }
 
 type MessageIds = 'ungatedHover'
@@ -129,7 +257,7 @@ export default createRule<[], MessageIds>({
     schema: [],
     messages: {
       ungatedHover:
-        "`{{hover}}` is (0,2,0) and the active background is (0,1,0), so hovering the selected element clears its tint. Gate the hover on the negation (`!{{flag}} && '{{hover}}'`) or give the active state its own hover.",
+        "`{{hover}}` is (0,2,0) and the active background is (0,1,0), so hovering the selected element clears its tint. Gate the hover (`{{gate}} && '{{hover}}'`) or give the active state its own hover.",
     },
   },
   defaultOptions: [],
@@ -155,33 +283,48 @@ export default createRule<[], MessageIds>({
         let ungatedHover: { node: TSESTree.Node; token: string } | null = null
         // Conditional active backgrounds that carry no hover of their own.
         const activeBgs: { flag: string; bgs: string[] }[] = []
+        const scope = context.sourceCode.getScope(node)
 
         for (const arg of node.arguments) {
-          const direct = literalText(arg)
-          if (direct !== null) {
+          // A bare argument — literal, or a table lookup with no condition on
+          // it. `cn(STYLES[variant], …)` is as ungated as a plain string.
+          if (arg.type !== 'LogicalExpression' && arg.type !== 'ConditionalExpression') {
             if (!ungatedHover) {
-              const token = firstHoverBg(direct)
-              if (token) ungatedHover = { node: arg, token }
+              for (const text of possibleTexts(arg, scope)) {
+                const token = firstHoverBg(text)
+                if (token) {
+                  ungatedHover = { node: arg, token }
+                  break
+                }
+              }
             }
             continue
           }
 
           if (arg.type === 'LogicalExpression' && arg.operator === '&&') {
-            const text = literalText(arg.right)
-            if (text === null) continue
-            // A conditional that ALREADY carries its own hover is the fix, not
-            // the bug — `isActive && 'bg-accent-4 hover:bg-accent-5'`.
-            if (firstHoverBg(text)) continue
-            const bgs = plainBgs(text)
-            if (bgs.length === 0) continue
             if (!testsSelection(arg.left)) continue
-            activeBgs.push({
-              bgs,
-              flag:
-                arg.left.type === 'Identifier'
-                  ? arg.left.name
-                  : context.sourceCode.getText(arg.left),
-            })
+            // Negate for the suggestion, but FLIP an existing `!` rather than
+            // stacking a second one — `!isRead` wants `isRead`, not `!!isRead`.
+            const flag =
+              arg.left.type === 'UnaryExpression' && arg.left.operator === '!'
+                ? context.sourceCode.getText(arg.left.argument)
+                : `!${
+                    arg.left.type === 'Identifier'
+                      ? arg.left.name
+                      : context.sourceCode.getText(arg.left)
+                  }`
+            // Judge EVERY value the right-hand side could take. A table whose
+            // entries disagree about carrying a hover ships the bug on some of
+            // its values and not others — which is precisely how this got past
+            // the rule in NotificationCenter.
+            for (const text of possibleTexts(arg.right, scope)) {
+              // A value that ALREADY carries its own hover is the fix, not the
+              // bug — `isActive && 'bg-accent-4 hover:bg-accent-5'`.
+              if (firstHoverBg(text)) continue
+              const bgs = plainBgs(text)
+              if (bgs.length === 0) continue
+              activeBgs.push({ bgs, flag })
+            }
           }
         }
 
@@ -200,7 +343,7 @@ export default createRule<[], MessageIds>({
         context.report({
           node: ungatedHover.node,
           messageId: 'ungatedHover',
-          data: { hover: ungatedHover.token, flag: offender.flag },
+          data: { hover: ungatedHover.token, gate: offender.flag },
         })
       },
     }

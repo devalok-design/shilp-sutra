@@ -266,6 +266,52 @@ describe('unreadStyle', () => {
     expect(cls).toContain('last:border-b-0')
   })
 
+  // The fault this locks in: a shared ungated `hover:bg-*` is (0,2,0) and a
+  // wash is (0,1,0), so a single shared hover greys out whichever row you point
+  // at. It shipped for `tint` and `strong` even after `recede` was fixed,
+  // because nothing asserted their hover.
+  it.each(['recede', 'tint', 'strong', 'none'] as const)(
+    '%s: every state owns its own hover, so nothing shares an ungated one',
+    (style) => {
+      const { unmount } = render(
+        <NotificationCenter
+          notifications={[makeNotification({ title: `Unread ${style}` })]}
+          unreadStyle={style}
+        />,
+      )
+      expect(rowOf(`Unread ${style}`).className).toMatch(/hover:bg-/)
+      unmount()
+
+      render(
+        <NotificationCenter
+          notifications={[makeNotification({ isRead: true, title: `Read ${style}` })]}
+          unreadStyle={style}
+        />,
+      )
+      expect(rowOf(`Read ${style}`).className).toMatch(/hover:bg-/)
+    },
+  )
+
+  it.each([
+    ['tint', 'bg-accent-4', 'hover:bg-accent-5'],
+    ['strong', 'bg-accent-5', 'hover:bg-accent-6'],
+  ] as const)(
+    '%s deepens its own wash on hover rather than falling to grey',
+    (style, rest, hover) => {
+      render(
+        <NotificationCenter
+          notifications={[makeNotification()]}
+          unreadStyle={style}
+        />,
+      )
+      const cls = rowOf('Test notification').className
+      expect(cls).toContain(rest)
+      expect(cls).toContain(hover)
+      // The grey shared hover must NOT also be present — it would win.
+      expect(cls).not.toContain('hover:bg-surface-panel-hover')
+    },
+  )
+
   it('tint still uses the step-4 wash that beats a hovered already-read row', () => {
     render(
       <NotificationCenter notifications={[makeNotification()]} unreadStyle="tint" />,

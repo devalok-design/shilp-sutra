@@ -453,8 +453,66 @@ worth knowing before you add a token):
 - **Steps 1–2 of every colour ramp sit BELOW `surface-panel` in dark**, while
   `panel-hover` sits above it. So a selection painted with `accent-2` recedes
   exactly as its own hover advances — the hovered row out-reads the selected one,
-  in the opposite direction. Selections start at **step 4**. Step 2 is a
+  in the opposite direction. **Selections start at step 3.** Step 2 is a
   `surface-base` device only.
+
+  This entry said **step 4** until 2026-09-13 and the Founder has ruled it to
+  **3**, matching the Figma design pass and PR #308, which had already moved the
+  source. The code was right and this file was wrong; do not "fix" the code back.
+
+  **The caveat that came with the ruling stands, and is the reason the number
+  was 4 in the first place.** Measured lightness in dark:
+
+  | token | L |
+  |---|---|
+  | `accent-2` | 0.17 |
+  | `surface-panel` | 0.207 |
+  | `accent-3` | **0.255** |
+  | `surface-panel-hover` | **0.267** |
+  | `accent-4` | 0.29 |
+
+  Step 3 clears `surface-panel` (0.255 vs 0.207) so a selection reads as a
+  selection at rest — that is the failure step 2 has and step 3 does not. But it
+  sits **0.012 BELOW `panel-hover`**, so a hovered *unselected* row is very
+  slightly brighter than the selected one; at rest the selection is obvious, and
+  under the pointer the two read as nearly equal. Step 4 at 0.29 is the first
+  that stays above its own hover. That is a real cost, chosen knowingly for the
+  designed hue — it is not an oversight and it is not a bug to re-file (#317).
+
+  A selection at step 3 therefore leans on its **non-background** signals to stay
+  legible under a neighbouring hover. `SidebarMenuButton` pairs it with both
+  `text-accent-11` and `font-medium`; `SidebarMenuSubButton` (`:803`) carries
+  only `text-accent-11`, which is the weaker of the two spellings and the one to
+  re-check if this ever reads badly. A step-3 selection carrying colour alone is
+  the shape to be suspicious of.
+
+  **This ships as a visible change.** Published 0.60.0 contains `accent-4`; the
+  source has `accent-3`, so the next release moves every Sidebar selection one
+  step darker in dark mode for every consumer on the default. The pending
+  `designers-updated-components` changeset already says so — check it is still
+  in `.changeset/` before the release, not after.
+
+  **"Start at" is a FLOOR, not a target — and exactly one component sits on it.**
+  Sidebar is the only selection in the system at step 3 (`sidebar.tsx:582`,
+  `:803`). Table, DataTable, MasterDetail, MultiSelectPopover, Combobox,
+  Autocomplete, TreeView, BottomNavbar, ScheduleView, CommandPalette,
+  NotificationCenter and FileUpload all ship `bg-accent-4`, and most pair it with
+  `hover:bg-accent-5` — the other correct fix, where the selection owns its own
+  hover and the ordering question never arises at all. Do not read this entry as
+  a mandate to sweep thirteen components down to 3. It lowers the floor; it does
+  not move anybody already above it.
+
+  **Where a wash carries the whole signal, step 4 is still the floor, and that is
+  measured, not preference.** `notification-center.tsx:150-162` records unread
+  against a *hovered read* row — `accent-3` is **1.042:1 in dark**, i.e. gone —
+  so the wash styles there are bound to 4. A component whose selected state is
+  only a background, on a list that hovers, wants 4. Sidebar gets away with 3
+  because it is not carrying the state on colour alone.
+
+  Consumer-facing history lives in `packages/core/MIGRATION.md` ("Selected rows
+  are more prominent, and correctly so"), which documents the 2 → 4 move for
+  0.58.0. That entry is history and stays as written; the next release's section
+  is where the Sidebar 4 → 3 change gets explained.
 - **A near-black shadow is not an edge on a dark ground.** `--shadow-edge-ring`
   flips to a light ring under `.dark` for this reason; anything that hardcodes
   `oklch(var(--shadow-color) …)` instead of consuming that var will silently

@@ -123,7 +123,13 @@ export default createRule<[], MessageIds>({
       description:
         'An ungated hover background outranks a conditional selected/active background, so hovering the selected row visually deselects it.',
       category: 'recommended',
-      recommended: 'error',
+      // `warn`, not `error`. This rule judges *existing* consumer code rather
+      // than a deprecated API — a repo that has always spelt selection this
+      // way would go red on upgrade, and a preset that turns red on upgrade
+      // gets switched off. `strict` carries it at `error` for repos that want
+      // the gate. The value is also read by `scripts/generate-rule-docs.mjs`
+      // to state preset membership, so it must match `src/configs/*.ts`.
+      recommended: 'warn',
       appliesFrom: '0.60.0',
     },
     schema: [],

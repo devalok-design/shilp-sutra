@@ -6,6 +6,13 @@
  * Excludes warn-only advisory rules like `no-bare-shadow` and
  * `toast-object-syntax` so the migration pass doesn't touch stylistic
  * surfaces.
+ *
+ * `no-ungated-hover-over-selection` is deliberately NOT here, and that is not
+ * the #315 omission repeating. It has no autofix — both corrections (gate the
+ * hover, or give the active state its own hover) are legitimate and look
+ * different, so there is nothing for `--fix` to do. A rule that can only
+ * report has no business in a codemod preset. It ships in `recommended`
+ * (`warn`) and `strict` (`error`).
  */
 const config = {
   plugins: ['shilp-sutra'],

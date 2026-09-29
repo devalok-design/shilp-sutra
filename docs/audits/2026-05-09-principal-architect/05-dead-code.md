@@ -53,7 +53,7 @@ CONTRIBUTING.md mandates `.stories.tsx` per public component.
 
 | # | Severity | Location | Issue | Fix |
 |---|---|---|---|---|
-| 27 | P3 | `ui/sidebar.tsx` ~line 42 | `// TODO: edge-swipe-to-open` no ticket reference, no follow-up | Either file an issue + link in TODO, or implement, or remove |
+| 27 | P3 | `ui/sidebar.tsx` ~line 42 | ~~`// TODO: edge-swipe-to-open` no ticket reference, no follow-up~~ **CLOSED 2026-09-30** | Taken as "remove": the bare TODO (by then at `:175`) is now a plain comment stating that the swipe wrapper closes only, and why the open gesture cannot live in it |
 
 ### Category 5 — Story-variant documentation mismatches (2 findings)
 

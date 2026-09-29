@@ -1,5 +1,24 @@
 'use client'
 
+/**
+ * MotionProvider -- Motion presets and reduced-motion state for the whole tree.
+ *
+ * **`motion/` is an orthogonal layer.** It sits beside the
+ * `primitives/ → ui/ → composed/ → shell/` hierarchy rather than inside it,
+ * so the `no-restricted-imports` boundary rule in `eslint.config.js` does not
+ * govern it and any layer may import from here. Today `ui/`, `composed/` and
+ * `ai/` do; `shell/` does not.
+ *
+ * The one in-repo edge runs the other way: the `springs`/`tweens` presets come
+ * from `ui/lib/motion`, a leaf module whose only import is `framer-motion`. It
+ * imports nothing back, so `ui/` ↔ `motion/` is not a cycle. Those presets
+ * are also re-exported from `motion/index.ts`, so they are reachable by two
+ * paths — prefer `motion/`.
+ *
+ * Mounting is optional. With no provider above it, `useMotion()` falls back to
+ * the OS `prefers-reduced-motion` setting, so a provider is an override rather
+ * than a requirement.
+ */
 import { MotionConfig, useReducedMotion as useFMReducedMotion } from 'framer-motion'
 import * as React from 'react'
 

@@ -71,7 +71,7 @@ Legend:
 
 - [ ] Add `no-restricted-imports` for `ai/` layer (covers `composed/`, `shell/`)
 - [ ] Refactor or document `shell/app-command-palette` → `composed/command-palette` dependency
-- [ ] Add JSDoc to `motion/motion-provider.tsx` documenting orthogonal-layer status
+- [x] Add JSDoc to `motion/motion-provider.tsx` documenting orthogonal-layer status (2026-09-30)
 - [ ] Update CONTRIBUTING.md § Module Boundaries with: orthogonal layers, re-export conventions, test-file policy, import-path style decision
 - [ ] Run `pnpm lint && pnpm test` to confirm fixes don't break anything
 

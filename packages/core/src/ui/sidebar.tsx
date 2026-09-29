@@ -172,7 +172,10 @@ SidebarProvider.displayName = 'SidebarProvider'
 
 // ── SidebarSwipeWrapper (swipe-to-close on mobile) ─────────────────
 
-// TODO: edge-swipe-to-open (swipe from left edge to open sidebar)
+// Close only. This wrapper *is* the mobile sidebar panel, rendered inside the
+// `Sheet`, so there is no off-canvas surface here to listen on — an
+// edge-swipe-to-open gesture would have to live on the page, not in this
+// component. Opening is `SidebarTrigger` or Cmd/Ctrl-B.
 
 function SidebarSwipeWrapper({
   side,

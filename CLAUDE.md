@@ -81,10 +81,10 @@ This applies to: Button, SplitButton, and anywhere else `variant="outline" | "so
 
 **Read these before touching the Figma file — they supersede the checklist below:**
 - [`docs/plans/2026-08-18-figma-library-build-plan.md`](./docs/plans/2026-08-18-figma-library-build-plan.md) — architecture and decisions (D1–D23)
-- [`docs/plans/2026-08-18-figma-build-playbook.md`](./docs/plans/2026-08-18-figma-build-playbook.md) — API traps, layout tricks, per-component audit, verification protocol
-- [`docs/plans/2026-08-18-figma-foundations-spec.md`](./docs/plans/2026-08-18-figma-foundations-spec.md) — every collection, mode and variable as built
+- [`docs/plans/implemented/2026-08-18-figma-build-playbook.md`](./docs/plans/implemented/2026-08-18-figma-build-playbook.md) — API traps, layout tricks, per-component audit, verification protocol
+- [`docs/plans/implemented/2026-08-18-figma-foundations-spec.md`](./docs/plans/implemented/2026-08-18-figma-foundations-spec.md) — every collection, mode and variable as built
 - [`docs/plans/2026-08-18-figma-port-retrospective.md`](./docs/plans/2026-08-18-figma-port-retrospective.md) — how the work went, the full bug ledger, and what caught what
-- [`docs/plans/2026-08-19-figma-components-build.md`](./docs/plans/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 32 sets, 505 variants, the mode-chain architecture, native slots, the shells, and 10 findings in the DS itself
+- [`docs/plans/implemented/2026-08-19-figma-components-build.md`](./docs/plans/implemented/2026-08-19-figma-components-build.md) — **Phase 3 as built**: 32 sets, 505 variants, the mode-chain architecture, native slots, the shells, and 10 findings in the DS itself
 
 Live file: `bcBO7RgVYR4ulwPr3j2heY`. Icon library: `Vst4WnV0LYfRZdC1dc7qv6` (owned, editable, 4,962 icons bound to `component/fg`). The April 2026 plan and its Figma file are superseded.
 
@@ -465,7 +465,7 @@ Both are recorded with measurements in
 [`docs/audits/2026-08-28-surface-model-audit.md`](./docs/audits/2026-08-28-surface-model-audit.md),
 along with the four root causes a full sweep of 205 files turned up.
 
-Full model: [`docs/plans/2026-08-26-surface-model-rebuild.md`](./docs/plans/2026-08-26-surface-model-rebuild.md).
+Full model: [`docs/plans/implemented/2026-08-26-surface-model-rebuild.md`](./docs/plans/implemented/2026-08-26-surface-model-rebuild.md).
 
 ## Publishing
 

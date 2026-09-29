@@ -9,7 +9,7 @@
 
 | Doc | Role |
 |---|---|
-| [`docs/plans/2026-05-08-public-release-roadmap.md`](./2026-05-08-public-release-roadmap.md) | Strategic phases (0-4) + open questions. **This plan supersedes its sprint sequencing.** |
+| [`docs/plans/implemented/2026-05-08-public-release-roadmap.md`](./2026-05-08-public-release-roadmap.md) | Strategic phases (0-4) + open questions. **This plan supersedes its sprint sequencing.** |
 | [`docs/audits/2026-05-09-principal-architect/findings.md`](../audits/2026-05-09-principal-architect/findings.md) | 151 findings, 10 cross-lens themes, 9 P0 / 38 P1 |
 | [`docs/audits/2026-05-09-principal-architect/world-class-verification.md`](../audits/2026-05-09-principal-architect/world-class-verification.md) | Confirms April audit ~95% closed; 7 residual items |
 | [`docs/audits/2026-05-09-principal-architect/00-best-practices.md`](../audits/2026-05-09-principal-architect/00-best-practices.md) | Industry rubric used to derive findings |

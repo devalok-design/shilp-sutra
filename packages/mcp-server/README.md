@@ -2,7 +2,7 @@
 
 Hosted read-only MCP server serving shilp-sutra docs to AI agents. Private — never published to npm; deployed to Railway (Phase 3).
 
-- **Plan**: `docs/plans/2026-07-05-hosted-docs-mcp-plan.md`
+- **Plan**: `docs/plans/implemented/2026-07-05-hosted-docs-mcp-plan.md`
 - **Standard** (tool conventions, response envelope, manifest schema): `docs/specs/mcp-manifest-standard.md`
 
 ## How it works

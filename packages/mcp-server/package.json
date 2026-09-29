@@ -2,7 +2,7 @@
   "name": "@devalok/shilp-sutra-mcp-server",
   "version": "0.1.0",
   "private": true,
-  "description": "Hosted read-only MCP server serving shilp-sutra docs extracted from published npm tarballs. Never published to npm — deployed to Railway. Plan: docs/plans/2026-07-05-hosted-docs-mcp-plan.md",
+  "description": "Hosted read-only MCP server serving shilp-sutra docs extracted from published npm tarballs. Never published to npm — deployed to Railway. Plan: docs/plans/implemented/2026-07-05-hosted-docs-mcp-plan.md",
   "type": "module",
   "engines": {
     "node": ">=22"

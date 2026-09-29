@@ -826,7 +826,7 @@ variant="elevated"`, `Menubar` and the keyboard caps had no boundary at all.
   **The model.** One surface per theme. Borders mark objects, fills mark regions.
   In light the page, a panel and an overlay are all `#ffffff` — an edge is what
   makes a card a card. Dark has room above the page, so panels genuinely lift.
-  Full reasoning in `docs/plans/2026-08-26-surface-model-rebuild.md`.
+  Full reasoning in `docs/plans/implemented/2026-08-26-surface-model-rebuild.md`.
 
   ## Breaking
 

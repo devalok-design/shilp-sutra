@@ -1306,7 +1306,7 @@ Added: `variant="soft"`, `color="custom"`, interactive props, `Badge.Indicator`,
 
 ## v0.23.0
 
-**Surface and shadow token migration.** See the detailed guide: [plans/2026-03-16-surface-shadow-consistency-design.md](plans/2026-03-16-surface-shadow-consistency-design.md).
+**Surface and shadow token migration.** See the detailed guide: [docs/plans/implemented/2026-03-16-surface-shadow-consistency-design.md](docs/plans/implemented/2026-03-16-surface-shadow-consistency-design.md).
 
 Key renames:
 - `bg-surface-1` → `bg-surface-base`

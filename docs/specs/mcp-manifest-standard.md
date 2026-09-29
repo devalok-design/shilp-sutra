@@ -3,7 +3,7 @@
 **Status:** Draft v1 — 2026-07-05
 **Applies from:** @devalok/shilp-sutra 0.45.0
 **Companion schema:** `packages/core/mcp-manifest.schema.json`
-**Plan:** `docs/plans/2026-07-05-hosted-docs-mcp-plan.md`
+**Plan:** `docs/plans/implemented/2026-07-05-hosted-docs-mcp-plan.md`
 
 ## Principle: mimic conventions agents already know
 

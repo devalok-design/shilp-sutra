@@ -45,7 +45,7 @@ import { cn } from '../ui/lib/utils'
  * With `bright` it is the reverse. That choice matters more than the lightness:
  * it decides whether your brand colour surrounds the work or sits underneath it.
  *
- * See docs/plans/2026-08-26-surface-model-rebuild.md.
+ * See docs/plans/implemented/2026-08-26-surface-model-rebuild.md.
  */
 
 type Variant = 'flat' | 'inset'

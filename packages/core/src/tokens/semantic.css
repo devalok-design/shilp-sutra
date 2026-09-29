@@ -165,7 +165,7 @@
 
   /* GROUNDS take the brand tint; OBJECTS hold neutral. In light the page, the
      panel and an overlay are all pure white — an edge is what makes a card a
-     card. See docs/plans/2026-08-26-surface-model-rebuild.md */
+     card. See docs/plans/implemented/2026-08-26-surface-model-rebuild.md */
   --color-surface-base:          var(--neutral-0);
   --color-surface-panel:         var(--neutral-0);
   --color-surface-overlay:       var(--neutral-0);

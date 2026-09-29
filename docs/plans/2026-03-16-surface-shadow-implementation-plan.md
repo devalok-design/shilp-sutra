@@ -8,7 +8,7 @@
 
 **Tech Stack:** CSS custom properties, Tailwind 3.4, oklch color space, CVA variants
 
-**Design doc:** `docs/plans/2026-03-16-surface-shadow-consistency-design.md`
+**Design doc:** `docs/plans/implemented/2026-03-16-surface-shadow-consistency-design.md`
 
 ---
 

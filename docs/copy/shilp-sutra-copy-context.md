@@ -300,8 +300,8 @@ Next session executes against this table.
 
 ## 16. Related docs
 
-- `docs/plans/2026-05-24-beta-release-plan.md` — beta posture, entry gates, exit criteria.
-- `docs/plans/2026-05-24-site-v2-be-yourself.md` — site v2 architecture and phase breakdown.
+- `docs/plans/implemented/2026-05-24-beta-release-plan.md` — beta posture, entry gates, exit criteria.
+- `docs/plans/implemented/2026-05-24-site-v2-be-yourself.md` — site v2 architecture and phase breakdown.
 - Smriti `writing/AI-RULES.md` — canonical hard writing rules. Load before any draft.
 - Smriti `writing/voice-foundation.md` — the Devalok sound, triplets, close patterns.
 - `CLAUDE.md` — repo-level design preferences (e.g. soft over outline for secondary CTAs).

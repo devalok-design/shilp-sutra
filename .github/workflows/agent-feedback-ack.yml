@@ -31,7 +31,7 @@ jobs:
               '',
               'Wrong category? Add label `urgent` or comment to reclassify.',
               '',
-              'Beta exit criteria + plan: [docs/plans/2026-05-24-beta-release-plan.md](../blob/main/docs/plans/2026-05-24-beta-release-plan.md#7-exit-criteria).',
+              'Beta exit criteria + plan: [docs/plans/implemented/2026-05-24-beta-release-plan.md](../blob/main/docs/plans/implemented/2026-05-24-beta-release-plan.md#7-exit-criteria).',
               '',
               '_This is an automated acknowledgement. A human will read this issue on the next triage cycle._',
             ].join('\n');

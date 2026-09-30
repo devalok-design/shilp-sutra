@@ -720,9 +720,9 @@ Worst-performing module. Systemic issues:
 
 ### B. Related Documents
 
-- Design document: `docs/plans/2026-03-03-consistency-review-design.md`
+- Design document: `docs/plans/implemented/2026-03-03-consistency-review-design.md`
 - Previous audit: `docs/audit/comprehensive-review-2026-03-01.md`
-- Roadmap: `docs/plans/2026-03-01-design-system-roadmap.md`
+- Roadmap: `docs/plans/implemented/2026-03-01-design-system-roadmap.md`
 - Contributing guidelines: `CONTRIBUTING.md`
 - Design philosophy: `docs/design-philosophy.md`
 - Changelog: `CHANGELOG.md`

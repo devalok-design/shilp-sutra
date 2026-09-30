@@ -52,7 +52,7 @@
   /* Sunken well. Chroma follows the neutral cadence (was H:360 C:0.008 — an
      outlier that read visibly pink on sunken surfaces). */
   /* Sunken wells. Sits below the page and clears panel-hover; see
-     docs/plans/2026-08-26-surface-model-rebuild.md */
+     docs/plans/implemented/2026-08-26-surface-model-rebuild.md */
   --neutral-sunken: oklch(0.95 0 0);
   --neutral-1:  oklch(0.99 0 0);
   --neutral-2:  oklch(0.97 0 0);

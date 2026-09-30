@@ -28,7 +28,6 @@ any gate that needs to skip a known case.
 | `BADGE-OUTLINE-BORDER` | Badge `outline` border step | 1.26:1 | WCAG 1.4.11 non-text, 3.0 | 2026-08-24 |
 | `BADGE-SUBTLE-BORDER` | Badge `subtle` border step | 1.26:1 | — (refinement only) | 2026-08-24 |
 | `ALERT-SUBTLE-BORDER` | Alert `subtle` border step | 1.26:1 | — (refinement only) | 2026-08-24 |
-| `SURFACE-BASE-GROUND` | Light canvas `#f5f5f5` | n/a | Setu `grounds`, tier 1 | open |
 | `AVATAR-RING-RADIUS` | Figma ring corner radius | `scale/lg` = 10 | derive from `role/control` + 4 | 2026-08-24 |
 | `WARNING-RAMP-CHROMA` | `warning/background` saturation | chroma 74.2 | siblings at 21.9–33.5 | 2026-08-26 |
 | `PALETTE-EDGE-WHISPER` | Coloured edges at ramp step 4 | 1.37–1.49:1 | — (a plain edge is 1.23:1) | open |
@@ -141,38 +140,6 @@ run of chips where every status appears at once, the shouting stops being useful
 and starts being noise. A de-saturated version was built and rejected — it is on
 the Figma showcase page under `DECISIONS` (`#efe0cb` light, `#2d1e0f` dark, at
 chroma 32.0 / 35.0) if the question reopens.
-
----
-
-### `SURFACE-BASE-GROUND` — light canvas is `#f5f5f5`
-
-**Status: open.** Recorded here because it is a known, deliberate hold rather than
-an oversight.
-
-`--color-surface-base` resolves to `neutral-2` (`#f5f5f5`) in light. Setu's
-`grounds` segment is **tier 1, status `defined`**, `posture: light-first`,
-`default: #ffffff`, with `#f8f4f5` as the only other allowed ground. `#f5f5f5` is
-on neither list, so every site page and consumer surface reads off-brand against
-the brand file.
-
-**Why it is not a one-line fix.** Light-mode elevation is carried by a 0.02 L gap:
-
-| Token | Light value | L |
-|---|---|---|
-| `surface-base` | `neutral-2` | 0.97 |
-| `surface-raised` | `neutral-1` | 0.99 |
-| `neutral-0` (unused here) | `#ffffff` | 1.00 |
-
-Moving base to `neutral-1` makes it identical to `surface-raised` and every card,
-dialog and chrome surface dissolves into the page. Moving it to `neutral-0` leaves
-nothing lighter for cards, so elevation has to come from borders or shadow instead
-of fill, or the model inverts.
-
-**The real question** is scope: Setu's grounds are authored for a print- and
-document-first studio, and Setu itself notes the product UI may define things the
-brand file does not. Whether a product-UI canvas must obey the document ground rule
-is the decision. The DS site pages are unambiguously Devalok surfaces; a consumer
-app dashboard is arguable.
 
 ---
 
@@ -298,8 +265,11 @@ above.
 - **Fixed, do not re-file:** menu-item hover in light (`MENU-ITEM-HOVER`, was
   invisible — every menu item now takes `surface-panel-hover`, distinct from the
   `surface-overlay` ground in both themes), Alert dismiss on solid (was 1.01:1), Badge category
-  labels in dark (was 3.28–3.70), and Input/Textarea/Select/Combobox placeholders
-  in light (was 4.14). All corrected and shipped; they are history, not exceptions.
+  labels in dark (was 3.28–3.70), Input/Textarea/Select/Combobox placeholders
+  in light (was 4.14), and the light canvas ground (`SURFACE-BASE-GROUND`, was
+  `#f5f5f5` and on neither of Setu's two allowed grounds — `semantic.css:169` now
+  maps `--color-surface-base` to `neutral-0`, `primitives.css:51` `#ffffff`, which
+  is Setu's `default`). All corrected and shipped; they are history, not exceptions.
 ---
 
 ### `SLIDER-THUMB-EDGE-STEP-7` — the slider handle keeps the old, louder edge

@@ -22,8 +22,8 @@
 
 | # | Finding | Severity | Effort |
 |---|---------|----------|--------|
-| 1 | `apps/playground/tailwind.config.ts` imports a path that no longer exists | Medium | Trivial |
-| 2 | 3 dead files inside the published package | Low | Trivial |
+| 1 | ~~`apps/playground/tailwind.config.ts` imports a path that no longer exists~~ **CLOSED 2026-09-30** | Medium | Trivial |
+| 2 | ~~3 dead files inside the published package~~ **CLOSED 2026-09-30** | Low | Trivial |
 | 3 | 10 unused d3 dependencies (+7 other unused devDeps) | Low | Small |
 | 4 | `packages/core/src/primitives/` ships parallel `.js` and `.ts` copies | Medium | Large |
 | 5 | 4 circular imports | Medium | Small |
@@ -34,7 +34,7 @@ Raw tool output: 173 unused files, 253 unused exports, 17 unused devDependencies
 
 ## Confirmed Findings
 
-### 1. Broken import in the playground Tailwind config
+### 1. Broken import in the playground Tailwind config **CLOSED 2026-09-30.**
 
 `apps/playground/tailwind.config.ts:1`
 
@@ -46,9 +46,11 @@ import preset from '../../packages/core/src/tailwind/preset'
 
 This is a Tailwind v4 repo, where `tailwind.config.ts` is not consumed at all. The repo also ships an ESLint rule — `@devalok/eslint-plugin-shilp-sutra/no-tailwind-config-preset` — written specifically to flag this pattern. The playground violates our own rule while pointing at a dead path.
 
-**Action**: delete `apps/playground/tailwind.config.ts`.
+~~**Action**: delete `apps/playground/tailwind.config.ts`.~~ **Deleted.** The file
+is absent as of 2026-09-30; `apps/playground/` no longer carries a Tailwind config
+at all.
 
-### 2. Three dead files in the published package
+### 2. Three dead files in the published package **CLOSED 2026-09-30.**
 
 Zero references repo-wide, confirmed by full-repo grep excluding `node_modules`, `dist`, `.next`:
 
@@ -58,7 +60,19 @@ packages/core/src/ui/lib/index.ts
 packages/core/src/ui/charts/_internal/scales.ts
 ```
 
-**Action**: delete. Confirm none appear in the `exports` map of `packages/core/package.json` first.
+~~**Action**: delete. Confirm none appear in the `exports` map of `packages/core/package.json` first.~~
+
+**All three are gone.** `ui/lib/slot.ts` and `ui/charts/_internal/scales.ts` had
+already been removed by 2026-09-30; `ui/lib/index.ts` was deleted then.
+
+The `exports` check the action asked for, run before the deletion:
+`packages/core/package.json` carries `./ui/lib/utils`, `./ui/lib/motion`,
+`./ui/lib/date-utils` and `./utils` (which resolves to `dist/ui/lib/utils.js`) —
+**no bare `./ui/lib` entry**. `vite.config.ts` never listed `ui/lib/index` either:
+`collectEntries` is one level deep over `ui`, `composed`, `shell`, `hooks`, and
+`explicitEntries` names only `ui/lib/utils`, `ui/lib/motion`, `ui/lib/date-utils`.
+The barrel was never built, and no tracked `.ts`/`.tsx` imported any bare `/lib`
+barrel.
 
 ### 3. Unused dependencies
 
@@ -131,7 +145,7 @@ Roughly 80% of the raw report is missing configuration. Any recurring use of kni
 
 ## Recommended Follow-up
 
-1. Fix #1 and #2 — trivial deletions.
+1. ~~Fix #1 and #2 — trivial deletions.~~ **Done 2026-09-30.**
 2. Add `knip` as a devDependency with a `knip.json` declaring `tests/smoke-consumer*` and `*/scripts/*` as entry points. That takes the report from 173 files to roughly 30 real ones.
 3. Wire `pnpm check:dead` into the existing `verify` script, which already chains eight checks.
 4. Scope #4 (primitives `.js`/`.ts` duplication) as separate work — it is the largest real item here.

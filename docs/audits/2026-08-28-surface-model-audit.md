@@ -178,11 +178,16 @@ resolving to the same colour as the resting border, Δ 0.00:
 `date-time-picker.tsx:209,219/220`, `time-picker.tsx:183/184`,
 `file-attachment.tsx:22`, `rich-text-editor.tsx:871/872`.
 
-**B4 — `docs/deviations.md` `SURFACE-BASE-GROUND` is stale and probably resolved.**
+~~**B4 — `docs/deviations.md` `SURFACE-BASE-GROUND` is stale and probably resolved.**~~ **CLOSED 2026-09-30.**
 It records the light canvas as `neutral-2` / `#f5f5f5` and off-brand.
 `semantic.css:169` now maps `--color-surface-base` to `neutral-0` = `#ffffff`,
 which *is* an approved Setu ground. Per the register's own rule, a fixed
 deviation is **deleted**, not edited.
+
+Re-verified 2026-09-30: `semantic.css:169` `--color-surface-base: var(--neutral-0)`,
+`primitives.css:51` `--neutral-0: #ffffff` — the same value this document's own
+reference table already carries. The table row and the detail block are deleted;
+the fix is listed under the register's "Fixed, do not re-file".
 
 ---
 

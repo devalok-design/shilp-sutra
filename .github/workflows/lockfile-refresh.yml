@@ -1,0 +1,203 @@
+# Lockfile factory - regenerate a lockfile on Linux and commit it back to the branch.
+#
+# WHY THIS EXISTS. A lockfile written by `npm install` on Windows omits the
+# Linux-only optional platform packages the deploy image needs. npm prunes
+# `optionalDependencies` to the installing host; pnpm records every platform,
+# which is why pnpm repos never hit this and npm repos do.
+#
+# On 2026-09-30 that took a service down: devalok-yojana merged a Windows
+# generated package-lock.json missing @emnapi/core and @emnapi/runtime. Every
+# local check passed. The Docker build's `npm ci` then failed:
+#
+#     npm error Missing: @emnapi/runtime@1.11.3 from lock file
+#     npm error Missing: @emnapi/core@1.11.3 from lock file
+#
+# yojana-app went SUCCESS -> FAILED, and five recovery routes all failed to
+# produce a passing lockfile from Windows: npm install, --package-lock-only,
+# npm's --os/--cpu/--libc overrides, Docker (daemon down) and WSL.
+#
+# It is also why gurukul and patra deleted their lockfiles in July rather than
+# keep fighting it. That dodged the prune at the cost of reproducible builds -
+# every deploy re-resolved from scratch. This workflow removes the trade: the
+# lockfile is generated on the same platform that runs it, so it is both
+# correct and reproducible.
+#
+# HOW THE LANE USES IT. The agent edits the manifest on a branch and pushes.
+# A push to a `deps/**` branch that touches a manifest or a lockfile runs this
+# automatically; the lockfile comes back as a commit on that branch. The box
+# never resolves a dependency tree.
+#
+# It can also be run by hand once this file is on the default branch, which is
+# where GitHub looks for workflow_dispatch:
+#     gh workflow run lockfile-refresh.yml --ref <branch> -f package_dir=.
+#
+# The push trigger is what makes the workflow usable from a branch BEFORE it
+# has ever been merged - workflow_dispatch is not offered for a workflow that
+# exists only on a feature branch, which would otherwise make this file
+# unusable in the very PR that introduces it.
+#
+# SAFETY. It refuses to run against the default branch, and it only ever
+# commits lockfiles - never a manifest, never source. The commit is pushed with
+# the default GITHUB_TOKEN, and GitHub does not raise workflow events for those
+# pushes, so this cannot re-trigger itself.
+#
+# WHY `github.event.inputs` AND NOT `inputs`. The `inputs` context is only
+# populated for workflow_dispatch and workflow_call. This workflow also answers
+# `push`, where `github.event.inputs` is simply null - which is what the
+# `|| '.'` fallback is for.
+#
+# AND HOW TO READ A FAILURE HERE. If a run fails with NO jobs, NO logs and the
+# file PATH standing in for the workflow name, the file did not compile. That
+# reads like an infrastructure fault and is a syntax error. The first version
+# of this file had one: the commit message at the bottom was a single quoted
+# string whose continuation lines sat at column 1, and inside a `run: |` block
+# an unindented line ENDS the block scalar, so the YAML stopped parsing 150
+# lines above where anything looked wrong. Validate locally before pushing -
+# `yaml.safe_load` on this file is enough to catch it.
+
+name: lockfile-refresh
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_dir:
+        description: 'Directory holding package.json (repo root is ".")'
+        required: false
+        default: '.'
+      node_version:
+        description: 'Node major to resolve against; blank reads .nvmrc, else 22'
+        required: false
+        default: ''
+  push:
+    branches:
+      - 'deps/**'
+    paths:
+      - '**/package.json'
+      - '**/package-lock.json'
+      - '**/pnpm-lock.yaml'
+      - '**/bun.lock'
+      - '**/bun.lockb'
+      # The factory re-runs when the factory itself changes. That is how it
+      # gets exercised on the branch that introduces it, where
+      # workflow_dispatch is not yet available. Re-running is cheap: the last
+      # step commits nothing unless the resolved lockfile actually differs.
+      - '.github/workflows/lockfile-refresh.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refuse to run on the default branch
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "${{ github.event.repository.default_branch }}" ]; then
+            echo "::error::lockfile-refresh runs on a PR branch, never on ${GITHUB_REF_NAME}."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          # A token that can push back to the branch. The default GITHUB_TOKEN
+          # is enough because `permissions: contents: write` is set above.
+          persist-credentials: true
+
+      - name: Resolve Node version
+        id: node
+        working-directory: ${{ github.event.inputs.package_dir || '.' }}
+        run: |
+          v="${{ github.event.inputs.node_version }}"
+          if [ -z "$v" ] && [ -f .nvmrc ]; then v="$(tr -d 'v \r\n' < .nvmrc)"; fi
+          if [ -z "$v" ]; then v="22"; fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "resolving against Node $v"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.node.outputs.version }}
+
+      # Detect from the lockfile that is present, falling back to the
+      # packageManager field. Detecting from the manifest alone is wrong: a repo
+      # can declare packageManager and still ship a different lockfile.
+      - name: Detect package manager
+        id: pm
+        working-directory: ${{ github.event.inputs.package_dir || '.' }}
+        run: |
+          if   [ -f pnpm-lock.yaml ];     then pm=pnpm
+          elif [ -f bun.lock ] || [ -f bun.lockb ]; then pm=bun
+          elif [ -f package-lock.json ];  then pm=npm
+          else
+            case "$(node -p "try{require('./package.json').packageManager||''}catch(e){''}")" in
+              pnpm*) pm=pnpm ;;
+              bun*)  pm=bun  ;;
+              *)     pm=npm  ;;
+            esac
+          fi
+          echo "pm=$pm" >> "$GITHUB_OUTPUT"
+          echo "package manager: $pm"
+
+      - name: Enable corepack for pnpm
+        if: steps.pm.outputs.pm == 'pnpm'
+        run: corepack enable
+
+      - uses: oven-sh/setup-bun@v2
+        if: steps.pm.outputs.pm == 'bun'
+
+      # --lockfile-only / --package-lock-only resolve the full tree without
+      # running install scripts, so no postinstall executes in this job.
+      - name: Regenerate the lockfile on Linux
+        working-directory: ${{ github.event.inputs.package_dir || '.' }}
+        run: |
+          case "${{ steps.pm.outputs.pm }}" in
+            npm)  npm install --package-lock-only --ignore-scripts ;;
+            pnpm) pnpm install --lockfile-only --ignore-scripts ;;
+            bun)  bun install --lockfile-only ;;
+          esac
+
+      # Prove the artifact rather than trusting the previous step's exit code.
+      # `npm ci --dry-run` is the exact check the Docker build performs, and it
+      # is the check that would have caught the yojana break before the merge.
+      - name: Verify the lockfile satisfies a clean install
+        working-directory: ${{ github.event.inputs.package_dir || '.' }}
+        run: |
+          case "${{ steps.pm.outputs.pm }}" in
+            npm)  npm ci --dry-run ;;
+            pnpm) pnpm install --frozen-lockfile --ignore-scripts ;;
+            bun)  bun install --frozen-lockfile ;;
+          esac
+
+      - name: Commit the lockfile back, if it changed
+        working-directory: ${{ github.event.inputs.package_dir || '.' }}
+        run: |
+          git config user.name  "devalok-lockfile-factory[bot]"
+          git config user.email "noreply@devalok.in"
+          # Only lockfiles. Never a manifest, never source.
+          #
+          # One `git add` per file that actually EXISTS. `git add -- a b c d` is
+          # atomic over its pathspecs: if any single one matches nothing, the
+          # command fails and stages NOTHING. Wrapped in `2>/dev/null || true`
+          # that failure is completely silent, and every repo here has at most
+          # one of these four files - so the original form staged nothing,
+          # anywhere, and the job then reported "nothing to commit" while the
+          # regenerated lockfile sat unstaged in the working tree. A green run
+          # that shipped no artifact is the worst shape this workflow can take,
+          # because the PR then looks resolved and is not.
+          for f in package-lock.json pnpm-lock.yaml bun.lock bun.lockb; do
+            if [ -f "$f" ]; then git add -- "$f"; fi
+          done
+          echo "staged:"
+          git diff --cached --name-only
+          if git diff --cached --quiet; then
+            echo "lockfile already correct for linux-x64 - nothing to commit"
+            exit 0
+          fi
+          # Subject and body as two -m arguments. They must NOT be one quoted
+          # string with its continuation lines at column 1: inside a `run: |`
+          # block an unindented line ends the block scalar, and the file stops
+          # being valid YAML.
+          git commit \
+            -m "chore: regenerate lockfile on ubuntu-latest" \
+            -m "Generated by the lockfile factory so the tree matches the deploy platform. A lockfile written on Windows omits Linux-only optional platform packages (@emnapi/* and friends) and fails 'npm ci' inside the image - see .github/workflows/lockfile-refresh.yml for the incident this prevents."
+          git push origin HEAD:"${GITHUB_REF_NAME}"

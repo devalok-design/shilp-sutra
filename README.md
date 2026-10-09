@@ -150,7 +150,7 @@ Step-by-step copy-paste install guides for each major React framework. Designed 
 
 Customization & diagnostics:
 
-- [customize-brand.md](./packages/core/docs/recipes/customize-brand.md) — colors, radius role tokens, `[data-shape]` presets, fonts, spacing
+- [customize-brand.md](./packages/core/docs/recipes/customize-brand.md) — colors, radius role tokens, `[data-shape]` presets, `[data-density]`, fonts, spacing
 - [server-components.md](./packages/core/docs/recipes/server-components.md) — RSC-safety matrix
 - [troubleshoot.md](./packages/core/docs/recipes/troubleshoot.md) — fixing the 13 most common breakages
 
@@ -165,6 +165,17 @@ Roundness is a brand axis. Set `data-shape` on `<html>` (or any subtree) to swap
 ```
 
 Pill shapes (Badge, Switch, Radio, Avatar circle) stay pill in every preset. Override individual role tokens (`--radius-control`, `--radius-surface`, `--radius-overlay`, `--radius-pill`, …) for fine-grained control. See [customize-brand.md → Shape presets](./packages/core/docs/recipes/customize-brand.md#shape-presets-data-shape) for the role token table + custom-preset cookbook.
+
+### Density (v0.61+)
+
+Body text ships comfortable. Set `data-density` on `<html>` (or any subtree) when a screen is data-dense:
+
+```html
+<html data-density="compact">       <!-- body leading 1.5 → 1.4, tracking −0.01em -->
+<div data-density="comfortable">    <!-- opt one region back out, at any depth -->
+```
+
+It retunes the four `text-body-*` composites only — headings, labels, caption and code are untouched, and the `leading-ds-relaxed` utility still means 1.5 if you wrote it by name. **Reach for this instead of dropping to raw `text-ds-*` sizes**, which carry size only and silently opt out of the type tuning. Line height does the work (−6.7% of vertical rhythm); tracking is worth about 1%. See [customize-brand.md → Density](./packages/core/docs/recipes/customize-brand.md#density-data-density) for the full table, the compose-with-everything-else rule, and the WCAG AAA line-spacing caveat.
 
 Recipes ship inside the npm package at `node_modules/@devalok/shilp-sutra/docs/recipes/`, so AI agents can read them locally without a network round-trip. See [AGENTS.md](./AGENTS.md) for the full agent integration contract. A hosted MCP serves version-exact docs at `https://shilp-sutra.devalok.in/mcp` — `claude mcp add --transport http shilp-sutra https://shilp-sutra.devalok.in/mcp`.
 

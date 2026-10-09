@@ -46,6 +46,25 @@ Prefer these — they bundle size + leading + weight + tracking:
 
 These are what `<Text>` applies internally. When generating raw text, prefer using `<Text variant="heading-md">` (or similar) over manually composing utilities.
 
+## Density (`[data-density]`)
+
+Body text ships comfortable. For a data-dense screen — table, inbox, console — set `data-density="compact"` on the screen root rather than dropping to raw `text-ds-*` sizes.
+
+```tsx
+<div data-density="compact">
+  <DataTable … />
+</div>
+```
+
+| | Comfortable (default) | Compact |
+|---|---|---|
+| Body leading | 1.5 | 1.4 |
+| Body tracking | `-0.01em` → `+0.02em` by size | one constant step tighter |
+
+It retunes the four `text-body-*` composites only. Headings, labels, caption and code are unchanged, and the `leading-ds-relaxed` utility still means 1.5. **Never reach for a raw `text-ds-*` size to get denser text** — those carry size only, so you lose the weight, leading and tracking the variant was carrying. Use the attribute.
+
+Compact changes layout metrics, so re-check fixed-height rows and `line-clamp` under it. Its body line-spacing sits below WCAG SC 1.4.8 (AAA); the default does not. Scope it to dense screens, not to reading copy.
+
 ## Font families
 
 | Token | Family | Use |

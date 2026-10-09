@@ -12,7 +12,16 @@ Split barrel imports of peer-cliff symbols (Toaster, DatePicker, RichTextEditor,
 
 ## Why
 
-Symbol → per-component subpath
+v0.40.0 removed twelve peer-cliff symbols from their parent barrels.
+Consumers must now import them via per-component subpaths.
+
+This rule:
+  1. Detects barrel imports (`@devalok/shilp-sutra/ui`, `/composed`,
+     `/ai`, `/ai/blocks`) that include cliff symbols.
+  2. Splits the import: keeps non-cliff symbols on the original line,
+     emits new import lines for each cliff symbol's per-component subpath.
+
+Source of truth: MIGRATION.md → v0.40.0 — Barrel peer-cliff cleanup.
 
 ## What it reports
 

@@ -34,6 +34,28 @@ tester.run('no-ungated-hover-over-selection', rule, {
 
     // The variant form carries its own specificity and needs no gate.
     `cn('data-[state=selected]:hover:bg-accent-5', isActive && 'bg-accent-4')`,
+
+    // ── Lookup tables ────────────────────────────────────────────────────
+    // Every entry carries its own hover — the NotificationCenter fix.
+    `const S = { tint: 'bg-accent-4 hover:bg-accent-5', none: 'hover:bg-surface-panel-hover' }
+     cn('border-b', isUnread && S[style])`,
+    // A table the rule cannot read resolves to nothing and it stays quiet.
+    `cn('hover:bg-surface-panel-hover', isActive && LOOKUP[key])`,
+    // Values come from a call, not literals — unreadable, so quiet.
+    `const S = { tint: makeClass('a') }
+     cn('hover:bg-surface-panel-hover', isActive && S[style])`,
+    // Dot access to an entry that already has its own hover.
+    `const S = { on: 'bg-accent-4 hover:bg-accent-5' }
+     cn('hover:bg-surface-panel-hover', isActive && S.on)`,
+    // Not a selection flag, so a shared hover over a table is intended.
+    `const S = { a: 'bg-error-3' }
+     cn('hover:bg-surface-panel-hover', hasError && S[kind])`,
+
+    // `read` is a state word, but `readOnly` and `readonly` are not — a
+    // read-only field is disabled-ish, and a shared hover over it is intended.
+    `cn('hover:bg-surface-panel-hover', isReadOnly && 'bg-surface-panel')`,
+    `cn('hover:bg-surface-panel-hover', readonly && 'bg-surface-panel')`,
+    `cn('hover:bg-surface-panel-hover', isDisabledRead && 'bg-surface-panel')`,
   ],
 
   invalid: [
@@ -73,6 +95,39 @@ tester.run('no-ungated-hover-over-selection', rule, {
     {
       // Template literal with no interpolation is still a readable string.
       code: 'cn(`hover:bg-surface-panel-hover`, isActive && `bg-accent-4`)',
+      errors: [{ messageId: 'ungatedHover' }],
+    },
+
+    // ── The NotificationCenter miss, in its original shape ───────────────
+    // A table lookup behind a negated flag. All three gaps had to close for
+    // this to report: reading the table, unwrapping the `!`, and treating
+    // `unread` as a state worth marking.
+    {
+      code: `const UNREAD_STYLES = { tint: 'bg-accent-4', strong: 'bg-accent-5', none: '' }
+             cn('border-b', 'hover:bg-surface-panel-hover', !n.isRead && UNREAD_STYLES[style])`,
+      errors: [{ messageId: 'ungatedHover' }],
+    },
+    // One bad entry among good ones is still a bug — it ships on that value.
+    {
+      code: `const S = { a: 'bg-accent-4 hover:bg-accent-5', b: 'bg-accent-4' }
+             cn('hover:bg-surface-panel-hover', isSelected && S[k])`,
+      errors: [{ messageId: 'ungatedHover' }],
+    },
+    // The ungated half can itself be a lookup.
+    {
+      code: `const H = { on: 'hover:bg-surface-panel-hover' }
+             cn(H[k], isActive && 'bg-accent-4')`,
+      errors: [{ messageId: 'ungatedHover' }],
+    },
+    // `as Record<…>` wraps the literal; the rule must still see through it.
+    {
+      code: `const S = { tint: 'bg-accent-4' } as Record<string, string>
+             cn('hover:bg-surface-panel-hover', isUnread && S[style])`,
+      errors: [{ messageId: 'ungatedHover' }],
+    },
+    // A ternary resolves to both branches.
+    {
+      code: `cn('hover:bg-surface-panel-hover', isSelected && (dense ? 'bg-accent-4' : 'bg-accent-5'))`,
       errors: [{ messageId: 'ungatedHover' }],
     },
   ],

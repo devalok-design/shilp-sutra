@@ -13,10 +13,10 @@
     "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {
-    "@babel/parser": "^8.0.4",
-    "@modelcontextprotocol/sdk": "^1.29.0",
-    "posthog-node": "^5.46.0",
-    "tar": "^7.5.21",
+    "@babel/parser": "^8.1.2",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "posthog-node": "^5.74.0",
+    "tar": "^7.5.23",
     "zod": "^3.25.76"
   }
 }

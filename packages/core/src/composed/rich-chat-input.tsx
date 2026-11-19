@@ -550,6 +550,9 @@ const RichChatInput = React.forwardRef<HTMLDivElement, RichChatInputProps>(
       editorProps: {
         attributes: {
           class: CHAT_PROSE,
+          // Tiptap 3.34 keeps role="textbox" on the editor, which needs an
+          // accessible name; the placeholder is the visible prompt.
+          'aria-label': placeholder,
         },
         handlePaste: (_view, event) => {
           const files = Array.from(event.clipboardData?.files ?? [])

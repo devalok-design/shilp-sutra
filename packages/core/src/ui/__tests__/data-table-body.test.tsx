@@ -224,21 +224,31 @@ describe('DataTableBody — expanded rows', () => {
  * Mirrors the stub already used in data-table-integration.test.tsx.
  */
 function mockVirtualLayout({ viewport = 400, rowGroup = 48 } = {}) {
-  const original = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight')
-  Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
-    configurable: true,
-    get(this: HTMLElement) {
-      if (this.tagName === 'TBODY') return rowGroup
-      if (this.style?.overflowY === 'auto') return viewport
-      return 0
-    },
-  })
+  // virtual-core >=3.19 measures the scroll viewport via clientHeight (it used
+  // offsetHeight before), so both are stubbed with the same layout.
+  const props = ['offsetHeight', 'clientHeight'] as const
+  const originals = props.map((p) =>
+    Object.getOwnPropertyDescriptor(HTMLElement.prototype, p),
+  )
+  for (const p of props) {
+    Object.defineProperty(HTMLElement.prototype, p, {
+      configurable: true,
+      get(this: HTMLElement) {
+        if (this.tagName === 'TBODY') return rowGroup
+        if (this.style?.overflowY === 'auto') return viewport
+        return 0
+      },
+    })
+  }
   return () => {
-    if (original) {
-      Object.defineProperty(HTMLElement.prototype, 'offsetHeight', original)
-    } else {
-      delete (HTMLElement.prototype as unknown as Record<string, unknown>).offsetHeight
-    }
+    props.forEach((p, i) => {
+      const original = originals[i]
+      if (original) {
+        Object.defineProperty(HTMLElement.prototype, p, original)
+      } else {
+        delete (HTMLElement.prototype as unknown as Record<string, unknown>)[p]
+      }
+    })
   }
 }
 

@@ -73,6 +73,6 @@
   "devDependencies": {
     "@paper-design/shaders-react": "^0.0.76",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.7.0"
   }
 }

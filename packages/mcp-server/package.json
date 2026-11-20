@@ -17,6 +17,6 @@
     "@modelcontextprotocol/sdk": "^1.32.2",
     "posthog-node": "^5.74.0",
     "tar": "^7.5.23",
-    "zod": "^3.25.76"
+    "zod": "^4.6.6"
   }
 }

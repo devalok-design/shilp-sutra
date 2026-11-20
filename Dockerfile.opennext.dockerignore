@@ -1,0 +1,14 @@
+# BuildKit reads <dockerfile>.dockerignore for a named Dockerfile, so this
+# applies only to Dockerfile.opennext. The repo has no root .dockerignore.
+**/node_modules
+**/.next
+**/.open-next
+**/.wrangler
+**/dist
+**/.turbo
+.git
+**/storybook-static
+**/test-results
+**/playwright-report
+**/.lighthouseci
+**/screenshots

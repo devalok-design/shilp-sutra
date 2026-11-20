@@ -31,12 +31,14 @@
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
+    "@opennextjs/cloudflare": "^1.20.16",
     "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "tailwindcss": "^4.3.5",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "wrangler": "^4.157.0"
   }
 }

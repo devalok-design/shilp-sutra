@@ -1,0 +1,117 @@
+name: Deploy site to Cloudflare Workers
+
+# shilp-sutra.devalok.in is served by Cloudflare Workers via OpenNext — the
+# Railway CNAME on that hostname was deleted when the site moved (see
+# apps/site/wrangler.jsonc). Until now the only deploy path was building the
+# bundle in Docker and running wrangler by hand, so the live site drifted
+# behind main while a redundant Railway copy rebuilt on every push and leaked
+# 1.38 GB/day. That Railway service has been removed; this replaces it.
+#
+# This mirrors Dockerfile.opennext step for step. That Dockerfile exists because
+# Next's standalone tracer creates symlinks and Windows refuses them without
+# Developer Mode, so the bundle cannot be produced on the maintainer's host.
+# ubuntu-latest has no such problem, so CI needs no container — but it does need
+# the same sequence and the same environment.
+
+on:
+  push:
+    branches: [main]
+    # The site bundles the library, so a packages/** change can change the site.
+    # Storybook/playground-only and MCP-only changes cannot.
+    paths:
+      - 'apps/site/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/deploy-site.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# GitHub bills every JOB rounded up to a whole minute, so a superseded run is
+# not free. Cancel in-progress deploys when a newer commit lands.
+concurrency:
+  group: deploy-site
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      # REQUIRED. apps/site/next.config.ts only sets `output: 'standalone'` when
+      # this is exactly '1'. Without it Next emits an ordinary build, OpenNext
+      # has nothing to package, and the failure is downstream and confusing.
+      BUILD_STANDALONE: '1'
+      # Deliberately NOT setting TURBO_API / TURBO_TOKEN. The remote cache was
+      # self-hosted at turbo-ss.devalok.dev on Railway and that service was
+      # deleted on 2026-11-19 — the host no longer resolves.
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Build the library FIRST: apps/site imports @devalok/shilp-sutra via
+      # per-component subpaths, whose .d.ts only exist after the build. Building
+      # the site first fails with TS2307 plus cascading TS7006 implicit-any.
+      # `|| true` on brand mirrors Dockerfile.opennext.
+      - name: Build design system
+        run: |
+          pnpm -F @devalok/shilp-sutra-brand build || true
+          pnpm -F @devalok/shilp-sutra build
+
+      # Runs apps/site's own `prebuild` (canvas-modes + registry) and then
+      # `next build` with BUILD_STANDALONE=1.
+      - name: Build site
+        run: pnpm -F site build
+
+      # --skipNextBuild: Next already built above. Without this flag OpenNext
+      # runs `next build` a second time, which is slow AND loses `prebuild`
+      # because it invokes Next directly rather than through the npm script.
+      - name: Package for workerd
+        working-directory: apps/site
+        run: pnpm exec opennextjs-cloudflare build --skipNextBuild
+
+      - name: Verify the bundle exists
+        working-directory: apps/site
+        run: |
+          test -f .open-next/worker.js || { echo "::error::no .open-next/worker.js — OpenNext produced no bundle"; exit 1; }
+          test -d .open-next/assets   || { echo "::error::no .open-next/assets"; exit 1; }
+          echo ".open-next/assets contains $(find .open-next/assets -type f | wc -l) files"
+
+      # wrangler directly rather than `opennextjs-cloudflare deploy`: that
+      # command only shells out to wrangler, and wrangler.jsonc already points
+      # main at .open-next/worker.js and assets at .open-next/assets.
+      - name: Deploy to Cloudflare Workers
+        working-directory: apps/site
+        run: pnpm exec wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # A green deploy step is not proof the site is serving. Check the real
+      # hostname, and assert OpenNext is answering rather than a stale origin —
+      # x-opennext is the discriminator between the Workers build and anything
+      # else that might hold the CNAME.
+      - name: Verify the live site
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 https://shilp-sutra.devalok.in)
+          echo "shilp-sutra.devalok.in -> $code"
+          test "$code" = "200" || { echo "::error::live site returned $code"; exit 1; }
+          curl -sI --max-time 30 https://shilp-sutra.devalok.in | tr -d '\r' | grep -qi '^x-opennext:' \
+            || { echo "::error::no x-opennext header — something other than the Workers build is serving this hostname"; exit 1; }
+          echo "verified: served by the OpenNext Worker"

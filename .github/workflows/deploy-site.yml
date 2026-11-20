@@ -82,17 +82,9 @@ jobs:
       # --skipNextBuild: Next already built above. Without this flag OpenNext
       # runs `next build` a second time, which is slow AND loses `prebuild`
       # because it invokes Next directly rather than through the npm script.
-      #
-      # pnpm dlx with a pinned version, not `pnpm exec`: @opennextjs/cloudflare
-      # and wrangler are not declared in apps/site/package.json on this branch.
-      # Adding them would require regenerating pnpm-lock.yaml, and the only
-      # lockfile available was generated on Windows — origin/main already
-      # carries `chore: regenerate lockfile on ubuntu-latest` precisely because
-      # a Windows lockfile drops Linux-only optional deps. Declaring them
-      # properly is a follow-up that needs a Linux lockfile regeneration.
       - name: Package for workerd
         working-directory: apps/site
-        run: pnpm dlx @opennextjs/cloudflare@1.20.16 build --skipNextBuild
+        run: pnpm exec opennextjs-cloudflare build --skipNextBuild
 
       - name: Verify the bundle exists
         working-directory: apps/site
@@ -106,7 +98,7 @@ jobs:
       # main at .open-next/worker.js and assets at .open-next/assets.
       - name: Deploy to Cloudflare Workers
         working-directory: apps/site
-        run: pnpm dlx wrangler@4.157.0 deploy
+        run: pnpm exec wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -7,12 +7,18 @@ name: Regenerate lockfile (Linux)
 # `pnpm install --frozen-lockfile` on a Linux runner or in Docker. This repo
 # already carries `chore: regenerate lockfile on ubuntu-latest` for that reason.
 #
-# Run it from the Actions tab against the branch whose package.json changed.
+# Triggered by pushes to this ONE branch, not workflow_dispatch: GitHub only
+# offers workflow_dispatch for workflows that already exist on the DEFAULT
+# branch, and this one does not (that is the whole chicken-and-egg it solves).
+# It cannot loop — a push made with GITHUB_TOKEN does not trigger workflows.
+#
 # It regenerates the lockfile only (no node_modules install) and commits it back
-# to that same branch.
+# to the same branch.
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - feat/cloudflare-workers-deploy
 
 permissions:
   contents: write

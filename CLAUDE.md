@@ -534,7 +534,26 @@ When the Storybook dev server is running (`pnpm dev`), an MCP server at `localho
 
 This complements the static `llms.txt` router + `mcp-manifest.json` with interactive capabilities.
 
-## Hosted Docs MCP (`packages/mcp-server`, live at `https://shilp-sutra.devalok.in/mcp`)
+## Hosted Docs MCP (`packages/mcp-server`) — **NOT REACHABLE, verified 2026-11-20**
+
+> `https://shilp-sutra.devalok.in/mcp` returns **503 `"MCP backend not configured"`** and
+> has received **zero requests** — in the month before the Railway outage and since. It has
+> never served a consumer.
+>
+> **Why.** `apps/site/app/mcp/route.ts` proxies `/mcp` to the MCP service and reads
+> `MCP_INTERNAL_URL` at request time; if unset it returns exactly that 503. The design
+> (`docs/plans/implemented/2026-07-05-hosted-docs-mcp-plan.md`) had the site reach the
+> service **over Railway's private network** — which worked only while the site ran on
+> Railway. The site now runs on Cloudflare Workers, and a Worker cannot route into
+> Railway's private network. `MCP_INTERNAL_URL` is set nowhere.
+>
+> **To fix:** give the Railway `shilp-sutra-mcp` service a public hostname and set
+> `MCP_INTERNAL_URL` on the Worker. Cap the unbounded version cache in
+> `packages/mcp-server/src/registry.mjs:37` **first** — it never evicts and leaks
+> ~0.32 GB/day; exposing it publicly before that just lets crawlers drive the leak.
+>
+> **Three repos' CLAUDE.md / AGENTS.md name this endpoint as the preferred route to the
+> design system.** Until the above is done, they are pointing agents at a 503.
 
 Serves version-exact docs from published npm tarballs. **13 tools** (spec: `docs/specs/mcp-manifest-standard.md`):
 - Reference: `how_to_use` (self-teaching bootstrap — tool map + sequences), `find_component`, `get_component`, `get_tokens`, `get_setup`, `upgrade`, `search_docs`
@@ -546,7 +565,12 @@ Tool list is GENERATED into README/AGENTS via `scripts/generate-tool-list.mjs` (
 
 ## CI: Turborepo remote cache (0.47+)
 
-`build`/`typecheck`/`lint`/`test` route through `turbo run`. PR CI reads+writes a self-hosted `turborepo-remote-cache` on Railway (`turbo-ss.devalok.dev`, `TURBO_TOKEN` repo secret). **Safety: the release path never uses the cache** — `release.yml` sets `TURBO_FORCE=true` with no cache creds, and `pnpm release` uses `build:fresh` (`turbo run build --force`), so a published artifact is always freshly built. `turbo.json` `outputs` list ONLY gitignored generated artifacts (dist, skill, mcp-manifest.json, AGENTS.md, MIGRATION.md, .next) — NEVER committed files the build also touches (`llms.txt`, `docs/components`, `README.md`), or a cache restore would misrepresent source.
+`build`/`typecheck`/`lint`/`test` route through `turbo run`. **The remote cache is GONE
+(2026-11-20):** it was a self-hosted `turborepo-remote-cache` on Railway at
+`turbo-ss.devalok.dev`, deleted 2026-11-19 as a disposable build cache; the host no longer
+resolves. `ci.yml` no longer sets `TURBO_API`/`TURBO_TOKEN`/`TURBO_TEAM`, so turbo uses a
+local cache only and PR CI rebuilds unchanged packages. The `TURBO_TOKEN` repo secret is
+now unused. **Safety: the release path never used the cache anyway** — `release.yml` sets `TURBO_FORCE=true` with no cache creds, and `pnpm release` uses `build:fresh` (`turbo run build --force`), so a published artifact is always freshly built. `turbo.json` `outputs` list ONLY gitignored generated artifacts (dist, skill, mcp-manifest.json, AGENTS.md, MIGRATION.md, .next) — NEVER committed files the build also touches (`llms.txt`, `docs/components`, `README.md`), or a cache restore would misrepresent source.
 
 The pre-publish-audit skips its build/typecheck/test/ssr gates when `SS_AUDIT_SKIP_REDUNDANT=1` (release.yml sets it — those ran as prior steps). `version-packages` auto-stubs a MIGRATION.md section for the target version (`scripts/stub-migration-section.mjs`) so the MIGRATION-section gate can't block a release.
 

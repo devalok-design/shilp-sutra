@@ -1,0 +1,28 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "shilp-sutra-site",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2026-10-01",
+
+	// OpenNext runs the Next server on workerd, which needs the Node built-ins.
+	// `global_fetch_strictly_public` makes same-worker fetches go out through the
+	// public internet, which is what Next's own internal fetches assume.
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+
+	"observability": {
+		"enabled": true
+	},
+
+	// Keep workers.dev alive: declaring routes without this silently
+	// disables it and takes the site down.
+	"workers_dev": true,
+
+	// The stale Railway CNAME on this hostname was deleted, so Cloudflare
+	// now owns the record and manages it as a real custom domain.
+	"routes": [{ "pattern": "shilp-sutra.devalok.in", "custom_domain": true }]
+}

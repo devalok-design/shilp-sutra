@@ -15,15 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    # Turborepo remote cache (self-hosted on Railway). PR CI reads+writes the
-    # shared cache so unchanged packages restore instead of rebuild. Degrades
-    # gracefully to no-cache if TURBO_TOKEN is unset. The RELEASE workflow does
-    # NOT set these + forces fresh builds, so a published artifact is never
-    # served from cache.
-    env:
-      TURBO_API: https://turbo-ss.devalok.dev
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: team_devalok
+    # Turborepo remote cache REMOVED 2026-11-20. It was self-hosted on Railway at
+    # turbo-ss.devalok.dev; that service was deleted on 2026-11-19 as a disposable
+    # build cache and the host no longer resolves (HTTP 000, no DNS). Turbo
+    # degrades to a local cache, so leaving the vars set cost nothing but a failed
+    # lookup and misleading output on every PR. The TURBO_TOKEN repo secret is now
+    # unused — delete it, or restore the service and put these three back:
+    #   TURBO_API: https://turbo-ss.devalok.dev
+    #   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #   TURBO_TEAM: team_devalok
 
     steps:
       - name: Checkout

@@ -19,3 +19,5 @@ playwright-report/
 
 # Lighthouse CI report output (`pnpm -F site lighthouse`)
 .lighthouseci/
+.open-next/
+.wrangler/

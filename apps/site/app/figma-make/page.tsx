@@ -25,6 +25,7 @@ import { SiteHeader } from '@/components/site-header'
 import { concatGroup, fileCount, getGuidelineGroups } from '@/lib/make-kit-content'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/figma-make' },
   title: 'Figma Make kit',
   description:
     'Generate apps in Figma Make against the production shilp-sutra design system. Register the npm package as a Make kit, paste twenty-six guideline files, and ship prototypes that match the same conventions as production code.',

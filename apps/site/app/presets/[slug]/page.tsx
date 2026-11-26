@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const preset = getPreset(slug)
   if (!preset) return { title: 'Not found' }
-  return { title: `${preset.title} · Preset Library`, description: preset.description }
+  return { alternates: { canonical: `/presets/${slug}` }, title: `${preset.title} · Preset Library`, description: preset.description }
 }
 
 export default async function PresetDetailPage({ params }: { params: Promise<{ slug: string }> }) {

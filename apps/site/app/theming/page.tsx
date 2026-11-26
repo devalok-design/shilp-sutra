@@ -8,6 +8,7 @@ import { SiteHeader } from '@/components/site-header'
 import { ThemingHub } from '@/components/themer/ThemingHub'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/theming' },
   title: 'Theming',
   description:
     'Build your own brand on shilp-sutra. Pick an archetype, paste your brand color, take a wizard, or dial OKLCH by hand — one page, one live preview, install + CSS to paste.',

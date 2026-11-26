@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const meta = getDocMeta(slug)
   if (!meta) return { title: 'Not found' }
-  return { title: meta.title, description: `${getCategoryLabel(meta.category)} guide for shilp-sutra: ${meta.title}.` }
+  return { alternates: { canonical: `/docs/${slug}` }, title: meta.title, description: `${getCategoryLabel(meta.category)} guide for shilp-sutra: ${meta.title}.` }
 }
 
 export default async function DocPage({ params }: { params: Promise<{ slug: string }> }) {

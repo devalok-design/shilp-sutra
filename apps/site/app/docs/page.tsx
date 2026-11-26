@@ -19,6 +19,7 @@ import { SiteHeader } from '@/components/site-header'
 import { CARD_INTERACTIVE, CARD_TITLE } from '@/lib/card-recipe'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/docs' },
   title: 'Docs',
   description:
     'Pick your framework and get going. Setup recipes for Next.js, Vite, Astro, Remix, TanStack Start. Plus theming, server components, troubleshoot.',

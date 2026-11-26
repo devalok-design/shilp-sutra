@@ -11,6 +11,7 @@ import { getPreviewSlugs } from '@/lib/preview-registry'
 import { SHILP_SUTRA_MINOR } from '@/lib/version'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/components' },
   title: 'Components',
   description:
     '125 accessible React components from shilp-sutra. UI primitives, composed patterns, app shell. Builder-ready, brand-aware, RSC-safe per import.',

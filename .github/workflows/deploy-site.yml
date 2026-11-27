@@ -86,12 +86,29 @@ jobs:
         working-directory: apps/site
         run: pnpm exec opennextjs-cloudflare build --skipNextBuild
 
+      # The prerendered pages are served from Workers static assets (see
+      # apps/site/open-next.config.ts). `opennextjs-cloudflare deploy` would fill
+      # that cache itself; this workflow calls wrangler directly, so it must.
+      # For the static-assets cache this only copies .open-next/cache into
+      # .open-next/assets/cdn-cgi/_next_cache -- no Cloudflare API calls.
+      - name: Populate the prerender cache
+        working-directory: apps/site
+        run: pnpm exec opennextjs-cloudflare populateCache remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
       - name: Verify the bundle exists
         working-directory: apps/site
         run: |
           test -f .open-next/worker.js || { echo "::error::no .open-next/worker.js — OpenNext produced no bundle"; exit 1; }
           test -d .open-next/assets   || { echo "::error::no .open-next/assets"; exit 1; }
           echo ".open-next/assets contains $(find .open-next/assets -type f | wc -l) files"
+          # Without the cache every /components/<slug> and /docs/<slug> page
+          # 404s on workerd (it cannot read the markdown at request time).
+          n=$(find .open-next/assets/cdn-cgi/_next_cache -path '*components*' -type f 2>/dev/null | wc -l)
+          echo "prerender cache holds $n component-page entries"
+          test "$n" -gt 0 || { echo "::error::prerender cache is empty — component and doc pages would 404"; exit 1; }
 
       # wrangler directly rather than `opennextjs-cloudflare deploy`: that
       # command only shells out to wrangler, and wrangler.jsonc already points
@@ -115,3 +132,10 @@ jobs:
           curl -sI --max-time 30 https://shilp-sutra.devalok.in | tr -d '\r' | grep -qi '^x-opennext:' \
             || { echo "::error::no x-opennext header — something other than the Workers build is serving this hostname"; exit 1; }
           echo "verified: served by the OpenNext Worker"
+          # The home page passing proved nothing on 26 Nov 2026: it rendered
+          # while every component and doc page returned 404. Check one of each.
+          for p in /components/button /docs/install-vite; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "https://shilp-sutra.devalok.in$p")
+            echo "$p -> $code"
+            test "$code" = "200" || { echo "::error::$p returned $code"; exit 1; }
+          done

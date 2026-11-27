@@ -8,6 +8,7 @@ import { SiteHeader } from '@/components/site-header'
 import { getAllPresets } from '@/lib/presets-registry'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/presets' },
   title: 'Preset Library · shilp-sutra',
   description:
     'Pre-assembled, real-world screens built from shilp-sutra components — copy them, own them, or tell your AI agent to install one. shadcn-compatible registry.',

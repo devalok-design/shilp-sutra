@@ -42,9 +42,10 @@ export const metadata: Metadata = {
     'india',
     'bharat',
   ],
-  alternates: {
-    canonical: SITE_URL,
-  },
+  // NO ROOT CANONICAL. Next inherits `alternates` into every route, so a
+  // canonical here made every /components/* and /docs/* page declare the
+  // home page as its canonical (found by the estate SEO study, 27 Nov 2026).
+  // Each route sets its own, relative to metadataBase above.
   // Icons + apple-touch-icon are auto-discovered by Next 15 from
   // app/icon.tsx and app/apple-icon.tsx. No manual icons[] needed.
   openGraph: {

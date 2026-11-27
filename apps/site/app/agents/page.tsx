@@ -19,6 +19,7 @@ import { CLOSES, PRIZE, isOpen as isBuildathonOpen } from '@/lib/buildathon'
 export const revalidate = 900
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/agents' },
   title: 'For AI editors',
   description:
     'Claude Code, Cursor, Codex, Aider. Install the shilp-sutra Agent Skill once and the library lives inside your editor. Current shape, current props, current gotchas. Built on the agentskills.io standard.',

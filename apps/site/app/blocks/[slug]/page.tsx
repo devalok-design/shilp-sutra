@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const block = getBlock(slug)
   if (!block) return { title: 'Not found' }
-  return { title: block.title, description: block.description }
+  return { alternates: { canonical: `/blocks/${slug}` }, title: block.title, description: block.description }
 }
 
 export default async function BlockDetailPage({ params }: { params: Promise<{ slug: string }> }) {

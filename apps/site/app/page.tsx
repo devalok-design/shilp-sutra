@@ -2,6 +2,13 @@ import { BelowFold } from '@/components/below-fold'
 import { Hero } from '@/components/hero'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import type { Metadata } from 'next'
+
+// The home page's own canonical. The root layout no longer sets one, because
+// Next inherited it into every route (see app/layout.tsx).
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 /**
  * Landing flow. Only the lander (header + full-height hero) paints on load; the

@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const entry = getShowcase(slug)
   if (!entry) return { title: 'Not found' }
   return {
+    alternates: { canonical: `/showcase/${slug}` },
     title: `${entry.product} · ${entry.industry}`,
     description: `${entry.tagline} ${entry.premise}`,
   }

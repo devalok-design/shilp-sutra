@@ -6,6 +6,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/aurora' },
   title: 'Aurora',
   description:
     'Interactive playground for AuroraBloom, the theme-reactive WebGL aurora curtain from @devalok/shilp-sutra-brand/aurora.',

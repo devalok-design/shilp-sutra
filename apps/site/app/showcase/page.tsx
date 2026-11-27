@@ -10,6 +10,7 @@ import { UnifiedCanvas } from '@/components/unified-canvas'
 import { getAllBlocks, getBlockSource } from '@/lib/blocks-registry'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/showcase' },
   title: 'Showcase',
   description:
     'Full pages you can copy and ship, plus the same shilp-sutra library shown across six different industry brands: SaaS, fintech, D2C, healthcare, editorial, and studio.',

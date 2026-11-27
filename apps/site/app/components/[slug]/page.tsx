@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const item = items.find((i) => i.slug === slug && i.layer === layer)
   if (!item) return { title: 'Not found' }
   return {
+    alternates: { canonical: `/components/${slug}` },
     title: item.name,
     description: `${item.name} from shilp-sutra. ${item.serverSafe ? 'Server-safe.' : 'Client component.'} Variants: ${item.variants.join(', ') || 'no variant axes'}.`,
   }
